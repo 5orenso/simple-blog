@@ -76,7 +76,6 @@ Readability, however, is emphasized above all else. A Markdown-formatted documen
 | Strike through  | ```~~Mistaken text~~```         | ~~Mistaken text~~ 
 | Horizontal line | ```----- or *****```            | [See below](#horizontal-line)
 | Table           |                                 | [See below](#tables)
-| Table of content| :toc: 
 
 
 
