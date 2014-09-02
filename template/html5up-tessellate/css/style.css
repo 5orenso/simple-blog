@@ -1001,6 +1001,8 @@
 				}
 
 
+
+
 .toc-indent-1 { display: block; text-indent: 0em; font-weight: bold; text-transform: uppercase;}
 .toc-indent-2 { display: block; text-indent: 0em;}
 .toc-indent-3 { display: block; text-indent: 1.5em;}
@@ -1009,3 +1011,34 @@
 .toc-indent-6 { display: block; text-indent: 6em;}
 
 .article-aside { float: right; width: 33% }
+ul.catlist {
+    clear: both;
+    display: block;
+    height: 40px;
+    width: 100%;
+}
+ul.catlist li {
+    display: inline-block;
+    line-height: 1em;
+    border-left: solid 1px #e6e6e6;
+    padding: 0 0 0 1em;
+    margin: 0 0 0 1em;
+}
+ul.catlist li:first-child {
+    border-left: 0;
+    padding-left: 0;
+    margin-left: 0;
+}
+ul.catlist li a:link, ul.catlist li a:visited {
+    border-bottom: 0px;
+    text-decoration: none;
+}
+div.artlist { clear: both; margin-left: auto; margin-right: auto; width: 90%; }
+div.artlist-art { float: left; width: 30%; margin-right: 3%; }
+div.artlist-image {
+    width: 100%;
+    height: 150px;
+    background-size:			cover;
+    background-position:		center center;
+    background-repeat:			no-repeat;
+}

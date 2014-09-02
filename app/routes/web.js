@@ -10,13 +10,14 @@ var express    = require('express'),
     _          = require('underscore'),
     swig       = require('swig'),
     fs         = require('fs'),
-    marked     = require('marked'),
-    renderer   = new marked.Renderer(),
+//    marked     = require('marked'),
+//    renderer   = new marked.Renderer(),
 
-    path       = require('path'),
-    app_path   = __dirname + '/../../',
-    template_path = app_path + 'template/current/',
-    logger     = require(app_path + 'lib/logger')();
+    path          = require('path'),
+    app_path      = __dirname + '/../../',
+    template_path = path.normalize(app_path + 'template/current/'),
+    content_path  = path.normalize(app_path + 'content/articles'),
+    logger        = require(app_path + 'lib/logger')();
 
 var web_router = express.Router();
 
@@ -52,16 +53,28 @@ web_router.get('/*', function(req, res) {
     var tpl = swig.compileFile(template_path + 'blog.html');
 
     // Load content based on filename
-    var markdown_filename = app_path + 'content/articles/' + article_filename + '.md';
+    var markdown_filename = path.normalize(app_path + 'content/articles/' + article_filename + '.md');
+    markdown_filename = markdown_filename.replace(/\/.md$/, '/index.md');
 
     // Load from function
     var article = require(app_path + 'lib/article')({
-        logger: logger
+        logger: logger,
+        filename: markdown_filename,
+        content_path: content_path
     });
-    when(article.article(markdown_filename))
-        .done(function (article) {
-            res.send(tpl({ article: article }))
-        });
+
+    when(article.catlist())
+        .then(article.artlist)
+        .then(article.article)
+        .then(function (article) {
+            res.send(tpl({ article: article }));
+        })
+        .catch(function (opt) {
+            console.log(opt);
+            res.status(404).send(tpl({ error: opt.error, article: opt.article }));
+        })
+        .done();
+
 
 });
 module.exports = web_router;
