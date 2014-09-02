@@ -27,3 +27,6 @@ node_modules
 .idea/
 
 dev/
+config/
+content/articles
+content/images
