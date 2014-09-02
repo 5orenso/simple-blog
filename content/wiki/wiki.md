@@ -1,28 +1,11 @@
-## A very simple blog server
+:title Blog Wiki
+:teaser A very simple and scalable blog platform
+:body
+[:menu]
 
-Written in Node.js with support for Markdown files.
+## Table of contents
 
-[Read more about the simple blog server.](https://github.com/5orenso/simple-blog/blob/master/content/wiki/wiki.md)
-
-Howto setup
-
-    npm install
-    
-
-Howto run unit tests:
-
-    grunt watch
-    
-
-Howto run integration tests:
-
-    grunt integration
-
-    
-Howto run script
-
-    grunt run
-    
+[:toc]
 
 ## Howto publish content
 
@@ -33,7 +16,6 @@ Simply save your article in the correct folder and voila, it's published.
 
 
 ## Blog posts are separated into sections. 
-
 Possible sections are:
 
 | Section   | Tag        | Example of usage | Description 
@@ -44,15 +26,16 @@ Possible sections are:
 | body      | :body      |                  | The blog post. 
 | img       | :img       | :img photo1.jpg  | Standard images used in the blog. It depends on the template where they are placed. You may use 
 | aside     | :aside     |                  | Boxes with content to go on the right side of the blog post.
-| tags      | :tags      | :tags foo,bar    | Content tag for this blog post.
 
 
 ## Special tags
-
 | Tag name  | Tag          | Example of usage | Description 
 |-----------|--------------|------------------|---------------------------------------------
-| toc       | [:toc]       | [:toc]           | Automatic generated table of contents.
-| fact      | [:fact file] | [:fact about-md] | A general fact box. This is usually shared between several blog posts.
+| toc       | &#91;:toc]       | &#91;:toc]           | Automatic generated table of contents.
+| fact      | &#91;:fact file] | &#91;:fact about-md] | A general fact box. This is usually shared between several blog posts.
+| menu      | &#91;:menu]      | &#91;:menu]          | List all categories inside the content dir.
+| artlist   | &#91;:artlist]   | &#91;:artlist [category]]       | List all articles inside the content dir in a plain list format.
+| artlist_block | &#91;:artlist_block ] | &#91;:artlist_block [category]] | List all articles inside the content dir in a plain list format.
 
 
 ### Example blog post
@@ -66,7 +49,8 @@ Possible sections are:
  
 ```
 
-__That's all there is to it.__
+That's all there is to it.
+
 
 
 ## Markdown is used for writing.
@@ -77,6 +61,7 @@ Readability, however, is emphasized above all else. A Markdown-formatted documen
 
 - Read more in [Markdown official syntax guide](http://daringfireball.net/projects/markdown/syntax).
 - [Github markdown page](https://help.github.com/articles/github-flavored-markdown)
+
 
 
 | Tag             | Example                         | Result                                  |
@@ -95,22 +80,153 @@ Readability, however, is emphasized above all else. A Markdown-formatted documen
 | Strike through  | ```~~Mistaken text~~```         | ~~Mistaken text~~ 
 | Horizontal line | ```----- or *****```            | [See below](#horizontal-line)
 | Table           |                                 | [See below](#tables)
-| Table of content| :toc: 
 
 
-## Work in progress
 
-More to come :) 
-The hottest feature is:
-- Dropbox integration
+### Headlines and subheadlines
+
+```md
+# This is an H1
+## This is an H2
+### This is an H3
+#### This is an H4
+```
+
+Turns into this:
+```html
+<h1>This is an H1</h1>
+<h2>This is an H2</h2>
+<h3>This is an H3</h3>
+<h4>This is an H4</h4>
+```
+
+### Text formatting
+
+```md
+_This is emphasis_
+__This is bold emphasis__
+```
+
+Looks like this:  
+_This is emphasis_  
+__This is bold emphasis__
 
 
-### Read more about:
+### Links
 
-- [Promises in general](https://www.promisejs.org/)
-- [Node.js when](https://github.com/cujojs/when)
-- [Markdown](http://daringfireball.net/projects/markdown/syntax)
-- [Github flavoured Markdown](https://help.github.com/articles/github-flavored-markdown)
-- [Express](http://expressjs.com/)
-- [Swig](https://github.com/paularmstrong/swig)
+```md
+[Link to an example](http://example.com/ "Title")
+```
 
+Looks like this:  
+[Link to an example](http://example.com/ "Title")
+
+
+### Images
+
+Inline-style:
+```md
+![alt text](https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png "Logo Title Text 1")
+```
+![alt text](https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png "Logo Title Text 1")
+
+
+### Text quotes
+
+```md
+> Quotes are  
+> written this way
+```
+
+Turns into this:
+> Quotes are
+> written this way
+
+Quotes can also contain Markdown elements.
+
+```md
+> ### The Fox
+> 
+> Ching ching ching.
+> Pow, pow, pow.
+```
+
+Looks like this:
+> ### The Fox
+> 
+> Ching ching ching.
+> Pow, pow, pow.
+
+
+
+### Ordered and unordered lists
+
+```md
+- Cat
+- Dog
+- Horse
+
+1. Donkey
+2. Squirrel
+3. Rat
+```
+
+Turns into this:
+- Cat
+- Dog
+- Horse
+
+And ordered list:
+1. Donkey
+2. Squirrel
+3. Rat
+
+
+### Tables
+
+Draw a text table and it becomes a html table.
+
+```md
+| First Header  | Second Header |
+| ------------- | ------------- |
+| Content Cell  | Content Cell  |
+| Content Cell  | Content Cell  |
+```
+
+Looks like this:
+
+| First Header  | Second Header |
+| ------------- | ------------- |
+| Content Cell  | Content Cell  |
+| Content Cell  | Content Cell  |
+
+
+
+If you want spesific alignment use colons within the header row on the side you want to align to.
+
+```md
+| Left-Aligned  | Center Aligned  | Right Aligned |
+| :------------ |:---------------:| -------------:|
+| col 3 is      | some wordy text | $1600         |
+```
+
+Looks like this:
+
+| Left-Aligned  | Center Aligned  | Right Aligned |
+| :------------ |:---------------:| -------------:|
+| col 3 is      | some wordy text | $1600         |
+
+
+### Horizontal line
+
+```md
+-----
+*****
+```
+
+Turns into the same line like this:
+  
+-----
+
+### Read more
+[:artlist wiki]

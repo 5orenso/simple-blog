@@ -1033,7 +1033,7 @@ ul.catlist li a:link, ul.catlist li a:visited {
     border-bottom: 0px;
     text-decoration: none;
 }
-div.artlist { clear: both; margin-left: auto; margin-right: auto; width: 90%; }
+div.artlist { clear: both; margin-left: auto; margin-right: auto; width: 90%; height: 200px; }
 div.artlist-art { float: left; width: 30%; margin-right: 3%; }
 div.artlist-image {
     width: 100%;
