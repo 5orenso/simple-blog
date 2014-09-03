@@ -14,11 +14,11 @@ module.exports = function (grunt) {
                 src: 'Gruntfile.js'
             },
             lib: {
-                src: ['app/**/*.js']
+                src: ['app/**/*.js', 'template/**/*.html']
             },
             test: {
                 src: ['test/**/*.js']
-            },
+            }
         },
         watch: {
             all: {
