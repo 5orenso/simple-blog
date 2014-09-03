@@ -10,7 +10,8 @@ var express    = require('express'),
     _          = require('underscore'),
     swig       = require('swig'),
     fs         = require('fs'),
-//    marked     = require('marked'),
+    marked     = require('marked'),
+    renderer     = new marked.Renderer(),
 //    renderer   = new marked.Renderer(),
 
     path          = require('path'),
@@ -18,6 +19,27 @@ var express    = require('express'),
     template_path = path.normalize(app_path + 'template/current/'),
     content_path  = path.normalize(app_path + 'content/articles/'),
     logger        = require(app_path + 'lib/logger')();
+
+marked.setOptions({
+    highlight: function (code) {
+        return require('highlight.js').highlightAuto(code).value;
+    }
+});
+
+renderer.heading = function (text, level) {
+    var escapedText = text.toLowerCase().replace(/[^\w]+/g, '-');
+    return '<h' + level + ' class="toc-' + level + '"><a name="' +
+        escapedText +
+        '" class="anchor" href="#' +
+        escapedText +
+        '"><span class="header-link"></span></a>' +
+        text + '</h' + level + '>';
+};
+
+function replaceMarked (input) {
+    return marked(input, { renderer: renderer });
+}
+swig.setFilter('markdown', replaceMarked);
 
 var web_router = express.Router();
 
