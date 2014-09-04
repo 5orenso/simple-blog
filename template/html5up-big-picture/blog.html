@@ -60,7 +60,6 @@
         </div>
         {% set arr = [0,2,4,6,8,10,12,14,16,18,20] %}
         {% for i in arr %}
-{{ i }}
             {% if (art.img[i+1]) %}
                 <div class="row flush images">
                     {% if (art.img[i+1]) %}<div class="6u"><a href="/photos/{{ art.img[i+1] }}" class="image fit from-left"><img src="/photos/{{ art.img[i+1] }}" title="Image" alt="" /></a></div>{% endif %}
