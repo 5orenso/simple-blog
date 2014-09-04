@@ -11,10 +11,9 @@ var express    = require('express'),
     swig       = require('swig'),
     fs         = require('fs'),
     marked     = require('marked'),
-    renderer     = new marked.Renderer(),
-//    renderer   = new marked.Renderer(),
-
+    renderer      = new marked.Renderer(),
     path          = require('path'),
+    commander     = require('commander'),
     app_path      = __dirname + '/../../',
     template_path = path.normalize(app_path + 'template/current/'),
     content_path  = path.normalize(app_path + 'content/articles/'),
@@ -41,8 +40,11 @@ function replaceMarked (input) {
 }
 swig.setFilter('markdown', replaceMarked);
 
+var config;
 var web_router = express.Router();
-
+web_router.set_config = function (conf) {
+    web_router.config = conf;
+};
 web_router.use(function(req, res, next) {
     // do logging
     logger.log(
@@ -88,6 +90,8 @@ function getMarkdownFilename (article_filename) {
 
 // test route to make sure everything is working (accessed at GET http://localhost:8080/api)
 web_router.get('/*', function(req, res) {
+//    web_router.config
+
     // Resolve filename
 //    console.log(req.url);
     var article_filename = getUrlFromRequest(req);
@@ -112,11 +116,11 @@ web_router.get('/*', function(req, res) {
         .then(article.artlist)
         .then(article.article)
         .then(function (article) {
-            res.send(tpl({ article: article }));
+            res.send(tpl({ blog: web_router.config.blog, article: article }));
         })
         .catch(function (opt) {
 //            console.log(opt);
-            res.status(404).send(tpl({ error: opt.error, article: opt.article }));
+            res.status(404).send(tpl({ blog: web_router.config.blog, error: opt.error, article: opt.article }));
         })
         .done();
 

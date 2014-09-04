@@ -10,21 +10,25 @@ var when       = require('when'),
     express    = require('express'),
     bodyParser = require('body-parser'),
     path       = require('path'),
+    commander  = require('commander'),
     app_path   = __dirname + '/../',
     logger     = require(app_path + 'lib/logger')();
 
 var app        = express();
 
+commander
+    .option('-c, --config <file>', 'configuration file path', './config/config.js')
+    .parse(process.argv);
+var config = require(commander.config);
+
 // configure app to use bodyParser()
 // this will let us get the data from a POST
 app.use(bodyParser.json());
 
-// set our port
-var port = 8080;
-
 // Include route handlers
 var api_router = require('./routes/api');
 var web_router = require('./routes/web');
+web_router.set_config(config);
 
 // middleware to use for all requests
 
@@ -36,6 +40,6 @@ app.use('/static', express.static(__dirname + '/public'));
 app.use('/', web_router);
 
 // Start the server -------------------------------
-app.listen(port);
-logger.log('Magic happens on port ' + port);
+app.listen(config.app.port);
+logger.log('Something happens on port ' + config.app.port);
 
