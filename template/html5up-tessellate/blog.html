@@ -87,15 +87,15 @@
                     </div>
                 </div>
                 <ul class="icons">
-					<li><a href="#" class="icon fa-twitter"><span class="label">Twitter</span></a></li>
-					<li><a href="#" class="icon fa-facebook"><span class="label">Facebook</span></a></li>
-					<li><a href="#" class="icon fa-instagram"><span class="label">Instagram</span></a></li>
-					<li><a href="#" class="icon fa-dribbble"><span class="label">Dribbble</span></a></li>
-					<li><a href="#" class="icon fa-github"><span class="label">GitHub</span></a></li>
+                    {% if (blog.social.twitter) %}    <li><a href="{{ blog.social.twitter }}" class="icon fa-twitter"><span class="label">Twitter</span></a></li>{% endif %}
+                    {% if (blog.social.facebook) %}   <li><a href="{{ blog.social.facebook }}" class="icon fa-facebook"><span class="label">Facebook</span></a></li>{% endif %}
+                    {% if (blog.social.googleplus) %} <li><a href="{{ blog.social.googleplus }}" class="icon fa-google-plus"><span class="label">Google+</span></a></li>{% endif %}
+                    {% if (blog.social.pintrest) %}   <li><a href="{{ blog.social.pintrest }}" class="icon fa-pinterest"><span class="label">Pinterest</span></a></li>{% endif %}
+                    {% if (blog.social.instagram) %}  <li><a href="{{ blog.social.instagram }}" class="icon fa-instagram"><span class="label">Instagram</span></a></li>{% endif %}
 				</ul>
 				<div class="copyright">
 					<ul class="menu">
-						<li>&copy; Sorenso. All rights reserved.</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+						<li>&copy; {{ blog.title }}. All rights reserved.</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
 					</ul>
 				</div>
 			</section>
