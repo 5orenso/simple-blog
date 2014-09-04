@@ -42,7 +42,7 @@
 
 <!-- Intro -->
 {% for art in article.artlist %}
-<section id="intro" class="main style1 dark fullscreen" style="{% if (art.img[0]) %}background-image: url('/photos/{{ art.img[0] }}'); background-size: cover; background-position: center center;{% endif %}">
+<section id="{{ art.file }}" class="main style1 dark fullscreen" style="{% if (art.img[0]) %}background-image: url('/photos/{{ art.img[0] }}'); background-size: cover; background-position: center center;{% endif %}">
     <div class="content container small">
         <header>
             <h2>{{ art.title }}</h2>
@@ -58,10 +58,14 @@
         <div class="container small">
             {{ art.body|markdown|raw }}
         </div>
-        <div class="row flush images">
-            {% if (art.img[1]) %}<div class="6u"><a href="/photos/{{ art.img[1] }}" class="image fit from-left"><img src="/photos/{{ art.img[1] }}" title="Image" alt="" /></a></div>{% endif %}
-            {% if (art.img[2]) %}<div class="6u"><a href="/photos/{{ art.img[2] }}" class="image fit from-right"><img src="/photos/{{ art.img[2] }}" title="Image" alt="" /></a></div>{% endif %}
-        </div>
+        {% for i in 0..10 %}
+            {% if (art.img[i+1]) %}
+                <div class="row flush images">
+                    {% if (art.img[i+1]) %}<div class="6u"><a href="/photos/{{ art.img[i+1] }}" class="image fit from-left"><img src="/photos/{{ art.img[i+1] }}" title="Image" alt="" /></a></div>{% endif %}
+                    {% if (art.img[i+2]) %}<div class="6u"><a href="/photos/{{ art.img[i+2] }}" class="image fit from-right"><img src="/photos/{{ art.img[i+2] }}" title="Image" alt="" /></a></div>{% endif %}
+                </div>
+            {% endif %}
+        {% endfor %}
 
     </div>
 </section>
