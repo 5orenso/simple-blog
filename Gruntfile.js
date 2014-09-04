@@ -34,7 +34,8 @@ module.exports = function (grunt) {
         nodemon: {
             dev: {
                 options: {
-                    file: 'app/server.js'
+                    file: 'app/server.js',
+                    args: ['-c', '../config/config-dist.js']
                 },
                 tasks: ['jshint', 'buster:unit']
             },
