@@ -23,6 +23,9 @@
 			<link rel="stylesheet" href="/css/style-wide.css" />
 		</noscript>
         <link rel="stylesheet" href="/css/highlight.js.min.css" />
+        <link rel="stylesheet" href="/css/owl-carousel/owl.carousel.css">
+        <link rel="stylesheet" href="/css/owl-carousel/owl.theme.css">
+        <script src="/css/owl-carousel/owl.carousel.js"></script>
         <!--[if lte IE 8]><link rel="stylesheet" href="/css/ie/v8.css" /><![endif]-->
 		<!--[if lte IE 9]><link rel="stylesheet" href="/css/ie/v9.css" /><![endif]-->
 	</head>
@@ -59,21 +62,46 @@
                                 {{ article.aside|raw }}
                             </div>
                         {% endif %}
-                        {% if (article.img[1]) %}
-                            <img src="/photos/{{ article.img[1] }}" style="width:33%; float:right; margin-left: 3em; margin-bottom: 3em;" />
-                        {% endif %}
-                        {% if (article.img[2]) %}
-                            <img src="/photos/{{ article.img[2] }}" style="width:33%; float:right; margin-left: 3em; margin-bottom: 3em;" />
-                        {% endif %}
                         {{ article.body|raw }}
                     </div>
                 </div>
+
+                {% if (article.img.length > 1) %}
+                <div class="content style4">
+                    <div class="container">
+                        More images:
+                        <div id="owl-example" class="owl-carousel">
+                            {% for img in article.img %}
+                                <div class="item"><img src="/photos/{{ img }}"></div>
+                            {% endfor %}
+                        </div>
+                        <script>
+                            $(document).ready(function() {
+                                $("#owl-example").owlCarousel({
+                                    navigation: true, // Show next and prev buttons
+                                    slideSpeed: 300,
+                                    paginationSpeed: 400,
+                                    // Most important owl features
+                                    items : 4,
+                                    itemsCustom : false,
+                                    itemsDesktop : [1199,3],
+                                    itemsDesktopSmall : [980,2],
+                                    itemsTablet: [768,1],
+                                    itemsTabletSmall: false,
+                                    itemsMobile : [479,1],
+                                    singleItem : false,
+                                    itemsScaleUp : false,
+
+                                });
+                            });
+                        </script>
+                    </div>
+                </div>
+                {% endif %}
+
 			</section>
 
 
-
-
-			
 		<!-- Footer -->
 			<section id="footer">
                 <div class="content ">
