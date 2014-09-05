@@ -1010,6 +1010,10 @@
 .toc-indent-5 { display: block; text-indent: 4.5em;}
 .toc-indent-6 { display: block; text-indent: 6em;}
 
+.content .container img {
+    max-width: 100%;
+}
+
 .article-aside { float: right; width: 33% }
 ul.catlist {
     clear: both;
@@ -1041,4 +1045,12 @@ div.artlist-image {
     background-size:			cover;
     background-position:		center center;
     background-repeat:			no-repeat;
+}
+
+#owl-example .item img {
+    display: block;
+    width: 98%;
+    height: auto;
+    margin-left: auto;
+    margin-right: auto;
 }
