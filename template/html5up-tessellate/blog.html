@@ -72,7 +72,7 @@
                         <div id="owl-example" class="owl-carousel">
                             {% for img in article.img %}
                                 {% if loop.index > 1 %}
-                                    <div class="item"><img src="/pho/{{ img }}?w=800"></div>
+                                    <div class="item"><img src="/pho/{{ img }}?w=800" alt="{{ img }}" title="{{ img }}"></div>
                                 {% endif %}
                             {% endfor %}
                         </div>
