@@ -1056,5 +1056,7 @@ div.artlist-image {
 }
 
 .image_inline {
+    margin-bottom: 0px;
+    margin-top: 25px;
     text-align: center;
 }
