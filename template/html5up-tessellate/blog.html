@@ -69,10 +69,11 @@
                 {% if (article.img.length > 1) %}
                 <div class="content style4">
                     <div class="container">
-                        More images:
                         <div id="owl-example" class="owl-carousel">
                             {% for img in article.img %}
-                                <div class="item"><img src="/pho/{{ img }}?w=800"></div>
+                                {% if loop.index > 1 %}
+                                    <div class="item"><img src="/pho/{{ img }}?w=800"></div>
+                                {% endif %}
                             {% endfor %}
                         </div>
                         <script>
@@ -82,7 +83,7 @@
                                     slideSpeed: 300,
                                     paginationSpeed: 400,
                                     // Most important owl features
-                                    items : 4,
+                                    items : 3,
                                     itemsCustom : false,
                                     itemsDesktop : [1199,3],
                                     itemsDesktopSmall : [980,2],
