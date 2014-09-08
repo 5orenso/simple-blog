@@ -5,12 +5,12 @@
  * Licensed under the MIT license.
  */
 'use strict';
-var express    = require('express'),
-    when       = require('when'),
-    _          = require('underscore'),
-    swig       = require('swig'),
-    fs         = require('fs'),
-    marked     = require('marked'),
+var express       = require('express'),
+    when          = require('when'),
+    _             = require('underscore'),
+    swig          = require('swig'),
+    fs            = require('fs'),
+    marked        = require('marked'),
     renderer      = new marked.Renderer(),
     path          = require('path'),
     commander     = require('commander'),
@@ -56,6 +56,10 @@ web_router.use(function(req, res, next) {
     next(); // make sure we go to the next routes and don't stop here
 });
 
+var image_router = require('./image');
+image_router.set_config(web_router.config);
+
+web_router.use('/pho/', image_router);
 web_router.use('/js/', express.static(app_path + 'template/current/js/'));
 web_router.use('/images/', express.static(app_path + 'template/current/images/'));
 web_router.use('/css/', express.static(app_path + 'template/current/css/'));
