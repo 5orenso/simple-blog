@@ -35,8 +35,12 @@
 		<!-- Header -->
 			<section id="header" class="dark" style="{% if (article.img[0]) %}background-image: url('/pho/{{ article.img[0] }}?w=1600'); background-size: cover; background-position: center center;{% endif %}">
 				<header>
-					<h1>{{ article.title|raw }}</h1>
-					<p>{{ article.teaser|raw }}</p>
+                    {% if article.title %}
+					    <h1>{{ article.title|raw }}</h1>
+                    {% endif %}
+                    {% if article.teaser %}
+					    <p>{{ article.teaser|raw }}</p>
+                    {% endif %}
 				</header>
 <!--				<footer>
 					<a href="#first" class="button scrolly">Read article</a>
@@ -78,8 +82,12 @@
                 <!-- Header -->
                 <section id="header" class="dark" style="{% if (article['img' + i][0]) %}background-image: url('/pho/{{ article['img' + i][0] }}?w=1600'); background-size: cover; background-position: center center;{% endif %}">
                     <header>
-                        <h1>{{ article['title' + i]|raw }}</h1>
-                        <p>{{ article['teaser' + i]|raw }}</p>
+                        {% if article['title' + i] %}
+                            <h1>{{ article['title' + i]|raw }}</h1>
+                        {% endif %}
+                        {% if article['teaser' + i] %}
+                            <p>{{ article['teaser' + i]|raw }}</p>
+                        {% endif %}
                     </header>
                 </section>
 
