@@ -31,6 +31,7 @@
 	</head>
 	<body>
 
+
 		<!-- Header -->
 			<section id="header" class="dark" style="{% if (article.img[0]) %}background-image: url('/pho/{{ article.img[0] }}?w=1600'); background-size: cover; background-position: center center;{% endif %}">
 				<header>
@@ -45,7 +46,7 @@
 		<!-- First -->
 			<section id="first" class="main">
 				<header>
-					<div class="container">
+					<div class="container small">
                         {% if (error) %}
                             {{ error }}
                         {% endif %}
@@ -56,24 +57,62 @@
 					</div>
 				</header>
                 <div class="content style4 ">
-                    <div class="container">
+                    <div class="container small">
                         {% if article.aside %}
                             <div class="article-aside">
                                 {{ article.aside|raw }}
                             </div>
                         {% endif %}
-                        {{ article.body|raw }}
+                        {% if article.body %}
+                            {{ article.body|raw }}
+                        {% endif %}
                     </div>
                 </div>
+			</section>
 
-                {% if (article.img.length > 1) %}
+
+
+        {% set arr = [2,3,4,5,6,7,8,9,10] %}
+        {% for i in arr %}
+            {% if (article['img' + i]) %}
+                <!-- Header -->
+                <section id="header" class="dark" style="{% if (article['img' + i][0]) %}background-image: url('/pho/{{ article['img' + i][0] }}?w=1600'); background-size: cover; background-position: center center;{% endif %}">
+                    <header>
+                        <h1>{{ article['title' + i]|raw }}</h1>
+                        <p>{{ article['teaser' + i]|raw }}</p>
+                    </header>
+                </section>
+
+                <!-- First -->
+                <section id="section{{ i }}" class="main">
+                    <header>
+                        <div class="container small">
+                            {% if article['ingress' + i] %}
+                                {{ article['ingress' + i]|raw }}
+                            {% endif %}
+                        </div>
+                    </header>
+                    <div class="content style4 ">
+                        <div class="container small">
+                            {% if article['body' + i] %}
+                                {{ article['body' + i]|raw }}
+                            {% endif %}
+                        </div>
+                    </div>
+                </section>
+            {% endif %}
+        {% endfor %}
+
+
+        {% if (article.img.length > 1) %}
+            <section id="first" class="main">
                 <div class="content style4">
                     <div class="container">
                         <div id="owl-example" class="owl-carousel">
                             {% for img in article.img %}
-                                {% if loop.index > 1 %}
-                                    <div class="item"><img src="/pho/{{ img }}?w=800" alt="{{ img }}" title="{{ img }}"></div>
-                                {% endif %}
+                            {% if loop.index > 1 %}
+                            <div class="item"><img src="/pho/{{ img }}?w=800" alt="{{ img }}" title="{{ img }}"></div>
+                            {% endif %}
                             {% endfor %}
                         </div>
                         <script>
@@ -98,9 +137,8 @@
                         </script>
                     </div>
                 </div>
-                {% endif %}
-
-			</section>
+            </section>
+        {% endif %}
 
 
 		<!-- Footer -->
