@@ -137,7 +137,7 @@ function serveImage(response, image_filename_resized) {
 image_router.get('/*', function(req, res) {
     var parsed_url = getUrlFromRequest(req);
     var cache_path = (parsed_url.query.w || 'rel') + 'x' + (parsed_url.query.h || 'rel');
-    var image_filename_requested = parsed_url.pathname;
+    var image_filename_requested = decodeURIComponent(parsed_url.pathname);
     var image_filename_absolute  = photo_path + image_filename_requested;
     var image_filename_resized   = photo_cache_path + cache_path + '/' + image_filename_requested;
 
