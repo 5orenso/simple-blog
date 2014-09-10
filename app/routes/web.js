@@ -65,10 +65,7 @@ web_router.use('/images/', express.static(app_path + 'template/current/images/')
 web_router.use('/css/', express.static(app_path + 'template/current/css/'));
 web_router.use('/fonts/', express.static(app_path + 'template/current/fonts/'));
 web_router.use('/photos/', express.static(app_path + 'content/images/'));
-
-web_router.get('/favicon.ico', function (req, res) {
-    res.send('hola');
-});
+web_router.use('/favicon.ico', express.static(app_path + 'template/current/favicon.ico'));
 
 
 function getArticlePathRelative (complete_filename) {
