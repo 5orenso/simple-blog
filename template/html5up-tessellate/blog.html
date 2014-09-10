@@ -23,17 +23,34 @@
 			<link rel="stylesheet" href="/css/style-wide.css" />
 		</noscript>
         <link rel="stylesheet" href="/css/highlight.js.min.css" />
+
         <link rel="stylesheet" href="/css/owl-carousel/owl.carousel.css">
         <link rel="stylesheet" href="/css/owl-carousel/owl.theme.css">
         <script src="/css/owl-carousel/owl.carousel.js"></script>
+
+        <link type="text/css" rel="stylesheet" href="/css/jquery.mmenu.all.css" />
+        <script src="/js/jquery.mmenu.min.all.js"></script>
+        <script type="text/javascript">
+            $(function() {
+                $('nav#menu').mmenu();
+            });
+        </script>
+
         <!--[if lte IE 8]><link rel="stylesheet" href="/css/ie/v8.css" /><![endif]-->
 		<!--[if lte IE 9]><link rel="stylesheet" href="/css/ie/v9.css" /><![endif]-->
 	</head>
 	<body>
 
+    <nav id="menu">
+        {{ article.tag_values.menu|raw }}
+    </nav>
+    <div id="page" class="mm-page" style="min-height: 718px;">
 
 		<!-- Header -->
 			<section id="header" class="dark" style="{% if (article.img[0]) %}background-image: url('/pho/{{ article.img[0] }}?w=1600'); background-size: cover; background-position: center center;{% endif %}">
+                <div class="header">
+                    <a href="#menu"></a>
+                </div>
 				<header>
                     {% if article.title %}
 					    <h1>{{ article.title|raw }}</h1>
@@ -174,6 +191,9 @@
 					</ul>
 				</div>
 			</section>
+
+
+        </div>
 
 	</body>
 </html>

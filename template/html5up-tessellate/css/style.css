@@ -1037,6 +1037,22 @@ ul.catlist li a:link, ul.catlist li a:visited {
     border-bottom: 0px;
     text-decoration: none;
 }
+
+nav#menu ul.catlist {
+}
+nav#menu ul.catlist li {
+    border: 0px;
+    width: 100%;
+    padding: 0 0 0 1em;
+    margin: 0 0 0 1em;
+}
+nav#menu ul.catlist li:first-child {
+    /*margin-left: 1em;*/
+}
+
+
+
+
 div.artlist { clear: both; margin-left: auto; margin-right: auto; width: 90%; height: 200px; }
 div.artlist-art { float: left; width: 30%; margin-right: 3%; }
 div.artlist-image {
@@ -1059,4 +1075,17 @@ div.artlist-image {
     margin-bottom: 0px;
     margin-top: 25px;
     text-align: center;
+}
+
+
+.header a {
+    background: center center no-repeat transparent;
+    background-image: url( data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABkAAAAZCAYAAADE6YVjAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAADhJREFUeNpi/P//PwOtARMDHQBdLGFBYtMq3BiHT3DRPU4YR4NrNAmPJuHRJDyahEeT8Ii3BCDAAF0WBj5Er5idAAAAAElFTkSuQmCC );
+    border-bottom: 0px;
+    display: block;
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    top: 0;
+    left: 10px;
 }
