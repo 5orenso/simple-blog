@@ -66,6 +66,7 @@ web_router.use('/css/', express.static(app_path + 'template/current/css/'));
 web_router.use('/fonts/', express.static(app_path + 'template/current/fonts/'));
 web_router.use('/photos/', express.static(app_path + 'content/images/'));
 web_router.use('/favicon.ico', express.static(app_path + 'template/current/favicon.ico'));
+web_router.use('/robots.txt', express.static(app_path + 'template/robots.txt'));
 
 
 function getArticlePathRelative (complete_filename) {
