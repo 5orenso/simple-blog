@@ -42,9 +42,11 @@ swig.setFilter('markdown', replaceMarked);
 
 var config;
 var web_router = express.Router();
-web_router.set_config = function (conf) {
+web_router.set_config = function (conf, opt) {
     web_router.config = conf;
+    logger.set('workerId', opt.workerId);
 };
+
 web_router.use(function(req, res, next) {
     // do logging
     logger.log(
