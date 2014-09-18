@@ -76,7 +76,7 @@ function fileExists (absolute_filename) {
 
 
 function resizeImage(opt) {
-    console.log('resizeImage: ', opt.image_filename_absolute, opt.image_filename_resized, opt.width)
+    console.log('resizeImage: ', opt.image_filename_absolute, opt.image_filename_resized, opt.width);
     return when.promise(function(resolve, reject) {
         fs.exists(opt.image_filename_resized, function(exists) {
             if (!exists || opt.force) {
