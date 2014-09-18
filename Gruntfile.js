@@ -14,7 +14,7 @@ module.exports = function (grunt) {
                 src: 'Gruntfile.js'
             },
             lib: {
-                src: ['app/**/*.js', 'template/**/*.html']
+                src: ['app/**/*.js', 'lib/**/*.js']
             },
             test: {
                 src: ['test/**/*.js']
@@ -22,7 +22,7 @@ module.exports = function (grunt) {
         },
         watch: {
             all: {
-                files: ['app/**/*.js', 'test/**/*.js', 'config/*.js'],
+                files: ['app/**/*.js', 'lib/**/*.js', 'test/**/*.js', 'config/*.js'],
                 tasks: ['jshint', 'buster:unit']
             }
         },
