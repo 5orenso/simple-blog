@@ -59,7 +59,7 @@ var art = {
     file: undefined,
     filename: '<p>/Users/sorenso/PhpstormProjects/simple-blog/test/content/articles/simple-blog/index.md</p>\n',
     tag: [ 'simple,blog' ],
-    body: '<h1 class="toc-1"><a name="simple-title-1" class="anchor" href="#simple-title-1"><span class="header-link"></span></a>Simple title 1</h1><h2 class="toc-2"><a name="simple-sub-title-1" class="anchor" href="#simple-sub-title-1"><span class="header-link"></span></a>Simple sub title 1</h2><p>My simple blog text.</p>\n<h1 class="toc-1"><a name="simple-title-2" class="anchor" href="#simple-title-2"><span class="header-link"></span></a>Simple title 2</h1><h2 class="toc-2"><a name="simple-sub-title-1" class="anchor" href="#simple-sub-title-1"><span class="header-link"></span></a>Simple sub title 1</h2><h3 class="toc-3"><a name="simple-sub-sub-title-1" class="anchor" href="#simple-sub-sub-title-1"><span class="header-link"></span></a>Simple sub sub title 1</h3><pre><code class="lang-javascript">\nconsole.<span class="hljs-built_in">log</span>(<span class="hljs-string">\'hello world\'</span>);\n</code></pre>\n<p><p class="image_inline"><img src="simple-blog.jpg?w=600" alt="Simple blog image"></p></p>\n<p><div class="toc" id="toc"><span class="toc-indent-1">&bull; <a href="#simple-title-1">Simple title 1</a></span><span class="toc-indent-2">&bull; <a href="#simple-sub-title-1">Simple sub title 1</a></span><span class="toc-indent-1">&bull; <a href="#simple-title-2">Simple title 2</a></span><span class="toc-indent-2">&bull; <a href="#simple-sub-title-1">Simple sub title 1</a></span><span class="toc-indent-3">&bull; <a href="#simple-sub-sub-title-1">Simple sub sub title 1</a></span></div></p>\n'
+    body: '<h1 class="toc-1"><a name="simple-title-1" class="anchor" href="#simple-title-1"><span class="header-link"></span></a>Simple title 1</h1><h2 class="toc-2"><a name="simple-sub-title-1" class="anchor" href="#simple-sub-title-1"><span class="header-link"></span></a>Simple sub title 1</h2><p>My simple blog text.</p>\n<h1 class="toc-1"><a name="simple-title-2" class="anchor" href="#simple-title-2"><span class="header-link"></span></a>Simple title 2</h1><h2 class="toc-2"><a name="simple-sub-title-1" class="anchor" href="#simple-sub-title-1"><span class="header-link"></span></a>Simple sub title 1</h2><h3 class="toc-3"><a name="simple-sub-sub-title-1" class="anchor" href="#simple-sub-sub-title-1"><span class="header-link"></span></a>Simple sub sub title 1</h3><pre><code class="lang-javascript">\nconsole.<span class="hljs-built_in">log</span>(<span class="hljs-string">\'hello world\'</span>);\n</code></pre>\n<p><p class="image_inline"><img src="simple-blog.jpg?w=600" alt="Simple blog image" title="My image text"></p></p>\n<p><div class="toc" id="toc"><span class="toc-indent-1">&bull; <a href="#simple-title-1">Simple title 1</a></span><span class="toc-indent-2">&bull; <a href="#simple-sub-title-1">Simple sub title 1</a></span><span class="toc-indent-1">&bull; <a href="#simple-title-2">Simple title 2</a></span><span class="toc-indent-2">&bull; <a href="#simple-sub-title-1">Simple sub title 1</a></span><span class="toc-indent-3">&bull; <a href="#simple-sub-sub-title-1">Simple sub sub title 1</a></span></div></p>\n'
 };
 
 buster.testCase('lib/article', {
@@ -71,8 +71,8 @@ buster.testCase('lib/article', {
         'catlist': function (done) {
             when( article.catlist({}) )
                 .done(function (obj) {
-                    assert.equals(obj.catlist[0].name, catlist[0].name);
-                    assert.equals(obj.catlist[0].type, catlist[0].type);
+                    assert.equals(catlist[0].name, obj.catlist[0].name);
+                    assert.equals(catlist[0].type, obj.catlist[0].type);
                     done();
                 });
         },
@@ -81,9 +81,9 @@ buster.testCase('lib/article', {
             when( article.artlist({}) )
                 .done(function (obj) {
 //                    console.log(obj);
-                    assert.equals(obj.artlist[0].title, artlist[0].title);
-                    assert.equals(obj.artlist[0].base_href, artlist[0].base_href);
-                    assert.equals(obj.artlist[0].file, artlist[0].file);
+                    assert.equals(artlist[0].title, obj.artlist[0].title);
+                    assert.equals(artlist[0].base_href, obj.artlist[0].base_href);
+                    assert.equals(artlist[0].file, obj.artlist[0].file);
                     done();
                 });
         },
@@ -95,15 +95,14 @@ buster.testCase('lib/article', {
                 content_path: content_path
             }) )
                 .done(function (article) {
-                    console.log(article);
-                    assert.equals(article.tag_values.toc ,art.tag_values.toc);
-                    assert.equals(article.tag_values.artlist ,art.tag_values.artlist);
-                    assert.equals(article.tag_values.artlist_onepage ,art.tag_values.artlist_onepage);
-                    assert.equals(article.title ,art.title);
-                    assert.equals(article.filename ,art.filename);
-                    assert.equals(article.tag, art.tag);
-                    assert.equals(article.body, art.body);
-
+//                    console.log(article);
+                    assert.equals(art.tag_values.toc, article.tag_values.toc);
+                    assert.equals(art.tag_values.artlist, article.tag_values.artlist);
+                    assert.equals(art.tag_values.artlist_onepage, article.tag_values.artlist_onepage);
+                    assert.equals(art.title, article.title);
+                    assert.equals(art.filename, article.filename);
+                    assert.equals(art.tag, article.tag);
+                    assert.equals(art.body, article.body);
                     done();
                 });
 
