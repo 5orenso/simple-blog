@@ -21,6 +21,7 @@ console.log('hello world');
 
 ```
 
-![Simple blog image](simple-blog.jpg?w=600)
+![Simple blog image](simple-blog.jpg?w=600 "My image text")
+
 
 [:toc]
