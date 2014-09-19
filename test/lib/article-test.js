@@ -66,6 +66,7 @@ buster.testCase('lib/article', {
     setUp: function () {
     },
     tearDown: function () {
+        delete require.cache[require.resolve('../../lib/article')];
     },
     'Test article:': {
         'catlist': function (done) {
