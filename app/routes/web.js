@@ -43,8 +43,15 @@ swig.setFilter('markdown', replaceMarked);
 var config;
 var web_router = express.Router();
 web_router.set_config = function (conf, opt) {
+//    console.log('web_router.set_config', conf, opt);
     web_router.config = conf;
-    logger.set('workerId', opt.workerId);
+    if (opt.hasOwnProperty('workerId')) {
+        logger.set('workerId', opt.workerId);
+    }
+    if (opt.hasOwnProperty('content_path')) {
+//        console.log('opt.content_path', opt.content_path);
+        content_path = path.normalize(opt.content_path);
+    }
 };
 
 web_router.use(function(req, res, next) {
@@ -72,12 +79,12 @@ web_router.use('/robots.txt', express.static(app_path + 'template/robots.txt'));
 
 
 function getArticlePathRelative (complete_filename) {
-    console.log(complete_filename);
+//    console.log('getArticlePathRelative', complete_filename);
     var re = new RegExp(content_path);
     var relative_path = complete_filename.replace(re, '');
     // Remove filename
     relative_path = relative_path.replace(/(\/*[^\/]+$)/, '');
-    console.log(relative_path);
+//    console.log('relative_path: ', relative_path);
     return relative_path ? '/' + relative_path : '';
 }
 function getUrlFromRequest (req) {
