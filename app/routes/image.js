@@ -44,7 +44,6 @@ function getUrlFromRequest (req) {
 
 
 function pathExists (absolute_path) {
-    console.log('pathExists: ', absolute_path);
     return when.promise(function(resolve, reject) {
         fs.exists(absolute_path, function(exists) {
             if(!exists) {
@@ -62,7 +61,6 @@ function pathExists (absolute_path) {
 }
 
 function fileExists (absolute_filename) {
-    console.log('fileExists: ', absolute_filename);
     return when.promise(function(resolve, reject) {
         fs.exists(absolute_filename, function(exists) {
             if (exists) {
@@ -76,7 +74,6 @@ function fileExists (absolute_filename) {
 
 
 function resizeImage(opt) {
-    console.log('resizeImage: ', opt.image_filename_absolute, opt.image_filename_resized, opt.width);
     return when.promise(function(resolve, reject) {
         fs.exists(opt.image_filename_resized, function(exists) {
             if (!exists || opt.force) {
@@ -108,7 +105,6 @@ function resizeImage(opt) {
 }
 
 function serveImage(response, image_filename_resized) {
-    console.log('serverImage: ', image_filename_resized);
     return when.promise(function (resolve, reject) {
         fs.exists(image_filename_resized, function(exists) {
             if (exists) {
