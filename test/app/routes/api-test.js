@@ -21,15 +21,15 @@ var responses = {
 buster.testCase('app/routes/api', {
     setUp: function () {
         // TODO: Start webserver and use routes.
-        console.log('api: setup');
+//        console.log('api: setup');
         this.timeout = 2000;
         server = app.listen(port);
     },
     tearDown: function (done) {
         // TODO: Shutdown webserver.
-        console.log('api: tearDown');
+//        console.log('api: tearDown');
         server.close(function() {
-            console.log("Closed out remaining connections.");
+//            console.log("Closed out remaining connections.");
 //            process.exit();
             done();
         });
@@ -38,11 +38,12 @@ buster.testCase('app/routes/api', {
         'endpoints': function (done) {
             request('http://127.0.0.1:' + port + '/api', done(function (error, response, body) {
                 if (!error && response.statusCode === 200) {
-                    console.log(body);
+//                    console.log(body);
 //                    console.log(response);
                     assert.equals(JSON.parse(body), responses.endpoints);
                 }
             }));
+
 
 //            when(article.catlist({}))
 //                .done(function (obj) {
