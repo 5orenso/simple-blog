@@ -25,34 +25,34 @@ var responses = {
 buster.testCase('app/routes/web', {
     setUp: function () {
         // TODO: Start webserver and use routes.
-        console.log('web: setup');
+//        console.log('web: setup');
         this.timeout = 2000;
         server = app.listen(port);
     },
     tearDown: function (done) {
-        console.log('web: tearDown');
+//        console.log('web: tearDown');
         // TODO: Shutdown webserver.
         server.close(function() {
-            console.log("Closed out remaining connections.");
+//            console.log("Closed out remaining connections.");
 //            delete require.cache[require.resolve('../../../lib/article')];
+
             done();
         });
     },
     'Test web routes:': {
-        'endpoints': function (done) {
+        'simple-blog/index': function (done) {
 //            request('http://127.0.0.1:' + port + '/web/simple-blog/index', function (error, response, body) {
             request('http://127.0.0.1:' + port + '/web/simple-blog/index', function (error, response, body) {
                 if (!error && response.statusCode === 200) {
-                    console.log(body);
+//                    console.log(body);
                     assert(true);
                     done();
-
-
+                    assert.equals(200, response.statusCode);
 //                    console.log(response);
 //                    assert.equals(JSON.parse(body), responses.endpoints);
                 } else {
-                    console.log(response.statusCode);
-                    console.log(body);
+                    console.log('response.statusCode:', response.statusCode);
+//                    console.log(body);
                     done();
                 }
             });
