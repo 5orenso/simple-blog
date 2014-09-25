@@ -130,7 +130,6 @@ web_router.get('/*', function(req, res) {
             res.send(tpl({ blog: web_router.config.blog, article: article }));
         })
         .catch(function (opt) {
-//            console.log(opt);
             res.status(404).send(tpl({ blog: web_router.config.blog, error: opt.error, article: opt.article }));
         })
         .done();
