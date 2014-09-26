@@ -1,5 +1,8 @@
 ## A very simple blog server
 
+![Build status](https://travis-ci.org/5orenso/simple-blog.svg?branch=master)
+
+
 Written in Node.js with support for Markdown files, images, embedded content and all other stuff you would expect from a blog.
 
 Base idea of this server is to keep it as lean as possible. There should be no hard admin interface or other stuff getting in the way of publishing content.
