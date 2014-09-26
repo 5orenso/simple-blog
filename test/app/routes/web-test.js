@@ -7,13 +7,13 @@ var buster     = require('buster'),
     fs         = require('fs'),
     express    = require('express'),
     request    = require('request'),
-    web_router = require('../../../app/routes/web');
+    web_router = require(__dirname + '/../../../app/routes/web');
 
 var content_path     = __dirname + '/../../content/articles/',
     photo_path       = __dirname + '/../../content/images/',
     photo_cache_path = __dirname + '/../../content/images_cached/';
 
-var config = require('../../../config/config-dist.js');
+var config = require(__dirname + '/../../../config/config-dist.js');
 web_router.set_config(config, {
     content_path: content_path,
     photo_path: photo_path,
