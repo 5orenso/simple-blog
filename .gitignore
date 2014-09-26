@@ -27,7 +27,7 @@ node_modules
 .idea/
 
 dev/
-config/
+config/config.js
 content/articles
 content/images
 content/images_cached
