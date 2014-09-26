@@ -6,5 +6,6 @@ matrix:
   allow_failures:
     - node_js: "0.11"
   fast_finish: true
-script: "grunt"
-after_script: "istanbul cover ./all-tests.js"
+before_install: npm install -g grunt-cli
+install: npm install
+#after_script: "istanbul cover ./all-tests.js"

@@ -12,7 +12,7 @@
     "node": ">=0.10.21"
   },
   "scripts": {
-    "test": "grunt nodeunit"
+    "test": "grunt"
   },
   "devDependencies": {
     "grunt-contrib-jshint": "~0.6.4",
