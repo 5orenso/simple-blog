@@ -31,3 +31,4 @@ config/
 content/articles
 content/images
 content/images_cached
+test/content/images_cached
