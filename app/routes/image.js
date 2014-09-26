@@ -21,8 +21,16 @@ var express          = require('express'),
 
 var config;
 var image_router = express.Router();
-image_router.set_config = function (conf) {
+image_router.set_config = function (conf, opt) {
     image_router.config = conf;
+    if (opt) {
+        if (opt.hasOwnProperty('photo_path')) {
+            photo_path = path.normalize(opt.photo_path);
+        }
+        if (opt.hasOwnProperty('photo_cache_path')) {
+            photo_cache_path = path.normalize(opt.photo_cache_path);
+        }
+    }
 };
 image_router.use(function(req, res, next) {
     // do logging
