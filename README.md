@@ -1,8 +1,31 @@
 ## A very simple blog server
 
-Written in Node.js with support for Markdown files.
+Written in Node.js with support for Markdown files, images, embedded content and all other stuff you would expect from a blog.
 
-[Read more about the simple blog server.](https://github.com/5orenso/simple-blog/blob/master/content/wiki/wiki.md)
+Base idea of this server is to keep it as lean as possible. There should be no hard admin interface or other stuff getting in the way of publishing content.
+
+## This is how it works
+
+```
+    ----------------   dropbox      -------------
+   | who-am-i.md    |  auto sync   | Simple blog |
+   | hello-blog.md  | -----------> | server      |
+   | ...            |              | (Amazon)    |  web page    ------------
+    ----------------               |             | ----------> | browser    |
+    ----------------   dropbox     |             |             |            |
+   | image.jpg      |  auto sync   |             |              ------------
+   | image2.jpg     | -----------> |             |
+    ----------------               |             |
+                                    -------------
+    
+```
+
+- All content is worked on locally on your computer, phone og tablet. You can even work when offline.
+- Everything is synced to the server by your Dropbox setup.
+- Administration of users is done with your Dropbox sharing.
+
+
+[Read more about the simple blog server.](http://litt.no/wiki/)
 
 Howto setup
 
