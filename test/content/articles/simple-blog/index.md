@@ -1,6 +1,7 @@
 :published 2014-09-01
 :tag simple,blog
 :title Simple Blog Server
+:teaser Life made easier
 :img simple-blog.jpg
 :body
 # Simple title 1
