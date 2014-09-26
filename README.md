@@ -2,7 +2,6 @@
 
 ![Build status](https://travis-ci.org/5orenso/simple-blog.svg?branch=master)
 
-
 Written in Node.js with support for Markdown files, images, embedded content and all other stuff you would expect from a blog.
 
 Base idea of this server is to keep it as lean as possible. There should be no hard admin interface or other stuff getting in the way of publishing content.
@@ -19,8 +18,7 @@ Base idea of this server is to keep it as lean as possible. There should be no h
    | image.jpg      |  auto sync   |             |              ------------
    | image2.jpg     | -----------> |             |
     ----------------               |             |
-                                    -------------
-    
+                                    -------------    
 ```
 
 - All content is worked on locally on your computer, phone og tablet. You can even work when offline.
@@ -30,22 +28,22 @@ Base idea of this server is to keep it as lean as possible. There should be no h
 
 [Read more about the simple blog server.](http://litt.no/wiki/)
 
-Howto setup
+#### Howto setup
 
     npm install
     
 
-Howto run unit tests:
+#### Howto run unit tests:
 
     grunt watch
     
 
-Howto run integration tests:
+#### Howto run integration tests:
 
     grunt integration
 
     
-Howto run script
+#### Howto run script
 
     grunt run
     
