@@ -36,7 +36,7 @@ if (cluster.isMaster) {
     commander
         .option('-c, --config <file>', 'configuration file path', './config/config.js')
         .parse(process.argv);
-    var config = require(commander.config);
+    var config = require(app_path + commander.config);
 
     // configure app to use bodyParser()
     // this will let us get the data from a POST
