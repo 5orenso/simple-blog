@@ -20,7 +20,7 @@ var when = require('when'),
 commander
     .option('-c, --config <file>', 'configuration file path', './config/config.js')
     .parse(process.argv);
-var config = require(app_path + commander.config);
+var config = require(commander.config);
 
 
 var article_path = article_util.getArticlePathRelative('');
