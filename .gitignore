@@ -32,3 +32,5 @@ content/articles
 content/images
 content/images_cached
 test/content/images_cached
+sitemap.xml
+pm2-run.json
