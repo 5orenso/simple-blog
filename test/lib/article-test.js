@@ -196,17 +196,13 @@ buster.testCase('lib/article', {
                 content_path: content_path
             }) )
                 .done(function (article) {
-                    assert.equals(art.tag_values.toc, article.tag_values.toc);
-                    assert.equals(art.tag_values.artlist, article.tag_values.artlist);
-                    assert.equals(art.tag_values.artlist_onepage, article.tag_values.artlist_onepage);
-                    assert.equals(art.title, article.title);
-//                    assert.equals(art.filename, article.filename);
-                    assert.equals(art.tag, article.tag);
-                    assert.equals(art.body, article.body);
+                    refute(article.title);
                     delete require.cache[require.resolve('../../lib/article')];
                     done();
                 }, function (response) {
-                    console.log(response.error);
+                    assert.equals(404, response.statusCode);
+//                    console.log(response.error);
+//                    console.log(response);
                     done();
                 });
 
@@ -219,12 +215,10 @@ buster.testCase('lib/article', {
                 content_path: content_path
             }) )
                 .done(function (article) {
-//                    console.log(article);
                     assert.equals(art_wip.tag_values.toc, article.tag_values.toc);
                     assert.equals(art_wip.tag_values.artlist, article.tag_values.artlist);
                     assert.equals(art_wip.tag_values.artlist_onepage, article.tag_values.artlist_onepage);
                     assert.equals(art_wip.title, article.title);
-//                    assert.equals(art_wip.filename, article.filename);
                     assert.equals(art_wip.tag, article.tag);
                     assert.equals(art_wip.body, article.body);
                     delete require.cache[require.resolve('../../lib/article')];
@@ -245,17 +239,8 @@ buster.testCase('lib/article', {
                     assert(false);
                     delete require.cache[require.resolve('../../lib/article')];
                     done();
-                }, function (err) {
-//                    console.log(err.article);
-                    var article = err.article;
-                    assert.equals('404: Not found.', err.error);
-                    assert.equals(art.tag_values.artlist, article.tag_values.artlist);
-                    assert.equals(art.tag_values.artlist_onepage, article.tag_values.artlist_onepage);
-                    assert.equals(artlist[0].title, article.artlist[0].title);
-                    assert.equals(artlist[0].base_href, article.artlist[0].base_href);
-                    assert.equals(artlist[0].file, article.artlist[0].file);
-
-//                    console.log(err.error);
+                }, function (response) {
+                    assert.equals(404, response.statusCode);
                     done();
                 });
 
