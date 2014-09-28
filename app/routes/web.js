@@ -56,6 +56,7 @@ web_router.use('/fonts/', express.static(app_path + 'template/current/fonts/'));
 web_router.use('/photos/', express.static(app_path + 'content/images/'));
 web_router.use('/favicon.ico', express.static(app_path + 'template/current/favicon.ico'));
 web_router.use('/robots.txt', express.static(app_path + 'template/robots.txt'));
+web_router.use('/sitemap.xml', express.static(app_path + 'template/sitemap.xml'));
 
 // Main route for blog articles.
 web_router.get('/*', function(req, res) {
