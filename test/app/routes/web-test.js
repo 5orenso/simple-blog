@@ -64,19 +64,30 @@ buster.testCase('app/routes/web', {
         });
     },
     'Test web routes:': {
-        'simple-blog/index': function (done) {
-            request('http://127.0.0.1:' + port + '/web/simple-blog/index', function (error, response, body) {
-                if (!error && response.statusCode === 200) {
-                    assert(true);
-                    done();
-                    assert.equals(200, response.statusCode);
-                } else {
-                    console.log('response.statusCode:', response.statusCode);
-                    done();
-                }
+        '/': function (done) {
+            request('http://127.0.0.1:' + port + '/web/', function (error, response, body) {
+                assert.equals(200, response.statusCode);
+                done();
             });
 
         },
+
+        'simple-blog/index': function (done) {
+            request('http://127.0.0.1:' + port + '/web/simple-blog/index', function (error, response, body) {
+                assert.equals(200, response.statusCode);
+                done();
+            });
+
+        },
+
+        'simple-blog/': function (done) {
+            request('http://127.0.0.1:' + port + '/web/simple-blog/', function (error, response, body) {
+                assert.equals(200, response.statusCode);
+                done();
+            });
+
+        },
+
 
         'pho/test.jpg?w=300 from scratch': function (done) {
             rmDir(photo_cache_path);
