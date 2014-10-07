@@ -41,10 +41,14 @@
 		-webkit-text-stroke: 0.1px;
 	}
 
+    code {
+        font-family: Courier New, monospace;
+    }
+
 	h1,h2,h3,h4,h5,h6
 	{
 		color: #666;
-		margin: 0 0 1em 0;
+		margin: 0 0 .5em 0;
 		font-weight: 100;
 		line-height: 1.5em;
 	}
@@ -64,6 +68,15 @@
 		{
 			color: #fff;
 		}
+        .dark h1 {
+            /*-webkit-text-stroke: 1px black;*/
+            /*text-shadow:*/
+            /*-1px -1px 0 #505050,*/
+            /*1px -1px 0  #505050,*/
+            /*-1px 1px 0  #505050,*/
+            /*1px 1px 0   #505050;*/
+        }
+
 		
 	strong, b
 	{
@@ -150,8 +163,10 @@
 	
 	p, ul, ol, dl, table
 	{
-		margin-bottom: 1em;
-	}
+		margin-bottom: 0.7em;
+        margin-top: 0.7em;
+
+    }
 	
 	p
 	{
@@ -840,7 +855,7 @@
 		
 			#header header h1
 			{
-				font-size: 2.25em;
+				font-size: 2.95em;
 				line-height: 1.25em;
 				margin-bottom: 0;
 			}
@@ -1089,3 +1104,4 @@ div.artlist-image {
     top: 0;
     left: 10px;
 }
+
