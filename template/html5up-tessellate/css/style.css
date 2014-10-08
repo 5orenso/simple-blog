@@ -1071,7 +1071,13 @@ nav#menu ul.catlist li:first-child {
 
 
 div.artlist { clear: both; margin-left: auto; margin-right: auto; width: 90%; height: 200px; }
-div.artlist-art { float: left; width: 30%; margin-right: 3%; }
+div.artlist-art {
+    float: left;
+    width: 30%;
+    margin-right: 3%;
+    overflow: hidden;
+    height: 230px;
+}
 div.artlist-image {
     width: 100%;
     height: 150px;
