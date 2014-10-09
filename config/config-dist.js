@@ -11,7 +11,8 @@ module.exports = {
             googleplus: '',
             pintrest: '',
             instagram: ''
-        }
+        },
+        text_files_path: '/Users/sorenso/text-files/'
     },
     app: {
         port: 8080
