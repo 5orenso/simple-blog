@@ -72,7 +72,6 @@ web_router.get('/*', function(req, res) {
     var markdown_filename = article_util.getMarkdownFilename(article_filename);
     var article_path = article_util.getArticlePathRelative(markdown_filename);
 
-    // Load from function
     var article = require(app_path + 'lib/article')({
         logger: logger,
         filename: markdown_filename,
@@ -80,9 +79,13 @@ web_router.get('/*', function(req, res) {
         content_path: content_path
     });
 
-    when(article.catlist())
-        .then(article.artlist)
-        .then(article.article)
+    when.all([article.catlist(), article.artlist()])
+        .then(function (content_lists) {
+            return article.article({
+                catlist: content_lists[0],
+                artlist: content_lists[1]
+            });
+        })
         .then(function (article) {
             res.send(tpl({ blog: web_router.config.blog, article: article }));
         })
