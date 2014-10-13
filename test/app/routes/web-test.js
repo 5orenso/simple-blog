@@ -17,7 +17,8 @@ var config = require(__dirname + '/../../../config/config-dist.js');
 web_router.set_config(config, {
     content_path: content_path,
     photo_path: photo_path,
-    photo_cache_path: photo_cache_path
+    photo_cache_path: photo_cache_path,
+    workerId: 1
 });
 
 var port = 4321;
@@ -67,6 +68,14 @@ buster.testCase('app/routes/web', {
         '/': function (done) {
             request('http://127.0.0.1:' + port + '/web/', function (error, response, body) {
                 assert.equals(200, response.statusCode);
+                done();
+            });
+
+        },
+
+        '/this-should-not-be-found': function (done) {
+            request('http://127.0.0.1:' + port + '/web/this-should-not-be-found', function (error, response, body) {
+                assert.equals(404, response.statusCode);
                 done();
             });
 
