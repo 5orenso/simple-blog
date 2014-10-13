@@ -38,54 +38,24 @@ if (cluster.isMaster) {
         .parse(process.argv);
     var config = require(commander.config);
 
-    // configure app to use bodyParser()
-    // this will let us get the data from a POST
     app.use(bodyParser.json());
 
-    // Include route handlers
+    // Include route handlers ------------------------
     var api_router = require('./routes/api');
     var web_router = require('./routes/web');
     web_router.set_config(config, {
         workerId: cluster.worker.id
     });
 
-    // middleware to use for all requests
-
-    // more routes for our API will happen here
-
     // Register routes -------------------------------
     app.use('/api', api_router);
     app.use('/static', express.static(__dirname + '/public'));
-    console.log(config.blog.text_files_path);
     app.use('/.well-known/', express.static(config.blog.text_files_path));
     app.use('/', web_router);
 
-    // Start the server -------------------------------
+    // Start the server ------------------------------
     var server = app.listen(config.app.port);
     logger.log('Something happens on port ' + config.app.port);
-
-
-//    // this function is called when you want the server to die gracefully
-//    // i.e. wait for existing connections
-//    var gracefulShutdown = function() {
-//        console.log("Received kill signal, shutting down gracefully.");
-//        server.close(function() {
-//            console.log("Closed out remaining connections.");
-//            process.exit();
-//        });
-//
-//        // if after
-//        setTimeout(function() {
-//            console.error("Could not close connections in time, forcefully shutting down");
-//            process.exit();
-//        }, 10*1000);
-//    };
-//
-//    // listen for TERM signal .e.g. kill
-//    process.on ('SIGTERM', gracefulShutdown);
-//
-//    // listen for INT signal e.g. Ctrl-C
-//    process.on ('SIGINT', gracefulShutdown);
 
 }
 
