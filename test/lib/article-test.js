@@ -152,19 +152,19 @@ buster.testCase('lib/article', {
     'Test article:': {
         'catlist': function (done) {
             when( article.catlist({}) )
-                .done(function (obj) {
-                    assert.equals(catlist[0].name, obj.catlist[0].name);
-                    assert.equals(catlist[0].type, obj.catlist[0].type);
+                .done(function (category_list) {
+                    assert.equals(catlist[0].name, category_list[0].name);
+                    assert.equals(catlist[0].type, category_list[0].type);
                     done();
                 });
         },
 
         'artlist': function (done) {
             when( article.artlist({}) )
-                .done(function (obj) {
-                    assert.equals(artlist[0].title, obj.artlist[0].title);
-                    assert.equals(artlist[0].base_href, obj.artlist[0].base_href);
-                    assert.equals(artlist[0].file, obj.artlist[0].file);
+                .done(function (article_list) {
+                    assert.equals(artlist[0].title, article_list[0].title);
+                    assert.equals(artlist[0].base_href, article_list[0].base_href);
+                    assert.equals(artlist[0].file, article_list[0].file);
                     done();
                 });
         },
@@ -172,8 +172,7 @@ buster.testCase('lib/article', {
         'article': function (done) {
             when( article.article({
                 artlist: artlist,
-                catlist: catlist,
-                content_path: content_path
+                catlist: catlist
             }) )
                 .done(function (article) {
                     assert.equals(art.tag_values.toc, article.tag_values.toc);
@@ -193,7 +192,6 @@ buster.testCase('lib/article', {
             when( article_not_found.article({
                 artlist: artlist,
                 catlist: catlist,
-                content_path: content_path
             }) )
                 .done(function (article) {
                     refute(article.title);
@@ -212,7 +210,6 @@ buster.testCase('lib/article', {
             when( article_wip.article({
                 artlist: artlist,
                 catlist: catlist,
-                content_path: content_path
             }) )
                 .done(function (article) {
                     assert.equals(art_wip.tag_values.toc, article.tag_values.toc);
