@@ -49,7 +49,7 @@ if (cluster.isMaster) {
 
     // Register routes -------------------------------
     app.use('/api', api_router);
-    app.use('/static', express.static(__dirname + '/public'));
+    app.use('/static', express.static(config.blog.static_files_path));
     app.use('/.well-known/', express.static(config.blog.text_files_path));
     app.use('/', web_router);
 
