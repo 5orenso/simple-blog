@@ -12,6 +12,7 @@ module.exports = {
             pintrest: '',
             instagram: ''
         },
+        static_files_path: '/Users/sorenso/html/',
         text_files_path: '/Users/sorenso/text-files/'
     },
     app: {
