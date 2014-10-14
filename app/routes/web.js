@@ -79,9 +79,14 @@ web_router.get('/*', function(req, res) {
         content_path: content_path
     });
 
-    when.all([article.catlist(), article.artlist()])
+    var category = require(app_path + 'lib/category')({
+        logger: logger,
+        content_path: content_path
+    });
+
+    when.all([category.list(), article.list()])
         .then(function (content_lists) {
-            return article.article({
+            return article.load({
                 catlist: content_lists[0],
                 artlist: content_lists[1]
             });
