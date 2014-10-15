@@ -49,7 +49,7 @@
     <div id="page" class="mm-page" style="min-height: 718px;">
 
 		<!-- Header -->
-			<section id="header" class="dark" style="{% if (article.img[0]) %}background-image: url('/pho/{{ article.img[0] }}?w=1600'); background-size: cover; background-position: center center;{% endif %}">
+			<section id="header" class="dark" style="{% if (article.img[0]) %}background-image: url('/images/overlay.png'), url('/pho/{{ article.img[0] }}?w=1600'); background-size: cover; background-position: center center;{% endif %}">
                 <div class="header">
                     <a href="#menu"></a>
                 </div>
@@ -99,7 +99,7 @@
         {% for i in arr %}
             {% if (article['img' + i]) %}
                 <!-- Header -->
-                <section id="header" class="dark" style="{% if (article['img' + i][0]) %}background-image: url('/pho/{{ article['img' + i][0] }}?w=1600'); background-size: cover; background-position: center center;{% endif %}">
+                <section id="header" class="dark" style="{% if (article['img' + i][0]) %}background-image: url('/images/overlay.png'), url('/pho/{{ article['img' + i][0] }}?w=1600'); background-size: cover; background-position: center center;{% endif %}">
                     <header>
                         {% if article['title' + i] %}
                             <h1>{{ article['title' + i]|raw }}</h1>
