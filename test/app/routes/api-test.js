@@ -4,9 +4,39 @@ var buster     = require('buster'),
     assert     = buster.assert,
     refute     = buster.refute,
     when       = require('when'),
+    fs         = require('fs'),
     express    = require('express'),
     request    = require('request'),
-    api_router = require('../../../app/routes/api');
+    stats      = {
+        meter: function () {
+            return {
+                mark: function () {}
+            };
+        }
+    },
+    activeConn = {
+        inc: function () {},
+        dec: function () {}
+    },
+    timer      = {
+        start: function () {
+            return {
+                end: function () {}
+            };
+        }
+    },
+    api_router = require(__dirname + '/../../../app/routes/api');
+var content_path     = __dirname + '/../../content/articles/';
+
+
+var config = require(__dirname + '/../../../config/config-dist.js');
+api_router.set_config(config, {
+    content_path: content_path,
+    workerId: 1,
+    stats: stats,
+    activeConn: activeConn,
+    timer: timer
+});
 
 var port = 4321;
 var app = express();
@@ -18,42 +48,37 @@ var responses = {
 };
 
 
+
 buster.testCase('app/routes/api', {
     setUp: function () {
         // TODO: Start webserver and use routes.
-//        console.log('api: setup');
+//        console.log('web: setup');
         this.timeout = 2000;
         server = app.listen(port);
     },
     tearDown: function (done) {
+//        console.log('web: tearDown');
         // TODO: Shutdown webserver.
-//        console.log('api: tearDown');
         server.close(function() {
-//            console.log("Closed out remaining connections.");
-//            process.exit();
             done();
         });
     },
     'Test api routes:': {
-        'endpoints': function (done) {
-            request('http://127.0.0.1:' + port + '/api', done(function (error, response, body) {
-                if (!error && response.statusCode === 200) {
-//                    console.log(body);
-//                    console.log(response);
-                    assert.equals(JSON.parse(body), responses.endpoints);
-                }
-            }));
+        '/api/': function (done) {
+            request('http://127.0.0.1:' + port + '/api/', function (error, response, body) {
+                assert.equals(200, response.statusCode);
+                done();
+            });
 
-
-//            when(article.catlist({}))
-//                .done(function (obj) {
-//                    assert(true);
-//                    done();
-//                });
         },
-//        'test': function () {
-//            assert(true);
-//        }
+
+        '/api/this-should-not-be-found': function (done) {
+            request('http://127.0.0.1:' + port + '/api/this-should-not-be-found', function (error, response, body) {
+                assert.equals(404, response.statusCode);
+                done();
+            });
+
+        },
 
 
     }
