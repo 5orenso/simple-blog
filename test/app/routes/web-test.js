@@ -7,18 +7,35 @@ var buster     = require('buster'),
     fs         = require('fs'),
     express    = require('express'),
     request    = require('request'),
+    stats      = {
+        meter: function () {
+            return {
+                mark: function () {}
+            };
+        }
+    },
+    activeConn = {
+        inc: function () {},
+        dec: function () {}
+    },
+    timer      = {
+        start: function () {
+            return {
+                end: function () {}
+            };
+        }
+    },
     web_router = require(__dirname + '/../../../app/routes/web');
 
-var content_path     = __dirname + '/../../content/articles/',
-    photo_path       = __dirname + '/../../content/images/',
-    photo_cache_path = __dirname + '/../../content/images_cached/';
+var content_path     = __dirname + '/../../content/articles/';
 
 var config = require(__dirname + '/../../../config/config-dist.js');
 web_router.set_config(config, {
     content_path: content_path,
-    photo_path: photo_path,
-    photo_cache_path: photo_cache_path,
-    workerId: 1
+    workerId: 1,
+    stats: stats,
+    activeConn: activeConn,
+    timer: timer
 });
 
 var port = 4321;
@@ -28,24 +45,6 @@ var server;
 
 var responses = {
     endpoints : {"message":"hooray! welcome to our api!"}
-};
-
-
-var rmDir = function(dirPath) {
-    var files;
-    try { files = fs.readdirSync(dirPath); }
-    catch(e) { return; }
-    if (files.length > 0) {
-        for (var i = 0; i < files.length; i++) {
-            var filePath = dirPath + '/' + files[i];
-            if (fs.statSync(filePath).isFile()) {
-                fs.unlinkSync(filePath);
-            } else {
-                rmDir(filePath);
-            }
-        }
-    }
-    fs.rmdirSync(dirPath);
 };
 
 
@@ -95,54 +94,7 @@ buster.testCase('app/routes/web', {
                 done();
             });
 
-        },
-
-
-        'pho/test.jpg?w=300 from scratch': function (done) {
-            rmDir(photo_cache_path);
-            request('http://127.0.0.1:' + port + '/web/pho/test.jpg?w=300', function (error, response, body) {
-                if (!error && response.statusCode === 200) {
-                    done();
-                    assert.equals(200, response.statusCode);
-                } else {
-                    console.log('response.statusCode:', response.statusCode);
-                    console.log(error);
-                    console.log(response);
-                    done();
-                }
-            });
-        },
-
-        'pho/test.jpg?w=300 cached version': function (done) {
-            request('http://127.0.0.1:' + port + '/web/pho/test.jpg?w=300', function (error, response, body) {
-                if (!error && response.statusCode === 200) {
-                    done();
-                    assert.equals(200, response.statusCode);
-                } else {
-                    console.log('response.statusCode:', response.statusCode);
-                    console.log(error);
-                    console.log(response);
-                    done();
-                }
-            });
-        },
-
-
-        'pho/test.jpg?w=300&force=1 force cache refresh': function (done) {
-            request('http://127.0.0.1:' + port + '/web/pho/test.jpg?w=300&force=1', function (error, response, body) {
-                if (!error && response.statusCode === 200) {
-                    done();
-                    assert.equals(200, response.statusCode);
-                } else {
-                    console.log('response.statusCode:', response.statusCode);
-                    console.log(error);
-                    console.log(response);
-                    done();
-                }
-            });
-        },
-
-
+        }
 
 
     }
