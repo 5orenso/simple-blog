@@ -19,7 +19,7 @@ var express          = require('express'),
     logger           = require(app_path + 'lib/logger')();
 
 
-var config;
+var stats, activeConn, timer, config;
 var image_router = express.Router();
 image_router.set_config = function (conf, opt) {
     image_router.config = conf;
@@ -29,6 +29,15 @@ image_router.set_config = function (conf, opt) {
         }
         if (opt.hasOwnProperty('photo_cache_path')) {
             photo_cache_path = path.normalize(opt.photo_cache_path);
+        }
+        if (opt.hasOwnProperty('stats')) {
+            stats = opt.stats;
+        }
+        if (opt.hasOwnProperty('activeConn')) {
+            activeConn = opt.activeConn;
+        }
+        if (opt.hasOwnProperty('timer')) {
+            timer = opt.timer;
         }
     }
 };
@@ -145,6 +154,22 @@ image_router.get('/*', function(req, res) {
     var image_filename_absolute  = photo_path + image_filename_requested;
     var image_filename_resized   = photo_cache_path + cache_path + '/' + image_filename_requested;
 
+    // Start metrics
+    var stopwatch;
+    if (timer) { stopwatch = timer.start();}
+    if (activeConn) { activeConn.inc(); }
+    if (stats) {
+        stats.meter('requestsPerSecond').mark();
+//        stats.meter(parsed_url.pathname).mark();
+    }
+    // Stop timer when response is transferred and finish.
+    res.on('finish', function () {
+        if (activeConn) { activeConn.dec(); }
+        if (timer) { stopwatch.end(); }
+    });
+    // End metrics
+
+
     when(pathExists(image_filename_resized))
         .then(function () {
             return fileExists(image_filename_absolute);
@@ -165,9 +190,8 @@ image_router.get('/*', function(req, res) {
             return serveImage(res, image_filename_resized);
         })
         .done(null, function (error) {
-            res.status(500).send(error);
+            res.status(404).send(error);
             res.end();
-            console.log(error);
         });
 
 //    res.send('yo! ' + photo_path + image_filename_requested);
