@@ -45,15 +45,13 @@ stats_router.use(express.query()); // Parse query_string.
 
 // Main route for html files.
 stats_router.get('/', function(req, res) {
-    var request_pathname = req._parsedUrl.pathname;
-
     // Start metrics
     var stopwatch;
     if (timer_api) { stopwatch = timer_api.start();}
     if (activeConn) { activeConn.inc(); }
     if (stats) {
         stats.meter('requestsPerSecond').mark();
-        stats.meter(request_pathname || '/').mark();
+        stats.meter('/api/v1/stats').mark();
     }
     // Stop timer when response is transferred and finish.
     res.on('finish', function () {
