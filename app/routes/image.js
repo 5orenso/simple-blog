@@ -160,7 +160,6 @@ image_router.get('/*', function(req, res) {
     if (activeConn) { activeConn.inc(); }
     if (stats) {
         stats.meter('requestsPerSecond').mark();
-//        stats.meter(parsed_url.pathname).mark();
     }
     // Stop timer when response is transferred and finish.
     res.on('finish', function () {
