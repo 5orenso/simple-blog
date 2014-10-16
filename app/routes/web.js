@@ -80,7 +80,7 @@ web_router.get('/*', function(req, res) {
     if (activeConn) { activeConn.inc(); }
     if (stats) {
         stats.meter('requestsPerSecond').mark();
-        stats.meter(article_filename || '/').mark();
+//        stats.meter(article_filename || '/').mark();
     }
     // Stop timer when response is transferred and finish.
     res.on('finish', function () {
@@ -114,6 +114,9 @@ web_router.get('/*', function(req, res) {
             });
         })
         .then(function (article) {
+            if (stats) {
+                stats.meter(article_filename || '/').mark();
+            }
             res.send(tpl({ blog: web_router.config.blog, article: article }));
         })
         .catch(function (opt) {
