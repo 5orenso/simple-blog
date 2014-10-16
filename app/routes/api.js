@@ -55,7 +55,7 @@ api_router.get('/', function(req, res) {
     if (activeConn) { activeConn.inc(); }
     if (stats) {
         stats.meter('requestsPerSecond').mark();
-        stats.meter(request_pathname).mark();
+        stats.meter('/api' + request_pathname).mark();
     }
     // Stop timer when response is transferred and finish.
     res.on('finish', function () {
