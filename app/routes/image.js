@@ -24,6 +24,9 @@ var image_router = express.Router();
 image_router.set_config = function (conf, opt) {
     image_router.config = conf;
     if (opt) {
+        if (opt.hasOwnProperty('workerId')) {
+            logger.set('workerId', opt.workerId);
+        }
         if (opt.hasOwnProperty('photo_path')) {
             photo_path = path.normalize(opt.photo_path);
         }
