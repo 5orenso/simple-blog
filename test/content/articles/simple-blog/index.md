@@ -29,6 +29,12 @@ console.log('hello world');
 
 [:toc]
 
+
+[:menu_onepage]
+
+[:artlist_onepage]
+
+
 :body2
 This is a test of body 2.
 [:toc]
@@ -60,3 +66,5 @@ This is a test of body 5.
 :aside5
 This is a test of aside 5.
 [:toc]
+
+:images /
