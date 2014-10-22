@@ -15,6 +15,7 @@ var express       = require('express'),
     app_path      = __dirname + '/../../',
     template_path = path.normalize(app_path + 'template/current/'),
     content_path  = path.normalize(app_path + 'content/articles/'),
+    photo_path    = path.normalize(app_path + 'content/images/'),
     logger        = require(app_path + 'lib/logger')(),
     article_util  = require(app_path + 'lib/article-util')();
 
@@ -32,6 +33,9 @@ web_router.set_config = function (conf, opt) {
         }
         if (opt.hasOwnProperty('content_path')) {
             content_path = path.normalize(opt.content_path);
+        }
+        if (opt.hasOwnProperty('photo_path')) {
+            photo_path = path.normalize(opt.photo_path);
         }
         if (opt.hasOwnProperty('stats')) {
             stats = opt.stats;
@@ -98,7 +102,8 @@ web_router.get('/*', function(req, res) {
         logger: logger,
         filename: markdown_filename,
         article_path: article_path,
-        content_path: content_path
+        content_path: content_path,
+        photo_path: photo_path
     });
 
     var category = require(app_path + 'lib/category')({
