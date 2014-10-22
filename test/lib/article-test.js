@@ -198,7 +198,7 @@ buster.testCase('lib/article', {
                     assert.equals(art.title, article.title);
 //                    assert.equals(art.filename, article.filename);
                     assert.equals(art.tag, article.tag);
-                    assert.equals(art.body, article.body);
+                    assert.match(article.body, art.body);
                     assert.equals(art.body2, article.body2);
                     assert.equals(art.body3, article.body3);
                     assert.equals(art.body4, article.body4);
@@ -230,8 +230,9 @@ buster.testCase('lib/article', {
                     done();
                 }, function (response) {
                     assert.equals(404, response.statusCode);
-//                    console.log(response.error);
-//                    console.log(response);
+                    assert.equals(art_wip.tag_values.artlist, response.article.tag_values.artlist);
+                    assert.equals(art_wip.tag_values.artlist_onepage, response.article.tag_values.artlist_onepage);
+                    assert.equals(art_wip.tag_values.menu, response.article.tag_values.menu);
                     done();
                 });
 
@@ -269,6 +270,9 @@ buster.testCase('lib/article', {
                     done();
                 }, function (response) {
                     assert.equals(404, response.statusCode);
+                    assert.equals(art_wip.tag_values.artlist, response.article.tag_values.artlist);
+                    assert.equals(art_wip.tag_values.artlist_onepage, response.article.tag_values.artlist_onepage);
+                    assert.equals(art_wip.tag_values.menu, response.article.tag_values.menu);
                     done();
                 });
 
