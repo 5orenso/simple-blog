@@ -29,7 +29,7 @@ var buster     = require('buster'),
 var content_path     = __dirname + '/../../content/articles/';
 
 
-var config = require(__dirname + '/../../../config/config-dist.js');
+var config = require(__dirname + '/../../../config/config-integration.js');
 api_router.set_config(config, {
     content_path: content_path,
     workerId: 1,
