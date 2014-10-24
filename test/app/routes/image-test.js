@@ -31,7 +31,7 @@ var content_path     = __dirname + '/../../content/articles/',
     photo_path       = __dirname + '/../../content/images/',
     photo_cache_path = __dirname + '/../../content/images_cached/';
 
-var config = require(__dirname + '/../../../config/config-dist.js');
+var config = require(__dirname + '/../../../config/config-integration.js');
 image_router.set_config(config, {
     content_path: content_path,
     photo_path: photo_path,
