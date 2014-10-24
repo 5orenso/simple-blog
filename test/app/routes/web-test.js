@@ -31,7 +31,7 @@ var content_path     = __dirname + '/../../content/articles/',
     photo_path       = __dirname + '/../../content/images/';
 
 
-var config = require(__dirname + '/../../../config/config-dist.js');
+var config = require(__dirname + '/../../../config/config-integration.js');
 web_router.set_config(config, {
     content_path: content_path,
     workerId: 1,
@@ -96,6 +96,8 @@ buster.testCase('app/routes/web', {
                 assert.match(body, art.tag_values.toc);
                 assert.match(body, art.tag_values.artlist_onepage);
                 assert.match(body, art.tag_values.menu_onepage);
+                assert.match(body, '/pho/simple-blog.jpg');
+                assert.match(body, '/pho/test.jpg');
                 done();
             });
         },
