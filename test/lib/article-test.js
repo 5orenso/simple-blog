@@ -4,7 +4,7 @@ var buster = require('buster'),
     assert = buster.assert,
     refute = buster.refute,
     when   = require('when'),
-    content_path = __dirname + '/../content/articles/',
+    content_path = __dirname + '/../../test/content/articles/',
     category = require('../../lib/category')({
         logger: {
             log: function () {
@@ -21,12 +21,21 @@ var buster = require('buster'),
             err: function () {
             },
         },
-        filename: content_path + 'simple-blog/index',
+        request_url: '/simple-blog/index',
         article_path: 'simple-blog/',
         content_path: content_path,
         domain: 'www.mydomain.no',
         protocol: 'http',
-        max_articles_in_artlist : 500
+        max_articles_in_artlist : 500,
+        config: {
+            adapter: {
+                markdown: {
+                    content_path: __dirname + '/../content/articles/',
+                    photo_path: __dirname + '/../content/images/',
+                    max_articles: 500,
+                }
+            }
+        }
     }),
     article_not_found = require('../../lib/article')({
         logger: {
@@ -35,9 +44,18 @@ var buster = require('buster'),
             err: function () {
             },
         },
-        filename: content_path + 'simple-blog/index_not_found',
+        request_url: '/simple-blog/index_not_found',
         article_path: 'simple-blog/',
-        content_path: content_path
+        content_path: content_path,
+        config: {
+            adapter: {
+                markdown: {
+                    content_path: __dirname + '/../content/articles/',
+                    photo_path: __dirname + '/../content/images/',
+                    max_articles: 500,
+                }
+            }
+        }
     }),
     article_wip_not_found = require('../../lib/article')({
         logger: {
@@ -46,9 +64,18 @@ var buster = require('buster'),
             err: function () {
             },
         },
-        filename: content_path + 'simple-blog/_index_wip_not_found',
+        request_url: '/simple-blog/_index_wip_not_found',
         article_path: 'simple-blog/',
-        content_path: content_path
+        content_path: content_path,
+        config: {
+            adapter: {
+                markdown: {
+                    content_path: __dirname + '/../content/articles/',
+                    photo_path: __dirname + '/../content/images/',
+                    max_articles: 500,
+                }
+            }
+        }
     }),
     article_wip = require('../../lib/article')({
         logger: {
@@ -57,9 +84,18 @@ var buster = require('buster'),
             err: function () {
             },
         },
-        filename: content_path + 'simple-blog/_index_wip',
+        request_url: '/simple-blog/_index_wip',
         article_path: 'simple-blog/',
-        content_path: content_path
+        content_path: content_path,
+        config: {
+            adapter: {
+                markdown: {
+                    content_path: __dirname + '/../content/articles/',
+                    photo_path: __dirname + '/../content/images/',
+                    max_articles: 500,
+                }
+            }
+        }
     });
 
 var catlist = [
@@ -85,23 +121,23 @@ var artlist = [
     {
         tag_values: [Object],
         title: 'Simple Blog Server',
-        file: '/index',
+        file: 'index',
         filename: './test/content/articles/simple-blog/index.md',
-        base_href: 'simple-blog/'
+        base_href: '/simple-blog/'
     }
 ];
 var art = {
     tag_values: {
         toc: '<div class="toc" id="toc"><span class="toc-indent-1">&bull; <a href="#simple-title-1">Simple title 1</a></span><span class="toc-indent-2">&bull; <a href="#simple-sub-title-1">Simple sub title 1</a></span><span class="toc-indent-1">&bull; <a href="#simple-title-2">Simple title 2</a></span><span class="toc-indent-2">&bull; <a href="#simple-sub-title-1">Simple sub title 1</a></span><span class="toc-indent-3">&bull; <a href="#simple-sub-sub-title-1">Simple sub sub title 1</a></span></div>',
         fact: '',
-        artlist: '<ul class="artlist"><li><a href="simple-blog/index">Simple Blog Server</a></li></ul>',
+        artlist: '<ul class="artlist"><li><a href="/simple-blog/index">Simple Blog Server</a></li></ul>',
         menu: '<ul class="catlist"><li><a href="/">Frontpage</a></li><li><a href="/simple-blog/">simple-blog</a></li></ul>',
         menu_onepage: '<ul class="catlist"><li><a href="/">Frontpage</a></li><li><a href="#simple-blog">simple-blog</a></li></ul>',
-        'artlist-block': '<div class="artlist"><div class="artlist-art"><h3><a href="simple-blog/index">Simple Blog Server</a></h3></div></div><br class="clear">',
-        artlist_onepage: '<ul class="artlist"><li><a href="#/index">Simple Blog Server</a></li></ul>'
+        'artlist-block': '<div class="artlist"><div class="artlist-art"><h3><a href="/simple-blog/index">Simple Blog Server</a></h3></div></div><br class="clear">',
+        artlist_onepage: '<ul class="artlist"><li><a href="#/simple-blog/index">Simple Blog Server</a></li></ul>'
     },
     title: 'Simple Blog Server',
-    file: undefined,
+    file: 'index',
     filename: '<p>./test/content/articles/simple-blog/index.md</p>\n',
     tag: [ 'simple,blog' ],
     body: '<h1 class="toc-1"><a name="simple-title-1" class="anchor" href="#simple-title-1"><span class="header-link"></span></a>Simple title 1</h1><h2 class="toc-2"><a name="simple-sub-title-1" class="anchor" href="#simple-sub-title-1"><span class="header-link"></span></a>Simple sub title 1</h2><p>My simple blog text.</p>\n<h1 class="toc-1"><a name="simple-title-2" class="anchor" href="#simple-title-2"><span class="header-link"></span></a>Simple title 2</h1><h2 class="toc-2"><a name="simple-sub-title-1" class="anchor" href="#simple-sub-title-1"><span class="header-link"></span></a>Simple sub title 1</h2><h3 class="toc-3"><a name="simple-sub-sub-title-1" class="anchor" href="#simple-sub-sub-title-1"><span class="header-link"></span></a>Simple sub sub title 1</h3><pre><code class="lang-javascript">\nconsole.<span class="hljs-built_in">log</span>(<span class="hljs-string">\'hello world\'</span>);\n</code></pre>\n<p><p class="image_inline"><img src="simple-blog.jpg?w=600" alt="Simple blog image" title="My image text"></p></p>\n<p><div class="toc" id="toc"><span class="toc-indent-1">&bull; <a href="#simple-title-1">Simple title 1</a></span><span class="toc-indent-2">&bull; <a href="#simple-sub-title-1">Simple sub title 1</a></span><span class="toc-indent-1">&bull; <a href="#simple-title-2">Simple title 2</a></span><span class="toc-indent-2">&bull; <a href="#simple-sub-title-1">Simple sub title 1</a></span><span class="toc-indent-3">&bull; <a href="#simple-sub-sub-title-1">Simple sub sub title 1</a></span></div></p>\n',
@@ -116,13 +152,13 @@ var art_not_found = {
     article: {
         file: undefined,
         filename: '<p>_index_wip_not_found.md</p>\n',
-        base_href: undefined,
+        base_href: '/',
         tag_values: {
             menu: '<ul class="catlist"><li><a href="/">Frontpage</a></li><li><a href="/simple-blog/">simple-blog</a></li></ul>',
             menu_onepage: '<ul class="catlist"><li><a href="/">Frontpage</a></li><li><a href="#simple-blog">simple-blog</a></li></ul>',
-            artlist: '<ul class="artlist"><li><a href="simple-blog/index">Simple Blog Server</a></li></ul>',
-            'artlist-block': '<div class="artlist"><div class="artlist-art"><h3><a href="simple-blog//index">Simple Blog Server</a></h3></div></div><br class="clear">',
-            artlist_onepage: '<ul class="artlist"><li><a href="#/index">Simple Blog Server</a></li></ul>'
+            artlist: '<ul class="artlist"><li><a href="/simple-blog/index">Simple Blog Server</a></li></ul>',
+            'artlist-block': '<div class="artlist"><div class="artlist-art"><h3><a href="/simple-blog//index">Simple Blog Server</a></h3></div></div><br class="clear">',
+            artlist_onepage: '<ul class="artlist"><li><a href="#/simple-blog/index">Simple Blog Server</a></li></ul>'
         },
         catlist:
             [ { dev: 16777219,
@@ -140,18 +176,18 @@ var art_not_found = {
         artlist:
             [ { tag_values: [Object],
                 title: 'Simple Blog Server',
-                file: '/index',
+                file: 'index',
                 filename: './test/content/articles/simple-blog/index.md',
-                base_href: 'simple-blog/' } ]
+                base_href: '/simple-blog/' } ]
     }
 };
 var art_wip = { tag_values: { toc: '<div class="toc" id="toc"><span class="toc-indent-1">&bull; <a href="#simple-title-1-wip">Simple title 1 wip</a></span><span class="toc-indent-2">&bull; <a href="#simple-sub-title-1">Simple sub title 1</a></span><span class="toc-indent-1">&bull; <a href="#simple-title-2">Simple title 2</a></span><span class="toc-indent-2">&bull; <a href="#simple-sub-title-1">Simple sub title 1</a></span><span class="toc-indent-3">&bull; <a href="#simple-sub-sub-title-1">Simple sub sub title 1</a></span></div>',
     fact: '',
-    artlist: '<ul class="artlist"><li><a href="simple-blog/index">Simple Blog Server</a></li></ul>',
+    artlist: '<ul class="artlist"><li><a href="/simple-blog/index">Simple Blog Server</a></li></ul>',
     menu: '<ul class="catlist"><li><a href="/">Frontpage</a></li><li><a href="/simple-blog/">simple-blog</a></li></ul>',
     menu_onepage: '<ul class="catlist"><li><a href="/">Frontpage</a></li><li><a href="#simple-blog">simple-blog</a></li></ul>',
-    'artlist-block': '<div class="artlist"><div class="artlist-art"><h3><a href="simple-blog//index">Simple Blog Server</a></h3></div></div><br class="clear">',
-    artlist_onepage: '<ul class="artlist"><li><a href="#/index">Simple Blog Server</a></li></ul>' },
+    'artlist-block': '<div class="artlist"><div class="artlist-art"><h3><a href="/simple-blog//index">Simple Blog Server</a></h3></div></div><br class="clear">',
+    artlist_onepage: '<ul class="artlist"><li><a href="#/simple-blog/index">Simple Blog Server</a></li></ul>' },
     published: '<p>2014-09-01</p>\n',
     tag: [ 'simple,blog,wip' ],
     title: 'Simple Blog Server WIP',
@@ -292,7 +328,7 @@ buster.testCase('lib/article', {
                         assert.equals('weekly', urls[0].changefreq[0]);
                         assert.equals('0.85', urls[0].priority[0]);
 
-                        assert.equals('http://www.mydomain.no/index', urls[1].loc[0]);
+                        assert.equals('http://www.mydomain.no/simple-blog/index', urls[1].loc[0]);
                         assert.equals('weekly', urls[1].changefreq[0]);
                         assert.equals('0.5', urls[1].priority[0]);
                         done();
