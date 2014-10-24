@@ -73,10 +73,9 @@ web_router.use('/sitemap.xml', express.static(app_path + 'template/sitemap.xml')
 // Main route for blog articles.
 web_router.get('/*', function(req, res) {
     // Resolve filename
-    var article_filename = article_util.getUrlFromRequest(req);
+    var request_url = article_util.getUrlFromRequest(req);
     // Load content based on filename
-    var markdown_filename = article_util.getMarkdownFilename(article_filename);
-    var article_path = article_util.getArticlePathRelative(markdown_filename);
+    var article_path = article_util.getArticlePathRelative(request_url, content_path);
 
     // Start metrics
     var stopwatch;
@@ -84,7 +83,7 @@ web_router.get('/*', function(req, res) {
     if (activeConn) { activeConn.inc(); }
     if (stats) {
         stats.meter('requestsPerSecond').mark();
-//        stats.meter(article_filename || '/').mark();
+//        stats.meter(request_url || '/').mark();
     }
     // Stop timer when response is transferred and finish.
     res.on('finish', function () {
@@ -100,15 +99,17 @@ web_router.get('/*', function(req, res) {
 
     var article = require(app_path + 'lib/article')({
         logger: logger,
-        filename: markdown_filename,
+        request_url: request_url,
         article_path: article_path,
-        content_path: content_path,
-        photo_path: photo_path
+//        content_path: content_path,
+        photo_path: photo_path,
+        config: web_router.config
     });
 
     var category = require(app_path + 'lib/category')({
         logger: logger,
-        content_path: content_path
+        content_path: content_path,
+        config: web_router.config
     });
 
     when.all([category.list(), article.list()])
@@ -120,7 +121,7 @@ web_router.get('/*', function(req, res) {
         })
         .then(function (article) {
             if (stats) {
-                stats.meter(article_filename || '/').mark();
+                stats.meter(request_url || '/').mark();
             }
             res.send(tpl({ blog: web_router.config.blog, article: article }));
         })
