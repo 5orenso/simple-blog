@@ -17,5 +17,12 @@ module.exports = {
     },
     app: {
         port: 8080
+    },
+    adapter: {
+        markdown: {
+            content_path: __dirname + '/../content/articles/',
+            photo_path: __dirname + '/../content/images/',
+            max_articles: 500,
+        }
     }
 };
