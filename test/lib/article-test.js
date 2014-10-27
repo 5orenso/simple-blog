@@ -5,6 +5,7 @@ var buster = require('buster'),
     refute = buster.refute,
     when   = require('when'),
     content_path = __dirname + '/../../test/content/articles/',
+    article_path = '/simple-blog/',
     category = require('../../lib/category')({
         logger: {
             log: function () {
@@ -204,7 +205,7 @@ buster.testCase('lib/article', {
     },
     'Test article:': {
         'catlist': function (done) {
-            when( category.list({}) )
+            when( category.list(content_path) )
                 .done(function (category_list) {
                     assert.equals(catlist[0].name, category_list[0].name);
                     assert.equals(catlist[0].type, category_list[0].type);
@@ -213,7 +214,7 @@ buster.testCase('lib/article', {
         },
 
         'artlist': function (done) {
-            when( article.list({}) )
+            when( article.list(article_path) )
                 .done(function (article_list) {
                     assert.equals(artlist[0].title, article_list[0].title);
                     assert.equals(artlist[0].base_href, article_list[0].base_href);
