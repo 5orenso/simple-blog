@@ -75,7 +75,7 @@ web_router.get('/*', function(req, res) {
     // Resolve filename
     var request_url = article_util.getUrlFromRequest(req);
     // Load content based on filename
-    var article_path = article_util.getArticlePathRelative(request_url, content_path);
+    var article_path = article_util.getArticlePathRelative(request_url);
 
     // Start metrics
     var stopwatch;
@@ -101,18 +101,16 @@ web_router.get('/*', function(req, res) {
         logger: logger,
         request_url: request_url,
         article_path: article_path,
-//        content_path: content_path,
         photo_path: photo_path,
         config: web_router.config
     });
 
     var category = require(app_path + 'lib/category')({
         logger: logger,
-        content_path: content_path,
         config: web_router.config
     });
 
-    when.all([category.list(), article.list()])
+    when.all([category.list(content_path), article.list(article_path)])
         .then(function (content_lists) {
             return article.load({
                 catlist: content_lists[0],
