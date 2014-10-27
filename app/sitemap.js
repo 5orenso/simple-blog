@@ -23,7 +23,7 @@ commander
 var config = require(commander.config);
 
 
-var article_path = article_util.getArticlePathRelative('');
+var article_path = '/'; //article_util.getArticlePathRelative('');
 
 // Load from function
 var article = require(app_path + 'lib/article')({
