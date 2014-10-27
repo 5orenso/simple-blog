@@ -39,7 +39,7 @@ var simple_blog_index = { tag_values: { toc: '', fact: '', artlist: '' },
     aside5: 'This is a test of aside 5.\n[:toc]\n',
     images: [ '/' ],
     file: 'index',
-    filename: '/Users/sorenso/PhpstormProjects/simple-blog/test/content/articles/simple-blog/index.md',
+    filename: 'my-path-to-the-files/content/articles/simple-blog/index.md',
     base_href: '/simple-blog/' };
 
 var artlist = [{
@@ -61,7 +61,7 @@ var artlist = [{
     aside5: 'This is a test of aside 5.\n[:toc]\n',
     images: [ '/' ],
     file: 'index',
-    filename: '/Users/sorenso/PhpstormProjects/simple-blog/test/content/articles/simple-blog/index.md',
+    filename: 'my-path-to-the-files/content/articles/simple-blog/index.md',
     base_href: '/simple-blog/'
 },
     {
@@ -71,7 +71,7 @@ var artlist = [{
         img: [ 'simple-blog.jpg' ],
         body: 'This is content number 2.',
         file: 'simple-blog',
-        filename: '/Users/sorenso/PhpstormProjects/simple-blog/test/content/articles/simple-blog/simple-blog.md',
+        filename: 'my-path-to-the-files/content/articles/simple-blog/simple-blog.md',
         base_href: '/simple-blog/'
     }];
 
@@ -111,7 +111,10 @@ buster.testCase('lib/adapter/markdown', {
         'list existing articles': function (done) {
             when( markdown.list_articles('/simple-blog/') )
                 .done(function (obj) {
-                    assert.equals(obj, artlist);
+                    assert.equals(obj[0].title, artlist[0].title);
+                    assert.equals(obj[0].teaser, artlist[0].teaser);
+                    assert.equals(obj[0].file, artlist[0].file);
+                    assert.equals(obj[0].base_href, artlist[0].base_href);
                     done();
                 });
         },
