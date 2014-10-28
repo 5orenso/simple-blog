@@ -14,7 +14,6 @@ var express       = require('express'),
     commander     = require('commander'),
     app_path      = __dirname + '/../../',
     template_path = path.normalize(app_path + 'template/current/'),
-    content_path  = path.normalize(app_path + 'content/articles/'),
     photo_path    = path.normalize(app_path + 'content/images/'),
     logger        = require(app_path + 'lib/logger')(),
     article_util  = require(app_path + 'lib/article-util')();
@@ -30,9 +29,6 @@ web_router.set_config = function (conf, opt) {
     if (opt) {
         if (opt.hasOwnProperty('workerId')) {
             logger.set('workerId', opt.workerId);
-        }
-        if (opt.hasOwnProperty('content_path')) {
-            content_path = path.normalize(opt.content_path);
         }
         if (opt.hasOwnProperty('photo_path')) {
             photo_path = path.normalize(opt.photo_path);
@@ -83,7 +79,6 @@ web_router.get('/*', function(req, res) {
     if (activeConn) { activeConn.inc(); }
     if (stats) {
         stats.meter('requestsPerSecond').mark();
-//        stats.meter(request_url || '/').mark();
     }
     // Stop timer when response is transferred and finish.
     res.on('finish', function () {
@@ -100,7 +95,6 @@ web_router.get('/*', function(req, res) {
     var article = require(app_path + 'lib/article')({
         logger: logger,
         request_url: request_url,
-        article_path: article_path,
         photo_path: photo_path,
         config: web_router.config
     });
@@ -110,7 +104,7 @@ web_router.get('/*', function(req, res) {
         config: web_router.config
     });
 
-    when.all([category.list(content_path), article.list(article_path)])
+    when.all([category.list('/'), article.list(article_path)])
         .then(function (content_lists) {
             return article.load({
                 catlist: content_lists[0],
