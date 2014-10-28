@@ -4,12 +4,20 @@ var buster       = require('buster'),
     assert       = buster.assert,
     refute       = buster.refute,
     when         = require('when'),
-    content_path = __dirname + '/../../test/content/articles/',
     category     = require('../../lib/category')({
         logger: {
             log: function () { },
             err: function () { }
         },
+        config: {
+            adapter: {
+                markdown: {
+                    content_path: __dirname + '/../content/articles/',
+                    photo_path: __dirname + '/../content/images/',
+                    max_articles: 500,
+                }
+            }
+        }
     });
 
 var catlist = [ { dev: 16777220,
@@ -35,12 +43,12 @@ buster.testCase('lib/category', {
     },
     'Test category:': {
         'list existing categories': function (done) {
-            when(category.list(content_path))
+            when(category.list('/'))
                 .then(function (obj) {
                     assert.equals(catlist[0].name, obj[0].name);
                     assert.equals(catlist[0].type, obj[0].type);
                     done();
-                });
+                }).catch(console.log);
         },
 
         'list non existing categories': function (done) {
@@ -49,7 +57,7 @@ buster.testCase('lib/category', {
                     assert.equals([], obj);
                     refute(obj[0]);
                     done();
-                });
+                }).catch(console.log);
         },
 
     }
