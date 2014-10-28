@@ -26,12 +26,10 @@ var buster     = require('buster'),
         }
     },
     api_router = require(__dirname + '/../../../app/routes/api');
-var content_path     = __dirname + '/../../content/articles/';
 
 
 var config = require(__dirname + '/../../../config/config-integration.js');
 api_router.set_config(config, {
-    content_path: content_path,
     workerId: 1,
     stats: stats,
     activeConn: activeConn,
