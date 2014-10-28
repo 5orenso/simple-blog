@@ -79,6 +79,22 @@ var article = {
 
 };
 
+var category_list = [ { dev: 16777220,
+    mode: 16877,
+    nlink: 5,
+    uid: 501,
+    gid: 20,
+    rdev: 0,
+    blksize: 4096,
+    ino: 37773547,
+    size: 170,
+    blocks: 0,
+//    atime: Tue Oct 28 2014 12:04:53 GMT+0100 (CET),
+//    mtime: Fri Oct 24 2014 21:43:27 GMT+0200 (CEST),
+//    ctime: Fri Oct 24 2014 21:43:27 GMT+0200 (CEST),
+    name: 'simple-blog',
+    type: 'directory' } ];
+
 buster.testCase('lib/adapter/markdown', {
     setUp: function () {
     },
@@ -145,7 +161,22 @@ buster.testCase('lib/adapter/markdown', {
                 });
         },
 
+        'list categories': function (done) {
+            when( markdown.list_categories('/') )
+                .done(function (catlist) {
+                    assert.equals(catlist[0].name, category_list[0].name);
+                    assert.equals(catlist[0].type, category_list[0].type);
+                    done();
+                });
+        },
 
+        'list categories wo/input': function (done) {
+            when( markdown.list_categories() )
+                .done(function (catlist) {
+                    assert.equals(catlist, []);
+                    done();
+                });
+        },
 
     }
 });
