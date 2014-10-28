@@ -27,13 +27,11 @@ var buster     = require('buster'),
     },
     web_router = require(__dirname + '/../../../app/routes/web');
 
-var content_path     = __dirname + '/../../content/articles/',
-    photo_path       = __dirname + '/../../content/images/';
+var photo_path       = __dirname + '/../../content/images/';
 
 
 var config = require(__dirname + '/../../../config/config-integration.js');
 web_router.set_config(config, {
-    content_path: content_path,
     workerId: 1,
     stats: stats,
     activeConn: activeConn,
