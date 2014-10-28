@@ -13,8 +13,6 @@ var when = require('when'),
     path = require('path'),
     commander = require('commander'),
     app_path = __dirname + '/../',
-    content_path = path.normalize(app_path + 'content/articles/'),
-    article_util = require(app_path + 'lib/article-util')(),
     logger = require(app_path + 'lib/logger')({});
 
 commander
@@ -30,7 +28,6 @@ var article = require(app_path + 'lib/article')({
     logger: logger,
     filename: '',
     article_path: article_path,
-    content_path: content_path,
     domain: config.blog.domain,
     protocol: config.blog.protocol,
     max_articles_in_artlist : 500
