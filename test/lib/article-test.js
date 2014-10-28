@@ -4,7 +4,6 @@ var buster = require('buster'),
     assert = buster.assert,
     refute = buster.refute,
     when   = require('when'),
-    content_path = __dirname + '/../../test/content/articles/',
     article_path = '/simple-blog/',
     category = require('../../lib/category')({
         logger: {
@@ -13,7 +12,15 @@ var buster = require('buster'),
             err: function () {
             },
         },
-        content_path: content_path
+        config: {
+            adapter: {
+                markdown: {
+                    content_path: __dirname + '/../content/articles/',
+                    photo_path: __dirname + '/../content/images/',
+                    max_articles: 500,
+                }
+            }
+        }
     }),
     article = require('../../lib/article')({
         logger: {
@@ -23,8 +30,6 @@ var buster = require('buster'),
             },
         },
         request_url: '/simple-blog/index',
-        article_path: 'simple-blog/',
-        content_path: content_path,
         domain: 'www.mydomain.no',
         protocol: 'http',
         max_articles_in_artlist : 500,
@@ -46,8 +51,6 @@ var buster = require('buster'),
             },
         },
         request_url: '/simple-blog/index_not_found',
-        article_path: 'simple-blog/',
-        content_path: content_path,
         config: {
             adapter: {
                 markdown: {
@@ -66,8 +69,6 @@ var buster = require('buster'),
             },
         },
         request_url: '/simple-blog/_index_wip_not_found',
-        article_path: 'simple-blog/',
-        content_path: content_path,
         config: {
             adapter: {
                 markdown: {
@@ -86,8 +87,6 @@ var buster = require('buster'),
             },
         },
         request_url: '/simple-blog/_index_wip',
-        article_path: 'simple-blog/',
-        content_path: content_path,
         config: {
             adapter: {
                 markdown: {
@@ -205,11 +204,13 @@ buster.testCase('lib/article', {
     },
     'Test article:': {
         'catlist': function (done) {
-            when( category.list(content_path) )
+            when( category.list('/') )
                 .done(function (category_list) {
                     assert.equals(catlist[0].name, category_list[0].name);
                     assert.equals(catlist[0].type, category_list[0].type);
                     done();
+                }, function (err) {
+                    console.log(err);
                 });
         },
 
@@ -233,7 +234,6 @@ buster.testCase('lib/article', {
                     assert.equals(art.tag_values.artlist, article.tag_values.artlist);
                     assert.equals(art.tag_values.artlist_onepage, article.tag_values.artlist_onepage);
                     assert.equals(art.title, article.title);
-//                    assert.equals(art.filename, article.filename);
                     assert.equals(art.tag, article.tag);
                     assert.match(article.body, art.body);
                     assert.equals(art.body2, article.body2);
@@ -299,7 +299,6 @@ buster.testCase('lib/article', {
             when( article_wip_not_found.load({
                 artlist: artlist,
                 catlist: catlist,
-                content_path: content_path
             }) )
                 .done(function (article) {
                     assert(false);
