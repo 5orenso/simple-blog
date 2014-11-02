@@ -34,7 +34,9 @@
         <script src="/js/jquery.mmenu.min.all.js"></script>
         <script type="text/javascript">
             $(function() {
-                $('nav#menu').mmenu();
+                $('nav#menu').mmenu({
+                },{
+                });
             });
         </script>
 
@@ -49,7 +51,17 @@
     <div id="page" class="mm-page" style="min-height: 718px;">
 
 		<!-- Header -->
-			<section id="header" class="dark" style="{% if (article.img[0]) %}background-image: url('/images/overlay.png'), url('/pho/{{ article.img[0] }}?w=1600'); background-size: cover; background-position: center center;{% endif %}">
+        {% if blog.simple_header %}
+            <section id="header_simple" class="" style="">
+                <div class="header">
+                    <a href="#menu"></a>
+                </div>
+                <header class="logo">
+                    {{ blog.title }}
+                </header>
+            </section>
+        {% else %}
+			<section id="header" class="dark" style="{% if (!blog.top_image && article.img[0]) %}background-image: url('/images/overlay.png'), url('/pho/{{ article.img[0] }}?w=1600'); background-size: cover; background-position: center center;{% endif %}">
                 <div class="header">
                     <a href="#menu"></a>
                 </div>
@@ -65,11 +77,20 @@
 					<a href="#first" class="button scrolly">Read article</a>
 				</footer>  -->
 			</section>
+        {% endif %}
 			
 		<!-- First -->
 			<section id="first" class="main">
 				<header>
-					<div class="container small">
+                    <div class="container">
+                        {% if blog.simple_header %}
+                        <h2>{{ article.title|raw }}</h2>
+                        {% if article.teaser %}
+                        <p>{{ article.teaser|raw }}</p>
+                        {% endif %}
+                        {% endif %}
+                    </div>
+					<div class="container small article_ingress">
                         {% if (error) %}
                             {{ error }}
                         {% endif %}
@@ -81,22 +102,46 @@
 				</header>
                 <div class="content style4 ">
                     <div class="container small">
-                        {% if article.aside %}
-                            <div class="article-aside">
-                                {{ article.aside|raw }}
-                            </div>
-                        {% endif %}
-                        {% if article.body %}
-                            {{ article.body|raw }}
-                        {% endif %}
+                        <div class="row">
+
+                            {% if article.aside || blog.top_image %}
+                                <div class="6u">
+                                    {% if article.body %}
+                                        {{ article.body|raw }}
+                                    {% endif %}
+                                </div>
+                                <div class="6u">
+                                    {{ article.aside|raw }}
+                                    {% if blog.top_image %}
+                                        {% set arr = [0,1,2,3,4] %}
+                                        {% for i in arr %}
+                                            {% if article.img[i] %}
+                                                <div class="item">
+                                                    <img src="/pho/{{ article.img[i] }}?w=600">
+                                                    {% if article.img_text[i] %}
+                                                        <p>{{ article.img_text[i] }}</p>
+                                                    {% endif %}
+                                                </div>
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% endif %}
+                                </div>
+                            {% else %}
+                                <div class="12u">
+                                    {% if article.body %}
+                                        {{ article.body|raw }}
+                                    {% endif %}
+                                </div>
+                            {% endif %}
+                        </div>
                     </div>
                 </div>
 			</section>
 
 
 
-        {% set arr = [2,3,4,5,6,7,8,9] %}
-        {% for i in arr %}
+        {% set image_arr = [2,3,4,5,6,7,8,9,10] %}
+        {% for i in image_arr %}
             {% if (article['img' + i]) %}
                 <!-- Header -->
                 <section id="header" class="dark" style="{% if (article['img' + i][0]) %}background-image: url('/images/overlay.png'), url('/pho/{{ article['img' + i][0] }}?w=1600'); background-size: cover; background-position: center center;{% endif %}">
@@ -131,15 +176,21 @@
         {% endfor %}
 
 
-        {% if (article.img.length > 1) %}
+        {% if blog.top_image %}
+            {% set image_start = 5 %}
+        {% else %}
+            {% set image_start = 1 %}
+        {% endif %}
+
+        {% if (article.img.length > image_start) %}
             <section id="first" class="main">
                 <div class="content style4">
                     <div class="container small">
                         <div id="owl-example" class="owl-carousel">
                             {% for img in article.img %}
-                            {% if loop.index > 1 %}
-                            <div class="item"><img src="/pho/{{ img }}?w=800" alt="{{ img }}" title="{{ img }}"></div>
-                            {% endif %}
+                                {% if loop.index > image_start %}
+                                    <div class="item"><img src="/pho/{{ img }}?w=800" alt="{{ img }}" title="{{ img }}"></div>
+                                {% endif %}
                             {% endfor %}
                         </div>
                         <script>
