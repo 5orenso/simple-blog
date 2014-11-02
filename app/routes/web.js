@@ -90,7 +90,10 @@ web_router.get('/*', function(req, res) {
     // Check for cached file
     // If not cached compile file and store it.
     // TODO: How do we bypass the cache?
-    var tpl = swig.compileFile(template_path + 'blog.html');
+//    var file = article_util.getArticleFilename(request_url);
+//    var template = (file === 'index' ? 'index.html' : 'blog.html');
+    var template = 'blog.html';
+    var tpl = swig.compileFile(template_path + template);
 
     var article = require(app_path + 'lib/article')({
         logger: logger,
