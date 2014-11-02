@@ -14,6 +14,7 @@ var buster = require('buster'),
         },
         config: {
             adapter: {
+                current: 'markdown',
                 markdown: {
                     content_path: __dirname + '/../content/articles/',
                     photo_path: __dirname + '/../content/images/',
@@ -35,6 +36,7 @@ var buster = require('buster'),
         max_articles_in_artlist : 500,
         config: {
             adapter: {
+                current: 'markdown',
                 markdown: {
                     content_path: __dirname + '/../content/articles/',
                     photo_path: __dirname + '/../content/images/',
@@ -53,6 +55,7 @@ var buster = require('buster'),
         request_url: '/simple-blog/index_not_found',
         config: {
             adapter: {
+                current: 'markdown',
                 markdown: {
                     content_path: __dirname + '/../content/articles/',
                     photo_path: __dirname + '/../content/images/',
@@ -71,6 +74,7 @@ var buster = require('buster'),
         request_url: '/simple-blog/_index_wip_not_found',
         config: {
             adapter: {
+                current: 'markdown',
                 markdown: {
                     content_path: __dirname + '/../content/articles/',
                     photo_path: __dirname + '/../content/images/',
@@ -88,6 +92,7 @@ var buster = require('buster'),
         },
         request_url: '/simple-blog/_index_wip',
         config: {
+            current: 'markdown',
             adapter: {
                 markdown: {
                     content_path: __dirname + '/../content/articles/',
