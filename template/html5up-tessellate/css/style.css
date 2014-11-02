@@ -196,7 +196,11 @@
 			margin: 0;
 			padding: 0.25em 0 0.5em 0;
 		}
-		
+
+    section#header_simple {
+        background-color: #808080;
+        margin-bottom : 0;
+    }
 	footer
 	{
 		padding-top: 1.5em;
@@ -1068,7 +1072,10 @@ nav#menu ul.catlist li:first-child {
 }
 
 
-
+div.article_ingress p {
+    text-align: left;
+    font-weight: bold;
+}
 
 div.artlist { clear: both; margin-left: auto; margin-right: auto; width: 90%; height: 200px; }
 div.artlist-art {
