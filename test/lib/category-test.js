@@ -11,6 +11,7 @@ var buster       = require('buster'),
         },
         config: {
             adapter: {
+                current: 'markdown',
                 markdown: {
                     content_path: __dirname + '/../content/articles/',
                     photo_path: __dirname + '/../content/images/',
