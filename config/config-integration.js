@@ -2,6 +2,7 @@ module.exports = {
     version: 1,
     blog: {
         title: 'Simple Blog Server',
+        slogun: '',
         protocol: 'http',
         domain: 'www.litt.no',
         disqus: 'Simple blog server',
@@ -18,11 +19,22 @@ module.exports = {
     app: {
         port: 8080
     },
+
     adapter: {
+        current: 'markdown',
         markdown: {
             content_path: __dirname + '/../test/content/articles/',
             photo_path: __dirname + '/../test/content/images/',
             max_articles: 500,
+        },
+        postgresql: {
+            username: '',
+            password: '',
+            server: '127.0.0.1',
+            port: '5432',
+            database: 'test',
+            article_table: 'article',
+            category_table: 'category'
         }
     }
 };
