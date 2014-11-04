@@ -7,6 +7,7 @@
 'use strict';
 
 var cluster = require('cluster');
+var worker;
 
 if (cluster.isMaster) {
     // Code to run if we're in the master process
@@ -15,7 +16,7 @@ if (cluster.isMaster) {
 
     // Create a worker for each CPU
     for (var i = 0; i < cpuCount; i += 1) {
-        cluster.fork();
+        worker = cluster.fork();
     }
 
 } else {
@@ -26,17 +27,6 @@ if (cluster.isMaster) {
         bodyParser = require('body-parser'),
         path = require('path'),
         commander = require('commander'),
-        measured = require('measured'),
-        stats = measured.createCollection(),
-        activeConn = new measured.Counter(),
-        timer_web = new measured.Timer(),
-        timer_api = new measured.Timer(),
-        timer_image = new measured.Timer(),
-        gauge = new measured.Gauge(function() {
-            return {
-                processMemoryMB: process.memoryUsage().rss / 1024 / 1024
-            };
-        }),
         app_path = __dirname + '/../',
         logger = require(app_path + 'lib/logger')({
             workerId: cluster.worker.id
@@ -55,38 +45,17 @@ if (cluster.isMaster) {
     var api_router = require('./routes/api');
     api_router.set_config(config, {
         workerId: cluster.worker.id,
-        stats: stats,
-        activeConn: activeConn,
-        timer: timer_api,
     });
     var web_router = require('./routes/web');
     web_router.set_config(config, {
         workerId: cluster.worker.id,
-        stats: stats,
-        activeConn: activeConn,
-        timer: timer_web
     });
-    var stats_router = require('./routes/stats');
-    stats_router.set_config(config, {
-        stats: stats,
-        activeConn: activeConn,
-        timer_web: timer_web,
-        timer_api: timer_api,
-        timer_image: timer_image,
-        gauge: gauge
-    });
-
     var image_router  = require('./routes/image');
     image_router.set_config(config, {
         workerId: cluster.worker.id,
-        stats: stats,
-        activeConn: activeConn,
-        timer: timer_image
     });
 
-
     // Register routes -------------------------------
-    app.use('/api/v1/stats', stats_router);
     app.use('/api', api_router);
     app.use('/static', express.static(config.blog.static_files_path));
     app.use('/.well-known/', express.static(config.blog.text_files_path));
@@ -96,7 +65,6 @@ if (cluster.isMaster) {
     // Start the server ------------------------------
     var server = app.listen(config.app.port);
     logger.log('Something happens on port ' + config.app.port);
-
 }
 
 // Listen for dying workers
