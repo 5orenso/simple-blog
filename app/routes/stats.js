@@ -11,7 +11,7 @@ var express       = require('express'),
     app_path      = __dirname + '/../../',
     logger        = require(app_path + 'lib/logger')();
 
-var stats, activeConn, timer_web, timer_api, timer_image, gauge, config;
+var stats, activeConn, timer_web, timer_api, timer_image, timer, gauge, config;
 var stats_router = express.Router();
 stats_router.set_config = function (conf, opt) {
     stats_router.config = conf;
@@ -34,6 +34,9 @@ stats_router.set_config = function (conf, opt) {
         }
         if (opt.hasOwnProperty('timer_image')) {
             timer_image = opt.timer_image;
+        }
+        if (opt.hasOwnProperty('timer')) {
+            timer = opt.timer;
         }
         if (opt.hasOwnProperty('gauge')) {
             gauge = opt.gauge;
@@ -68,6 +71,7 @@ stats_router.get('/', function(req, res) {
             timer_web: timer_web.toJSON(),
             timer_api: timer_api.toJSON(),
             timer_image: timer_image.toJSON(),
+            timer: timer,
             gauge: gauge.toJSON()
         }, null, 4));
 
