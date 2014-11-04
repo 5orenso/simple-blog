@@ -41,6 +41,7 @@ module.exports = {
     udp: {
         ip: '127.0.0.1',
         port: 9990,
-        prefix: 'simpleblog.dev'
+        prefix: 'simpleblog.dev',
+        host: 'litt.no'
     }
 };
