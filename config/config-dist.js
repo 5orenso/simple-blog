@@ -22,7 +22,7 @@ module.exports = {
         port: 8080
     },
     adapter: {
-        current: 'postgresql',
+        current: 'markdown',
         markdown: {
             content_path: __dirname + '/../content/articles/',
             photo_path: __dirname + '/../content/images/',
@@ -37,5 +37,10 @@ module.exports = {
             article_table: 'article',
             category_table: 'category',
         }
+    },
+    udp: {
+        ip: '127.0.0.1',
+        port: 9990,
+        prefix: 'simpleblog.dev'
     }
 };
