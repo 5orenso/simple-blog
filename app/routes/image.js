@@ -33,25 +33,16 @@ image_router.set_config = function (conf, opt) {
         if (opt.hasOwnProperty('photo_cache_path')) {
             photo_cache_path = path.normalize(opt.photo_cache_path);
         }
-        if (opt.hasOwnProperty('stats')) {
-            stats = opt.stats;
-        }
-        if (opt.hasOwnProperty('activeConn')) {
-            activeConn = opt.activeConn;
-        }
-        if (opt.hasOwnProperty('timer')) {
-            timer = opt.timer;
-        }
     }
 };
 image_router.use(function(req, res, next) {
     // do logging
-    logger.log(
-        req.method,
-        req.url,
-        req.get('Content-type'),
-        req.get('User-agent')
-    );
+//    logger.log(
+//        req.method,
+//        req.url,
+//        req.get('Content-type'),
+//        req.get('User-agent')
+//    );
     next(); // make sure we go to the next routes and don't stop here
 });
 
@@ -151,32 +142,26 @@ function serveImage(response, image_filename_resized) {
 
 // test route to make sure everything is working (accessed at GET http://localhost:8080/api)
 image_router.get('/*', function(req, res) {
+    var lu    = require(app_path + 'lib/local-util')({config: image_router.config});
     var parsed_url = getUrlFromRequest(req);
     var cache_path = (parsed_url.query.w || 'rel') + 'x' + (parsed_url.query.h || 'rel');
     var image_filename_requested = decodeURIComponent(parsed_url.pathname);
     var image_filename_absolute  = photo_path + image_filename_requested;
     var image_filename_resized   = photo_cache_path + cache_path + '/' + image_filename_requested;
 
-    // Start metrics
-    var stopwatch;
-    if (timer) { stopwatch = timer.start();}
-    if (activeConn) { activeConn.inc(); }
-    if (stats) {
-        stats.meter('requestsPerSecond').mark();
-    }
     // Stop timer when response is transferred and finish.
     res.on('finish', function () {
-        if (activeConn) { activeConn.dec(); }
-        if (timer) { stopwatch.end(); }
+//        if (timer) { stopwatch.end(); }
     });
-    // End metrics
-
+    lu.timers_reset();
+    lu.timer('routes/image->request');
 
     when(pathExists(image_filename_resized))
         .then(function () {
             return fileExists(image_filename_absolute);
         })
         .then(function () {
+            lu.timer('routes/image->resizeImage');
             return resizeImage({
                 image_filename_absolute: image_filename_absolute,
                 image_filename_resized: image_filename_resized,
@@ -186,12 +171,18 @@ image_router.get('/*', function(req, res) {
             });
         })
         .then(function () {
+            lu.timer('routes/image->resizeImage');
             return fileExists(image_filename_resized);
         })
         .then(function () {
             return serveImage(res, image_filename_resized);
         })
-        .done(null, function (error) {
+        .done(function () {
+            lu.timer('routes/image->request');
+            lu.send_udp({ timers: lu.timers_get() });
+        }, function (error) {
+            lu.timer('routes/image->request');
+            lu.send_udp({ timers: lu.timers_get() });
             res.status(404).send(error);
             res.end();
         });
