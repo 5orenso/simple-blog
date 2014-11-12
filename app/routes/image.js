@@ -34,6 +34,11 @@ image_router.set_config = function (conf, opt) {
             photo_cache_path = path.normalize(opt.photo_cache_path);
         }
     }
+    if (conf) {
+        if (_.isObject(conf) && _.isObject(conf.log)) {
+            logger.set('log', conf.log);
+        }
+    }
 };
 image_router.use(function(req, res, next) {
     // do logging

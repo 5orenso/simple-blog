@@ -35,6 +35,11 @@ web_router.set_config = function (conf, opt) {
             photo_path = path.normalize(opt.photo_path);
         }
     }
+    if (conf) {
+        if (_.isObject(conf) && _.isObject(conf.log)) {
+            logger.set('log', conf.log);
+        }
+    }
 };
 
 web_router.use(function(req, res, next) {

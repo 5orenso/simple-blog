@@ -42,6 +42,11 @@ stats_router.set_config = function (conf, opt) {
             gauge = opt.gauge;
         }
     }
+    if (conf) {
+        if (_.isObject(conf) && _.isObject(conf.log)) {
+            logger.set('log', conf.log);
+        }
+    }
 };
 
 stats_router.use(express.query()); // Parse query_string.
