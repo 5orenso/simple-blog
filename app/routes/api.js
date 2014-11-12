@@ -23,6 +23,11 @@ api_router.set_config = function (conf, opt) {
             logger.set('workerId', opt.workerId);
         }
     }
+    if (conf) {
+        if (_.isObject(conf) && _.isObject(conf.log)) {
+            logger.set('log', conf.log);
+        }
+    }
 };
 // middleware to use for all requests
 api_router.use(function(req, res, next) {
