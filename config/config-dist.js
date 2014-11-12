@@ -21,6 +21,10 @@ module.exports = {
     app: {
         port: 8080
     },
+    log: {
+        level   : 'info', // debug|info|notice|warning|error|crit|alert|emerg
+        console : true
+    },
     adapter: {
         current: 'markdown',
         markdown: {
