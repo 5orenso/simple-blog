@@ -38,6 +38,11 @@ if (cluster.isMaster) {
         .option('-c, --config <file>', 'configuration file path', './config/config.js')
         .parse(process.argv);
     var config = require(commander.config);
+    if (config) {
+        if (_.isObject(config) && _.isObject(config.log)) {
+            logger.set('log', config.log);
+        }
+    }
 
     app.use(bodyParser.json());
 
