@@ -6,6 +6,7 @@
  */
 'use strict';
 var express       = require('express'),
+    morgan        = require('morgan'),
     when          = require('when'),
     _             = require('underscore'),
     swig          = require('swig'),
@@ -42,6 +43,12 @@ web_router.set_config = function (conf, opt) {
     }
 };
 
+// create a write stream (in append mode)
+var accessLogStream = fs.createWriteStream(app_path + '/logs/web-access.log', {flags: 'a'});
+// setup the logger
+web_router.use(morgan('combined', {stream: accessLogStream}));
+
+
 web_router.use(function(req, res, next) {
 //    logger.log(
 //        req.method,
@@ -77,10 +84,14 @@ web_router.get('/*', function(req, res) {
     // Check for cached file
     // If not cached compile file and store it.
     // TODO: How do we bypass the cache?
-//    var file = article_util.getArticleFilename(request_url);
-//    var template = (file === 'index' ? 'index.html' : 'blog.html');
-    var template = 'blog.html';
-    var tpl = swig.compileFile(template_path + template);
+    var file = article_util.getArticleFilename(request_url);
+    var template = template_path + (file === 'index' ? 'index.html' : 'blog.html');
+
+    if (_.isObject(web_router.config.template)) {
+        template = app_path +  (file === 'index' ? web_router.config.template.index : web_router.config.template.blog);
+    }
+    //var template = 'blog.html';
+    var tpl = swig.compileFile(template);
 
     var article = require(app_path + 'lib/article')({
         logger: logger,
