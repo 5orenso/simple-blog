@@ -12,7 +12,8 @@
     "node": ">=0.10.21"
   },
   "scripts": {
-    "test": "grunt"
+    "test": "grunt",
+    "start": "node app/server.js -c config-dist.js"
   },
   "devDependencies": {
     "grunt-contrib-jshint": "~0.6.4",
@@ -25,7 +26,8 @@
     "buster": "~0.7.8",
     "request": "~2.44.0",
     "xml2js": "~0.4.4",
-    "html-md": "~3.0.2"
+    "html-md": "~3.0.2",
+    "buster-istanbul": "~0.1.10"
   },
   "keywords": [],
   "dependencies": {
@@ -44,6 +46,8 @@
     "mkdirp": "~0.5.0",
     "measured": "~0.1.6",
     "pg": "~3.6.2",
-    "winston-syslog": "~0.2.5"
+    "winston-syslog": "~0.2.5",
+    "morgan": "~1.5.0",
+    "node-dogstatsd": "0.0.5"
   }
 }
