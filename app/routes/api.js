@@ -6,9 +6,10 @@
  */
 'use strict';
 var express    = require('express'),
+    morgan     = require('morgan'),
     when       = require('when'),
     _          = require('underscore'),
-
+    fs         = require('fs'),
     path       = require('path'),
     app_path   = __dirname + '/../../',
     logger     = require(app_path + 'lib/logger')();
@@ -30,6 +31,10 @@ api_router.set_config = function (conf, opt) {
     }
 };
 // middleware to use for all requests
+var accessLogStream = fs.createWriteStream(app_path + '/logs/api-access.log', {flags: 'a'});
+// setup the logger
+api_router.use(morgan('combined', {stream: accessLogStream}));
+
 api_router.use(function(req, res, next) {
     // do logging
 //    logger.log(
