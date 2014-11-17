@@ -10,80 +10,99 @@
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 		<meta name="description" content="" />
 		<meta name="keywords" content="" />
-		<!--[if lte IE 8]><script src="css/ie/html5shiv.js"></script><![endif]-->
-		<script src="js/jquery.min.js"></script>
-		<script src="js/jquery.scrolly.min.js"></script>
-		<script src="js/skel.min.js"></script>
-		<script src="js/init.js"></script>
+		<!--[if lte IE 8]><script src="/css/ie/html5shiv.js"></script><![endif]-->
+		<script src="/js/jquery.min.js"></script>
+		<script src="/js/jquery.scrolly.min.js"></script>
+		<script src="/js/skel.min.js"></script>
+		<script src="/js/init.js"></script>
 		<noscript>
-			<link rel="stylesheet" href="css/skel.css" />
-			<link rel="stylesheet" href="css/style.css" />
-			<link rel="stylesheet" href="css/style-wide.css" />
+			<link rel="stylesheet" href="/css/skel.css" />
+			<link rel="stylesheet" href="/css/style.css" />
+			<link rel="stylesheet" href="/css/style-wide.css" />
 		</noscript>
-		<!--[if lte IE 8]><link rel="stylesheet" href="css/ie/v8.css" /><![endif]-->
-		<!--[if lte IE 9]><link rel="stylesheet" href="css/ie/v9.css" /><![endif]-->
+		<link rel="stylesheet" href="/css/highlight.js.min.css" />
+
+		<link rel="stylesheet" href="/css/owl-carousel/owl.carousel.css">
+		<link rel="stylesheet" href="/css/owl-carousel/owl.theme.css">
+		<script src="/css/owl-carousel/owl.carousel.js"></script>
+
+		<link type="text/css" rel="stylesheet" href="/css/jquery.mmenu.all.css" />
+		<script src="/js/jquery.mmenu.min.all.js"></script>
+		<script type="text/javascript">
+			$(function() {
+				$('nav#menu').mmenu({
+				},{
+				});
+			});
+		</script>
+
+		<!--[if lte IE 8]><link rel="stylesheet" href="/css/ie/v8.css" /><![endif]-->
+		<!--[if lte IE 9]><link rel="stylesheet" href="/css/ie/v9.css" /><![endif]-->
 	</head>
 	<body>
 
-		<!-- Header -->
-			<section id="header" class="dark">
-				<header>
-					<h1>{{ article.title }}</h1>
-					<p>{{ article.ingress }}</p>
-				</header>
-				<footer>
-					<a href="#first" class="button scrolly">Read article</a>
-				</footer>
-			</section>
-			
-		<!-- First -->
+
+	<nav id="menu">
+		{{ article.tag_values.menu|raw }}
+	</nav>
+	<div id="page" class="mm-page" style="min-height: 718px;">
+
+
+	<!-- First -->
+		{% if blog.simple_header %}
+		<section id="header_simple" class="" style="">
+			<div class="header">
+				<a href="#menu"></a>
+			</div>
+			<header class="logo">
+				{{ blog.title }}
+			</header>
+		</section>
+		{% else %}
+		<section id="header" class="dark" style="{% if (!blog.top_image && article.img[0]) %}background-image: url('/images/overlay.png'), url('/pho/{{ article.img[0] }}?w=1600'); background-size: cover; background-position: center center;{% endif %}">
+			<div class="header">
+				<a href="#menu"></a>
+			</div>
+			<header>
+				{% if article.title %}
+				<h1>{{ article.title|raw }}</h1>
+				{% endif %}
+				{% if article.teaser %}
+				<p>{{ article.teaser|raw }}</p>
+				{% endif %}
+			</header>
+			<!--				<footer>
+                                <a href="#first" class="button scrolly">Read article</a>
+                            </footer>  -->
+		</section>
+		{% endif %}
+
+
 			<section id="first" class="main">
 				<header>
 					<div class="container">
 						<h2>{{ article.subtitle }}</h2>
-						<p>{{ article.ingress }}</p>
+						<p>{{ article.ingress|markdown|raw }}</p>
 					</div>
 				</header>
 
 				<div class="content dark style1 featured">
 					<div class="container">
 						<div class="row">
+							{% for art in article.artlist %}
 							<div class="4u">
 								<section>
 									<span class="feature-icon"><span class="icon fa-clock-o"></span></span>
+									{{ art }}
 									<header>
-										<h3>Gravida</h3>
+										<h3>{{ art.title }}</h3>
 									</header>
-									<p>Gravida dis placerat lectus ante vel nunc euismod est turpis sodales. 
-									Diam tempor dui lacinia accumsan vivamus. Gravida dis placerat lectus 
-									ante vel nunc euismod est turpis sodales. Diam tempor dui lacinia 
-									accumsan vivamus.</p>
+									<p>{{ art.teaser || art.ingress }}</p>
 								</section>
 							</div>
-							<div class="4u">
-								<section>
-									<span class="feature-icon"><span class="icon fa-bolt"></span></span>
-									<header>
-										<h3>Vivamus</h3>
-									</header>
-									<p>Gravida dis placerat lectus ante vel nunc euismod est turpis sodales. 
-									Diam tempor dui lacinia accumsan vivamus. Gravida dis placerat lectus 
-									ante vel nunc euismod est turpis sodales. Diam tempor dui lacinia 
-									accumsan vivamus.</p>
-								</section>
-							</div>
-							<div class="4u">
-								<section>
-									<span class="feature-icon"><span class="icon fa-cloud"></span></span>
-									<header>
-										<h3>Accumsan</h3>
-									</header>
-									<p>Gravida dis placerat lectus ante vel nunc euismod est turpis sodales. 
-									Diam tempor dui lacinia accumsan vivamus. Gravida dis placerat lectus 
-									ante vel nunc euismod est turpis sodales. Diam tempor dui lacinia 
-									accumsan vivamus.</p>
-								</section>
-							</div>
+							{% endfor %}
+
+
 						</div>
 						<div class="row">
 							<div class="12u">
@@ -202,7 +221,7 @@
 			</section>
 
 		<!-- Basic Elements -->
-		<!--
+
 			<section class="main">
 				<header>
 					<div class="container">
@@ -371,8 +390,7 @@
 					</div>
 				</div>
 			</section>
-		-->
-		
+
 		<!-- Fourth -->
 			<section id="fourth" class="main">
 				<header>
@@ -404,22 +422,31 @@
 					</div>
 				</div>
 			</section>
-			
+
 		<!-- Footer -->
-			<section id="footer">
-				<ul class="icons">
-					<li><a href="#" class="icon fa-twitter"><span class="label">Twitter</span></a></li>
-					<li><a href="#" class="icon fa-facebook"><span class="label">Facebook</span></a></li>
-					<li><a href="#" class="icon fa-instagram"><span class="label">Instagram</span></a></li>
-					<li><a href="#" class="icon fa-dribbble"><span class="label">Dribbble</span></a></li>
-					<li><a href="#" class="icon fa-github"><span class="label">GitHub</span></a></li>
-				</ul>
-				<div class="copyright">
-					<ul class="menu">
-						<li>&copy; Untitled. All rights reserved.</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
-					</ul>
+		<section id="footer">
+			<div class="content ">
+				<div class="container">
+					{{ article.tag_values['artlist-block']|raw }}
 				</div>
-			</section>
+			</div>
+
+			<ul class="icons">
+				{% if (blog.social.twitter) %}    <li><a href="{{ blog.social.twitter }}" class="icon fa-twitter"><span class="label">Twitter</span></a></li>{% endif %}
+				{% if (blog.social.facebook) %}   <li><a href="{{ blog.social.facebook }}" class="icon fa-facebook"><span class="label">Facebook</span></a></li>{% endif %}
+				{% if (blog.social.googleplus) %} <li><a href="{{ blog.social.googleplus }}" class="icon fa-google-plus"><span class="label">Google+</span></a></li>{% endif %}
+				{% if (blog.social.pintrest) %}   <li><a href="{{ blog.social.pintrest }}" class="icon fa-pinterest"><span class="label">Pinterest</span></a></li>{% endif %}
+				{% if (blog.social.instagram) %}  <li><a href="{{ blog.social.instagram }}" class="icon fa-instagram"><span class="label">Instagram</span></a></li>{% endif %}
+			</ul>
+			<div class="copyright">
+				<ul class="menu">
+					<li>&copy; {{ blog.title }}. All rights reserved.</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+				</ul>
+			</div>
+		</section>
+
+
+	</div>
 
 	</body>
 </html>
