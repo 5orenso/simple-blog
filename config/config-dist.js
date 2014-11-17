@@ -21,6 +21,10 @@ module.exports = {
     app: {
         port: 8080
     },
+    template: {
+        blog: 'template/current/blog.html',
+        index: 'template/current/blog.html'
+    },
     log: {
         level   : 'info', // debug|info|notice|warning|error|crit|alert|emerg
         console : true
