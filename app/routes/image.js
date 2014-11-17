@@ -6,6 +6,7 @@
  */
 'use strict';
 var express          = require('express'),
+    morgan           = require('morgan'),
     when             = require('when'),
     _                = require('underscore'),
     fs               = require('fs'),
@@ -40,6 +41,13 @@ image_router.set_config = function (conf, opt) {
         }
     }
 };
+
+
+// create a write stream (in append mode)
+var accessLogStream = fs.createWriteStream(app_path + '/logs/image-access.log', {flags: 'a'});
+// setup the logger
+image_router.use(morgan('combined', {stream: accessLogStream}));
+
 image_router.use(function(req, res, next) {
     // do logging
 //    logger.log(
