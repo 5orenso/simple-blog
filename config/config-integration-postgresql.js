@@ -18,7 +18,10 @@ module.exports = {
     app: {
         port: 8080
     },
-
+    template: {
+        blog: 'template/current/blog.html',
+        index: 'template/current/blog.html'
+    },
     adapter: {
         current: 'postgresql',
         markdown: {
