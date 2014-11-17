@@ -22,7 +22,7 @@ module.exports = function (grunt) {
         },
         watch: {
             all: {
-                files: ['app/**/*.js', 'lib/**/*.js', 'test/**/*.js', 'test/content/**/*.md', 'config/*.js'],
+                files: ['app/**/*.js', 'lib/**/*.js', 'test/**/*.js', 'test/content/**/*.md', 'config/*.js', 'template/**/*.html'],
                 tasks: ['jshint', 'buster:unit']
             }
         },
