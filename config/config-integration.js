@@ -19,6 +19,10 @@ module.exports = {
     app: {
         port: 8080
     },
+    template: {
+        blog: 'test/template/blog.html',
+        index: 'test/template/blog.html'
+    },
 
     adapter: {
         current: 'markdown',
