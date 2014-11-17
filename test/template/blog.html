@@ -1,0 +1,269 @@
+<!DOCTYPE HTML>
+<!--
+	Tessellate by HTML5 UP
+	html5up.net | @n33co
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+<head>
+    <title>{{ article.title }}</title>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="description" content="{{ article.teaser|striptags }}" />
+    <meta name="keywords" content="{{ article.tag|striptags|join(',') }}" />
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <!--[if lte IE 8]><script src="/css/ie/html5shiv.js"></script><![endif]-->
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/jquery.scrolly.min.js"></script>
+    <script src="/js/skel.min.js"></script>
+    <script src="/js/init.js"></script>
+    <script src="/js/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <noscript>
+        <link rel="stylesheet" href="/css/skel.css" />
+        <link rel="stylesheet" href="/css/style.css" />
+        <link rel="stylesheet" href="/css/style-wide.css" />
+    </noscript>
+    <link rel="stylesheet" href="/css/highlight.js.min.css" />
+
+    <link rel="stylesheet" href="/css/owl-carousel/owl.carousel.css">
+    <link rel="stylesheet" href="/css/owl-carousel/owl.theme.css">
+    <script src="/css/owl-carousel/owl.carousel.js"></script>
+
+    <link type="text/css" rel="stylesheet" href="/css/jquery.mmenu.all.css" />
+    <script src="/js/jquery.mmenu.min.all.js"></script>
+    <script type="text/javascript">
+        $(function() {
+            $('nav#menu').mmenu({
+            },{
+            });
+        });
+    </script>
+
+    <!--[if lte IE 8]><link rel="stylesheet" href="/css/ie/v8.css" /><![endif]-->
+    <!--[if lte IE 9]><link rel="stylesheet" href="/css/ie/v9.css" /><![endif]-->
+</head>
+<body>
+
+<nav id="menu">
+    {{ article.tag_values.menu|raw }}
+</nav>
+<div id="page" class="mm-page" style="min-height: 718px;">
+
+    <!-- Header -->
+    {% if blog.simple_header %}
+    <section id="header_simple" class="" style="">
+        <div class="header">
+            <a href="#menu"></a>
+        </div>
+        <header class="logo">
+            {{ blog.title }}
+        </header>
+    </section>
+    {% else %}
+    <section id="header" class="dark" style="{% if (!blog.top_image && article.img[0]) %}background-image: url('/images/overlay.png'), url('/pho/{{ article.img[0] }}?w=1600'); background-size: cover; background-position: center center;{% endif %}">
+        <div class="header">
+            <a href="#menu"></a>
+        </div>
+        <header>
+            {% if article.title %}
+            <h1>{{ article.title|raw }}</h1>
+            {% endif %}
+            {% if article.teaser %}
+            <p>{{ article.teaser|raw }}</p>
+            {% endif %}
+        </header>
+        <!--				<footer>
+                            <a href="#first" class="button scrolly">Read article</a>
+                        </footer>  -->
+    </section>
+    {% endif %}
+
+    <!-- First -->
+    <section id="first" class="main">
+        <header>
+            <div class="container">
+                {% if blog.simple_header %}
+                <h2>{{ article.title|raw }}</h2>
+                {% if article.teaser %}
+                <p>{{ article.teaser|raw }}</p>
+                {% endif %}
+                {% endif %}
+            </div>
+            <div class="container small article_ingress">
+                {% if (error) %}
+                {{ error }}
+                {% endif %}
+
+                {% if article.ingress %}
+                {{ article.ingress|raw }}
+                {% endif %}
+            </div>
+        </header>
+        <div class="content style4 ">
+            <div class="container small">
+                <div class="row">
+
+                    {% if article.aside || blog.top_image %}
+                    <div class="6u">
+                        {% if article.body %}
+                        {{ article.body|raw }}
+                        {% endif %}
+                    </div>
+                    <div class="6u">
+                        {{ article.aside|raw }}
+                        {% if blog.top_image %}
+                        {% set arr = [0,1,2,3,4] %}
+                        {% for i in arr %}
+                        {% if article.img[i] %}
+                        <div class="item">
+                            <img src="/pho/{{ article.img[i] }}?w=600">
+                            {% if article.img_text[i] %}
+                            <p>{{ article.img_text[i] }}</p>
+                            {% endif %}
+                        </div>
+                        {% endif %}
+                        {% endfor %}
+                        {% endif %}
+                    </div>
+                    {% else %}
+                    <div class="12u">
+                        {% if article.body %}
+                        {{ article.body|raw }}
+                        {% endif %}
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+    {% set image_arr = [2,3,4,5,6,7,8,9,10] %}
+    {% for i in image_arr %}
+    {% if (article['img' + i]) %}
+    <!-- Header -->
+    <section id="header" class="dark" style="{% if (article['img' + i][0]) %}background-image: url('/images/overlay.png'), url('/pho/{{ article['img' + i][0] }}?w=1600'); background-size: cover; background-position: center center;{% endif %}">
+        <header>
+            {% if article['title' + i] %}
+            <h1>{{ article['title' + i]|raw }}</h1>
+            {% endif %}
+            {% if article['teaser' + i] %}
+            <p>{{ article['teaser' + i]|raw }}</p>
+            {% endif %}
+        </header>
+    </section>
+
+    <!-- First -->
+    <section id="section{{ i }}" class="main">
+        <header>
+            <div class="container small">
+                {% if article['ingress' + i] %}
+                {{ article['ingress' + i]|raw }}
+                {% endif %}
+            </div>
+        </header>
+        <div class="content style4 ">
+            <div class="container small">
+                {% if article['body' + i] %}
+                {{ article['body' + i]|raw }}
+                {% endif %}
+            </div>
+        </div>
+    </section>
+    {% endif %}
+    {% endfor %}
+
+
+    {% if blog.top_image %}
+    {% set image_start = 5 %}
+    {% else %}
+    {% set image_start = 1 %}
+    {% endif %}
+
+    {% if (article.img.length > image_start) %}
+    <section id="first" class="main">
+        <div class="content style4">
+            <div class="container small">
+                <div id="owl-example" class="owl-carousel">
+                    {% for img in article.img %}
+                    {% if loop.index > image_start %}
+                    <div class="item"><img src="/pho/{{ img }}?w=800" alt="{{ img }}" title="{{ img }}"></div>
+                    {% endif %}
+                    {% endfor %}
+                </div>
+                <script>
+                    $(document).ready(function() {
+                        $("#owl-example").owlCarousel({
+                            navigation: true, // Show next and prev buttons
+                            slideSpeed: 300,
+                            paginationSpeed: 400,
+                            // Most important owl features
+                            items : 3,
+                            itemsCustom : false,
+                            itemsDesktop : [1199,3],
+                            itemsDesktopSmall : [980,2],
+                            itemsTablet: [768,1],
+                            itemsTabletSmall: false,
+                            itemsMobile : [479,1],
+                            singleItem : false,
+                            itemsScaleUp : false,
+
+                        });
+                    });
+                </script>
+            </div>
+        </div>
+    </section>
+    {% endif %}
+
+    <section id="first" class="main">
+        <div class="content style4">
+            <div class="container small">
+                <div id="disqus_thread"></div>
+                <script type="text/javascript">
+                    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+                    var disqus_shortname = '{{ blog.disqus }}'; // required: replace example with your forum shortname
+
+                    /* * * DON'T EDIT BELOW THIS LINE * * */
+                    (function() {
+                        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                    })();
+                </script>
+                <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+                <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Footer -->
+    <section id="footer">
+        <div class="content ">
+            <div class="container">
+                {{ article.tag_values['artlist-block']|raw }}
+            </div>
+        </div>
+
+        <ul class="icons">
+            {% if (blog.social.twitter) %}    <li><a href="{{ blog.social.twitter }}" class="icon fa-twitter"><span class="label">Twitter</span></a></li>{% endif %}
+            {% if (blog.social.facebook) %}   <li><a href="{{ blog.social.facebook }}" class="icon fa-facebook"><span class="label">Facebook</span></a></li>{% endif %}
+            {% if (blog.social.googleplus) %} <li><a href="{{ blog.social.googleplus }}" class="icon fa-google-plus"><span class="label">Google+</span></a></li>{% endif %}
+            {% if (blog.social.pintrest) %}   <li><a href="{{ blog.social.pintrest }}" class="icon fa-pinterest"><span class="label">Pinterest</span></a></li>{% endif %}
+            {% if (blog.social.instagram) %}  <li><a href="{{ blog.social.instagram }}" class="icon fa-instagram"><span class="label">Instagram</span></a></li>{% endif %}
+        </ul>
+        <div class="copyright">
+            <ul class="menu">
+                <li>&copy; {{ blog.title }}. All rights reserved.</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+            </ul>
+        </div>
+    </section>
+
+
+</div>
+
+</body>
+</html>
