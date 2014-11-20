@@ -57,26 +57,28 @@ Simply save your article in the correct folder and voila, it's published.
 
 
 ## Blog posts are separated into sections. 
-
 Possible sections are:
 
-| Section   | Tag        | Example of usage | Description 
+| Section   | Tag        | Example of usage | Description
 |-----------|------------|------------------|---------------------------------------------
 | title     | :title     | :title My title  | Title of the blog post.
+| published | :published | :published 2014-10-05 | Publish date of the blog post.
 | teaser    | :teaser    |                  | Teaser text used on the frontpage and on the very top.
 | ingress   | :ingress   |                  | Blog intro. The start of the blog post. Keep it relatively short.
-| body      | :body      |                  | The blog post. 
-| img       | :img       | :img photo1.jpg  | Standard images used in the blog. It depends on the template where they are placed. You may use 
+| body      | :body      |                  | The blog post.
+| img       | :img       | :img photo1.jpg  | Standard images used in the blog. It depends on the template where they are placed. You may use
 | aside     | :aside     |                  | Boxes with content to go on the right side of the blog post.
-| tags      | :tags      | :tags foo,bar    | Content tag for this blog post.
+| images    | :images    | :images /path/   | Load all images from one of the content categories.
 
 
 ## Special tags
-
-| Tag name  | Tag          | Example of usage | Description 
+| Tag name  | Tag          | Example of usage | Description
 |-----------|--------------|------------------|---------------------------------------------
-| toc       | [:toc]       | [:toc]           | Automatic generated table of contents.
-| fact      | [:fact file] | [:fact about-md] | A general fact box. This is usually shared between several blog posts.
+| toc       | &#91;:toc]       | &#91;:toc]           | Automatic generated table of contents.
+| fact      | &#91;:fact file] | &#91;:fact about-md] | A general fact box. This is usually shared between several blog posts.
+| menu      | &#91;:menu]      | &#91;:menu]          | List all categories inside the content dir.
+| artlist   | &#91;:artlist]   | &#91;:artlist [category]]       | List all articles inside the content dir in a plain list format.
+| artlist_block | &#91;:artlist_block ] | &#91;:artlist_block [category]] | List all articles inside the content dir in a plain list format.
 
 
 ### Example blog post
@@ -103,30 +105,9 @@ Readability, however, is emphasized above all else. A Markdown-formatted documen
 - [Github markdown page](https://help.github.com/articles/github-flavored-markdown)
 
 
-| Tag             | Example                         | Result                                  |
-|-----------------|---------------------------------|-----------------------------------------|
-| Headlines       | # This is H1                    | [See below](#headlines-and-subheadlines)
-|                 | ## This is H2                   | |
-| Emphasis        | ```_italic_```                  | _italic_
-| Bold            | ```__bold__```                  | __bold__
-| Link            | ```[Link to an example](http://example.com/)``` | [Link to an example](http://example.com/)
-| Images          | ```![Image alt text](http://parsedown.org/md.png)``` | ![Image alt text](http://parsedown.org/md.png) 
-| Quotes          | ```> This is the quoted text``` | [See below](#text-quotes)
-| Unordered lists | - First element                 | [See below](#ordered-and-unordered-lists)
-|                 | - Second element                | |
-| Ordered lists   | 1. First element                | [See below](#ordered-and-unordered-lists)
-|                 | 2. Second element               | |
-| Strike through  | ```~~Mistaken text~~```         | ~~Mistaken text~~ 
-| Horizontal line | ```----- or *****```            | [See below](#horizontal-line)
-| Table           |                                 | [See below](#tables)
-| Table of content| :toc: 
-
-
 ## Work in progress
 
-More to come :) 
-The hottest feature is:
-- Dropbox integration
+More to come :)
 
 
 ### Read more about:
