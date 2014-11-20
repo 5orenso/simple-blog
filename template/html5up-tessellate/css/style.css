@@ -1120,4 +1120,22 @@ div.artlist-image {
     top: 0;
     left: 10px;
 }
-
+.comment {
+	display: block;
+	font-size: 0.8em;
+	color: #c0c0c0;
+}
+.hash_tag {
+	background : #a0a0f0;
+	color: #ffffff;
+	border-radius: 5px;
+	padding:1px 4px;
+	margin-left: 10px;
+}
+.user {
+	background : #f0a0a0;
+	color: #ffffff;
+	border-radius: 4px;
+	padding:1px 4px;
+	margin-left: 10px;
+}
