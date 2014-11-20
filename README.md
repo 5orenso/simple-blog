@@ -29,13 +29,15 @@ Base idea of this server is to keep it as lean as possible. There should be no h
 [Read more about the simple blog server.](http://litt.no/wiki/)
 
 ### Prerequisite
-```
-    # Install grunt
+
+#### Install grunt
+
     $ npm install grunt -g
 
-    # Install istanbul
+#### Install istanbul
+
     $ npm install istanbul -g
-```
+
 
 ### Setup developer environment
 
