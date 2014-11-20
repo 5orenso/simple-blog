@@ -28,25 +28,38 @@ Base idea of this server is to keep it as lean as possible. There should be no h
 
 [Read more about the simple blog server.](http://litt.no/wiki/)
 
-#### Howto setup
+### Prerequisite
+```
+    # Install grunt
+    $ npm install grunt -g
 
-    npm install
-    
+    # Install istanbul
+    $ npm install istanbul -g
+```
 
-#### Howto run unit tests:
+### Setup developer environment
 
-    grunt watch
-    
+#### Clone repository
 
-#### Howto run integration tests:
+    $ git clone git@github.com:5orenso/simple-blog.git
 
-    grunt integration
+#### Install dependencies
 
-    
-#### Howto run script
+    $ npm install
 
-    grunt run
-    
+
+#### To watch files while developing.
+
+    $ ./run-watch.sh
+
+#### To run the server in develop mode and automatically reload when files changes.
+
+    $ ./run-server.sh
+
+#### To view code coverage
+
+    $ ./report-test-cover.sh
+
 
 ## Howto publish content
 
