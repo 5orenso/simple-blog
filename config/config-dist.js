@@ -15,8 +15,8 @@ module.exports = {
         },
         static_files_path: '/Users/sorenso/html/',
         text_files_path: '/Users/sorenso/text-files/',
-        top_image: true, // Don't use image[0] as top image on site. Use top_image instead.
-        simple_header: true, // Use simple header instead of top panorama
+        top_image: false, // Don't use image[0] as top image on site. Use top_image instead.
+        simple_header: false, // Use simple header instead of top panorama
     },
     app: {
         port: 8080
