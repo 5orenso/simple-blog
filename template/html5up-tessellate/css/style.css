@@ -1126,16 +1126,30 @@ div.artlist-image {
 	color: #c0c0c0;
 }
 .hash_tag {
-	background : #a0a0f0;
+	background : #e0e0e0;
 	color: #ffffff;
 	border-radius: 5px;
 	padding:1px 4px;
 	margin-left: 10px;
 }
+.hash_tag a:link, .hash_tag a:visited {
+	text-decoration: none;
+	border: 0;
+}
+.hash_tag a:hover {
+	color: #0000ee;
+}
 .user {
-	background : #f0a0a0;
+	background : #f0c0c0;
 	color: #ffffff;
 	border-radius: 4px;
 	padding:1px 4px;
 	margin-left: 10px;
+}
+.user a:link, .user a:visited {
+	 text-decoration: none;
+	 border: 0;
+ }
+.user a:hover {
+	color: #0000ee;
 }
