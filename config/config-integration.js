@@ -14,7 +14,8 @@ module.exports = {
             instagram: ''
         },
         static_files_path: '/Users/sorenso/html/',
-        text_files_path: '/Users/sorenso/text-files/'
+        text_files_path: '/Users/sorenso/text-files/',
+        //google_analytics: 'UA-xxxxxxxx-1'
     },
     app: {
         port: 8080
