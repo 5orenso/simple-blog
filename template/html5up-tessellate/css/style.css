@@ -150,13 +150,33 @@
 		{
 			border-top-color: rgba(255,255,255,0.5);
 		}
-	
+
+
 	blockquote
 	{
-		border-left: solid 0.25em #e6e6e6;
-		padding: 1em 0 1em 2em;
+		border-left: solid 0.4em #e6e6e6;
+		padding: .1em 0 .1em 2em;
 		font-style: italic;
+		font-size: 1.2em;
 	}
+	blockquote p {
+		margin-top: 0;
+	}
+	.blockquote_prefix {
+		font-size: 1.0em;
+		color: #e0e0e0;
+		position: relative;
+		top: 0px;
+		left: -0.7em;
+	}
+	.blockquote_postfix {
+		font-size: 1.0em;
+		color: #e0e0e0;
+		position: relative;
+		float:right;
+		bottom: 1em;
+	}
+
 
 		.dark blockquote
 		{
@@ -165,7 +185,7 @@
 	
 	p, ul, ol, dl, table
 	{
-		margin-bottom: 0.7em;
+		margin-bottom: 1.2em;
         margin-top: 0.7em;
 
     }
