@@ -154,10 +154,12 @@
 
 	blockquote
 	{
-		border-left: solid 0.4em #e6e6e6;
+		border-left: solid 0.3em #0789c9;
 		padding: .1em 0 .1em 2em;
+		margin-left: 2em;
 		font-style: italic;
-		font-size: 1.2em;
+		font-size: 1.0em;
+		line-height: 1.3em;
 	}
 	blockquote p {
 		margin-top: 0;
