@@ -22,6 +22,7 @@ var express       = require('express'),
 
 
 swig.setFilter('markdown', article_util.replaceMarked);
+swig.setFilter('formatted', article_util.formatDate);
 
 var stats, activeConn, timer, timer_v2, config;
 var web_router = express.Router();
