@@ -50,7 +50,7 @@
     </nav>
     <div id="page" class="mm-page" style="min-height: 718px;">
 
-		<!-- Header -->
+        <!-- Header -->
         {% if blog.simple_header %}
             <section id="header_simple" class="" style="">
                 <div class="header">
@@ -63,7 +63,15 @@
         {% else %}
 			<section id="header" class="dark" style="{% if (!blog.top_image && article.img[0]) %}background-image: url('/images/overlay.png'), url('/pho/{{ article.img[0] }}?w=1600'); background-size: cover; background-position: center center;{% endif %}">
                 <div class="header">
-                    <a href="#menu"></a>
+                    <a class="menu" href="#menu"></a>
+                    {% if article.author && blog.author && blog.author[article.author] %}
+                        {% if blog.author[article.author].image %}
+                            <div class="author_image" style = 'background-image: url("{{ blog.author[article.author].image }}");'></div>
+                        {% endif %}
+                        {% if blog.author[article.author].name %}
+                            <div class="author_name">{{ blog.author[article.author].name|raw }} {% if article.published %}on {{ article.published|formatted }} {% endif %}</div>
+                        {% endif %}
+                    {% endif %}
                 </div>
 				<header>
                     {% if article.title %}
