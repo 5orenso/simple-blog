@@ -1131,7 +1131,7 @@ div.artlist-image {
 }
 
 
-.header a {
+.header a.menu {
     background: center center no-repeat transparent;
     background-image: url( data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABkAAAAZCAYAAADE6YVjAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAADhJREFUeNpi/P//PwOtARMDHQBdLGFBYtMq3BiHT3DRPU4YR4NrNAmPJuHRJDyahEeT8Ii3BCDAAF0WBj5Er5idAAAAAElFTkSuQmCC );
     border-bottom: 0px;
@@ -1139,7 +1139,7 @@ div.artlist-image {
     width: 40px;
     height: 40px;
     position: absolute;
-    top: 0;
+    top: 10px;
     left: 10px;
 }
 .comment {
@@ -1174,4 +1174,25 @@ div.artlist-image {
  }
 .user a:hover {
 	color: #0000ee;
+}
+
+.author_image {
+	position : absolute;
+	background-position: 50% 50%;
+	background-repeat: no-repeat;
+	border-radius: 50%;
+	-webkit-border-radius: 50%;
+	-moz-border-radius: 50%;
+	width: 40px;
+	height: 40px;
+	top:10px;
+	left: 50px;
+}
+.author_name {
+	position : absolute;
+	height: 40px;
+	text-align: left;
+	font-size: 0.8em;
+	top:10px;
+	left: 96px;
 }
