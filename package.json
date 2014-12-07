@@ -48,6 +48,7 @@
     "pg": "~3.6.2",
     "winston-syslog": "~0.2.5",
     "morgan": "~1.5.0",
-    "node-dogstatsd": "0.0.5"
+    "node-dogstatsd": "0.0.5",
+    "strftime": "~0.8.2"
   }
 }
