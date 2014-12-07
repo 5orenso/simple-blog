@@ -18,6 +18,12 @@ module.exports = {
         top_image: false, // Don't use image[0] as top image on site. Use top_image instead.
         simple_header: false, // Use simple header instead of top panorama
         google_analytics: 'UA-xxxxxxxx-1',
+        author: {
+            sorenso: {
+                image: '/pho/profile/fish_oistein.jpg?w=50',
+                name: '<a href="https://twitter.com/sorenso">Sorenso</a>',
+            }
+        },
     },
     app: {
         port: 8080
