@@ -66,7 +66,15 @@
         {% if blog.simple_header %}
             <section id="header_simple" class="" style="">
                 <div class="header">
-                    <a href="#menu"></a>
+                    <a class="menu" href="#menu"></a>
+                    {% if article.author && blog.author && blog.author[article.author] %}
+                        {% if blog.author[article.author].image %}
+                            <div class="author_image" style = 'background-image: url("{{ blog.author[article.author].image }}");'></div>
+                        {% endif %}
+                        {% if blog.author[article.author].name %}
+                            <div class="author_name">{{ blog.author[article.author].name|raw }} {% if article.published %}on {{ article.published|formatted }} {% endif %}</div>
+                        {% endif %}
+                    {% endif %}
                 </div>
                 <header class="logo">
                     {{ blog.title }}
@@ -101,25 +109,38 @@
 			
 		<!-- First -->
 			<section id="first" class="main">
-				<header>
+                {% if  blog.simple_header %}
+                <header>
                     <div class="container">
-                        {% if blog.simple_header %}
                         <h2>{{ article.title|raw }}</h2>
                         {% if article.teaser %}
-                        <p>{{ article.teaser|raw }}</p>
-                        {% endif %}
+                            <p>{{ article.teaser|raw }}</p>
                         {% endif %}
                     </div>
-					<div class="container small article_ingress">
+                    <div class="container small article_ingress">
                         {% if (error) %}
                             {{ error }}
                         {% endif %}
-
                         {% if article.ingress %}
-						    {{ article.ingress|raw }}
+                            {{ article.ingress|raw }}
                         {% endif %}
-					</div>
-				</header>
+                    </div>
+                </header>
+                {% else %}
+                    {% if article.ingress %}
+                        <header>
+                            <div class="container small article_ingress">
+                                {% if (error) %}
+                                    {{ error }}
+                                {% endif %}
+                                {% if article.ingress %}
+                                    {{ article.ingress|raw }}
+                                {% endif %}
+                            </div>
+                        </header>
+                    {% endif %}
+                {% endif %}
+
                 <div class="content style4 ">
                     <div class="container small">
                         <div class="row">
@@ -177,6 +198,7 @@
 
                 <!-- First -->
                 <section id="section{{ i }}" class="main">
+                    {% if article['ingress' + i] %}
                     <header>
                         <div class="container small">
                             {% if article['ingress' + i] %}
@@ -184,6 +206,7 @@
                             {% endif %}
                         </div>
                     </header>
+                    {% endif %}
                     <div class="content style4 ">
                         <div class="container small">
                             {% if article['body' + i] %}
