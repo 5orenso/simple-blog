@@ -220,9 +220,20 @@
 		}
 
     section#header_simple {
-        background-color: #808080;
+        background-color: #000000;
         margin-bottom : 0;
     }
+	section#header_simple .logo {
+		color: #ffffff;
+		padding-top: 12px;
+		padding-bottom: 14px;
+		left: 55px;
+		position: relative;
+		text-align: left;
+	}
+
+
+
 	footer
 	{
 		padding-top: 1.5em;
@@ -1195,4 +1206,13 @@ div.artlist-image {
 	font-size: 0.8em;
 	top:10px;
 	left: 96px;
+}
+
+section#header_simple .author_image {
+	left: auto;
+	right: 10px;
+}
+section#header_simple .author_name {
+	left: auto;
+	right: 60px;
 }
