@@ -222,13 +222,15 @@
     section#header_simple {
         background-color: #000000;
         margin-bottom : 0;
+		height: 62px;
     }
 	section#header_simple .logo {
 		color: #ffffff;
-		padding-top: 12px;
-		padding-bottom: 14px;
+		padding-top: 0px;
+		padding-bottom: 0px;
 		left: 55px;
-		position: relative;
+		top: 12px;
+		position: absolute;
 		text-align: left;
 	}
 
@@ -413,6 +415,39 @@
 				padding-left: 0;
 				margin-left: 0;
 			}
+
+
+ul.menu_small
+{
+	cursor: default;
+	position: absolute;
+	margin: 0;
+	left: 12px;
+	top: 31px;
+}
+
+ul.menu_small li
+{
+	display: inline-block;
+	line-height: .9em;
+	font-size: .8em;
+	border-left: solid 1px #505050;
+	padding: 0 0 0 0.5em;
+	margin: 0 0 0 0em;
+}
+
+ul.menu_small li:first-child
+{
+	border-left: 0;
+	padding-left: 0;
+	margin-left: 0;
+}
+ul.menu_small li.selected {
+	color: #ffffff;
+}
+
+
+
 
 		ul.actions
 		{
