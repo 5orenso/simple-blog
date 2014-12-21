@@ -34,6 +34,9 @@ var article_md = ":title My nice title\n" +
     ":tag foo,bar,gomle\n";
 
 var article_obj = { tag_values: { toc: '', fact: '', artlist: '' },
+    author: 'sorenso',
+    published: '2014-12-21',
+    base_href: '/simpleblog/',
     title: 'My nice title',
     img: [ 'test-image.jpg' ],
     aside: 'My aside content',
@@ -51,7 +54,10 @@ var article_obj_html = {
     title: 'My nice title',
     body: '<p>This is my body content.</p>\n<h2 class="toc-2"><a name="content-span" class="anchor" href="#content-span"><span class="header-link"></span></a>Content span</h2><p>This can span several lines if you want to.</p>\n<h3 class="toc-3"><a name="even-more-titles" class="anchor" href="#even-more-titles"><span class="header-link"></span></a>Even more titles</h3><p>With sub content belonging to sections.</p>\n<h2 class="toc-2"><a name="table-of-contents" class="anchor" href="#table-of-contents"><span class="header-link"></span></a>Table of contents</h2><p>[:toc]</p>\n',
     img: [ 'test-image.jpg' ],
-    tag: [ 'foo,bar,gomle' ]
+    tag: [ 'foo,bar,gomle' ],
+    author: 'sorenso',
+    published: '2014-12-21',
+    base_href: '/simpleblog/'
 };
 
 var artlist = [
@@ -170,13 +176,20 @@ buster.testCase('lib/article-util', {
                 title: article_obj.title,
                 body: article_obj.body,
                 img: article_obj.img,
-                tag: article_obj.tag
+                tag: article_obj.tag,
+                author: article_obj.author,
+                published: article_obj.published,
+                base_href: article_obj.base_href
             };
             var result = article_util.formatArticleSections(article);
             assert.equals(article.title, article_obj_html.title);
             assert.equals(article.body, article_obj_html.body);
             assert.equals(article.img, article_obj_html.img);
             assert.equals(article.tag, article_obj_html.tag);
+            assert.equals(article.author, article_obj_html.author);
+            assert.equals(article.published, article_obj_html.published);
+            assert.equals(article.base_href, article_obj_html.base_href);
+
             refute(result);
         },
 
