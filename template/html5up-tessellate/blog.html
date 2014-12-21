@@ -74,7 +74,19 @@
                         {% if blog.author[article.author].name %}
                             <div class="author_name">{{ blog.author[article.author].name|raw }} {% if article.published %}on {{ article.published|formatted }} {% endif %}</div>
                         {% endif %}
+                    {% elseif blog.author && blog.author.fallback %}
+                        {% if blog.author.fallback.image %}
+                            <div class="author_image" style = 'background-image: url("{{ blog.author.fallback.image }}");'></div>
+                        {% endif %}
+                        {% if blog.author.fallback.name %}
+                            <div class="author_name">{{ blog.author.fallback.name|raw }} {% if article.published %}on {{ article.published|formatted }} {% endif %}</div>
+                        {% endif %}
                     {% endif %}
+                    <ul class="menu_small">
+                        {% for cat in article.catlist %}
+                            <li {% if cat.base_href == article.base_href %}class="selected"{% endif %}><a href="/{{ cat.name }}/">{{ cat.name }}</a></li>
+                        {% endfor %}
+                    </ul>
                 </div>
                 <header class="logo">
                     {{ blog.title }}
@@ -90,6 +102,13 @@
                         {% endif %}
                         {% if blog.author[article.author].name %}
                             <div class="author_name">{{ blog.author[article.author].name|raw }} {% if article.published %}on {{ article.published|formatted }} {% endif %}</div>
+                        {% endif %}
+                    {% elseif blog.author && blog.author.fallback %}
+                        {% if blog.author.fallback.image %}
+                            <div class="author_image" style = 'background-image: url("{{ blog.author.fallback.image }}");'></div>
+                        {% endif %}
+                        {% if blog.author.fallback.name %}
+                            <div class="author_name">{{ blog.author.fallback.name|raw }} {% if article.published %}on {{ article.published|formatted }} {% endif %}</div>
                         {% endif %}
                     {% endif %}
                 </div>
