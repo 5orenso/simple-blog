@@ -20,6 +20,10 @@ module.exports = {
         //google_analytics: 'UA-xxxxxxxx-1',
         //google_tag_manager: 'GTM-xxxxxx',
         author: {
+            fallback: {
+                image: '/pho/profile/fish_oistein.jpg?w=50',
+                name: '<a href="https://twitter.com/sorenso">Sorenso</a>'
+            },
             sorenso: {
                 image: '/pho/profile/fish_oistein.jpg?w=50',
                 name: '<a href="https://twitter.com/sorenso">Sorenso</a>',
