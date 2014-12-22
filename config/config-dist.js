@@ -16,7 +16,7 @@ module.exports = {
         static_files_path: '/Users/sorenso/html/',
         text_files_path: '/Users/sorenso/text-files/',
         top_image: false, // Don't use image[0] as top image on site. Use top_image instead.
-        simple_header: false, // Use simple header instead of top panorama
+        simple_header: true, // Use simple header instead of top panorama
         //google_analytics: 'UA-xxxxxxxx-1',
         //google_tag_manager: 'GTM-xxxxxx',
         author: {
@@ -29,6 +29,13 @@ module.exports = {
                 name: '<a href="https://twitter.com/sorenso">Sorenso</a>',
             }
         },
+/*        menu: [
+            { name: 'iPad', url: 'ipad' },
+            { name: 'iPhone', url: 'iphone' },
+            { name: 'Mac', url: 'mac' },
+        ]
+        */
+
     },
     app: {
         port: 8080
