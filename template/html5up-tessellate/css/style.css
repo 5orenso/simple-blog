@@ -1251,3 +1251,41 @@ section#header_simple .author_name {
 	left: auto;
 	right: 60px;
 }
+
+.slide-image {
+	float: left;
+	display: inline-block;
+	width: 30%;
+	height: 50px;
+	overflow: hidden;
+}
+.slide-content {
+	float: left;
+	display: inline-block;
+	font-size: 14px;
+	width: 70%;
+	padding-left: 10px;
+	line-height: 17px;
+	height: 50px;
+	overflow: hidden;
+}
+
+div.bx-wrapper .bx-viewport {
+	-moz-box-shadow: none;
+	-webkit-box-shadow: none;
+	box-shadow: none;
+}
+
+div.bx-wrapper {
+	margin: 0 auto 12px;
+	border-top : 1px solid #f3f3f3;
+	border-bottom : 1px solid #f3f3f3;
+}
+div.bx-wrapper .bx-pager {
+	color: #c0c0c0;
+	padding-top: 0px;
+}
+div.bx-wrapper .bx-pager, div.bx-wrapper .bx-controls-auto {
+	background-color: #ffffff;
+	bottom: -36px;
+}
