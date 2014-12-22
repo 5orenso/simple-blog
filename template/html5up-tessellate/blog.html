@@ -16,6 +16,7 @@
 		<script src="/js/jquery.min.js"></script>
 		<script src="/js/jquery.scrolly.min.js"></script>
 		<script src="/js/skel.min.js"></script>
+        <script src="/js/jquery.bxslider.min.js"></script>
 		<script src="/js/init.js"></script>
         <script src="/js/highlight.min.js"></script>
         <script>hljs.initHighlightingOnLoad();</script>
@@ -24,11 +25,12 @@
 			<link rel="stylesheet" href="/css/style.css" />
 			<link rel="stylesheet" href="/css/style-wide.css" />
 		</noscript>
+        <link href="/css/jquery.bxslider.css" rel="stylesheet" />
         <link rel="stylesheet" href="/css/highlight.js.min.css" />
-
         <link rel="stylesheet" href="/css/owl-carousel/owl.carousel.css">
         <link rel="stylesheet" href="/css/owl-carousel/owl.theme.css">
         <script src="/css/owl-carousel/owl.carousel.js"></script>
+
 
         <link type="text/css" rel="stylesheet" href="/css/jquery.mmenu.all.css" />
         <script src="/js/jquery.mmenu.min.all.js"></script>
@@ -83,13 +85,19 @@
                         {% endif %}
                     {% endif %}
                     <ul class="menu_small">
-                        {% for cat in article.catlist %}
-                            <li {% if cat.base_href == article.base_href %}class="selected"{% endif %}><a href="/{{ cat.name }}/">{{ cat.name }}</a></li>
-                        {% endfor %}
+                        {% if blog.menu %}
+                            {% for cat in blog.menu %}
+                                <li {% if cat.url == article.base_href %}class="selected"{% endif %}><a href="/{{ cat.url }}/">{{ cat.name }}</a></li>
+                            {% endfor %}
+                        {% else %}
+                            {% for cat in article.catlist %}
+                                <li {% if cat.base_href == article.base_href %}class="selected"{% endif %}><a href="/{{ cat.name }}/">{{ cat.name }}</a></li>
+                            {% endfor %}
+                        {% endif %}
                     </ul>
                 </div>
                 <header class="logo">
-                    {{ blog.title }}
+                    <a href="/">{{ blog.title }}</a>
                 </header>
             </section>
         {% else %}
@@ -125,7 +133,33 @@
 				</footer>  -->
 			</section>
         {% endif %}
-			
+
+        {% if article.artlist[1] %}
+        <div class="bxslider">
+            {% for a in article.artlist %}
+            <div class="slide">
+                <div class="slide-image" style="background-image: url('/images/overlay.png'), url('/pho/{{ a.img[0] || 'bg/3.jpg' }}?w=150'); background-size: cover; background-position: center center;"><a href="{{ a.base_href }}{{ a.file }}"><img src="/images/pix.gif" style="height:100%; width:100%;"></a></a></div>
+                <div class="slide-content">
+                    <a href="{{ a.base_href }}{{ a.file }}">{{ a.title }}</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <script>
+            $(document).ready(function(){
+                $('.bxslider').bxSlider({
+                    slideWidth: 250,
+                    minSlides: 2,
+                    maxSlides: 8,
+                    slideMargin: 20,
+                    infiniteLoop: false,
+                    pager: false
+                });
+            });
+        </script>
+        {% endif %}
+
+
 		<!-- First -->
 			<section id="first" class="main">
                 {% if  blog.simple_header %}
@@ -251,7 +285,7 @@
                         <div id="owl-example" class="owl-carousel">
                             {% for img in article.img %}
                                 {% if loop.index > image_start %}
-                                    <div class="item"><img src="/pho/{{ img }}?w=800" alt="{{ img }}" title="{{ img }}"></div>
+                                    <div class="item"><a href="/pho/{{ img }}?w=1200"><img src="/pho/{{ img }}?w=800" alt="{{ img }}" title="{{ img }}"></a></div>
                                 {% endif %}
                             {% endfor %}
                         </div>
