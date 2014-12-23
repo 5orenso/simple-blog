@@ -1289,3 +1289,19 @@ div.bx-wrapper .bx-pager, div.bx-wrapper .bx-controls-auto {
 	background-color: #ffffff;
 	bottom: -36px;
 }
+
+.photo_item {
+	margin-bottom: 30px;
+}
+.frontpage-artlist-image {
+	height: 150px;
+}
+.frontpage-artlist-item {
+	margin-top: 10px;
+	margin-bottom: 10px;
+	padding: 0;
+}
+.row .frontpage-artlist-content {
+	padding: 0;
+	padding-left: 30px;
+}
