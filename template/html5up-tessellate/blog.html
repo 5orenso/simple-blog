@@ -97,7 +97,7 @@
                     </ul>
                 </div>
                 <header class="logo">
-                    <a href="/">{{ blog.title }}</a>
+                    <a href="/">{{ blog.title|raw }}</a>
                 </header>
             </section>
         {% else %}
@@ -134,11 +134,11 @@
 			</section>
         {% endif %}
 
-        {% if article.artlist[1] %}
+        {% if article.artlist[1] && article.file != 'index' %}
         <div class="bxslider">
             {% for a in article.artlist %}
             <div class="slide">
-                <div class="slide-image" style="background-image: url('/images/overlay.png'), url('/pho/{{ a.img[0] || 'bg/3.jpg' }}?w=150'); background-size: cover; background-position: center center;"><a href="{{ a.base_href }}{{ a.file }}"><img src="/images/pix.gif" style="height:100%; width:100%;"></a></a></div>
+                <div class="slide-image" style="background-image: url('/images/overlay.png'), url('/pho/{{ a.img[0] || 'bg/3.jpg' }}?w=150'); background-size: cover; background-position: center center;"><a href="{{ a.base_href }}{{ a.file }}"><img src="/images/pix.gif" style="height:100%; width:100%;"></a></div>
                 <div class="slide-content">
                     <a href="{{ a.base_href }}{{ a.file }}">{{ a.title }}</a>
                 </div>
@@ -160,7 +160,28 @@
         {% endif %}
 
 
-		<!-- First -->
+        {% if article.file == 'index' && blog.simple_header %}
+            <section id="first" class="main">
+                <div class="content style4 ">
+                    <div class="container small">
+                        {% for a in article.artlist %}
+                            <div class="row frontpage-artlist-item">
+                                <div class="4u frontpage-artlist-image" style="background-image: url('/images/overlay.png'), url('/pho/{{ a.img[0] || 'bg/3.jpg' }}?w=400'); background-size: cover; background-position: center center;">
+                                    <a href="{{ a.base_href }}{{ a.file }}"><img src="/images/pix.gif" style="height:100%; width:100%;"></a>
+                                </div>
+                                <div class="8u frontpage-artlist-content">
+                                    <h3><a href="{{ a.base_href }}{{ a.file }}">{{ a.title }}</a></h3>
+                                    {{ a.ingress }}
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </section>
+        {% endif %}
+
+        {% if article.file != 'index' || !blog.simple_header %}
+		    <!-- First -->
 			<section id="first" class="main">
                 {% if  blog.simple_header %}
                 <header>
@@ -210,7 +231,7 @@
                                         {% set arr = [0,1,2,3,4] %}
                                         {% for i in arr %}
                                             {% if article.img[i] %}
-                                                <div class="item">
+                                                <div class="item photo_item">
                                                     <img src="/pho/{{ article.img[i] }}?w=600">
                                                     {% if article.img_text[i] %}
                                                         <p>{{ article.img_text[i] }}</p>
@@ -335,6 +356,8 @@
             </div>
         </section>
 
+
+        {% endif %}
 
         <!-- Footer -->
 			<section id="footer">
