@@ -422,18 +422,21 @@ ul.menu_small
 	cursor: default;
 	position: absolute;
 	margin: 0;
-	left: 12px;
-	top: 31px;
+	left: 250px;
+	top: 12px;
 }
 
 ul.menu_small li
 {
 	display: inline-block;
-	line-height: .9em;
-	font-size: .8em;
+	line-height: 1.0em;
+	font-size: 1.0em;
 	border-left: solid 1px #505050;
 	padding: 0 0 0 0.5em;
 	margin: 0 0 0 0em;
+}
+ul.menu_small li {
+	color : #f0f0f0;
 }
 
 ul.menu_small li:first-child
@@ -443,7 +446,8 @@ ul.menu_small li:first-child
 	margin-left: 0;
 }
 ul.menu_small li.selected {
-	color: #ffffff;
+	color: #ff0000;
+	font-weight: bold;
 }
 
 
