@@ -174,7 +174,7 @@
                                 </div>
                                 <div class="8u frontpage-artlist-content">
                                     <h3><a href="{{ a.base_href }}{{ a.file }}">{{ a.title }}</a></h3>
-                                    {{ a.ingress|markdown }}
+                                    {{ a.ingress|markdown|raw }}
                                 </div>
                             </div>
                         {% endif %}
