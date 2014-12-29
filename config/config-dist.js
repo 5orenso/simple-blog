@@ -35,6 +35,13 @@ module.exports = {
             { name: 'Mac', url: 'mac' },
         ]
         */
+        rewrites: [
+            { url: '/wip4/.*', target: '/', code: 302 },
+            { url: '/photoalbum/view.*', target: '/images/pix.gif', code: 302 },
+            { url: '/tools/.*', target: '/', code: 302 }
+        ]
+
+
 
     },
     app: {
