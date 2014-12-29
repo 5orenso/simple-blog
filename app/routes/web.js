@@ -38,8 +38,10 @@ web_router.set_config = function (conf, opt) {
         }
     }
     if (conf) {
-        if (_.isObject(conf) && _.isObject(conf.log)) {
-            logger.set('log', conf.log);
+        if (_.isObject(conf)) {
+            if (_.isObject(conf.log)) {
+                logger.set('log', conf.log);
+            }
         }
     }
 };
@@ -74,65 +76,83 @@ web_router.get('/*', function(req, res) {
     var lu    = require(app_path + 'lib/local-util')({config: web_router.config});
     // Resolve filename
     var request_url = article_util.getUrlFromRequest(req);
-    // Load content based on filename
-    var article_path = article_util.getArticlePathRelative(request_url);
 
-    // Stop timer when response is transferred and finish.
-    res.on('finish', function () {
-//        if (timer) { stopwatch.end(); }
-    });
-
-    // Check for cached file
-    // If not cached compile file and store it.
-    // TODO: How do we bypass the cache?
-    var file = article_util.getArticleFilename(request_url);
-    var template = template_path + (file === 'index' ? 'index.html' : 'blog.html');
-
-    if (_.isObject(web_router.config.template)) {
-        template = app_path +  (file === 'index' ? web_router.config.template.index : web_router.config.template.blog);
+    // Check for redirect
+    var is_redirect = false;
+    if (_.isObject(web_router.config.blog) && _.isArray(web_router.config.blog.rewrites)) {
+        for (var i in web_router.config.blog.rewrites) {
+            if (web_router.config.blog.rewrites[i]) {
+                var rewrite = web_router.config.blog.rewrites[i];
+                if (request_url.match(rewrite.url)) {
+                    console.log('Rewriting...', rewrite);
+                    res.redirect(rewrite.code, rewrite.target);
+                    is_redirect = true;
+                }
+            }
+        }
     }
-    //var template = 'blog.html';
-    var tpl = swig.compileFile(template);
 
-    var article = require(app_path + 'lib/article')({
-        logger: logger,
-        request_url: request_url,
-        photo_path: photo_path,
-        config: web_router.config
-    });
+    if (!is_redirect) {
+        // Load content based on filename
+        var article_path = article_util.getArticlePathRelative(request_url);
 
-    var category = require(app_path + 'lib/category')({
-        logger: logger,
-        config: web_router.config
-    });
-
-    lu.timers_reset();
-    lu.timer('routes/web->request');
-    lu.timer('routes/web->load_category_and_article_lists');
-    when.all([category.list('/'), article.list(article_path)])
-        .then(function (content_lists) {
-            lu.timer('routes/web->load_category_and_article_lists');
-            lu.timer('routes/web->load_article');
-            return article.load({
-                catlist: content_lists[0],
-                artlist: content_lists[1]
-            });
-        })
-        .then(function (article) {
-//            if (stats) {
-//                stats.meter(request_url || '/').mark();
-//            }
-            lu.timer('routes/web->load_article');
-            res.send(tpl({ blog: web_router.config.blog, article: article }));
-        })
-        .catch(function (opt) {
-            lu.timer('routes/web->load_article');
-            lu.send_udp({ timers: lu.timers_get() });
-            res.status(404).send(tpl({ blog: web_router.config.blog, error: opt.error, article: opt.article }));
-        })
-        .done(function () {
-            lu.timer('routes/web->request');
-            lu.send_udp({ timers: lu.timers_get() });
+        // Stop timer when response is transferred and finish.
+        res.on('finish', function () {
+            // if (timer) { stopwatch.end(); }
         });
+
+        // Check for cached file
+        // If not cached compile file and store it.
+        // TODO: How do we bypass the cache?
+        var file = article_util.getArticleFilename(request_url);
+        var template = template_path + (file === 'index' ? 'index.html' : 'blog.html');
+
+        if (_.isObject(web_router.config.template)) {
+            template = app_path + (file === 'index' ? web_router.config.template.index : web_router.config.template.blog);
+        }
+        //var template = 'blog.html';
+        var tpl = swig.compileFile(template);
+
+        var article = require(app_path + 'lib/article')({
+            logger: logger,
+            request_url: request_url,
+            photo_path: photo_path,
+            config: web_router.config
+        });
+
+        var category = require(app_path + 'lib/category')({
+            logger: logger,
+            config: web_router.config
+        });
+
+        lu.timers_reset();
+        lu.timer('routes/web->request');
+        lu.timer('routes/web->load_category_and_article_lists');
+        when.all([category.list('/'), article.list(article_path)])
+            .then(function (content_lists) {
+                lu.timer('routes/web->load_category_and_article_lists');
+                lu.timer('routes/web->load_article');
+                return article.load({
+                    catlist: content_lists[0],
+                    artlist: content_lists[1]
+                });
+            })
+            .then(function (article) {
+                //            if (stats) {
+                //                stats.meter(request_url || '/').mark();
+                //            }
+                lu.timer('routes/web->load_article');
+                res.send(tpl({blog: web_router.config.blog, article: article}));
+            })
+            .catch(function (opt) {
+                lu.timer('routes/web->load_article');
+                lu.send_udp({timers: lu.timers_get()});
+                res.status(404).send(tpl({blog: web_router.config.blog, error: opt.error, article: opt.article}));
+            })
+            .done(function () {
+                lu.timer('routes/web->request');
+                lu.send_udp({timers: lu.timers_get()});
+            });
+    }
 });
 module.exports = web_router;
