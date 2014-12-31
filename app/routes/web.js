@@ -76,10 +76,8 @@ web_router.get('/*', function(req, res) {
                 if (request_url.match(rewrite.url)) {
                     console.log('Rewriting...', rewrite);
                     var target = rewrite.target;
-                    if (rewrite.use_url) {
-                        if (rewrite.regex) {
-                            request_url = request_url.replace(rewrite.regex, rewrite.regex_result);
-                        }
+                    if (rewrite.use_url && rewrite.regex) {
+                        request_url = request_url.replace(rewrite.regex, rewrite.regex_result);
                         target += request_url;
                     }
                     res.redirect(rewrite.code, target);
