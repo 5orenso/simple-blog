@@ -44,7 +44,7 @@ search_router.use(morgan('combined', {stream: accessLogStream}));
 search_router.get('/*', function(req, res) {
     var lu    = require(app_path + 'lib/local-util')({config: search_router.config});
     var request_url = article_util.getUrlFromRequest(req);
-    console.log('search for:', lu.safe_string(request_url));
+    console.log('search for:', (_.isEmpty(req.query.q) ? request_url : req.query.q));
     // Check for cached file
     // If not cached compile file and store it.
     // TODO: How do we bypass the cache?
@@ -67,7 +67,7 @@ search_router.get('/*', function(req, res) {
 
     var query = {
         //_all: lu.safe_string(req.query.q)
-        _all: lu.safe_string(request_url)
+        _all: lu.safe_string(_.isEmpty(req.query.q) ? request_url : req.query.q)
     };
     var filter = {};
 
