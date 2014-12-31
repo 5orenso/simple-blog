@@ -29,7 +29,7 @@ module.exports = {
                 name: '<a href="https://twitter.com/sorenso">Sorenso</a>',
             }
         },
-/*        menu: [
+        /* menu: [
             { name: 'iPad', url: 'ipad' },
             { name: 'iPhone', url: 'iphone' },
             { name: 'Mac', url: 'mac' },
@@ -40,9 +40,6 @@ module.exports = {
             { url: '/photoalbum/view.*', target: '/images/pix.gif', code: 302 },
             { url: '/tools/.*', target: '/', code: 302 }
         ]
-
-
-
     },
     app: {
         port: 8080
@@ -57,6 +54,7 @@ module.exports = {
     },
     adapter: {
         current: 'markdown',
+        //search_adapter: 'elasticsearch',
         markdown: {
             content_path: __dirname + '/../content/articles/',
             photo_path: __dirname + '/../content/images/',
@@ -70,6 +68,13 @@ module.exports = {
             database: 'nils',
             article_table: 'article',
             category_table: 'category',
+        },
+        elasticsearch: {
+            //server: '172.30.0.227',
+            server: '54.154.55.126',
+            port: 9200,
+            index: 'twitter',
+            type: 'tweet'
         }
     },
     udp: {
