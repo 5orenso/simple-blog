@@ -59,12 +59,17 @@ if (cluster.isMaster) {
     image_router.set_config(config, {
         workerId: cluster.worker.id,
     });
+    var search_router  = require('./routes/search');
+    search_router.set_config(config, {
+        workerId: cluster.worker.id,
+    });
 
     // Register routes -------------------------------
     app.use('/api', api_router);
     app.use('/static', express.static(config.blog.static_files_path));
     app.use('/.well-known/', express.static(config.blog.text_files_path));
     app.use('/pho/', image_router);
+    app.use('/search/', search_router);
     app.use('/', web_router);
 
     // Start the server ------------------------------
