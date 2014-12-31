@@ -75,7 +75,14 @@ web_router.get('/*', function(req, res) {
                 var rewrite = web_router.config.blog.rewrites[i];
                 if (request_url.match(rewrite.url)) {
                     console.log('Rewriting...', rewrite);
-                    res.redirect(rewrite.code, rewrite.target);
+                    var target = rewrite.target;
+                    if (rewrite.use_url) {
+                        if (rewrite.regex) {
+                            request_url = request_url.replace(rewrite.regex, rewrite.regex_result);
+                        }
+                        target += request_url;
+                    }
+                    res.redirect(rewrite.code, target);
                     is_redirect = true;
                 }
             }
