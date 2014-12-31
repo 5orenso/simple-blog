@@ -1299,6 +1299,11 @@ div.bx-wrapper .bx-pager, div.bx-wrapper .bx-controls-auto {
 }
 .frontpage-artlist-image {
 	height: 150px;
+	border: 1px solid #e0e0e0;
+	padding: 0;
+}
+.frontpage-artlist-image a:link, .frontpage-artlist-image a:visited {
+	border: none;
 }
 .frontpage-artlist-item {
 	margin-top: 10px;
