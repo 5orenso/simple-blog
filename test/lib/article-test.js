@@ -321,10 +321,7 @@ buster.testCase('lib/article', {
 
 
         'sitemap': function (done) {
-            when( article.sitemap({
-                artlist: artlist,
-                catlist: catlist
-            }) )
+            when( article.sitemap(catlist, artlist))
                 .done(function (xml) {
                     var parseString = require('xml2js').parseString;
                     parseString(xml, function (err, result) {
