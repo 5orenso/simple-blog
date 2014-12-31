@@ -20,7 +20,6 @@ var express       = require('express'),
     article_util  = require(app_path + 'lib/article-util')(),
     local_util  = require(app_path + 'lib/local-util')();
 
-
 swig.setFilter('markdown', article_util.replaceMarked);
 swig.setFilter('formatted', article_util.formatDate);
 
@@ -48,20 +47,11 @@ web_router.set_config = function (conf, opt) {
 
 // create a write stream (in append mode)
 var accessLogStream = fs.createWriteStream(app_path + '/logs/web-access.log', {flags: 'a'});
-// setup the logger
+
+// Setup the logger
 web_router.use(morgan('combined', {stream: accessLogStream}));
 
-
-web_router.use(function(req, res, next) {
-//    logger.log(
-//        req.method,
-//        req.url,
-//        req.get('Content-type'),
-//        req.get('User-agent')
-//    );
-    next(); // make sure we go to the next routes and don't stop here
-});
-
+// Setup static routes
 web_router.use('/js/', express.static(app_path + 'template/current/js/'));
 web_router.use('/images/', express.static(app_path + 'template/current/images/'));
 web_router.use('/css/', express.static(app_path + 'template/current/css/'));
@@ -138,9 +128,6 @@ web_router.get('/*', function(req, res) {
                 });
             })
             .then(function (article) {
-                //            if (stats) {
-                //                stats.meter(request_url || '/').mark();
-                //            }
                 lu.timer('routes/web->load_article');
                 res.send(tpl({blog: web_router.config.blog, article: article}));
             })
