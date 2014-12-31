@@ -36,7 +36,7 @@ module.exports = {
         ]
         */
         rewrites: [
-            { url: '/wip4/.*', target: '/', code: 302 },
+            { url: '/wip4/.*', target: '/search/?q=', code: 302, use_url: true, regex: /^\/wip4\/(.+?)\/.+?$/, regex_result: "$1" },
             { url: '/photoalbum/view.*', target: '/images/pix.gif', code: 302 },
             { url: '/tools/.*', target: '/', code: 302 }
         ]
