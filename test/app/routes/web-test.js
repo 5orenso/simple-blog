@@ -7,24 +7,6 @@ var buster     = require('buster'),
     fs         = require('fs'),
     express    = require('express'),
     request    = require('request'),
-    stats      = {
-        meter: function () {
-            return {
-                mark: function () {}
-            };
-        }
-    },
-    activeConn = {
-        inc: function () {},
-        dec: function () {}
-    },
-    timer      = {
-        start: function () {
-            return {
-                end: function () {}
-            };
-        }
-    },
     web_router = require(__dirname + '/../../../app/routes/web');
 
 var photo_path       = __dirname + '/../../content/images/';
@@ -33,9 +15,6 @@ var photo_path       = __dirname + '/../../content/images/';
 var config = require(__dirname + '/../../../config/config-integration.js');
 web_router.set_config(config, {
     workerId: 1,
-    stats: stats,
-    activeConn: activeConn,
-    timer: timer,
     photo_path: photo_path
 });
 
@@ -107,7 +86,6 @@ buster.testCase('app/routes/web', {
                 assert.match(body, art.tag_values.artlist);
                 done();
             });
-
         },
 
         'simple-blog/index': function (done) {
@@ -117,7 +95,6 @@ buster.testCase('app/routes/web', {
                 assert.match(body, art.tag_values.artlist);
                 done();
             });
-
         },
 
         'simple-blog/': function (done) {
@@ -127,8 +104,18 @@ buster.testCase('app/routes/web', {
                 assert.match(body, art.tag_values.artlist);
                 done();
             });
+        },
 
+        '/photoalbum/view/12345': function (done) {
+            request('http://127.0.0.1:' + port + '/web/photoalbum/view/12345', function (error, response, body) {
+                console.log(body, response.statusCode, response.request.path);
+                assert.equals(200, response.statusCode);
+                assert.match(body, art.tag_values.menu);
+                assert.match(body, art.tag_values.artlist);
+                done();
+            });
         }
+
 
 
     }

@@ -15,7 +15,12 @@ module.exports = {
         },
         static_files_path: '/Users/sorenso/html/',
         text_files_path: '/Users/sorenso/text-files/',
-        //google_analytics: 'UA-xxxxxxxx-1'
+        //google_analytics: 'UA-xxxxxxxx-1',
+
+        rewrites: [
+            { url: '/photoalbum/view.*', target: '/web/?q=', code: 302, use_url: true, regex: /^\/photoalbum\/view\/(.+?)$/, regex_result: "$1" },
+            { url: '/tools/.*', target: '/', code: 302 }
+        ]
     },
     app: {
         port: 8080

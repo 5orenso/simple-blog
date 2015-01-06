@@ -23,7 +23,8 @@ var express       = require('express'),
 swig.setFilter('markdown', article_util.replaceMarked);
 swig.setFilter('formatted', article_util.formatDate);
 
-var stats, activeConn, timer, timer_v2, config;
+//var stats, activeConn, timer, timer_v2, config;
+var config;
 var web_router = express.Router();
 web_router.set_config = function (conf, opt) {
     web_router.config = conf;
@@ -74,7 +75,7 @@ web_router.get('/*', function(req, res) {
             if (web_router.config.blog.rewrites[i]) {
                 var rewrite = web_router.config.blog.rewrites[i];
                 if (request_url.match(rewrite.url)) {
-                    console.log('Rewriting...', rewrite);
+                    //console.log('Rewriting...', rewrite);
                     var target = rewrite.target;
                     if (rewrite.use_url && rewrite.regex) {
                         request_url = request_url.replace(rewrite.regex, rewrite.regex_result);
@@ -100,6 +101,7 @@ web_router.get('/*', function(req, res) {
         // If not cached compile file and store it.
         // TODO: How do we bypass the cache?
         var file = article_util.getArticleFilename(request_url);
+        console.log('web.js', request_url, file);
         var template = template_path + (file === 'index' ? 'index.html' : 'blog.html');
 
         if (_.isObject(web_router.config.template)) {
