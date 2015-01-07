@@ -4,6 +4,7 @@ var buster       = require('buster'),
     assert       = buster.assert,
     refute       = buster.refute,
     when         = require('when'),
+    strftime     = require('strftime'),
     article_util = require('../../lib/article-util')({
         logger: {
             log: function () { },
@@ -24,7 +25,7 @@ var markdown_output = {
 var article_md = ":title My nice title\n" +
     ":img test-image.jpg\n" +
     ":aside My aside content\n" +
-    ":body This is my body content.\n" +
+    ":body This is my body content. [:fa-link]\n// youtube.com #video #yolo @sorenso\n" +
     "## Content span\n" +
     "This can span several lines if you want to.\n" +
     "### Even more titles\n" +
@@ -40,7 +41,7 @@ var article_obj = { tag_values: { toc: '', fact: '', artlist: '' },
     title: 'My nice title',
     img: [ 'test-image.jpg' ],
     aside: 'My aside content',
-    body: 'This is my body content.\n## Content span\nThis can span several lines if you want to.\n### Even more titles\nWith sub content belonging to sections.\n## Table of contents\n[:toc]\n',
+    body: 'This is my body content. [:fa-link]\n// youtube.com #video #yolo @sorenso\n## Content span\nThis can span several lines if you want to.\n### Even more titles\nWith sub content belonging to sections.\n## Table of contents\n[:toc]\n',
     tag: [ 'foo,bar,gomle' ] };
 
 var article_obj_html = {
@@ -52,7 +53,7 @@ var article_obj_html = {
         artlist_onepage: '<ul class="artlist"><li><a href="#/simple-blog/index">Simple Blog Server</a></li></ul>'
     },
     title: 'My nice title',
-    body: '<p>This is my body content.</p>\n<h2 class="toc-2"><a name="content-span" class="anchor" href="#content-span"><span class="header-link"></span></a>Content span</h2><p>This can span several lines if you want to.</p>\n<h3 class="toc-3"><a name="even-more-titles" class="anchor" href="#even-more-titles"><span class="header-link"></span></a>Even more titles</h3><p>With sub content belonging to sections.</p>\n<h2 class="toc-2"><a name="table-of-contents" class="anchor" href="#table-of-contents"><span class="header-link"></span></a>Table of contents</h2><p>[:toc]</p>\n',
+    body: '<p>This is my body content. [:fa-link]\n// youtube.com #video #yolo @sorenso</p>\n<h2 class="toc-2"><a name="content-span" class="anchor" href="#content-span"><span class="header-link"></span></a>Content span</h2><p>This can span several lines if you want to.</p>\n<h3 class="toc-3"><a name="even-more-titles" class="anchor" href="#even-more-titles"><span class="header-link"></span></a>Even more titles</h3><p>With sub content belonging to sections.</p>\n<h2 class="toc-2"><a name="table-of-contents" class="anchor" href="#table-of-contents"><span class="header-link"></span></a>Table of contents</h2><p>[:toc]</p>\n',
     img: [ 'test-image.jpg' ],
     tag: [ 'foo,bar,gomle' ],
     author: 'sorenso',
@@ -82,6 +83,24 @@ buster.testCase('lib/article-util', {
             assert.match(result, markdown_output.header);
             assert.match(result, markdown_output.link);
             assert.match(result, markdown_output.image);
+        },
+
+        'formatDate 2014-12-24 17:00:00': function () {
+            var result = article_util.formatDate('2014-12-24 17:00:00');
+            assert.equals(result, 'Dec 24, 2014');
+        },
+
+        'formatDate Xmas this year': function () {
+            var current_year = strftime('%Y');
+            var xmas_this_year = current_year + '-12-24 17:00:00';
+            var result = article_util.formatDate(xmas_this_year);
+            assert.equals(result, 'Dec 24');
+        },
+
+        'formatDate wo/input': function () {
+            var result = article_util.formatDate();
+            var expected_result = strftime('%b %e');
+            assert.equals(result, expected_result);
         },
 
         'getArticleFilename': function () {
@@ -206,8 +225,19 @@ buster.testCase('lib/article-util', {
                 img: article_obj_html.img,
                 tag: article_obj_html.tag
             };
+            // <span class="icon fa-link"></span>
+            // <span class="comment">// youtube.com
+            // <span class="hash_tag">#<a href="https://twitter.com/search?q=%23video">video</a></span>
+            // <span class="hash_tag">#<a href="https://twitter.com/search?q=%23yolo">yolo</a></span>
+            // <span class="user">@<a href="https://twitter.com/sorenso">sorenso</a></span>
             var result = article_util.replaceTagsWithContent(article);
+            console.log(article);
             assert.match(article.body, article_obj_html.tag_values.toc);
+            assert.match(article.body, '<span class="icon fa-link"></span>');
+            assert.match(article.body, '<span class="comment">// youtube.com');
+            assert.match(article.body, '<span class="hash_tag">#<a href="https://twitter.com/search?q=%23video">video</a></span>');
+            assert.match(article.body, '<span class="hash_tag">#<a href="https://twitter.com/search?q=%23yolo">yolo</a></span>');
+            assert.match(article.body, '<span class="user">@<a href="https://twitter.com/sorenso">sorenso</a></span>');
             refute(result);
         },
 
