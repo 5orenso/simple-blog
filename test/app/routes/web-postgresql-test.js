@@ -7,36 +7,14 @@ var buster     = require('buster'),
     fs         = require('fs'),
     express    = require('express'),
     request    = require('request'),
-    stats      = {
-        meter: function () {
-            return {
-                mark: function () {}
-            };
-        }
-    },
-    activeConn = {
-        inc: function () {},
-        dec: function () {}
-    },
-    timer      = {
-        start: function () {
-            return {
-                end: function () {}
-            };
-        }
-    },
     web_router = require(__dirname + '/../../../app/routes/web');
 
 var photo_path       = __dirname + '/../../content/images/';
 
 
-
 var config = require(__dirname + '/../../../config/config-integration-postgresql.js');
 web_router.set_config(config, {
     workerId: 1,
-    stats: stats,
-    activeConn: activeConn,
-    timer: timer,
     photo_path: photo_path
 });
 
@@ -88,7 +66,7 @@ buster.testCase('app/routes/web', {
     'Test web routes:': {
         '/': function (done) {
             request('http://127.0.0.1:' + port + '/web/', function (error, response, body) {
-                assert.equals(200, response.statusCode);
+                assert.equals(response.statusCode, 200);
                 assert.match(body, art.tag_values.menu);
                 assert.match(body, art.tag_values.artlist);
                 assert.match(body, art.body);
@@ -104,7 +82,7 @@ buster.testCase('app/routes/web', {
 
         '// /this-should-not-be-found': function (done) {
             request('http://127.0.0.1:' + port + '/web/this-should-not-be-found', function (error, response, body) {
-                assert.equals(404, response.statusCode);
+                assert.equals(response.statusCode, 404);
                 assert.match(body, art.tag_values.menu);
                 assert.match(body, art.tag_values.artlist);
                 done();
@@ -114,7 +92,7 @@ buster.testCase('app/routes/web', {
 
         '// simple-blog/index': function (done) {
             request('http://127.0.0.1:' + port + '/web/simple-blog/index', function (error, response, body) {
-                assert.equals(200, response.statusCode);
+                assert.equals(response.statusCode, 200);
                 assert.match(body, art.tag_values.menu);
                 assert.match(body, art.tag_values.artlist);
                 done();
@@ -124,7 +102,7 @@ buster.testCase('app/routes/web', {
 
         '// simple-blog/': function (done) {
             request('http://127.0.0.1:' + port + '/web/simple-blog/', function (error, response, body) {
-                assert.equals(200, response.statusCode);
+                assert.equals(response.statusCode, 200);
                 assert.match(body, art.tag_values.menu);
                 assert.match(body, art.tag_values.artlist);
                 done();
