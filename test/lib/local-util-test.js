@@ -9,6 +9,19 @@ var buster       = require('buster'),
             log: function () { },
             err: function () { }
         },
+        config: {
+            udp: {
+                prefix: 'unittest',
+                host: 'localhost',
+                port: 9999
+            }
+        }
+    }, {
+        udp_client: {
+            send: function (message, something, message_length, udp_port, udp_server, callback) {
+                callback(null, 140);
+            }
+        }
     });
 
 var my_array = [
@@ -67,6 +80,38 @@ buster.testCase('lib/local-util', {
         'quote_url w/no input': function () {
             var result = local_util.quote_url();
             assert.equals(result, '');
+        },
+
+        'send_udp as plain message': function (done) {
+            local_util.send_udp('my nice message', function (result) {
+                assert.equals(result, 140);
+                done();
+            });
+        },
+
+        'send_udp as an object': function (done) {
+            local_util.send_udp({message: 'my nice message'}, function (result) {
+                assert.equals(result, 140);
+                done();
+            });
+        },
+
+        'safe_string': function () {
+            var result = local_util.safe_string('If you\'re crazy enough to send in special chars like æøå?~!@#$%^&*())_-+=');
+            assert.equals(result, 'if you re crazy enough to send in special chars like æøå');
+        },
+
+        'iso_date wo/input': function () {
+            var result = local_util.iso_date();
+            // 2015-01-07T15:37:48.824+01:00
+            assert.match(result, /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}\+\d{2}:\d{2}/);
+        },
+
+        'iso_date w/epoch micro time as input': function () {
+            var result = local_util.iso_date(1410642022 * 1000);
+            // 2014-09-13T23:00:22.000+02:00
+            assert.match(result, /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}\+\d{2}:\d{2}/);
+            assert.match(result, '2014-09-13T23:00:22.000+02:00');
         },
 
     }
