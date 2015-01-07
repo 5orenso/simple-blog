@@ -60,7 +60,7 @@ search_router.get('/*', function(req, res) {
     var search = require(app_path + 'lib/search')({
         logger: logger,
         config: search_router.config
-    });
+    }, search_router.config.adapter.mock_services);
 
     lu.timers_reset();
     lu.timer('routes/search->request');
