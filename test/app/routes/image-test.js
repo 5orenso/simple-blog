@@ -92,7 +92,7 @@ buster.testCase('app/routes/image', {
             request('http://127.0.0.1:' + port + '/photo/test.jpg?w=300', function (error, response, body) {
                 if (!error && response.statusCode === 200) {
                     done();
-                    assert.equals(200, response.statusCode);
+                    assert.equals(response.statusCode, 200);
                 } else {
                     console.log('response.statusCode:', response.statusCode);
                     console.log(error);
@@ -106,7 +106,7 @@ buster.testCase('app/routes/image', {
             request('http://127.0.0.1:' + port + '/photo/test.jpg?w=300', function (error, response, body) {
                 if (!error && response.statusCode === 200) {
                     done();
-                    assert.equals(200, response.statusCode);
+                    assert.equals(response.statusCode, 200);
                 } else {
                     console.log('response.statusCode:', response.statusCode);
                     console.log(error);
@@ -121,7 +121,7 @@ buster.testCase('app/routes/image', {
             request('http://127.0.0.1:' + port + '/photo/test.jpg?w=300&force=1', function (error, response, body) {
                 if (!error && response.statusCode === 200) {
                     done();
-                    assert.equals(200, response.statusCode);
+                    assert.equals(response.statusCode, 200);
                 } else {
                     console.log('response.statusCode:', response.statusCode);
                     console.log(error);
@@ -135,7 +135,7 @@ buster.testCase('app/routes/image', {
             request('http://127.0.0.1:' + port + '/photo/test-not-found.jpg?w=300', function (error, response, body) {
                 if (!error && response.statusCode === 404) {
                     done();
-                    assert.equals(404, response.statusCode);
+                    assert.equals(response.statusCode, 404);
                 } else {
                     console.log('response.statusCode:', response.statusCode);
                     console.log(error);
