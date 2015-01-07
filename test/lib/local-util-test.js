@@ -111,7 +111,7 @@ buster.testCase('lib/local-util', {
             var result = local_util.iso_date(1410642022 * 1000);
             // 2014-09-13T23:00:22.000+02:00
             assert.match(result, /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}\+\d{2}:\d{2}/);
-            assert.match(result, '2014-09-13T23:00:22.000+02:00');
+            assert.match(result, /2014-09-13T\d{2}:00:22\.000\+02:00/);
         },
 
     }
