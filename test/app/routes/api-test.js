@@ -64,7 +64,7 @@ buster.testCase('app/routes/api', {
     'Test api routes:': {
         '/api/': function (done) {
             request('http://127.0.0.1:' + port + '/api/', function (error, response, body) {
-                assert.equals(200, response.statusCode);
+                assert.equals(response.statusCode, 200);
                 done();
             });
 
@@ -72,7 +72,7 @@ buster.testCase('app/routes/api', {
 
         '/api/this-should-not-be-found': function (done) {
             request('http://127.0.0.1:' + port + '/api/this-should-not-be-found', function (error, response, body) {
-                assert.equals(404, response.statusCode);
+                assert.equals(response.statusCode, 404);
                 done();
             });
 

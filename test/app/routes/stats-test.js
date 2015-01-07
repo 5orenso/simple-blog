@@ -76,7 +76,7 @@ buster.testCase('stats', {
 //                console.log(body);
 //                console.log(error);
 //                console.log(response.statusCode);
-                assert.equals(200, response.statusCode);
+                assert.equals(response.statusCode, 200);
                 done();
             });
 
@@ -84,7 +84,7 @@ buster.testCase('stats', {
 
         '/api/this-should-not-be-found': function (done) {
             request('http://127.0.0.1:' + port + '/api/this-should-not-be-found', function (error, response, body) {
-                assert.equals(404, response.statusCode);
+                assert.equals(response.statusCode, 404);
                 done();
             });
 
