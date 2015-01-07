@@ -11,7 +11,6 @@ var buster     = require('buster'),
 
 var photo_path       = __dirname + '/../../content/images/';
 
-
 var config = require(__dirname + '/../../../config/config-integration.js');
 web_router.set_config(config, {
     workerId: 1,
@@ -65,7 +64,7 @@ buster.testCase('app/routes/web', {
     'Test web routes:': {
         '/': function (done) {
             request('http://127.0.0.1:' + port + '/web/', function (error, response, body) {
-                assert.equals(200, response.statusCode);
+                assert.equals(response.statusCode, 200);
                 assert.match(body, art.tag_values.menu);
                 assert.match(body, art.tag_values.artlist);
                 assert.match(body, art.body);
@@ -81,7 +80,7 @@ buster.testCase('app/routes/web', {
 
         '/this-should-not-be-found': function (done) {
             request('http://127.0.0.1:' + port + '/web/this-should-not-be-found', function (error, response, body) {
-                assert.equals(404, response.statusCode);
+                assert.equals(response.statusCode, 404);
                 assert.match(body, art.tag_values.menu);
                 assert.match(body, art.tag_values.artlist);
                 done();
@@ -90,7 +89,7 @@ buster.testCase('app/routes/web', {
 
         'simple-blog/index': function (done) {
             request('http://127.0.0.1:' + port + '/web/simple-blog/index', function (error, response, body) {
-                assert.equals(200, response.statusCode);
+                assert.equals(response.statusCode, 200);
                 assert.match(body, art.tag_values.menu);
                 assert.match(body, art.tag_values.artlist);
                 done();
@@ -99,7 +98,7 @@ buster.testCase('app/routes/web', {
 
         'simple-blog/': function (done) {
             request('http://127.0.0.1:' + port + '/web/simple-blog/', function (error, response, body) {
-                assert.equals(200, response.statusCode);
+                assert.equals(response.statusCode, 200);
                 assert.match(body, art.tag_values.menu);
                 assert.match(body, art.tag_values.artlist);
                 done();
@@ -108,14 +107,35 @@ buster.testCase('app/routes/web', {
 
         '/photoalbum/view/12345': function (done) {
             request('http://127.0.0.1:' + port + '/web/photoalbum/view/12345', function (error, response, body) {
-                console.log(body, response.statusCode, response.request.path);
-                assert.equals(200, response.statusCode);
+                assert.equals(response.statusCode, 200);
                 assert.match(body, art.tag_values.menu);
                 assert.match(body, art.tag_values.artlist);
+                assert.match(body, art.body);
+                assert.match(body, art.title);
+                assert.match(body, art.tag_values.toc);
+                assert.match(body, art.tag_values.artlist_onepage);
+                assert.match(body, art.tag_values.menu_onepage);
+                assert.match(body, '/pho/simple-blog.jpg');
+                assert.match(body, '/pho/test.jpg');
+                done();
+            });
+        },
+
+        '/tools/env.epl': function (done) {
+            request('http://127.0.0.1:' + port + '/web/tools/env.epl', function (error, response, body) {
+                assert.equals(response.statusCode, 200);
+                assert.match(body, art.tag_values.menu);
+                assert.match(body, art.tag_values.artlist);
+                assert.match(body, art.body);
+                assert.match(body, art.title);
+                assert.match(body, art.tag_values.toc);
+                assert.match(body, art.tag_values.artlist_onepage);
+                assert.match(body, art.tag_values.menu_onepage);
+                assert.match(body, '/pho/simple-blog.jpg');
+                assert.match(body, '/pho/test.jpg');
                 done();
             });
         }
-
 
 
     }
