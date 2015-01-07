@@ -231,7 +231,6 @@ buster.testCase('lib/article-util', {
             // <span class="hash_tag">#<a href="https://twitter.com/search?q=%23yolo">yolo</a></span>
             // <span class="user">@<a href="https://twitter.com/sorenso">sorenso</a></span>
             var result = article_util.replaceTagsWithContent(article);
-            console.log(article);
             assert.match(article.body, article_obj_html.tag_values.toc);
             assert.match(article.body, '<span class="icon fa-link"></span>');
             assert.match(article.body, '<span class="comment">// youtube.com');
