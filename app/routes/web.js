@@ -101,7 +101,6 @@ web_router.get('/*', function(req, res) {
         // If not cached compile file and store it.
         // TODO: How do we bypass the cache?
         var file = article_util.getArticleFilename(request_url);
-        console.log('web.js', request_url, file);
         var template = template_path + (file === 'index' ? 'index.html' : 'blog.html');
 
         if (_.isObject(web_router.config.template)) {
