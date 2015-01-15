@@ -17,7 +17,8 @@ var express          = require('express'),
     app_path         = __dirname + '/../../',
     photo_path       = path.normalize(app_path + 'content/images/'),
     photo_cache_path = path.normalize(app_path + 'content/images_cached/'),
-    logger           = require(app_path + 'lib/logger')();
+    logger           = require(app_path + 'lib/logger')(),
+    local_util       = require(app_path + 'lib/local-util')();
 
 
 var stats, activeConn, timer, config;
@@ -50,12 +51,12 @@ image_router.use(morgan('combined', {stream: accessLogStream}));
 
 image_router.use(function(req, res, next) {
     // do logging
-//    logger.log(
-//        req.method,
-//        req.url,
-//        req.get('Content-type'),
-//        req.get('User-agent')
-//    );
+    logger.log(
+        req.method,
+        req.url,
+        req.get('Content-type'),
+        req.get('User-agent')
+    );
     next(); // make sure we go to the next routes and don't stop here
 });
 
@@ -152,6 +153,7 @@ function serveImage(response, image_filename_resized) {
     });
 }
 
+image_router.use('/*', local_util.set_cache_headers);
 
 // test route to make sure everything is working (accessed at GET http://localhost:8080/api)
 image_router.get('/*', function(req, res) {
