@@ -33,7 +33,7 @@ buster.testCase('lib/search', {
     },
     'Test search:': {
         'query': function (done) {
-            when( search.query('one-hit') )
+            when( search.query({ _all: 'one-hit'}) )
                 .done(function (obj) {
                     assert.isArray(obj);
                     assert.equals(obj[0].title, article.title);
@@ -43,11 +43,14 @@ buster.testCase('lib/search', {
                     assert.equals(obj[0].file, article.file);
                     assert.equals(obj[0].base_href, article.base_href);
                     done();
+                }, function (err) {
+                    console.log(err);
+                    done();
                 });
         },
 
         'query for existing word and expect two hits': function (done) {
-            when( search.query('two-hit', {}) )
+            when( search.query({ _all: 'two-hit'}, {}) )
                 .done(function (obj) {
                     assert.isArray(obj);
                     assert.equals(obj[1].title, article.title);
@@ -64,7 +67,7 @@ buster.testCase('lib/search', {
         },
 
         'query for non existing word': function (done) {
-            when( search.query('no-hit', {}) )
+            when( search.query({ _all: 'no-hit'}, {}) )
                 .done(function (obj) {
                     assert.isArray(obj);
                     assert.equals(obj, []);
