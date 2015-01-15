@@ -4,6 +4,8 @@ var buster       = require('buster'),
     assert       = buster.assert,
     refute       = buster.refute,
     when         = require('when'),
+    error_msg    = 'Error sending UDP...',
+    error_msg_throw = 'PANG!',
     local_util   = require('../../lib/local-util')({
         logger: {
             log: function () { },
@@ -19,7 +21,14 @@ var buster       = require('buster'),
     }, {
         udp_client: {
             send: function (message, something, message_length, udp_port, udp_server, callback) {
-                callback(null, 140);
+                var message_text = message.toString('utf8');
+                if (message_text.match(/error/)) {
+                    callback(error_msg, null);
+                } else if (message_text.match(/explode/)) {
+                    throw new Error(error_msg_throw);
+                } else {
+                    callback(null, 140);
+                }
             }
         }
     });
@@ -49,6 +58,14 @@ var my_array_asc_name = [
     { name: 'b', integer: 456 },
     { name: 'c', integer: 789 },
 ];
+
+var timer_result = {
+    'local-util-test': {
+        start: [ 221059, 879195203 ],
+        end: [ 0, 629624 ],
+        total: 0.000629624
+    }
+};
 
 
 buster.testCase('lib/local-util', {
@@ -83,22 +100,36 @@ buster.testCase('lib/local-util', {
         },
 
         'send_udp as plain message': function (done) {
-            local_util.send_udp('my nice message', function (result) {
+            local_util.send_udp('my nice message', function (error, result) {
                 assert.equals(result, 140);
                 done();
             });
         },
 
         'send_udp as an object': function (done) {
-            local_util.send_udp({message: 'my nice message'}, function (result) {
+            local_util.send_udp({message: 'my nice message'}, function (error, result) {
                 assert.equals(result, 140);
+                done();
+            });
+        },
+
+        'send_udp and fail': function (done) {
+            local_util.send_udp('error', function (error, result) {
+                assert.equals(error, error_msg);
+                done();
+            });
+        },
+
+        'send_udp and explode': function (done) {
+            local_util.send_udp('explode', function (error, result) {
+                assert.match(error, error_msg_throw);
                 done();
             });
         },
 
         'safe_string': function () {
             var result = local_util.safe_string('If you\'re crazy enough to send in special chars like æøå?~!@#$%^&*())_-+=');
-            assert.equals(result, 'if you re crazy enough to send in special chars like æøå');
+            assert.equals(result, 'if you re crazy enough to send in special chars like æøå              -');
         },
 
         'iso_date wo/input': function () {
@@ -113,6 +144,42 @@ buster.testCase('lib/local-util', {
             assert.match(result, /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}\+\d{2}:\d{2}/);
             assert.match(result, /2014-09-13T\d{2}:00:22\.000\+\d{2}:00/);
         },
+
+        'timer': function () {
+            local_util.timer('local-util-test');
+            for (var i=0; i<1e5; i++) {
+                // just waiting a bit
+                var j;
+            }
+            local_util.timer('local-util-test');
+            var timers = local_util.timers_get();
+            assert.isObject(timers);
+            assert.isObject(timers['local-util-test']);
+            assert.isNumber(timers['local-util-test'].total);
+            assert(true);
+        },
+
+        'timers_reset': function () {
+            local_util.timer('local-util-test');
+            for (var i=0; i<1e5; i++) {
+                // just waiting a bit
+                var j;
+            }
+            local_util.timer('local-util-test');
+            var timers = local_util.timers_get();
+            assert.isObject(timers);
+            assert.isObject(timers['local-util-test']);
+            assert.isNumber(timers['local-util-test'].total);
+            local_util.timers_reset();
+            var timers_reset = local_util.timers_get();
+            assert.isObject(timers_reset);
+            refute.isObject(timers_reset['local-util-test']);
+            assert(true);
+        },
+
+
+
+
 
     }
 });
