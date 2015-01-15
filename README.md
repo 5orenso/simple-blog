@@ -11,19 +11,19 @@ Search capabilities is added with an ElasticSearch integration adapter.
 ## This is how it works
 
 ```
-    ----------------   dropbox      -------------
-   | who-am-i.md    |  auto sync   | Simple blog |
-   | hello-blog.md  | -----------> | server      |
-   | ...            |              | (Amazon)    |  web page    ------------
-    ----------------               |             | ----------> | browser    |
-    ----------------   dropbox     |             |             |            |
-   | image.jpg      |  auto sync   |             |              ------------
-   | image2.jpg     | -----------> |             |
-    ----------------               |             |
+    ----------------   dropbox      -------------     -------
+   | who-am-i.md    |  auto sync   | Simple blog |   | Nginx |
+   | hello-blog.md  | -----------> | server      |-->|   or  |
+   | ...            |              | (Amazon)    |   | Cloud-|  web page    -----------
+    ----------------               |             |   | Front | ----------> | browser   |
+    ----------------   dropbox     |             |   |       |             | or mobile |
+   | image.jpg      |  auto sync   |             |   |       |              -----------
+   | image2.jpg     | -----------> |             |   |       |
+    ----------------               |             |    -------
                                     -------------
     ----------------                      |
    | ElasticSearch  | --------------------
-    ----------------                                    
+    ----------------
 
 ```
 
