@@ -13,6 +13,8 @@ var config = require(__dirname + '/../../../config/config-integration.js');
 search_router.set_config(config, {
     workerId: 1
 });
+//console.log('mock_services search-test.js : ', search_router.config.adapter.mock_services);
+
 
 var port = 4321;
 var app = express();
@@ -25,26 +27,21 @@ var responses = {
 
 var art = {
     tag_values: {
-        toc: '<div class="toc" id="toc"><span class="toc-indent-1">&bull; <a href="#simple-title-1">Simple title 1</a></span><span class="toc-indent-2">&bull; <a href="#simple-sub-title-1">Simple sub title 1</a></span><span class="toc-indent-1">&bull; <a href="#simple-title-2">Simple title 2</a></span><span class="toc-indent-2">&bull; <a href="#simple-sub-title-1">Simple sub title 1</a></span><span class="toc-indent-3">&bull; <a href="#simple-sub-sub-title-1">Simple sub sub title 1</a></span></div>',
+        toc: '',
         fact: '',
-        artlist: '<div class="artlist"><div class="artlist-art"><div class="artlist-image" style="background-image: url(\'/pho/simple-blog.jpg?w=500\');"><a href="/simple-blog/index"><img src="/images/pix.gif" style="height:100%; width:100%;"></a></div><h3><a href="/simple-blog/index">Simple Blog Server</a></h3></div><div class="artlist-art"><div class="artlist-image" style="background-image: url(\'/pho/simple-blog.jpg?w=500\');"><a href="/simple-blog/simple-blog"><img src="/images/pix.gif" style="height:100%; width:100%;"></a></div><h3><a href="/simple-blog/simple-blog">Simple blog 2</a></h3></div></div><br class="clear">',
-        menu: '<ul class="catlist"><li><a href="/">Frontpage</a></li><li><a href="/simple-blog/">simple-blog</a></li></ul>',
-        menu_onepage: '<ul class="catlist"><li><a href="/">Frontpage</a></li><li><a href="#simple-blog">simple-blog</a></li></ul>',
-        'artlist-block': '<div class="artlist"><div class="artlist-art"><h3><a href="simple-blog/index">Simple Blog Server</a></h3></div></div><br class="clear">',
-        artlist_onepage: '<p><ul class="artlist"><li><a href="#/simple-blog/index">Simple Blog Server</a></li><li><a href="#/simple-blog/simple-blog">Simple blog 2</a></li></ul></p>'
+        artlist: '<ul class="artlist"></ul>',
+        'artlist-block': '<div class="artlist"></div><br class="clear">',
+        artlist_onepage: '<ul class="artlist"></ul>'
     },
-    title: 'Simple Blog Server',
-    file: undefined,
-    filename: '<p>./test/content/articles/simple-blog/index.md</p>\n',
-    tag: [ 'simple,blog' ],
-    body: '<h1 class="toc-1"><a name="simple-title-1" class="anchor" href="#simple-title-1"><span class="header-link"></span></a>Simple title 1</h1><h2 class="toc-2"><a name="simple-sub-title-1" class="anchor" href="#simple-sub-title-1"><span class="header-link"></span></a>Simple sub title 1</h2><p>My simple blog text.</p>\n<h1 class="toc-1"><a name="simple-title-2" class="anchor" href="#simple-title-2"><span class="header-link"></span></a>Simple title 2</h1><h2 class="toc-2"><a name="simple-sub-title-1" class="anchor" href="#simple-sub-title-1"><span class="header-link"></span></a>Simple sub title 1</h2><h3 class="toc-3"><a name="simple-sub-sub-title-1" class="anchor" href="#simple-sub-sub-title-1"><span class="header-link"></span></a>Simple sub sub title 1</h3><pre><code class="lang-javascript">\nconsole.<span class="hljs-built_in">log</span>(<span class="hljs-string">\'hello world\'</span>);\n</code></pre>\n<p><p class="image_inline"><img src="simple-blog.jpg?w=600" alt="Simple blog image" title="My image text"></p></p>\n<p><div class="toc" id="toc"><span class="toc-indent-1">&bull; <a href="#simple-title-1">Simple title 1</a></span><span class="toc-indent-2">&bull; <a href="#simple-sub-title-1">Simple sub title 1</a></span><span class="toc-indent-1">&bull; <a href="#simple-title-2">Simple title 2</a></span><span class="toc-indent-2">&bull; <a href="#simple-sub-title-1">Simple sub title 1</a></span><span class="toc-indent-3">&bull; <a href="#simple-sub-sub-title-1">Simple sub sub title 1</a></span></div></p>\n',
-    body2: '<p>This is a test of body 2.\n<div class="toc" id="toc"><span class="toc-indent-1">&bull; <a href="#simple-title-1">Simple title 1</a></span><span class="toc-indent-2">&bull; <a href="#simple-sub-title-1">Simple sub title 1</a></span><span class="toc-indent-1">&bull; <a href="#simple-title-2">Simple title 2</a></span><span class="toc-indent-2">&bull; <a href="#simple-sub-title-1">Simple sub title 1</a></span><span class="toc-indent-3">&bull; <a href="#simple-sub-sub-title-1">Simple sub sub title 1</a></span></div></p>\n',
-    body3: '<p>This is a test of body 3.\n<div class="toc" id="toc"><span class="toc-indent-1">&bull; <a href="#simple-title-1">Simple title 1</a></span><span class="toc-indent-2">&bull; <a href="#simple-sub-title-1">Simple sub title 1</a></span><span class="toc-indent-1">&bull; <a href="#simple-title-2">Simple title 2</a></span><span class="toc-indent-2">&bull; <a href="#simple-sub-title-1">Simple sub title 1</a></span><span class="toc-indent-3">&bull; <a href="#simple-sub-sub-title-1">Simple sub sub title 1</a></span></div></p>\n',
-    body4: '<p>This is a test of body 4.\n<div class="toc" id="toc"><span class="toc-indent-1">&bull; <a href="#simple-title-1">Simple title 1</a></span><span class="toc-indent-2">&bull; <a href="#simple-sub-title-1">Simple sub title 1</a></span><span class="toc-indent-1">&bull; <a href="#simple-title-2">Simple title 2</a></span><span class="toc-indent-2">&bull; <a href="#simple-sub-title-1">Simple sub title 1</a></span><span class="toc-indent-3">&bull; <a href="#simple-sub-sub-title-1">Simple sub sub title 1</a></span></div></p>\n',
-    body5: '<p>This is a test of body 5.\n<div class="toc" id="toc"><span class="toc-indent-1">&bull; <a href="#simple-title-1">Simple title 1</a></span><span class="toc-indent-2">&bull; <a href="#simple-sub-title-1">Simple sub title 1</a></span><span class="toc-indent-1">&bull; <a href="#simple-title-2">Simple title 2</a></span><span class="toc-indent-2">&bull; <a href="#simple-sub-title-1">Simple sub title 1</a></span><span class="toc-indent-3">&bull; <a href="#simple-sub-sub-title-1">Simple sub sub title 1</a></span></div></p>\n',
-
+    published: '2014-01-01',
+    title: 'Simple blog 2',
+    img: [ 'simple-blog.jpg' ],
+    body: '<p>This is content number 2.</p>\n',
+    file: 'index',
+    filename: 'my-path-to-the-files/content/articles/simple-blog/simple-blog.md',
+    base_href: '/simple-blog/',
+    artlist: [ undefined ]
 };
-
 
 buster.testCase('app/routes/search', {
     setUp: function () {
@@ -59,32 +56,63 @@ buster.testCase('app/routes/search', {
         });
     },
     'Test web routes:': {
-        '// /': function (done) {
-            request('http://127.0.0.1:' + port + '/search/', function (error, response, body) {
-                console.log(body, response.statusCode, response.request.path);
-
+        '/': function (done) {
+            //console.log('Testing search route /');
+            request('http://127.0.0.1:' + port + '/search/one-hit', function (error, response, body) {
+                //console.log(body, response.statusCode, response.request.path);
                 assert.equals(response.statusCode, 200);
-                assert.match(body, art.tag_values.menu);
-                assert.match(body, art.tag_values.artlist);
                 assert.match(body, art.body);
                 assert.match(body, art.title);
-                assert.match(body, art.tag_values.toc);
-                assert.match(body, art.tag_values.artlist_onepage);
-                assert.match(body, art.tag_values.menu_onepage);
-                assert.match(body, '/pho/simple-blog.jpg');
-                assert.match(body, '/pho/test.jpg');
+                done();
+            });
+        },
+        '/ w/query_string': function (done) {
+            //console.log('Testing search route /');
+            request('http://127.0.0.1:' + port + '/search/?q=one-hit', function (error, response, body) {
+                //console.log(body, response.statusCode, response.request.path);
+                assert.equals(response.statusCode, 200);
+                assert.match(body, art.body);
+                assert.match(body, art.title);
                 done();
             });
         },
 
-        '// /this-should-not-be-found': function (done) {
-            request('http://127.0.0.1:' + port + '/search/this-should-not-be-found', function (error, response, body) {
-                assert.equals(response.statusCode, 404);
-                assert.match(body, art.tag_values.menu);
-                assert.match(body, art.tag_values.artlist);
+        '/this-should-not-be-found': function (done) {
+            request('http://127.0.0.1:' + port + '/search/no-hit', function (error, response, body) {
+                //console.log(body, response.statusCode, response.request.path);
+                assert.equals(response.statusCode, 200);
+                assert.match(body, '"no-hit" not found');
                 done();
             });
         },
+
+        '/this-should-not-be-found w/query_string': function (done) {
+            request('http://127.0.0.1:' + port + '/search/?=no-hit', function (error, response, body) {
+                //console.log(body, response.statusCode, response.request.path);
+                assert.equals(response.statusCode, 200);
+                assert.match(body, '"no-hit" not found');
+                done();
+            });
+        },
+
+        '/this-should-blow-up': function (done) {
+            request('http://127.0.0.1:' + port + '/search/blow-up', function (error, response, body) {
+                //console.log(body, response.statusCode, response.request.path);
+                assert.equals(response.statusCode, 404);
+                assert.match(body, 'Error in search...');
+                done();
+            });
+        },
+
+        '/this-should-blow-up w/query_string': function (done) {
+            request('http://127.0.0.1:' + port + '/search/?q=blow-up', function (error, response, body) {
+                //console.log(body, response.statusCode, response.request.path);
+                assert.equals(response.statusCode, 404);
+                assert.match(body, 'Error in search...');
+                done();
+            });
+        },
+
 
 
     }
