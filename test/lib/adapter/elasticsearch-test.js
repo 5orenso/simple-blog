@@ -47,8 +47,14 @@ buster.testCase("Elasticsearch", {
         delete require.cache[require.resolve('../../../lib/adapter/elasticsearch')];
     },
 
+    'missing config input. Should blow up': function () {
+        assert.exception(function () {
+            var _es = require('../../../lib/adapter/elasticsearch')({});
+        });
+    },
+
     'search for existing word and expect one hit': function (done) {
-        when( es.query('one-hit', {}) )
+        when( es.query({_all:'one-hit'}, {}) )
             .done(function (obj) {
                 assert.isArray(obj);
                 assert.equals(obj[0].title, article.title);
@@ -65,7 +71,7 @@ buster.testCase("Elasticsearch", {
     },
 
     'search for existing word and expect two hits': function (done) {
-        when( es.query('two-hit', {}) )
+        when( es.query({_all:'two-hit'}, {}) )
             .done(function (obj) {
                 assert.isArray(obj);
                 assert.equals(obj[1].title, article.title);
@@ -82,7 +88,7 @@ buster.testCase("Elasticsearch", {
     },
 
     'search for non existing word': function (done) {
-        when( es.query('no-hit', {}) )
+        when( es.query({_all:'no-hit'}, {}) )
             .done(function (obj) {
                 assert.isArray(obj);
                 assert.equals(obj, []);
