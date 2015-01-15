@@ -6,6 +6,8 @@ Written in Node.js with support for Markdown files, images, embedded content and
 
 Base idea of this server is to keep it as lean as possible. There should be no hard admin interface or other stuff getting in the way of publishing content.
 
+Search capabilities is added with an ElasticSearch integration adapter.
+
 ## This is how it works
 
 ```
@@ -18,7 +20,11 @@ Base idea of this server is to keep it as lean as possible. There should be no h
    | image.jpg      |  auto sync   |             |              ------------
    | image2.jpg     | -----------> |             |
     ----------------               |             |
-                                    -------------    
+                                    -------------
+    ----------------                      |
+   | ElasticSearch  | --------------------
+    ----------------                                    
+
 ```
 
 - All content is worked on locally on your computer, phone og tablet. You can even work when offline.
