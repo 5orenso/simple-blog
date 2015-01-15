@@ -29,7 +29,10 @@ module.exports = {
         blog: 'test/template/blog.html',
         index: 'test/template/blog.html'
     },
-
+    log: {
+        level   : 'debug', // debug|info|notice|warning|error|crit|alert|emerg
+        console : true
+    },
     adapter: {
         mock_services: {
             //adapter: {
@@ -57,7 +60,9 @@ module.exports = {
                             },
                             search: function (query) {
                                 return when.promise(function (resolve, reject) {
-                                    if (query.body.query.match === 'one-hit') {
+                                    //console.log('elasticsearch for: ', query.body.query.match._all);
+                                    if (query.body.query.match._all === 'one-hit') {
+                                        //console.log('elasticsearch : ONE HIT');
                                         resolve({
                                             hits: {
                                                 hits: [{
@@ -66,19 +71,31 @@ module.exports = {
                                             },
                                             query: query
                                         });
-                                    } else if (query.body.query.match === 'no-hit') {
+                                    } else if (query.body.query.match._all === 'no-hit') {
+                                        //console.log('elasticsearch : NO HIT');
                                         resolve({
                                             hits: {
                                                 hits: []
                                             },
                                             query: query
                                         });
-                                    } else if (query.body.query.match === 'two-hit') {
+                                    } else if (query.body.query.match._all === 'two-hit') {
                                         resolve({
                                             hits: {
                                                 hits: [{
                                                     _source: article
                                                 }, {
+                                                    _source: article
+                                                }]
+                                            },
+                                            query: query
+                                        });
+                                    } else if (query.body.query.match._all === 'blow-up') {
+                                        reject('search inside elasticsearch mock failed, because you asked it to do so :)');
+                                    } else {
+                                        resolve({
+                                            hits: {
+                                                hits: [{
                                                     _source: article
                                                 }]
                                             },
