@@ -30,7 +30,8 @@ if (cluster.isMaster) {
         app_path = __dirname + '/../',
         logger = require(app_path + 'lib/logger')({
             workerId: cluster.worker.id
-        });
+        }),
+        local_util    = require(app_path + 'lib/local-util')();
 
     var app = express();
 
@@ -66,6 +67,7 @@ if (cluster.isMaster) {
 
     // Register routes -------------------------------
     app.use('/api', api_router);
+    app.use('/static', local_util.set_cache_headers);
     app.use('/static', express.static(config.blog.static_files_path));
     app.use('/.well-known/', express.static(config.blog.text_files_path));
     app.use('/pho/', image_router);
