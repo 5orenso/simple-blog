@@ -12,7 +12,8 @@ var express    = require('express'),
     fs         = require('fs'),
     path       = require('path'),
     app_path   = __dirname + '/../../',
-    logger     = require(app_path + 'lib/logger')();
+    logger     = require(app_path + 'lib/logger')(),
+    local_util = require(app_path + 'lib/local-util')();
 
 var stats, activeConn, timer, config;
 var api_router = express.Router();
@@ -34,6 +35,7 @@ api_router.set_config = function (conf, opt) {
 var accessLogStream = fs.createWriteStream(app_path + '/logs/api-access.log', {flags: 'a'});
 // setup the logger
 api_router.use(morgan('combined', {stream: accessLogStream}));
+api_router.use('/*', local_util.set_cache_headers);
 
 api_router.use(function(req, res, next) {
     // do logging
