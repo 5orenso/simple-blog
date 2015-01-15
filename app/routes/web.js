@@ -18,7 +18,7 @@ var express       = require('express'),
     photo_path    = path.normalize(app_path + 'content/images/'),
     logger        = require(app_path + 'lib/logger')(),
     article_util  = require(app_path + 'lib/article-util')(),
-    local_util  = require(app_path + 'lib/local-util')();
+    local_util    = require(app_path + 'lib/local-util')();
 
 swig.setFilter('markdown', article_util.replaceMarked);
 swig.setFilter('formatted', article_util.formatDate);
@@ -53,13 +53,21 @@ var accessLogStream = fs.createWriteStream(app_path + '/logs/web-access.log', {f
 web_router.use(morgan('combined', {stream: accessLogStream}));
 
 // Setup static routes
+web_router.use('/js/', local_util.set_cache_headers);
 web_router.use('/js/', express.static(app_path + 'template/current/js/'));
+web_router.use('/images/', local_util.set_cache_headers);
 web_router.use('/images/', express.static(app_path + 'template/current/images/'));
+web_router.use('/css/', local_util.set_cache_headers);
 web_router.use('/css/', express.static(app_path + 'template/current/css/'));
+web_router.use('/fonts/', local_util.set_cache_headers);
 web_router.use('/fonts/', express.static(app_path + 'template/current/fonts/'));
+web_router.use('/photos/', local_util.set_cache_headers);
 web_router.use('/photos/', express.static(app_path + 'content/images/'));
+web_router.use('/favicon.ico/', local_util.set_cache_headers);
 web_router.use('/favicon.ico', express.static(app_path + 'template/current/favicon.ico'));
+web_router.use('/robots.txt/', local_util.set_cache_headers);
 web_router.use('/robots.txt', express.static(app_path + 'template/robots.txt'));
+web_router.use('/sitemap.xml/', local_util.set_cache_headers);
 web_router.use('/sitemap.xml', express.static(app_path + 'template/sitemap.xml'));
 
 // Main route for blog articles.
