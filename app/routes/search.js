@@ -16,7 +16,8 @@ var express      = require('express'),
     template_path = path.normalize(app_path + 'template/current/'),
     photo_path    = path.normalize(app_path + 'content/images/'),
     article_util = require(app_path + 'lib/article-util')(),
-    logger       = require(app_path + 'lib/logger')();
+    logger       = require(app_path + 'lib/logger')(),
+    local_util    = require(app_path + 'lib/local-util')();
 
 var stats, activeConn, timer, config;
 var search_router = express.Router();
@@ -40,11 +41,13 @@ var accessLogStream = fs.createWriteStream(app_path + '/logs/search-access.log',
 // setup the logger
 search_router.use(morgan('combined', {stream: accessLogStream}));
 
+search_router.use('/*', local_util.set_cache_headers);
+
 // test route to make sure everything is working (accessed at GET http://localhost:8080/search)
 search_router.get('/*', function(req, res) {
     var lu    = require(app_path + 'lib/local-util')({config: search_router.config});
     var request_url = article_util.getUrlFromRequest(req);
-    console.log('search for:', (_.isEmpty(req.query.q) ? request_url : req.query.q));
+    //console.log('search for:', (_.isEmpty(req.query.q) ? request_url : req.query.q));
     // Check for cached file
     // If not cached compile file and store it.
     // TODO: How do we bypass the cache?
@@ -65,9 +68,10 @@ search_router.get('/*', function(req, res) {
     lu.timers_reset();
     lu.timer('routes/search->request');
 
+    var search_for = lu.safe_string(_.isEmpty(req.query.q) ? request_url : req.query.q);
     var query = {
         //_all: lu.safe_string(req.query.q)
-        _all: lu.safe_string(_.isEmpty(req.query.q) ? request_url : req.query.q)
+        _all: search_for
     };
     var filter = {};
 
@@ -80,11 +84,13 @@ search_router.get('/*', function(req, res) {
             lu.timer('routes/search->search_articles');
             var article = {};
             if (_.isArray(results) && _.isArray(results[0]) && _.isObject(results[0][0])) {
-                article = results[0][0]._source;
+                if (_.isObject(results[0][0])) {
+                    article = results[0][0];
+                }
                 article.artlist = [];
                 for (var i in results[0]) {
                     if (results[0][i]) {
-                        var art = results[0][i]._source;
+                        var art = results[0][i];
                         article.artlist.push(art);
                     }
                 }
@@ -98,7 +104,7 @@ search_router.get('/*', function(req, res) {
                 article_util.replaceTagsWithContent(article);
                 lu.timer('article_util.replaceTagsWithContent');
             } else {
-                article.title = '"' + lu.safe_string(req.query.q) + '" not found';
+                article.title = '"' + lu.safe_string(search_for) + '" not found';
             }
             res.send(tpl({blog: search_router.config.blog, article: article}));
         })
