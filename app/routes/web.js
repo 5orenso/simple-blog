@@ -71,6 +71,7 @@ web_router.use('/sitemap.xml/', local_util.set_cache_headers);
 web_router.use('/sitemap.xml', express.static(app_path + 'template/sitemap.xml'));
 
 // Main route for blog articles.
+web_router.use('/*', local_util.set_no_cache_headers);
 web_router.get('/*', function(req, res) {
     var lu    = require(app_path + 'lib/local-util')({config: web_router.config});
     // Resolve filename
