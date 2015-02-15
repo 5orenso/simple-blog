@@ -95,6 +95,13 @@
                             {% endfor %}
                         {% endif %}
                     </ul>
+
+                    <div class="3u search_field">
+                        <form method="GET" action="/search/">
+                            <input type="text" name="q" placeholder="Søk i alt innhold...">
+                        </form>
+                    </div>
+
                 </div>
                 <header class="logo">
                     <a href="/">{{ blog.title|raw }}</a>
@@ -133,6 +140,7 @@
 				</footer>  -->
 			</section>
         {% endif %}
+
 
         {% if article.artlist[1] && article.file != 'index' %}
         <div class="bxslider">
