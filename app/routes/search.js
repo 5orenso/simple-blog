@@ -60,6 +60,11 @@ search_router.get('/*', function(req, res) {
     //var template = 'blog.html';
     var tpl = swig.compileFile(template);
 
+    var category = require(app_path + 'lib/category')({
+        logger: logger,
+        config: search_router.config
+    });
+
     var search = require(app_path + 'lib/search')({
         logger: logger,
         config: search_router.config
@@ -75,7 +80,7 @@ search_router.get('/*', function(req, res) {
     };
     var filter = {};
 
-    when.all([search.query(query, filter)])
+    when.all([search.query(query, filter), category.list('/')])
         .then(function (results) {
             lu.timer('routes/search->search_articles');
             return results;
@@ -87,6 +92,7 @@ search_router.get('/*', function(req, res) {
                 if (_.isObject(results[0][0])) {
                     article = results[0][0];
                 }
+                article.catlist = results[1];
                 article.artlist = [];
                 for (var i in results[0]) {
                     if (results[0][i]) {
