@@ -5,18 +5,19 @@
  * Licensed under the MIT license.
  */
 'use strict';
-var express      = require('express'),
-    morgan       = require('morgan'),
-    when         = require('when'),
-    _            = require('underscore'),
-    fs           = require('fs'),
+var express       = require('express'),
+    morgan        = require('morgan'),
+    when          = require('when'),
+    _             = require('underscore'),
+    fs            = require('fs'),
     swig          = require('swig'),
-    path         = require('path'),
-    app_path     = __dirname + '/../../',
+    path          = require('path'),
+    app_path      = __dirname + '/../../',
     template_path = path.normalize(app_path + 'template/current/'),
     photo_path    = path.normalize(app_path + 'content/images/'),
-    article_util = require(app_path + 'lib/article-util')(),
-    logger       = require(app_path + 'lib/logger')(),
+    article_util  = require(app_path + 'lib/article-util')(),
+    category_util = require(app_path + 'lib/category-util')(),
+    logger        = require(app_path + 'lib/logger')(),
     local_util    = require(app_path + 'lib/local-util')();
 
 var stats, activeConn, timer, config;
@@ -87,12 +88,13 @@ search_router.get('/*', function(req, res) {
         })
         .then(function (results) {
             lu.timer('routes/search->search_articles');
+            var catlist = results[1];
             var article = {};
             if (_.isArray(results) && _.isArray(results[0]) && _.isObject(results[0][0])) {
                 if (_.isObject(results[0][0])) {
                     article = results[0][0];
                 }
-                article.catlist = results[1];
+                article.catlist = catlist;
                 article.artlist = [];
                 for (var i in results[0]) {
                     if (results[0][i]) {
