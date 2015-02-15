@@ -1320,3 +1320,6 @@ div.bx-wrapper .bx-pager, div.bx-wrapper .bx-controls-auto {
     margin-right: 30%;
     margin-top: 5px;
 }
+.search_field input {
+    padding: .5em;
+}
