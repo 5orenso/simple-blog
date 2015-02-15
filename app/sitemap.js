@@ -70,4 +70,8 @@ when.all([category.list('/'), article.list(article_path)])
         lu.timer('routes/sitemap->elasticsearch');
         lu.timer('routes/sitemap->request');
         lu.send_udp({timers: lu.timers_get()});
+        setTimeout(function () {
+            process.exit(1);
+        }, 5000);
+
     });
