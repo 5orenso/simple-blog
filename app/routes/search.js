@@ -100,6 +100,9 @@ search_router.get('/*', function(req, res) {
                         article.artlist.push(art);
                     }
                 }
+                lu.timer('category_util.format_catlist');
+                category_util.format_catlist(article, catlist);
+                lu.timer('category_util.format_catlist');
                 lu.timer('article_util.formatArtlist');
                 article_util.formatArtlist(article, article.artlist);
                 lu.timer('article_util.formatArtlist');
