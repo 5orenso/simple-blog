@@ -53,7 +53,7 @@ when.all([category.list('/'), article.list(article_path)])
         lu.timer('routes/sitemap->load_category_and_article_lists');
         when.all([
             article.sitemap(content_lists[0], content_lists[1]),
-            search.index_artlist(content_lists[1])
+            search.index_artlist(content_lists[1], true)
         ])
             .then(function (results) {
                 return results;
