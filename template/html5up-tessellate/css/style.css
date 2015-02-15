@@ -1314,3 +1314,9 @@ div.bx-wrapper .bx-pager, div.bx-wrapper .bx-controls-auto {
 	padding: 0;
 	padding-left: 30px;
 }
+
+.search_field  {
+    float: right;
+    margin-right: 30%;
+    margin-top: 5px;
+}
