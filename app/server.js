@@ -33,6 +33,10 @@ if (config) {
 app.use(bodyParser.json());
 
 // Include route handlers ------------------------
+var rss_router = require('./routes/rss');
+rss_router.set_config(config, {
+    workerId: 1 //cluster.worker.id,
+});
 var api_router = require('./routes/api');
 api_router.set_config(config, {
     workerId: 1 //cluster.worker.id,
@@ -52,6 +56,7 @@ search_router.set_config(config, {
 
 // Register routes -------------------------------
 app.use('/api', api_router);
+app.use('/rss', rss_router);
 app.use('/static', local_util.set_cache_headers);
 app.use('/static', express.static(config.blog.static_files_path));
 app.use('/.well-known/', express.static(config.blog.text_files_path));
