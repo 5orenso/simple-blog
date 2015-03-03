@@ -4,11 +4,11 @@
 	<description>
 		{{ blog.description }}
 	</description>
-	<link>http://www.feedforall.com/industry-solutions.htm</link>
+	<link>{{ blog.protocol }}://{{ blog.domain }}/</link>
 	<category domain="{{ blog.domain }}">
 		{{ blog.tags }}
 	</category>
-	<copyright>{{ blog.copyright }}Copyright 2004 NotePage, Inc.</copyright>
+	<copyright>{{ blog.copyright }}</copyright>
 	<docs>{{ blog.protocol }}://{{ blog.domain }}/rss</docs>
 	<language>en-us</language>
 	<lastBuildDate>{{ ''|rssdate }}</lastBuildDate>
@@ -29,7 +29,5 @@
     </item>
     {% endif %}
     {% endfor %}
-
-
 </channel>
 </rss>
