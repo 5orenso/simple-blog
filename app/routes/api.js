@@ -82,7 +82,7 @@ api_router.post('/report', function(req, res) {
     });
 
     // Write shit to file.
-    var milliseconds = (new Date).getTime();
+    var milliseconds = (new Date()).getTime();
     var fs = require('fs');
     fs.writeFile("/tmp/javascript-module-performance-" + milliseconds, JSON.stringify(req.body), function(err) {
         if(err) {
