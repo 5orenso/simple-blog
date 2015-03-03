@@ -1,0 +1,35 @@
+<rss version="2.0">
+<channel>
+	<title>{{ blog.title }}</title>
+	<description>
+		{{ blog.description }}
+	</description>
+	<link>http://www.feedforall.com/industry-solutions.htm</link>
+	<category domain="{{ blog.domain }}">
+		{{ blog.tags }}
+	</category>
+	<copyright>{{ blog.copyright }}Copyright 2004 NotePage, Inc.</copyright>
+	<docs>{{ blog.protocol }}://{{ blog.domain }}/rss</docs>
+	<language>en-us</language>
+	<lastBuildDate>{{ ''|rssdate }}</lastBuildDate>
+	<managingEditor>{{ blog.email }}</managingEditor>
+	<pubDate>{{ ''|rssdate }}</pubDate>
+	<webMaster>{{ blog.email }}</webMaster>
+	<generator>Simple-blog - github.com/5orenso/simple-blog/</generator>
+    {% for a in article.artlist %}
+    {% if loop.index < 30 %}
+    <item>
+        <title>{{ a.title }}</title>
+        <description>{{ a.teaser }}</description>
+        <link>{{ blog.protocol }}://{{ blog.domain }}{{ a.base_href }}{{ a.file }}</link>
+        <category domain="{{ blog.domain }}">
+            {{ a.base_href }}
+        </category>
+        <pubDate>{% if article.published %}{{ article.published|rssdate }}{% endif %}</pubDate>
+    </item>
+    {% endif %}
+    {% endfor %}
+
+
+</channel>
+</rss>
