@@ -5,6 +5,11 @@ module.exports = {
         slogun: '',
         protocol: 'http',
         domain: 'www.litt.no',
+
+        tags: '',
+        copyright: 'Copyright 2014 Sorenso, litt.no',
+        email: 'sorenso@gmail.com',
+
         disqus: 'Simple blog server',
         social: {
             twitter: '',
@@ -29,12 +34,11 @@ module.exports = {
                 name: '<a href="https://twitter.com/sorenso">Sorenso</a>',
             }
         },
-        /* menu: [
+        menu: [
             { name: 'iPad', url: 'ipad' },
             { name: 'iPhone', url: 'iphone' },
-            { name: 'Mac', url: 'mac' },
-        ]
-        */
+            { name: 'Mac', url: 'mac' }
+        ],
         rewrites: [
             { url: '/wip4/.*', target: '/search/?q=', code: 302, use_url: true, regex: /^\/wip4\/(.+?)\/.+?$/, regex_result: "$1" },
             { url: '/photoalbum/view.*', target: '/images/pix.gif', code: 302 },
