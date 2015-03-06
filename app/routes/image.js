@@ -14,9 +14,12 @@ var express          = require('express'),
     imagemagick      = require('imagemagick'),
     mkdirp           = require('mkdirp'),
     url              = require('url'),
+    wsd              = require('websequencediagrams'),
+    crypto           = require('crypto'),
     app_path         = __dirname + '/../../',
     photo_path       = path.normalize(app_path + 'content/images/'),
     photo_cache_path = path.normalize(app_path + 'content/images_cached/'),
+    wsd_path         = '/tmp/',
     logger           = require(app_path + 'lib/logger')(),
     local_util       = require(app_path + 'lib/local-util')();
 
@@ -153,7 +156,69 @@ function serveImage(response, image_filename_resized) {
     });
 }
 
+
+function makeWebsequenceDiagram(wsd_text, path) {
+    return when.promise(function (resolve, reject) {
+        // ["default",
+        //"earth",
+        //    "modern-blue",
+        //    "mscgen",
+        //    "omegapple",
+        //    "qsd",
+        //    "rose",
+        //    "roundgreen",
+        //    "napkin"];
+
+        wsd.diagram(wsd_text, "roundgreen", "png", function (err, buf, typ) {
+            if (err) {
+                reject(err);
+            } else {
+                //console.log("Received MIME type:", typ);
+                var filename = path + crypto.createHash('sha256').update(wsd_text).digest("hex") + '.png';
+                //console.log(filename);
+                fs.writeFile(filename, buf, function (err) {
+                    if (err) {
+                        reject(err);
+                    }
+                    resolve(filename);
+                });
+            }
+        });
+    });
+}
+
+
 image_router.use('/*', local_util.set_cache_headers);
+
+image_router.get('/wsd/*', function(req, res) {
+    var lu    = require(app_path + 'lib/local-util')({config: image_router.config});
+    var parsed_url = getUrlFromRequest(req);
+    var filename = wsd_path + crypto.createHash('sha256').update(parsed_url.query.data).digest("hex") + '.png';
+    when(pathExists(wsd_path))
+        .then(function () {
+            return fileExists(filename);
+        })
+        .catch(function () {
+            console.log('wsd dont exist. Have to generate.');
+            lu.timer('routes/image->wsd');
+            return makeWebsequenceDiagram(parsed_url.query.data, wsd_path);
+        })
+        .then(function (wsd_file) {
+            console.log('wsd exists. Serving cached file.');
+            lu.timer('routes/image->wsd');
+            return serveImage(res, wsd_file);
+        })
+        .done(function () {
+            lu.timer('routes/image->request');
+            lu.send_udp({ timers: lu.timers_get() });
+        }, function (error) {
+            lu.timer('routes/image->request');
+            lu.send_udp({ timers: lu.timers_get() });
+            res.status(404).send(error);
+            res.end();
+        });
+
+});
 
 // test route to make sure everything is working (accessed at GET http://localhost:8080/api)
 image_router.get('/*', function(req, res) {
