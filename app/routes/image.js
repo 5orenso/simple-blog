@@ -175,7 +175,6 @@ function makeWebsequenceDiagram(wsd_text, path) {
             } else {
                 //console.log("Received MIME type:", typ);
                 var filename = path + crypto.createHash('sha256').update(wsd_text).digest("hex") + '.png';
-                //console.log(filename);
                 fs.writeFile(filename, buf, function (err) {
                     if (err) {
                         reject(err);
@@ -199,12 +198,10 @@ image_router.get('/wsd/*', function(req, res) {
             return fileExists(filename);
         })
         .catch(function () {
-            console.log('wsd dont exist. Have to generate.');
             lu.timer('routes/image->wsd');
             return makeWebsequenceDiagram(parsed_url.query.data, wsd_path);
         })
         .then(function (wsd_file) {
-            console.log('wsd exists. Serving cached file.');
             lu.timer('routes/image->wsd');
             return serveImage(res, wsd_file);
         })
