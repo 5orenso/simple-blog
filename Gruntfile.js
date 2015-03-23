@@ -48,15 +48,34 @@ module.exports = function (grunt) {
             }
         },
         shell: {
+            getLatestTag: {
+                command: 'git describe --abbrev=0 --tags',
+                options: {
+                    callback: function (err, stdout, stderr, cb) {
+                        stdout = stdout.trim();
+                        // If we have a leading 'v' in the version, remove it
+                        if (stdout.substring(0, 1) === 'v') {
+                            stdout = stdout.substring(1);
+                        }
+                        console.log('Latest tag: ' + stdout);
+                        grunt.config.set('latestTag', stdout);
+                        console.log('s3cmd put artifact/' + stdout + '.tar.gz s3://simple-blog-releases/');
+                        console.log('');
+                        console.log('PS! Remember to upload a corresponding config tar-ball to s3://simple-blog-<purpose>-configs');
+                        cb();
+                    }
+                }
+            },
             multiple: {
                 command: [
                     'rm -rf artifact',
                     'mkdir -p artifact',
                     'mv node_modules ../node_modules2',
                     'npm install --production',
-                    'tar -zcf artifact/simple-blog.tar.gz .',
+                    'tar --exclude "./.git*" --exclude "./node_modules" --exclude "./test*" --exclude "./artifact" --exclude "./app/config/config*" --exclude "./.idea" --exclude "./dev" -zcf artifact/<%= latestTag %>.tar.gz .',
                     'rm -rf node_modules',
-                    'mv ../node_modules2 node_modules'
+                    'mv ../node_modules2 node_modules',
+                    'bash changelog.sh'
                 ].join('&&')
             }
         },
