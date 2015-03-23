@@ -72,7 +72,8 @@ module.exports = function (grunt) {
                     'mkdir -p artifact',
                     'mv node_modules ../node_modules2',
                     'npm install --production',
-                    'tar --exclude "./.git*" --exclude "./node_modules" --exclude "./test*" --exclude "./artifact" --exclude "./app/config/config*" --exclude "./.idea" --exclude "./dev" -zcf artifact/<%= latestTag %>.tar.gz .',
+                    'tar --exclude "./.git*" --exclude "./node_modules" --exclude "./test*" --exclude "./artifact" ' +
+                    '--exclude "./app/config/config*" --exclude "./.idea" --exclude "./dev" -zcf artifact/<%= latestTag %>.tar.gz .',
                     'rm -rf node_modules',
                     'mv ../node_modules2 node_modules',
                     'bash changelog.sh'
