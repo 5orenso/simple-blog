@@ -1339,3 +1339,41 @@ div.bx-wrapper .bx-pager, div.bx-wrapper .bx-controls-auto {
 .search_field_full form input[type=text] {
     padding: .5em;
 }
+
+.flot-legend {
+    box-sizing: border-box;
+    float: left;
+}
+.flot-legend table tr {
+    border : 0;
+}
+.flot-legend table td {
+    font-size: 0.9em;
+    line-height: 1.4em;
+    padding: 0.1em;
+    vertical-align: middle;
+}
+.flot-legend table td.legendLabel {
+    padding-left : .5em;
+    padding-top : .1em;
+}
+.flot-legend table td.legendColorBox {
+    width: 15px;
+}
+.flot-choices label {
+    font-size: 0.9em !important;
+}
+
+.flot-placeholder {
+    width: 100%;
+    height: 100%;
+    font-size: 12px;
+    line-height: 1.1em;
+}
+
+.legend table {
+    border-spacing: 5px;
+}
+.legend {
+    width: 100px !important;
+}
