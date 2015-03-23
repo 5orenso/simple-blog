@@ -1,15 +1,22 @@
 {
-  "name": "promises",
-  "description": "Test",
+  "name": "simple-blog",
+  "description": "A very simple blog server. Written in Node.js with support for Markdown files, images, embedded content and all other stuff you would expect from a blog.",
   "version": "0.1.0",
-  "homepage": "https://github.com/schibsted/promises",
+  "homepage": "https://github.com/5orenso/simple-blog",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/5orenso/simple-blog"
+  },
+  "bugs": {
+    "url": "https://github.com/5orenso/simple-blog/issues"
+  },
   "author": {
     "name": "Øistein Sørensen",
     "email": "sorenso@gmail.com"
   },
-  "main": "main",
+  "main": "app/server.js",
   "engines": {
-    "node": ">=0.10.21"
+    "node": ">=0.10.33"
   },
   "scripts": {
     "test": "grunt",
