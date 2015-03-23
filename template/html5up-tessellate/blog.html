@@ -17,7 +17,11 @@
 		<script src="/js/jquery.scrolly.min.js"></script>
 		<script src="/js/skel.min.js"></script>
         <script src="/js/jquery.bxslider.min.js"></script>
-		<script src="/js/init.js"></script>
+
+        <script src="/js/jquery.flot.js"></script>
+        <script src="/js/jquery.flot.orderBars.js"></script>
+
+        <script src="/js/init.js"></script>
         <script src="/js/highlight.min.js"></script>
         <script>hljs.initHighlightingOnLoad();</script>
 		<noscript>
@@ -31,21 +35,59 @@
         <link rel="stylesheet" href="/css/owl-carousel/owl.theme.css">
         <script src="/css/owl-carousel/owl.carousel.js"></script>
 
-
         <link type="text/css" rel="stylesheet" href="/css/jquery.mmenu.all.css" />
         <script src="/js/jquery.mmenu.min.all.js"></script>
         <script type="text/javascript">
-            $(function() {
-                $('nav#menu').mmenu({
-                },{
-                });
-            });
-        </script>
+             $(function() {
+                 $('nav#menu').mmenu({},{});
+             });
 
+             function plotAccordingToChoices(datasets, choiceContainer, placeholder, legend, xaxis, yaxis) {
+                 var data = [];
+                 choiceContainer.find("input:checked").each(function () {
+                     var key = $(this).attr("name");
+                     if (key && datasets[key]) {
+                         data.push(datasets[key]);
+                     }
+                 });
+                 if (data.length > 0) {
+                     $.plot(placeholder, data, {
+                         yaxis: yaxis,
+                         xaxis: xaxis,
+                         legend: {
+                             container: legend,
+                             sorted: "ascending",
+                             noColumns: 1,
+                             labelFormatter: function(label, series) {
+                                 // series is the series object for the label
+                                 return label;
+                             }
+                         },
+                         series: {
+                             bars: {
+                                 order: 1,
+                                 barWidth: 1.2,
+                                 lineWidth: 0,
+                                 align: 'center',
+                                 fill: 1
+                             }
+                         },
+//                         colors: ['#ff6666', '#ff3333', '#ff0000', '#cc0000', '#00ffff']
+
+//                         valueLabels: {
+//                             show: true
+//                         }
+                     });
+                 }
+             }
+
+        </script>
         <!--[if lte IE 8]><link rel="stylesheet" href="/css/ie/v8.css" /><![endif]-->
 		<!--[if lte IE 9]><link rel="stylesheet" href="/css/ie/v9.css" /><![endif]-->
 	</head>
 	<body>
+
+
     {% if blog.google_tag_manager %}
     <!-- Google Tag Manager -->
     <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-WZPRG9"
