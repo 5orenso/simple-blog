@@ -1,6 +1,7 @@
 ## A very simple blog server
 [![Build Status](https://travis-ci.org/5orenso/simple-blog.svg?branch=master)](https://travis-ci.org/5orenso/simple-blog)
 [![Coverage Status](https://coveralls.io/repos/5orenso/simple-blog/badge.svg?branch=master)](https://coveralls.io/r/5orenso/simple-blog?branch=master)
+[![GitHub version](https://badge.fury.io/gh/5orenso%2Fsimple-blog.svg)](http://badge.fury.io/gh/5orenso%2Fsimple-blog)
 
 Written in Node.js with support for Markdown files, images, embedded content and all other stuff you would expect from a blog.
 
