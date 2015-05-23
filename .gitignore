@@ -36,3 +36,5 @@ test/content/images_cached
 sitemap.xml
 pm2-run.json
 artifact/
+aws_launch_config/
+
