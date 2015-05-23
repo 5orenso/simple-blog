@@ -141,3 +141,18 @@ More to come :)
 - [Express](http://expressjs.com/)
 - [Swig](https://github.com/paularmstrong/swig)
 
+
+### HOWTO upgrade dev environment
+```bash
+npm install buster --save-dev
+npm install buster-istanbul --save-dev
+npm install grunt --save-dev
+npm install grunt-buster --save-dev
+npm install grunt-contrib-jshint --save-dev
+npm install grunt-contrib-nodeunit --save-dev
+npm install grunt-contrib-watch --save-dev
+npm install grunt-coveralls --save-dev
+npm install grunt-jscs --save-dev
+npm install grunt-nodemon --save-dev
+npm install grunt-shell --save-dev
+```
