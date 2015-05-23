@@ -12,6 +12,17 @@ var buster       = require('buster'),
         },
     });
 
+var htmlCoponents = {
+    flot: new RegExp('<div class="row">[\\s\\S]+<div class="flot-container 10u">' +
+    '[\\s\\S]+<div id="flotplaceholder_\\d+_\\d+" class="flot-placeholder".+?>[\\s\\S]+' +
+    '</div>[\\s\\S]+</div>[\\s\\S]+</div>[\\s\\S]+' +
+    '<div class="row">[\\s\\S]+<div.+?class="flot-choices 12u">[\\s\\S]*' +
+    '</div>[\\s\\S]+</div>[\\s\\S]+' +
+    '<script type="text/javascript">[\\s\\S]+' +
+    '\\$\\(function\\(\\) \\{[\\s\\S]+' +
+    '</script>'),
+    wsd: new RegExp('<img src="\\/pho\\/wsd\\/\\?data=.+?">')
+};
 var markdown_input = "## My H2 Headline.\n" +
     "[my link](http://www.example.com)\n" +
     "![my image](http://www.example.com/image.jpg)\n" +
@@ -32,6 +43,15 @@ var article_md = ":title My nice title\n" +
     "With sub content belonging to sections.\n" +
     "## Table of contents\n" +
     "[:toc]\n" +
+        '```wsd\n' +
+        'title Central Identification Service\n' +
+        'Browser->VG.no: GET /\n' +
+        '```\n' +
+        '```flot\n' +
+        'xaxis: {}\n' +
+        'yaxis: {}\n' +
+        '[{"data":[[1,2]]}]\n' +
+        '```\n' +
     ":tag foo,bar,gomle\n";
 
 var article_obj = { tag_values: { toc: '', fact: '', artlist: '' },
@@ -41,7 +61,16 @@ var article_obj = { tag_values: { toc: '', fact: '', artlist: '' },
     title: 'My nice title',
     img: [ 'test-image.jpg' ],
     aside: 'My aside content',
-    body: 'This is my body content. [:fa-link]\n// youtube.com #video #yolo @sorenso\n## Content span\nThis can span several lines if you want to.\n### Even more titles\nWith sub content belonging to sections.\n## Table of contents\n[:toc]\n',
+    body: 'This is my body content. [:fa-link]\n// youtube.com #video #yolo @sorenso\n## Content span\nThis can span several lines if you want to.\n### Even more titles\nWith sub content belonging to sections.\n## Table of contents\n[:toc]\n' +
+        '```wsd\n' +
+        'title Central Identification Service\n' +
+        'Browser->VG.no: GET /\n' +
+        '```\n' +
+        '```flot\n' +
+        'xaxis: {}\n' +
+        'yaxis: {}\n' +
+        '[{"data":[[1,2]]}]\n' +
+        '```\n',
     tag: [ 'foo,bar,gomle' ] };
 
 var article_obj_html = {
@@ -53,7 +82,13 @@ var article_obj_html = {
         artlist_onepage: '<ul class="artlist"><li><a href="#/simple-blog/index">Simple Blog Server</a></li></ul>'
     },
     title: 'My nice title',
-    body: '<p>This is my body content. [:fa-link]\n// youtube.com #video #yolo @sorenso</p>\n<h2 class="toc-2"><a name="content-span" class="anchor" href="#content-span"><span class="header-link"></span></a>Content span</h2><p>This can span several lines if you want to.</p>\n<h3 class="toc-3"><a name="even-more-titles" class="anchor" href="#even-more-titles"><span class="header-link"></span></a>Even more titles</h3><p>With sub content belonging to sections.</p>\n<h2 class="toc-2"><a name="table-of-contents" class="anchor" href="#table-of-contents"><span class="header-link"></span></a>Table of contents</h2><p>[:toc]</p>\n',
+    body: '<p>This is my body content. [:fa-link]\n' +
+        '// youtube.com #video #yolo @sorenso</p>\n' +
+        '<h2 class="toc-2"><a name="content-span" class="anchor" href="#content-span"><span class="header-link"></span></a>Content span</h2><p>This can span several lines if you want to.</p>\n' +
+        '<h3 class="toc-3"><a name="even-more-titles" class="anchor" href="#even-more-titles"><span class="header-link"></span></a>Even more titles</h3><p>With sub content belonging to sections.</p>\n' +
+        '<h2 class="toc-2"><a name="table-of-contents" class="anchor" href="#table-of-contents"><span class="header-link"></span></a>Table of contents</h2><p>[:toc]\n' +
+        '<img src="/pho/wsd/?data=title%20Central%20Identification%20Service%0ABrowser-%3EVG.no%3A%20GET%20%2F%0A"></p>\n' +
+        '<p><div class="row">\n',
     img: [ 'test-image.jpg' ],
     tag: [ 'foo,bar,gomle' ],
     author: 'sorenso',
@@ -100,6 +135,19 @@ buster.testCase('lib/article-util', {
         'formatDate wo/input': function () {
             var result = article_util.formatDate();
             var expected_result = strftime('%b %e');
+            assert.equals(result, expected_result);
+        },
+
+        'rssDate w/input 2014-12-24 17:00:00': function () {
+            var date = '2014-12-24 17:00:00';
+            var result = article_util.rssDate(date);
+            var expected_result = new Date(Date.parse(date)).toUTCString();
+            assert.equals(result, expected_result);
+        },
+
+        'rssDate wo/input': function () {
+            var result = article_util.rssDate();
+            var expected_result = new Date(Date.parse(strftime('%Y-%m-%d %H:%M:%S'))).toUTCString();
             assert.equals(result, expected_result);
         },
 
@@ -201,13 +249,19 @@ buster.testCase('lib/article-util', {
                 base_href: article_obj.base_href
             };
             var result = article_util.formatArticleSections(article);
+            //console.log(article);
             assert.equals(article.title, article_obj_html.title);
-            assert.equals(article.body, article_obj_html.body);
+            assert.match(article.body, article_obj_html.body);
             assert.equals(article.img, article_obj_html.img);
             assert.equals(article.tag, article_obj_html.tag);
             assert.equals(article.author, article_obj_html.author);
             assert.equals(article.published, article_obj_html.published);
             assert.equals(article.base_href, article_obj_html.base_href);
+
+            //<div class="row">\n    <div class="flot-container 10u">        <div id="flotplaceholder_1427899873730_7935" class="flot-placeholder" style="float:left; width:100%; min-height:350px"></div>\n    </div>\n    <div id="flot-legend_1427899873730_7935" class="flot-legend 2u"></div>\n</div></p>\n<p><div class="row">\n    <div id="flot-choices_1427899873730_7935" class="flot-choices 12u"></div>\n</div></p>\n<script type="text/javascript">\n $(function() { \n     var datasets_1427899873730_7935 = \n\n[{"data":[[1,2]]}]\n; \n     var xaxis = JSON.parse(\'{}\');\n     var yaxis = JSON.parse(\'{}\');\n     // hard-code color indices to prevent them from shifting as \n     // countries are turned on/off \n     var i = 0; \n     // insert checkboxes \n     var choiceContainer_1427899873730_7935 = $("#flot-choices_1427899873730_7935"); \n     var keys = [];\n     for (var key in datasets_1427899873730_7935) {\n         keys.push(key);\n     }\n     keys.sort();\n     for (var i=0; i < keys.length; i++) {\n         var key = keys[i];\n         var val = datasets_1427899873730_7935[key];\n         choiceContainer_1427899873730_7935.append("<input type=\'checkbox\' name=\'" + key + \n         "\' checked=\'checked\' id=\'id" + key + "\'></input>" + \n        "<label for=\'id" + key + "\'>" \n         + val.label + "</label>"); \n     } \n     function plot_1427899873730_7935() {\n         plotAccordingToChoices(datasets_1427899873730_7935, choiceContainer_1427899873730_7935, "#flotplaceholder_1427899873730_7935", "#flot-legend_1427899873730_7935", xaxis, yaxis); \n\n\n     }\n     choiceContainer_1427899873730_7935.find("input").click(plot_1427899873730_7935); \n     plotAccordingToChoices(datasets_1427899873730_7935, choiceContainer_1427899873730_7935, "#flotplaceholder_1427899873730_7935", "#flot-legend_1427899873730_7935", xaxis, yaxis); \n }); \n</script>
+
+            assert.match(article.body, htmlCoponents.flot);
+            assert.match(article.body, htmlCoponents.wsd);
 
             refute(result);
         },
