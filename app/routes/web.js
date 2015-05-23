@@ -67,6 +67,8 @@ web_router.use('/favicon.ico/', local_util.set_cache_headers);
 web_router.use('/favicon.ico', express.static(app_path + 'template/current/favicon.ico'));
 web_router.use('/robots.txt/', local_util.set_cache_headers);
 web_router.use('/robots.txt', express.static(app_path + 'template/robots.txt'));
+web_router.use('/keybase.txt/', local_util.set_cache_headers);
+web_router.use('/keybase.txt', express.static(app_path + 'template/keybase.txt'));
 web_router.use('/sitemap.xml/', local_util.set_cache_headers);
 web_router.use('/sitemap.xml', express.static(app_path + 'template/sitemap.xml'));
 
