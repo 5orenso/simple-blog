@@ -47,7 +47,9 @@ web_router.set_config(config, {
 });
 var image_router = require('./routes/image');
 image_router.set_config(config, {
-    workerId: 1 //cluster.worker.id,
+    workerId: 1, //cluster.worker.id,
+    photo_path: config.adapter.markdown.photo_path,
+    photo_cache_path: config.adapter.markdown.photo_path + '../images_cached/'
 });
 var search_router = require('./routes/search');
 search_router.set_config(config, {
