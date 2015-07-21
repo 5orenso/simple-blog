@@ -7,7 +7,7 @@ module.exports = {
         domain: 'www.litt.no',
 
         tags: '',
-        copyright: 'Copyright 2014 Sorenso, litt.no',
+        copyright: 'Copyright 2014-2015 Sorenso, litt.no',
         email: 'sorenso@gmail.com',
 
         disqus: 'Simple blog server',
