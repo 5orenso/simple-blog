@@ -36,7 +36,7 @@ image_router.set_config = function (conf, opt) {
             photo_path = path.normalize(opt.photo_path);
         }
         if (opt.hasOwnProperty('photo_cache_path')) {
-            photo_cache_path = path.normalize(opt.photo_cache_path);
+            photo_cache_path = path.normalize(photo_cache_path + opt.photo_cache_path + '/');
         }
     }
     if (conf) {
