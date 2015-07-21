@@ -159,11 +159,13 @@ Looks like this:
 ```
 
 Turns into this:
+
 - Cat
 - Dog
 - Horse
 
-And ordered list:
+An ordered list:
+
 1. Donkey
 2. Squirrel
 3. Rat
