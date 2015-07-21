@@ -43,8 +43,11 @@
 
     code {
         font-family: Courier New, monospace;
-        font-size: 0.8em;
+        font-size: 1.0em;
         line-height: 1.2em;
+        padding: 0.3em;
+        border-radius: 3px;
+        background-color: #f0f0f0;
     }
 
 	h1,h2,h3,h4,h5,h6
@@ -95,6 +98,12 @@
 	em, i
 	{
 		font-style: italic;
+	}
+
+	em strong {
+		font-size: 1.1em;
+		color: #dd0000;
+		font-style: normal;
 	}
 
 	a
@@ -1195,6 +1204,7 @@ div.artlist-image {
 .comment {
 	display: block;
 	font-size: 0.8em;
+	line-height: 1.4em;
 	color: #c0c0c0;
 }
 .hash_tag {

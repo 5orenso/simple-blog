@@ -308,6 +308,17 @@
                                 </div>
                             {% endif %}
                         </div>
+
+                        {% if article.footnote %}           
+                            <div class="row comment">
+                                <div class="12u">
+                                    {% if article.footnote %}
+                                        {{ article.footnote|raw }}
+                                    {% endif %}
+                                </div>
+                            </div>
+                        {% endif %}
+
                     </div>
                 </div>
 			</section>
@@ -343,7 +354,20 @@
                     <div class="content style4 ">
                         <div class="container small">
                             {% if article['body' + i] %}
-                                {{ article['body' + i]|raw }}
+                                <div class="row">
+                                    <div class="12u">
+                                        {{ article['body' + i]|raw }}
+                                    </div>
+                                </div>
+                            {% endif %}
+                            {% if article['footnote' + i] %}           
+                                <div class="row comment">
+                                    <div class="12u">
+                                        {% if article['footnote' + i] %}
+                                            {{ article['footnote' + i]|raw }}
+                                        {% endif %}
+                                    </div>
+                                </div>
                             {% endif %}
                         </div>
                     </div>
