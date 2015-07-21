@@ -48,7 +48,7 @@ Readability, however, is emphasized above all else. A Markdown-formatted documen
 
 - Read more in [Markdown official syntax guide](http://daringfireball.net/projects/markdown/syntax).
 - [Github markdown page](https://help.github.com/articles/github-flavored-markdown)
-
+- [Markdown cheatsheet](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet#links)
 
 
 | Tag             | Example                         | Result                                  |
