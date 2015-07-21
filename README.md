@@ -88,32 +88,6 @@ Articles are located in the article folder and sub folders.
 Images are located in the images folder and sub folders.  
 Simply save your article in the correct folder and voila, it's published.  
 
-
-## Blog posts are separated into sections. 
-Possible sections are:
-
-| Section   | Tag        | Example of usage | Description
-|-----------|------------|------------------|---------------------------------------------
-| title     | :title     | :title My title  | Title of the blog post.
-| published | :published | :published 2014-10-05 | Publish date of the blog post.
-| teaser    | :teaser    |                  | Teaser text used on the frontpage and on the very top.
-| ingress   | :ingress   |                  | Blog intro. The start of the blog post. Keep it relatively short.
-| body      | :body      |                  | The blog post.
-| img       | :img       | :img photo1.jpg  | Standard images used in the blog. It depends on the template where they are placed. You may use
-| aside     | :aside     |                  | Boxes with content to go on the right side of the blog post.
-| images    | :images    | :images /path/   | Load all images from one of the content categories.
-
-
-## Special tags
-| Tag name  | Tag          | Example of usage | Description
-|-----------|--------------|------------------|---------------------------------------------
-| toc       | &#91;:toc]       | &#91;:toc]           | Automatic generated table of contents.
-| fact      | &#91;:fact file] | &#91;:fact about-md] | A general fact box. This is usually shared between several blog posts.
-| menu      | &#91;:menu]      | &#91;:menu]          | List all categories inside the content dir.
-| artlist   | &#91;:artlist]   | &#91;:artlist [category]]       | List all articles inside the content dir in a plain list format.
-| artlist_block | &#91;:artlist_block ] | &#91;:artlist_block [category]] | List all articles inside the content dir in a plain list format.
-
-
 ### Example blog post
 ```md
  :title My blog post title
@@ -127,6 +101,8 @@ Possible sections are:
 
 __That's all there is to it.__
 
+See the [wiki page](./wiki.md) for more details.
+
 
 ## Markdown is used for writing.
 
@@ -136,6 +112,7 @@ Readability, however, is emphasized above all else. A Markdown-formatted documen
 
 - Read more in [Markdown official syntax guide](http://daringfireball.net/projects/markdown/syntax).
 - [Github markdown page](https://help.github.com/articles/github-flavored-markdown)
+- [Markdown cheatsheet](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet#links)
 
 
 ## Work in progress
