@@ -43,8 +43,7 @@ web_router.set_config = function (conf, opt) {
             if (_.isObject(conf.log)) {
                 logger.set('log', conf.log);
             }
-            sitemap = path.normalize(app_path + 'template/sitemap-' + conf.domain + '.xml');
-            web_router.use('/sitemap.xml', express.static(sitemap));
+            sitemap = path.normalize(app_path + 'template/sitemap-' + conf.blog.domain + '.xml');
         }
     }
 };
@@ -73,7 +72,11 @@ web_router.use('/robots.txt', express.static(app_path + 'template/robots.txt'));
 web_router.use('/keybase.txt/', local_util.set_cache_headers);
 web_router.use('/keybase.txt', express.static(app_path + 'content/articles/keybase.txt'));
 web_router.use('/sitemap.xml/', local_util.set_cache_headers);
-web_router.use('/sitemap.xml', express.static(sitemap));
+//web_router.use('/sitemap.xml', express.static(sitemap));
+
+web_router.get('/sitemap.xml', function(req, res){
+    res.sendfile(sitemap, {root: path.normalize(app_path + './template')});
+});
 
 // Main route for blog articles.
 web_router.use('/*', local_util.set_no_cache_headers);
