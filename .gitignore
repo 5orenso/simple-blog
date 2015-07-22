@@ -36,6 +36,7 @@ content/articles
 content/images*
 test/content/images_cached
 template/flot/
+template/sitemap-www.mydomain.no.xml
 sitemap.xml
 pm2-run.json
 artifact/
