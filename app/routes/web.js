@@ -16,7 +16,7 @@ var express       = require('express'),
     app_path      = __dirname + '/../../',
     template_path = path.normalize(app_path + 'template/current/'),
     photo_path    = path.normalize(app_path + 'content/images/'),
-    sitemap       = app_path + 'template/sitemap.xml',
+    sitemap       = 'sitemap.xml',
     logger        = require(app_path + 'lib/logger')(),
     article_util  = require(app_path + 'lib/article-util')(),
     local_util    = require(app_path + 'lib/local-util')();
@@ -43,7 +43,7 @@ web_router.set_config = function (conf, opt) {
             if (_.isObject(conf.log)) {
                 logger.set('log', conf.log);
             }
-            sitemap = path.normalize(app_path + 'template/sitemap-' + conf.blog.domain + '.xml');
+            sitemap = 'sitemap-' + conf.blog.domain + '.xml';
         }
     }
 };
