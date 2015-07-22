@@ -44,6 +44,7 @@ web_router.set_config = function (conf, opt) {
                 logger.set('log', conf.log);
             }
             sitemap = path.normalize(app_path + 'template/sitemap-' + conf.domain + '.xml');
+            web_router.use('/sitemap.xml', express.static(sitemap));
         }
     }
 };
