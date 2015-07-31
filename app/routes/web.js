@@ -75,7 +75,7 @@ web_router.use('/sitemap.xml/', local_util.set_cache_headers);
 //web_router.use('/sitemap.xml', express.static(sitemap));
 
 web_router.get('/sitemap.xml', function(req, res){
-    res.sendfile(sitemap, {root: path.normalize(app_path + './template')});
+    res.sendFile(sitemap, {root: path.normalize(app_path + './template')});
 });
 
 // Main route for blog articles.
