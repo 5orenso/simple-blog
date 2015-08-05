@@ -936,7 +936,9 @@ ul.menu_small li.selected {
 		text-align: center;
 		color: #fff;
 	}
-	
+	#header.header_small {
+		padding: 5em 0 2.5em 0;
+	}
 		#header header
 		{
 		}

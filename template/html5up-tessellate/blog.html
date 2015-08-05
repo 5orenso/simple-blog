@@ -150,7 +150,7 @@
                 </header>
             </section>
         {% else %}
-			<section id="header" class="dark" style="{% if (!blog.top_image && article.img[0]) %}background-image: url('/images/overlay.png'), url('/pho/{{ article.img[0] }}?w=1600'); background-size: cover; background-position: center center;{% endif %}">
+			<section id="header" class="dark {% if (!article.img[0]) %}header_small{% endif %}" style="{% if (!blog.top_image && article.img[0]) %}background-image: url('/images/overlay.png'), url('/pho/{{ article.img[0] }}?w=1600'); background-size: cover; background-position: center center;{% endif %}">
                 <div class="header">
                     <a class="menu" href="#menu"></a>
                     {% if article.author && blog.author && blog.author[article.author] %}

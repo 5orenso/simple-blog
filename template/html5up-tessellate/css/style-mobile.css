@@ -76,6 +76,9 @@ ul.menu_small {
 	{
 		padding: 6em 20px 6em 20px;
 	}
+	#header.header_small {
+		padding: 4em 20px 1.5em 20px;
+	}
 	
 		#header > header
 		{
