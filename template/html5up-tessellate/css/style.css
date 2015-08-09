@@ -64,6 +64,11 @@
 			text-decoration: none;
 		}
 
+.row div.body-col {
+	padding-bottom: 2em !important;
+	padding-top: 2em !important;
+}
+
 		.dark h1,
 		.dark h2,
 		.dark h3,
