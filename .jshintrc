@@ -8,7 +8,7 @@
     "immed": true,
     "indent": 4,
     "latedef": "nofunc",
-    "maxdepth": 5,
+    "maxdepth": 6,
 //    "maxlen": 2000,
     "newcap": true,
     "noarg": true,
