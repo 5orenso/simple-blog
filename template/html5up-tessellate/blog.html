@@ -150,7 +150,7 @@
                 </header>
             </section>
         {% else %}
-			<section id="header" class="dark {% if (!article.img[0]) %}header_small{% endif %}" style="{% if (!blog.top_image && article.img[0]) %}background-image: url('/images/overlay.png'), url('/pho/{{ article.img[0] }}?w=1600'); background-size: cover; background-position: center center;{% endif %}">
+			<section id="header" class="dark {% if (!article.img[0]) %}header_small{% endif %}" style="{% if (!blog.top_image && article.img[0]) %}background-image: {% if (!article.nofilter) %}url('/images/overlay.png'),{% endif %} url('/pho/{{ article.img[0] }}?w=1600'); background-size: cover; background-position: center center;{% endif %}">
                 <div class="header">
                     <a class="menu" href="#menu"></a>
                     {% if article.author && blog.author && blog.author[article.author] %}
@@ -301,13 +301,17 @@
                                     {% endif %}
                                 </div>
                             {% else %}
-                                {% set arr = [0,1,2,3,4,5,6,7,8,9,10,11] %}
-                                {% for i in arr %}
-                                    {% if article.col[i] %}
-                                        <div class="4u body-col">{{ article.col[i]|raw }}</div>
-                                    {% endif %}
-                                {% endfor %}
-                                
+                                {% if article.col %}
+                                    {% set arr = [0,1,2, 3,4,5, 6,7,8, 9,10,11, 12,13,14, 15,16,17] %}
+                                    {% for i in arr %}
+                                        {% if i % 3 == 0 %}
+                                            <br class="clear">
+                                        {% endif %}
+                                        {% if article.col[i] %}
+                                            <div class="4u body-col">{{ article.col[i]|raw }}</div>
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endif %}
                                 <div class="12u">
                                     {% if article.body %}
                                         {{ article.body|raw }}
@@ -336,7 +340,7 @@
         {% for i in image_arr %}
             {% if (article['img' + i]) %}
                 <!-- Header -->
-                <section id="header" class="dark" style="{% if (article['img' + i][0]) %}background-image: url('/images/overlay.png'), url('/pho/{{ article['img' + i][0] }}?w=1600'); background-size: cover; background-position: center center;{% endif %}">
+                <section id="header" class="dark" style="{% if (article['img' + i][0]) %}background-image: {% if (!article.nofilter) %}url('/images/overlay.png'){% endif %}, url('/pho/{{ article['img' + i][0] }}?w=1600'); background-size: cover; background-position: center center;{% endif %}">
                     <header>
                         {% if article['title' + i] %}
                             <h1>{{ article['title' + i]|raw }}</h1>
@@ -360,13 +364,24 @@
                     {% endif %}
                     <div class="content style4 ">
                         <div class="container small">
-                            {% if article['body' + i] %}
-                                <div class="row">
-                                    <div class="12u">
-                                        {{ article['body' + i]|raw }}
-                                    </div>
-                                </div>
-                            {% endif %}
+                            <div class="row">                            
+                                {% if article['col' + i] %}
+                                    {% set arr = [0,1,2, 3,4,5, 6,7,8, 9,10,11, 12,13,14, 15,16,17] %}                               
+                                    {% for j in arr %}
+                                        {% if j % 3 == 0 %}
+                                            <br class="clear">
+                                        {% endif %}
+                                        {% if article['col' + i][j] %}
+                                            <div class="4u body-col">{{ article['col' + i][j]|raw }}</div>
+                                        {% endif %}
+                                    {% endfor %}
+                                    {% if article['body' + i] %}
+                                        <div class="12u">
+                                            {{ article['body' + i]|raw }}
+                                        </div>
+                                    {% endif %}
+                                {% endif %}
+                            </div>                           
                             {% if article['footnote' + i] %}           
                                 <div class="row comment">
                                     <div class="12u">
