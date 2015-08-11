@@ -3,7 +3,6 @@
 var buster       = require('buster'),
     assert       = buster.assert,
     refute       = buster.refute,
-    when         = require('when'),
     strftime     = require('strftime'),
     article_util = require('../../lib/article-util')({
         logger: {

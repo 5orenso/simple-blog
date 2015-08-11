@@ -2,7 +2,6 @@
 
 var buster = require('buster'),
     assert = buster.assert,
-    refute = buster.refute,
     when   = require('when'),
     config = require(__dirname + '/../../config/config-integration.js'),
     search = require(__dirname + '/../../lib/search')({

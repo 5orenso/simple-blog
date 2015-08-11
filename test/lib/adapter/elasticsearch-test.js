@@ -2,7 +2,6 @@
 
 var buster       = require('buster'),
     assert       = buster.assert,
-    refute       = buster.refute,
     when         = require('when'),
     config       = require(__dirname + '/../../../config/config-integration.js');
 
@@ -50,6 +49,7 @@ buster.testCase("Elasticsearch", {
     'missing config input. Should blow up': function () {
         assert.exception(function () {
             var _es = require('../../../lib/adapter/elasticsearch')({});
+            console.log(_es);
         });
     },
 

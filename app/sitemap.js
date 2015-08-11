@@ -8,9 +8,6 @@
 
 
 var when = require('when'),
-    _ = require('underscore'),
-//    bodyParser = require('body-parser'),
-    path = require('path'),
     commander = require('commander'),
     app_path = __dirname + '/../',
     logger = require(app_path + 'lib/logger')({});
@@ -59,7 +56,7 @@ when.all([category.list('/'), article.list(article_path)])
                 return results;
             });
     })
-    .catch(function (opt) {
+    .catch(function () {
         lu.timer('routes/sitemap->request');
         lu.timer('routes/sitemap->load_category_and_article_lists');
         lu.send_udp({timers: lu.timers_get()});

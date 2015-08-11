@@ -7,16 +7,11 @@
 'use strict';
 var express    = require('express'),
     bodyParser = require('body-parser'),
-    morgan     = require('morgan'),
-    when       = require('when'),
     _          = require('underscore'),
-    fs         = require('fs'),
-    path       = require('path'),
     app_path   = __dirname + '/../../',
     logger     = require(app_path + 'lib/logger')(),
     local_util = require(app_path + 'lib/local-util')();
 
-var stats, activeConn, timer, config;
 var api_router = express.Router();
 api_router.set_config = function (conf, opt) {
     api_router.config = conf;
@@ -55,8 +50,6 @@ api_router.use(function(req, res, next) {
 // test route to make sure everything is working (accessed at GET http://localhost:8080/api)
 api_router.get('/', function(req, res) {
     var lu    = require(app_path + 'lib/local-util')({config: api_router.config});
-    var request_pathname = req._parsedUrl.pathname;
-
 
     lu.timers_reset();
     lu.timer('routes/api->request');
@@ -71,7 +64,6 @@ api_router.get('/', function(req, res) {
 // test route to make sure everything is working (accessed at GET http://localhost:8080/api)
 api_router.post('/report', function(req, res) {
     var lu    = require(app_path + 'lib/local-util')({config: api_router.config});
-    var request_pathname = req._parsedUrl.pathname;
 
     lu.timers_reset();
     lu.timer('routes/api->request');

@@ -153,40 +153,40 @@ var art = {
     body5: '<p>This is a test of body 5.\n<div class="toc" id="toc"><span class="toc-indent-1">&bull; <a href="#simple-title-1">Simple title 1</a></span><span class="toc-indent-2">&bull; <a href="#simple-sub-title-1">Simple sub title 1</a></span><span class="toc-indent-1">&bull; <a href="#simple-title-2">Simple title 2</a></span><span class="toc-indent-2">&bull; <a href="#simple-sub-title-1">Simple sub title 1</a></span><span class="toc-indent-3">&bull; <a href="#simple-sub-sub-title-1">Simple sub sub title 1</a></span></div></p>\n',
 
 };
-var art_not_found = {
-    error: '404: Not found.',
-    article: {
-        file: undefined,
-        filename: '<p>_index_wip_not_found.md</p>\n',
-        base_href: '/',
-        tag_values: {
-            menu: '<ul class="catlist"><li><a href="/">Frontpage</a></li><li><a href="/simple-blog/">simple-blog</a></li></ul>',
-            menu_onepage: '<ul class="catlist"><li><a href="/">Frontpage</a></li><li><a href="#simple-blog">simple-blog</a></li></ul>',
-            artlist: '<ul class="artlist"><li><a href="/simple-blog/index">Simple Blog Server</a></li></ul>',
-            'artlist-block': '<div class="artlist"><div class="artlist-art"><h3><a href="/simple-blog//index">Simple Blog Server</a></h3></div></div><br class="clear">',
-            artlist_onepage: '<ul class="artlist"><li><a href="#/simple-blog/index">Simple Blog Server</a></li></ul>'
-        },
-        catlist:
-            [ { dev: 16777219,
-                mode: 16877,
-                nlink: 3,
-                uid: 501,
-                gid: 20,
-                rdev: 0,
-                blksize: 4096,
-                ino: 37773547,
-                size: 102,
-                blocks: 0,
-                name: 'simple-blog',
-                type: 'directory' } ],
-        artlist:
-            [ { tag_values: [Object],
-                title: 'Simple Blog Server',
-                file: 'index',
-                filename: './test/content/articles/simple-blog/index.md',
-                base_href: '/simple-blog/' } ]
-    }
-};
+// var art_not_found = {
+//     error: '404: Not found.',
+//     article: {
+//         file: undefined,
+//         filename: '<p>_index_wip_not_found.md</p>\n',
+//         base_href: '/',
+//         tag_values: {
+//             menu: '<ul class="catlist"><li><a href="/">Frontpage</a></li><li><a href="/simple-blog/">simple-blog</a></li></ul>',
+//             menu_onepage: '<ul class="catlist"><li><a href="/">Frontpage</a></li><li><a href="#simple-blog">simple-blog</a></li></ul>',
+//             artlist: '<ul class="artlist"><li><a href="/simple-blog/index">Simple Blog Server</a></li></ul>',
+//             'artlist-block': '<div class="artlist"><div class="artlist-art"><h3><a href="/simple-blog//index">Simple Blog Server</a></h3></div></div><br class="clear">',
+//             artlist_onepage: '<ul class="artlist"><li><a href="#/simple-blog/index">Simple Blog Server</a></li></ul>'
+//         },
+//         catlist:
+//             [ { dev: 16777219,
+//                 mode: 16877,
+//                 nlink: 3,
+//                 uid: 501,
+//                 gid: 20,
+//                 rdev: 0,
+//                 blksize: 4096,
+//                 ino: 37773547,
+//                 size: 102,
+//                 blocks: 0,
+//                 name: 'simple-blog',
+//                 type: 'directory' } ],
+//         artlist:
+//             [ { tag_values: [Object],
+//                 title: 'Simple Blog Server',
+//                 file: 'index',
+//                 filename: './test/content/articles/simple-blog/index.md',
+//                 base_href: '/simple-blog/' } ]
+//     }
+// };
 var art_wip = { tag_values: { toc: '<div class="toc" id="toc"><span class="toc-indent-1">&bull; <a href="#simple-title-1-wip">Simple title 1 wip</a></span><span class="toc-indent-2">&bull; <a href="#simple-sub-title-1">Simple sub title 1</a></span><span class="toc-indent-1">&bull; <a href="#simple-title-2">Simple title 2</a></span><span class="toc-indent-2">&bull; <a href="#simple-sub-title-1">Simple sub title 1</a></span><span class="toc-indent-3">&bull; <a href="#simple-sub-sub-title-1">Simple sub sub title 1</a></span></div>',
     fact: '',
     artlist: '<ul class="artlist"><li><a href="/simple-blog/index">Simple Blog Server</a></li></ul>',
@@ -309,6 +309,7 @@ buster.testCase('lib/article', {
             }) )
                 .done(function (article) {
                     assert(false);
+                    console.log(article.length);
                     delete require.cache[require.resolve('../../lib/article')];
                     done();
                 }, function (response) {

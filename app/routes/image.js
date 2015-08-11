@@ -23,8 +23,6 @@ var express          = require('express'),
     logger           = require(app_path + 'lib/logger')(),
     local_util       = require(app_path + 'lib/local-util')();
 
-
-var stats, activeConn, timer, config;
 var image_router = express.Router();
 image_router.set_config = function (conf, opt) {
     image_router.config = conf;
@@ -169,7 +167,7 @@ function makeWebsequenceDiagram(wsd_text, path) {
         //    "roundgreen",
         //    "napkin"];
 
-        wsd.diagram(wsd_text, "roundgreen", "png", function (err, buf, typ) {
+        wsd.diagram(wsd_text, "roundgreen", "png", function (err, buf) {
             if (err) {
                 reject(err);
             } else {
@@ -185,7 +183,6 @@ function makeWebsequenceDiagram(wsd_text, path) {
         });
     });
 }
-
 
 image_router.use('/*', local_util.set_cache_headers);
 

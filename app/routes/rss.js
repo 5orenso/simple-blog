@@ -12,7 +12,6 @@ var express       = require('express'),
     swig          = require('swig'),
     fs            = require('fs'),
     path          = require('path'),
-    commander     = require('commander'),
     app_path      = __dirname + '/../../',
     template_path = path.normalize(app_path + 'template/current/'),
     photo_path    = path.normalize(app_path + 'content/images/'),
@@ -24,9 +23,7 @@ swig.setFilter('markdown', article_util.replaceMarked);
 swig.setFilter('formatted', article_util.formatDate);
 swig.setFilter('rssdate', article_util.rssDate);
 
-
 //var stats, activeConn, timer, timer_v2, config;
-var config;
 var rss_router = express.Router();
 rss_router.set_config = function (conf, opt) {
     rss_router.config = conf;

@@ -3,7 +3,6 @@
 var buster       = require('buster'),
     assert       = buster.assert,
     refute       = buster.refute,
-    when         = require('when'),
     category_util = require('../../lib/category-util')({
         logger: {
             log: function () { },

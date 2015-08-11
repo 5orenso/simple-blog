@@ -2,9 +2,6 @@
 
 var buster        = require('buster'),
     assert        = buster.assert,
-    refute        = buster.refute,
-    when          = require('when'),
-    fs            = require('fs'),
     express       = require('express'),
     request       = require('request'),
     search_router = require(__dirname + '/../../../app/routes/search');
@@ -21,9 +18,9 @@ var app = express();
 app.use('/search', search_router);
 var server;
 
-var responses = {
-    endpoints : {"message":"hooray! welcome to our api!"}
-};
+// var responses = {
+//     endpoints : {"message":"hooray! welcome to our api!"}
+// };
 
 var art = {
     tag_values: {

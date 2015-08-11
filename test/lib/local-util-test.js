@@ -3,7 +3,6 @@
 var buster       = require('buster'),
     assert       = buster.assert,
     refute       = buster.refute,
-    when         = require('when'),
     error_msg    = 'Error sending UDP...',
     error_msg_throw = 'PANG!',
     local_util   = require('../../lib/local-util')({
@@ -59,13 +58,13 @@ var my_array_asc_name = [
     { name: 'c', integer: 789 },
 ];
 
-var timer_result = {
-    'local-util-test': {
-        start: [ 221059, 879195203 ],
-        end: [ 0, 629624 ],
-        total: 0.000629624
-    }
-};
+// var timer_result = {
+//     'local-util-test': {
+//         start: [ 221059, 879195203 ],
+//         end: [ 0, 629624 ],
+//         total: 0.000629624
+//     }
+// };
 
 
 buster.testCase('lib/local-util', {
@@ -114,14 +113,14 @@ buster.testCase('lib/local-util', {
         },
 
         'send_udp and fail': function (done) {
-            local_util.send_udp('error', function (error, result) {
+            local_util.send_udp('error', function (error) {
                 assert.equals(error, error_msg);
                 done();
             });
         },
 
         'send_udp and explode': function (done) {
-            local_util.send_udp('explode', function (error, result) {
+            local_util.send_udp('explode', function (error) {
                 assert.match(error, error_msg_throw);
                 done();
             });
@@ -150,6 +149,7 @@ buster.testCase('lib/local-util', {
             for (var i=0; i<1e5; i++) {
                 // just waiting a bit
                 var j;
+                j++;
             }
             local_util.timer('local-util-test');
             var timers = local_util.timers_get();
@@ -164,6 +164,7 @@ buster.testCase('lib/local-util', {
             for (var i=0; i<1e5; i++) {
                 // just waiting a bit
                 var j;
+                j++;
             }
             local_util.timer('local-util-test');
             var timers = local_util.timers_get();

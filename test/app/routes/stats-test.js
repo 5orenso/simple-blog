@@ -2,9 +2,6 @@
 
 var buster     = require('buster'),
     assert     = buster.assert,
-    refute     = buster.refute,
-    when       = require('when'),
-    fs         = require('fs'),
     express    = require('express'),
     request    = require('request'),
     stats      = {
@@ -50,11 +47,9 @@ var app = express();
 app.use('/api', stats_router);
 var server;
 
-var responses = {
-    endpoints : {"message":"hooray! welcome to our api!"}
-};
-
-
+// var responses = {
+//     endpoints : {"message":"hooray! welcome to our api!"}
+// };
 
 buster.testCase('stats', {
     setUp: function () {
@@ -72,7 +67,7 @@ buster.testCase('stats', {
     },
     'Test stats routes:': {
         '/stats': function (done) {
-            request('http://127.0.0.1:' + port + '/api/', function (error, response, body) {
+            request('http://127.0.0.1:' + port + '/api/', function (error, response) {
 //                console.log(body);
 //                console.log(error);
 //                console.log(response.statusCode);
@@ -83,7 +78,7 @@ buster.testCase('stats', {
         },
 
         '/api/this-should-not-be-found': function (done) {
-            request('http://127.0.0.1:' + port + '/api/this-should-not-be-found', function (error, response, body) {
+            request('http://127.0.0.1:' + port + '/api/this-should-not-be-found', function (error, response) {
                 assert.equals(response.statusCode, 404);
                 done();
             });

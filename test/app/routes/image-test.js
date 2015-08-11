@@ -2,8 +2,6 @@
 
 var buster     = require('buster'),
     assert     = buster.assert,
-    refute     = buster.refute,
-    when       = require('when'),
     fs         = require('fs'),
     express    = require('express'),
     request    = require('request'),
@@ -47,9 +45,9 @@ var app = express();
 app.use('/photo', image_router);
 var server;
 
-var responses = {
-    endpoints : {"message":"hooray! welcome to our api!"}
-};
+// var responses = {
+//     endpoints : {"message":"hooray! welcome to our api!"}
+// };
 
 
 var rmDir = function(dirPath) {
@@ -87,9 +85,11 @@ buster.testCase('app/routes/image', {
     },
     'Test web routes:': {
 
+
+
         '/test.jpg?w=300 from scratch': function (done) {
             rmDir(photo_cache_path);
-            request('http://127.0.0.1:' + port + '/photo/test.jpg?w=300', function (error, response, body) {
+            request('http://127.0.0.1:' + port + '/photo/test.jpg?w=300', function (error, response) {
                 if (!error && response.statusCode === 200) {
                     done();
                     assert.equals(response.statusCode, 200);
@@ -103,7 +103,7 @@ buster.testCase('app/routes/image', {
         },
 
         '/test.jpg?w=300 cached version': function (done) {
-            request('http://127.0.0.1:' + port + '/photo/test.jpg?w=300', function (error, response, body) {
+            request('http://127.0.0.1:' + port + '/photo/test.jpg?w=300', function (error, response) {
                 if (!error && response.statusCode === 200) {
                     done();
                     assert.equals(response.statusCode, 200);
@@ -118,7 +118,7 @@ buster.testCase('app/routes/image', {
 
 
         '/test.jpg?w=300&force=1 force cache refresh': function (done) {
-            request('http://127.0.0.1:' + port + '/photo/test.jpg?w=300&force=1', function (error, response, body) {
+            request('http://127.0.0.1:' + port + '/photo/test.jpg?w=300&force=1', function (error, response) {
                 if (!error && response.statusCode === 200) {
                     done();
                     assert.equals(response.statusCode, 200);
@@ -132,7 +132,7 @@ buster.testCase('app/routes/image', {
         },
 
         '/test-not-found.jpg?w=300': function (done) {
-            request('http://127.0.0.1:' + port + '/photo/test-not-found.jpg?w=300', function (error, response, body) {
+            request('http://127.0.0.1:' + port + '/photo/test-not-found.jpg?w=300', function (error, response) {
                 if (!error && response.statusCode === 404) {
                     done();
                     assert.equals(response.statusCode, 404);

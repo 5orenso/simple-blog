@@ -6,11 +6,9 @@
  */
 'use strict';
 
-var when = require('when'),
-    _ = require('underscore'),
+var _ = require('underscore'),
     express = require('express'),
     bodyParser = require('body-parser'),
-    path = require('path'),
     commander = require('commander'),
     app_path = __dirname + '/../',
     logger = require(app_path + 'lib/logger')({
@@ -67,5 +65,8 @@ app.use('/search/', search_router);
 app.use('/', web_router);
 
 // Start the server ------------------------------
-var server = app.listen(config.app.port);
-logger.log('Something happens on port ' + config.app.port);
+var server = app.listen(config.app.port, function () {
+        var host = server.address().address;
+        var port = server.address().port;
+        logger.log('info', 'Something happens at http://' + host + ':' + port + '/');
+    });

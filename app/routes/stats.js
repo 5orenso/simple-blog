@@ -6,12 +6,11 @@
  */
 'use strict';
 var express       = require('express'),
-    when          = require('when'),
     _             = require('underscore'),
     app_path      = __dirname + '/../../',
     logger        = require(app_path + 'lib/logger')();
 
-var stats, activeConn, timer_web, timer_api, timer_image, timer, gauge, config;
+var stats, activeConn, timer_web, timer_api, timer_image, timer, gauge;
 var stats_router = express.Router();
 stats_router.set_config = function (conf, opt) {
     stats_router.config = conf;

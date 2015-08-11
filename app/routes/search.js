@@ -14,13 +14,11 @@ var express       = require('express'),
     path          = require('path'),
     app_path      = __dirname + '/../../',
     template_path = path.normalize(app_path + 'template/current/'),
-    photo_path    = path.normalize(app_path + 'content/images/'),
     article_util  = require(app_path + 'lib/article-util')(),
     category_util = require(app_path + 'lib/category-util')(),
     logger        = require(app_path + 'lib/logger')(),
     local_util    = require(app_path + 'lib/local-util')();
 
-var stats, activeConn, timer, config;
 var search_router = express.Router();
 search_router.set_config = function (conf, opt) {
     search_router.config = conf;

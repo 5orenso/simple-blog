@@ -76,9 +76,9 @@ var artlist = [{
         base_href: '/simple-blog/'
     }];
 
-var article = {
+// var article = {
 
-};
+// };
 
 var category_list = [ { dev: 16777220,
     mode: 16877,

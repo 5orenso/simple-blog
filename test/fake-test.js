@@ -2,7 +2,6 @@
 
 var buster = require('buster');
 var assert = buster.assert;
-var refute = buster.refute;
 
 buster.testCase('Fake test.', {
     setUp: function () {
