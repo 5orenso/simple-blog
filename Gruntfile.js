@@ -20,10 +20,16 @@ module.exports = function (grunt) {
                 src: ['test/**/*.js']
             }
         },
+        jscs: {
+            main: ['app/**/*.js', 'lib/**/*.js', 'test/**/*.js'],
+            options: {
+                config: ".jscsrc"
+            }
+        },
         watch: {
             all: {
                 files: ['app/**/*.js', 'lib/**/*.js', 'test/**/*.js', 'test/content/**/*.md', 'config/*.js'],
-                tasks: ['jshint', 'buster:unit']
+                tasks: ['lint', 'buster:unit']
             }
         },
 
@@ -37,14 +43,14 @@ module.exports = function (grunt) {
                     file: 'app/server.js',
                     args: ['-c', '../config/config-dist.js']
                 },
-                tasks: ['jshint', 'buster:unit']
+                tasks: ['buster:unit']
             },
             dev_local: {
                 options: {
                     file: 'app/server.js',
                     args: ['-c', '../config/config-local.js']
                 },
-                tasks: ['jshint', 'buster:unit']
+                tasks: ['buster:unit']
             }
         },
         shell: {
@@ -92,10 +98,12 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-nodemon');
     grunt.loadNpmTasks('grunt-shell');
     grunt.loadNpmTasks('grunt-buster');
+    grunt.loadNpmTasks("grunt-jscs");
     grunt.loadNpmTasks('grunt-coveralls');
 
     // Default task.
-    grunt.registerTask('default', ['jshint', 'buster:unit']);
+    grunt.registerTask( "lint", [ "jshint", "jscs" ] );
+    grunt.registerTask('default', ['lint', 'buster:unit']);
     grunt.registerTask('test', 'buster:unit');
     grunt.registerTask('check', ['watch']);
     grunt.registerTask('run', ['buster:unit', 'nodemon:dev']);
