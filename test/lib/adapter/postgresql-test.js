@@ -5,22 +5,24 @@ var buster       = require('buster'),
     refute       = buster.refute,
     when         = require('when');
 
-var table_columns = [
-    { column_name: 'age', data_type: 'integer', character_maximum_length: null },
-    { column_name: 'agreement_time', data_type: 'integer', character_maximum_length: null },
-    { column_name: 'agreement_type', data_type: 'character varying', character_maximum_length: 10 },
-    { column_name: 'campaign_id', data_type: 'character varying', character_maximum_length: 10 },
-    { column_name: 'captured_amount', data_type: 'numeric', character_maximum_length: null }
+var tableColumns = [
+    { columnName: 'age', dataType: 'integer', characterMaximumLength: null },
+    { columnName: 'agreement_time', dataType: 'integer', characterMaximumLength: null },
+    { columnName: 'agreement_type', dataType: 'character varying', characterMaximumLength: 10 },
+    { columnName: 'campaign_id', dataType: 'character varying', characterMaximumLength: 10 },
+    { columnName: 'captured_amount', dataType: 'numeric', characterMaximumLength: null }
 ];
 
-var simple_blog_index = { tag_values: { toc: '', fact: '', artlist: '' },
+var simpleBlogIndex = {tagValues: { toc: '', fact: '', artlist: ''},
     published: '2014-09-01',
-    tag: [ 'simple,blog' ],
+    tag: ['simple,blog'],
     title: 'Simple Blog Server',
     teaser: 'Life made easier',
-    img: [ 'simple-blog.jpg' ],
+    img: ['simple-blog.jpg'],
     aside: 'This is the aside.',
-    body: '# Simple title 1\n\n## Simple sub title 1\n\nMy simple blog text.\n\n# Simple title 2\n\n## Simple sub title 1\n\n### Simple sub sub title 1\n\n```javascript \n\nconsole.log(\'hello world\');\n\n```\n\n![Simple blog image](simple-blog.jpg?w=600 "My image text")\n\n\n[:toc]\n\n\n[:menu_onepage]\n\n[:artlist_onepage]\n\n',
+    body: '# Simple title 1\n\n## Simple sub title 1\n\nMy simple blog text.\n\n# Simple title 2\n\n## Simple sub ' +
+        'title 1\n\n### Simple sub sub title 1\n\n```javascript \n\nconsole.log(\'hello world\');\n\n```\n\n![Simple' +
+        ' blog image](simple-blog.jpg?w=600 "My image text")\n\n\n[:toc]\n\n\n[:menuOnepage]\n\n[:artlistOnepage]\n\n',
     body2: 'This is a test of body 2.\n[:toc]\n',
     aside2: 'This is a test of aside 2.\n[:toc]\n',
     body3: 'This is a test of body 3.\n[:toc]\n',
@@ -29,20 +31,22 @@ var simple_blog_index = { tag_values: { toc: '', fact: '', artlist: '' },
     aside4: 'This is a test of aside 4.\n[:toc]\n',
     body5: 'This is a test of body 5.\n[:toc]\n',
     aside5: 'This is a test of aside 5.\n[:toc]\n',
-    images: [ '/' ],
+    images: ['/'],
     file: 'index',
     filename: 'my-path-to-the-files/content/articles/simple-blog/index.md',
-    base_href: '/simple-blog/' };
+    baseHref: '/simple-blog/' };
 
 var artlist = [{
-    tag_values: { toc: '', fact: '', artlist: '' },
+    tagValues: {toc: '', fact: '', artlist: ''},
     published: '2014-09-01',
-    tag: [ 'simple,blog' ],
+    tag: ['simple,blog'],
     title: 'Simple Blog Server',
     teaser: 'Life made easier',
-    img: [ 'simple-blog.jpg' ],
+    img: ['simple-blog.jpg'],
     aside: 'This is the aside.',
-    body: '# Simple title 1\n\n## Simple sub title 1\n\nMy simple blog text.\n\n# Simple title 2\n\n## Simple sub title 1\n\n### Simple sub sub title 1\n\n```javascript \n\nconsole.log(\'hello world\');\n\n```\n\n![Simple blog image](simple-blog.jpg?w=600 "My image text")\n\n\n[:toc]\n\n\n[:menu_onepage]\n\n[:artlist_onepage]\n\n',
+    body: '# Simple title 1\n\n## Simple sub title 1\n\nMy simple blog text.\n\n# Simple title 2\n\n## Simple sub ' +
+        'title 1\n\n### Simple sub sub title 1\n\n```javascript \n\nconsole.log(\'hello world\');\n\n```\n\n![Simple ' +
+        'blog image](simple-blog.jpg?w=600 "My image text")\n\n\n[:toc]\n\n\n[:menuOnepage]\n\n[:artlistOnepage]\n\n',
     body2: 'This is a test of body 2.\n[:toc]\n',
     aside2: 'This is a test of aside 2.\n[:toc]\n',
     body3: 'This is a test of body 3.\n[:toc]\n',
@@ -51,34 +55,34 @@ var artlist = [{
     aside4: 'This is a test of aside 4.\n[:toc]\n',
     body5: 'This is a test of body 5.\n[:toc]\n',
     aside5: 'This is a test of aside 5.\n[:toc]\n',
-    images: [ '/' ],
+    images: ['/'],
     file: 'index',
     filename: 'my-path-to-the-files/content/articles/simple-blog/index.md',
-    base_href: '/simple-blog/'
+    baseHref: '/simple-blog/'
 },
     {
-        tag_values: { toc: '', fact: '', artlist: '' },
+        tagValues: { toc: '', fact: '', artlist: '' },
         published: '2014-01-01',
         title: 'Simple blog 2',
-        img: [ 'simple-blog.jpg' ],
+        img: ['simple-blog.jpg'],
         body: 'This is content number 2.',
         file: 'simple-blog',
         filename: 'my-path-to-the-files/content/articles/simple-blog/simple-blog.md',
-        base_href: '/simple-blog/'
+        baseHref: '/simple-blog/'
     }];
 
 var article = {
-    tag_values: { toc: '', fact: '', artlist: '' },
+    tagValues: { toc: '', fact: '', artlist: '' },
     published: '2014-01-01',
     title: 'Simple blog 2',
-    img: [ 'simple-blog.jpg' ],
+    img: ['simple-blog.jpg'],
     body: 'This is content number 2.',
     file: 'index',
     filename: 'my-path-to-the-files/content/articles/simple-blog/simple-blog.md',
-    base_href: '/simple-blog/'
+    baseHref: '/simple-blog/'
 };
 
-var category_list = [ { dev: 16777220,
+var categoryList = [{ dev: 16777220,
     mode: 16877,
     nlink: 5,
     uid: 501,
@@ -92,16 +96,15 @@ var category_list = [ { dev: 16777220,
 //    mtime: Fri Oct 24 2014 21:43:27 GMT+0200 (CEST),
 //    ctime: Fri Oct 24 2014 21:43:27 GMT+0200 (CEST),
     name: 'simple-blog',
-    type: 'directory' } ];
-
+    type: 'directory' }];
 
 var pg = null;
 
-buster.testCase("PostgreSQL", {
+buster.testCase('PostgreSQL', {
     setUp: function() {
         var that = this;
         this.clock = this.useFakeTimers();
-        this.pg_query_spy = this.spy();
+        this.pgQuerySpy = this.spy();
 
         pg = require('../../../lib/adapter/postgresql')({
             logger: {
@@ -112,9 +115,9 @@ buster.testCase("PostgreSQL", {
                 adapter: {
                     current: 'postgresql',
                     markdown: {
-                        content_path: __dirname + '/../../content/articles/',
-                        photo_path: __dirname + '/../../content/images/',
-                        max_articles: 900,
+                        contentPath: __dirname + '/../../content/articles/',
+                        photoPath: __dirname + '/../../content/images/',
+                        maxArticles: 900
                     },
                     postgresql: {
                         username: '',
@@ -129,24 +132,24 @@ buster.testCase("PostgreSQL", {
             pg: {
                 connect: function (opts, callback) {
                     callback(undefined, {
-                        query: function (q, values, q_callback) {
-                            if (!q_callback) {
-                                q_callback = values;
+                        query: function (q, values, qCallback) {
+                            if (!qCallback) {
+                                qCallback = values;
                             }
-                            that.pg_query_spy(q);
+                            that.pgQuerySpy(q);
                             if (q.match(/-does-not-exist/)) {
-                                q_callback('Error: doh!');
+                                qCallback('Error: doh!');
                             } else if (q.match(/LIMIT 1/i)) {
-                                q_callback(null, {
+                                qCallback(null, {
                                     rows: [article]
                                 });
                             } else if (q.match(/LIMIT \d+/i)) {
-                                q_callback(null, {
+                                qCallback(null, {
                                     rows: artlist
                                 });
                             } else {
-                                q_callback(null, {
-                                    rows: table_columns
+                                qCallback(null, {
+                                    rows: tableColumns
                                 });
                             }
                         }
@@ -164,29 +167,29 @@ buster.testCase("PostgreSQL", {
         delete require.cache[require.resolve('../../../lib/adapter/postgresql')];
     },
 
-    "get column names get_column_names": function (done) {
+    'get column names getColumnNames': function (done) {
         var that = this;
-        when( pg.get_column_names('spid_event') )
+        when(pg.getColumnNames('spid_event'))
             .then(function (result) {
-                assert.equals(result, table_columns);
-                assert(that.pg_query_spy.calledOnce);
+                assert.equals(result, tableColumns);
+                assert(that.pgQuerySpy.calledOnce);
                 done();
             });
     },
 
     'load existing file': function (done) {
         var that = this;
-        when( pg.load({
-            request_url: '/simple-blog/index'
-        }) )
+        when(pg.load({
+            requestUrl: '/simple-blog/index'
+        }))
             .done(function (obj) {
                 assert.equals(obj.title, article.title);
                 assert.equals(obj.published, article.published);
                 assert.equals(obj.img, article.img);
                 assert.equals(obj.body, article.body);
                 assert.equals(obj.file, article.file);
-                assert.equals(obj.base_href, article.base_href);
-                assert(that.pg_query_spy.calledOnce);
+                assert.equals(obj.baseHref, article.baseHref);
+                assert(that.pgQuerySpy.calledOnce);
                 done();
             }, function (err) {
                 console.log(err);
@@ -195,29 +198,28 @@ buster.testCase("PostgreSQL", {
     },
 
     'load non existing file': function (done) {
-        when( pg.load({
-            request_url: '/simple-blog/index-does-not-exist'
-        }) )
+        when(pg.load({
+            requestUrl: '/simple-blog/index-does-not-exist'
+        }))
             .done(function (obj) {
                 console.log(obj);
                 done();
             }, function (obj) {
                 assert.equals(obj.article.file, 'index-does-not-exist');
-                assert.equals(obj.article.base_href, simple_blog_index.base_href);
+                assert.equals(obj.article.baseHref, simpleBlogIndex.baseHref);
                 assert.equals(obj.status, 404);
                 assert(obj.error);
                 done();
             });
     },
 
-
     'list existing articles': function (done) {
-        when( pg.list_articles('/simple-blog/') )
+        when(pg.listArticles('/simple-blog/'))
             .done(function (obj) {
                 assert.equals(obj[0].title, artlist[0].title);
                 assert.equals(obj[0].teaser, artlist[0].teaser);
                 assert.equals(obj[0].file, artlist[0].file);
-                assert.equals(obj[0].base_href, artlist[0].base_href);
+                assert.equals(obj[0].baseHref, artlist[0].baseHref);
                 done();
             }, function (err) {
                 console.log(err);
@@ -226,7 +228,7 @@ buster.testCase("PostgreSQL", {
     },
 
     'list non existing articles': function (done) {
-        when( pg.list_articles('/simple-blog-does-not-exist/') )
+        when(pg.listArticles('/simple-blog-does-not-exist/'))
             .done(function (obj) {
                 assert.equals(obj, []);
                 done();
@@ -237,9 +239,9 @@ buster.testCase("PostgreSQL", {
     },
 
     '// list existing images': function (done) {
-        when( pg.list_images(simple_blog_index) )
+        when(pg.listImages(simpleBlogIndex))
             .done(function (article) {
-                assert.equals(article.image_list[0].filename, 'test.jpg');
+                assert.equals(article.imageList[0].filename, 'test.jpg');
                 assert.equals(article.img[1], 'test.jpg');
                 done();
             }, function (err) {
@@ -249,9 +251,9 @@ buster.testCase("PostgreSQL", {
     },
 
     '// list non existing images': function (done) {
-        when( pg.list_images({}) )
+        when(pg.listImages({}))
             .done(function (article) {
-                refute(article.image_list);
+                refute(article.imageList);
                 refute(article.img);
                 done();
             }, function (err) {
@@ -261,10 +263,10 @@ buster.testCase("PostgreSQL", {
     },
 
     '// list categories': function (done) {
-        when( pg.list_categories('/') )
+        when(pg.listCategories('/'))
             .done(function (catlist) {
-                assert.equals(catlist[0].name, category_list[0].name);
-                assert.equals(catlist[0].type, category_list[0].type);
+                assert.equals(catlist[0].name, categoryList[0].name);
+                assert.equals(catlist[0].type, categoryList[0].type);
                 done();
             }, function (err) {
                 console.log(err);
@@ -273,7 +275,7 @@ buster.testCase("PostgreSQL", {
     },
 
     '// list categories wo/input': function (done) {
-        when( pg.list_categories() )
+        when(pg.listCategories())
             .done(function (catlist) {
                 assert.equals(catlist, []);
                 done();
@@ -281,9 +283,7 @@ buster.testCase("PostgreSQL", {
                 console.log(err);
                 done();
             });
-    },
-
-
+    }
 
 });
 

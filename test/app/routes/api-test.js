@@ -22,11 +22,10 @@ var buster     = require('buster'),
             };
         }
     },
-    api_router = require(__dirname + '/../../../app/routes/api');
-
+    apiRouter = require(__dirname + '/../../../app/routes/api');
 
 var config = require(__dirname + '/../../../config/config-integration.js');
-api_router.set_config(config, {
+apiRouter.setConfig(config, {
     workerId: 1,
     stats: stats,
     activeConn: activeConn,
@@ -35,14 +34,8 @@ api_router.set_config(config, {
 
 var port = 4321;
 var app = express();
-app.use('/api', api_router);
+app.use('/api', apiRouter);
 var server;
-
-// var responses = {
-//     endpoints : {"message":"hooray! welcome to our api!"}
-// };
-
-
 
 buster.testCase('app/routes/api', {
     setUp: function () {
@@ -73,8 +66,7 @@ buster.testCase('app/routes/api', {
                 done();
             });
 
-        },
-
+        }
 
     }
 });

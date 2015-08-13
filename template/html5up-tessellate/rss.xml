@@ -21,9 +21,9 @@
     <item>
         <title>{{ a.title }}</title>
         <description>{{ a.teaser }}</description>
-        <link>{{ blog.protocol }}://{{ blog.domain }}{{ a.base_href }}{{ a.file }}</link>
+        <link>{{ blog.protocol }}://{{ blog.domain }}{{ a.baseHref }}{{ a.file }}</link>
         <category domain="{{ blog.domain }}">
-            {{ a.base_href }}
+            {{ a.baseHref }}
         </category>
         <pubDate>{% if article.published %}{{ article.published|rssdate }}{% endif %}</pubDate>
     </item>

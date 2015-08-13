@@ -4,40 +4,34 @@ var buster        = require('buster'),
     assert        = buster.assert,
     express       = require('express'),
     request       = require('request'),
-    search_router = require(__dirname + '/../../../app/routes/search');
+    searchRouter = require(__dirname + '/../../../app/routes/search');
 
 var config = require(__dirname + '/../../../config/config-integration.js');
-search_router.set_config(config, {
+searchRouter.setConfig(config, {
     workerId: 1
 });
-//console.log('mock_services search-test.js : ', search_router.config.adapter.mock_services);
-
 
 var port = 4321;
 var app = express();
-app.use('/search', search_router);
+app.use('/search', searchRouter);
 var server;
 
-// var responses = {
-//     endpoints : {"message":"hooray! welcome to our api!"}
-// };
-
 var art = {
-    tag_values: {
+    tagValues: {
         toc: '',
         fact: '',
         artlist: '<ul class="artlist"></ul>',
         'artlist-block': '<div class="artlist"></div><br class="clear">',
-        artlist_onepage: '<ul class="artlist"></ul>'
+        artlistOnepage: '<ul class="artlist"></ul>'
     },
     published: '2014-01-01',
     title: 'Simple blog 2',
-    img: [ 'simple-blog.jpg' ],
+    img: ['simple-blog.jpg'],
     body: '<p>This is content number 2.</p>\n',
     file: 'index',
     filename: 'my-path-to-the-files/content/articles/simple-blog/simple-blog.md',
-    base_href: '/simple-blog/',
-    artlist: [ undefined ]
+    baseHref: '/simple-blog/',
+    artlist: [undefined]
 };
 
 buster.testCase('app/routes/search', {
@@ -108,9 +102,7 @@ buster.testCase('app/routes/search', {
                 assert.match(body, 'Error in search...');
                 done();
             });
-        },
-
-
+        }
 
     }
 });

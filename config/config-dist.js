@@ -18,10 +18,10 @@ module.exports = {
             pintrest: '',
             instagram: ''
         },
-        static_files_path: '/Users/sorenso/html/',
-        text_files_path: '/Users/sorenso/text-files/',
-        top_image: false, // Don't use image[0] as top image on site. Use top_image instead.
-        simple_header: false, // Use simple header instead of top panorama
+        staticFilesPath: '/Users/sorenso/html/',
+        textFilesPath: '/Users/sorenso/text-files/',
+        topImage: false, // Don't use image[0] as top image on site. Use topImage instead.
+        simpleHeader: false, // Use simple header instead of top panorama
         //google_analytics: 'UA-xxxxxxxx-1',
         //google_tag_manager: 'GTM-xxxxxx',
         author: {
@@ -40,7 +40,7 @@ module.exports = {
             { name: 'Mac', url: 'mac' }
         ],
         rewrites: [
-            { url: '/wip4/.*', target: '/search/?q=', code: 302, use_url: true, regex: /^\/wip4\/(.+?)\/.+?$/, regex_result: "$1" },
+            { url: '/wip4/.*', target: '/search/?q=', code: 302, useUrl: true, regex: /^\/wip4\/(.+?)\/.+?$/, regexResult: "$1" },
             { url: '/photoalbum/view.*', target: '/images/pix.gif', code: 302 },
             { url: '/tools/.*', target: '/', code: 302 }
         ]
@@ -60,9 +60,9 @@ module.exports = {
         current: 'markdown',
         //search_adapter: 'elasticsearch',
         markdown: {
-            content_path: __dirname + '/../content/articles/',
-            photo_path: __dirname + '/../content/images/',
-            max_articles: 500,
+            contentPath: __dirname + '/../content/articles/',
+            photoPath: __dirname + '/../content/images/',
+            maxArticles: 500,
         },
         postgresql: {
             username: '',
@@ -70,8 +70,8 @@ module.exports = {
             server: '127.0.0.1',
             port: '5432',
             database: 'nils',
-            article_table: 'article',
-            category_table: 'category',
+            articleTable: 'article',
+            categoryTable: 'category',
         },
         elasticsearch: {
             //server: '172.30.0.227',

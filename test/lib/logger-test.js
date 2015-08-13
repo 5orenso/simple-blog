@@ -4,14 +4,14 @@ var buster = require('buster'),
     assert = buster.assert,
     when   = require('when'),
     logger = require('../../lib/logger')({}, {
-    logger : {
+    logger: {
         log: function (type, msg, meta) {
             return {
                 type: type,
                 msg: msg,
                 meta: meta
             };
-        },
+        }
     }
 });
 
@@ -20,7 +20,7 @@ var log = {
     msg: /\d+ \[\d*\]: simple -> blog -> is -> fun/,
     meta: null
 };
-var log_meta = {
+var logMeta = {
     type: 'info',
     msg: /\d+ \[\d*\]: simple -> \{"meta4":"yes it is!"\}/,
     meta: { meta1: 'blog', meta2: 'is', meta3: 'fun' }
@@ -30,7 +30,7 @@ var err = {
     msg: /\d+ \[\d*\]: simple -> blog -> is -> fun/,
     meta: null
 };
-var err_meta = {
+var errMeta = {
     type: 'error',
     msg: /\d+ \[\d*\]: simple -> \{"meta4":"yes it is!"\}/,
     meta: { meta1: 'blog', meta2: 'is', meta3: 'fun' }
@@ -41,8 +41,8 @@ buster.testCase('lib/logger', {
     tearDown: function () {
     },
     'Test logger:': {
-        'log': function (done) {
-            when( logger.log('simple', 'blog', 'is', 'fun') )
+        'log wo/meta': function (done) {
+            when(logger.log('simple', 'blog', 'is', 'fun'))
                 .done(function (obj) {
                     assert.equals(obj.type, log.type);
                     assert.match(obj.msg, log.msg);
@@ -50,17 +50,17 @@ buster.testCase('lib/logger', {
                 });
         },
         'log w/meta': function (done) {
-            when( logger.log('simple', { meta1: 'blog', meta2: 'is', meta3: 'fun' }, { meta4: 'yes it is!'}  ) )
+            when(logger.log('simple', {meta1: 'blog', meta2: 'is', meta3: 'fun' }, { meta4: 'yes it is!'}))
                 .done(function (obj) {
 //                    console.log(obj);
-                    assert.equals(obj.type, log_meta.type);
-                    assert.match(obj.msg, log_meta.msg);
-                    assert.equals(obj.meta, log_meta.meta);
+                    assert.equals(obj.type, logMeta.type);
+                    assert.match(obj.msg, logMeta.msg);
+                    assert.equals(obj.meta, logMeta.meta);
                     done();
                 });
         },
-        'err': function (done) {
-            when( logger.err('simple', 'blog', 'is', 'fun') )
+        'err test': function (done) {
+            when(logger.err('simple', 'blog', 'is', 'fun'))
                 .done(function (obj) {
 //                    console.log(obj);
                     assert.equals(obj.type, err.type);
@@ -70,12 +70,12 @@ buster.testCase('lib/logger', {
                 });
         },
         'err w/meta': function (done) {
-            when( logger.err('simple', { meta1: 'blog', meta2: 'is', meta3: 'fun' }, { meta4: 'yes it is!'} ) )
+            when(logger.err('simple', { meta1: 'blog', meta2: 'is', meta3: 'fun' }, {meta4: 'yes it is!'}))
                 .done(function (obj) {
 //                    console.log(obj);
-                    assert.equals(obj.type, err_meta.type);
-                    assert.match(obj.msg, err_meta.msg);
-                    assert.equals(obj.meta, err_meta.meta);
+                    assert.equals(obj.type, errMeta.type);
+                    assert.match(obj.msg, errMeta.msg);
+                    assert.equals(obj.meta, errMeta.meta);
                     done();
                 });
         },

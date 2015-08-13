@@ -6,19 +6,19 @@ var buster       = require('buster'),
     config       = require(__dirname + '/../../../config/config-integration.js');
 
 var article = {
-    tag_values: { toc: '', fact: '', artlist: '' },
+    tagValues: { toc: '', fact: '', artlist: '' },
     published: '2014-01-01',
     title: 'Simple blog 2',
-    img: [ 'simple-blog.jpg' ],
+    img: ['simple-blog.jpg'],
     body: 'This is content number 2.',
     file: 'index',
     filename: 'my-path-to-the-files/content/articles/simple-blog/simple-blog.md',
-    base_href: '/simple-blog/'
+    baseHref: '/simple-blog/'
 };
 
 var es = null;
 
-buster.testCase("Elasticsearch", {
+buster.testCase('Elasticsearch', {
     setUp: function() {
         es = require('../../../lib/adapter/elasticsearch')({
             logger: {
@@ -36,9 +36,8 @@ buster.testCase("Elasticsearch", {
                 }
             }
         }, {
-            elasticsearch: config.adapter.mock_services.elasticsearch.elasticsearch
+            elasticsearch: config.adapter.mockServices.elasticsearch.elasticsearch
         });
-
 
     },
 
@@ -54,7 +53,7 @@ buster.testCase("Elasticsearch", {
     },
 
     'search for existing word and expect one hit': function (done) {
-        when( es.query({_all:'one-hit'}, {}) )
+        when(es.query({_all:'one-hit'}, {}))
             .done(function (obj) {
                 assert.isArray(obj);
                 assert.equals(obj[0].title, article.title);
@@ -62,7 +61,7 @@ buster.testCase("Elasticsearch", {
                 assert.equals(obj[0].img, article.img);
                 assert.equals(obj[0].body, article.body);
                 assert.equals(obj[0].file, article.file);
-                assert.equals(obj[0].base_href, article.base_href);
+                assert.equals(obj[0].baseHref, article.baseHref);
                 done();
             }, function (err) {
                 console.log(err);
@@ -71,7 +70,7 @@ buster.testCase("Elasticsearch", {
     },
 
     'search for existing word and expect two hits': function (done) {
-        when( es.query({_all:'two-hit'}, {}) )
+        when(es.query({_all:'two-hit'}, {}))
             .done(function (obj) {
                 assert.isArray(obj);
                 assert.equals(obj[1].title, article.title);
@@ -79,7 +78,7 @@ buster.testCase("Elasticsearch", {
                 assert.equals(obj[1].img, article.img);
                 assert.equals(obj[1].body, article.body);
                 assert.equals(obj[1].file, article.file);
-                assert.equals(obj[1].base_href, article.base_href);
+                assert.equals(obj[1].baseHref, article.baseHref);
                 done();
             }, function (err) {
                 console.log(err);
@@ -88,7 +87,7 @@ buster.testCase("Elasticsearch", {
     },
 
     'search for non existing word': function (done) {
-        when( es.query({_all:'no-hit'}, {}) )
+        when(es.query({_all:'no-hit'}, {}))
             .done(function (obj) {
                 assert.isArray(obj);
                 assert.equals(obj, []);
@@ -100,7 +99,7 @@ buster.testCase("Elasticsearch", {
     },
 
     'ping server': function (done) {
-        when( es.ping() )
+        when(es.ping())
             .done(function (obj) {
                 assert.equals(obj, 'all is well');
                 done();
@@ -110,9 +109,8 @@ buster.testCase("Elasticsearch", {
             });
     },
 
-
     'index object': function (done) {
-        when( es.index(article) )
+        when(es.index(article))
             .done(function (obj) {
                 assert.equals(obj, { status: 'ok' });
                 done();
@@ -123,17 +121,16 @@ buster.testCase("Elasticsearch", {
     },
 
     'index object with wrong input': function (done) {
-        when( es.index({}) )
+        when(es.index({}))
             .done(function (obj) {
                 console.log(obj);
                 done();
             }, function (err) {
-                assert.match(err, 'obj.base_href');
+                assert.match(err, 'obj.baseHref');
                 assert.match(err, 'obj.file');
                 done();
             });
-    },
-
+    }
 
 });
 

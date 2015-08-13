@@ -9,20 +9,20 @@ var buster = require('buster'),
             log: function () {
             },
             err: function () {
-            },
+            }
         },
         config: config
-    }, config.adapter.mock_services);
+    }, config.adapter.mockServices);
 
 var article = {
-    tag_values: { toc: '', fact: '', artlist: '' },
+    tagValues: { toc: '', fact: '', artlist: '' },
     published: '2014-01-01',
     title: 'Simple blog 2',
-    img: [ 'simple-blog.jpg' ],
+    img: ['simple-blog.jpg'],
     body: 'This is content number 2.',
     file: 'index',
     filename: 'my-path-to-the-files/content/articles/simple-blog/simple-blog.md',
-    base_href: '/simple-blog/'
+    baseHref: '/simple-blog/'
 };
 
 buster.testCase('lib/search', {
@@ -31,8 +31,8 @@ buster.testCase('lib/search', {
     tearDown: function () {
     },
     'Test search:': {
-        'query': function (done) {
-            when( search.query({ _all: 'one-hit'}) )
+        'query plain': function (done) {
+            when(search.query({ _all: 'one-hit'}))
                 .done(function (obj) {
                     assert.isArray(obj);
                     assert.equals(obj[0].title, article.title);
@@ -40,7 +40,7 @@ buster.testCase('lib/search', {
                     assert.equals(obj[0].img, article.img);
                     assert.equals(obj[0].body, article.body);
                     assert.equals(obj[0].file, article.file);
-                    assert.equals(obj[0].base_href, article.base_href);
+                    assert.equals(obj[0].baseHref, article.baseHref);
                     done();
                 }, function (err) {
                     console.log(err);
@@ -49,7 +49,7 @@ buster.testCase('lib/search', {
         },
 
         'query for existing word and expect two hits': function (done) {
-            when( search.query({ _all: 'two-hit'}, {}) )
+            when(search.query({ _all: 'two-hit'}, {}))
                 .done(function (obj) {
                     assert.isArray(obj);
                     assert.equals(obj[1].title, article.title);
@@ -57,7 +57,7 @@ buster.testCase('lib/search', {
                     assert.equals(obj[1].img, article.img);
                     assert.equals(obj[1].body, article.body);
                     assert.equals(obj[1].file, article.file);
-                    assert.equals(obj[1].base_href, article.base_href);
+                    assert.equals(obj[1].baseHref, article.baseHref);
                     done();
                 }, function (err) {
                     console.log(err);
@@ -66,7 +66,7 @@ buster.testCase('lib/search', {
         },
 
         'query for non existing word': function (done) {
-            when( search.query({ _all: 'no-hit'}, {}) )
+            when(search.query({ _all: 'no-hit'}, {}))
                 .done(function (obj) {
                     assert.isArray(obj);
                     assert.equals(obj, []);
@@ -78,7 +78,7 @@ buster.testCase('lib/search', {
         },
 
         'index object': function (done) {
-            when( search.index(article) )
+            when(search.index(article))
                 .done(function (obj) {
                     assert.equals(obj, { status: 'ok' });
                     done();
@@ -89,19 +89,19 @@ buster.testCase('lib/search', {
         },
 
         'index object with wrong input': function (done) {
-            when( search.index({}) )
+            when(search.index({}))
                 .done(function (obj) {
                     console.log(obj);
                     done();
                 }, function (err) {
-                    assert.match(err.error, 'obj.base_href');
+                    assert.match(err.error, 'obj.baseHref');
                     assert.match(err.error, 'obj.file');
                     done();
                 });
         },
 
         'index artlist': function (done) {
-            when( search.index_artlist([article, article, article]) )
+            when(search.indexArtlist([article, article, article]))
                 .done(function (obj) {
                     assert.isArray(obj);
                     assert.equals(obj[0], { status: 'ok' });
@@ -112,9 +112,7 @@ buster.testCase('lib/search', {
                     console.log(err);
                     done();
                 });
-        },
-
-
+        }
 
     }
 });

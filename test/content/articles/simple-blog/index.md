@@ -30,7 +30,7 @@ console.log('hello world');
 [:toc]
 
 
-[:menu_onepage]
+[:menuOnepage]
 
 [:artlist_onepage]
 

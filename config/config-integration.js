@@ -13,12 +13,12 @@ module.exports = {
             pintrest: '',
             instagram: ''
         },
-        static_files_path: '/Users/sorenso/html/',
-        text_files_path: '/Users/sorenso/text-files/',
+        staticFilesPath: '/Users/sorenso/html/',
+        textFilesPath: '/Users/sorenso/text-files/',
         //google_analytics: 'UA-xxxxxxxx-1',
 
         rewrites: [
-            { url: '/photoalbum/view.*', target: '/web/?q=', code: 302, use_url: true, regex: /^\/photoalbum\/view\/(.+?)$/, regex_result: "$1" },
+            { url: '/photoalbum/view.*', target: '/web/?q=', code: 302, useUrl: true, regex: /^\/photoalbum\/view\/(.+?)$/, regexResult: "$1" },
             { url: '/tools/.*', target: '/web/', code: 302 }
         ]
     },
@@ -34,7 +34,7 @@ module.exports = {
         console : true
     },
     adapter: {
-        mock_services: {
+        mockServices: {
             //adapter: {
             //    service: {
             //        functions
@@ -45,14 +45,14 @@ module.exports = {
                     Client: function () {
                         var when   = require('when');
                         var article = {
-                            tag_values: { toc: '', fact: '', artlist: '' },
+                            tagValues: { toc: '', fact: '', artlist: '' },
                             published: '2014-01-01',
                             title: 'Simple blog 2',
                             img: [ 'simple-blog.jpg' ],
                             body: 'This is content number 2.',
                             file: 'index',
                             filename: 'my-path-to-the-files/content/articles/simple-blog/simple-blog.md',
-                            base_href: '/simple-blog/'
+                            baseHref: '/simple-blog/'
                         };
                         return {
                             ping: function (opt, callback) {
@@ -114,9 +114,9 @@ module.exports = {
         },
         current: 'markdown',
         markdown: {
-            content_path: __dirname + '/../test/content/articles/',
-            photo_path: __dirname + '/../test/content/images/',
-            max_articles: 500,
+            contentPath: __dirname + '/../test/content/articles/',
+            photoPath: __dirname + '/../test/content/images/',
+            maxArticles: 500,
         },
         postgresql: {
             username: '',
@@ -124,8 +124,8 @@ module.exports = {
             server: '127.0.0.1',
             port: '5432',
             database: 'test',
-            article_table: 'article',
-            category_table: 'category'
+            articleTable: 'article',
+            categoryTable: 'category'
         },
         elasticsearch: {
             server: '127.0.0.1',

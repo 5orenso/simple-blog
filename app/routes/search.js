@@ -12,17 +12,17 @@ var express       = require('express'),
     fs            = require('fs'),
     swig          = require('swig'),
     path          = require('path'),
-    app_path      = __dirname + '/../../',
-    template_path = path.normalize(app_path + 'template/current/'),
-    article_util  = require(app_path + 'lib/article-util')(),
-    category_util = require(app_path + 'lib/category-util')(),
-    logger        = require(app_path + 'lib/logger')(),
-    local_util    = require(app_path + 'lib/local-util')();
+    appPath      = __dirname + '/../../',
+    templatePath = path.normalize(appPath + 'template/current/'),
+    articleUtil  = require(appPath + 'lib/article-util')(),
+    categoryUtil = require(appPath + 'lib/category-util')(),
+    logger        = require(appPath + 'lib/logger')(),
+    localUtil    = require(appPath + 'lib/local-util')();
 
-var search_router = express.Router();
-search_router.set_config = function (conf, opt) {
-    search_router.config = conf;
-    search_router.opt = opt;
+var searchRouter = express.Router();
+searchRouter.setConfig = function (conf, opt) {
+    searchRouter.config = conf;
+    searchRouter.opt = opt;
     if (opt) {
         if (opt.hasOwnProperty('workerId')) {
             logger.set('workerId', opt.workerId);
@@ -35,47 +35,48 @@ search_router.set_config = function (conf, opt) {
     }
 };
 // middleware to use for all requests
-var accessLogStream = fs.createWriteStream(app_path + '/logs/search-access.log', {flags: 'a'});
+var accessLogStream = fs.createWriteStream(appPath + '/logs/search-access.log', {flags: 'a'});
 
 // setup the logger
-search_router.use(morgan('combined', {stream: accessLogStream}));
+searchRouter.use(morgan('combined', {stream: accessLogStream}));
 
-search_router.use('/*', local_util.set_cache_headers);
+searchRouter.use('/*', localUtil.setCacheHeaders);
 
 // test route to make sure everything is working (accessed at GET http://localhost:8080/search)
-search_router.get('/*', function(req, res) {
-    var lu    = require(app_path + 'lib/local-util')({config: search_router.config});
-    var request_url = article_util.getUrlFromRequest(req);
-    //console.log('search for:', (_.isEmpty(req.query.q) ? request_url : req.query.q));
+searchRouter.get('/*', function(req, res) {
+    var lu    = require(appPath + 'lib/local-util')({config: searchRouter.config});
+    var requestUrl = articleUtil.getUrlFromRequest(req);
+    //console.log('search for:', (_.isEmpty(req.query.q) ? requestUrl : req.query.q));
     // Check for cached file
     // If not cached compile file and store it.
     // TODO: How do we bypass the cache?
-    var file = article_util.getArticleFilename(request_url);
-    var template = template_path + (file === 'index' ? 'index.html' : 'blog.html');
+    var file = articleUtil.getArticleFilename(requestUrl);
+    var template = templatePath + (file === 'index' ? 'index.html' : 'blog.html');
 
-    if (_.isObject(search_router.config.template)) {
-        template = app_path + (file === 'index' ? search_router.config.template.index : search_router.config.template.blog);
+    if (_.isObject(searchRouter.config.template)) {
+        template = appPath + (file === 'index' ?
+            searchRouter.config.template.index : searchRouter.config.template.blog);
     }
     //var template = 'blog.html';
     var tpl = swig.compileFile(template);
 
-    var category = require(app_path + 'lib/category')({
+    var category = require(appPath + 'lib/category')({
         logger: logger,
-        config: search_router.config
+        config: searchRouter.config
     });
 
-    var search = require(app_path + 'lib/search')({
+    var search = require(appPath + 'lib/search')({
         logger: logger,
-        config: search_router.config
-    }, search_router.config.adapter.mock_services);
+        config: searchRouter.config
+    }, searchRouter.config.adapter.mockServices);
 
-    lu.timers_reset();
+    lu.timersReset();
     lu.timer('routes/search->request');
 
-    var search_for = lu.safe_string(_.isEmpty(req.query.q) ? request_url : req.query.q);
+    var searchFor = lu.safeString(_.isEmpty(req.query.q) ? requestUrl : req.query.q);
     var query = {
-        //_all: lu.safe_string(req.query.q)
-        _all: search_for
+        //_all: lu.safeString(req.query.q)
+        _all: searchFor
     };
     var filter = {};
 
@@ -100,35 +101,34 @@ search_router.get('/*', function(req, res) {
                         article.artlist.push(art);
                     }
                 }
-                lu.timer('category_util.format_catlist');
-                category_util.format_catlist(article, catlist);
-                lu.timer('category_util.format_catlist');
-                lu.timer('article_util.formatArtlist');
-                article_util.formatArtlist(article, article.artlist);
-                lu.timer('article_util.formatArtlist');
-                lu.timer('article_util.formatArticleSections');
-                article_util.formatArticleSections(article);
-                lu.timer('article_util.formatArticleSections');
-                lu.timer('article_util.replaceTagsWithContent');
-                article_util.replaceTagsWithContent(article);
-                lu.timer('article_util.replaceTagsWithContent');
+                lu.timer('categoryUtil.formatCatlist');
+                categoryUtil.formatCatlist(article, catlist);
+                lu.timer('categoryUtil.formatCatlist');
+                lu.timer('articleUtil.formatArtlist');
+                articleUtil.formatArtlist(article, article.artlist);
+                lu.timer('articleUtil.formatArtlist');
+                lu.timer('articleUtil.formatArticleSections');
+                articleUtil.formatArticleSections(article);
+                lu.timer('articleUtil.formatArticleSections');
+                lu.timer('articleUtil.replaceTagsWithContent');
+                articleUtil.replaceTagsWithContent(article);
+                lu.timer('articleUtil.replaceTagsWithContent');
             } else {
-                article.title = '"' + lu.safe_string(search_for) + '" not found';
+                article.title = '"' + lu.safeString(searchFor) + '" not found';
             }
-            res.send(tpl({blog: search_router.config.blog, article: article}));
+            res.send(tpl({blog: searchRouter.config.blog, article: article}));
         })
         .catch(function (opt) {
             lu.timer('routes/search->search_articles');
-            lu.send_udp({timers: lu.timers_get()});
+            lu.sendUdp({timers: lu.timersGet()});
             opt.error = 'Error in search...';
-            res.status(404).send(tpl({blog: search_router.config.blog, error: opt.error, article: opt.article}));
+            res.status(404).send(tpl({blog: searchRouter.config.blog, error: opt.error, article: opt.article}));
         })
         .done(function () {
             lu.timer('routes/search->request');
-            lu.send_udp({timers: lu.timers_get()});
+            lu.sendUdp({timers: lu.timersGet()});
         });
-
 
 });
 
-module.exports = search_router;
+module.exports = searchRouter;

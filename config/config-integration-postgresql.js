@@ -12,8 +12,8 @@ module.exports = {
             pintrest: '',
             instagram: ''
         },
-        static_files_path: '/Users/sorenso/html/',
-        text_files_path: '/Users/sorenso/text-files/'
+        staticFilesPath: '/Users/sorenso/html/',
+        textFilesPath: '/Users/sorenso/text-files/'
     },
     app: {
         port: 8080
@@ -25,9 +25,9 @@ module.exports = {
     adapter: {
         current: 'postgresql',
         markdown: {
-            content_path: __dirname + '/../test/content/articles/',
-            photo_path: __dirname + '/../test/content/images/',
-            max_articles: 500,
+            contentPath: __dirname + '/../test/content/articles/',
+            photoPath: __dirname + '/../test/content/images/',
+            maxArticles: 500,
         },
         postgresql: {
             username: '',
@@ -35,8 +35,8 @@ module.exports = {
             server: '127.0.0.1',
             port: '5432',
             database: 'nils',
-            article_table: 'wip_article',
-            category_table: 'wip_category'
+            articleTable: 'wip_article',
+            categoryTable: 'wip_category'
         }
     }
 };

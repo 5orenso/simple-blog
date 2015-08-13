@@ -102,7 +102,7 @@
 
 
     <nav id="menu">
-        {{ article.tag_values.menu|raw }}
+        {{ article.tagValues.menu|raw }}
     </nav>
     <div id="page" class="mm-page" style="min-height: 718px;">
 
@@ -129,11 +129,11 @@
                     <ul class="menu_small">
                         {% if blog.menu %}
                             {% for cat in blog.menu %}
-                                <li {% if cat.url == article.base_href %}class="selected"{% endif %}><a href="/{{ cat.url }}/">{{ cat.name }}</a></li>
+                                <li {% if cat.url == article.baseHref %}class="selected"{% endif %}><a href="/{{ cat.url }}/">{{ cat.name }}</a></li>
                             {% endfor %}
                         {% else %}
                             {% for cat in article.catlist %}
-                                <li {% if cat.base_href == article.base_href %}class="selected"{% endif %}><a href="/{{ cat.name }}/">{{ cat.name }}</a></li>
+                                <li {% if cat.baseHref == article.baseHref %}class="selected"{% endif %}><a href="/{{ cat.name }}/">{{ cat.name }}</a></li>
                             {% endfor %}
                         {% endif %}
                     </ul>
@@ -194,9 +194,9 @@
             {% for a in article.artlist %}
             {% if loop.index < 30 %}
             <div class="slide">
-                <div class="slide-image" style="background-image: url('/images/overlay.png'), url('/pho/{{ a.img[0] || 'bg/3.jpg' }}?w=150'); background-size: cover; background-position: center center;"><a href="{{ a.base_href }}{{ a.file }}"><img src="/images/pix.gif" style="height:100%; width:100%;"></a></div>
+                <div class="slide-image" style="background-image: url('/images/overlay.png'), url('/pho/{{ a.img[0] || 'bg/3.jpg' }}?w=150'); background-size: cover; background-position: center center;"><a href="{{ a.baseHref }}{{ a.file }}"><img src="/images/pix.gif" style="height:100%; width:100%;"></a></div>
                 <div class="slide-content">
-                    <a href="{{ a.base_href }}{{ a.file }}">{{ a.title }}</a>
+                    <a href="{{ a.baseHref }}{{ a.file }}">{{ a.title }}</a>
                 </div>
             </div>
             {% endif %}
@@ -225,10 +225,10 @@
                         {% if loop.index < 30 %}
                         <div class="row frontpage-artlist-item">
                                 <div class="4u frontpage-artlist-image" style="background-image: url('/images/overlay.png'), url('/pho/{{ a.img[0] || 'bg/3.jpg' }}?w=400'); background-size: cover; background-position: center center;">
-                                    <a href="{{ a.base_href }}{{ a.file }}"><img src="/images/pix.gif" style="height:100%; width:100%;"></a>
+                                    <a href="{{ a.baseHref }}{{ a.file }}"><img src="/images/pix.gif" style="height:100%; width:100%;"></a>
                                 </div>
                                 <div class="8u frontpage-artlist-content">
-                                    <h3><a href="{{ a.base_href }}{{ a.file }}">{{ a.title }}</a></h3>
+                                    <h3><a href="{{ a.baseHref }}{{ a.file }}">{{ a.title }}</a></h3>
                                     {{ a.ingress|markdown|raw }}
                                 </div>
                             </div>
@@ -468,7 +468,7 @@
 			<section id="footer">
                 <div class="content ">
                     <div class="container">
-                        {{ article.tag_values['artlist-block']|raw }}
+                        {{ article.tagValues['artlist-block']|raw }}
                     </div>
                 </div>
 

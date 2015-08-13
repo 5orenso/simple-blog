@@ -12,28 +12,28 @@ var express       = require('express'),
     swig          = require('swig'),
     fs            = require('fs'),
     path          = require('path'),
-    app_path      = __dirname + '/../../',
-    template_path = path.normalize(app_path + 'template/current/'),
-    photo_path    = path.normalize(app_path + 'content/images/'),
-    logger        = require(app_path + 'lib/logger')(),
-    article_util  = require(app_path + 'lib/article-util')(),
-    local_util    = require(app_path + 'lib/local-util')();
+    appPath      = __dirname + '/../../',
+    templatePath = path.normalize(appPath + 'template/current/'),
+    photoPath    = path.normalize(appPath + 'content/images/'),
+    logger        = require(appPath + 'lib/logger')(),
+    articleUtil  = require(appPath + 'lib/article-util')(),
+    localUtil    = require(appPath + 'lib/local-util')();
 
-swig.setFilter('markdown', article_util.replaceMarked);
-swig.setFilter('formatted', article_util.formatDate);
-swig.setFilter('rssdate', article_util.rssDate);
+swig.setFilter('markdown', articleUtil.replaceMarked);
+swig.setFilter('formatted', articleUtil.formatDate);
+swig.setFilter('rssdate', articleUtil.rssDate);
 
 //var stats, activeConn, timer, timer_v2, config;
-var rss_router = express.Router();
-rss_router.set_config = function (conf, opt) {
-    rss_router.config = conf;
-    rss_router.opt = opt;
+var rssRouter = express.Router();
+rssRouter.setConfig = function (conf, opt) {
+    rssRouter.config = conf;
+    rssRouter.opt = opt;
     if (opt) {
         if (opt.hasOwnProperty('workerId')) {
             logger.set('workerId', opt.workerId);
         }
-        if (opt.hasOwnProperty('photo_path')) {
-            photo_path = path.normalize(opt.photo_path);
+        if (opt.hasOwnProperty('photoPath')) {
+            photoPath = path.normalize(opt.photoPath);
         }
     }
     if (conf) {
@@ -46,20 +46,20 @@ rss_router.set_config = function (conf, opt) {
 };
 
 // create a write stream (in append mode)
-var accessLogStream = fs.createWriteStream(app_path + '/logs/rss-access.log', {flags: 'a'});
+var accessLogStream = fs.createWriteStream(appPath + '/logs/rss-access.log', {flags: 'a'});
 
 // Setup the logger
-rss_router.use(morgan('combined', {stream: accessLogStream}));
+rssRouter.use(morgan('combined', {stream: accessLogStream}));
 
 // Main route for blog articles.
-rss_router.use('/*', local_util.set_no_cache_headers);
-rss_router.get('/*', function(req, res) {
-    var lu    = require(app_path + 'lib/local-util')({config: rss_router.config});
+rssRouter.use('/*', localUtil.setNoCacheHeaders);
+rssRouter.get('/*', function(req, res) {
+    var lu    = require(appPath + 'lib/local-util')({config: rssRouter.config});
     // Resolve filename
-    var request_url = article_util.getUrlFromRequest(req);
+    var requestUrl = articleUtil.getUrlFromRequest(req);
 
     // Load content based on filename
-    var article_path = article_util.getArticlePathRelative(request_url);
+    var articlePath = articleUtil.getArticlePathRelative(requestUrl);
 
     // Stop timer when response is transferred and finish.
     res.on('finish', function () {
@@ -68,51 +68,50 @@ rss_router.get('/*', function(req, res) {
 
     res.setHeader('Content-type', 'text/xml');
 
-
     // Check for cached file
     // If not cached compile file and store it.
     // TODO: How do we bypass the cache?
-    var file = article_util.getArticleFilename(request_url);
-    var template = template_path + (file === 'index' ? 'rss.xml' : 'rss.xml');
+    var file = articleUtil.getArticleFilename(requestUrl);
+    var template = templatePath + (file === 'index' ? 'rss.xml' : 'rss.xml');
     var tpl = swig.compileFile(template);
 
-    var article = require(app_path + 'lib/article')({
+    var article = require(appPath + 'lib/article')({
         logger: logger,
-        request_url: request_url,
-        photo_path: photo_path,
-        config: rss_router.config
+        requestUrl: requestUrl,
+        photoPath: photoPath,
+        config: rssRouter.config
     });
 
-    var category = require(app_path + 'lib/category')({
+    var category = require(appPath + 'lib/category')({
         logger: logger,
-        config: rss_router.config
+        config: rssRouter.config
     });
 
-    lu.timers_reset();
+    lu.timersReset();
     lu.timer('routes/rss->request');
     lu.timer('routes/rss->load_category_and_article_lists');
-    when.all([category.list('/'), article.list(article_path)])
-        .then(function (content_lists) {
+    when.all([category.list('/'), article.list(articlePath)])
+        .then(function (contentLists) {
             lu.timer('routes/rss->load_category_and_article_lists');
             lu.timer('routes/rss->load_article');
             return article.load({
-                catlist: content_lists[0],
-                artlist: content_lists[1]
+                catlist: contentLists[0],
+                artlist: contentLists[1]
             });
         })
         .then(function (article) {
             lu.timer('routes/rss->load_article');
-            res.send(tpl({blog: rss_router.config.blog, article: article}));
+            res.send(tpl({blog: rssRouter.config.blog, article: article}));
         })
         .catch(function (opt) {
             lu.timer('routes/rss->load_article');
-            lu.send_udp({timers: lu.timers_get()});
-            res.status(404).send(tpl({blog: rss_router.config.blog, error: opt.error, article: opt.article}));
+            lu.sendUdp({timers: lu.timersGet()});
+            res.status(404).send(tpl({blog: rssRouter.config.blog, error: opt.error, article: opt.article}));
         })
         .done(function () {
             lu.timer('routes/rss->request');
-            lu.send_udp({timers: lu.timers_get()});
+            lu.sendUdp({timers: lu.timersGet()});
         });
 
 });
-module.exports = rss_router;
+module.exports = rssRouter;

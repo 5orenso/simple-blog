@@ -23,17 +23,17 @@ var buster     = require('buster'),
             };
         }
     },
-    image_router = require(__dirname + '/../../../app/routes/image');
+    imageRouter = require(__dirname + '/../../../app/routes/image');
 
-var content_path     = __dirname + '/../../content/articles/',
-    photo_path       = __dirname + '/../../content/images/',
-    photo_cache_path = __dirname + '/../../content/images_cached/';
+var contentPath     = __dirname + '/../../content/articles/',
+    photoPath       = __dirname + '/../../content/images/',
+    photoCachePath = __dirname + '/../../content/images_cached/';
 
 var config = require(__dirname + '/../../../config/config-integration.js');
-image_router.set_config(config, {
-    content_path: content_path,
-    photo_path: photo_path,
-    photo_cache_path: photo_cache_path,
+imageRouter.setConfig(config, {
+    contentPath: contentPath,
+    photoPath: photoPath,
+    photoCachePath: photoCachePath,
     workerId: 1,
     stats: stats,
     activeConn: activeConn,
@@ -42,18 +42,16 @@ image_router.set_config(config, {
 
 var port = 4322;
 var app = express();
-app.use('/photo', image_router);
+app.use('/photo', imageRouter);
 var server;
-
-// var responses = {
-//     endpoints : {"message":"hooray! welcome to our api!"}
-// };
-
 
 var rmDir = function(dirPath) {
     var files;
-    try { files = fs.readdirSync(dirPath); }
-    catch(e) { return; }
+    try {
+        files = fs.readdirSync(dirPath);
+    } catch (e) {
+        return;
+    }
     if (files.length > 0) {
         for (var i = 0; i < files.length; i++) {
             var filePath = dirPath + '/' + files[i];
@@ -66,8 +64,6 @@ var rmDir = function(dirPath) {
     }
     fs.rmdirSync(dirPath);
 };
-
-
 
 buster.testCase('app/routes/image', {
     setUp: function () {
@@ -85,10 +81,8 @@ buster.testCase('app/routes/image', {
     },
     'Test web routes:': {
 
-
-
         '/test.jpg?w=300 from scratch': function (done) {
-            rmDir(photo_cache_path);
+            rmDir(photoCachePath);
             request('http://127.0.0.1:' + port + '/photo/test.jpg?w=300', function (error, response) {
                 if (!error && response.statusCode === 200) {
                     done();
@@ -116,7 +110,6 @@ buster.testCase('app/routes/image', {
             });
         },
 
-
         '/test.jpg?w=300&force=1 force cache refresh': function (done) {
             request('http://127.0.0.1:' + port + '/photo/test.jpg?w=300&force=1', function (error, response) {
                 if (!error && response.statusCode === 200) {
@@ -139,13 +132,10 @@ buster.testCase('app/routes/image', {
                 } else {
                     console.log('response.statusCode:', response.statusCode);
                     console.log(error);
-//                    console.log(response);
                     done();
                 }
             });
-        },
-
-
+        }
 
     }
 });

@@ -13,15 +13,15 @@ var buster       = require('buster'),
             adapter: {
                 current: 'markdown',
                 markdown: {
-                    content_path: __dirname + '/../content/articles/',
-                    photo_path: __dirname + '/../content/images/',
-                    max_articles: 500,
+                    contentPath: __dirname + '/../content/articles/',
+                    photoPath: __dirname + '/../content/images/',
+                    maxArticles: 500
                 }
             }
         }
     });
 
-var catlist = [ { dev: 16777220,
+var catlist = [{ dev: 16777220,
     mode: 16877,
     nlink: 5,
     uid: 501,
@@ -35,7 +35,7 @@ var catlist = [ { dev: 16777220,
     mtime: 'Fri Oct 24 2014 21:43:27 GMT+0200 (CEST)',
     ctime: 'Fri Oct 24 2014 21:43:27 GMT+0200 (CEST)',
     name: 'simple-blog',
-    type: 'directory' } ];
+    type: 'directory' }];
 
 buster.testCase('lib/category', {
     setUp: function () {
@@ -59,7 +59,7 @@ buster.testCase('lib/category', {
                     refute(obj[0]);
                     done();
                 }).catch(console.log);
-        },
+        }
 
     }
 });

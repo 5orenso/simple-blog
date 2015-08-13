@@ -8,14 +8,14 @@
 var express    = require('express'),
     bodyParser = require('body-parser'),
     _          = require('underscore'),
-    app_path   = __dirname + '/../../',
-    logger     = require(app_path + 'lib/logger')(),
-    local_util = require(app_path + 'lib/local-util')();
+    appPath   = __dirname + '/../../',
+    logger     = require(appPath + 'lib/logger')(),
+    localUtil = require(appPath + 'lib/local-util')();
 
-var api_router = express.Router();
-api_router.set_config = function (conf, opt) {
-    api_router.config = conf;
-    api_router.opt = opt;
+var apiRouter = express.Router();
+apiRouter.setConfig = function (conf, opt) {
+    apiRouter.config = conf;
+    apiRouter.opt = opt;
     if (opt) {
         if (opt.hasOwnProperty('workerId')) {
             logger.set('workerId', opt.workerId);
@@ -28,15 +28,14 @@ api_router.set_config = function (conf, opt) {
     }
 };
 // middleware to use for all requests
-//var accessLogStream = fs.createWriteStream(app_path + '/logs/api-access.log', {flags: 'a'});
+//var accessLogStream = fs.createWriteStream(appPath + '/logs/api-access.log', {flags: 'a'});
 // setup the logger
-//api_router.use(morgan('combined', {stream: accessLogStream}));
-api_router.use('/*', local_util.set_cache_headers);
+//apiRouter.use(morgan('combined', {stream: accessLogStream}));
+apiRouter.use('/*', localUtil.setCacheHeaders);
 // parse application/json
-api_router.use(bodyParser.json());
+apiRouter.use(bodyParser.json());
 
-
-api_router.use(function(req, res, next) {
+apiRouter.use(function(req, res, next) {
     // do logging
 //    logger.log(
 //        req.method,
@@ -48,44 +47,42 @@ api_router.use(function(req, res, next) {
 });
 
 // test route to make sure everything is working (accessed at GET http://localhost:8080/api)
-api_router.get('/', function(req, res) {
-    var lu    = require(app_path + 'lib/local-util')({config: api_router.config});
+apiRouter.get('/', function(req, res) {
+    var lu    = require(appPath + 'lib/local-util')({config: apiRouter.config});
 
-    lu.timers_reset();
+    lu.timersReset();
     lu.timer('routes/api->request');
     // Stop timer when response is transferred and finish.
     res.on('finish', function () {
         lu.timer('routes/api->request');
-        lu.send_udp({ timers: lu.timers_get() });
+        lu.sendUdp({ timers: lu.timersGet() });
     });
     res.json({ message: 'hooray! welcome to our api!' });
 });
 
 // test route to make sure everything is working (accessed at GET http://localhost:8080/api)
-api_router.post('/report', function(req, res) {
-    var lu    = require(app_path + 'lib/local-util')({config: api_router.config});
+apiRouter.post('/report', function(req, res) {
+    var lu    = require(appPath + 'lib/local-util')({config: apiRouter.config});
 
-    lu.timers_reset();
+    lu.timersReset();
     lu.timer('routes/api->request');
     // Stop timer when response is transferred and finish.
     res.on('finish', function () {
         lu.timer('routes/api->request');
-        lu.send_udp({ timers: lu.timers_get() });
+        lu.sendUdp({ timers: lu.timersGet() });
     });
 
     // Write shit to file.
     var milliseconds = (new Date()).getTime();
     var fs = require('fs');
-    fs.writeFile("/tmp/javascript-module-performance-" + milliseconds, JSON.stringify(req.body), function(err) {
-        if(err) {
+    fs.writeFile('/tmp/javascript-module-performance-' + milliseconds, JSON.stringify(req.body), function(err) {
+        if (err) {
             res.json({ message: 'Something went wrong: ' + err, status: 500 });
         } else {
             res.json({ message: 'Thanks for your report.', status: 200 });
         }
     });
 
-
 });
 
-
-module.exports = api_router;
+module.exports = apiRouter;

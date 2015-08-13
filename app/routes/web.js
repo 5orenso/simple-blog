@@ -12,27 +12,27 @@ var express       = require('express'),
     swig          = require('swig'),
     fs            = require('fs'),
     path          = require('path'),
-    app_path      = __dirname + '/../../',
-    template_path = path.normalize(app_path + 'template/current/'),
-    photo_path    = path.normalize(app_path + 'content/images/'),
+    appPath       = __dirname + '/../../',
+    templatePath  = path.normalize(appPath + 'template/current/'),
+    photoPath     = path.normalize(appPath + 'content/images/'),
     sitemap       = 'sitemap.xml',
-    logger        = require(app_path + 'lib/logger')(),
-    article_util  = require(app_path + 'lib/article-util')(),
-    local_util    = require(app_path + 'lib/local-util')();
+    logger        = require(appPath + 'lib/logger')(),
+    articleUtil  = require(appPath + 'lib/article-util')(),
+    localUtil    = require(appPath + 'lib/local-util')();
 
-swig.setFilter('markdown', article_util.replaceMarked);
-swig.setFilter('formatted', article_util.formatDate);
+swig.setFilter('markdown', articleUtil.replaceMarked);
+swig.setFilter('formatted', articleUtil.formatDate);
 
-var web_router = express.Router();
-web_router.set_config = function (conf, opt) {
-    web_router.config = conf;
-    web_router.opt = opt;
+var webRouter = express.Router();
+webRouter.setConfig = function (conf, opt) {
+    webRouter.config = conf;
+    webRouter.opt = opt;
     if (opt) {
         if (opt.hasOwnProperty('workerId')) {
             logger.set('workerId', opt.workerId);
         }
-        if (opt.hasOwnProperty('photo_path')) {
-            photo_path = path.normalize(opt.photo_path);
+        if (opt.hasOwnProperty('photoPath')) {
+            photoPath = path.normalize(opt.photoPath);
         }
     }
     if (conf) {
@@ -46,65 +46,65 @@ web_router.set_config = function (conf, opt) {
 };
 
 // create a write stream (in append mode)
-var accessLogStream = fs.createWriteStream(app_path + '/logs/web-access.log', {flags: 'a'});
+var accessLogStream = fs.createWriteStream(appPath + '/logs/web-access.log', {flags: 'a'});
 
 // Setup the logger
-web_router.use(morgan('combined', {stream: accessLogStream}));
+webRouter.use(morgan('combined', {stream: accessLogStream}));
 
 // Setup static routes
-web_router.use('/js/', local_util.set_cache_headers);
-web_router.use('/js/', express.static(app_path + 'template/current/js/'));
-web_router.use('/images/', local_util.set_cache_headers);
-web_router.use('/images/', express.static(app_path + 'template/current/images/'));
-web_router.use('/css/', local_util.set_cache_headers);
-web_router.use('/css/', express.static(app_path + 'template/current/css/'));
-web_router.use('/fonts/', local_util.set_cache_headers);
-web_router.use('/fonts/', express.static(app_path + 'template/current/fonts/'));
-web_router.use('/photos/', local_util.set_cache_headers);
-web_router.use('/photos/', express.static(app_path + 'content/images/'));
-web_router.use('/favicon.ico/', local_util.set_cache_headers);
-web_router.use('/favicon.ico', express.static(app_path + 'template/current/favicon.ico'));
-web_router.use('/robots.txt/', local_util.set_cache_headers);
-web_router.use('/robots.txt', express.static(app_path + 'template/robots.txt'));
-web_router.use('/keybase.txt/', local_util.set_cache_headers);
-web_router.use('/keybase.txt', express.static(app_path + 'content/articles/keybase.txt'));
-web_router.use('/sitemap.xml/', local_util.set_cache_headers);
-//web_router.use('/sitemap.xml', express.static(sitemap));
+webRouter.use('/js/', localUtil.setCacheHeaders);
+webRouter.use('/js/', express.static(appPath + 'template/current/js/'));
+webRouter.use('/images/', localUtil.setCacheHeaders);
+webRouter.use('/images/', express.static(appPath + 'template/current/images/'));
+webRouter.use('/css/', localUtil.setCacheHeaders);
+webRouter.use('/css/', express.static(appPath + 'template/current/css/'));
+webRouter.use('/fonts/', localUtil.setCacheHeaders);
+webRouter.use('/fonts/', express.static(appPath + 'template/current/fonts/'));
+webRouter.use('/photos/', localUtil.setCacheHeaders);
+webRouter.use('/photos/', express.static(appPath + 'content/images/'));
+webRouter.use('/favicon.ico/', localUtil.setCacheHeaders);
+webRouter.use('/favicon.ico', express.static(appPath + 'template/current/favicon.ico'));
+webRouter.use('/robots.txt/', localUtil.setCacheHeaders);
+webRouter.use('/robots.txt', express.static(appPath + 'template/robots.txt'));
+webRouter.use('/keybase.txt/', localUtil.setCacheHeaders);
+webRouter.use('/keybase.txt', express.static(appPath + 'content/articles/keybase.txt'));
+webRouter.use('/sitemap.xml/', localUtil.setCacheHeaders);
+//webRouter.use('/sitemap.xml', express.static(sitemap));
 
-web_router.get('/sitemap.xml', function(req, res){
-    res.sendFile(sitemap, {root: path.normalize(app_path + './template')});
+webRouter.get('/sitemap.xml', function (req, res) {
+    res.sendFile(sitemap, {root: path.normalize(appPath + './template')});
 });
 
 // Main route for blog articles.
-web_router.use('/*', local_util.set_no_cache_headers);
-web_router.get('/*', function(req, res) {
-    var lu    = require(app_path + 'lib/local-util')({config: web_router.config});
+webRouter.use('/*', localUtil.setNoCacheHeaders);
+webRouter.get('/*', function(req, res) {
+    var lu    = require(appPath + 'lib/local-util')({config: webRouter.config});
     // Resolve filename
-    var request_url = article_util.getUrlFromRequest(req);
+    var requestUrl = articleUtil.getUrlFromRequest(req);
 
     // Check for redirect
-    var is_redirect = false;
-    if (_.isObject(web_router.config.blog) && _.isArray(web_router.config.blog.rewrites)) {
-        for (var i in web_router.config.blog.rewrites) {
-            if (web_router.config.blog.rewrites[i]) {
-                var rewrite = web_router.config.blog.rewrites[i];
-                if (request_url.match(rewrite.url)) {
+    var isRedirect = false;
+    if (_.isObject(webRouter.config.blog) && _.isArray(webRouter.config.blog.rewrites)) {
+        for (var i in webRouter.config.blog.rewrites) {
+            if (webRouter.config.blog.rewrites[i]) {
+                var rewrite = webRouter.config.blog.rewrites[i];
+                if (requestUrl.match(rewrite.url)) {
                     //console.log('Rewriting...', rewrite);
                     var target = rewrite.target;
-                    if (rewrite.use_url && rewrite.regex) {
-                        request_url = request_url.replace(rewrite.regex, rewrite.regex_result);
-                        target += request_url;
+                    if (rewrite.useUrl && rewrite.regex) {
+                        requestUrl = requestUrl.replace(rewrite.regex, rewrite.regexResult);
+                        target += requestUrl;
                     }
                     res.redirect(rewrite.code, target);
-                    is_redirect = true;
+                    isRedirect = true;
                 }
             }
         }
     }
 
-    if (!is_redirect) {
+    if (!isRedirect) {
         // Load content based on filename
-        var article_path = article_util.getArticlePathRelative(request_url);
+        var articlePath = articleUtil.getArticlePathRelative(requestUrl);
 
         // Stop timer when response is transferred and finish.
         res.on('finish', function () {
@@ -114,52 +114,52 @@ web_router.get('/*', function(req, res) {
         // Check for cached file
         // If not cached compile file and store it.
         // TODO: How do we bypass the cache?
-        var file = article_util.getArticleFilename(request_url);
-        var template = template_path + (file === 'index' ? 'index.html' : 'blog.html');
+        var file = articleUtil.getArticleFilename(requestUrl);
+        var template = templatePath + (file === 'index' ? 'index.html' : 'blog.html');
 
-        if (_.isObject(web_router.config.template)) {
-            template = app_path + (file === 'index' ? web_router.config.template.index : web_router.config.template.blog);
+        if (_.isObject(webRouter.config.template)) {
+            template = appPath + (file === 'index' ? webRouter.config.template.index : webRouter.config.template.blog);
         }
         //var template = 'blog.html';
         var tpl = swig.compileFile(template);
 
-        var article = require(app_path + 'lib/article')({
+        var article = require(appPath + 'lib/article')({
             logger: logger,
-            request_url: request_url,
-            photo_path: photo_path,
-            config: web_router.config
+            requestUrl: requestUrl,
+            photoPath: photoPath,
+            config: webRouter.config
         });
 
-        var category = require(app_path + 'lib/category')({
+        var category = require(appPath + 'lib/category')({
             logger: logger,
-            config: web_router.config
+            config: webRouter.config
         });
 
-        lu.timers_reset();
+        lu.timersReset();
         lu.timer('routes/web->request');
         lu.timer('routes/web->load_category_and_article_lists');
-        when.all([category.list('/'), article.list(article_path)])
-            .then(function (content_lists) {
+        when.all([category.list('/'), article.list(articlePath)])
+            .then(function (contentLists) {
                 lu.timer('routes/web->load_category_and_article_lists');
                 lu.timer('routes/web->load_article');
                 return article.load({
-                    catlist: content_lists[0],
-                    artlist: content_lists[1]
+                    catlist: contentLists[0],
+                    artlist: contentLists[1]
                 });
             })
             .then(function (article) {
                 lu.timer('routes/web->load_article');
-                res.send(tpl({blog: web_router.config.blog, article: article}));
+                res.send(tpl({blog: webRouter.config.blog, article: article}));
             })
             .catch(function (opt) {
                 lu.timer('routes/web->load_article');
-                lu.send_udp({timers: lu.timers_get()});
-                res.status(404).send(tpl({blog: web_router.config.blog, error: opt.error, article: opt.article}));
+                lu.sendUdp({timers: lu.timersGet()});
+                res.status(404).send(tpl({blog: webRouter.config.blog, error: opt.error, article: opt.article}));
             })
             .done(function () {
                 lu.timer('routes/web->request');
-                lu.send_udp({timers: lu.timers_get()});
+                lu.sendUdp({timers: lu.timersGet()});
             });
     }
 });
-module.exports = web_router;
+module.exports = webRouter;

@@ -10,11 +10,11 @@ var _ = require('underscore'),
     express = require('express'),
     bodyParser = require('body-parser'),
     commander = require('commander'),
-    app_path = __dirname + '/../',
-    logger = require(app_path + 'lib/logger')({
+    appPath = __dirname + '/../',
+    logger = require(appPath + 'lib/logger')({
         workerId: 1 //cluster.worker.id
     }),
-    local_util = require(app_path + 'lib/local-util')();
+    localUtil = require(appPath + 'lib/local-util')();
 
 var app = express();
 
@@ -31,38 +31,38 @@ if (config) {
 app.use(bodyParser.json());
 
 // Include route handlers ------------------------
-var rss_router = require('./routes/rss');
-rss_router.set_config(config, {
+var rssRouter = require('./routes/rss');
+rssRouter.setConfig(config, {
     workerId: 1 //cluster.worker.id,
 });
-var api_router = require('./routes/api');
-api_router.set_config(config, {
+var apiRouter = require('./routes/api');
+apiRouter.setConfig(config, {
     workerId: 1 //cluster.worker.id,
 });
-var web_router = require('./routes/web');
-web_router.set_config(config, {
+var webRouter = require('./routes/web');
+webRouter.setConfig(config, {
     workerId: 1 //cluster.worker.id,
 });
-var image_router = require('./routes/image');
-image_router.set_config(config, {
+var imageRouter = require('./routes/image');
+imageRouter.setConfig(config, {
     workerId: 1, //cluster.worker.id,
-    photo_path: config.adapter.markdown.photo_path,
-    photo_cache_path: config.blog.domain
+    photoPath: config.adapter.markdown.photoPath,
+    photoCachePath: config.blog.domain
 });
-var search_router = require('./routes/search');
-search_router.set_config(config, {
+var searchRouter = require('./routes/search');
+searchRouter.setConfig(config, {
     workerId: 1 //cluster.worker.id,
 });
 
 // Register routes -------------------------------
-app.use('/api', api_router);
-app.use('/rss', rss_router);
-app.use('/static', local_util.set_cache_headers);
-app.use('/static', express.static(config.blog.static_files_path));
-app.use('/.well-known/', express.static(config.blog.text_files_path));
-app.use('/pho/', image_router);
-app.use('/search/', search_router);
-app.use('/', web_router);
+app.use('/api', apiRouter);
+app.use('/rss', rssRouter);
+app.use('/static', localUtil.setCacheHeaders);
+app.use('/static', express.static(config.blog.staticFilesPath));
+app.use('/.well-known/', express.static(config.blog.textFilesPath));
+app.use('/pho/', imageRouter);
+app.use('/search/', searchRouter);
+app.use('/', webRouter);
 
 // Start the server ------------------------------
 var server = app.listen(config.app.port, function () {

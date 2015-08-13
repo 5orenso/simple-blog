@@ -13,23 +13,24 @@ var buster   = require('buster'),
             adapter: {
                 current: 'markdown',
                 markdown: {
-                    content_path: __dirname + '/../../content/articles/',
-                    photo_path: __dirname + '/../../content/images/',
-                    max_articles: 900,
+                    contentPath: __dirname + '/../../content/articles/',
+                    photoPath: __dirname + '/../../content/images/',
+                    maxArticles: 900
                 }
             }
         }
-
     });
 
-var simple_blog_index = { tag_values: { toc: '', fact: '', artlist: '' },
+var simpleBlogIndex = { tagValues: { toc: '', fact: '', artlist: '' },
     published: '2014-09-01',
-    tag: [ 'simple,blog' ],
+    tag: ['simple,blog'],
     title: 'Simple Blog Server',
     teaser: 'Life made easier',
-    img: [ 'simple-blog.jpg' ],
+    img: ['simple-blog.jpg'],
     aside: 'This is the aside.',
-    body: '# Simple title 1\n\n## Simple sub title 1\n\nMy simple blog text.\n\n# Simple title 2\n\n## Simple sub title 1\n\n### Simple sub sub title 1\n\n```javascript \n\nconsole.log(\'hello world\');\n\n```\n\n![Simple blog image](simple-blog.jpg?w=600 "My image text")\n\n\n[:toc]\n\n\n[:menu_onepage]\n\n[:artlist_onepage]\n\n',
+    body: '# Simple title 1\n\n## Simple sub title 1\n\nMy simple blog text.\n\n# Simple title 2\n\n## Simple sub ' +
+        'title 1\n\n### Simple sub sub title 1\n\n```javascript \n\nconsole.log(\'hello world\');\n\n```\n\n![Simple' +
+        ' blog image](simple-blog.jpg?w=600 "My image text")\n\n\n[:toc]\n\n\n[:menuOnepage]\n\n[:artlistOnepage]\n\n',
     body2: 'This is a test of body 2.\n[:toc]\n',
     aside2: 'This is a test of aside 2.\n[:toc]\n',
     body3: 'This is a test of body 3.\n[:toc]\n',
@@ -38,20 +39,22 @@ var simple_blog_index = { tag_values: { toc: '', fact: '', artlist: '' },
     aside4: 'This is a test of aside 4.\n[:toc]\n',
     body5: 'This is a test of body 5.\n[:toc]\n',
     aside5: 'This is a test of aside 5.\n[:toc]\n',
-    images: [ '/' ],
+    images: ['/'],
     file: 'index',
     filename: 'my-path-to-the-files/content/articles/simple-blog/index.md',
-    base_href: '/simple-blog/' };
+    baseHref: '/simple-blog/' };
 
 var artlist = [{
-    tag_values: { toc: '', fact: '', artlist: '' },
+    tagValues: { toc: '', fact: '', artlist: '' },
     published: '2014-09-01',
-    tag: [ 'simple,blog' ],
+    tag: ['simple,blog'],
     title: 'Simple Blog Server',
     teaser: 'Life made easier',
-    img: [ 'simple-blog.jpg' ],
+    img: ['simple-blog.jpg'],
     aside: 'This is the aside.',
-    body: '# Simple title 1\n\n## Simple sub title 1\n\nMy simple blog text.\n\n# Simple title 2\n\n## Simple sub title 1\n\n### Simple sub sub title 1\n\n```javascript \n\nconsole.log(\'hello world\');\n\n```\n\n![Simple blog image](simple-blog.jpg?w=600 "My image text")\n\n\n[:toc]\n\n\n[:menu_onepage]\n\n[:artlist_onepage]\n\n',
+    body: '# Simple title 1\n\n## Simple sub title 1\n\nMy simple blog text.\n\n# Simple title 2\n\n## Simple sub ' +
+        'title 1\n\n### Simple sub sub title 1\n\n```javascript \n\nconsole.log(\'hello world\');\n\n```\n\n![Simple' +
+        ' blog image](simple-blog.jpg?w=600 "My image text")\n\n\n[:toc]\n\n\n[:menuOnepage]\n\n[:artlistOnepage]\n\n',
     body2: 'This is a test of body 2.\n[:toc]\n',
     aside2: 'This is a test of aside 2.\n[:toc]\n',
     body3: 'This is a test of body 3.\n[:toc]\n',
@@ -60,27 +63,23 @@ var artlist = [{
     aside4: 'This is a test of aside 4.\n[:toc]\n',
     body5: 'This is a test of body 5.\n[:toc]\n',
     aside5: 'This is a test of aside 5.\n[:toc]\n',
-    images: [ '/' ],
+    images: ['/'],
     file: 'index',
     filename: 'my-path-to-the-files/content/articles/simple-blog/index.md',
-    base_href: '/simple-blog/'
+    baseHref: '/simple-blog/'
 },
     {
-        tag_values: { toc: '', fact: '', artlist: '' },
+        tagValues: { toc: '', fact: '', artlist: '' },
         published: '2014-01-01',
         title: 'Simple blog 2',
-        img: [ 'simple-blog.jpg' ],
+        img: ['simple-blog.jpg'],
         body: 'This is content number 2.',
         file: 'simple-blog',
         filename: 'my-path-to-the-files/content/articles/simple-blog/simple-blog.md',
-        base_href: '/simple-blog/'
+        baseHref: '/simple-blog/'
     }];
 
-// var article = {
-
-// };
-
-var category_list = [ { dev: 16777220,
+var categoryList = [{ dev: 16777220,
     mode: 16877,
     nlink: 5,
     uid: 501,
@@ -94,7 +93,7 @@ var category_list = [ { dev: 16777220,
 //    mtime: Fri Oct 24 2014 21:43:27 GMT+0200 (CEST),
 //    ctime: Fri Oct 24 2014 21:43:27 GMT+0200 (CEST),
     name: 'simple-blog',
-    type: 'directory' } ];
+    type: 'directory' }];
 
 buster.testCase('lib/adapter/markdown', {
     setUp: function () {
@@ -103,41 +102,41 @@ buster.testCase('lib/adapter/markdown', {
     },
     'Test markdown adapter:': {
         'load existing file': function (done) {
-            when( markdown.load({
-                request_url: '/simple-blog/index'
-            }) )
+            when(markdown.load({
+                requestUrl: '/simple-blog/index'
+            }))
                 .done(function (obj) {
-                    assert.equals(obj.file, simple_blog_index.file);
-                    assert.equals(obj.base_href, simple_blog_index.base_href);
+                    assert.equals(obj.file, simpleBlogIndex.file);
+                    assert.equals(obj.baseHref, simpleBlogIndex.baseHref);
                     done();
                 });
         },
         'load non existing file': function (done) {
-            when( markdown.load({
-                request_url: '/simple-blog/index-does-not-exist'
-            }) )
+            when(markdown.load({
+                requestUrl: '/simple-blog/index-does-not-exist'
+            }))
                 .done(function (obj) {
                     console.log(obj);
                 }, function (obj) {
                     assert.equals(obj.article.file, 'index-does-not-exist');
-                    assert.equals(obj.article.base_href, simple_blog_index.base_href);
+                    assert.equals(obj.article.baseHref, simpleBlogIndex.baseHref);
                     done();
                 });
         },
 
         'list existing articles': function (done) {
-            when( markdown.list_articles('/simple-blog/') )
+            when(markdown.listArticles('/simple-blog/'))
                 .done(function (obj) {
                     assert.equals(obj[0].title, artlist[0].title);
                     assert.equals(obj[0].teaser, artlist[0].teaser);
                     assert.equals(obj[0].file, artlist[0].file);
-                    assert.equals(obj[0].base_href, artlist[0].base_href);
+                    assert.equals(obj[0].baseHref, artlist[0].baseHref);
                     done();
                 });
         },
 
         'list non existing articles': function (done) {
-            when( markdown.list_articles('/simple-blog-does-not-exist/') )
+            when(markdown.listArticles('/simple-blog-does-not-exist/'))
                 .done(function (obj) {
                     assert.equals(obj, []);
                     done();
@@ -145,39 +144,39 @@ buster.testCase('lib/adapter/markdown', {
         },
 
         'list existing images': function (done) {
-            when( markdown.list_images(simple_blog_index) )
+            when(markdown.listImages(simpleBlogIndex))
                 .done(function (article) {
-                    assert.equals(article.image_list[0].filename, 'test.jpg');
+                    assert.equals(article.imageList[0].filename, 'test.jpg');
                     assert.equals(article.img[1], 'test.jpg');
                     done();
                 });
         },
 
         'list non existing images': function (done) {
-            when( markdown.list_images({}) )
+            when(markdown.listImages({}))
                 .done(function (article) {
-                    refute(article.image_list);
+                    refute(article.imageList);
                     refute(article.img);
                     done();
                 });
         },
 
         'list categories': function (done) {
-            when( markdown.list_categories('/') )
+            when(markdown.listCategories('/'))
                 .done(function (catlist) {
-                    assert.equals(catlist[0].name, category_list[0].name);
-                    assert.equals(catlist[0].type, category_list[0].type);
+                    assert.equals(catlist[0].name, categoryList[0].name);
+                    assert.equals(catlist[0].type, categoryList[0].type);
                     done();
                 });
         },
 
         'list categories wo/input': function (done) {
-            when( markdown.list_categories() )
+            when(markdown.listCategories())
                 .done(function (catlist) {
                     assert.equals(catlist, []);
                     done();
                 });
-        },
+        }
 
     }
 });

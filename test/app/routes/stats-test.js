@@ -28,28 +28,23 @@ var buster     = require('buster'),
     gauge      = {
         toJSON: function () {}
     },
-    stats_router = require(__dirname + '/../../../app/routes/stats');
-
+    statsRouter = require(__dirname + '/../../../app/routes/stats');
 
 var config = require(__dirname + '/../../../config/config-dist.js');
-stats_router.set_config(config, {
+statsRouter.setConfig(config, {
     workerId: 1,
     stats: stats,
     activeConn: activeConn,
-    timer_web: timer,
-    timer_api: timer,
-    timer_image: timer,
+    timerWeb: timer,
+    timerApi: timer,
+    timerImage: timer,
     gauge: gauge
 });
 
 var port = 4321;
 var app = express();
-app.use('/api', stats_router);
+app.use('/api', statsRouter);
 var server;
-
-// var responses = {
-//     endpoints : {"message":"hooray! welcome to our api!"}
-// };
 
 buster.testCase('stats', {
     setUp: function () {
@@ -82,9 +77,7 @@ buster.testCase('stats', {
                 assert.equals(response.statusCode, 404);
                 done();
             });
-
-        },
-
+        }
 
     }
 });

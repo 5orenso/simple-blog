@@ -7,14 +7,14 @@
 'use strict';
 var express       = require('express'),
     _             = require('underscore'),
-    app_path      = __dirname + '/../../',
-    logger        = require(app_path + 'lib/logger')();
+    appPath      = __dirname + '/../../',
+    logger        = require(appPath + 'lib/logger')();
 
-var stats, activeConn, timer_web, timer_api, timer_image, timer, gauge;
-var stats_router = express.Router();
-stats_router.set_config = function (conf, opt) {
-    stats_router.config = conf;
-    stats_router.opt = opt;
+var stats, activeConn, timerWeb, timerApi, timerImage, timer, gauge;
+var statsRouter = express.Router();
+statsRouter.setConfig = function (conf, opt) {
+    statsRouter.config = conf;
+    statsRouter.opt = opt;
     if (opt) {
         if (opt.hasOwnProperty('workerId')) {
             logger.set('workerId', opt.workerId);
@@ -25,14 +25,14 @@ stats_router.set_config = function (conf, opt) {
         if (opt.hasOwnProperty('activeConn')) {
             activeConn = opt.activeConn;
         }
-        if (opt.hasOwnProperty('timer_web')) {
-            timer_web = opt.timer_web;
+        if (opt.hasOwnProperty('timerWeb')) {
+            timerWeb = opt.timerWeb;
         }
-        if (opt.hasOwnProperty('timer_api')) {
-            timer_api = opt.timer_api;
+        if (opt.hasOwnProperty('timerApi')) {
+            timerApi = opt.timerApi;
         }
-        if (opt.hasOwnProperty('timer_image')) {
-            timer_image = opt.timer_image;
+        if (opt.hasOwnProperty('timerImage')) {
+            timerImage = opt.timerImage;
         }
         if (opt.hasOwnProperty('timer')) {
             timer = opt.timer;
@@ -48,13 +48,13 @@ stats_router.set_config = function (conf, opt) {
     }
 };
 
-stats_router.use(express.query()); // Parse query_string.
+statsRouter.use(express.query()); // Parse query_string.
 
 // Main route for html files.
-stats_router.get('/', function(req, res) {
+statsRouter.get('/', function(req, res) {
     // Start metrics
     var stopwatch;
-    if (timer_api) { stopwatch = timer_api.start();}
+    if (timerApi) { stopwatch = timerApi.start();}
     if (activeConn) { activeConn.inc(); }
     if (stats) {
         stats.meter('requestsPerSecond').mark();
@@ -63,7 +63,7 @@ stats_router.get('/', function(req, res) {
     // Stop timer when response is transferred and finish.
     res.on('finish', function () {
         if (activeConn) { activeConn.dec(); }
-        if (timer_api) { stopwatch.end(); }
+        if (timerApi) { stopwatch.end(); }
     });
     // End metrics
 
@@ -72,9 +72,9 @@ stats_router.get('/', function(req, res) {
         res.end(JSON.stringify({
             stats: stats.toJSON(),
             activeConn: activeConn.toJSON(),
-            timer_web: timer_web.toJSON(),
-            timer_api: timer_api.toJSON(),
-            timer_image: timer_image.toJSON(),
+            timerWeb: timerWeb.toJSON(),
+            timerApi: timerApi.toJSON(),
+            timerImage: timerImage.toJSON(),
             timer: timer,
             gauge: gauge.toJSON()
         }, null, 4));
@@ -84,4 +84,4 @@ stats_router.get('/', function(req, res) {
 
     }
 });
-module.exports = stats_router;
+module.exports = statsRouter;

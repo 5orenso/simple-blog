@@ -16,25 +16,25 @@ var express          = require('express'),
     url              = require('url'),
     wsd              = require('websequencediagrams'),
     crypto           = require('crypto'),
-    app_path         = __dirname + '/../../',
-    photo_path       = path.normalize(app_path + 'content/images/'),
-    photo_cache_path = path.normalize(app_path + 'content/images_cached/'),
-    wsd_path         = '/tmp/',
-    logger           = require(app_path + 'lib/logger')(),
-    local_util       = require(app_path + 'lib/local-util')();
+    appPath         = __dirname + '/../../',
+    photoPath       = path.normalize(appPath + 'content/images/'),
+    photoCachePath = path.normalize(appPath + 'content/images_cached/'),
+    wsdPath         = '/tmp/',
+    logger           = require(appPath + 'lib/logger')(),
+    localUtil       = require(appPath + 'lib/local-util')();
 
-var image_router = express.Router();
-image_router.set_config = function (conf, opt) {
-    image_router.config = conf;
+var imageRouter = express.Router();
+imageRouter.setConfig = function (conf, opt) {
+    imageRouter.config = conf;
     if (opt) {
         if (opt.hasOwnProperty('workerId')) {
             logger.set('workerId', opt.workerId);
         }
-        if (opt.hasOwnProperty('photo_path')) {
-            photo_path = path.normalize(opt.photo_path);
+        if (opt.hasOwnProperty('photoPath')) {
+            photoPath = path.normalize(opt.photoPath);
         }
-        if (opt.hasOwnProperty('photo_cache_path')) {
-            photo_cache_path = path.normalize(photo_cache_path + opt.photo_cache_path + '/');
+        if (opt.hasOwnProperty('photoCachePath')) {
+            photoCachePath = path.normalize(photoCachePath + opt.photoCachePath + '/');
         }
     }
     if (conf) {
@@ -44,13 +44,12 @@ image_router.set_config = function (conf, opt) {
     }
 };
 
-
 // create a write stream (in append mode)
-var accessLogStream = fs.createWriteStream(app_path + '/logs/image-access.log', {flags: 'a'});
+var accessLogStream = fs.createWriteStream(appPath + '/logs/image-access.log', {flags: 'a'});
 // setup the logger
-image_router.use(morgan('combined', {stream: accessLogStream}));
+imageRouter.use(morgan('combined', {stream: accessLogStream}));
 
-image_router.use(function(req, res, next) {
+imageRouter.use(function(req, res, next) {
     // do logging
     logger.log(
         req.method,
@@ -61,51 +60,48 @@ image_router.use(function(req, res, next) {
     next(); // make sure we go to the next routes and don't stop here
 });
 
-
-function getUrlFromRequest (req) {
-    var image_filename = req.url.replace(/\//, '');
-    image_filename = decodeURIComponent(image_filename);
-    return url.parse(image_filename, true);
+function getUrlFromRequest(req) {
+    var imageFilename = req.url.replace(/\//, '');
+    imageFilename = decodeURIComponent(imageFilename);
+    return url.parse(imageFilename, true);
 }
 
-
-function pathExists (absolute_path) {
+function pathExists(absolutePath) {
     return when.promise(function(resolve, reject) {
-        fs.exists(absolute_path, function(exists) {
-            if(!exists) {
-                mkdirp(path.dirname(absolute_path), function (err) {
+        fs.exists(absolutePath, function(exists) {
+            if (!exists) {
+                mkdirp(path.dirname(absolutePath), function (err) {
                     if (err) {
                         reject(err);
                     }
-                    resolve(absolute_path);
+                    resolve(absolutePath);
                 });
             } else {
-                resolve(absolute_path);
+                resolve(absolutePath);
             }
         });
     });
 }
 
-function fileExists (absolute_filename) {
+function fileExists(absoluteFilename) {
     return when.promise(function(resolve, reject) {
-        fs.exists(absolute_filename, function(exists) {
+        fs.exists(absoluteFilename, function(exists) {
             if (exists) {
-                resolve(absolute_filename);
+                resolve(absoluteFilename);
             } else {
-                reject('Not found: ' + absolute_filename);
+                reject('Not found: ' + absoluteFilename);
             }
         });
     });
 }
-
 
 function resizeImage(opt) {
     return when.promise(function(resolve, reject) {
-        fs.exists(opt.image_filename_resized, function(exists) {
+        fs.exists(opt.imageFilenameResized, function(exists) {
             if (!exists || opt.force) {
                 imagemagick.resize({
-                    srcPath: opt.image_filename_absolute,
-                    dstPath: opt.image_filename_resized,
+                    srcPath: opt.imageFilenameAbsolute,
+                    dstPath: opt.imageFilenameResized,
                     width: opt.width,
                     quality: 0.9,
                     format: 'jpg',
@@ -113,49 +109,50 @@ function resizeImage(opt) {
 //                    height: opt.height,
 //                    strip: true,
 //                    filter: 'Lagrange',
-                    sharpening: 0.3,
+                    sharpening: 0.3
 //                    customArgs: []
 
                 }, function (err) {
                     if (err) {
                         reject(err);
                     } else {
-                        resolve(opt.image_filename_resized);
+                        resolve(opt.imageFilenameResized);
                     }
                 });
             } else {
-                resolve(opt.image_filename_resized);
+                resolve(opt.imageFilenameResized);
             }
         });
     });
 }
 
-function serveImage(response, image_filename_resized) {
+function serveImage(response, imageFilenameResized) {
     return when.promise(function (resolve, reject) {
-        fs.exists(image_filename_resized, function(exists) {
+        fs.exists(imageFilenameResized, function(exists) {
             if (exists) {
-                fs.readFile(image_filename_resized, "binary", function (err, file) {
+                fs.readFile(imageFilenameResized, 'binary', function (err, file) {
                     if (err) {
-                        response.writeHead(500, {"Content-Type": "text/plain"});
+                        response.writeHead(500, {'Content-Type': 'text/plain'});
+                        // jscs:disable
                         response.write(err + "\n");
+                        // jscs:enable
                         response.end();
                         reject(err);
                     } else {
                         response.writeHead(200);
-                        response.write(file, "binary");
+                        response.write(file, 'binary');
                         response.end();
                         resolve();
                     }
                 });
             } else {
-                reject('File does not exist: ' + image_filename_resized);
+                reject('File does not exist: ' + imageFilenameResized);
             }
         });
     });
 }
 
-
-function makeWebsequenceDiagram(wsd_text, path) {
+function makeWebsequenceDiagram(wsdText, path) {
     return when.promise(function (resolve, reject) {
         // ["default",
         //"earth",
@@ -167,12 +164,12 @@ function makeWebsequenceDiagram(wsd_text, path) {
         //    "roundgreen",
         //    "napkin"];
 
-        wsd.diagram(wsd_text, "roundgreen", "png", function (err, buf) {
+        wsd.diagram(wsdText, 'roundgreen', 'png', function (err, buf) {
             if (err) {
                 reject(err);
             } else {
                 //console.log("Received MIME type:", typ);
-                var filename = path + crypto.createHash('sha256').update(wsd_text).digest("hex") + '.png';
+                var filename = path + crypto.createHash('sha256').update(wsdText).digest('hex') + '.png';
                 fs.writeFile(filename, buf, function (err) {
                     if (err) {
                         reject(err);
@@ -184,30 +181,30 @@ function makeWebsequenceDiagram(wsd_text, path) {
     });
 }
 
-image_router.use('/*', local_util.set_cache_headers);
+imageRouter.use('/*', localUtil.setCacheHeaders);
 
-image_router.get('/wsd/*', function(req, res) {
-    var lu    = require(app_path + 'lib/local-util')({config: image_router.config});
-    var parsed_url = getUrlFromRequest(req);
-    var filename = wsd_path + crypto.createHash('sha256').update(parsed_url.query.data).digest("hex") + '.png';
-    when(pathExists(wsd_path))
+imageRouter.get('/wsd/*', function(req, res) {
+    var lu    = require(appPath + 'lib/local-util')({config: imageRouter.config});
+    var parsedUrl = getUrlFromRequest(req);
+    var filename = wsdPath + crypto.createHash('sha256').update(parsedUrl.query.data).digest('hex') + '.png';
+    when(pathExists(wsdPath))
         .then(function () {
             return fileExists(filename);
         })
         .catch(function () {
             lu.timer('routes/image->wsd');
-            return makeWebsequenceDiagram(parsed_url.query.data, wsd_path);
+            return makeWebsequenceDiagram(parsedUrl.query.data, wsdPath);
         })
-        .then(function (wsd_file) {
+        .then(function (wsdFile) {
             lu.timer('routes/image->wsd');
-            return serveImage(res, wsd_file);
+            return serveImage(res, wsdFile);
         })
         .done(function () {
             lu.timer('routes/image->request');
-            lu.send_udp({ timers: lu.timers_get() });
+            lu.sendUdp({ timers: lu.timersGet() });
         }, function (error) {
             lu.timer('routes/image->request');
-            lu.send_udp({ timers: lu.timers_get() });
+            lu.sendUdp({ timers: lu.timersGet() });
             res.status(404).send(error);
             res.end();
         });
@@ -215,52 +212,52 @@ image_router.get('/wsd/*', function(req, res) {
 });
 
 // test route to make sure everything is working (accessed at GET http://localhost:8080/api)
-image_router.get('/*', function(req, res) {
-    var lu    = require(app_path + 'lib/local-util')({config: image_router.config});
-    var parsed_url = getUrlFromRequest(req);
-    var cache_path = (parsed_url.query.w || 'rel') + 'x' + (parsed_url.query.h || 'rel');
-    var image_filename_requested = decodeURIComponent(parsed_url.pathname);
-    var image_filename_absolute  = photo_path + image_filename_requested;
-    var image_filename_resized   = photo_cache_path + cache_path + '/' + image_filename_requested;
+imageRouter.get('/*', function(req, res) {
+    var lu    = require(appPath + 'lib/local-util')({config: imageRouter.config});
+    var parsedUrl = getUrlFromRequest(req);
+    var cachePath = (parsedUrl.query.w || 'rel') + 'x' + (parsedUrl.query.h || 'rel');
+    var imageFilenameRequested = decodeURIComponent(parsedUrl.pathname);
+    var imageFilenameAbsolute  = photoPath + imageFilenameRequested;
+    var imageFilenameResized   = photoCachePath + cachePath + '/' + imageFilenameRequested;
 
     // Stop timer when response is transferred and finish.
     res.on('finish', function () {
 //        if (timer) { stopwatch.end(); }
     });
-    lu.timers_reset();
+    lu.timersReset();
     lu.timer('routes/image->request');
 
-    when(pathExists(image_filename_resized))
+    when(pathExists(imageFilenameResized))
         .then(function () {
-            return fileExists(image_filename_absolute);
+            return fileExists(imageFilenameAbsolute);
         })
         .then(function () {
             lu.timer('routes/image->resizeImage');
             return resizeImage({
-                image_filename_absolute: image_filename_absolute,
-                image_filename_resized: image_filename_resized,
-                height: parsed_url.query.h,
-                width: parsed_url.query.w,
-                force: parsed_url.query.force
+                imageFilenameAbsolute: imageFilenameAbsolute,
+                imageFilenameResized: imageFilenameResized,
+                height: parsedUrl.query.h,
+                width: parsedUrl.query.w,
+                force: parsedUrl.query.force
             });
         })
         .then(function () {
             lu.timer('routes/image->resizeImage');
-            return fileExists(image_filename_resized);
+            return fileExists(imageFilenameResized);
         })
         .then(function () {
-            return serveImage(res, image_filename_resized);
+            return serveImage(res, imageFilenameResized);
         })
         .done(function () {
             lu.timer('routes/image->request');
-            lu.send_udp({ timers: lu.timers_get() });
+            lu.sendUdp({ timers: lu.timersGet() });
         }, function (error) {
             lu.timer('routes/image->request');
-            lu.send_udp({ timers: lu.timers_get() });
+            lu.sendUdp({ timers: lu.timersGet() });
             res.status(404).send(error);
             res.end();
         });
 
-//    res.send('yo! ' + photo_path + image_filename_requested);
+//    res.send('yo! ' + photoPath + imageFilenameRequested);
 });
-module.exports = image_router;
+module.exports = imageRouter;

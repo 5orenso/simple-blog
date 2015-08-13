@@ -6,51 +6,49 @@
  */
 'use strict';
 
-
 var when = require('when'),
     commander = require('commander'),
-    app_path = __dirname + '/../',
-    logger = require(app_path + 'lib/logger')({});
+    appPath = __dirname + '/../',
+    logger = require(appPath + 'lib/logger')({});
 
 commander
     .option('-c, --config <file>', 'configuration file path', './config/config.js')
     .parse(process.argv);
 var config = require(commander.config);
 
-
-var article_path = '/'; //article_util.getArticlePathRelative('');
+var articlePath = '/'; //articleUtil.getArticlePathRelative('');
 
 // Load from function
-var article = require(app_path + 'lib/article')({
+var article = require(appPath + 'lib/article')({
     logger: logger,
     //filename: '',
-    //article_path: article_path,
+    //articlePath: articlePath,
     domain: config.blog.domain,
     protocol: config.blog.protocol,
-    max_articles_in_artlist : 5000,
+    maxArticlesInArtlist: 5000,
     config: config
 });
 
-var category = require(app_path + 'lib/category')({
+var category = require(appPath + 'lib/category')({
     logger: logger,
     config: config
 });
 
-var search = require(app_path + 'lib/search')({
+var search = require(appPath + 'lib/search')({
     logger: logger,
     config: config
 });
 
-var lu    = require(app_path + 'lib/local-util')({config: config});
-lu.timers_reset();
+var lu    = require(appPath + 'lib/local-util')({config: config});
+lu.timersReset();
 lu.timer('routes/sitemap->request');
 
-when.all([category.list('/'), article.list(article_path)])
-    .then(function (content_lists) {
+when.all([category.list('/'), article.list(articlePath)])
+    .then(function (contentLists) {
         lu.timer('routes/sitemap->load_category_and_article_lists');
         when.all([
-            article.sitemap(content_lists[0], content_lists[1]),
-            search.index_artlist(content_lists[1], true)
+            article.sitemap(contentLists[0], contentLists[1]),
+            search.indexArtlist(contentLists[1], true)
         ])
             .then(function (results) {
                 return results;
@@ -59,14 +57,14 @@ when.all([category.list('/'), article.list(article_path)])
     .catch(function () {
         lu.timer('routes/sitemap->request');
         lu.timer('routes/sitemap->load_category_and_article_lists');
-        lu.send_udp({timers: lu.timers_get()});
-        //res.status(404).send(tpl({blog: web_router.config.blog, error: opt.error, article: opt.article}));
+        lu.sendUdp({timers: lu.timersGet()});
+        //res.status(404).send(tpl({blog: webRouter.config.blog, error: opt.error, article: opt.article}));
     })
     .done(function () {
         console.log('done...');
         lu.timer('routes/sitemap->elasticsearch');
         lu.timer('routes/sitemap->request');
-        lu.send_udp({timers: lu.timers_get()});
+        lu.sendUdp({timers: lu.timersGet()});
         setTimeout(function () {
             process.exit(1);
         }, 5000);

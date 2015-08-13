@@ -3,11 +3,11 @@
 var buster       = require('buster'),
     assert       = buster.assert,
     refute       = buster.refute,
-    category_util = require('../../lib/category-util')({
+    categoryUtil = require('../../lib/category-util')({
         logger: {
             log: function () { },
             err: function () { }
-        },
+        }
     });
 
 var catlist = [
@@ -30,24 +30,26 @@ var catlist = [
     }
 ];
 var article = {
-    tag_values: {
+    tagValues: {
         toc: '',
         fact: '',
         artlist: '',
         menu: '',
-        menu_onepage: '',
+        menuOnepage: ''
     },
     title: 'Simple Blog Server',
     file: 'index',
     filename: '',
     tag: [],
-    body: '',
+    body: ''
 };
 
-var article_result = {
-    tag_values: {
-        menu: '<ul class="catlist"><li><a href="/">Frontpage</a></li><li><a href="/simple-blog/">simple-blog</a></li></ul>',
-        menu_onepage: '<ul class="catlist"><li><a href="/">Frontpage</a></li><li><a href="#simple-blog">simple-blog</a></li></ul>'
+var articleResult = {
+    tagValues: {
+        menu: '<ul class="catlist"><li><a href="/">Frontpage</a></li>' +
+            '<li><a href="/simple-blog/">simple-blog</a></li></ul>',
+        menuOnepage: '<ul class="catlist"><li><a href="/">Frontpage</a></li>' +
+            '<li><a href="#simple-blog">simple-blog</a></li></ul>'
     },
     catlist: [{ dev: 16777219,
         mode: 16877,
@@ -73,15 +75,13 @@ buster.testCase('lib/category-util', {
     tearDown: function () {
     },
     'Test category-util:': {
-        'format_catlist': function () {
-            var result = category_util.format_catlist(article, catlist);
-            assert.equals(article.tag_values.menu, article_result.tag_values.menu);
-            assert.equals(article.tag_values.menu_onepage, article_result.tag_values.menu_onepage);
-            assert.equals(article.catlist[0].name, article_result.catlist[0].name);
-            assert.equals(article.catlist[0].type, article_result.catlist[0].type);
+        'formatCatlist test': function () {
+            var result = categoryUtil.formatCatlist(article, catlist);
+            assert.equals(article.tagValues.menu, articleResult.tagValues.menu);
+            assert.equals(article.tagValues.menuOnepage, articleResult.tagValues.menuOnepage);
+            assert.equals(article.catlist[0].name, articleResult.catlist[0].name);
+            assert.equals(article.catlist[0].type, articleResult.catlist[0].type);
             refute(result);
-        },
-
-
+        }
     }
 });
