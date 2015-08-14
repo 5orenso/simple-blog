@@ -80,6 +80,7 @@ statsRouter.get('/', function(req, res) {
         }, null, 4));
 
     } catch (err) {
+        // TODO: This is never happening..? Or am I missing something?
         res.status(404).send('Page not found: ' + err);
 
     }

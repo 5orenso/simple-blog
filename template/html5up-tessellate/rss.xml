@@ -16,6 +16,7 @@
 	<pubDate>{{ ''|rssdate }}</pubDate>
 	<webMaster>{{ blog.email }}</webMaster>
 	<generator>Simple-blog - github.com/5orenso/simple-blog/</generator>
+    {% if error %}<error>{{ error }}</error>{% endif %}
     {% for a in article.artlist %}
     {% if loop.index < 30 %}
     <item>

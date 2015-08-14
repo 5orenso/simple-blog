@@ -152,6 +152,9 @@ function serveImage(response, imageFilenameResized) {
     });
 }
 
+// TODO: Should this route be inside this router? It's external
+// and it depends on an external resource. I think we should move
+// to a custom router somewhere else.
 function makeWebsequenceDiagram(wsdText, path) {
     return when.promise(function (resolve, reject) {
         // ["default",

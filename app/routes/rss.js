@@ -65,7 +65,6 @@ rssRouter.get('/*', function(req, res) {
     res.on('finish', function () {
         // if (timer) { stopwatch.end(); }
     });
-
     res.setHeader('Content-type', 'text/xml');
 
     // Check for cached file

@@ -83,6 +83,19 @@ var art = {
 };
 // jscs:enable
 
+var xml = [
+    {
+        loc: ['http://www.mydomain.no/simple-blog/'],
+        changefreq: ['weekly'],
+        priority: ['0.85']
+    },
+    {
+        loc: ['http://www.mydomain.no/simple-blog/index'],
+        changefreq: ['weekly'],
+        priority: ['0.5']
+    }
+];
+
 buster.testCase('app/routes/web', {
     setUp: function () {
         // TODO: Start webserver and use routes.
@@ -168,6 +181,18 @@ buster.testCase('app/routes/web', {
                 assert.match(body, '/pho/simple-blog.jpg');
                 assert.match(body, '/pho/test.jpg');
                 done();
+            });
+        },
+
+        '/sitemap.xml': function (done) {
+            request('http://127.0.0.1:' + port + '/web/sitemap.xml', function (error, response, body) {
+                assert.equals(response.statusCode, 200);
+                var parseString = require('xml2js').parseString;
+                parseString(body, function (err, result) {
+//                    console.log(result.urlset.url);
+                    assert.equals(result.urlset.url, xml);
+                    done();
+                });
             });
         }
 

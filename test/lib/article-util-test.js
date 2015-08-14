@@ -34,10 +34,16 @@ var markdownOutput = {
     image: '<p class="image_inline"><img src="http://www.example.com/image.jpg" alt="my image"></p>'
 };
 
+var articleMdBodyOnly = ':body test without title' + "\n" +
+    '## Content span' + "\n" +
+    'This can span several lines if you want to.' + "\n";
+
 var articleMd = ':title My nice title' + "\n" +
+    ':teaser test' + "\n" +
+    '' + "\n" +
     ':img test-image.jpg' + "\n" +
     ':aside My aside content' + "\n" +
-    ':body This is my body content. [:fa-link]\n// youtube.com #video #yolo @sorenso' + "\n" +
+    ':body This is my body content. [:fa-link] [:fa-link 2]\n// youtube.com #video #yolo @sorenso' + "\n" +
     '## Content span' + "\n" +
     'This can span several lines if you want to.' + "\n" +
     '### Even more titles' + "\n" +
@@ -53,7 +59,24 @@ var articleMd = ':title My nice title' + "\n" +
         'yaxis: {}' + "\n" +
         '[{"data":[[1,2]]}]' + "\n" +
         '```' + "\n" +
-    ':tag foo,bar,gomle' + "\n";
+    ':tag foo,bar,gomle' + "\n" +
+    ':img2 test-image.jpg' + "\n" +
+    ':body2 test body2' + "\n" +
+    ':col2 col2.1' + "\n" +
+    ':col2 col2.2' + "\n" +
+    ':col2 col2.3' + "\n";
+
+var articleObjBodyOnly = {
+    tagValues: {
+        toc: '',
+        fact: '',
+        artlist: ''
+    },
+    body: 'test without title' + "\n" +
+        '## Content span' + "\n" +
+        'This can span several lines if you want to.' + "\n",
+    title: 'test without title'
+};
 
 var articleObj = { tagValues: { toc: '', fact: '', artlist: '' },
     author: 'sorenso',
@@ -62,7 +85,7 @@ var articleObj = { tagValues: { toc: '', fact: '', artlist: '' },
     title: 'My nice title',
     img: ['test-image.jpg'],
     aside: 'My aside content',
-    body: 'This is my body content. [:fa-link]\n// youtube.com #video #yolo @sorenso\n## Content span\nThis can span ' +
+    body: 'This is my body content. [:fa-link] [:fa-link 2]\n// youtube.com #video #yolo @sorenso\n## Content span\nThis can span ' +
         'several lines if you want to.\n### Even more titles\nWith sub content belonging to sections.\n## Table of ' +
         'contents\n[:toc]' + "\n" +
         '```wsd' + "\n" +
@@ -73,7 +96,11 @@ var articleObj = { tagValues: { toc: '', fact: '', artlist: '' },
         'xaxis: {}' + "\n" +
         'yaxis: {}' + "\n" +
         '[{"data":[[1,2]]}]' + "\n" +
-        '```' + "\n",
+        '```',
+    img2: ['test-image.jpg'],
+    body2: 'test body2',
+    col: ['col1', 'col2', 'col3', 'col4'],
+    col2: ['col2.1', 'col2.2', 'col2.3'],
     tag: ['foo,bar,gomle']};
 
 var articleObjHtml = {
@@ -89,7 +116,7 @@ var articleObjHtml = {
         artlistOnepage: '<ul class="artlist"><li><a href="#/simple-blog/index">Simple Blog Server</a></li></ul>'
     },
     title: 'My nice title',
-    body: '<p>This is my body content. [:fa-link]' + "\n" +
+    body: '<p>This is my body content. [:fa-link] [:fa-link 2]' + "\n" +
         '// youtube.com #video #yolo @sorenso</p>' + "\n" +
         '<h2 class="toc-2"><a name="content-span" class="anchor" href="#content-span"><span class="header-link">' +
         '</span></a>Content span</h2><p>This can span several lines if you want to.</p>' + "\n" +
@@ -100,7 +127,20 @@ var articleObjHtml = {
         '<img src="/pho/wsd/?data=title%20Central%20Identification%20Service%0ABrowser-%3EVG.no%3A%20GET%20%2F%0A">' +
         '</p>' + "\n" +
         '<p><div class="row">' + "\n",
+    body2: '<p>test body</p>',
+    col: [
+        '<p>col1</p>\n',
+        '<p>col2</p>\n',
+        '<p>col3</p>\n',
+        '<p>col4</p>\n'
+    ],
+    col2: [
+        '<p>col2.1</p>',
+        '<p>col2.2</p>',
+        '<p>col2.3</p>'
+    ],
     img: ['test-image.jpg'],
+    img2: ['test-image.jpg'],
     tag: ['foo,bar,gomle'],
     author: 'sorenso',
     published: '2014-12-21',
@@ -217,7 +257,16 @@ buster.testCase('lib/article-util', {
             var result = articleUtil.populateArticleSections(articleMd);
             assert.equals(result.title, articleObj.title);
             assert.equals(result.img, articleObj.img);
+//            console.log('result:', result.body, '<--');
+//            console.log('articleObj:', articleObj.body, '<--');
             assert.equals(result.body, articleObj.body);
+        },
+
+        'populateArticleSections without title': function () {
+            var result = articleUtil.populateArticleSections(articleMdBodyOnly);
+            assert.equals(result.title, articleObjBodyOnly.title);
+            assert.equals(result.img, articleObjBodyOnly.img);
+            assert.equals(result.body, articleObjBodyOnly.body);
         },
 
         'buildTableOfContents test': function () {
@@ -254,6 +303,7 @@ buster.testCase('lib/article-util', {
                 tagValues: { toc: '', fact: '', artlist: '' },
                 title: articleObj.title,
                 body: articleObj.body,
+                col: articleObj.col,
                 img: articleObj.img,
                 tag: articleObj.tag,
                 author: articleObj.author,
@@ -261,9 +311,9 @@ buster.testCase('lib/article-util', {
                 baseHref: articleObj.baseHref
             };
             var result = articleUtil.formatArticleSections(article);
-            //console.log(article);
             assert.equals(article.title, articleObjHtml.title);
             assert.match(article.body, articleObjHtml.body);
+            assert.match(article.col, articleObjHtml.col);
             assert.equals(article.img, articleObjHtml.img);
             assert.equals(article.tag, articleObjHtml.tag);
             assert.equals(article.author, articleObjHtml.author);
@@ -284,6 +334,7 @@ buster.testCase('lib/article-util', {
                 },
                 title: articleObjHtml.title,
                 body: articleObjHtml.body,
+                col: articleObjHtml.col,
                 aside: articleObjHtml.aside,
                 img: articleObjHtml.img,
                 tag: articleObjHtml.tag
@@ -294,8 +345,10 @@ buster.testCase('lib/article-util', {
             // <span class="hash_tag">#<a href="https://twitter.com/search?q=%23yolo">yolo</a></span>
             // <span class="user">@<a href="https://twitter.com/sorenso">sorenso</a></span>
             var result = articleUtil.replaceTagsWithContent(article);
+            assert.equals(article.col, articleObjHtml.col);
             assert.match(article.body, articleObjHtml.tagValues.toc);
             assert.match(article.body, '<span class="icon fa-link"></span>');
+            assert.match(article.body, '<span class="icon fa-link"></span><span class="icon fa-link"></span>');
             assert.match(article.body, '<span class="comment">// youtube.com');
             assert.match(article.body, '<span class="hash_tag">#<a href="https://twitter.com/search?q=%23video">' +
                 'video</a></span>');

@@ -35,6 +35,7 @@ statsRouter.setConfig(config, {
     workerId: 1,
     stats: stats,
     activeConn: activeConn,
+    timer: 1,
     timerWeb: timer,
     timerApi: timer,
     timerImage: timer,
