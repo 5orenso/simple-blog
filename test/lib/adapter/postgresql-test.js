@@ -305,7 +305,7 @@ buster.testCase('PostgreSQL', {
     'list categories': function (done) {
         when(pg.listCategories('/'))
             .done(function (catlist) {
-                console.log(catlist);
+//                console.log(catlist);
                 assert.equals(catlist[0].name, catlistResult[0].name);
                 assert.equals(catlist[0].type, catlistResult[0].type);
                 done();
