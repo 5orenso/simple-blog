@@ -5,6 +5,8 @@ var buster     = require('buster'),
     fs         = require('fs'),
     express    = require('express'),
     request    = require('request'),
+    sinon      = require('sinon'),
+    wsd        = require('websequencediagrams'),
     stats      = {
         meter: function () {
             return {
@@ -135,6 +137,30 @@ buster.testCase('app/routes/image', {
                     done();
                 }
             });
+        },
+
+        '/wsd with data': function (done) {
+            sinon.stub(wsd, 'diagram', function (text, opt, format, callback) {
+                console.log(text, opt, format);
+                callback(null, 'wsd image');
+            });
+            var date = new Date();
+            var utime = date.getTime();
+            request('http://127.0.0.1:' + port + '/photo/wsd/?data=title%20TestService%0A' +
+                    utime + 'Browser-%3EVG.no%0A',
+                function (error, response) {
+                    if (!error && response.statusCode === 404) {
+                        done();
+                    } else {
+                        // jscs:disable
+                        assert(wsd.diagram.calledWithMatch('title TestService' + "\n" +
+                            utime + 'Browser->VG.no', 'roundgreen', 'png'));
+                        // jscs:enable
+                        assert.equals(response.statusCode, 200);
+                        done();
+                    }
+                }
+            );
         }
 
     }
