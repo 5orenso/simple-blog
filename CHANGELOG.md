@@ -1,4 +1,6 @@
-* _2015-08-15_: Removed console.log. (HEAD, tag: 0.2.0, origin/master, origin/HEAD, master) [Øistein Sørensen] <a href="http://github.com/5orenso/simple-blog/commit/e2d374a9c4db2f4f18bf3afe8db45c1ec4504707">view commit</a>
+* _2015-08-16_: Fixed bug in font-size. (HEAD, origin/master, origin/HEAD, master) [Øistein Sørensen] <a href="http://github.com/5orenso/simple-blog/commit/d862d1ff5f9b4b488aeb938a80791f16e31a9e12">view commit</a>
+* _2015-08-15_: Bumped version to 0.2.0 [Øistein Sørensen] <a href="http://github.com/5orenso/simple-blog/commit/99cec1b4b01707c070083ae9ab2f55ffa486893d">view commit</a>
+* _2015-08-15_: Removed console.log. (tag: 0.2.0) [Øistein Sørensen] <a href="http://github.com/5orenso/simple-blog/commit/e2d374a9c4db2f4f18bf3afe8db45c1ec4504707">view commit</a>
 * _2015-08-15_: Added Sinon.js for stubbing. [Øistein Sørensen] <a href="http://github.com/5orenso/simple-blog/commit/7dfe10bef68da37c8e68849ca4efdcd74c775ac1">view commit</a>
 * _2015-08-15_: Improved test coverage and added Sinon.js for stubbing. [Øistein Sørensen] <a href="http://github.com/5orenso/simple-blog/commit/1c0f5d65b9072f44dafd0c9d0c69e5804e3ad1fd">view commit</a>
 * _2015-08-15_: Improved test coverage. [Øistein Sørensen] <a href="http://github.com/5orenso/simple-blog/commit/dccbb9206c8c51e1dadbebe182aa28055e2e7c0f">view commit</a>
