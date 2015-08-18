@@ -141,7 +141,7 @@ buster.testCase('app/routes/image', {
 
         '/wsd with data': function (done) {
             sinon.stub(wsd, 'diagram', function (text, opt, format, callback) {
-                console.log(text, opt, format);
+//                console.log(text, opt, format);
                 callback(null, 'wsd image');
             });
             var date = new Date();
