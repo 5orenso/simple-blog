@@ -22,8 +22,9 @@ module.exports = {
         textFilesPath: '/Users/sorenso/text-files/',
         topImage: false, // Don't use image[0] as top image on site. Use topImage instead.
         simpleHeader: false, // Use simple header instead of top panorama
-        //google_analytics: 'UA-xxxxxxxx-1',
-        //google_tag_manager: 'GTM-xxxxxx',
+        //googleAnalytics: 'UA-xxxxxxxx-1',
+        //googleTagManager: 'GTM-xxxxxx',
+        //googleSiteVerification: ''
         author: {
             fallback: {
                 image: '/pho/profile/fish_oistein.jpg?w=50',

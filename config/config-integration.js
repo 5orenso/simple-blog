@@ -15,8 +15,9 @@ module.exports = {
         },
         staticFilesPath: '/Users/sorenso/html/',
         textFilesPath: '/Users/sorenso/text-files/',
-        //google_analytics: 'UA-xxxxxxxx-1',
-
+        //googleAnalytics: 'UA-xxxxxxxx-1',
+        //googleTagManager: 'GTM-xxxxxx',
+        //googleSiteVerification: ''
         rewrites: [
             { url: '/photoalbum/view.*', target: '/web/?q=', code: 302, useUrl: true, regex: /^\/photoalbum\/view\/(.+?)$/, regexResult: "$1" },
             { url: '/tools/.*', target: '/web/', code: 302 }
