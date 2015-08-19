@@ -83,13 +83,33 @@
              }
 
         </script>
+        <script type="application/ld+json">
+            // http://schema.org/BlogPosting
+            // https://developers.google.com/structured-data/rich-snippets/articles
+            // https://developers.google.com/structured-data/testing-tool/
+            {
+              "@context": "http://schema.org",
+              "@type": "BlogPosting",
+              "author": "{{ article.author }}",
+              "headline": "{{ article.title }}",
+              "alternativeHeadline": "{{ article.teaser }}",
+              "image": [
+                  {% for img in article.img %}
+                      "/pho/{{ img }}?w=800"
+                  {% endfor %}
+              ],
+              "datePublished": "{{ article.published }}",
+              "description": "{{ article.ingress }}",
+              "articleBody": "{{ article.body }}"
+            }
+        </script>
         <!--[if lte IE 8]><link rel="stylesheet" href="/css/ie/v8.css" /><![endif]-->
 		<!--[if lte IE 9]><link rel="stylesheet" href="/css/ie/v9.css" /><![endif]-->
 	</head>
 	<body>
 
 
-    {% if blog.google_tag_manager %}
+    {% if blog.googleTagManager %}
     <!-- Google Tag Manager -->
     <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-WZPRG9"
                       height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
@@ -108,7 +128,7 @@
     <div id="page" class="mm-page" style="min-height: 718px;">
 
         <!-- Header -->
-        {% if blog.simple_header %}
+        {% if blog.simpleHeader %}
             <section id="header_simple" class="" style="">
                 <div class="header">
                     <a class="menu" href="#menu"></a>
@@ -151,7 +171,7 @@
                 </header>
             </section>
         {% else %}
-			<section id="header" class="dark {% if (!article.img[0]) %}header_small{% endif %}" style="{% if (!blog.top_image && article.img[0]) %}background-image: {% if (!article.nofilter) %}url('/images/overlay.png'),{% endif %} url('/pho/{{ article.img[0] }}?w=1600'); background-size: cover; background-position: center center;{% endif %}">
+			<section id="header" class="dark {% if (!article.img[0]) %}header_small{% endif %}" style="{% if (!blog.topImage && article.img[0]) %}background-image: {% if (!article.nofilter) %}url('/images/overlay.png'),{% endif %} url('/pho/{{ article.img[0] }}?w=1600'); background-size: cover; background-position: center center;{% endif %}">
                 <div class="header">
                     <a class="menu" href="#menu"></a>
                     {% if article.author && blog.author && blog.author[article.author] %}
@@ -218,7 +238,7 @@
         {% endif %}
 
 
-        {% if article.file == 'index' && blog.simple_header %}
+        {% if article.file == 'index' && blog.simpleHeader %}
             <section id="first" class="main">
                 <div class="content style4 ">
                     <div class="container small">
@@ -240,10 +260,10 @@
             </section>
         {% endif %}
 
-        {% if article.file != 'index' || !blog.simple_header %}
+        {% if article.file != 'index' || !blog.simpleHeader %}
 		    <!-- First -->
 			<section id="first" class="main">
-                {% if  blog.simple_header %}
+                {% if  blog.simpleHeader %}
                 <header>
                     <div class="container">
                         <h2>{{ article.title|raw }}</h2>
@@ -279,7 +299,7 @@
                     <div class="container small">
                         <div class="row">
 
-                            {% if article.aside || blog.top_image %}
+                            {% if article.aside || blog.topImage %}
                                 <div class="6u">
                                     {% if article.body %}
                                         {{ article.body|raw }}
@@ -287,14 +307,14 @@
                                 </div>
                                 <div class="6u">
                                     {{ article.aside|raw }}
-                                    {% if blog.top_image %}
+                                    {% if blog.topImage %}
                                         {% set arr = [0,1,2,3,4] %}
                                         {% for i in arr %}
                                             {% if article.img[i] %}
                                                 <div class="item photo_item">
                                                     <img src="/pho/{{ article.img[i] }}?w=600">
-                                                    {% if article.img_text[i] %}
-                                                        <p>{{ article.img_text[i] }}</p>
+                                                    {% if article.imgText[i] %}
+                                                        <p>{{ article.imgText[i] }}</p>
                                                     {% endif %}
                                                 </div>
                                             {% endif %}
@@ -399,7 +419,7 @@
         {% endfor %}
 
 
-        {% if blog.top_image %}
+        {% if blog.topImage %}
             {% set image_start = 5 %}
         {% else %}
             {% set image_start = 1 %}
@@ -493,7 +513,7 @@
         </div>
 
 
-        {% if blog.google_analytics %}
+        {% if blog.googleAnalytics %}
             <script>
                 (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
                     (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
