@@ -46,7 +46,7 @@ buster.testCase('lib/plugins/googleMaps', {
 
         'replacer mode=streetview': function () {
             var inputStr = 'See my map ' + "\n" +
-                '@69.9396,22.9232;10;mode=streetview&heading=90&pitch=-15';
+                '@69.9396,22.9232;mode=streetview&heading=90&pitch=-15';
             var result = inputStr.replace(plugin.get('regexp'), plugin.replacer);
 //            console.log(result);
             var regexp = new RegExp('<iframe src=".+?www.google.com\/maps\/embed\/v1\/' +
@@ -58,7 +58,7 @@ buster.testCase('lib/plugins/googleMaps', {
 
         'replacer mode=view': function () {
             var inputStr = 'See my map ' + "\n" +
-                '@69.9396,22.9232;10;mode=view';
+                '@69.9396,22.9232;mode=view';
             var result = inputStr.replace(plugin.get('regexp'), plugin.replacer);
 //            console.log(result);
             var regexp = new RegExp('<iframe src=".+?www.google.com\/maps\/embed\/v1\/' +
@@ -70,7 +70,7 @@ buster.testCase('lib/plugins/googleMaps', {
 
         'replacer mode=directions': function () {
             var inputStr = 'See my map ' + "\n" +
-                '@69.9396,22.9232;10;mode=directions&origin=oslo,norway&destination=telemark,norway&avoid=tolls|highways';
+                '@69.9396,22.9232;mode=directions&origin=oslo,norway&destination=telemark,norway&avoid=tolls|highways';
             var result = inputStr.replace(plugin.get('regexp'), plugin.replacer);
 //            console.log(result);
             var regexp = new RegExp('<iframe src=".+?www.google.com\/maps\/embed\/v1\/' +
@@ -82,7 +82,7 @@ buster.testCase('lib/plugins/googleMaps', {
 
         'replacer mode=directions and missing parameter': function () {
             var inputStr = 'See my map ' + "\n" +
-                '@69.9396,22.9232;10;mode=directions&origin=oslo,norway&avoid=tolls|highways';
+                '@69.9396,22.9232;mode=directions&origin=oslo,norway&avoid=tolls|highways';
             var result = inputStr.replace(plugin.get('regexp'), plugin.replacer);
 //            console.log(result);
             var regexp = new RegExp('<div><strong>ERROR with googleMaps plugin! ` @69.9396,22.9232;10;mode=directions&origin=oslo,norway&avoid=tolls|highways` <br>Error: Missing parameters:</strong><ul><li>destination: <pre><code class="hljs">');
