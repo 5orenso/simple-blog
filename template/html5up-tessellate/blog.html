@@ -95,12 +95,15 @@
               "alternativeHeadline": "{{ article.teaser }}",
               "image": [
                   {% for img in article.img %}
-                      "/pho/{{ img }}?w=800"
+                      "{{ blog.protocol }}://{{ blog.domain }}/pho/{{ img }}?w=800"
                   {% endfor %}
               ],
               "datePublished": "{{ article.published }}",
               "description": "{{ article.ingress }}",
-              "articleBody": "{{ article.body }}"
+              "articleBody": "{{ article.body }}
+              {% for col in article.col %}
+                  {{ col }}
+              {% endfor %}"
             }
         </script>
         <!--[if lte IE 8]><link rel="stylesheet" href="/css/ie/v8.css" /><![endif]-->
