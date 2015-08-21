@@ -16,6 +16,8 @@ require('./test/lib/adapter/elasticsearch-test.js');
 require('./test/lib/plugins/flot-test.js');
 require('./test/lib/plugins/wsd-test.js');
 require('./test/lib/plugins/googleMaps-test.js');
+require('./test/lib/plugins/vimeo-test.js');
+require('./test/lib/plugins/youtube-test.js');
 
 require('./test/lib/replacers/codeStyle-test.js');
 require('./test/lib/replacers/hashTags-test.js');
