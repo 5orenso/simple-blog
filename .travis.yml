@@ -11,4 +11,5 @@ matrix:
   fast_finish: true
 before_install: npm install -g grunt-cli
 install: npm install
+sudo: false
 #after_script: "istanbul cover ./all-tests.js"
