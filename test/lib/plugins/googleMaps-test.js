@@ -68,6 +68,18 @@ buster.testCase('lib/plugins/googleMaps', {
             assert.match(result, regexp);
         },
 
+        'replacer mode=view w/helt': function () {
+            var inputStr = 'See my map ' + "\n" +
+                '@69.9396,22.9232;mode=view&help=1';
+            var result = inputStr.replace(plugin.get('regexp'), plugin.replacer);
+//            console.log(result);
+            var regexp = new RegExp('<iframe src=".+?www.google.com\/maps\/embed\/v1\/' +
+                'view\\?key=.+?&' +
+                'zoom=10&center=69.9396%2C22.9232' +
+                '" width="100%" height="400" frameborder="0" style="border:0" allowfullscreen><\/iframe>');
+            assert.match(result, regexp);
+        },
+
         'replacer mode=directions': function () {
             var inputStr = 'See my map ' + "\n" +
                 '@69.9396,22.9232;mode=directions&origin=oslo,norway&destination=telemark,norway&avoid=tolls|highways';
