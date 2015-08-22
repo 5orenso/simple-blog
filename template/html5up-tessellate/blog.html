@@ -399,11 +399,11 @@
                                             <div class="4u body-col">{{ article['col' + i][j]|raw }}</div>
                                         {% endif %}
                                     {% endfor %}
-                                    {% if article['body' + i] %}
-                                        <div class="12u">
-                                            {{ article['body' + i]|raw }}
-                                        </div>
-                                    {% endif %}
+                                {% endif %}
+                                {% if article['body' + i] %}
+                                <div class="12u">
+                                    {{ article['body' + i]|raw }}
+                                </div>
                                 {% endif %}
                             </div>                           
                             {% if article['footnote' + i] %}           
