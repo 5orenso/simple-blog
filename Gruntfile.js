@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 module.exports = function (grunt) {
 
@@ -40,6 +40,7 @@ module.exports = function (grunt) {
         nodemon: {
             dev: {
                 options: {
+                    nodeArgs: ['--debug'],
                     file: 'app/server.js',
                     args: ['-c', '../config/config-dist.js']
                 },
@@ -47,6 +48,7 @@ module.exports = function (grunt) {
             },
             dev_local: {
                 options: {
+                    nodeArgs: ['--debug'],
                     file: 'app/server.js',
                     args: ['-c', '../config/config-local.js']
                 },
