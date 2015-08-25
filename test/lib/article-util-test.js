@@ -31,7 +31,7 @@ var markdownOutput = {
     header: '<h2 class="toc-2"><a name="my-h2-headline-" class="anchor" href="#my-h2-headline-">' +
         '<span class="header-link"></span></a>My H2 Headline.</h2>',
     link: '<a href="http://www.example.com">my link</a>',
-    image: '<p class="image_inline"><img src="http://www.example.com/image.jpg" alt="my image"></p>'
+    image: '<p class="image_inline"><a href="http://www.example.com/image.jpg" data-smoothzoom="group1"><img src="http://www.example.com/image.jpg" alt="my image"></a></p>'
 };
 
 var articleMdBodyOnly = ':body test without title' + "\n" +
