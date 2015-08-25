@@ -108,7 +108,10 @@
         </script>
         <!--[if lte IE 8]><link rel="stylesheet" href="/css/ie/v8.css" /><![endif]-->
 		<!--[if lte IE 9]><link rel="stylesheet" href="/css/ie/v9.css" /><![endif]-->
-	</head>
+
+
+        <link rel="stylesheet" href="/js/Smoothzoom/css/smoothzoom.css" />
+    </head>
 	<body>
 
 
@@ -390,10 +393,10 @@
                                 {% if article['col' + i] %}
                                     {% set arr = [0,1,2, 3,4,5, 6,7,8, 9,10,11, 12,13,14, 15,16,17] %}                               
                                     {% for j in arr %}
-                                        {% if j % 3 == 0 %}
-                                            <br class="clear">
-                                        {% endif %}
                                         {% if article['col' + i][j] %}
+                                            {% if j % 3 == 0 %}
+                                                <br class="clear">
+                                            {% endif %}
                                             <div class="4u body-col">{{ article['col' + i][j]|raw }}</div>
                                         {% endif %}
                                     {% endfor %}
@@ -532,5 +535,15 @@
 
         </script>
 
-	</body>
+    <script src="/js/Smoothzoom/js/easing.js"></script>
+    <script src="/js/Smoothzoom/js/smoothzoom.min.js"></script>
+    <script type="text/javascript">
+        $(window).load( function() {
+            $('img').smoothZoom({
+                // Options go here
+            });
+        });
+    </script>
+
+    </body>
 </html>
