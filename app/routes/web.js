@@ -16,6 +16,7 @@ var express       = require('express'),
     templatePath  = path.normalize(appPath + 'template/current/'),
     photoPath     = path.normalize(appPath + 'content/images/'),
     sitemap       = 'sitemap.xml',
+    keybase       = 'keybase.txt',
     logger        = require(appPath + 'lib/logger')(),
     articleUtil  = require(appPath + 'lib/article-util')(),
     localUtil    = require(appPath + 'lib/local-util')();
@@ -60,19 +61,24 @@ webRouter.use('/css/', localUtil.setCacheHeaders);
 webRouter.use('/css/', express.static(appPath + 'template/current/css/'));
 webRouter.use('/fonts/', localUtil.setCacheHeaders);
 webRouter.use('/fonts/', express.static(appPath + 'template/current/fonts/'));
-webRouter.use('/photos/', localUtil.setCacheHeaders);
-webRouter.use('/photos/', express.static(appPath + 'content/images/'));
 webRouter.use('/favicon.ico/', localUtil.setCacheHeaders);
 webRouter.use('/favicon.ico', express.static(appPath + 'template/current/favicon.ico'));
 webRouter.use('/robots.txt/', localUtil.setCacheHeaders);
 webRouter.use('/robots.txt', express.static(appPath + 'template/robots.txt'));
-webRouter.use('/keybase.txt/', localUtil.setCacheHeaders);
-webRouter.use('/keybase.txt', express.static(appPath + 'content/articles/keybase.txt'));
 webRouter.use('/sitemap.xml/', localUtil.setCacheHeaders);
-//webRouter.use('/sitemap.xml', express.static(sitemap));
-
 webRouter.get('/sitemap.xml', function (req, res) {
     res.sendFile(sitemap, {root: path.normalize(appPath + './template')});
+});
+webRouter.use('/keybase.txt/', localUtil.setCacheHeaders);
+webRouter.get('/keybase.txt', function (req, res) {
+    res.sendFile(keybase, {root: path.normalize(webRouter.config.adapter.markdown.contentPath)});
+});
+webRouter.use('/photos/', localUtil.setCacheHeaders);
+webRouter.get('/photos/*', function (req, res) {
+    // Resolve filename
+    var requestUrl = articleUtil.getUrlFromRequest(req);
+    requestUrl = requestUrl.replace(/\/photos\//, '');
+    res.sendFile(requestUrl, {root: path.normalize(webRouter.config.adapter.markdown.photoPath)});
 });
 
 // Main route for blog articles.
