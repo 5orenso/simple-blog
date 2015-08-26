@@ -191,10 +191,29 @@ buster.testCase('app/routes/web', {
                 parseString(body, function (err, result) {
 //                    console.log(result.urlset.url);
                     assert.equals(result.urlset.url, xml);
+                    assert.equals(response.headers['cache-control'], 'public, max-age=3600');
                     done();
                 });
             });
-        }
+        },
 
+        '/keybase.txt': function (done) {
+            request('http://127.0.0.1:' + port + '/web/keybase.txt', function (error, response, body) {
+                assert.equals(response.statusCode, 200);
+                assert.match(body, 'This is the keybase.txt file.');
+                assert.equals(response.headers['cache-control'], 'public, max-age=3600');
+                done();
+            });
+        },
+
+        '/photos/test.jpg': function (done) {
+            request('http://127.0.0.1:' + port + '/web/photos/test.jpg', function (error, response) {
+                assert.equals(response.statusCode, 200);
+                assert.equals(response.headers['content-type'], 'image/jpeg');
+                assert.equals(response.headers['content-length'], '7323084');
+                assert.equals(response.headers['cache-control'], 'public, max-age=3600');
+                done();
+            });
+        }
     }
 });
