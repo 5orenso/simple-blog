@@ -21,6 +21,7 @@ require('./test/lib/plugins/youtube-test.js');
 require('./test/lib/plugins/strava-test.js');
 require('./test/lib/plugins/spotify-test.js');
 require('./test/lib/plugins/spotify-uri-test.js');
+require('./test/lib/plugins/github-gist-test.js');
 
 require('./test/lib/replacers/codeStyle-test.js');
 require('./test/lib/replacers/hashTags-test.js');
