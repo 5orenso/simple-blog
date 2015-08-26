@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, user-scalable=0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta charset='utf-8'> 
+<head>
+<!--[if lt IE 9]>
+	<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+
+<!-- META ===================================================== --> 
+    <title>Smoothzoom Demo</title> 
+    <meta name="description" content="A lightweight and dead simple lightbox script"> 
+
+<!-- Favicon  ========================================== --> 
+	<link rel="icon" href="favicon.ico">
+
+<!-- CSS ====================================================== --> 
+	<link rel="stylesheet" href="css/smoothzoom.css">
+	<!-- Demo CSS (don't use) -->
+	<link rel="stylesheet" href="css/demo.css">
+</head>
+<body>
+<br>
+<h1>Smoothzoom</h1>
+
+<h2>EXAMPLE DEMO</h2>
+<div class="images">
+<a href="images/1.jpg" data-smoothzoom="group1"><img src="images/1-sm.jpg" alt="Photo Credit: Sebastian Boguszewicz"></a>
+<a href="images/2.jpg" data-smoothzoom="group1"><img src="images/2-sm.jpg" alt="Photo Credit: Ales Krivec"></a>
+<a href="images/3.jpg" data-smoothzoom="group1"><img src="images/3-sm.jpg" alt="Photo Credit: Dustin Scarpitti"></a>
+<a href="images/4.jpg" data-smoothzoom="group1"><img src="images/4-sm.jpg" alt="Photo Credit: Billy Onjea"></a>
+<a href="images/5.jpg" data-smoothzoom="group1"><img src="images/5-sm.jpg" alt="Photo Credit: Jan Erik Waider"></a>
+<a href="images/6.jpg" data-smoothzoom="group1"><img src="images/6-sm.jpg" alt="Photo Credit: Artur Pokusin"></a>
+</div>
+<br><br>
+<a href="http://github.com/kthornbloom/smoothzoom" target="_blank" class="button">Usage & Download</a>
+
+<!-- JS ======================================================= --> 
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.js"></script>
+	<script type="text/javascript" src="js/easing.js"></script>
+	<script type="text/javascript" src="js/smoothzoom.min.js"></script>
+    <script type="text/javascript">
+        $(window).load( function() {
+            $('img').smoothZoom({
+            	// Options go here
+            });
+        });
+    </script>
+    <script>
+    	$('img').hover(function() {
+                $('img').not(this).css('opacity','.6');
+            }, function() {
+		    $('img').not(this).css('opacity','1');
+		});
+    </script>
+</body>
+</html>
