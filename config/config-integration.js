@@ -4,7 +4,7 @@ module.exports = {
         title: 'Simple Blog Server',
         slogun: '',
         protocol: 'http',
-        domain: 'www.litt.no',
+        domain: 'www.mydomain.no',
         disqus: 'Simple blog server',
         social: {
             twitter: '',
@@ -63,7 +63,7 @@ module.exports = {
                                 return when.promise(function (resolve, reject) {
                                     //console.log('elasticsearch for: ', query.body.query.match._all);
                                     //console.log('elasticsearch for: ', query.body.query);
-                                    if (query.body.query.multi_match.query._all === 'one-hit') {
+                                    if (query.body.query.multi_match.query === 'one-hit') {
                                         //console.log('elasticsearch : ONE HIT');
                                         resolve({
                                             hits: {
@@ -73,7 +73,7 @@ module.exports = {
                                             },
                                             query: query
                                         });
-                                    } else if (query.body.query.multi_match.query._all === 'no-hit') {
+                                    } else if (query.body.query.multi_match.query === 'no-hit') {
                                         //console.log('elasticsearch : NO HIT');
                                         resolve({
                                             hits: {
@@ -81,7 +81,7 @@ module.exports = {
                                             },
                                             query: query
                                         });
-                                    } else if (query.body.query.multi_match.query._all === 'two-hit') {
+                                    } else if (query.body.query.multi_match.query === 'two-hit') {
                                         resolve({
                                             hits: {
                                                 hits: [{
@@ -92,7 +92,7 @@ module.exports = {
                                             },
                                             query: query
                                         });
-                                    } else if (query.body.query.multi_match.query._all === 'blow-up') {
+                                    } else if (query.body.query.multi_match.query === 'blow-up') {
                                         reject('search inside elasticsearch mock failed, because you asked it to do so :)');
                                     } else {
                                         resolve({
