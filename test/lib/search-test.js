@@ -32,7 +32,7 @@ buster.testCase('lib/search', {
     },
     'Test search:': {
         'query plain': function (done) {
-            when(search.query({ _all: 'one-hit'}))
+            when(search.query('one-hit'))
                 .done(function (obj) {
                     assert.isArray(obj);
                     assert.equals(obj[0].title, article.title);
@@ -49,7 +49,7 @@ buster.testCase('lib/search', {
         },
 
         'query for existing word and expect two hits': function (done) {
-            when(search.query({ _all: 'two-hit'}, {}))
+            when(search.query('two-hit', {}))
                 .done(function (obj) {
                     assert.isArray(obj);
                     assert.equals(obj[1].title, article.title);
@@ -66,7 +66,7 @@ buster.testCase('lib/search', {
         },
 
         'query for non existing word': function (done) {
-            when(search.query({ _all: 'no-hit'}, {}))
+            when(search.query('no-hit', {}))
                 .done(function (obj) {
                     assert.isArray(obj);
                     assert.equals(obj, []);
