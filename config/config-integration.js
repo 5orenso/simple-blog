@@ -62,7 +62,8 @@ module.exports = {
                             search: function (query) {
                                 return when.promise(function (resolve, reject) {
                                     //console.log('elasticsearch for: ', query.body.query.match._all);
-                                    if (query.body.query.match._all === 'one-hit') {
+                                    //console.log('elasticsearch for: ', query.body.query);
+                                    if (query.body.query.multi_match.query._all === 'one-hit') {
                                         //console.log('elasticsearch : ONE HIT');
                                         resolve({
                                             hits: {
@@ -72,7 +73,7 @@ module.exports = {
                                             },
                                             query: query
                                         });
-                                    } else if (query.body.query.match._all === 'no-hit') {
+                                    } else if (query.body.query.multi_match.query._all === 'no-hit') {
                                         //console.log('elasticsearch : NO HIT');
                                         resolve({
                                             hits: {
@@ -80,7 +81,7 @@ module.exports = {
                                             },
                                             query: query
                                         });
-                                    } else if (query.body.query.match._all === 'two-hit') {
+                                    } else if (query.body.query.multi_match.query._all === 'two-hit') {
                                         resolve({
                                             hits: {
                                                 hits: [{
@@ -91,7 +92,7 @@ module.exports = {
                                             },
                                             query: query
                                         });
-                                    } else if (query.body.query.match._all === 'blow-up') {
+                                    } else if (query.body.query.multi_match.query._all === 'blow-up') {
                                         reject('search inside elasticsearch mock failed, because you asked it to do so :)');
                                     } else {
                                         resolve({
