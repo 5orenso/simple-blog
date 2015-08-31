@@ -74,10 +74,7 @@ searchRouter.get('/*', function(req, res) {
     lu.timer('routes/search->request');
 
     var searchFor = lu.safeString(_.isEmpty(req.query.q) ? requestUrl : req.query.q);
-    var query = {
-        //_all: lu.safeString(req.query.q)
-        _all: searchFor
-    };
+    var query = searchFor;
     var filter = {};
 
     when.all([search.query(query, filter), category.list('/')])
