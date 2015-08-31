@@ -55,13 +55,13 @@ buster.testCase('Elasticsearch', {
     'search for existing word and expect one hit': function (done) {
         when(es.query('one-hit', {}))
             .done(function (obj) {
-                assert.isArray(obj);
-                assert.equals(obj[0].title, article.title);
-                assert.equals(obj[0].published, article.published);
-                assert.equals(obj[0].img, article.img);
-                assert.equals(obj[0].body, article.body);
-                assert.equals(obj[0].file, article.file);
-                assert.equals(obj[0].baseHref, article.baseHref);
+                assert.isArray(obj.hits);
+                assert.equals(obj.hits[0].title, article.title);
+                assert.equals(obj.hits[0].published, article.published);
+                assert.equals(obj.hits[0].img, article.img);
+                assert.equals(obj.hits[0].body, article.body);
+                assert.equals(obj.hits[0].file, article.file);
+                assert.equals(obj.hits[0].baseHref, article.baseHref);
                 done();
             }, function (err) {
                 console.log(err);
@@ -72,13 +72,13 @@ buster.testCase('Elasticsearch', {
     'search for existing word and expect two hits': function (done) {
         when(es.query('two-hit', {}))
             .done(function (obj) {
-                assert.isArray(obj);
-                assert.equals(obj[1].title, article.title);
-                assert.equals(obj[1].published, article.published);
-                assert.equals(obj[1].img, article.img);
-                assert.equals(obj[1].body, article.body);
-                assert.equals(obj[1].file, article.file);
-                assert.equals(obj[1].baseHref, article.baseHref);
+                assert.isArray(obj.hits);
+                assert.equals(obj.hits[1].title, article.title);
+                assert.equals(obj.hits[1].published, article.published);
+                assert.equals(obj.hits[1].img, article.img);
+                assert.equals(obj.hits[1].body, article.body);
+                assert.equals(obj.hits[1].file, article.file);
+                assert.equals(obj.hits[1].baseHref, article.baseHref);
                 done();
             }, function (err) {
                 console.log(err);
@@ -89,8 +89,10 @@ buster.testCase('Elasticsearch', {
     'search for non existing word': function (done) {
         when(es.query('no-hit', {}))
             .done(function (obj) {
-                assert.isArray(obj);
-                assert.equals(obj, []);
+                assert.isArray(obj.hits);
+                // jscs:disable
+                assert.equals(obj, { hits: [], meta: { maxScore: 0.83, timeMs: 4, total: 0 } });
+                // jscs:enable
                 done();
             }, function (err) {
                 console.log(err);

@@ -76,6 +76,7 @@ searchRouter.get('/*', function(req, res) {
     var searchFor = lu.safeString(_.isEmpty(req.query.q) ? requestUrl : req.query.q);
     var query = searchFor;
     var filter = {};
+    var inputQuery = req.query;
 
     when.all([search.query(query, filter), category.list('/')])
         .then(function (results) {
@@ -86,15 +87,15 @@ searchRouter.get('/*', function(req, res) {
             lu.timer('routes/search->search_articles');
             var catlist = results[1];
             var article = {};
-            if (_.isArray(results) && _.isArray(results[0]) && _.isObject(results[0][0])) {
-                if (_.isObject(results[0][0])) {
-                    article = results[0][0];
+            if (_.isArray(results) && _.isArray(results[0].hits) && _.isObject(results[0].hits[0])) {
+                if (_.isObject(results[0].hits[0])) {
+                    article = results[0].hits[0];
                 }
                 article.catlist = catlist;
                 article.artlist = [];
-                for (var i in results[0]) {
-                    if (results[0][i]) {
-                        var art = results[0][i];
+                for (var i in results[0].hits) {
+                    if (results[0].hits[i]) {
+                        var art = results[0].hits[i];
                         article.artlist.push(art);
                     }
                 }
@@ -113,13 +114,23 @@ searchRouter.get('/*', function(req, res) {
             } else {
                 article.title = '"' + lu.safeString(searchFor) + '" not found';
             }
-            res.send(tpl({blog: searchRouter.config.blog, article: article}));
+            res.send(tpl({
+                blog: searchRouter.config.blog,
+                article: article,
+                query: inputQuery,
+                searchMeta: results[0].meta
+            }));
         })
         .catch(function (opt) {
             lu.timer('routes/search->search_articles');
             lu.sendUdp({timers: lu.timersGet()});
             opt.error = 'Error in search...';
-            res.status(404).send(tpl({blog: searchRouter.config.blog, error: opt.error, article: opt.article}));
+            res.status(404).send(tpl({
+                blog: searchRouter.config.blog,
+                error: opt.error,
+                article: opt.article,
+                query: inputQuery
+            }));
         })
         .done(function () {
             lu.timer('routes/search->request');

@@ -87,6 +87,7 @@ webRouter.get('/*', function(req, res) {
     var lu    = require(appPath + 'lib/local-util')({config: webRouter.config});
     // Resolve filename
     var requestUrl = articleUtil.getUrlFromRequest(req);
+    var inputQuery = req.query;
 
     // Check for redirect
     var isRedirect = false;
@@ -155,12 +156,21 @@ webRouter.get('/*', function(req, res) {
             })
             .then(function (article) {
                 lu.timer('routes/web->load_article');
-                res.send(tpl({blog: webRouter.config.blog, article: article}));
+                res.send(tpl({
+                    blog: webRouter.config.blog,
+                    article: article,
+                    query: inputQuery
+                }));
             })
             .catch(function (opt) {
                 lu.timer('routes/web->load_article');
                 lu.sendUdp({timers: lu.timersGet()});
-                res.status(404).send(tpl({blog: webRouter.config.blog, error: opt.error, article: opt.article}));
+                res.status(404).send(tpl({
+                    blog: webRouter.config.blog,
+                    error: opt.error,
+                    article: opt.article,
+                    query: inputQuery
+                }));
             })
             .done(function () {
                 lu.timer('routes/web->request');
