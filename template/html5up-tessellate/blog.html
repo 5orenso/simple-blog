@@ -167,7 +167,7 @@
 
                     <div class="3u search_field">
                         <form method="GET" action="/search/">
-                            <input type="text" name="q" placeholder="Søk i alt innhold...">
+                            <input type="text" name="q" placeholder="Søk i alt innhold..." value="{{ query.q }}">
                         </form>
                     </div>
 
@@ -198,7 +198,7 @@
                 </div>
                 <div class="3u search_field_full">
                     <form method="GET" action="/search/">
-                        <input type="text" name="q" placeholder="Search {{ blog.title|raw }}...">
+                        <input type="text" name="q" placeholder="Search {{ blog.title|raw }}..." value="{{ query.q }}">
                     </form>
                 </div>
 				<header>
@@ -215,6 +215,20 @@
 			</section>
         {% endif %}
 
+        {% if query.q %}
+        <div class="content style4 ">
+            <div class="container small">
+                <div class="row">
+                    <div class="12u">
+                        <code>
+                            {{ searchMeta.total }}
+                            {{ blog.searchResults || "blog posts related to" }} "{{ query.q }}":
+                        </code>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
 
         {% if article.artlist[1] && article.file != 'index' %}
         <div class="bxslider">
@@ -304,7 +318,6 @@
                 <div class="content style4 ">
                     <div class="container small">
                         <div class="row">
-
                             {% if article.aside || blog.topImage %}
                                 <div class="6u">
                                     {% if article.body %}
@@ -506,6 +519,7 @@
 				</ul>
 				<div class="copyright">
 					<ul class="menu">
+                        {% if query.q %}<li>Search time Elasticsearch: {{ searchMeta.timeMs }} ms</li> {% endif %}
 						<li>&copy; {{ blog.title }}. All rights reserved.</li>
                         <li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
                         <li><a href="/rss">RSS feed</a></li>
