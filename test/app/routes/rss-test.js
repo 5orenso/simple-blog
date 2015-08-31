@@ -24,10 +24,10 @@ var xml = {
     error: ['Not Found'],
     title: ['Simple Blog Server'],
     description: ['\n\t\t\n\t'],
-    link: ['http://www.litt.no/'],
+    link: ['http://www.mydomain.no/'],
     category: [],
     copyright: [''],
-    docs: ['http://www.litt.no/rss'],
+    docs: ['http://www.mydomain.no/rss'],
     language: ['en-us'],
     lastBuildDate: ['Fri, 14 Aug 2015 07:46:12 GMT'],
     managingEditor: [''],
@@ -38,14 +38,14 @@ var xml = {
         {
             title: ['Simple Blog Server'],
             description: ['Life made easier'],
-            link: ['http://www.litt.no/simple-blog/index'],
+            link: ['http://www.mydomain.no/simple-blog/index'],
             category: [],
             pubDate: ['Mon, 01 Sep 2014 00:00:00 GMT']
         },
         {
             title: ['Simple blog 2'],
             description: [''],
-            link: ['http://www.litt.no/simple-blog/simple-blog'],
+            link: ['http://www.mydomain.no/simple-blog/simple-blog'],
             category: [],
             pubDate: ['Mon, 01 Sep 2014 00:00:00 GMT']
         }
