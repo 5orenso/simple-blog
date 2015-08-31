@@ -6,6 +6,7 @@ module.exports = {
         protocol: 'http',
         domain: 'www.mydomain.no',
         disqus: 'Simple blog server',
+        searchResults: 'Blog posts related to ',
         social: {
             twitter: '',
             facebook: '',
@@ -66,7 +67,10 @@ module.exports = {
                                     if (query.body.query.multi_match.query === 'one-hit') {
                                         //console.log('elasticsearch : ONE HIT');
                                         resolve({
+                                            took: 4,
                                             hits: {
+                                                total: 1,
+                                                max_score: 0.83,
                                                 hits: [{
                                                     _source: article
                                                 }]
@@ -76,14 +80,20 @@ module.exports = {
                                     } else if (query.body.query.multi_match.query === 'no-hit') {
                                         //console.log('elasticsearch : NO HIT');
                                         resolve({
+                                            took: 4,
                                             hits: {
+                                                total: 0,
+                                                max_score: 0.83,
                                                 hits: []
                                             },
                                             query: query
                                         });
                                     } else if (query.body.query.multi_match.query === 'two-hit') {
                                         resolve({
+                                            took: 4,
                                             hits: {
+                                                total: 2,
+                                                max_score: 0.83,
                                                 hits: [{
                                                     _source: article
                                                 }, {
@@ -96,7 +106,10 @@ module.exports = {
                                         reject('search inside elasticsearch mock failed, because you asked it to do so :)');
                                     } else {
                                         resolve({
+                                            took: 4,
                                             hits: {
+                                                total: 1,
+                                                max_score: 0.83,
                                                 hits: [{
                                                     _source: article
                                                 }]
