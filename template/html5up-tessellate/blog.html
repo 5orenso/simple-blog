@@ -230,7 +230,7 @@
         </div>
         {% endif %}
 
-        {% if article.artlist[1] && article.file != 'index' %}
+        {% if article.artlist[1] && (article.file != 'index' || blog.showListOnIndex) %}
         <div class="bxslider">
             {% for a in article.artlist %}
             {% if loop.index < 30 %}

@@ -9,6 +9,7 @@ module.exports = {
         copyright: 'Copyright 2014-2015 Sorenso, litt.no',
         email: 'sorenso@gmail.com',
         searchResults: 'Blog posts related to ',
+        showListOnIndex: 1,
         disqus: 'Simple blog server',
         social: {
             twitter: '',

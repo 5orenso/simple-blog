@@ -6,7 +6,7 @@ module.exports = {
         protocol: 'http',
         domain: 'www.mydomain.no',
         disqus: 'Simple blog server',
-        searchResults: 'Blog posts related to ',
+        searchResults: 'blog posts related to ',
         social: {
             twitter: '',
             facebook: '',
