@@ -3,7 +3,7 @@ module.exports = {
     blog: {
         title: 'Simple Blog Server',
         protocol: 'http',
-        domain: 'www.litt.no',
+        domain: 'www.mydomain.no',
         disqus: 'Simple blog server',
         social: {
             twitter: '',

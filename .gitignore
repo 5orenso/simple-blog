@@ -32,11 +32,12 @@ node_modules
 
 dev/
 config/config.js
+config/config-sitemap.js
 content/articles
 content/images*
 test/content/images_cached
 template/flot/
-template/sitemap-www.mydomain.no.xml
+template/sitemap-www.litt.no.xml
 sitemap.xml
 pm2-run.json
 artifact/
