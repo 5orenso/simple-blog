@@ -5,7 +5,6 @@ module.exports = {
         slogun: '',
         protocol: 'http',
         domain: 'www.litt.no',
-
         tags: '',
         copyright: 'Copyright 2014-2015 Sorenso, litt.no',
         email: 'sorenso@gmail.com',
@@ -76,10 +75,10 @@ module.exports = {
         },
         elasticsearch: {
             //server: '172.30.0.227',
-            server: '54.154.55.126',
+            server: '127.0.0.1',
             port: 9200,
-            index: 'twitter',
-            type: 'tweet'
+            index: 'litt.no',
+            type: 'article'
         }
     },
     udp: {
