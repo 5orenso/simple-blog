@@ -79,7 +79,9 @@ module.exports = {
             server: '127.0.0.1',
             port: 9200,
             index: 'litt.no',
-            type: 'article'
+            type: 'article',
+            multiMatchType: 'best_fields',
+            multiMatchTieBreaker: 0.3
         }
     },
     udp: {
