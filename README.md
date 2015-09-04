@@ -1,4 +1,6 @@
 ## A very simple blog server
+
+[![Join the chat at https://gitter.im/5orenso/simple-blog](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/5orenso/simple-blog?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Build Status](https://travis-ci.org/5orenso/simple-blog.svg?branch=master)](https://travis-ci.org/5orenso/simple-blog)
 [![Coverage Status](https://coveralls.io/repos/5orenso/simple-blog/badge.svg?branch=master)](https://coveralls.io/r/5orenso/simple-blog?branch=master)
 [![GitHub version](https://badge.fury.io/gh/5orenso%2Fsimple-blog.svg)](http://badge.fury.io/gh/5orenso%2Fsimple-blog)
