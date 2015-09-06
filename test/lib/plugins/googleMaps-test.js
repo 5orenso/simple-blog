@@ -82,7 +82,7 @@ buster.testCase('lib/plugins/googleMaps', {
 
         'replacer mode=directions': function () {
             var inputStr = 'See my map ' + "\n" +
-                '@69.9396,22.9232;mode=directions&origin=oslo,norway&destination=telemark,norway&avoid=tolls|highways';
+                '@oslo,norway;mode=directions&origin=oslo,norway&destination=telemark,norway&avoid=tolls|highways';
             var result = inputStr.replace(plugin.get('regexp'), plugin.replacer);
 //            console.log(result);
             var regexp = new RegExp('<iframe src=".+?www.google.com\/maps\/embed\/v1\/' +
