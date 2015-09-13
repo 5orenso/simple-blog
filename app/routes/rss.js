@@ -17,7 +17,11 @@ var express       = require('express'),
     photoPath    = path.normalize(appPath + 'content/images/'),
     logger        = require(appPath + 'lib/logger')(),
     articleUtil  = require(appPath + 'lib/article-util')(),
-    localUtil    = require(appPath + 'lib/local-util')();
+    localUtil    = require(appPath + 'lib/local-util')(),
+    Metrics       = require(appPath + 'lib/metrics'),
+    metrics       = new Metrics({
+        useDataDog: true
+    });
 
 swig.setFilter('markdown', articleUtil.replaceMarked);
 swig.setFilter('formatted', articleUtil.formatDate);
@@ -54,7 +58,6 @@ rssRouter.use(morgan('combined', {stream: accessLogStream}));
 // Main route for blog articles.
 rssRouter.use('/*', localUtil.setNoCacheHeaders);
 rssRouter.get('/*', function(req, res) {
-    var lu    = require(appPath + 'lib/local-util')({config: rssRouter.config});
     // Resolve filename
     var requestUrl = articleUtil.getUrlFromRequest(req);
 
@@ -86,30 +89,21 @@ rssRouter.get('/*', function(req, res) {
         config: rssRouter.config
     });
 
-    lu.timersReset();
-    lu.timer('routes/rss->request');
-    lu.timer('routes/rss->load_category_and_article_lists');
     when.all([category.list('/'), article.list(articlePath)])
         .then(function (contentLists) {
-            lu.timer('routes/rss->load_category_and_article_lists');
-            lu.timer('routes/rss->load_article');
             return article.load({
                 catlist: contentLists[0],
                 artlist: contentLists[1]
             });
         })
         .then(function (article) {
-            lu.timer('routes/rss->load_article');
             res.send(tpl({blog: rssRouter.config.blog, article: article}));
         })
         .catch(function (opt) {
-            lu.timer('routes/rss->load_article');
-            lu.sendUdp({timers: lu.timersGet()});
             res.status(404).send(tpl({blog: rssRouter.config.blog, error: opt.error, article: opt.article}));
         })
         .done(function () {
-            lu.timer('routes/rss->request');
-            lu.sendUdp({timers: lu.timersGet()});
+            metrics.increment('simpleblog.rss.' + articlePath);
         });
 
 });

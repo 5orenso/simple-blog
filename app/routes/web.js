@@ -18,8 +18,12 @@ var express       = require('express'),
     sitemap       = 'sitemap.xml',
     keybase       = 'keybase.txt',
     logger        = require(appPath + 'lib/logger')(),
-    articleUtil  = require(appPath + 'lib/article-util')(),
-    localUtil    = require(appPath + 'lib/local-util')();
+    articleUtil   = require(appPath + 'lib/article-util')(),
+    localUtil     = require(appPath + 'lib/local-util')(),
+    Metrics       = require(appPath + 'lib/metrics'),
+    metrics       = new Metrics({
+        useDataDog: true
+    });
 
 swig.setFilter('markdown', articleUtil.replaceMarked);
 swig.setFilter('formatted', articleUtil.formatDate);
@@ -84,7 +88,6 @@ webRouter.get('/photos/*', function (req, res) {
 // Main route for blog articles.
 webRouter.use('/*', localUtil.setNoCacheHeaders);
 webRouter.get('/*', function(req, res) {
-    var lu    = require(appPath + 'lib/local-util')({config: webRouter.config});
     // Resolve filename
     var requestUrl = articleUtil.getUrlFromRequest(req);
     var inputQuery = req.query;
@@ -137,25 +140,36 @@ webRouter.get('/*', function(req, res) {
             config: webRouter.config
         });
 
+        // Add timer hooks to the functions you want to measure.
+        var funcName;
+        var articleFunctionsToTime = ['load', 'list', 'sitemap'];
+        for (var k = 0; k <  articleFunctionsToTime.length; k++) {
+            funcName = articleFunctionsToTime[k];
+            article[funcName] = metrics.hook(article[funcName],
+                'simpleblog.lib.article.' + funcName);
+        }
+
         var category = require(appPath + 'lib/category')({
             logger: logger,
             config: webRouter.config
         });
 
-        lu.timersReset();
-        lu.timer('routes/web->request');
-        lu.timer('routes/web->load_category_and_article_lists');
+        // Add timer hooks to the functions you want to measure.
+        var categoryFunctionsToTime = ['list'];
+        for (var j = 0; j <  categoryFunctionsToTime.length; j++) {
+            funcName = categoryFunctionsToTime[j];
+            category[funcName] = metrics.hook(category[funcName],
+                'simpleblog.lib.category.' + funcName);
+        }
+
         when.all([category.list('/'), article.list(articlePath)])
             .then(function (contentLists) {
-                lu.timer('routes/web->load_category_and_article_lists');
-                lu.timer('routes/web->load_article');
                 return article.load({
                     catlist: contentLists[0],
                     artlist: contentLists[1]
                 });
             })
             .then(function (article) {
-                lu.timer('routes/web->load_article');
                 res.send(tpl({
                     blog: webRouter.config.blog,
                     article: article,
@@ -163,8 +177,6 @@ webRouter.get('/*', function(req, res) {
                 }));
             })
             .catch(function (opt) {
-                lu.timer('routes/web->load_article');
-                lu.sendUdp({timers: lu.timersGet()});
                 res.status(404).send(tpl({
                     blog: webRouter.config.blog,
                     error: opt.error,
@@ -173,8 +185,7 @@ webRouter.get('/*', function(req, res) {
                 }));
             })
             .done(function () {
-                lu.timer('routes/web->request');
-                lu.sendUdp({timers: lu.timersGet()});
+                metrics.increment('simpleblog.view.' + articlePath);
             });
     }
 });

@@ -21,7 +21,11 @@ var express          = require('express'),
     photoCachePath = path.normalize(appPath + 'content/images_cached/'),
     wsdPath         = '/tmp/',
     logger           = require(appPath + 'lib/logger')(),
-    localUtil       = require(appPath + 'lib/local-util')();
+    localUtil       = require(appPath + 'lib/local-util')(),
+    Metrics       = require(appPath + 'lib/metrics'),
+    metrics       = new Metrics({
+        useDataDog: true
+    });
 
 var imageRouter = express.Router();
 imageRouter.setConfig = function (conf, opt) {
@@ -42,6 +46,15 @@ imageRouter.setConfig = function (conf, opt) {
             logger.set('log', conf.log);
         }
     }
+
+    // Add timer hooks to the functions you want to measure.
+    pathExists = metrics.hook(pathExists, 'simpleblog.image.pathExists');
+    fileExists = metrics.hook(fileExists, 'simpleblog.image.fileExists');
+    resizeImage = metrics.hook(resizeImage, 'simpleblog.image.resizeImage');
+    serveImage = metrics.hook(serveImage, 'simpleblog.image.serveImage');
+    makeWebsequenceDiagram = metrics.hook(makeWebsequenceDiagram, 'simpleblog.image.makeWebsequenceDiagram');
+    pathExists = metrics.hook(pathExists, 'simpleblog.image.pathExists');
+    pathExists = metrics.hook(pathExists, 'simpleblog.image.pathExists');
 };
 
 // create a write stream (in append mode)
@@ -187,7 +200,6 @@ function makeWebsequenceDiagram(wsdText, path) {
 imageRouter.use('/*', localUtil.setCacheHeaders);
 
 imageRouter.get('/wsd/*', function(req, res) {
-    var lu    = require(appPath + 'lib/local-util')({config: imageRouter.config});
     var parsedUrl = getUrlFromRequest(req);
     var filename = wsdPath + crypto.createHash('sha256').update(parsedUrl.query.data).digest('hex') + '.png';
     when(pathExists(wsdPath))
@@ -195,19 +207,14 @@ imageRouter.get('/wsd/*', function(req, res) {
             return fileExists(filename);
         })
         .catch(function () {
-            lu.timer('routes/image->wsd');
             return makeWebsequenceDiagram(parsedUrl.query.data, wsdPath);
         })
         .then(function (wsdFile) {
-            lu.timer('routes/image->wsd');
             return serveImage(res, wsdFile);
         })
         .done(function () {
-            lu.timer('routes/image->request');
-            lu.sendUdp({ timers: lu.timersGet() });
+            metrics.increment('simpleblog.image.wsd');
         }, function (error) {
-            lu.timer('routes/image->request');
-            lu.sendUdp({ timers: lu.timersGet() });
             res.status(404).send(error);
             res.end();
         });
@@ -216,7 +223,6 @@ imageRouter.get('/wsd/*', function(req, res) {
 
 // test route to make sure everything is working (accessed at GET http://localhost:8080/api)
 imageRouter.get('/*', function(req, res) {
-    var lu    = require(appPath + 'lib/local-util')({config: imageRouter.config});
     var parsedUrl = getUrlFromRequest(req);
     var cachePath = (parsedUrl.query.w || 'rel') + 'x' + (parsedUrl.query.h || 'rel');
     var imageFilenameRequested = decodeURIComponent(parsedUrl.pathname);
@@ -227,15 +233,12 @@ imageRouter.get('/*', function(req, res) {
     res.on('finish', function () {
 //        if (timer) { stopwatch.end(); }
     });
-    lu.timersReset();
-    lu.timer('routes/image->request');
 
     when(pathExists(imageFilenameResized))
         .then(function () {
             return fileExists(imageFilenameAbsolute);
         })
         .then(function () {
-            lu.timer('routes/image->resizeImage');
             return resizeImage({
                 imageFilenameAbsolute: imageFilenameAbsolute,
                 imageFilenameResized: imageFilenameResized,
@@ -245,18 +248,14 @@ imageRouter.get('/*', function(req, res) {
             });
         })
         .then(function () {
-            lu.timer('routes/image->resizeImage');
             return fileExists(imageFilenameResized);
         })
         .then(function () {
             return serveImage(res, imageFilenameResized);
         })
         .done(function () {
-            lu.timer('routes/image->request');
-            lu.sendUdp({ timers: lu.timersGet() });
+            metrics.increment('simpleblog.image.regular');
         }, function (error) {
-            lu.timer('routes/image->request');
-            lu.sendUdp({ timers: lu.timersGet() });
             res.status(404).send(error);
             res.end();
         });

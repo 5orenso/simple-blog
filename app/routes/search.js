@@ -17,7 +17,11 @@ var express       = require('express'),
     articleUtil  = require(appPath + 'lib/article-util')(),
     categoryUtil = require(appPath + 'lib/category-util')(),
     logger        = require(appPath + 'lib/logger')(),
-    localUtil    = require(appPath + 'lib/local-util')();
+    localUtil    = require(appPath + 'lib/local-util')(),
+    Metrics       = require(appPath + 'lib/metrics'),
+    metrics       = new Metrics({
+        useDataDog: true
+    });
 
 var searchRouter = express.Router();
 searchRouter.setConfig = function (conf, opt) {
@@ -70,8 +74,14 @@ searchRouter.get('/*', function(req, res) {
         config: searchRouter.config
     }, searchRouter.config.adapter.mockServices);
 
-    lu.timersReset();
-    lu.timer('routes/search->request');
+    // Add timer hooks to the functions you want to measure.
+    var funcName;
+    var searchFunctionsToTime = ['query', 'index', 'indexArtlist'];
+    for (var k = 0; k <  searchFunctionsToTime.length; k++) {
+        funcName = searchFunctionsToTime[k];
+        search[funcName] = metrics.hook(search[funcName],
+            'simpleblog.lib.search.' + funcName);
+    }
 
     var searchFor = lu.safeString(_.isEmpty(req.query.q) ? requestUrl : req.query.q);
     var query = searchFor;
@@ -80,11 +90,9 @@ searchRouter.get('/*', function(req, res) {
 
     when.all([search.query(query, filter), category.list('/')])
         .then(function (results) {
-            lu.timer('routes/search->search_articles');
             return results;
         })
         .then(function (results) {
-            lu.timer('routes/search->search_articles');
             var catlist = results[1];
             var article = {};
             if (_.isArray(results) && _.isArray(results[0].hits) && _.isObject(results[0].hits[0])) {
@@ -99,18 +107,10 @@ searchRouter.get('/*', function(req, res) {
                         article.artlist.push(art);
                     }
                 }
-                lu.timer('categoryUtil.formatCatlist');
                 categoryUtil.formatCatlist(article, catlist);
-                lu.timer('categoryUtil.formatCatlist');
-                lu.timer('articleUtil.formatArtlist');
                 articleUtil.formatArtlist(article, article.artlist);
-                lu.timer('articleUtil.formatArtlist');
-                lu.timer('articleUtil.formatArticleSections');
                 articleUtil.formatArticleSections(article);
-                lu.timer('articleUtil.formatArticleSections');
-                lu.timer('articleUtil.replaceTagsWithContent');
                 articleUtil.replaceTagsWithContent(article);
-                lu.timer('articleUtil.replaceTagsWithContent');
             } else {
                 article.title = '"' + lu.safeString(searchFor) + '" not found';
             }
@@ -122,8 +122,6 @@ searchRouter.get('/*', function(req, res) {
             }));
         })
         .catch(function (opt) {
-            lu.timer('routes/search->search_articles');
-            lu.sendUdp({timers: lu.timersGet()});
             opt.error = 'Error in search...';
             res.status(404).send(tpl({
                 blog: searchRouter.config.blog,
@@ -133,8 +131,7 @@ searchRouter.get('/*', function(req, res) {
             }));
         })
         .done(function () {
-            lu.timer('routes/search->request');
-            lu.sendUdp({timers: lu.timersGet()});
+            metrics.increment('simpleblog.search.' + searchFor);
         });
 
 });

@@ -10,7 +10,11 @@ var express    = require('express'),
     _          = require('underscore'),
     appPath   = __dirname + '/../../',
     logger     = require(appPath + 'lib/logger')(),
-    localUtil = require(appPath + 'lib/local-util')();
+    localUtil = require(appPath + 'lib/local-util')(),
+    Metrics       = require(appPath + 'lib/metrics'),
+    metrics       = new Metrics({
+        useDataDog: true
+    });
 
 var apiRouter = express.Router();
 apiRouter.setConfig = function (conf, opt) {
@@ -48,28 +52,18 @@ apiRouter.use(function(req, res, next) {
 
 // test route to make sure everything is working (accessed at GET http://localhost:8080/api)
 apiRouter.get('/', function(req, res) {
-    var lu    = require(appPath + 'lib/local-util')({config: apiRouter.config});
-
-    lu.timersReset();
-    lu.timer('routes/api->request');
     // Stop timer when response is transferred and finish.
     res.on('finish', function () {
-        lu.timer('routes/api->request');
-        lu.sendUdp({ timers: lu.timersGet() });
+        metrics.increment('simpleblog.api.get');
     });
     res.json({ message: 'hooray! welcome to our api!' });
 });
 
 // test route to make sure everything is working (accessed at GET http://localhost:8080/api)
 apiRouter.post('/report', function(req, res) {
-    var lu    = require(appPath + 'lib/local-util')({config: apiRouter.config});
-
-    lu.timersReset();
-    lu.timer('routes/api->request');
     // Stop timer when response is transferred and finish.
     res.on('finish', function () {
-        lu.timer('routes/api->request');
-        lu.sendUdp({ timers: lu.timersGet() });
+        metrics.increment('simpleblog.api.post');
     });
 
     // Write shit to file.
