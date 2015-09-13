@@ -1,6 +1,6 @@
 # Plugins
 
-Plugins are runned before markdown is generated. The results returned from the 
+Plugins are run before markdown is generated. The results returned from the 
 plugins should be formatted as markdown compatible content.
 
 A plugin needs:
