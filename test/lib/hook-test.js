@@ -6,6 +6,13 @@ var buster = require('buster'),
     Hook   = require('../../lib/hook'),
     hook   = new Hook();
 
+function sleep(milliseconds) {
+    var date = new Date();
+    var curDate = null;
+    do { curDate = new Date(); }
+    while (curDate - date < milliseconds);
+}
+
 buster.testCase('lib/hook', {
     setUp: function () {
         this.timeout = 2000;
@@ -71,6 +78,31 @@ buster.testCase('lib/hook', {
             });
             var input = { foo: 'bar' };
             syncFunc(input);
+            //console.log('hook-test.result = ', result, hookMeta);
+            assert.equals(input.foo, 'gomle');
+            assert.equals(input.bar, 'foobar');
+        },
+
+        'add hooks to a promise function and alter input': function () {
+            function promiseFunc(input) {
+                input.bar = 'not-the-right-one';
+                return when.promise(function(resolve) {
+                    sleep(1000);
+                    input.bar = 'foobar';
+                    //console.log('done...');
+                    resolve();
+                    //console.log(input);
+                });
+            }
+            promiseFunc = hook.add(promiseFunc, function (inputRef) { // jshint ignore:line
+                inputRef.foo = 'gomle';
+                //console.log('pre');
+            }, function (inputRef) { // jshint ignore:line
+                //console.log('post');
+                inputRef.post = 'gomle';
+            });
+            var input = { foo: 'bar' };
+            promiseFunc(input);
             //console.log('hook-test.result = ', result, hookMeta);
             assert.equals(input.foo, 'gomle');
             assert.equals(input.bar, 'foobar');
