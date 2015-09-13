@@ -62,6 +62,19 @@ app.use('/static', express.static(config.blog.staticFilesPath));
 app.use('/.well-known/', express.static(config.blog.textFilesPath));
 app.use('/pho/', imageRouter);
 app.use('/search/', searchRouter);
+
+// heapdump / inspecting for memory leaks.
+//require('heapdump');
+//if (typeof gc === 'function') {
+//    console.error('Collected garbage');
+//} else {
+//    console.error('Please run the server with --expose-gc to make gc function available.');
+//}
+//webRouter.get('/gc', function(req, res) {
+//    gc();
+//    res.send('Garbage collected');
+//});
+
 app.use('/', webRouter);
 
 // Start the server ------------------------------
@@ -69,4 +82,7 @@ var server = app.listen(config.app.port, function () {
         var host = server.address().address;
         var port = server.address().port;
         logger.log('info', 'Something happens at http://' + host + ':' + port + '/');
+        // heapdump / inspecting for memory leaks.
+        //console.log('$ kill -USR2 ' + process.pid + ' && curl http://localhost:8080/tech/_test_col && ' +
+        //    'curl http://localhost:8080/gc && curl http://localhost:8080/gc');
     });
