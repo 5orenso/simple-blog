@@ -134,16 +134,40 @@ More to come :)
 
 ### HOWTO upgrade dev environment
 ```bash
-npm install buster --save-dev
-npm install buster-istanbul --save-dev
-npm install grunt --save-dev
-npm install grunt-buster --save-dev
-npm install grunt-contrib-jshint --save-dev
-npm install grunt-contrib-nodeunit --save-dev
-npm install grunt-contrib-watch --save-dev
-npm install grunt-coveralls --save-dev
-npm install grunt-jscs --save-dev
-npm install grunt-nodemon --save-dev
-npm install grunt-shell --save-dev
+npm install buster --save-dev --no-optional
+npm install buster-istanbul --save-dev --no-optional
+npm install grunt --save-dev --no-optional
+npm install grunt-buster --save-dev --no-optional
+npm install grunt-contrib-jshint --save-dev --no-optional
+npm install grunt-contrib-nodeunit --save-dev --no-optional
+npm install grunt-contrib-watch --save-dev --no-optional
+npm install grunt-coveralls --save-dev --no-optional
+npm install grunt-jscs --save-dev --no-optional
+npm install grunt-nodemon --save-dev --no-optional
+npm install grunt-shell --save-dev --no-optional
 ```
 
+### Howto upgrade modules
+```bash
+npm install body-parser --save --no-optional
+npm install commander --save --no-optional
+npm install elasticsearch --save --no-optional
+npm install express --save --no-optional
+npm install highlight.js --save --no-optional
+npm install imagemagick --save --no-optional
+npm install marked --save --no-optional
+npm install measured --save --no-optional
+npm install mkdirp --save --no-optional
+npm install morgan --save --no-optional
+npm install node-dogstatsd --save --no-optional
+npm install pg --save --no-optional
+npm install rest --save --no-optional
+npm install strftime --save --no-optional
+npm install swig --save --no-optional
+npm install underscore --save --no-optional
+npm install walk --save --no-optional
+npm install websequencediagrams --save --no-optional
+npm install when --save --no-optional
+npm install winston --save --no-optional
+npm install winston-syslog --save --no-optional
+```
