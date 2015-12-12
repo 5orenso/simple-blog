@@ -9,12 +9,11 @@ matrix:
     - node_js: "iojs"
   fast_finish: true
 before_install: npm install -g grunt-cli
-install: npm install
-compiler:
-  - gcc
-  - gcc-4.8
-  - clang
-  - clang-3.4
+env:
+  - CXX=g++-4.8
+install:
+  - npm install
+  - npm install -g npm
 notifications:
   webhooks:
     urls:
