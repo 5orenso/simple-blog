@@ -10,6 +10,11 @@ matrix:
   fast_finish: true
 before_install: npm install -g grunt-cli
 install: npm install
+compiler:
+  - gcc
+  - gcc-4.8
+  - clang
+  - clang-3.4
 notifications:
   webhooks:
     urls:
