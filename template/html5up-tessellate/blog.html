@@ -143,14 +143,22 @@
                             <div class="author_image" style = 'background-image: url("{{ blog.author[article.author].image }}");'></div>
                         {% endif %}
                         {% if blog.author[article.author].name %}
-                            <div class="author_name">{{ blog.author[article.author].name|raw }} {% if article.published %}on {{ article.published|formatted }} {% endif %}</div>
+                            <div class="author_name">
+                                {{ blog.author[article.author].name|raw }}
+                                {% if article.published %}on {{ article.published|formatted }} {% endif %}
+                                {% if article.updated %}(last updated {{ article.updated|formatted }}) {% endif %}
+                            </div>
                         {% endif %}
                     {% elseif blog.author && blog.author.fallback %}
                         {% if blog.author.fallback.image %}
                             <div class="author_image" style = 'background-image: url("{{ blog.author.fallback.image }}");'></div>
                         {% endif %}
                         {% if blog.author.fallback.name %}
-                            <div class="author_name">{{ blog.author.fallback.name|raw }} {% if article.published %}on {{ article.published|formatted }} {% endif %}</div>
+                            <div class="author_name">
+                                {{ blog.author.fallback.name|raw }}
+                                {% if article.published %}on {{ article.published|formatted }} {% endif %}
+                                {% if article.updated %}(last updated {{ article.updated|formatted }}) {% endif %}
+                            </div>
                         {% endif %}
                     {% endif %}
                     <ul class="menu_small">
@@ -185,14 +193,22 @@
                             <div class="author_image" style = 'background-image: url("{{ blog.author[article.author].image }}");'></div>
                         {% endif %}
                         {% if blog.author[article.author].name %}
-                            <div class="author_name">{{ blog.author[article.author].name|raw }} {% if article.published %}on {{ article.published|formatted }} {% endif %}</div>
+                            <div class="author_name">
+                                {{ blog.author[article.author].name|raw }}
+                                {% if article.published %}on {{ article.published|formatted }} {% endif %}
+                                {% if article.updated %}(last updated {{ article.updated|formatted }}) {% endif %}
+                            </div>
                         {% endif %}
                     {% elseif blog.author && blog.author.fallback %}
                         {% if blog.author.fallback.image %}
                             <div class="author_image" style = 'background-image: url("{{ blog.author.fallback.image }}");'></div>
                         {% endif %}
                         {% if blog.author.fallback.name %}
-                            <div class="author_name">{{ blog.author.fallback.name|raw }} {% if article.published %}on {{ article.published|formatted }} {% endif %}</div>
+                            <div class="author_name">
+                                {{ blog.author.fallback.name|raw }}
+                                {% if article.published %}on {{ article.published|formatted }} {% endif %}
+                                {% if article.updated %}(last updated {{ article.updated|formatted }}) {% endif %}
+                            </div>
                         {% endif %}
                     {% endif %}
                 </div>
@@ -344,9 +360,6 @@
                                 {% if article.col %}
                                     {% set arr = [0,1,2, 3,4,5, 6,7,8, 9,10,11, 12,13,14, 15,16,17] %}
                                     {% for i in arr %}
-                                        {% if i % 3 == 0 %}
-                                            <br class="clear">
-                                        {% endif %}
                                         {% if article.col[i] %}
                                             <div class="4u body-col">{{ article.col[i]|raw }}</div>
                                         {% endif %}
@@ -388,7 +401,8 @@
                         {% endif %}
                     </header>
                 </section>
-
+            {% endif %}
+            {% if (article['ingress' + i] or article['body' + i] or article['col' + i]) %}
                 <!-- First -->
                 <section id="section{{ i }}" class="main">
                     {% if article['ingress' + i] %}
@@ -407,9 +421,6 @@
                                     {% set arr = [0,1,2, 3,4,5, 6,7,8, 9,10,11, 12,13,14, 15,16,17] %}                               
                                     {% for j in arr %}
                                         {% if article['col' + i][j] %}
-                                            {% if j % 3 == 0 %}
-                                                <br class="clear">
-                                            {% endif %}
                                             <div class="4u body-col">{{ article['col' + i][j]|raw }}</div>
                                         {% endif %}
                                     {% endfor %}
