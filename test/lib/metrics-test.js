@@ -84,9 +84,10 @@ buster.testCase('lib/metrics', {
                 //console.log('promise-start...' + (new Date()).getTime());
                 return when.promise(function(resolve) {
                     setTimeout(function () {
-                        input.bar = 'foobar';
+                        var inputObject = input;
+                        //inputObject.bar = 'foobar';
                         //console.log('promise-done...' + (new Date()).getTime());
-                        resolve(input);
+                        resolve(inputObject);
                     }, 100);
                 });
             }
