@@ -18,8 +18,12 @@ var express       = require('express'),
     sitemap       = 'sitemap.xml',
     keybase       = 'keybase.txt',
     logger        = require(appPath + 'lib/logger')(),
-    articleUtil   = require(appPath + 'lib/article-util')(),
-    localUtil     = require(appPath + 'lib/local-util')(),
+    Category      = require(appPath + 'lib/category'),
+    Article       = require(appPath + 'lib/article'),
+    ArticleUtil   = require(appPath + 'lib/article-util'),
+    articleUtil   = new ArticleUtil(),
+    LocalUtil     = require(appPath + 'lib/local-util'),
+    localUtil     = new LocalUtil(),
     Metrics       = require(appPath + 'lib/metrics'),
     metrics       = new Metrics({
         useDataDog: true
@@ -133,7 +137,7 @@ webRouter.get('/*', function(req, res) {
         //var template = 'blog.html';
         var tpl = swig.compileFile(template);
 
-        var article = require(appPath + 'lib/article')({
+        var article = new Article({
             logger: logger,
             requestUrl: requestUrl,
             photoPath: photoPath,
@@ -149,7 +153,7 @@ webRouter.get('/*', function(req, res) {
                 'simpleblog.lib.article.' + funcName);
         }
 
-        var category = require(appPath + 'lib/category')({
+        var category = new Category({
             logger: logger,
             config: webRouter.config
         });

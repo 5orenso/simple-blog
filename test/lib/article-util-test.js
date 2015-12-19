@@ -4,7 +4,8 @@ var buster       = require('buster'),
     assert       = buster.assert,
     refute       = buster.refute,
     strftime     = require('strftime'),
-    articleUtil = require('../../lib/article-util')({
+    ArticleUtil  = require('../../lib/article-util'),
+    articleUtil  = new ArticleUtil({
         logger: {
             log: function () { },
             err: function () { }

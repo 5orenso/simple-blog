@@ -5,7 +5,8 @@ var buster = require('buster'),
     refute = buster.refute,
     when   = require('when'),
     articlePath = '/simple-blog/',
-    category = require('../../lib/category')({
+    Category = require('../../lib/category'),
+    category = new Category({
         logger: {
             log: function () {
             },
@@ -23,7 +24,8 @@ var buster = require('buster'),
             }
         }
     }),
-    article = require('../../lib/article')({
+    Article = require('../../lib/article'),
+    article = new Article({
         logger: {
             log: function () {
             },
@@ -45,7 +47,7 @@ var buster = require('buster'),
             }
         }
     }),
-    articleNotFound = require('../../lib/article')({
+    articleNotFound = new Article({
         logger: {
             log: function () {
             },
@@ -64,7 +66,7 @@ var buster = require('buster'),
             }
         }
     }),
-    articleWipNotFound = require('../../lib/article')({
+    articleWipNotFound = new Article({
         logger: {
             log: function () {
             },
@@ -83,7 +85,7 @@ var buster = require('buster'),
             }
         }
     }),
-    articleWip = require('../../lib/article')({
+    articleWip = new Article({
         logger: {
             log: function () {
             },
@@ -225,7 +227,7 @@ buster.testCase('lib/article', {
     setUp: function () {
     },
     tearDown: function () {
-        delete require.cache[require.resolve('../../lib/article')];
+        //delete require.cache[require.resolve('../../lib/article')];
     },
     'Test article:': {
         'catlist test': function (done) {
@@ -275,7 +277,7 @@ buster.testCase('lib/article', {
                     refute(article.aside8);
                     refute(article.aside9);
 
-                    delete require.cache[require.resolve('../../lib/article')];
+                    //delete require.cache[require.resolve('../../lib/article')];
                     done();
                 });
 
@@ -288,7 +290,7 @@ buster.testCase('lib/article', {
             }))
                 .done(function (article) {
                     refute(article.title);
-                    delete require.cache[require.resolve('../../lib/article')];
+                    //delete require.cache[require.resolve('../../lib/article')];
                     done();
                 }, function (response) {
                     assert.equals(response.statusCode, 404);
@@ -312,7 +314,7 @@ buster.testCase('lib/article', {
                     assert.equals(article.title, artWip.title);
                     assert.equals(article.tag, artWip.tag);
                     assert.match(article.body, artWip.body);
-                    delete require.cache[require.resolve('../../lib/article')];
+                    //delete require.cache[require.resolve('../../lib/article')];
                     done();
                 }, function (err) {
                     console.log(err);
@@ -328,7 +330,7 @@ buster.testCase('lib/article', {
                 .done(function (article) {
                     assert(false);
                     console.log(article.length);
-                    delete require.cache[require.resolve('../../lib/article')];
+                    //delete require.cache[require.resolve('../../lib/article')];
                     done();
                 }, function (response) {
                     assert.equals(response.statusCode, 404);
@@ -355,7 +357,7 @@ buster.testCase('lib/article', {
                         assert.equals(urls[1].priority[0], '0.5');
                         done();
                     });
-                    delete require.cache[require.resolve('../../lib/article')];
+                    //delete require.cache[require.resolve('../../lib/article')];
                 }, function (err) {
                     console.log(err);
                 });

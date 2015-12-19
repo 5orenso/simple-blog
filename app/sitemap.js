@@ -9,7 +9,8 @@
 var when = require('when'),
     commander = require('commander'),
     appPath = __dirname + '/../',
-    logger = require(appPath + 'lib/logger')({});
+    logger = require(appPath + 'lib/logger')({}),
+    LocalUtil = require(appPath + 'lib/local-util');
 
 commander
     .option('-c, --config <file>', 'configuration file path', './config/config.js')
@@ -39,7 +40,7 @@ var search = require(appPath + 'lib/search')({
     config: config
 });
 
-var lu    = require(appPath + 'lib/local-util')({config: config});
+var lu    = new LocalUtil({config: config});
 lu.timersReset();
 lu.timer('routes/sitemap->request');
 

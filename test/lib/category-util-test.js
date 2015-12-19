@@ -3,7 +3,8 @@
 var buster       = require('buster'),
     assert       = buster.assert,
     refute       = buster.refute,
-    categoryUtil = require('../../lib/category-util')({
+    CategoryUtil = require('../../lib/category-util'),
+    categoryUtil = new CategoryUtil({
         logger: {
             log: function () { },
             err: function () { }

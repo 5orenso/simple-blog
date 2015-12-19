@@ -12,12 +12,16 @@ var express       = require('express'),
     fs            = require('fs'),
     swig          = require('swig'),
     path          = require('path'),
-    appPath      = __dirname + '/../../',
-    templatePath = path.normalize(appPath + 'template/current/'),
-    articleUtil  = require(appPath + 'lib/article-util')(),
-    categoryUtil = require(appPath + 'lib/category-util')(),
+    appPath       = __dirname + '/../../',
+    templatePath  = path.normalize(appPath + 'template/current/'),
+    Category      = require(appPath + 'lib/category'),
+    ArticleUtil   = require(appPath + 'lib/article-util'),
+    articleUtil   = new ArticleUtil(),
+    CategoryUtil  = require(appPath + 'lib/category-util'),
+    categoryUtil  = new CategoryUtil(),
     logger        = require(appPath + 'lib/logger')(),
-    localUtil    = require(appPath + 'lib/local-util')(),
+    LocalUtil     = require(appPath + 'lib/local-util'),
+    localUtil     = new LocalUtil(),
     Metrics       = require(appPath + 'lib/metrics'),
     metrics       = new Metrics({
         useDataDog: true
@@ -48,7 +52,7 @@ searchRouter.use('/*', localUtil.setCacheHeaders);
 
 // test route to make sure everything is working (accessed at GET http://localhost:8080/search)
 searchRouter.get('/*', function(req, res) {
-    var lu    = require(appPath + 'lib/local-util')({config: searchRouter.config});
+    var lu    = new LocalUtil({config: searchRouter.config});
     var requestUrl = articleUtil.getUrlFromRequest(req);
     //console.log('search for:', (_.isEmpty(req.query.q) ? requestUrl : req.query.q));
     // Check for cached file
@@ -64,7 +68,7 @@ searchRouter.get('/*', function(req, res) {
     //var template = 'blog.html';
     var tpl = swig.compileFile(template);
 
-    var category = require(appPath + 'lib/category')({
+    var category = new Category({
         logger: logger,
         config: searchRouter.config
     });

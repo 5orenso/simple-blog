@@ -12,12 +12,16 @@ var express       = require('express'),
     swig          = require('swig'),
     fs            = require('fs'),
     path          = require('path'),
-    appPath      = __dirname + '/../../',
-    templatePath = path.normalize(appPath + 'template/current/'),
-    photoPath    = path.normalize(appPath + 'content/images/'),
+    appPath       = __dirname + '/../../',
+    templatePath  = path.normalize(appPath + 'template/current/'),
+    photoPath     = path.normalize(appPath + 'content/images/'),
     logger        = require(appPath + 'lib/logger')(),
-    articleUtil  = require(appPath + 'lib/article-util')(),
-    localUtil    = require(appPath + 'lib/local-util')(),
+    Category      = require(appPath + 'lib/category'),
+    Article       = require(appPath + 'lib/article'),
+    ArticleUtil   = require(appPath + 'lib/article-util'),
+    articleUtil   = new ArticleUtil(),
+    LocalUtil     = require(appPath + 'lib/local-util'),
+    localUtil     = new LocalUtil(),
     Metrics       = require(appPath + 'lib/metrics'),
     metrics       = new Metrics({
         useDataDog: true
@@ -77,14 +81,14 @@ rssRouter.get('/*', function(req, res) {
     var template = templatePath + (file === 'index' ? 'rss.xml' : 'rss.xml');
     var tpl = swig.compileFile(template);
 
-    var article = require(appPath + 'lib/article')({
+    var article = new Article({
         logger: logger,
         requestUrl: requestUrl,
         photoPath: photoPath,
         config: rssRouter.config
     });
 
-    var category = require(appPath + 'lib/category')({
+    var category = new Category({
         logger: logger,
         config: rssRouter.config
     });

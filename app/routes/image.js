@@ -5,25 +5,26 @@
  * Licensed under the MIT license.
  */
 'use strict';
-var express          = require('express'),
-    morgan           = require('morgan'),
-    when             = require('when'),
-    _                = require('underscore'),
-    fs               = require('fs'),
-    path             = require('path'),
-    imagemagick      = require('imagemagick'),
-    mkdirp           = require('mkdirp'),
-    url              = require('url'),
-    wsd              = require('websequencediagrams'),
-    crypto           = require('crypto'),
-    appPath         = __dirname + '/../../',
-    photoPath       = path.normalize(appPath + 'content/images/'),
+var express        = require('express'),
+    morgan         = require('morgan'),
+    when           = require('when'),
+    _              = require('underscore'),
+    fs             = require('fs'),
+    path           = require('path'),
+    imagemagick    = require('imagemagick'),
+    mkdirp         = require('mkdirp'),
+    url            = require('url'),
+    wsd            = require('websequencediagrams'),
+    crypto         = require('crypto'),
+    appPath        = __dirname + '/../../',
+    photoPath      = path.normalize(appPath + 'content/images/'),
     photoCachePath = path.normalize(appPath + 'content/images_cached/'),
-    wsdPath         = '/tmp/',
-    logger           = require(appPath + 'lib/logger')(),
-    localUtil       = require(appPath + 'lib/local-util')(),
-    Metrics       = require(appPath + 'lib/metrics'),
-    metrics       = new Metrics({
+    wsdPath        = '/tmp/',
+    logger         = require(appPath + 'lib/logger')(),
+    LocalUtil      = require(appPath + 'lib/local-util'),
+    localUtil      = new LocalUtil(),
+    Metrics        = require(appPath + 'lib/metrics'),
+    metrics        = new Metrics({
         useDataDog: true
     });
 

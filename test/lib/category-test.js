@@ -4,7 +4,8 @@ var buster       = require('buster'),
     assert       = buster.assert,
     refute       = buster.refute,
     when         = require('when'),
-    category     = require('../../lib/category')({
+    Category     = require('../../lib/category'),
+    category     = new Category({
         logger: {
             log: function () { },
             err: function () { }

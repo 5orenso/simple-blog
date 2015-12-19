@@ -1,11 +1,31 @@
 'use strict';
 
-var buster       = require('buster'),
-    assert       = buster.assert,
-    refute       = buster.refute,
-    errorMsg    = 'Error sending UDP...',
-    errorMsgThrow = 'PANG!',
-    localUtil   = require('../../lib/local-util')({
+var buster        = require('buster'),
+    assert        = buster.assert,
+    refute        = buster.refute,
+    sinon         = require('sinon'),
+    dgram         = require('dgram'),
+    errorMsg      = 'Error sending UDP...',
+    errorMsgThrow = 'PANG!';
+
+delete require.cache[require.resolve('../../lib/local-util')];
+sinon.stub(dgram, 'createSocket', function () {
+    return {
+        send: function (message, something, messageLength, udpPort, udpServer, callback) {
+            var messageText = message.toString('utf8');
+            if (messageText.match(/error/)) {
+                callback(errorMsg, null);
+            } else if (messageText.match(/explode/)) {
+                throw new Error(errorMsgThrow);
+            } else {
+                callback(null, 140);
+            }
+        }
+    };
+});
+
+var LocalUtil     = require('../../lib/local-util'),
+    localUtil     = new LocalUtil({
         logger: {
             log: function () { },
             err: function () { }
@@ -15,19 +35,6 @@ var buster       = require('buster'),
                 prefix: 'unittest',
                 host: 'localhost',
                 port: 9999
-            }
-        }
-    }, {
-        udpClient: {
-            send: function (message, something, messageLength, udpPort, udpServer, callback) {
-                var messageText = message.toString('utf8');
-                if (messageText.match(/error/)) {
-                    callback(errorMsg, null);
-                } else if (messageText.match(/explode/)) {
-                    throw new Error(errorMsgThrow);
-                } else {
-                    callback(null, 140);
-                }
             }
         }
     });

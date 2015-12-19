@@ -14,7 +14,8 @@ var _ = require('underscore'),
     logger = require(appPath + 'lib/logger')({
         workerId: 1 //cluster.worker.id
     }),
-    localUtil = require(appPath + 'lib/local-util')();
+    LocalUtil     = require(appPath + 'lib/local-util'),
+    localUtil     = new LocalUtil();
 
 var app = express();
 

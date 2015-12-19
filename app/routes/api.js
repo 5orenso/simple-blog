@@ -5,12 +5,13 @@
  * Licensed under the MIT license.
  */
 'use strict';
-var express    = require('express'),
-    bodyParser = require('body-parser'),
-    _          = require('underscore'),
-    appPath   = __dirname + '/../../',
-    logger     = require(appPath + 'lib/logger')(),
-    localUtil = require(appPath + 'lib/local-util')(),
+var express       = require('express'),
+    bodyParser    = require('body-parser'),
+    _             = require('underscore'),
+    appPath       = __dirname + '/../../',
+    logger        = require(appPath + 'lib/logger')(),
+    LocalUtil     = require(appPath + 'lib/local-util'),
+    localUtil     = new LocalUtil(),
     Metrics       = require(appPath + 'lib/metrics'),
     metrics       = new Metrics({
         useDataDog: true
