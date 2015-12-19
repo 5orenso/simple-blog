@@ -3,7 +3,9 @@
 var buster       = require('buster'),
     assert       = buster.assert,
     refute       = buster.refute,
-    when         = require('when');
+    when         = require('when'),
+    pg           = require('pg'),
+    sinon        = require('sinon');
 
 var tableColumns = [
     { columnName: 'age', dataType: 'integer', characterMaximumLength: null },
@@ -118,15 +120,40 @@ var catlistResult = [
         baseHref: '/simple-blog/' }
 ];
 
-var pg = null;
+var postgres = null;
 
+delete require.cache[require.resolve('../../../lib/adapter/postgresql')];
+sinon.stub(pg, 'connect', function (opts, callback) {
+    callback(undefined, {
+        query: function (q, values, qCallback) {
+            if (!qCallback) {
+                qCallback = values;
+            }
+            if (q.match(/-does-not-exist/)) {
+                qCallback('Error: doh!');
+            } else if (q.match(/LIMIT 1/i)) {
+                qCallback(null, {
+                    rows: [article]
+                });
+            } else if (q.match(/LIMIT \d+/i)) {
+                qCallback(null, {
+                    rows: artlist
+                });
+            } else {
+                qCallback(null, {
+                    rows: tableColumns
+                });
+            }
+        }
+    }, function done() {
+
+    });
+});
+
+//var pgSpy;
 buster.testCase('PostgreSQL', {
     setUp: function() {
-        var that = this;
-//        this.clock = this.useFakeTimers();
-        this.pgQuerySpy = this.spy();
-
-        pg = require('../../../lib/adapter/postgresql')({
+        postgres = require('../../../lib/adapter/postgresql')({
             logger: {
                 log: function () { },
                 err: function () { }
@@ -148,40 +175,8 @@ buster.testCase('PostgreSQL', {
                     }
                 }
             }
-        }, {
-            pg: {
-                connect: function (opts, callback) {
-                    callback(undefined, {
-                        query: function (q, values, qCallback) {
-                            if (!qCallback) {
-                                qCallback = values;
-                            }
-                            that.pgQuerySpy(q);
-//                            console.log(q);
-
-                            if (q.match(/-does-not-exist/)) {
-                                qCallback('Error: doh!');
-                            } else if (q.match(/LIMIT 1/i)) {
-                                qCallback(null, {
-                                    rows: [article]
-                                });
-                            } else if (q.match(/LIMIT \d+/i)) {
-                                qCallback(null, {
-                                    rows: artlist
-                                });
-                            } else {
-                                qCallback(null, {
-                                    rows: tableColumns
-                                });
-                            }
-                        }
-                    }, function done() {
-
-                    });
-                }
-            }
         });
-
+        //pgSpy = sinon.spy(postgres, 'query');
     },
 
     tearDown: function () {
@@ -190,18 +185,16 @@ buster.testCase('PostgreSQL', {
     },
 
     'get column names getColumnNames': function (done) {
-        var that = this;
-        when(pg.getColumnNames('spid_event'))
+        when(postgres.getColumnNames('spid_event'))
             .then(function (result) {
                 assert.equals(result, tableColumns);
-                assert(that.pgQuerySpy.calledOnce);
+                //assert(pgSpy.calledOnce);
                 done();
             });
     },
 
     'load existing file': function (done) {
-        var that = this;
-        when(pg.load({
+        when(postgres.load({
             requestUrl: '/simple-blog/index'
         }))
             .done(function (obj) {
@@ -211,7 +204,7 @@ buster.testCase('PostgreSQL', {
                 assert.equals(obj.body, article.body);
                 assert.equals(obj.file, article.file);
                 assert.equals(obj.baseHref, article.baseHref);
-                assert(that.pgQuerySpy.calledOnce);
+                //assert(pgSpy.calledOnce);
                 done();
             }, function (err) {
                 console.log(err);
@@ -220,7 +213,7 @@ buster.testCase('PostgreSQL', {
     },
 
     'load non existing file': function (done) {
-        when(pg.load({
+        when(postgres.load({
             requestUrl: '/simple-blog/index-does-not-exist'
         }))
             .done(function (obj) {
@@ -236,7 +229,7 @@ buster.testCase('PostgreSQL', {
     },
 
     'list existing articles': function (done) {
-        when(pg.listArticles('/simple-blog/'))
+        when(postgres.listArticles('/simple-blog/'))
             .done(function (obj) {
 //                console.log('listArticles:', obj);
                 assert.equals(obj[0].title, artlist[0].title);
@@ -252,7 +245,7 @@ buster.testCase('PostgreSQL', {
 
     'list non existing articles w/special chars': function (done) {
         // jscs:disable
-        when(pg.listArticles('/simple-blog-does-not-exist/\'"' + "\n\b\t\0\r\x1a"))
+        when(postgres.listArticles('/simple-blog-does-not-exist/\'"' + "\n\b\t\0\r\x1a"))
             // jscs:enable
             .done(function (obj) {
 //                console.log('listArticles1:', obj);
@@ -265,7 +258,7 @@ buster.testCase('PostgreSQL', {
     },
 
     'list non existing articles': function (done) {
-        when(pg.listArticles('/simple-blog-does-not-exist/'))
+        when(postgres.listArticles('/simple-blog-does-not-exist/'))
             .done(function (obj) {
 //                console.log('listArticles1:', obj);
                 assert.equals(obj, []);
@@ -277,7 +270,7 @@ buster.testCase('PostgreSQL', {
     },
 
     'list existing images': function (done) {
-        when(pg.listImages(simpleBlogIndex))
+        when(postgres.listImages(simpleBlogIndex))
             .done(function (obj) {
                 // TODO: should be fixed.
                 assert.equals(obj, simpleBlogIndex);
@@ -291,7 +284,7 @@ buster.testCase('PostgreSQL', {
     },
 
     '// list non existing images': function (done) {
-        when(pg.listImages({}))
+        when(postgres.listImages({}))
             .done(function (article) {
                 refute(article.imageList);
                 refute(article.img);
@@ -303,7 +296,7 @@ buster.testCase('PostgreSQL', {
     },
 
     'list categories': function (done) {
-        when(pg.listCategories('/'))
+        when(postgres.listCategories('/'))
             .done(function (catlist) {
 //                console.log(catlist);
                 assert.equals(catlist[0].name, catlistResult[0].name);
@@ -316,7 +309,7 @@ buster.testCase('PostgreSQL', {
     },
 
     '// list categories wo/input': function (done) {
-        when(pg.listCategories())
+        when(postgres.listCategories())
             .done(function (catlist) {
                 assert.equals(catlist, []);
                 done();

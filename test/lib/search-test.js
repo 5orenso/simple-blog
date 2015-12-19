@@ -3,16 +3,9 @@
 var buster = require('buster'),
     assert = buster.assert,
     when   = require('when'),
-    config = require(__dirname + '/../../config/config-integration.js'),
-    search = require(__dirname + '/../../lib/search')({
-        logger: {
-            log: function () {
-            },
-            err: function () {
-            }
-        },
-        config: config
-    }, config.adapter.mockServices);
+    sinon  = require('sinon'),
+    elasticsearch = require('elasticsearch'),
+    config = require(__dirname + '/../../config/config-integration.js');
 
 var article = {
     tagValues: { toc: '', fact: '', artlist: '' },
@@ -24,6 +17,89 @@ var article = {
     filename: 'my-path-to-the-files/content/articles/simple-blog/simple-blog.md',
     baseHref: '/simple-blog/'
 };
+
+delete require.cache[require.resolve(__dirname + '/../../lib/search')];
+sinon.stub(elasticsearch, 'Client', function () {
+    // jscs:disable
+    return {
+        ping: function (opt, callback) {
+            callback(null, {status: 'ok'});
+        },
+        search: function (query) {
+            return when.promise(function (resolve, reject) {
+                //console.log('elasticsearch for: ', query.body.query.match._all);
+                //console.log('elasticsearch for: ', query.body.query);
+                if (query.body.query.multi_match.query === 'one-hit') {
+                    //console.log('elasticsearch : ONE HIT');
+                    resolve({
+                        took: 4,
+                        hits: {
+                            total: 1,
+                            max_score: 0.83,
+                            hits: [{
+                                _source: article
+                            }]
+                        },
+                        query: query
+                    });
+                } else if (query.body.query.multi_match.query === 'no-hit') {
+                    //console.log('elasticsearch : NO HIT');
+                    resolve({
+                        took: 4,
+                        hits: {
+                            total: 0,
+                            max_score: 0.83,
+                            hits: []
+                        },
+                        query: query
+                    });
+                } else if (query.body.query.multi_match.query === 'two-hit') {
+                    resolve({
+                        took: 4,
+                        hits: {
+                            total: 2,
+                            max_score: 0.83,
+                            hits: [{
+                                _source: article
+                            }, {
+                                _source: article
+                            }]
+                        },
+                        query: query
+                    });
+                } else if (query.body.query.multi_match.query === 'blow-up') {
+                    reject('search inside elasticsearch mock failed, because you asked it to do so :)');
+                } else {
+                    resolve({
+                        took: 4,
+                        hits: {
+                            total: 1,
+                            max_score: 0.83,
+                            hits: [{
+                                _source: article
+                            }]
+                        },
+                        query: query
+                    });
+                }
+            });
+        },
+        index: function (obj, callback) {
+            callback(null, {status: 'ok'});
+        }
+    };
+    // jscs:enable
+});
+
+var search = require(__dirname + '/../../lib/search')({
+        logger: {
+            log: function () {
+            },
+            err: function () {
+            }
+        },
+        config: config
+    });
 
 buster.testCase('lib/search', {
     setUp: function () {

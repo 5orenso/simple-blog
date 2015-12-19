@@ -76,7 +76,7 @@ searchRouter.get('/*', function(req, res) {
     var search = require(appPath + 'lib/search')({
         logger: logger,
         config: searchRouter.config
-    }, searchRouter.config.adapter.mockServices);
+    });
 
     // Add timer hooks to the functions you want to measure.
     var funcName;

@@ -3,17 +3,19 @@
 var buster = require('buster'),
     assert = buster.assert,
     when   = require('when'),
-    logger = require('../../lib/logger')({}, {
-    logger: {
-        log: function (type, msg, meta) {
-            return {
-                type: type,
-                msg: msg,
-                meta: meta
-            };
-        }
-    }
+    winston  = require('winston'),
+    sinon  = require('sinon');
+
+delete require.cache[require.resolve(__dirname + '/../../lib/search')];
+sinon.stub(winston, 'log', function (type, msg, meta) {
+    return {
+        type: type,
+        msg: msg,
+        meta: meta
+    };
 });
+
+var logger = require('../../lib/logger')();
 
 var log = {
     type: 'info',

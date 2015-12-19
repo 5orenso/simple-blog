@@ -2,8 +2,7 @@
 
 var buster       = require('buster'),
     assert       = buster.assert,
-    when         = require('when'),
-    config       = require(__dirname + '/../../../config/config-integration.js');
+    when         = require('when');
 
 var article = {
     tagValues: { toc: '', fact: '', artlist: '' },
@@ -35,8 +34,6 @@ buster.testCase('Elasticsearch', {
                     }
                 }
             }
-        }, {
-            elasticsearch: config.adapter.mockServices.elasticsearch.elasticsearch
         });
 
     },
