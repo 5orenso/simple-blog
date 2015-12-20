@@ -6,16 +6,17 @@
  */
 'use strict';
 
-var _ = require('underscore'),
-    express = require('express'),
+var _          = require('underscore'),
+    express    = require('express'),
     bodyParser = require('body-parser'),
-    commander = require('commander'),
-    appPath = __dirname + '/../',
-    logger = require(appPath + 'lib/logger')({
+    commander  = require('commander'),
+    appPath    = __dirname + '/../',
+    Logger     = require(appPath + 'lib/logger'),
+    logger     = new Logger({
         workerId: 1 //cluster.worker.id
     }),
-    LocalUtil     = require(appPath + 'lib/local-util'),
-    localUtil     = new LocalUtil();
+    LocalUtil  = require(appPath + 'lib/local-util'),
+    localUtil  = new LocalUtil();
 
 var app = express();
 

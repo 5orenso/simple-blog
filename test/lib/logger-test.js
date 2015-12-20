@@ -6,7 +6,7 @@ var buster = require('buster'),
     winston  = require('winston'),
     sinon  = require('sinon');
 
-delete require.cache[require.resolve(__dirname + '/../../lib/search')];
+//delete require.cache[require.resolve(__dirname + '/../../lib/logger')];
 sinon.stub(winston, 'log', function (type, msg, meta) {
     return {
         type: type,
@@ -15,7 +15,8 @@ sinon.stub(winston, 'log', function (type, msg, meta) {
     };
 });
 
-var logger = require('../../lib/logger')();
+var Logger = require('../../lib/logger'),
+    logger = new Logger();
 
 var log = {
     type: 'info',

@@ -19,13 +19,15 @@ var express       = require('express'),
     articleUtil   = new ArticleUtil(),
     CategoryUtil  = require(appPath + 'lib/category-util'),
     categoryUtil  = new CategoryUtil(),
-    logger        = require(appPath + 'lib/logger')(),
+    Logger        = require(appPath + 'lib/logger'),
+    logger        = new Logger(),
     LocalUtil     = require(appPath + 'lib/local-util'),
     localUtil     = new LocalUtil(),
     Metrics       = require(appPath + 'lib/metrics'),
     metrics       = new Metrics({
         useDataDog: true
-    });
+    }),
+    Search        = require(appPath + 'lib/search');
 
 var searchRouter = express.Router();
 searchRouter.setConfig = function (conf, opt) {
@@ -73,7 +75,7 @@ searchRouter.get('/*', function(req, res) {
         config: searchRouter.config
     });
 
-    var search = require(appPath + 'lib/search')({
+    var search = new Search({
         logger: logger,
         config: searchRouter.config
     });

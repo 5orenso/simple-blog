@@ -91,7 +91,8 @@ sinon.stub(elasticsearch, 'Client', function () {
     // jscs:enable
 });
 
-var search = require(__dirname + '/../../lib/search')({
+var Search = require(__dirname + '/../../lib/search');
+var search = new Search({
         logger: {
             log: function () {
             },

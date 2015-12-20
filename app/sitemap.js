@@ -6,10 +6,11 @@
  */
 'use strict';
 
-var when = require('when'),
+var when      = require('when'),
     commander = require('commander'),
-    appPath = __dirname + '/../',
-    logger = require(appPath + 'lib/logger')({}),
+    appPath   = __dirname + '/../',
+    Logger    = require(appPath + 'lib/logger'),
+    logger    = new Logger({}),
     LocalUtil = require(appPath + 'lib/local-util');
 
 commander
@@ -20,7 +21,8 @@ var config = require(commander.config);
 var articlePath = '/'; //articleUtil.getArticlePathRelative('');
 
 // Load from function
-var article = require(appPath + 'lib/article')({
+var Article = require(appPath + 'lib/article');
+var article = new Article({
     logger: logger,
     //filename: '',
     //articlePath: articlePath,
@@ -30,12 +32,14 @@ var article = require(appPath + 'lib/article')({
     config: config
 });
 
-var category = require(appPath + 'lib/category')({
+var Category = require(appPath + 'lib/category');
+var category = new Category({
     logger: logger,
     config: config
 });
 
-var search = require(appPath + 'lib/search')({
+var Search = require(appPath + 'lib/search');
+var search = new Search({
     logger: logger,
     config: config
 });

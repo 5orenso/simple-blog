@@ -8,7 +8,8 @@
 var express       = require('express'),
     _             = require('underscore'),
     appPath      = __dirname + '/../../',
-    logger        = require(appPath + 'lib/logger')();
+    Logger        = require(appPath + 'lib/logger'),
+    logger        = new Logger();
 
 var stats, activeConn, timerWeb, timerApi, timerImage, timer, gauge;
 var statsRouter = express.Router();
