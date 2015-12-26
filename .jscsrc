@@ -90,10 +90,10 @@
   "disallowSpaceAfterObjectKeys": true,
   "disallowQuotedKeysInObjects": "allButReserved",
 
-  "validateJSDoc": {
-    "checkParamNames": true,
-    "requireParamTypes": true
-  },
+//  "validateJSDoc": {
+//    "checkParamNames": true,
+//    "requireParamTypes": true
+//  },
 
   "maximumLineLength": {
     "value": 120,
