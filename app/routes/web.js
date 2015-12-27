@@ -20,7 +20,9 @@ var express       = require('express'),
     Logger        = require(appPath + 'lib/logger'),
     logger        = new Logger(),
     Category      = require(appPath + 'lib/category'),
+    category,
     Article       = require(appPath + 'lib/article'),
+    article,
     ArticleUtil   = require(appPath + 'lib/article-util'),
     articleUtil   = new ArticleUtil(),
     LocalUtil     = require(appPath + 'lib/local-util'),
@@ -51,6 +53,31 @@ webRouter.setConfig = function (conf, opt) {
                 logger.set('log', conf.log);
             }
             sitemap = 'sitemap-' + conf.blog.domain + '.xml';
+        }
+        article = new Article({
+            logger: logger,
+            photoPath: photoPath,
+            config: conf
+        });
+        // Add timer hooks to the functions you want to measure.
+        var funcName;
+        var articleFunctionsToTime = ['load', 'list', 'sitemap'];
+        for (var k = 0; k <  articleFunctionsToTime.length; k++) {
+            funcName = articleFunctionsToTime[k];
+            article[funcName] = metrics.hook(article[funcName],
+                'simpleblog.article.' + funcName);
+        }
+        category = new Category({
+            logger: logger,
+            config: conf
+        });
+
+        // Add timer hooks to the functions you want to measure.
+        var categoryFunctionsToTime = ['list'];
+        for (var j = 0; j <  categoryFunctionsToTime.length; j++) {
+            funcName = categoryFunctionsToTime[j];
+            category[funcName] = metrics.hook(category[funcName],
+                'simpleblog.category.' + funcName);
         }
     }
 };
@@ -92,7 +119,7 @@ webRouter.get('/photos/*', function (req, res) {
 
 // Main route for blog articles.
 webRouter.use('/*', localUtil.setNoCacheHeaders);
-webRouter.get('/*', function(req, res) {
+webRouter.get('/*', function handleGetRequest(req, res) {
     // Resolve filename
     var requestUrl = articleUtil.getUrlFromRequest(req);
     var inputQuery = req.query;
@@ -138,38 +165,10 @@ webRouter.get('/*', function(req, res) {
         //var template = 'blog.html';
         var tpl = swig.compileFile(template);
 
-        var article = new Article({
-            logger: logger,
-            requestUrl: requestUrl,
-            photoPath: photoPath,
-            config: webRouter.config
-        });
-
-        // Add timer hooks to the functions you want to measure.
-        var funcName;
-        var articleFunctionsToTime = ['load', 'list', 'sitemap'];
-        for (var k = 0; k <  articleFunctionsToTime.length; k++) {
-            funcName = articleFunctionsToTime[k];
-            article[funcName] = metrics.hook(article[funcName],
-                'simpleblog.lib.article.' + funcName);
-        }
-
-        var category = new Category({
-            logger: logger,
-            config: webRouter.config
-        });
-
-        // Add timer hooks to the functions you want to measure.
-        var categoryFunctionsToTime = ['list'];
-        for (var j = 0; j <  categoryFunctionsToTime.length; j++) {
-            funcName = categoryFunctionsToTime[j];
-            category[funcName] = metrics.hook(category[funcName],
-                'simpleblog.lib.category.' + funcName);
-        }
-
         when.all([category.list('/'), article.list(articlePath)])
             .then(function (contentLists) {
                 return article.load({
+                    requestUrl: requestUrl,
                     catlist: contentLists[0],
                     artlist: contentLists[1]
                 });

@@ -15,6 +15,7 @@ var express       = require('express'),
     appPath       = __dirname + '/../../',
     templatePath  = path.normalize(appPath + 'template/current/'),
     Category      = require(appPath + 'lib/category'),
+    category,
     ArticleUtil   = require(appPath + 'lib/article-util'),
     articleUtil   = new ArticleUtil(),
     CategoryUtil  = require(appPath + 'lib/category-util'),
@@ -27,7 +28,8 @@ var express       = require('express'),
     metrics       = new Metrics({
         useDataDog: true
     }),
-    Search        = require(appPath + 'lib/search');
+    Search        = require(appPath + 'lib/search'),
+    search;
 
 var searchRouter = express.Router();
 searchRouter.setConfig = function (conf, opt) {
@@ -42,6 +44,15 @@ searchRouter.setConfig = function (conf, opt) {
         if (_.isObject(conf) && _.isObject(conf.log)) {
             logger.set('log', conf.log);
         }
+        category = new Category({
+            logger: logger,
+            config: conf
+        });
+
+        search = new Search({
+            logger: logger,
+            config: conf
+        });
     }
 };
 // middleware to use for all requests
@@ -69,16 +80,6 @@ searchRouter.get('/*', function(req, res) {
     }
     //var template = 'blog.html';
     var tpl = swig.compileFile(template);
-
-    var category = new Category({
-        logger: logger,
-        config: searchRouter.config
-    });
-
-    var search = new Search({
-        logger: logger,
-        config: searchRouter.config
-    });
 
     // Add timer hooks to the functions you want to measure.
     var funcName;

@@ -32,7 +32,6 @@ var buster = require('buster'),
             err: function () {
             }
         },
-        requestUrl: '/simple-blog/index',
         domain: 'www.mydomain.no',
         protocol: 'http',
         maxArticlesInArtlist: 500,
@@ -54,7 +53,6 @@ var buster = require('buster'),
             err: function () {
             }
         },
-        requestUrl: '/simple-blog/index_not_found',
         config: {
             adapter: {
                 current: 'markdown',
@@ -73,7 +71,6 @@ var buster = require('buster'),
             err: function () {
             }
         },
-        requestUrl: '/simple-blog/_index_wip_not_found',
         config: {
             adapter: {
                 current: 'markdown',
@@ -92,7 +89,6 @@ var buster = require('buster'),
             err: function () {
             }
         },
-        requestUrl: '/simple-blog/_index_wip',
         config: {
             current: 'markdown',
             adapter: {
@@ -253,6 +249,7 @@ buster.testCase('lib/article', {
 
         'article test': function (done) {
             when(article.load({
+                requestUrl: '/simple-blog/index',
                 artlist: artlist,
                 catlist: catlist
             }))
@@ -285,6 +282,7 @@ buster.testCase('lib/article', {
 
         'article not found': function (done) {
             when(articleNotFound.load({
+                requestUrl: '/simple-blog/index_not_found',
                 artlist: artlist,
                 catlist: catlist
             }))
@@ -304,6 +302,7 @@ buster.testCase('lib/article', {
 
         'article wip': function (done) {
             when(articleWip.load({
+                requestUrl: '/simple-blog/_index_wip',
                 artlist: artlist,
                 catlist: catlist
             }))
@@ -324,6 +323,7 @@ buster.testCase('lib/article', {
 
         'article wip not found': function (done) {
             when(articleWipNotFound.load({
+                requestUrl: '/simple-blog/_index_wip_not_found',
                 artlist: artlist,
                 catlist: catlist
             }))
