@@ -1,7 +1,7 @@
 {
   "name": "simple-blog",
   "description": "A very simple blog server. Written in Node.js with support for Markdown files, images, embedded content and all other stuff you would expect from a blog.",
-  "version": "0.2.3",
+  "version": "0.3.0",
   "homepage": "https://github.com/5orenso/simple-blog",
   "repository": {
     "type": "git",
@@ -16,7 +16,7 @@
   },
   "main": "app/server.js",
   "engines": {
-    "node": ">=0.12"
+    "node": ">=4.3"
   },
   "scripts": {
     "test": "grunt",
