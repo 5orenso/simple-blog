@@ -39,48 +39,7 @@ Search capabilities is added with an ElasticSearch integration adapter.
 
 ### Prerequisite
 
-#### Install grunt
-
-    $ npm install -g grunt-cli
-
-#### Install istanbul
-
-    $ npm install istanbul -g
-
-#### Install ImageMagick
-
-    $ brew install imagemagick
-
-
-### Setup developer environment
-
-#### Clone repository
-
-    $ git clone git@github.com:5orenso/simple-blog.git
-
-#### Install dependencies
-
-    $ cd simple-blog
-    $ npm install
-
-#### Link content folders to your Dropbox folder
-    $ ln -s ~/Dropbox/Blog/articles
-    $ ln -s ~/Dropbox/Blog/images
-
-#### To watch files while developing.
-
-    $ ./run-watch.sh
-
-#### To run the server in develop mode and automatically reload when files changes.
-
-    $ ./run-server.sh
-    $ open -a Safari http://127.0.0.1:8080/
-    # Or simply point your favorite browser to http://127.0.0.1:8080/
-
-
-#### To view code coverage
-
-    $ ./report-test-cover.sh
+* [Install instructions](INSTALL.md)
 
 
 ## Howto publish content
