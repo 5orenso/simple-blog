@@ -16,7 +16,7 @@
   },
   "main": "app/server.js",
   "engines": {
-    "node": ">=0.10.36"
+    "node": ">=0.12"
   },
   "scripts": {
     "test": "grunt",
