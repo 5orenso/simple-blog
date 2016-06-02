@@ -124,5 +124,6 @@ module.exports = function (grunt) {
     grunt.registerTask('run', ['buster:unit', 'nodemon:dev']);
     grunt.registerTask('run-local', ['buster:unit', 'nodemon:dev_local']);
     grunt.registerTask('artifact', ['shell', 'coveralls:real_coverage']);
+    grunt.registerTask('report', ['coveralls:real_coverage']);
 
 };
