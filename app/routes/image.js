@@ -29,6 +29,130 @@ var express        = require('express'),
         useDataDog: true
     });
 
+let getUrlFromRequest = function getUrlFromRequest(req) {
+    var imageFilename = req.url.replace(/\//, '');
+    imageFilename = decodeURIComponent(imageFilename);
+    return url.parse(imageFilename, true);
+};
+
+let pathExists = function pathExists(absolutePath) {
+    return when.promise(function(resolve, reject) {
+        fs.exists(absolutePath, function(exists) {
+            if (!exists) {
+                mkdirp(path.dirname(absolutePath), function (err) {
+                    if (err) {
+                        reject(err);
+                    }
+                    resolve(absolutePath);
+                });
+            } else {
+                resolve(absolutePath);
+            }
+        });
+    });
+};
+
+let fileExists = function fileExists(absoluteFilename) {
+    return when.promise(function(resolve, reject) {
+        fs.exists(absoluteFilename, function(exists) {
+            if (exists) {
+                resolve(absoluteFilename);
+            } else {
+                reject('Not found: ' + absoluteFilename);
+            }
+        });
+    });
+};
+
+let resizeImage = function resizeImage(opt) {
+    return when.promise(function(resolve, reject) {
+        fs.exists(opt.imageFilenameResized, function(exists) {
+            if (!exists || opt.force) {
+                imagemagick.resize({
+                    srcPath: opt.imageFilenameAbsolute,
+                    dstPath: opt.imageFilenameResized,
+                    width: opt.width,
+                    quality: 0.9,
+                    format: 'jpg',
+                    progressive: false,
+//                    height: opt.height,
+//                    strip: true,
+//                    filter: 'Lagrange',
+                    sharpening: 0.3
+//                    customArgs: []
+
+                }, function (err) {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        resolve(opt.imageFilenameResized);
+                    }
+                });
+            } else {
+                resolve(opt.imageFilenameResized);
+            }
+        });
+    });
+};
+
+let serveImage = function serveImage(response, imageFilenameResized) {
+    return when.promise(function (resolve, reject) {
+        fs.exists(imageFilenameResized, function(exists) {
+            if (exists) {
+                fs.readFile(imageFilenameResized, 'binary', function (err, file) {
+                    if (err) {
+                        response.writeHead(500, {'Content-Type': 'text/plain'});
+                        // jscs:disable
+                        response.write(err + "\n");
+                        // jscs:enable
+                        response.end();
+                        reject(err);
+                    } else {
+                        response.writeHead(200);
+                        response.write(file, 'binary');
+                        response.end();
+                        resolve();
+                    }
+                });
+            } else {
+                reject('File does not exist: ' + imageFilenameResized);
+            }
+        });
+    });
+};
+
+// TODO: Should this route be inside this router? It's external
+// and it depends on an external resource. I think we should move
+// to a custom router somewhere else.
+let makeWebsequenceDiagram = function makeWebsequenceDiagram(wsdText, path) {
+    return when.promise(function (resolve, reject) {
+        // ["default",
+        //"earth",
+        //    "modern-blue",
+        //    "mscgen",
+        //    "omegapple",
+        //    "qsd",
+        //    "rose",
+        //    "roundgreen",
+        //    "napkin"];
+
+        wsd.diagram(wsdText, 'roundgreen', 'png', function (err, buf) {
+            if (err) {
+                reject(err);
+            } else {
+                //console.log("Received MIME type:", typ);
+                var filename = path + crypto.createHash('sha256').update(wsdText).digest('hex') + '.png';
+                fs.writeFile(filename, buf, function (err) {
+                    if (err) {
+                        reject(err);
+                    }
+                    resolve(filename);
+                });
+            }
+        });
+    });
+};
+
 var imageRouter = express.Router();
 imageRouter.setConfig = function (conf, opt) {
     imageRouter.config = conf;
@@ -74,130 +198,6 @@ imageRouter.use(function(req, res, next) {
     );
     next(); // make sure we go to the next routes and don't stop here
 });
-
-function getUrlFromRequest(req) {
-    var imageFilename = req.url.replace(/\//, '');
-    imageFilename = decodeURIComponent(imageFilename);
-    return url.parse(imageFilename, true);
-}
-
-function pathExists(absolutePath) {
-    return when.promise(function(resolve, reject) {
-        fs.exists(absolutePath, function(exists) {
-            if (!exists) {
-                mkdirp(path.dirname(absolutePath), function (err) {
-                    if (err) {
-                        reject(err);
-                    }
-                    resolve(absolutePath);
-                });
-            } else {
-                resolve(absolutePath);
-            }
-        });
-    });
-}
-
-function fileExists(absoluteFilename) {
-    return when.promise(function(resolve, reject) {
-        fs.exists(absoluteFilename, function(exists) {
-            if (exists) {
-                resolve(absoluteFilename);
-            } else {
-                reject('Not found: ' + absoluteFilename);
-            }
-        });
-    });
-}
-
-function resizeImage(opt) {
-    return when.promise(function(resolve, reject) {
-        fs.exists(opt.imageFilenameResized, function(exists) {
-            if (!exists || opt.force) {
-                imagemagick.resize({
-                    srcPath: opt.imageFilenameAbsolute,
-                    dstPath: opt.imageFilenameResized,
-                    width: opt.width,
-                    quality: 0.9,
-                    format: 'jpg',
-                    progressive: false,
-//                    height: opt.height,
-//                    strip: true,
-//                    filter: 'Lagrange',
-                    sharpening: 0.3
-//                    customArgs: []
-
-                }, function (err) {
-                    if (err) {
-                        reject(err);
-                    } else {
-                        resolve(opt.imageFilenameResized);
-                    }
-                });
-            } else {
-                resolve(opt.imageFilenameResized);
-            }
-        });
-    });
-}
-
-function serveImage(response, imageFilenameResized) {
-    return when.promise(function (resolve, reject) {
-        fs.exists(imageFilenameResized, function(exists) {
-            if (exists) {
-                fs.readFile(imageFilenameResized, 'binary', function (err, file) {
-                    if (err) {
-                        response.writeHead(500, {'Content-Type': 'text/plain'});
-                        // jscs:disable
-                        response.write(err + "\n");
-                        // jscs:enable
-                        response.end();
-                        reject(err);
-                    } else {
-                        response.writeHead(200);
-                        response.write(file, 'binary');
-                        response.end();
-                        resolve();
-                    }
-                });
-            } else {
-                reject('File does not exist: ' + imageFilenameResized);
-            }
-        });
-    });
-}
-
-// TODO: Should this route be inside this router? It's external
-// and it depends on an external resource. I think we should move
-// to a custom router somewhere else.
-function makeWebsequenceDiagram(wsdText, path) {
-    return when.promise(function (resolve, reject) {
-        // ["default",
-        //"earth",
-        //    "modern-blue",
-        //    "mscgen",
-        //    "omegapple",
-        //    "qsd",
-        //    "rose",
-        //    "roundgreen",
-        //    "napkin"];
-
-        wsd.diagram(wsdText, 'roundgreen', 'png', function (err, buf) {
-            if (err) {
-                reject(err);
-            } else {
-                //console.log("Received MIME type:", typ);
-                var filename = path + crypto.createHash('sha256').update(wsdText).digest('hex') + '.png';
-                fs.writeFile(filename, buf, function (err) {
-                    if (err) {
-                        reject(err);
-                    }
-                    resolve(filename);
-                });
-            }
-        });
-    });
-}
 
 imageRouter.use('/*', localUtil.setCacheHeaders);
 
