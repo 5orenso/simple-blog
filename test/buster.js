@@ -15,7 +15,8 @@ config['My tests'] = {
     },
     sources: [
         'lib/**/**/*.js',
-        'app/routes/**/*.js'
+        'app/routes/**/*.js',
+        '!Gruntfile.js'
     ],
     extensions: [
         require('buster-istanbul')
