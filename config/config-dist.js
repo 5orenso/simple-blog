@@ -6,7 +6,7 @@ module.exports = {
         protocol: 'http',
         domain: 'www.litt.no',
         tags: '',
-        copyright: 'Copyright 2014-2015 Sorenso, litt.no',
+        copyright: 'Copyright 2014-2016 Sorenso, litt.no',
         email: 'sorenso@gmail.com',
         searchResults: 'Blog posts related to ',
         showListOnIndex: 1,
