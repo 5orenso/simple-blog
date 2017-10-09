@@ -1,8 +1,7 @@
 language: node_js
 node_js:
-  - "4.3"
-  - "5.11"
-  - "6.2"
+  - "6.11"
+  - "8.6"
 matrix:
 #  allow_failures:
 #    - node_js: "0.11"
