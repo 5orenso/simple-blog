@@ -24,10 +24,6 @@ var express       = require('express'),
     logger        = new Logger(),
     LocalUtil     = require(appPath + 'lib/local-util'),
     localUtil     = new LocalUtil(),
-    Metrics       = require(appPath + 'lib/metrics'),
-    metrics       = new Metrics({
-        useDataDog: true
-    }),
     Search        = require(appPath + 'lib/search'),
     search;
 
@@ -81,15 +77,6 @@ searchRouter.get('/*', function(req, res) {
     //var template = 'blog.html';
     var tpl = swig.compileFile(template);
 
-    // Add timer hooks to the functions you want to measure.
-    var funcName;
-    var searchFunctionsToTime = ['query', 'index', 'indexArtlist'];
-    for (var k = 0; k <  searchFunctionsToTime.length; k++) {
-        funcName = searchFunctionsToTime[k];
-        search[funcName] = metrics.hook(search[funcName],
-            'simpleblog.lib.search.' + funcName);
-    }
-
     var searchFor = lu.safeString(_.isEmpty(req.query.q) ? requestUrl : req.query.q);
     var query = searchFor;
     var filter = {};
@@ -136,9 +123,6 @@ searchRouter.get('/*', function(req, res) {
                 article: opt.article,
                 query: inputQuery
             }));
-        })
-        .done(function () {
-            metrics.increment('simpleblog.search.' + searchFor);
         });
 
 });

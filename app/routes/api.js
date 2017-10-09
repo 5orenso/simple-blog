@@ -12,11 +12,7 @@ var express       = require('express'),
     Logger        = require(appPath + 'lib/logger'),
     logger        = new Logger(),
     LocalUtil     = require(appPath + 'lib/local-util'),
-    localUtil     = new LocalUtil(),
-    Metrics       = require(appPath + 'lib/metrics'),
-    metrics       = new Metrics({
-        useDataDog: true
-    });
+    localUtil     = new LocalUtil();
 
 var apiRouter = express.Router();
 apiRouter.setConfig = function (conf, opt) {
@@ -56,7 +52,7 @@ apiRouter.use(function(req, res, next) {
 apiRouter.get('/', function(req, res) {
     // Stop timer when response is transferred and finish.
     res.on('finish', function () {
-        metrics.increment('simpleblog.api.get');
+        // metrics.increment('simpleblog.api.get');
     });
     res.json({ message: 'hooray! welcome to our api!' });
 });
@@ -65,7 +61,7 @@ apiRouter.get('/', function(req, res) {
 apiRouter.post('/report', function(req, res) {
     // Stop timer when response is transferred and finish.
     res.on('finish', function () {
-        metrics.increment('simpleblog.api.post');
+        // metrics.increment('simpleblog.api.post');
     });
 
     // Write shit to file.

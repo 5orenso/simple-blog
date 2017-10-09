@@ -65,18 +65,6 @@ app.use('/.well-known/', express.static(config.blog.textFilesPath));
 app.use('/pho/', imageRouter);
 app.use('/search/', searchRouter);
 
-// heapdump / inspecting for memory leaks.
-//require('heapdump');
-//if (typeof gc === 'function') {
-//    console.error('Collected garbage');
-//} else {
-//    console.error('Please run the server with --expose-gc to make gc function available.');
-//}
-//webRouter.get('/gc', function(req, res) {
-//    gc();
-//    res.send('Garbage collected');
-//});
-
 app.use('/', webRouter);
 
 // Start the server ------------------------------

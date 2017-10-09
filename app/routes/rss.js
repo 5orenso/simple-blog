@@ -24,11 +24,7 @@ var express       = require('express'),
     ArticleUtil   = require(appPath + 'lib/article-util'),
     articleUtil   = new ArticleUtil(),
     LocalUtil     = require(appPath + 'lib/local-util'),
-    localUtil     = new LocalUtil(),
-    Metrics       = require(appPath + 'lib/metrics'),
-    metrics       = new Metrics({
-        useDataDog: true
-    });
+    localUtil     = new LocalUtil();
 
 swig.setFilter('markdown', articleUtil.replaceMarked);
 swig.setFilter('formatted', articleUtil.formatDate);
@@ -107,10 +103,6 @@ rssRouter.get('/*', function(req, res) {
         })
         .catch(function (opt) {
             res.status(404).send(tpl({blog: rssRouter.config.blog, error: opt.error, article: opt.article}));
-        })
-        .done(function () {
-            metrics.increment('simpleblog.rss.' + articlePath);
         });
-
 });
 module.exports = rssRouter;

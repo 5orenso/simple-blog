@@ -26,11 +26,7 @@ var express       = require('express'),
     ArticleUtil   = require(appPath + 'lib/article-util'),
     articleUtil   = new ArticleUtil(),
     LocalUtil     = require(appPath + 'lib/local-util'),
-    localUtil     = new LocalUtil(),
-    Metrics       = require(appPath + 'lib/metrics'),
-    metrics       = new Metrics({
-        useDataDog: true
-    });
+    localUtil     = new LocalUtil();
 
 swig.setFilter('markdown', articleUtil.replaceMarked);
 swig.setFilter('formatted', articleUtil.formatDate);
@@ -59,26 +55,10 @@ webRouter.setConfig = function (conf, opt) {
             photoPath: photoPath,
             config: conf
         });
-        // Add timer hooks to the functions you want to measure.
-        var funcName;
-        var articleFunctionsToTime = ['load', 'list', 'sitemap'];
-        for (var k = 0; k <  articleFunctionsToTime.length; k++) {
-            funcName = articleFunctionsToTime[k];
-            article[funcName] = metrics.hook(article[funcName],
-                'simpleblog.article.' + funcName);
-        }
         category = new Category({
             logger: logger,
             config: conf
         });
-
-        // Add timer hooks to the functions you want to measure.
-        var categoryFunctionsToTime = ['list'];
-        for (var j = 0; j <  categoryFunctionsToTime.length; j++) {
-            funcName = categoryFunctionsToTime[j];
-            category[funcName] = metrics.hook(category[funcName],
-                'simpleblog.category.' + funcName);
-        }
     }
 };
 
@@ -187,9 +167,6 @@ webRouter.get('/*', function handleGetRequest(req, res) {
                     article: opt.article,
                     query: inputQuery
                 }));
-            })
-            .done(function () {
-                metrics.increment('simpleblog.view.' + articlePath);
             });
     }
 });

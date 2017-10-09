@@ -23,11 +23,7 @@ var express        = require('express'),
     Logger         = require(appPath + 'lib/logger'),
     logger         = new Logger(),
     LocalUtil      = require(appPath + 'lib/local-util'),
-    localUtil      = new LocalUtil(),
-    Metrics        = require(appPath + 'lib/metrics'),
-    metrics        = new Metrics({
-        useDataDog: true
-    });
+    localUtil      = new LocalUtil();
 
 let getUrlFromRequest = function getUrlFromRequest(req) {
     var imageFilename = req.url.replace(/\//, '');
@@ -172,15 +168,6 @@ imageRouter.setConfig = function (conf, opt) {
             logger.set('log', conf.log);
         }
     }
-
-    // Add timer hooks to the functions you want to measure.
-    pathExists = metrics.hook(pathExists, 'simpleblog.image.pathExists');
-    fileExists = metrics.hook(fileExists, 'simpleblog.image.fileExists');
-    resizeImage = metrics.hook(resizeImage, 'simpleblog.image.resizeImage');
-    serveImage = metrics.hook(serveImage, 'simpleblog.image.serveImage');
-    makeWebsequenceDiagram = metrics.hook(makeWebsequenceDiagram, 'simpleblog.image.makeWebsequenceDiagram');
-    pathExists = metrics.hook(pathExists, 'simpleblog.image.pathExists');
-    pathExists = metrics.hook(pathExists, 'simpleblog.image.pathExists');
 };
 
 // create a write stream (in append mode)
@@ -215,7 +202,7 @@ imageRouter.get('/wsd/*', function(req, res) {
             return serveImage(res, wsdFile);
         })
         .done(function () {
-            metrics.increment('simpleblog.image.wsd');
+            // metrics.increment('simpleblog.image.wsd');
         }, function (error) {
             res.status(404).send(error);
             res.end();
@@ -256,7 +243,7 @@ imageRouter.get('/*', function(req, res) {
             return serveImage(res, imageFilenameResized);
         })
         .done(function () {
-            metrics.increment('simpleblog.image.regular');
+            // metrics.increment('simpleblog.image.regular');
         }, function (error) {
             res.status(404).send(error);
             res.end();
