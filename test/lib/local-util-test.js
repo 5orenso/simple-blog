@@ -104,33 +104,33 @@ buster.testCase('lib/local-util', {
             assert.equals(result, '');
         },
 
-        'send_udp as plain message': function (done) {
-            localUtil.sendUdp('my nice message', function (error, result) {
-                assert.equals(result, 140);
-                done();
-            });
-        },
-
-        'send_udp as an object': function (done) {
-            localUtil.sendUdp({message: 'my nice message'}, function (error, result) {
-                assert.equals(result, 140);
-                done();
-            });
-        },
-
-        'send_udp and fail': function (done) {
-            localUtil.sendUdp('error', function (error) {
-                assert.equals(error, errorMsg);
-                done();
-            });
-        },
-
-        'send_udp and explode': function (done) {
-            localUtil.sendUdp('explode', function (error) {
-                assert.match(error, errorMsgThrow);
-                done();
-            });
-        },
+        // 'send_udp as plain message': function (done) {
+        //     localUtil.sendUdp('my nice message', function (error, result) {
+        //         assert.equals(result, 140);
+        //         done();
+        //     });
+        // },
+        //
+        // 'send_udp as an object': function (done) {
+        //     localUtil.sendUdp({message: 'my nice message'}, function (error, result) {
+        //         assert.equals(result, 140);
+        //         done();
+        //     });
+        // },
+        //
+        // 'send_udp and fail': function (done) {
+        //     localUtil.sendUdp('error', function (error) {
+        //         assert.equals(error, errorMsg);
+        //         done();
+        //     });
+        // },
+        //
+        // 'send_udp and explode': function (done) {
+        //     localUtil.sendUdp('explode', function (error) {
+        //         assert.match(error, errorMsgThrow);
+        //         done();
+        //     });
+        // },
 
         'safeString test': function () {
             var result = localUtil.safeString('If you\'re crazy enough to send in special chars ' +
