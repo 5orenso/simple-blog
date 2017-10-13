@@ -39,7 +39,7 @@ module.exports = function (grunt) {
         },
         watch: {
             all: {
-                files: ['app/**/*.js', 'lib/**/*.js', 'test/**/*.js', 'test/content/**/*.md', 'config/*.js'],
+                files: ['app/**/*.js', 'lib/**/*.js', 'test/**/*.js', 'test/content/**/*.md', 'config/*.js', 'template/**/**/*.html'],
                 tasks: ['lint', 'buster:unit', 'doc']
             }
         },
@@ -51,19 +51,27 @@ module.exports = function (grunt) {
         nodemon: {
             dev: {
                 options: {
-                    nodeArgs: ['--debug'],
-                    file: 'app/server.js',
-                    args: ['-c', '../config/config-dist.js']
+                    script: 'app/server.js',
+                    ext: 'js,json,html',
+                    ignore: ['node_modules/**', 'template/current/**'],
+                    args: ['-c', '../config/config-dist.js'],
+                    env: {
+                        nodeEnv: 'development'
+                    }
                 },
-                tasks: ['buster:unit']
+                tasks: ['jshint', 'buster:unit']
             },
             dev_local: {
                 options: {
-                    nodeArgs: ['--debug'],
-                    file: 'app/server.js',
-                    args: ['-c', '../config/config-local.js']
+                    script: 'app/server.js',
+                    ext: 'js,json,html',
+                    ignore: ['node_modules/**', 'template/current/**'],
+                    args: ['-c', '../config/config-local.js'],
+                    env: {
+                        nodeEnv: 'development'
+                    }
                 },
-                tasks: ['buster:unit']
+                tasks: ['jshint', 'buster:unit']
             }
         },
         shell: {
