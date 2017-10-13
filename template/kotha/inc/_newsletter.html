@@ -1,0 +1,29 @@
+    <aside class="widget about-me-widget  text-center">
+        <div class="about-me-content">
+            <div class="about-me-img">
+                <img src="{{ blog.author.fallback.imageLarge }}" alt="" class="img-me img-circle">
+                <h2 class="text-uppercase">{{ blog.author.fallback.nameFull }}</h2>
+                <p>{{ blog.author.fallback.description }}</p>
+            </div>
+        </div>
+        <div class="social-share">
+            <ul class="list-inline">
+                {% if blog.author.fallback.facebook %}<li><a class="s-facebook" href="{{ blog.author.fallback.facebook }}"><i class="fa fa-facebook"></i></a></li>{% endif %}
+                {% if blog.author.fallback.twitter %}<li><a class="s-twitter" href="{{ blog.author.fallback.twitter }}"><i class="fa fa-twitter"></i></a></li>{% endif %}
+                {% if blog.author.fallback.google_plus %}<li><a class="s-google-plus" href="{{ blog.author.fallback.google_plus }}"><i class="fa fa-google-plus"></i></a></li>{% endif %}
+                {% if blog.author.fallback.linkedin %}<li><a class="s-linkedin" href="{{ blog.author.fallback.linkedin }}"><i class="fa fa-linkedin"></i></a></li>{% endif %}
+                {% if blog.author.fallback.instagram %}<li><a class="s-instagram" href="{{ blog.author.fallback.instagram }}"><i class="fa fa-instagram"></i></a></li>{% endif %}
+            </ul>
+        </div>
+    </aside>
+
+{% if 1 == 2 %}
+    <aside class="widget news-letter-widget">
+        <h2 class="widget-title text-uppercase text-center">Get Newsletter</h2>
+        <form action="#">
+            <input type="email" placeholder="Your email address" required>
+            <input type="submit" value="Subscribe Now"
+                   class="text-uppercase text-center btn btn-subscribe">
+        </form>
+    </aside>
+{% endif %}

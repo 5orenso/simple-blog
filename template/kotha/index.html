@@ -1,0 +1,155 @@
+{% include 'inc/_header.html' %}
+{% set limit = 5 %}
+{% set page = parseInt(query.page) %}
+{% if !page %}
+    {% set page = 1 %}
+{% endif %}
+{% set pageStart = page - 1 %}
+{% set pageStart = pageStart * limit %}
+
+<div class="kotha-default-content">
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-8">
+
+            {% for art in article.artlist %}
+                {% if loop.index >= pageStart && loop.index < limit * page %}
+    				<article class="single-blog">
+    					<div class="post-thumb">
+    						<a href="{{ art.baseHref }}{{ art.file }}"><img src="/pho/{{ art.img[0] }}?w=800" alt="{{ art.title|e }}"></a>
+    					</div>
+    					<div class="post-content">
+    						<div class="entry-header text-center text-uppercase">
+    							<a href="{{ art.baseHref }}" class="post-cat">{{ art.baseHref }}</a>
+    							<h2><a href="{{ art.baseHref }}{{ art.file }}">{{ art.title }}</a></h2>
+    						</div>
+    						<div class="entry-content">
+    							<p>{{ art.body|substring(1, 300)|markdown|cleanHtml }}...</p>
+    						</div>
+    						<div class="continue-reading text-center text-uppercase">
+    							<a href="{{ art.baseHref }}{{ art.file }}">Continue Reading</a>
+    						</div>
+    						<div class="post-meta">
+    							<ul class="pull-left list-inline author-meta">
+    								<li class="author">By <a href="#">{{ art.author }} </a></li>
+    								<li class="date"> {{ art.published }}</li>
+    							</ul>
+    							<ul class="pull-right list-inline social-share">
+                                    {% if art.facebook %}<li><a href="{{ art.facebook }}"><i class="fa fa-facebook"></i></a></li>{% endif %}
+    								{% if art.twitter %}<li><a href="{{ art.twitter }}"><i class="fa fa-twitter"></i></a></li>{% endif %}
+    								{% if art.pintrest %}<li><a href="{{ art.pintrest }}"><i class="fa fa-pinterest"></i></a></li>{% endif %}
+    								{% if art.google_plus %}<li><a href="{{ art.google_plus }}"><i class="fa fa-google-plus"></i></a></li>{% endif %}
+    								{% if art.instagram %}<li><a href="{{ art.instagram }}"><i class="fa fa-instagram"></i></a></li>{% endif %}
+    							</ul>
+    						</div>
+    					</div>
+    				</article>
+                {% endif %}
+            {% endfor %}
+
+            {% if 1 == 2 %}
+				<article class="single-blog">
+					<div class="post-thumb">
+						<div id="blog-gallery-slider" class="carousel slide" data-ride="carousel">
+							<!-- Wrapper for slides -->
+							<div class="carousel-inner">
+								<div class="item">
+									<a href=""><img src="assets/images/post-thumb-8.jpg" alt=""></a>
+								</div>
+								<div class="item">
+									<a href=""><img src="assets/images/post-thumb-9.jpg"  alt=""></a>
+								</div>
+								<div class="item active">
+									<a href=""> <img src="assets/images/post-thumb-7.jpg" alt=""></a>
+								</div>
+							</div>
+							<!-- Controls -->
+							<a class="left carousel-control" href="#blog-gallery-slider" data-slide="prev">
+								<i class="fa fa-angle-left"></i>
+							</a>
+							<a class="right carousel-control" href="#blog-gallery-slider" data-slide="next">
+								<i class="fa fa-angle-right"></i>
+							</a>
+						</div>
+					</div>
+					<div class="post-content">
+						<div class="entry-header text-center text-uppercase">
+							<a href="" class="post-cat">Slider</a>
+							<h2><a href="single-page.html">Awesome slider post</a></h2>
+						</div>
+						<div class="entry-content">
+							<p>Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Sed
+								diam nonumy eirmod
+								tempor invidunt ut labore et dolore magna aliquyam erat, Lorem ipsum dolor sit amet,
+								consetetur
+								sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna
+								aliquyam erat, sed
+								diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. sed diam
+								voluptua Lorem ipsum
+								dolor sit sadipscing elitr amet, consetetur ...</p>
+						</div>
+						<div class="continue-reading text-center text-uppercase">
+							<a href="single-page.html">Continue Reading</a>
+						</div>
+						<div class="post-meta">
+							<ul class="pull-left list-inline author-meta">
+								<li class="author">By <a href="#">Jennifer </a></li>
+								<li class="date"> On March 17, 2017</li>
+							</ul>
+							<ul class="pull-right list-inline social-share">
+								<li><a href=""><i class="fa fa-facebook"></i></a></li>
+								<li><a href=""><i class="fa fa-twitter"></i></a></li>
+								<li><a href=""><i class="fa fa-pinterest"></i></a></li>
+								<li><a href=""><i class="fa fa-google-plus"></i></a></li>
+								<li><a href=""><i class="fa fa-instagram"></i></a></li>
+							</ul>
+						</div>
+					</div>
+				</article>
+            {% endif %}
+
+				<div class="post-pagination  clearfix">
+					<ul class="pagination text-left">
+                        {% set pages = [1,2,3,4,5,6,7,8,9,10]; %}
+                        {% set total = article.artlistTotal %}
+
+                        {% for p in pages %}
+                            {% set sp = p - 1 %}
+                            {% set s = sp * limit %}
+                            {% set s = s + 1 %}
+                            {% set e = p * limit %}
+                            {% if s <= total %}
+						        <li class="{% if p == page %}active{% endif %}"><a href="{{ article.baseHref }}?page={{ p }}" title="{{ s }}-{{ e }}">{{ p }}</a></li>
+                            {% endif %}
+                        {% endfor %}
+
+                        {% set end = page * limit %}
+                        {% set nextPage = page + 1 %}
+                        {% if total > end %}
+						    <li><a href="{{ article.baseHref }}?page={{ nextPage }}"><i class="fa fa-angle-double-right"></i></a></li>
+                        {% endif %}
+					</ul>
+				</div>
+
+			</div>
+			<div class="col-sm-4">
+				<div class="kotha-sidebar">
+
+                    {% include 'inc/_newsletter.html' %}
+                    {% include 'inc/_popular_posts.html' %}
+                    {% include 'inc/_latest_posts.html' %}
+                    {% include 'inc/_instagram_feed.html' %}
+                    {% include 'inc/_advertisement.html' %}
+
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+{% if 1 == 2 %}
+<xmp>{{ blog|json(4)|raw }}</xmp>
+<xmp>{{ article|json(4)|raw }}</xmp>
+{% endif %}
+
+{% include 'inc/_footer.html' %}

@@ -1,0 +1,19 @@
+<aside class="widget latest-post-widget">
+    <h2 class="widget-title text-uppercase text-center">Latest Posts</h2>
+    <ul>
+        {% for art in article.artlistall %}
+        {% if loop.index < 10 %}
+        <li class="media">
+            <div class="media-left">
+                <a href="{{ art.baseHref }}{{ art.file }}" class="popular-img"><img src="/pho/{{ art.img[0] }}?w=300" alt="">
+                </a>
+            </div>
+            <div class="latest-post-content">
+                <h2 class="text-uppercase"><a href="{{ art.baseHref }}{{ art.file }}">{{ art.title }}</a></h2>
+                <p>{{ art.published }}</p>
+            </div>
+        </li>
+        {% endif %}
+        {% endfor %}
+    </ul>
+</aside>
