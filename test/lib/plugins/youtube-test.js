@@ -19,7 +19,7 @@ buster.testCase('lib/plugins/youtube', {
         'replacer mode=search': function () {
             var inputStr = 'See my map https://www.youtube.com/watch?v=lJNu4k20sFE';
             var result = inputStr.replace(plugin.get('regexp'), plugin.replacer);
-            var regexp = new RegExp('<div class="videoWrapper"><iframe width="560" height="349" src="https://www.youtube.com/embed/lJNu4k20sFE" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></div>');
+            var regexp = new RegExp('<div class="videoWrapper"><iframe height="500" src="https://www.youtube.com/embed/lJNu4k20sFE" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></div>');
             assert.match(result, regexp);
         }
         // jscs:enable
