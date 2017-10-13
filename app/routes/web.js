@@ -30,6 +30,8 @@ var express       = require('express'),
 
 swig.setFilter('markdown', articleUtil.replaceMarked);
 swig.setFilter('formatted', articleUtil.formatDate);
+swig.setFilter('substring', articleUtil.substring);
+swig.setFilter('cleanHtml', articleUtil.cleanHtml);
 
 var webRouter = express.Router();
 webRouter.setConfig = function (conf, opt) {
@@ -69,6 +71,8 @@ var accessLogStream = fs.createWriteStream(appPath + '/logs/web-access.log', {fl
 webRouter.use(morgan('combined', {stream: accessLogStream}));
 
 // Setup static routes
+webRouter.use('/template/', localUtil.setCacheHeaders);
+webRouter.use('/template/', express.static(appPath + 'template/'));
 webRouter.use('/js/', localUtil.setCacheHeaders);
 webRouter.use('/js/', express.static(appPath + 'template/current/js/'));
 webRouter.use('/images/', localUtil.setCacheHeaders);
@@ -126,6 +130,7 @@ webRouter.get('/*', function handleGetRequest(req, res) {
 
     if (!isRedirect) {
         // Load content based on filename
+        var articleAllPath = articleUtil.getArticlePathRelative('/');
         var articlePath = articleUtil.getArticlePathRelative(requestUrl);
 
         // Stop timer when response is transferred and finish.
@@ -145,15 +150,24 @@ webRouter.get('/*', function handleGetRequest(req, res) {
         //var template = 'blog.html';
         var tpl = swig.compileFile(template);
 
-        when.all([category.list('/'), article.list(articlePath)])
+        when.all([category.list('/'), article.list(articlePath), article.list(articleAllPath)])
             .then(function (contentLists) {
                 return article.load({
                     requestUrl: requestUrl,
                     catlist: contentLists[0],
-                    artlist: contentLists[1]
+                    artlist: contentLists[1],
+                    artlistall: contentLists[2]
                 });
             })
             .then(function (article) {
+                for (let i = 0; i < article.artlist.length; i += 1) {
+                    const art = article.artlist[i];
+                    if (article.file === art.file) {
+                        article.next = article.artlist[i - 1];
+                        article.previous = article.artlist[i + 1];
+                    }
+                }
+                article.artlistTotal = article.artlist.length;
                 res.send(tpl({
                     blog: webRouter.config.blog,
                     article: article,
