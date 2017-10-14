@@ -47,6 +47,10 @@
     position: relative;
     width: calc(100% + 80px);
 }
+.post-thumb .videoWrapper {
+    left: 0px;
+    width: 100%
+}
 
 .videoWrapper iframe {
     border: 0;

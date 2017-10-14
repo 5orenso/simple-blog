@@ -17,8 +17,37 @@
 	<link rel="stylesheet" href="assets/css/font-awesome.min.css">
 	<link rel="stylesheet" href="assets/css/slick-theme.css">
 	<link rel="stylesheet" href="assets/css/slick.css">
+{% if article.gallery %}
+    <link rel="stylesheet" href="assets/css/justifiedGallery.min.css">
+    <link rel="stylesheet" href="assets/css/prettyPhoto.css">
+{% endif %}
 	<link rel="stylesheet" href="style.css">
 	<link rel="stylesheet" href="/template/kotha/css/custom.css">
+    <!-- Verification -->
+    <meta name="google-site-verification" content="{{ blog.googleSiteVerification }}" />
+    <!-- SEO stuff -->
+    <meta name="description" content="{{ article.teaser|striptags }}" />
+    <meta name="keywords" content="{{ article.tag|striptags|join(',') }}" />
+    <script type="application/ld+json">
+        // http://schema.org/BlogPosting
+        // https://developers.google.com/structured-data/rich-snippets/articles
+        // https://developers.google.com/structured-data/testing-tool/
+        {
+          "@context": "http://schema.org",
+          "@type": "BlogPosting",
+          "author": "{{ article.author }}",
+          "headline": "{{ article.title }}",
+          "alternativeHeadline": "{{ article.teaser }}",
+          "image": [
+              {% for img in article.img %}
+                  "{{ blog.protocol }}://{{ blog.domain }}/pho/{{ img }}?w=800"
+              {% endfor %}
+          ],
+          "datePublished": "{{ article.published }}",
+          "description": "{{ article.ingress }}",
+          "articleBody": "{{ article.body }} {% for col in article.col %}{{ col }} {% endfor %}"
+        }
+    </script>
 	<!-- HTML5 shim and Respond.js IE9 support of HTML5 elements and media queries -->
 	<!--[if lt IE 9]>
 	<script src="assets/js/html5shiv.js"></script>
@@ -26,6 +55,19 @@
 	<![endif]-->
 </head>
 <body>
+
+{% if blog.googleTagManager %}
+<!-- Google Tag Manager -->
+<noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-WZPRG9"
+                  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+        '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','{{ blog.googleTagManager }}');</script>
+<!-- End Google Tag Manager -->
+{% endif %}
+
 <header class="kotha-menu marketing-menu">
 	<nav class="navbar  navbar-default">
 		<div class="container">

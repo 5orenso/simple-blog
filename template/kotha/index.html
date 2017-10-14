@@ -16,7 +16,23 @@
                 {% if loop.index >= pageStart && loop.index < limit * page %}
     				<article class="single-blog">
     					<div class="post-thumb">
-    						<a href="{{ art.baseHref }}{{ art.file }}"><img src="/pho/{{ art.img[0] }}?w=800" alt="{{ art.title|e }}"></a>
+                            {% if art.img[0] %}
+    						    <a href="{{ art.baseHref }}{{ art.file }}"><img src="/pho/{{ art.img[0] }}?w=800" alt="{{ art.title|e }}"></a>
+                            {% else %}
+                                <div class="entry-quote-post-format">
+        							<blockquote>
+        								<p><i class="fa fa-quote-left"></i>
+                                            {% if art.quote %}
+                                                {{ art.quote }}
+                                            {% elseif art.teaser %}
+                                                {{ art.teaser }}
+                                            {% elseif art.title %}
+                                                {{ art.title }}
+                                            {% endif %}</p>
+        								<h3>{{ art.quoteBy }}</h3>
+        							</blockquote>
+        						</div>
+                            {% endif %}
     					</div>
     					<div class="post-content">
     						<div class="entry-header text-center text-uppercase">
@@ -110,7 +126,7 @@
 
 				<div class="post-pagination  clearfix">
 					<ul class="pagination text-left">
-                        {% set pages = [1,2,3,4,5,6,7,8,9,10]; %}
+                        {% set pages = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20] %}
                         {% set total = article.artlistTotal %}
 
                         {% for p in pages %}

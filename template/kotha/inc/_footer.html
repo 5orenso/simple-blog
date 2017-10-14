@@ -142,8 +142,7 @@
 				<div class="widget-title">
                     <img src="../img/sorenso-logo.png" alt="sorenso">
 				</div>
-				<p>Her skriver jeg hovedsaklig på norsk om det ikke skulle være noe helt spesielt.</p>
-				<p>Jeg skriver om det jeg bruker tiden min på, som er tur, foto, hundekjøring, hacking, fikling og mye annet.</p>
+				<p>{{ blog.description }}</p>
                 {% if 1 == 2 %}
 				<div class="address">
 					<h4 class="text-uppercase">contact Info</h4>
@@ -153,6 +152,7 @@
 				</div>
                 {% endif %}
 			</div>
+
             {% if 1 == 2 %}
 			<div class="footer-widget twitter-widget">
 				<h2 class="widget-title text-uppercase">
@@ -244,6 +244,7 @@
 
 		</div>
 	</div>
+
 	<div class="container-fluid text-center ft-copyright">
 		<p>&copy; 2017 <a href="">Sorenso </a> - Published with <i class="fa fa-heart"></i> by <a
 			href="https://github.com/5orenso/simple-blog">simple-blog</a></p>
@@ -276,16 +277,30 @@
 <script src="assets/js/jquery-1.12.4.min.js"></script>
 <script src="assets/js/bootstrap.min.js"></script>
 <script src="assets/js/slick.min.js"></script>
+{% if article.gallery %}
+    <script src="assets/js/jquery.prettyPhoto.js"></script>
+    <script src="assets/js/jquery.justifiedGallery.min.js"></script>
+    <script>
+    //pretty Photo
+    $("a[data-rel^='prettyPhoto']").prettyPhoto({
+        animation_speed: 'normal',
+        slideshow: 5000,
+        autoplay_slideshow: true
+    });
+    $("#mygallery").justifiedGallery({
+        rowHeight: 160,
+        margins: 0,
+        lastRow: 'justify'
+    });
+    </script>
+{% endif %}
 <script src="assets/js/main.js"></script>
+
 
 <script>
 $(document).ready(function() {
-    $('.image_inline').find('a').each(function() {
-        console.log(this);
-    });
     $('.image_inline').find('a').click(function(event) {
         event.preventDefault();
-        console.log(this);
         $('#imagepreview').attr('src', $(this).attr('href'));
         $('#imageText').html($(this).attr('title'));
         $('#imagemodal').modal('show');
@@ -296,5 +311,6 @@ $(document).ready(function() {
     // });
 });
 </script>
+
 </body>
 </html>

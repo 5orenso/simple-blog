@@ -1,18 +1,22 @@
+    {% set author = blog.author.fallback %}
+    {% if blog.author[article.author] %}
+        {% set author = blog.author[article.author] %}
+    {% endif %}
     <aside class="widget about-me-widget  text-center">
         <div class="about-me-content">
             <div class="about-me-img">
-                <img src="{{ blog.author.fallback.imageLarge }}" alt="" class="img-me img-circle">
-                <h2 class="text-uppercase">{{ blog.author.fallback.nameFull }}</h2>
-                <p>{{ blog.author.fallback.description }}</p>
+                <img src="{{ author.imageLarge }}" alt="" class="img-me img-circle">
+                <h2 class="text-uppercase">{{ author.nameFull }}</h2>
+                <p>{{ author.description }}</p>
             </div>
         </div>
         <div class="social-share">
             <ul class="list-inline">
-                {% if blog.author.fallback.facebook %}<li><a class="s-facebook" href="{{ blog.author.fallback.facebook }}"><i class="fa fa-facebook"></i></a></li>{% endif %}
-                {% if blog.author.fallback.twitter %}<li><a class="s-twitter" href="{{ blog.author.fallback.twitter }}"><i class="fa fa-twitter"></i></a></li>{% endif %}
-                {% if blog.author.fallback.google_plus %}<li><a class="s-google-plus" href="{{ blog.author.fallback.google_plus }}"><i class="fa fa-google-plus"></i></a></li>{% endif %}
-                {% if blog.author.fallback.linkedin %}<li><a class="s-linkedin" href="{{ blog.author.fallback.linkedin }}"><i class="fa fa-linkedin"></i></a></li>{% endif %}
-                {% if blog.author.fallback.instagram %}<li><a class="s-instagram" href="{{ blog.author.fallback.instagram }}"><i class="fa fa-instagram"></i></a></li>{% endif %}
+                {% if author.facebook %}<li><a class="s-facebook" href="{{ author.facebook }}"><i class="fa fa-facebook"></i></a></li>{% endif %}
+                {% if author.twitter %}<li><a class="s-twitter" href="{{ author.twitter }}"><i class="fa fa-twitter"></i></a></li>{% endif %}
+                {% if author.google_plus %}<li><a class="s-google-plus" href="{{ author.google_plus }}"><i class="fa fa-google-plus"></i></a></li>{% endif %}
+                {% if author.linkedin %}<li><a class="s-linkedin" href="{{ author.linkedin }}"><i class="fa fa-linkedin"></i></a></li>{% endif %}
+                {% if author.instagram %}<li><a class="s-instagram" href="{{ author.instagram }}"><i class="fa fa-instagram"></i></a></li>{% endif %}
             </ul>
         </div>
     </aside>

@@ -1,0 +1,18 @@
+
+				<div class="related-post-carousel"><!--related post carousel-->
+					<div class="related-heading">
+						<h4>More post in this category</h4>
+					</div>
+					<div class="related-post-carousel-items">
+                        {% for art in article.artlist %}
+                            {% if loop.index < 10 %}
+                                <div class="single-item">
+                                    <a href="{{ art.baseHref }}{{ art.file }}">
+                                        <img src="/pho/{{ art.img[0] }}?w=200" alt="{{ art.title }}">
+                                        <h4>{{ art.title }}</h4>
+                                    </a>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+					</div>
+				</div>

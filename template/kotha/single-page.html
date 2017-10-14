@@ -4,8 +4,47 @@
 		<div class="row">
 			<div class="col-sm-8">
 				<article class="single-blog">
-					<div class="post-thumb">
-						<img src="/pho/{{ article.img[0] }}?w=800" alt="{{ article.title|e }}">
+					<div class="post-thumb {% if article.gallery %}gallery-post-format{% endif %}">
+                        {% if article.youtube %}
+						    {{ article.youtube|raw }}
+                        {% elseif article.gallery %}
+                            <div id="mygallery">
+                                {% set imgnum = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20] %}
+                                {% for i in imgnum %}
+                                    {% if article.img[i] %}
+                                        <div class="portfolio single-gallery">
+                                            <div class="post-thumb">
+                                                <a href="/pho/{{ article.img[i] }}?w=1200" data-rel="prettyPhoto[gallery]">
+                                                    <img src="/pho/{{ article.img[i] }}?w=600" alt=""></a>
+                                                {% if article.imgtext[i] %}
+                                                    <div class="thumb-caption">
+                                                        <h3>{{ article.imgtext[i] }}</h3>
+                                                    </div>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+
+                            </div>
+                        {% elseif article.img[0] %}
+                            <img src="/pho/{{ article.img[0] }}?w=800" alt="{{ article.title|e }}">
+                        {% else %}
+                            <div class="entry-quote-post-format">
+    							<blockquote>
+    								<p><i class="fa fa-quote-left"></i>
+                                        {% if article.quote %}
+                                            {{ article.quote }}
+                                        {% elseif article.teaser %}
+                                            {{ article.teaser }}
+                                        {% elseif article.title %}
+                                            {{ article.title }}
+                                        {% endif %}
+                                    </p>
+    								<h3>{{ article.quoteBy }}</h3>
+    							</blockquote>
+    						</div>
+                        {% endif %}
 					</div>
 					<div class="post-content">
 						<div class="entry-header text-center text-uppercase">
@@ -18,8 +57,12 @@
 
 						<div class="post-meta">
 							<ul class="pull-left list-inline author-meta">
-								<li class="author">By <a href="#">{{ article.author }} </a></li>
-								<li class="date"> On {{ article.published }}</li>
+                                {% if article.author %}
+								    <li class="author">By <a href="#">{{ article.author }} </a></li>
+                                {% endif %}
+                                {% if article.published %}
+								    <li class="date"> On {{ article.published }}</li>
+                                {% endif %}
 							</ul>
 							<ul class="pull-right list-inline social-share">
                                 {% if blog.author.fallback.facebook %}<li><a class="s-facebook" href="{{ blog.author.fallback.facebook }}"><i class="fa fa-facebook"></i></a></li>{% endif %}
@@ -32,20 +75,9 @@
 
 					</div>
 				</article>
+
 {% if 1 == 2 %}
-				<div class="top-comment"><!--top comment-->
-					<img src="assets/images/comment.jpg" class="pull-left img-circle" alt="">
-					<h4><a href="">Ricard Goff</a></h4>
-					<p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy hello ro mod tempor
-						invidunt ut labore et dolore magna aliquyam erat.</p>
-					<ul class="list-inline social-share">
-						<li><a href=""><i class="fa fa-facebook"></i></a></li>
-						<li><a href=""><i class="fa fa-twitter"></i></a></li>
-						<li><a href=""><i class="fa fa-pinterest"></i></a></li>
-						<li><a href=""><i class="fa fa-google-plus"></i></a></li>
-						<li><a href=""><i class="fa fa-instagram"></i></a></li>
-					</ul>
-				</div>
+                {% include 'inc/_top_comment.html' %}
 {% endif %}
 
 
@@ -84,144 +116,29 @@
                     {% endif %}
 				</div>
 
+                {% include 'inc/_related_blogs.html' %}
+
+                <div class="comment-area">
+                    <div class="comment-heading">
+                        <h3>Some comments</h3>
+                    </div>
+                    <div id="disqus_thread"></div>
+                    <script type="text/javascript">
+                        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+                        var disqus_shortname = '{{ blog.disqus }}'; // required: replace example with your forum shortname
+
+                        /* * * DON'T EDIT BELOW THIS LINE * * */
+                        (function() {
+                            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                        })();
+                    </script>
+                    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+                </div>
+
 {% if 1 == 2 %}
-				<div class="related-post-carousel"><!--related post carousel-->
-					<div class="related-heading">
-						<h4>You might also like</h4>
-					</div>
-					<div class="related-post-carousel-items">
-						<div class="single-item">
-							<a href="#">
-								<img src="assets/images/p-1.jpg" alt="">
-								<h4>Lorem ipsum dolor sit amet,</h4>
-							</a>
-						</div>
-						<div class="single-item">
-							<a href="#">
-								<img src="assets/images/p-2.jpg" alt="">
-								<h4>Just Wondering at Beach</h4>
-							</a>
-						</div>
-						<div class="single-item">
-							<a href="#">
-								<img src="assets/images/p-3.jpg" alt="">
-								<h4>Nonumy eirmod tempor invidunt</h4>
-							</a>
-						</div>
-						<div class="single-item">
-							<a href="#">
-								<img src="assets/images/p-1.jpg" alt="">
-								<h4>Justo duo dolores et ea rebum</h4>
-							</a>
-						</div>
-						<div class="single-item">
-							<a href="#">
-								<img src="assets/images/p-2.jpg" alt="">
-								<h4>Duo dolores justo t ea rebum</h4>
-							</a>
-						</div>
-						<div class="single-item">
-							<a href="#">
-								<img src="assets/images/p-3.jpg" alt="">
-								<h4>Duo dolores justo t ea rebum</h4>
-							</a>
-						</div>
-					</div>
-				</div>
-{% endif %}
-{% if 1 == 2 %}
-				<div class="comment-area">
-					<div class="comment-heading">
-						<h3>3 Thoughts</h3>
-					</div>
-					<div class="single-comment">
-						<div class="media">
-							<div class="media-left text-center">
-								<a href=""><img class="media-object" src="assets/images/reply-1.jpg" alt=""></a>
-							</div>
-							<div class="media-body">
-								<div class="media-heading">
-									<h3 class="text-uppercase">
-										<a href="">John Smith</a>
-										<a href="" class="pull-right reply-btn">reply</a>
-									</h3>
-								</div>
-								<p class="comment-date">
-									December, 02, 2017 at 5:57 PM
-								</p>
-								<p class="comment-p">
-									Nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sdiam
-									voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd
-									gubergren, no sea takimata sanctus est.
-								</p>
-							</div>
-						</div>
-					</div>
-					<div class="single-comment single-comment-reply">
-						<div class="media">
-							<div class="media-left text-center">
-								<a href=""> <img class="media-object" src="assets/images/reply-2.jpg" alt=""></a>
-							</div>
-							<div class="media-body">
-								<div class="media-heading">
-									<h3 class="text-uppercase"><a href="">Joan Coal</a></h3>
-								</div>
-								<p class="comment-date">
-									2 days ago
-								</p>
-								<p class="comment-p">
-									Labore et dolore magna aliquyam erat, sdiam voluptua. At vero eos eaccusam et justo
-									duo dolores et ea rebum. Stet clita kasd.
-								</p>
-							</div>
-						</div>
-					</div>
-					<div class="single-comment">
-						<div class="media">
-							<div class="media-left text-center">
-								<a href=""> <img class="media-object" src="assets/images/reply-3.jpg" alt=""></a>
-							</div>
-							<div class="media-body">
-								<div class="media-heading">
-									<h3 class="text-uppercase"><a href="">Ricard Goff</a> <a href=""
-									                                                         class="pull-right reply-btn">reply</a>
-									</h3>
-								</div>
-								<span class="comment-date"> 5 hours ago</span>
-								<p class="comment-p">
-									Amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidu labore et
-									dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et usto duo
-									dolores et ea rebum.
-								</p>
-							</div>
-						</div>
-					</div>
-				</div>
-				<!--leave comment-->
-				<div class="leave-comment">
-					<h4>Leave a reply</h4>
-					<form class="form-horizontal contact-form"   method="post" action="#">
-						<div class="form-group">
-							<div class="col-md-6">
-								<input type="text" class="form-control" id="name" name="name" placeholder="Name" required>
-							</div>
-							<div class="col-md-6">
-								<input type="email" class="form-control" id="email" name="email" placeholder="Email" required>
-							</div>
-						</div>
-						<div class="form-group">
-							<div class="col-md-12">
-								<input type="text" class="form-control" id="subject" name="subject" placeholder="Website url">
-							</div>
-						</div>
-						<div class="form-group">
-							<div class="col-md-12">
-								<textarea class="form-control" rows="6" name="message" placeholder="Write Massage" required></textarea>
-							</div>
-						</div>
-						<button type="submit" class="btn send-btn">Post Comment</button>
-					</form>
-				</div>
+                {% include 'inc/_comments.html' %}
 {% endif %}
 
             </div>
