@@ -2,6 +2,8 @@ module.exports = {
     version: 1,
     blog: {
         title: 'Simple Blog Server',
+        description: 'Her skriver jeg hovedsaklig på norsk om det ikke skulle være noe helt spesielt. Jeg skriver om det jeg bruker tiden min på, som er tur, foto, hundekjøring, hacking, fikling og mye annet.',
+        disqus: 'sorenso',        
         slogun: '',
         protocol: 'http',
         domain: 'www.litt.no',
@@ -10,7 +12,6 @@ module.exports = {
         email: 'sorenso@gmail.com',
         searchResults: 'Blog posts related to ',
         showListOnIndex: 1,
-        disqus: 'Simple blog server',
         social: {
             twitter: '',
             facebook: '',
