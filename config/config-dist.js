@@ -3,7 +3,7 @@ module.exports = {
     blog: {
         title: 'Simple Blog Server',
         description: 'Her skriver jeg hovedsaklig på norsk om det ikke skulle være noe helt spesielt. Jeg skriver om det jeg bruker tiden min på, som er tur, foto, hundekjøring, hacking, fikling og mye annet.',
-        disqus: 'sorenso',        
+        disqus: 'sorenso',
         slogun: '',
         protocol: 'http',
         domain: 'www.litt.no',
@@ -18,6 +18,9 @@ module.exports = {
             googleplus: '',
             pintrest: '',
             instagram: ''
+        },
+        socialUser: {
+            twitter: 'sorenso',
         },
         staticFilesPath: '/Users/sorenso/html/',
         textFilesPath: '/Users/sorenso/text-files/',
