@@ -65,11 +65,16 @@
                                 {% endif %}
 							</ul>
 							<ul class="pull-right list-inline social-share">
-                                {% if blog.author.fallback.facebook %}<li><a class="s-facebook" href="{{ blog.author.fallback.facebook }}"><i class="fa fa-facebook"></i></a></li>{% endif %}
-                                {% if blog.author.fallback.twitter %}<li><a class="s-twitter" href="{{ blog.author.fallback.twitter }}"><i class="fa fa-twitter"></i></a></li>{% endif %}
-                                {% if blog.author.fallback.google_plus %}<li><a class="s-google-plus" href="{{ blog.author.fallback.google_plus }}"><i class="fa fa-google-plus"></i></a></li>{% endif %}
-                                {% if blog.author.fallback.linkedin %}<li><a class="s-linkedin" href="{{ blog.author.fallback.linkedin }}"><i class="fa fa-linkedin"></i></a></li>{% endif %}
-                                {% if blog.author.fallback.instagram %}<li><a class="s-instagram" href="{{ blog.author.fallback.instagram }}"><i class="fa fa-instagram"></i></a></li>{% endif %}
+                                <!-- https://www.facebook.com/sharer.php?u=https%3A%2F%2Fwww.nrk.no%2Fmr%2F1.13734993 -->
+                                <!-- https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.nrk.no%2Fmr%2F1.13734993&text=Bevegelsene%20holder%20seg%20h%C3%B8ye -->
+                                <!-- https://plus.google.com/share?url=https%3A%2F%2Fwww.nrk.no%2Fmr%2F1.13734993 -->
+                                <!-- https://www.linkedin.com/shareArticle?mini=true&url=http://developer.linkedin.com&title=LinkedIn%20Developer%20Network&summary=My%20favorite%20developer%20program&source=LinkedIn -->
+
+                                {% set shareLink = blog.protocol + '://' + blog.domain + article.baseHref + article.file %}
+                                <li><a rel="noopener" target="_blank" class="s-facebook" href="https://www.facebook.com/sharer.php?u={{ shareLink|url_encode }}"><i class="fa fa-facebook"></i></a></li>
+                                <li><a rel="noopener" target="_blank" class="s-twitter" href="https://twitter.com/intent/tweet?url={{ shareLink|url_encode }}&text={{ article.title|url_encode }}.%20{{ article.teaser|striptags|url_encode }}{% if blog.socialUser.twitter %}&via={{ blog.socialUser.twitter }}{% endif %}&hashtags={{ article.tags }}"><i class="fa fa-twitter"></i></a></li>
+                                <li><a rel="noopener" target="_blank" class="s-google-plus" href="https://plus.google.com/share?url={{ shareLink|url_encode }}"><i class="fa fa-google-plus"></i></a></li>
+                                <li><a rel="noopener" target="_blank" class="s-linkedin" href="https://www.linkedin.com/shareArticle?mini=true&url={{ shareLink|url_encode }}&summary={{ article.title|url_encode }}.%20{{ article.teaser|striptags|url_encode }}&source={{ blog.domain }}"><i class="fa fa-linkedin"></i></a></li>
 							</ul>
 						</div>
 

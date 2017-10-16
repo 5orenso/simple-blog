@@ -51,11 +51,11 @@
     								<li class="date"> {{ art.published }}</li>
     							</ul>
     							<ul class="pull-right list-inline social-share">
-                                    {% if art.facebook %}<li><a href="{{ art.facebook }}"><i class="fa fa-facebook"></i></a></li>{% endif %}
-    								{% if art.twitter %}<li><a href="{{ art.twitter }}"><i class="fa fa-twitter"></i></a></li>{% endif %}
-    								{% if art.pintrest %}<li><a href="{{ art.pintrest }}"><i class="fa fa-pinterest"></i></a></li>{% endif %}
-    								{% if art.google_plus %}<li><a href="{{ art.google_plus }}"><i class="fa fa-google-plus"></i></a></li>{% endif %}
-    								{% if art.instagram %}<li><a href="{{ art.instagram }}"><i class="fa fa-instagram"></i></a></li>{% endif %}
+                                    {% set shareLink = blog.protocol + '://' + blog.domain + art.baseHref + art.file %}
+                                    <li><a rel="noopener" target="_blank" class="s-facebook" href="https://www.facebook.com/sharer.php?u={{ shareLink|url_encode }}"><i class="fa fa-facebook"></i></a></li>
+                                    <li><a rel="noopener" target="_blank" class="s-twitter" href="https://twitter.com/intent/tweet?url={{ shareLink|url_encode }}&text={{ art.title|url_encode }}.%20{{ art.teaser|striptags|url_encode }}{% if blog.socialUser.twitter %}&via={{ blog.socialUser.twitter }}{% endif %}&hashtags={{ art.tags }}"><i class="fa fa-twitter"></i></a></li>
+                                    <li><a rel="noopener" target="_blank" class="s-google-plus" href="https://plus.google.com/share?url={{ shareLink|url_encode }}"><i class="fa fa-google-plus"></i></a></li>
+                                    <li><a rel="noopener" target="_blank" class="s-linkedin" href="https://www.linkedin.com/shareArticle?mini=true&url={{ shareLink|url_encode }}&summary={{ art.title|url_encode }}.%20{{ art.teaser|striptags|url_encode }}&source={{ blog.domain }}"><i class="fa fa-linkedin"></i></a></li>
     							</ul>
     						</div>
     					</div>
