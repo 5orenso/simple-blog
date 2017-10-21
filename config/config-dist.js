@@ -87,15 +87,6 @@ module.exports = {
             photoPath: __dirname + '/../content/images/',
             maxArticles: 500,
         },
-        postgresql: {
-            username: '',
-            password: '',
-            server: '127.0.0.1',
-            port: '5432',
-            database: 'nils',
-            articleTable: 'article',
-            categoryTable: 'category',
-        },
         elasticsearch: {
             //server: '172.30.0.227',
             server: '127.0.0.1',

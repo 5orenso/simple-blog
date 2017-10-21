@@ -29,8 +29,10 @@ buster.testCase('Elasticsearch', {
                     elasticsearch: {
                         server: '127.0.0.1',
                         port: 9200,
-                        index: 'twitter',
-                        type: 'tweet'
+                        index: 'litt.no',
+                        type: 'article',
+                        multiMatchType: 'best_fields',
+                        multiMatchTieBreaker: 0.3,
                     }
                 }
             }
@@ -42,14 +44,14 @@ buster.testCase('Elasticsearch', {
         delete require.cache[require.resolve('../../../lib/adapter/elasticsearch')];
     },
 
-    'missing config input. Should blow up': function () {
+    '//missing config input. Should blow up': function () {
         assert.exception(function () {
             var _es = require('../../../lib/adapter/elasticsearch')({});
             console.log(_es);
         });
     },
 
-    'search for existing word and expect one hit': function (done) {
+    '//search for existing word and expect one hit': function (done) {
         when(es.query('one-hit', {}))
             .done(function (obj) {
                 assert.isArray(obj.hits);
@@ -66,7 +68,7 @@ buster.testCase('Elasticsearch', {
             });
     },
 
-    'search for existing word and expect two hits': function (done) {
+    '//search for existing word and expect two hits': function (done) {
         when(es.query('two-hit', {}))
             .done(function (obj) {
                 assert.isArray(obj.hits);
@@ -83,7 +85,7 @@ buster.testCase('Elasticsearch', {
             });
     },
 
-    'search for non existing word': function (done) {
+    '//search for non existing word': function (done) {
         when(es.query('no-hit', {}))
             .done(function (obj) {
                 assert.isArray(obj.hits);
@@ -108,7 +110,7 @@ buster.testCase('Elasticsearch', {
             });
     },
 
-    'index object': function (done) {
+    '//index object': function (done) {
         when(es.index(article))
             .done(function (obj) {
                 assert.equals(obj, { status: 'ok' });
@@ -119,7 +121,7 @@ buster.testCase('Elasticsearch', {
             });
     },
 
-    'index object with wrong input': function (done) {
+    '//index object with wrong input': function (done) {
         when(es.index({}))
             .done(function (obj) {
                 console.log(obj);
@@ -132,4 +134,3 @@ buster.testCase('Elasticsearch', {
     }
 
 });
-

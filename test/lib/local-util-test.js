@@ -9,7 +9,7 @@ var buster        = require('buster'),
     errorMsgThrow = 'PANG!';
 
 delete require.cache[require.resolve('../../lib/local-util')];
-sinon.stub(dgram, 'createSocket', function () {
+sinon.stub(dgram, 'createSocket').set(function () {
     return {
         send: function (message, something, messageLength, udpPort, udpServer, callback) {
             var messageText = message.toString('utf8');

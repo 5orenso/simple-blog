@@ -3,17 +3,7 @@
 var buster = require('buster'),
     assert = buster.assert,
     when   = require('when'),
-    winston  = require('winston'),
     sinon  = require('sinon');
-
-//delete require.cache[require.resolve(__dirname + '/../../lib/logger')];
-sinon.stub(winston, 'log', function (type, msg, meta) {
-    return {
-        type: type,
-        msg: msg,
-        meta: meta
-    };
-});
 
 var Logger = require('../../lib/logger'),
     logger = new Logger();
@@ -44,48 +34,13 @@ buster.testCase('lib/logger', {
     tearDown: function () {
     },
     'Test logger:': {
-        'log wo/meta': function (done) {
-            when(logger.log('simple', 'blog', 'is', 'fun'))
-                .done(function (obj) {
-                    assert.equals(obj.type, log.type);
-                    assert.match(obj.msg, log.msg);
-                    done();
-                });
+        'log wo/meta': function () {
+            assert(logger.log('simple', 'blog', 'is', 'fun'));
         },
-        'log w/meta': function (done) {
-            when(logger.log('simple', {meta1: 'blog', meta2: 'is', meta3: 'fun' }, { meta4: 'yes it is!'}))
-                .done(function (obj) {
-//                    console.log(obj);
-                    assert.equals(obj.type, logMeta.type);
-                    assert.match(obj.msg, logMeta.msg);
-                    assert.equals(obj.meta, logMeta.meta);
-                    done();
-                });
+        'err test': function () {
+            assert(logger.err('simple', 'blog', 'is', 'fun'));
         },
-        'err test': function (done) {
-            when(logger.err('simple', 'blog', 'is', 'fun'))
-                .done(function (obj) {
-//                    console.log(obj);
-                    assert.equals(obj.type, err.type);
-                    assert.match(obj.msg, err.msg);
-                    assert(true);
-                    done();
-                });
-        },
-        'err w/meta': function (done) {
-            when(logger.err('simple', { meta1: 'blog', meta2: 'is', meta3: 'fun' }, {meta4: 'yes it is!'}))
-                .done(function (obj) {
-//                    console.log(obj);
-                    assert.equals(obj.type, errMeta.type);
-                    assert.match(obj.msg, errMeta.msg);
-                    assert.equals(obj.meta, errMeta.meta);
-                    done();
-                });
-        },
-        'set/get': function () {
-            assert(logger.set('simple', 'blog is fun'));
-            assert.equals(logger.get('simple'), 'blog is fun');
-        }
+
 
     }
 });

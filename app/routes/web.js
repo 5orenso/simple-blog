@@ -26,7 +26,8 @@ var express       = require('express'),
     ArticleUtil   = require(appPath + 'lib/article-util'),
     articleUtil   = new ArticleUtil(),
     LocalUtil     = require(appPath + 'lib/local-util'),
-    localUtil     = new LocalUtil();
+    localUtil     = new LocalUtil(),
+    webUtil       = require(appPath + 'lib/web-util');
 
 swig.setFilter('markdown', articleUtil.replaceMarked);
 swig.setFilter('formatted', articleUtil.formatDate);
@@ -64,13 +65,24 @@ webRouter.setConfig = function (conf, opt) {
     }
 };
 
+function setConfig(req, res, next) {
+    req.config = webRouter.config;
+    next();
+}
+
 // create a write stream (in append mode)
 var accessLogStream = fs.createWriteStream(appPath + '/logs/web-access.log', {flags: 'a'});
 
 // Setup the logger
 webRouter.use(morgan('combined', {stream: accessLogStream}));
 
+// Set config
+webRouter.use(setConfig);
+
 // Setup static routes
+webRouter.use('/global/', localUtil.setCacheHeaders);
+webRouter.use('/global/', express.static(appPath + 'template/global/'));
+
 webRouter.use('/template/', localUtil.setCacheHeaders);
 webRouter.use('/template/', express.static(appPath + 'template/'));
 webRouter.use('/js/', localUtil.setCacheHeaders);
@@ -100,6 +112,10 @@ webRouter.get('/photos/*', function (req, res) {
     requestUrl = requestUrl.replace(/\/photos\//, '');
     res.sendFile(requestUrl, {root: path.normalize(webRouter.config.adapter.markdown.photoPath)});
 });
+
+// webRouter.post('/ajax/fileupload', webUtil.restrict, require('./post-fileupload.js'));
+webRouter.get('/ajax/fileupload', require('./post-fileupload.js'));
+webRouter.post('/ajax/fileupload', require('./post-fileupload.js'));
 
 // Main route for blog articles.
 webRouter.use('/*', localUtil.setNoCacheHeaders);
@@ -169,6 +185,10 @@ webRouter.get('/*', function handleGetRequest(req, res) {
                 }
                 article.artlistTotal = article.artlist.length;
                 res.send(tpl({
+                    file: {
+                        name: file,
+                        path: articlePath,
+                    },
                     blog: webRouter.config.blog,
                     article: article,
                     query: inputQuery

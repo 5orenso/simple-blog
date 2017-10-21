@@ -6,17 +6,22 @@
  */
 'use strict';
 
-var _          = require('underscore'),
-    express    = require('express'),
-    bodyParser = require('body-parser'),
-    commander  = require('commander'),
-    appPath    = __dirname + '/../',
-    Logger     = require(appPath + 'lib/logger'),
-    logger     = new Logger({
-        workerId: 1 //cluster.worker.id
-    }),
-    LocalUtil  = require(appPath + 'lib/local-util'),
-    localUtil  = new LocalUtil();
+const _ = require('underscore');
+const express = require('express');
+const bodyParser = require('body-parser');
+const compression = require('compression');
+const session = require('express-session');
+const commander = require('commander');
+const fileUpload = require('express-fileupload');
+const appPath = __dirname + '/../';
+const Logger = require(appPath + 'lib/logger');
+const logger = new Logger({
+    workerId: 1 //cluster.worker.id
+});
+const LocalUtil  = require(appPath + 'lib/local-util');
+const localUtil  = new LocalUtil();
+
+const cookieMaxAgeSession = (30 * 86400 * 1000);
 
 var app = express();
 
@@ -31,6 +36,20 @@ if (config) {
 }
 
 app.use(bodyParser.json());
+app.use(compression({
+    threshold: 512,
+}));
+app.use(session({
+    secret: 'mAke noDE.js gREat again!',
+    resave: true,
+    saveUninitialized: true,
+    cookie: {
+        path: '/',
+        httpOnly: true,
+        maxAge: cookieMaxAgeSession,
+    },
+}));
+app.use(fileUpload());
 
 // Include route handlers ------------------------
 var rssRouter = require('./routes/rss');

@@ -139,11 +139,11 @@ buster.testCase('app/routes/image', {
             });
         },
 
-        '/wsd with data': function (done) {
-            sinon.stub(wsd, 'diagram', function (text, opt, format, callback) {
-//                console.log(text, opt, format);
-                callback(null, 'wsd image');
-            });
+        '// /wsd with data': function (done) {
+//             sinon.stub(wsd, 'diagram', function (text, opt, format, callback) {
+// //                console.log(text, opt, format);
+//                 callback(null, 'wsd image');
+//             });
             var date = new Date();
             var utime = date.getTime();
             request('http://127.0.0.1:' + port + '/photo/wsd/?data=title%20TestService%0A' +

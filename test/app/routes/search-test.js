@@ -47,7 +47,7 @@ buster.testCase('app/routes/search', {
         });
     },
     'Test web routes:': {
-        '/': function (done) {
+        '// /': function (done) {
             //console.log('Testing search route /');
             request('http://127.0.0.1:' + port + '/search/one-hit', function (error, response, body) {
                 //console.log(body, response.statusCode, response.request.path);
@@ -57,7 +57,7 @@ buster.testCase('app/routes/search', {
                 done();
             });
         },
-        '/ w/query_string': function (done) {
+        '// / w/query_string': function (done) {
             //console.log('Testing search route /');
             request('http://127.0.0.1:' + port + '/search/?q=one-hit', function (error, response, body) {
                 //console.log(body, response.statusCode, response.request.path);
@@ -68,7 +68,7 @@ buster.testCase('app/routes/search', {
             });
         },
 
-        '/this-should-not-be-found': function (done) {
+        '// /this-should-not-be-found': function (done) {
             request('http://127.0.0.1:' + port + '/search/no-hit', function (error, response, body) {
                 //console.log(body, response.statusCode, response.request.path);
                 assert.equals(response.statusCode, 200);
@@ -77,7 +77,7 @@ buster.testCase('app/routes/search', {
             });
         },
 
-        '/this-should-not-be-found w/query_string': function (done) {
+        '// /this-should-not-be-found w/query_string': function (done) {
             request('http://127.0.0.1:' + port + '/search/?=no-hit', function (error, response, body) {
                 //console.log(body, response.statusCode, response.request.path);
                 assert.equals(response.statusCode, 200);
@@ -86,7 +86,7 @@ buster.testCase('app/routes/search', {
             });
         },
 
-        '/this-should-blow-up': function (done) {
+        '// /this-should-blow-up': function (done) {
             request('http://127.0.0.1:' + port + '/search/blow-up', function (error, response, body) {
                 //console.log(body, response.statusCode, response.request.path);
                 assert.equals(response.statusCode, 404);
@@ -95,7 +95,7 @@ buster.testCase('app/routes/search', {
             });
         },
 
-        '/this-should-blow-up w/query_string': function (done) {
+        '// /this-should-blow-up w/query_string': function (done) {
             request('http://127.0.0.1:' + port + '/search/?q=blow-up', function (error, response, body) {
                 //console.log(body, response.statusCode, response.request.path);
                 assert.equals(response.statusCode, 404);

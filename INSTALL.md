@@ -32,6 +32,27 @@ $ npm install istanbul -g
 $ brew install imagemagick
 ```
 
+### Install ElasticSearch
+```bash
+$ brew cask install java
+$ brew install elasticsearch
+```
+
+To have launchd start elasticsearch at login:
+```bash
+$  ln -sfv /usr/local/opt/elasticsearch/*.plist ~/Library/LaunchAgents
+```
+
+Then to load elasticsearch now:
+```bash
+$  launchctl load ~/Library/LaunchAgents/homebrew.mxcl.elasticsearch.plist
+```
+
+Or, if you don't want/need launchctl, you can just run:
+```bash
+$  elasticsearch --config=/usr/local/opt/elasticsearch/config/elasticsearch.yml
+```
+
 ## Application installation
 
 ### Clone repository
