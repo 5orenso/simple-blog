@@ -128,7 +128,6 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-nodemon');
     grunt.loadNpmTasks('grunt-shell');
     grunt.loadNpmTasks('grunt-buster');
-    grunt.loadNpmTasks("grunt-jscs");
     grunt.loadNpmTasks('grunt-jsdoc');
     grunt.loadNpmTasks('grunt-coveralls');
     grunt.loadNpmTasks('grunt-retire');
