@@ -1,5 +1,11 @@
 module.exports = {
     version: 1,
+    jwt: {
+        secret: 'This is the JWT secret',
+    },
+    sendgrid: {
+        apiKey: 'Your Sendgrid API key which should be kept secret.',
+    },
     blog: {
         title: 'Simple Blog Server',
         description: 'Her skriver jeg hovedsaklig på norsk om det ikke skulle være noe helt spesielt. Jeg skriver om det jeg bruker tiden min på, som er tur, foto, hundekjøring, hacking, fikling og mye annet.',
