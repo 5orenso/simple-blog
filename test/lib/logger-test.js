@@ -2,8 +2,7 @@
 
 var buster = require('buster'),
     assert = buster.assert,
-    when   = require('when'),
-    sinon  = require('sinon');
+    when   = require('when');
 
 var Logger = require('../../lib/logger'),
     logger = new Logger();
