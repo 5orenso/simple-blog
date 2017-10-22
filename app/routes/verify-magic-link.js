@@ -19,6 +19,7 @@ module.exports = (req, res) => {
             body: 'You are now logged in and able to do cools stuff inside your blog.\n' +
                 '<a href="/">Jump to the frontpage</a> to get started.',
         },
+        blog: req.config.blog,
     }, {
         hrstart,
         routePath,

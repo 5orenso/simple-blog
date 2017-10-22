@@ -41,6 +41,7 @@ The Simple-Blog server
                     No username and password required.
                     `,
                 },
+                blog: req.config.blog,
             }, {
                 hrstart,
                 routePath,
