@@ -3,26 +3,11 @@
 var buster        = require('buster'),
     assert        = buster.assert,
     refute        = buster.refute,
-    sinon         = require('sinon'),
-    dgram         = require('dgram'),
     errorMsg      = 'Error sending UDP...',
     errorMsgThrow = 'PANG!';
 
 delete require.cache[require.resolve('../../lib/local-util')];
-sinon.stub(dgram, 'createSocket').set(function () {
-    return {
-        send: function (message, something, messageLength, udpPort, udpServer, callback) {
-            var messageText = message.toString('utf8');
-            if (messageText.match(/error/)) {
-                callback(errorMsg, null);
-            } else if (messageText.match(/explode/)) {
-                throw new Error(errorMsgThrow);
-            } else {
-                callback(null, 140);
-            }
-        }
-    };
-});
+
 
 var LocalUtil     = require('../../lib/local-util'),
     localUtil     = new LocalUtil({
