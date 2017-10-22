@@ -19,11 +19,10 @@ buster.testCase('lib/plugins/googleMaps', {
         'replacer mode=search': function () {
             var inputStr = 'See my map @69.9396,22.9232';
             var result = inputStr.replace(plugin.get('regexp'), plugin.replacer);
-            var regexp = new RegExp('<iframe src=".+?www.google.com\/maps\/embed\/v1\/' +
-                'search\\?key=.+?&' +
-                'zoom=10&q=69.9396%2C22.9232' +
-                '" width="100%" height="400" frameborder="0" style="border:0" allowfullscreen><\/iframe>');
-            assert.match(result, regexp);
+            assert.match(result, /<iframe/i);
+            assert.match(result, /src=".+?www.google.com\/maps\/embed\/v1\//i);
+            assert.match(result, /search\?key=.+?&/i);
+            assert.match(result, /zoom=10&q=69.9396%2C22.9232/);
         },
 
         'replacer mode=search only position': function () {
@@ -36,69 +35,67 @@ buster.testCase('lib/plugins/googleMaps', {
             var inputStr = 'See my map ' + "\n" +
                 '@69.9396,22.9232';
             var result = inputStr.replace(plugin.get('regexp'), plugin.replacer);
-//            console.log(result);
-            var regexp = new RegExp('<iframe src=".+?www.google.com\/maps\/embed\/v1\/' +
-                'search\\?key=.+?&' +
-                'zoom=10&q=69.9396%2C22.9232' +
-                '" width="100%" height="400" frameborder="0" style="border:0" allowfullscreen><\/iframe>');
-            assert.match(result, regexp);
+            //            console.log(result);
+            assert.match(result, /<iframe/i);
+            assert.match(result, /src=".+?www.google.com\/maps\/embed\/v1\//i);
+            assert.match(result, /search\?key=.+?&/i);
+            assert.match(result, /zoom=10&q=69.9396%2C22.9232/);
         },
 
         'replacer mode=streetview': function () {
             var inputStr = 'See my map ' + "\n" +
                 '@69.9396,22.9232;mode=streetview&heading=90&pitch=-15';
             var result = inputStr.replace(plugin.get('regexp'), plugin.replacer);
-//            console.log(result);
-            var regexp = new RegExp('<iframe src=".+?www.google.com\/maps\/embed\/v1\/' +
-                'streetview\\?key=.+?&' +
-                'heading=90&pitch=-15&location=69.9396%2C22.9232' +
-                '" width="100%" height="400" frameborder="0" style="border:0" allowfullscreen><\/iframe>');
-            assert.match(result, regexp);
+            assert.match(result, /<iframe/i);
+            assert.match(result, /src=".+?www.google.com\/maps\/embed\/v1\//i);
+            assert.match(result, /streetview\?key=.+?&/i);
+            assert.match(result, /heading=90&pitch=-15&location=69.9396%2C22.9232/);
         },
 
         'replacer mode=view': function () {
             var inputStr = 'See my map ' + "\n" +
                 '@69.9396,22.9232;mode=view';
             var result = inputStr.replace(plugin.get('regexp'), plugin.replacer);
-//            console.log(result);
-            var regexp = new RegExp('<iframe src=".+?www.google.com\/maps\/embed\/v1\/' +
-                'view\\?key=.+?&' +
-                'zoom=10&center=69.9396%2C22.9232' +
-                '" width="100%" height="400" frameborder="0" style="border:0" allowfullscreen><\/iframe>');
-            assert.match(result, regexp);
+            // console.log(result);
+            assert.match(result, /<iframe/i);
+            assert.match(result, /src=".+?www.google.com\/maps\/embed\/v1\//i);
+            assert.match(result, /view\?key=.+?&/i);
+            assert.match(result, /zoom=10/);
+            assert.match(result, /center=69.9396%2C22.9232/i);
         },
 
-        'replacer mode=view w/helt': function () {
+        'replacer mode=view w/help': function () {
             var inputStr = 'See my map ' + "\n" +
                 '@69.9396,22.9232;mode=view&help=1';
             var result = inputStr.replace(plugin.get('regexp'), plugin.replacer);
-//            console.log(result);
-            var regexp = new RegExp('<iframe src=".+?www.google.com\/maps\/embed\/v1\/' +
-                'view\\?key=.+?&' +
-                'zoom=10&center=69.9396%2C22.9232' +
-                '" width="100%" height="400" frameborder="0" style="border:0" allowfullscreen><\/iframe>');
-            assert.match(result, regexp);
+            //            console.log(result);
+            assert.match(result, /<iframe/i);
+            assert.match(result, /src=".+?www.google.com\/maps\/embed\/v1\//i);
+            assert.match(result, /view\?key=.+?&/i);
+            assert.match(result, /zoom=10/);
+            assert.match(result, /center=69.9396%2C22.9232/i);
         },
 
         'replacer mode=directions': function () {
             var inputStr = 'See my map ' + "\n" +
                 '@oslo,norway;mode=directions&origin=oslo,norway&destination=telemark,norway&avoid=tolls|highways';
             var result = inputStr.replace(plugin.get('regexp'), plugin.replacer);
-//            console.log(result);
-            var regexp = new RegExp('<iframe src=".+?www.google.com\/maps\/embed\/v1\/' +
-                'directions\\?key=.+?&' +
-                'origin=oslo%2Cnorway&destination=telemark%2Cnorway&avoid=tolls%7Chighways' +
-                '" width="100%" height="400" frameborder="0" style="border:0" allowfullscreen><\/iframe>');
-            assert.match(result, regexp);
+            //            console.log(result);
+            assert.match(result, /<iframe/i);
+            assert.match(result, /src=".+?www.google.com\/maps\/embed\/v1\//i);
+            assert.match(result, /directions\?key=.+?&/i);
+            assert.match(result, /origin=oslo%2Cnorway&destination=telemark%2Cnorway&avoid=tolls%7Chighways/);
         },
 
         'replacer mode=directions and missing parameter': function () {
             var inputStr = 'See my map ' + "\n" +
                 '@69.9396,22.9232;mode=directions&origin=oslo,norway&avoid=tolls|highways';
             var result = inputStr.replace(plugin.get('regexp'), plugin.replacer);
-//            console.log(result);
-            var regexp = new RegExp('<div><strong>ERROR with googleMaps plugin! ` @69.9396,22.9232;10;mode=directions&origin=oslo,norway&avoid=tolls|highways` <br>Error: Missing parameters:</strong><ul><li>destination: <pre><code class="hljs">');
-            assert.match(result, regexp);
+            assert.match(result, /<div/i);
+            assert.match(result, /<li>destination:/i);
+            assert.match(result, /<code class="hljs">/i);
+            assert.match(result, /@69.9396,22.9232;10;mode=directions&origin=oslo,norway&avoid=tolls|highways/i);
+            assert.match(result, /ERROR with googleMaps plugin!/i);
         }
 
 

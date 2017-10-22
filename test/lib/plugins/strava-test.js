@@ -19,8 +19,13 @@ buster.testCase('lib/plugins/strava', {
         'replacer mode=search': function () {
             var inputStr = 'See my map https://www.strava.com/segments/1942901';
             var result = inputStr.replace(plugin.get('regexp'), plugin.replacer);
-            var regexp = new RegExp('<div class="videoWrapper"><iframe width="560" height="349" src="https://www.strava.com/segments/1942901/embed" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></div>');
+            var regexp = new RegExp('https://www.strava.com/segments/1942901/embed');
             assert.match(result, regexp);
+            assert.match(result, /<div class="videoWrapper">/i);
+            assert.match(result, /<iframe width="560" height="349"/i);
+            assert.match(result, /webkitallowfullscreen mozallowfullscreen allowfullscreen/i);
+            assert.match(result, /<\/iframe>/i);
+            assert.match(result, /<\/div>/i);
         }
         // jscs:enable
 

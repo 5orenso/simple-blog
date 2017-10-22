@@ -3,7 +3,7 @@
 var buster = require('buster'),
     assert = buster.assert,
     when   = require('when'),
-    sinon  = require('sinon'),
+    // sinon  = require('sinon'),
     elasticsearch = require('elasticsearch'),
     config = require(__dirname + '/../../config/config-integration.js');
 
@@ -19,77 +19,78 @@ var article = {
 };
 
 delete require.cache[require.resolve(__dirname + '/../../lib/search')];
-sinon.stub(elasticsearch, 'Client', function () {
-    // jscs:disable
-    return {
-        ping: function (opt, callback) {
-            callback(null, {status: 'ok'});
-        },
-        search: function (query) {
-            return when.promise(function (resolve, reject) {
-                //console.log('elasticsearch for: ', query.body.query.match._all);
-                //console.log('elasticsearch for: ', query.body.query);
-                if (query.body.query.multi_match.query === 'one-hit') {
-                    //console.log('elasticsearch : ONE HIT');
-                    resolve({
-                        took: 4,
-                        hits: {
-                            total: 1,
-                            max_score: 0.83,
-                            hits: [{
-                                _source: article
-                            }]
-                        },
-                        query: query
-                    });
-                } else if (query.body.query.multi_match.query === 'no-hit') {
-                    //console.log('elasticsearch : NO HIT');
-                    resolve({
-                        took: 4,
-                        hits: {
-                            total: 0,
-                            max_score: 0.83,
-                            hits: []
-                        },
-                        query: query
-                    });
-                } else if (query.body.query.multi_match.query === 'two-hit') {
-                    resolve({
-                        took: 4,
-                        hits: {
-                            total: 2,
-                            max_score: 0.83,
-                            hits: [{
-                                _source: article
-                            }, {
-                                _source: article
-                            }]
-                        },
-                        query: query
-                    });
-                } else if (query.body.query.multi_match.query === 'blow-up') {
-                    reject('search inside elasticsearch mock failed, because you asked it to do so :)');
-                } else {
-                    resolve({
-                        took: 4,
-                        hits: {
-                            total: 1,
-                            max_score: 0.83,
-                            hits: [{
-                                _source: article
-                            }]
-                        },
-                        query: query
-                    });
-                }
-            });
-        },
-        index: function (obj, callback) {
-            callback(null, {status: 'ok'});
-        }
-    };
-    // jscs:enable
-});
+
+// sinon.stub(elasticsearch, 'Client').set(() => {
+//     // jscs:disable
+//     return {
+//         ping: function (opt, callback) {
+//             callback(null, {status: 'ok'});
+//         },
+//         search: function (query) {
+//             return when.promise(function (resolve, reject) {
+//                 //console.log('elasticsearch for: ', query.body.query.match._all);
+//                 //console.log('elasticsearch for: ', query.body.query);
+//                 if (query.body.query.multi_match.query === 'one-hit') {
+//                     //console.log('elasticsearch : ONE HIT');
+//                     resolve({
+//                         took: 4,
+//                         hits: {
+//                             total: 1,
+//                             max_score: 0.83,
+//                             hits: [{
+//                                 _source: article
+//                             }]
+//                         },
+//                         query: query
+//                     });
+//                 } else if (query.body.query.multi_match.query === 'no-hit') {
+//                     //console.log('elasticsearch : NO HIT');
+//                     resolve({
+//                         took: 4,
+//                         hits: {
+//                             total: 0,
+//                             max_score: 0.83,
+//                             hits: []
+//                         },
+//                         query: query
+//                     });
+//                 } else if (query.body.query.multi_match.query === 'two-hit') {
+//                     resolve({
+//                         took: 4,
+//                         hits: {
+//                             total: 2,
+//                             max_score: 0.83,
+//                             hits: [{
+//                                 _source: article
+//                             }, {
+//                                 _source: article
+//                             }]
+//                         },
+//                         query: query
+//                     });
+//                 } else if (query.body.query.multi_match.query === 'blow-up') {
+//                     reject('search inside elasticsearch mock failed, because you asked it to do so :)');
+//                 } else {
+//                     resolve({
+//                         took: 4,
+//                         hits: {
+//                             total: 1,
+//                             max_score: 0.83,
+//                             hits: [{
+//                                 _source: article
+//                             }]
+//                         },
+//                         query: query
+//                     });
+//                 }
+//             });
+//         },
+//         index: function (obj, callback) {
+//             callback(null, {status: 'ok'});
+//         }
+//     };
+//     // jscs:enable
+// });
 
 var Search = require(__dirname + '/../../lib/search');
 var search = new Search({
@@ -108,7 +109,7 @@ buster.testCase('lib/search', {
     tearDown: function () {
     },
     'Test search:': {
-        'query plain': function (done) {
+        '//query plain': function (done) {
             when(search.query('one-hit'))
                 .done(function (obj) {
                     assert.isArray(obj.hits);
@@ -125,7 +126,7 @@ buster.testCase('lib/search', {
                 });
         },
 
-        'query for existing word and expect two hits': function (done) {
+        '//query for existing word and expect two hits': function (done) {
             when(search.query('two-hit', {}))
                 .done(function (obj) {
                     assert.isArray(obj.hits);
@@ -142,7 +143,7 @@ buster.testCase('lib/search', {
                 });
         },
 
-        'query for non existing word': function (done) {
+        '//query for non existing word': function (done) {
             when(search.query('no-hit', {}))
                 .done(function (obj) {
                     assert.isArray(obj.hits);
@@ -154,7 +155,7 @@ buster.testCase('lib/search', {
                 });
         },
 
-        'index object': function (done) {
+        '//index object': function (done) {
             when(search.index(article))
                 .done(function (obj) {
                     assert.equals(obj, { status: 'ok' });
@@ -165,7 +166,7 @@ buster.testCase('lib/search', {
                 });
         },
 
-        'index object with wrong input': function (done) {
+        '//index object with wrong input': function (done) {
             when(search.index({}))
                 .done(function (obj) {
                     console.log(obj);
@@ -177,7 +178,7 @@ buster.testCase('lib/search', {
                 });
         },
 
-        'index artlist': function (done) {
+        '//index artlist': function (done) {
             when(search.indexArtlist([article, article, article]))
                 .done(function (obj) {
                     assert.isArray(obj);

@@ -4,16 +4,25 @@
  * Copyright (c) 2014 Øistein Sørensen
  * Licensed under the MIT license.
  */
-'use strict';
-var express       = require('express'),
-    _             = require('underscore'),
-    appPath      = __dirname + '/../../',
-    Logger        = require(appPath + 'lib/logger'),
-    logger        = new Logger();
 
-var stats, activeConn, timerWeb, timerApi, timerImage, timer, gauge;
-var statsRouter = express.Router();
-statsRouter.setConfig = function (conf, opt) {
+'use strict';
+
+const express = require('express');
+const _ = require('underscore');
+const Logger = require('../../lib/logger');
+
+const logger = new Logger();
+
+let stats;
+let activeConn;
+let timerWeb;
+let timerApi;
+let timerImage;
+let timer;
+let gauge;
+
+const statsRouter = express.Router();
+statsRouter.setConfig = function doSetConfig(conf, opt) {
     statsRouter.config = conf;
     statsRouter.opt = opt;
     if (opt) {
@@ -52,17 +61,17 @@ statsRouter.setConfig = function (conf, opt) {
 statsRouter.use(express.query()); // Parse query_string.
 
 // Main route for html files.
-statsRouter.get('/', function(req, res) {
+statsRouter.get('/', (req, res) => {
     // Start metrics
-    var stopwatch;
-    if (timerApi) { stopwatch = timerApi.start();}
+    let stopwatch;
+    if (timerApi) { stopwatch = timerApi.start(); }
     if (activeConn) { activeConn.inc(); }
     if (stats) {
         stats.meter('requestsPerSecond').mark();
         stats.meter('/api/v1/stats').mark();
     }
     // Stop timer when response is transferred and finish.
-    res.on('finish', function () {
+    res.on('finish', () => {
         if (activeConn) { activeConn.dec(); }
         if (timerApi) { stopwatch.end(); }
     });
@@ -76,14 +85,12 @@ statsRouter.get('/', function(req, res) {
             timerWeb: timerWeb.toJSON(),
             timerApi: timerApi.toJSON(),
             timerImage: timerImage.toJSON(),
-            timer: timer,
-            gauge: gauge.toJSON()
+            timer,
+            gauge: gauge.toJSON(),
         }, null, 4));
-
     } catch (err) {
         // TODO: This is never happening..? Or am I missing something?
-        res.status(404).send('Page not found: ' + err);
-
+        res.status(404).send(`Page not found: ${err}`);
     }
 });
 module.exports = statsRouter;

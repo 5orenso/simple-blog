@@ -4,37 +4,42 @@
  * Copyright (c) 2014 Øistein Sørensen
  * Licensed under the MIT license.
  */
+
 'use strict';
-var express       = require('express'),
-    morgan        = require('morgan'),
-    when          = require('when'),
-    _             = require('underscore'),
-    swig          = require('swig'),
-    fs            = require('fs'),
-    path          = require('path'),
-    appPath       = __dirname + '/../../',
-    templatePath  = path.normalize(appPath + 'template/current/'),
-    photoPath     = path.normalize(appPath + 'content/images/'),
-    sitemap       = 'sitemap.xml',
-    keybase       = 'keybase.txt',
-    Logger        = require(appPath + 'lib/logger'),
-    logger        = new Logger(),
-    Category      = require(appPath + 'lib/category'),
-    category,
-    Article       = require(appPath + 'lib/article'),
-    article,
-    ArticleUtil   = require(appPath + 'lib/article-util'),
-    articleUtil   = new ArticleUtil(),
-    LocalUtil     = require(appPath + 'lib/local-util'),
-    localUtil     = new LocalUtil();
+
+const express = require('express');
+const morgan = require('morgan');
+const when = require('when');
+const _ = require('underscore');
+const swig = require('swig');
+const fs = require('fs');
+const path = require('path');
+const Logger = require('../../lib/logger');
+const Category = require('../../lib/category');
+const Article = require('../../lib/article');
+const ArticleUtil = require('../../lib/article-util');
+const LocalUtil = require('../../lib/local-util');
+
+const logger = new Logger();
+const articleUtil = new ArticleUtil();
+const localUtil = new LocalUtil();
+
+const appPath = `${__dirname}/../../`;
+const templatePath = path.normalize(`${appPath}template/current/`);
+let photoPath = path.normalize(`${appPath}content/images/`);
+const keybase = 'keybase.txt';
+let sitemap = 'sitemap.xml';
+let category;
+let article;
 
 swig.setFilter('markdown', articleUtil.replaceMarked);
 swig.setFilter('formatted', articleUtil.formatDate);
 swig.setFilter('substring', articleUtil.substring);
 swig.setFilter('cleanHtml', articleUtil.cleanHtml);
+swig.setFilter('fixFilename', articleUtil.fixFilename);
 
-var webRouter = express.Router();
-webRouter.setConfig = function (conf, opt) {
+const webRouter = express.Router();
+webRouter.setConfig = function doSetConfig(conf, opt) {
     webRouter.config = conf;
     webRouter.opt = opt;
     if (opt) {
@@ -50,73 +55,93 @@ webRouter.setConfig = function (conf, opt) {
             if (_.isObject(conf.log)) {
                 logger.set('log', conf.log);
             }
-            sitemap = 'sitemap-' + conf.blog.domain + '.xml';
+            sitemap = `sitemap-${conf.blog.domain}.xml`;
         }
         article = new Article({
-            logger: logger,
-            photoPath: photoPath,
-            config: conf
+            logger,
+            photoPath,
+            config: conf,
         });
         category = new Category({
-            logger: logger,
-            config: conf
+            logger,
+            config: conf,
         });
     }
 };
 
+function setConfig(req, res, next) {
+    req.config = webRouter.config;
+    next();
+}
+
 // create a write stream (in append mode)
-var accessLogStream = fs.createWriteStream(appPath + '/logs/web-access.log', {flags: 'a'});
+const accessLogStream = fs.createWriteStream(`${appPath}/logs/web-access.log`, { flags: 'a' });
 
 // Setup the logger
-webRouter.use(morgan('combined', {stream: accessLogStream}));
+webRouter.use(morgan('combined', { stream: accessLogStream }));
+
+// Set config
+webRouter.use(setConfig);
+// webRouter.use(require('../../lib/jwt').authenticated);
+webRouter.use(require('../../lib/jwt'));
 
 // Setup static routes
+webRouter.use('/global/', localUtil.setCacheHeaders);
+webRouter.use('/global/', express.static(`${appPath}template/global/`));
+
 webRouter.use('/template/', localUtil.setCacheHeaders);
-webRouter.use('/template/', express.static(appPath + 'template/'));
+webRouter.use('/template/', express.static(`${appPath}template/`));
 webRouter.use('/js/', localUtil.setCacheHeaders);
-webRouter.use('/js/', express.static(appPath + 'template/current/js/'));
+webRouter.use('/js/', express.static(`${appPath}template/current/js/`));
 webRouter.use('/images/', localUtil.setCacheHeaders);
-webRouter.use('/images/', express.static(appPath + 'template/current/images/'));
+webRouter.use('/images/', express.static(`${appPath}template/current/images/`));
 webRouter.use('/css/', localUtil.setCacheHeaders);
-webRouter.use('/css/', express.static(appPath + 'template/current/css/'));
+webRouter.use('/css/', express.static(`${appPath}template/current/css/`));
 webRouter.use('/fonts/', localUtil.setCacheHeaders);
-webRouter.use('/fonts/', express.static(appPath + 'template/current/fonts/'));
+webRouter.use('/fonts/', express.static(`${appPath}template/current/fonts/`));
 webRouter.use('/favicon.ico/', localUtil.setCacheHeaders);
-webRouter.use('/favicon.ico', express.static(appPath + 'template/current/favicon.ico'));
+webRouter.use('/favicon.ico', express.static(`${appPath}template/current/favicon.ico`));
 webRouter.use('/robots.txt/', localUtil.setCacheHeaders);
-webRouter.use('/robots.txt', express.static(appPath + 'template/robots.txt'));
+webRouter.use('/robots.txt', express.static(`${appPath}template/robots.txt`));
 webRouter.use('/sitemap.xml/', localUtil.setCacheHeaders);
-webRouter.get('/sitemap.xml', function (req, res) {
-    res.sendFile(sitemap, {root: path.normalize(appPath + './template')});
+webRouter.get('/sitemap.xml', (req, res) => {
+    res.sendFile(sitemap, { root: path.normalize(`${appPath}./template`) });
 });
 webRouter.use('/keybase.txt/', localUtil.setCacheHeaders);
-webRouter.get('/keybase.txt', function (req, res) {
-    res.sendFile(keybase, {root: path.normalize(webRouter.config.adapter.markdown.contentPath)});
+webRouter.get('/keybase.txt', (req, res) => {
+    res.sendFile(keybase, { root: path.normalize(webRouter.config.adapter.markdown.contentPath) });
 });
 webRouter.use('/photos/', localUtil.setCacheHeaders);
-webRouter.get('/photos/*', function (req, res) {
+webRouter.get('/photos/*', (req, res) => {
     // Resolve filename
-    var requestUrl = articleUtil.getUrlFromRequest(req);
+    let requestUrl = articleUtil.getUrlFromRequest(req);
     requestUrl = requestUrl.replace(/\/photos\//, '');
-    res.sendFile(requestUrl, {root: path.normalize(webRouter.config.adapter.markdown.photoPath)});
+    res.sendFile(requestUrl, { root: path.normalize(webRouter.config.adapter.markdown.photoPath) });
 });
+
+webRouter.get('/send-magic-link', require('./send-magic-link.js'));
+webRouter.get('/verify-magic-link', require('./verify-magic-link.js'));
+
+// webRouter.post('/ajax/fileupload', webUtil.restrict, require('./post-fileupload.js'));
+webRouter.get('/ajax/fileupload', require('./post-fileupload.js'));
+webRouter.post('/ajax/fileupload', require('./post-fileupload.js'));
 
 // Main route for blog articles.
 webRouter.use('/*', localUtil.setNoCacheHeaders);
-webRouter.get('/*', function handleGetRequest(req, res) {
+webRouter.get('/*', (req, res) => {
     // Resolve filename
-    var requestUrl = articleUtil.getUrlFromRequest(req);
-    var inputQuery = req.query;
+    let requestUrl = articleUtil.getUrlFromRequest(req);
+    const inputQuery = req.query;
 
     // Check for redirect
-    var isRedirect = false;
+    let isRedirect = false;
     if (_.isObject(webRouter.config.blog) && _.isArray(webRouter.config.blog.rewrites)) {
-        for (var i in webRouter.config.blog.rewrites) {
+        for (let i = 0, l = webRouter.config.blog.rewrites.length; i < l; i += 1) {
             if (webRouter.config.blog.rewrites[i]) {
-                var rewrite = webRouter.config.blog.rewrites[i];
+                const rewrite = webRouter.config.blog.rewrites[i];
                 if (requestUrl.match(rewrite.url)) {
-                    //console.log('Rewriting...', rewrite);
-                    var target = rewrite.target;
+                    // console.log('Rewriting...', rewrite);
+                    let target = rewrite.target;
                     if (rewrite.useUrl && rewrite.regex) {
                         requestUrl = requestUrl.replace(rewrite.regex, rewrite.regexResult);
                         target += requestUrl;
@@ -130,56 +155,59 @@ webRouter.get('/*', function handleGetRequest(req, res) {
 
     if (!isRedirect) {
         // Load content based on filename
-        var articleAllPath = articleUtil.getArticlePathRelative('/');
-        var articlePath = articleUtil.getArticlePathRelative(requestUrl);
+        const articleAllPath = articleUtil.getArticlePathRelative('/');
+        const articlePath = articleUtil.getArticlePathRelative(requestUrl);
 
-        // Stop timer when response is transferred and finish.
-        res.on('finish', function () {
-            // if (timer) { stopwatch.end(); }
-        });
-
+        if (typeof req.session === 'object' && req.session.iat) {
+            const now = parseInt((new Date()).getTime() / 1000, 10);
+            req.session.age = now - req.session.iat;
+        }
         // Check for cached file
         // If not cached compile file and store it.
         // TODO: How do we bypass the cache?
-        var file = articleUtil.getArticleFilename(requestUrl);
-        var template = templatePath + (file === 'index' ? 'index.html' : 'blog.html');
+        const file = articleUtil.getArticleFilename(requestUrl);
+        let template = templatePath + (file === 'index' ? 'index.html' : 'blog.html');
 
         if (_.isObject(webRouter.config.template)) {
             template = appPath + (file === 'index' ? webRouter.config.template.index : webRouter.config.template.blog);
         }
-        //var template = 'blog.html';
-        var tpl = swig.compileFile(template);
+        // var template = 'blog.html';
+        const tpl = swig.compileFile(template);
 
         when.all([category.list('/'), article.list(articlePath), article.list(articleAllPath)])
-            .then(function (contentLists) {
-                return article.load({
-                    requestUrl: requestUrl,
-                    catlist: contentLists[0],
-                    artlist: contentLists[1],
-                    artlistall: contentLists[2]
-                });
-            })
-            .then(function (article) {
-                for (let i = 0; i < article.artlist.length; i += 1) {
-                    const art = article.artlist[i];
-                    if (article.file === art.file) {
-                        article.next = article.artlist[i - 1];
-                        article.previous = article.artlist[i + 1];
+            .then(contentLists => article.load({
+                requestUrl,
+                catlist: contentLists[0],
+                artlist: contentLists[1],
+                artlistall: contentLists[2],
+            }))
+            .then(($resultArticle) => {
+                const resultArticle = $resultArticle;
+                for (let i = 0, l = resultArticle.artlist.length; i < l; i += 1) {
+                    const art = resultArticle.artlist[i];
+                    if (resultArticle.file === art.file) {
+                        art.next = resultArticle.artlist[i - 1];
+                        art.previous = resultArticle.artlist[i + 1];
                     }
                 }
-                article.artlistTotal = article.artlist.length;
+                resultArticle.artlistTotal = resultArticle.artlist.length;
                 res.send(tpl({
+                    file: {
+                        name: file,
+                        path: articlePath,
+                    },
                     blog: webRouter.config.blog,
-                    article: article,
-                    query: inputQuery
+                    article: resultArticle,
+                    query: inputQuery,
+                    session: req.session,
                 }));
             })
-            .catch(function (opt) {
+            .catch((opt) => {
                 res.status(404).send(tpl({
                     blog: webRouter.config.blog,
                     error: opt.error,
                     article: opt.article,
-                    query: inputQuery
+                    query: inputQuery,
                 }));
             });
     }

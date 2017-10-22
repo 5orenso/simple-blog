@@ -4,26 +4,33 @@
  * Copyright (c) 2014 Øistein Sørensen
  * Licensed under the MIT license.
  */
+
 'use strict';
 
-var _          = require('underscore'),
-    express    = require('express'),
-    bodyParser = require('body-parser'),
-    commander  = require('commander'),
-    appPath    = __dirname + '/../',
-    Logger     = require(appPath + 'lib/logger'),
-    logger     = new Logger({
-        workerId: 1 //cluster.worker.id
-    }),
-    LocalUtil  = require(appPath + 'lib/local-util'),
-    localUtil  = new LocalUtil();
+const _ = require('underscore');
+const express = require('express');
+const bodyParser = require('body-parser');
+const compression = require('compression');
+const session = require('express-session');
+const commander = require('commander');
+const fileUpload = require('express-fileupload');
+const Logger = require('../lib/logger');
+const LocalUtil = require('../lib/local-util');
 
-var app = express();
+const logger = new Logger({
+    workerId: 1, // cluster.worker.id
+});
+const localUtil = new LocalUtil();
+const cookieMaxAgeSession = (30 * 86400 * 1000);
+
+const app = express();
 
 commander
     .option('-c, --config <file>', 'configuration file path', './config/config.js')
     .parse(process.argv);
-var config = require(commander.config);
+
+// eslint-disable-next-line
+const config = require(commander.config);
 if (config) {
     if (_.isObject(config) && _.isObject(config.log)) {
         logger.set('log', config.log);
@@ -31,29 +38,48 @@ if (config) {
 }
 
 app.use(bodyParser.json());
+app.use(compression({
+    threshold: 512,
+}));
+app.use(session({
+    secret: 'mAke noDE.js gREat again!',
+    resave: true,
+    saveUninitialized: true,
+    cookie: {
+        path: '/',
+        httpOnly: true,
+        maxAge: cookieMaxAgeSession,
+    },
+}));
+app.use(fileUpload());
 
 // Include route handlers ------------------------
-var rssRouter = require('./routes/rss');
+const rssRouter = require('./routes/rss');
+
 rssRouter.setConfig(config, {
-    workerId: 1 //cluster.worker.id,
+    workerId: 1, // cluster.worker.id,
 });
-var apiRouter = require('./routes/api');
+const apiRouter = require('./routes/api');
+
 apiRouter.setConfig(config, {
-    workerId: 1 //cluster.worker.id,
+    workerId: 1, // cluster.worker.id,
 });
-var webRouter = require('./routes/web');
+const webRouter = require('./routes/web');
+
 webRouter.setConfig(config, {
-    workerId: 1 //cluster.worker.id,
+    workerId: 1, // cluster.worker.id,
 });
-var imageRouter = require('./routes/image');
+const imageRouter = require('./routes/image');
+
 imageRouter.setConfig(config, {
-    workerId: 1, //cluster.worker.id,
+    workerId: 1, // cluster.worker.id,
     photoPath: config.adapter.markdown.photoPath,
-    photoCachePath: config.blog.domain
+    photoCachePath: config.blog.domain,
 });
-var searchRouter = require('./routes/search');
+const searchRouter = require('./routes/search');
+
 searchRouter.setConfig(config, {
-    workerId: 1 //cluster.worker.id,
+    workerId: 1, // cluster.worker.id,
 });
 
 // Register routes -------------------------------
@@ -68,11 +94,11 @@ app.use('/search/', searchRouter);
 app.use('/', webRouter);
 
 // Start the server ------------------------------
-var server = app.listen(config.app.port, function () {
-        var host = server.address().address;
-        var port = server.address().port;
-        logger.log('info', 'Something happens at http://' + host + ':' + port + '/');
-        // heapdump / inspecting for memory leaks.
-        //console.log('$ kill -USR2 ' + process.pid + ' && curl http://localhost:8080/tech/_test_col && ' +
-        //    'curl http://localhost:8080/gc && curl http://localhost:8080/gc');
-    });
+const server = app.listen(config.app.port, () => {
+    const host = server.address().address;
+    const port = server.address().port;
+    logger.log('info', `Something happens at http://${host}:${port}/`);
+    // heapdump / inspecting for memory leaks.
+    // console.log('$ kill -USR2 ' + process.pid + ' && curl http://localhost:8080/tech/_test_col && ' +
+    //    'curl http://localhost:8080/gc && curl http://localhost:8080/gc');
+});

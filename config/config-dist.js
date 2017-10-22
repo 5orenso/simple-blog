@@ -1,5 +1,11 @@
 module.exports = {
     version: 1,
+    jwt: {
+        secret: 'This is the JWT secret',
+    },
+    sendgrid: {
+        apiKey: 'Your Sendgrid API key which should be kept secret.',
+    },
     blog: {
         title: 'Simple Blog Server',
         description: 'Her skriver jeg hovedsaklig på norsk om det ikke skulle være noe helt spesielt. Jeg skriver om det jeg bruker tiden min på, som er tur, foto, hundekjøring, hacking, fikling og mye annet.',
@@ -86,15 +92,6 @@ module.exports = {
             contentPath: __dirname + '/../content/articles/',
             photoPath: __dirname + '/../content/images/',
             maxArticles: 500,
-        },
-        postgresql: {
-            username: '',
-            password: '',
-            server: '127.0.0.1',
-            port: '5432',
-            database: 'nils',
-            articleTable: 'article',
-            categoryTable: 'category',
         },
         elasticsearch: {
             //server: '172.30.0.227',

@@ -6,25 +6,13 @@ module.exports = function (grunt) {
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
 
-        jshint: {
+        eslint: {
             options: {
-                jshintrc: '.jshintrc'
+                config: '.eslintrc.json',
+                reset: true
             },
-            gruntfile: {
-                src: 'Gruntfile.js'
-            },
-            lib: {
-                src: ['app/**/*.js', 'lib/**/*.js']
-            },
-            test: {
-                src: ['test/**/*.js']
-            }
-        },
-        jscs: {
-            main: ['app/**/*.js', 'lib/**/*.js', 'test/**/*.js'],
-            options: {
-                config: ".jscsrc"
-            }
+            target: ['app/**/*.js', 'lib/**/*.js']
+            // target: ['app/**/*.js', 'lib/**/*.js', 'test/**/*.js']
         },
         jsdoc: {
             dist: {
@@ -43,7 +31,23 @@ module.exports = function (grunt) {
                 tasks: ['lint', 'buster:unit', 'doc']
             }
         },
-
+        watchtest: {
+            all: {
+                files: ['app/**/*.js', 'lib/**/*.js', 'test/**/*.js', 'test/content/**/*.md', 'config/*.js', 'template/**/**/*.html'],
+                tasks: ['buster:unit'],
+            }
+        },
+        retire: {
+            js: ['app/**/*.js', 'lib/**/*.js'], /** Which js-files to scan. **/
+            node: ['node'], /** Which node directories to scan (containing package.json). **/
+            options: {
+                verbose: true,
+                packageOnly: true,
+                jsRepository: 'https://raw.github.com/RetireJS/retire.js/master/repository/jsrepository.json',
+                nodeRepository: 'https://raw.github.com/RetireJS/retire.js/master/repository/npmrepository.json',
+                ignorefile: '.retireignore' /** list of files to ignore **/
+            }
+        },
         buster: {
             unit: {
             }
@@ -54,7 +58,7 @@ module.exports = function (grunt) {
                     script: 'app/server.js',
                     ext: 'js,json,html',
                     ignore: ['node_modules/**', 'template/current/**'],
-                    args: ['-c', '../config/config-dist.js'],
+                    args: ['-c', '../config/config.js'],
                     env: {
                         nodeEnv: 'development'
                     }
@@ -116,16 +120,24 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-nodeunit');
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-watch');
+    // Rename watch to watchdev and load it again
+    grunt.renameTask('watch', 'watchtest');
+    // Load it again.
+    grunt.loadNpmTasks('grunt-contrib-watch');
+
     grunt.loadNpmTasks('grunt-nodemon');
     grunt.loadNpmTasks('grunt-shell');
     grunt.loadNpmTasks('grunt-buster');
-    grunt.loadNpmTasks("grunt-jscs");
     grunt.loadNpmTasks('grunt-jsdoc');
     grunt.loadNpmTasks('grunt-coveralls');
+    grunt.loadNpmTasks('grunt-retire');
+    grunt.loadNpmTasks('grunt-eslint');
 
     // Default task.
-    grunt.registerTask( "lint", [ "jshint", "jscs" ] );
-    grunt.registerTask('default', ['lint', 'buster:unit', 'doc']);
+    grunt.registerTask('es', ['eslint']);
+    grunt.registerTask( "lint", [ "eslint" ] );
+
+    grunt.registerTask('default', ['lint', 'buster:unit', 'doc', 'retire']);
     grunt.registerTask('doc', ['jsdoc']);
     grunt.registerTask('test', 'buster:unit');
     grunt.registerTask('check', ['watch']);

@@ -55,11 +55,11 @@ var articleMd = ':title My nice title' + "\n" +
         'title Central Identification Service' + "\n" +
         'Browser->VG.no: GET /' + "\n" +
         '```' + "\n" +
-        '```flot' + "\n" +
-        'xaxis: {}' + "\n" +
-        'yaxis: {}' + "\n" +
-        '[{"data":[[1,2]]}]' + "\n" +
-        '```' + "\n" +
+        // '```flot' + "\n" +
+        // 'xaxis: {}' + "\n" +
+        // 'yaxis: {}' + "\n" +
+        // '[{"data":[[1,2]]}]' + "\n" +
+        // '```' + "\n" +
     ':tag foo,bar,gomle' + "\n" +
     ':img2 test-image.jpg' + "\n" +
     ':body2 test body2' + "\n" +
@@ -92,12 +92,12 @@ var articleObj = { tagValues: { toc: '', fact: '', artlist: '' },
         '```wsd' + "\n" +
         'title Central Identification Service' + "\n" +
         'Browser->VG.no: GET /' + "\n" +
-        '```' + "\n" +
-        '```flot' + "\n" +
-        'xaxis: {}' + "\n" +
-        'yaxis: {}' + "\n" +
-        '[{"data":[[1,2]]}]' + "\n" +
         '```',
+        // '```flot' + "\n" +
+        // 'xaxis: {}' + "\n" +
+        // 'yaxis: {}' + "\n" +
+        // '[{"data":[[1,2]]}]' + "\n" +
+        // '```',
     img2: ['test-image.jpg'],
     body2: 'test body2',
     col: ['col1', 'col2', 'col3', 'col4'],
@@ -126,8 +126,8 @@ var articleObjHtml = {
         '<h2 class="toc-2"><a name="table-of-contents" class="anchor" href="#table-of-contents">' +
         '<span class="header-link"></span></a>Table of contents</h2><p>[:toc]' + "\n" +
         '<img src="/pho/wsd/?data=title%20Central%20Identification%20Service%0ABrowser-%3EVG.no%3A%20GET%20%2F%0A">' +
-        '</p>' + "\n" +
-        '<p><div class="row">' + "\n",
+        '</p>',
+        // '<p><div class="row">' + "\n",
     body2: '<p>test body</p>',
     col: [
         '<p>col1</p>\n',
@@ -258,8 +258,8 @@ buster.testCase('lib/article-util', {
             var result = articleUtil.populateArticleSections(articleMd);
             assert.equals(result.title, articleObj.title);
             assert.equals(result.img, articleObj.img);
-//            console.log('result:', result.body, '<--');
-//            console.log('articleObj:', articleObj.body, '<--');
+            //    console.log('result:', result.body, '<--');
+            //    console.log('articleObj:', articleObj.body, '<--');
             assert.equals(result.body, articleObj.body);
         },
 
@@ -320,7 +320,7 @@ buster.testCase('lib/article-util', {
             assert.equals(article.author, articleObjHtml.author);
             assert.equals(article.published, articleObjHtml.published);
             assert.equals(article.baseHref, articleObjHtml.baseHref);
-            assert.match(article.body, htmlCoponents.flot);
+            // assert.match(article.body, htmlCoponents.flot);
             assert.match(article.body, htmlCoponents.wsd);
 
             refute(result);

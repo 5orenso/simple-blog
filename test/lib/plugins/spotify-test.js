@@ -19,14 +19,22 @@ buster.testCase('lib/plugins/spotify', {
         'replacer track': function () {
             var inputStr = 'See my music track https://open.spotify.com/track/0qRXZNsoVdU9xXJIFqQkCQ';
             var result = inputStr.replace(plugin.get('regexp'), plugin.replacer);
-            var regexp = new RegExp('<div class="videoWrapper"><iframe width="560" height="349" src="https://embed.spotify.com/\\?uri=spotify%3Atrack%3A0qRXZNsoVdU9xXJIFqQkCQ" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></div>');
+            var regexp = new RegExp('src="https://embed.spotify.com/\\?uri=spotify%3Atrack%3A0qRXZNsoVdU9xXJIFqQkCQ"');
             assert.match(result, regexp);
+            assert.match(result, /<div class="videoWrapper">/i);
+            assert.match(result, /<iframe width="560" height="349"/i);
+            assert.match(result, /webkitallowfullscreen mozallowfullscreen allowfullscreen>/i);
+            assert.match(result, /<\/iframe><\/div>/i);
         },
         'replacer playlist': function () {
             var inputStr = 'See my playlist https://open.spotify.com/user/jarlelk/playlist/1HjpdqHWIZCAsod0RBvjFX';
             var result = inputStr.replace(plugin.get('regexp'), plugin.replacer);
-            var regexp = new RegExp('<div class="videoWrapper"><iframe width="560" height="349" src="https://embed.spotify.com/\\?uri=spotify%3Auser%3Ajarlelk%3Aplaylist%3A1HjpdqHWIZCAsod0RBvjFX" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></div>');
+            var regexp = new RegExp('src="https://embed.spotify.com/\\?uri=spotify%3Auser%3Ajarlelk%3Aplaylist%3A1HjpdqHWIZCAsod0RBvjFX"');
             assert.match(result, regexp);
+            assert.match(result, /<div class="videoWrapper">/i);
+            assert.match(result, /<iframe width="560" height="349"/i);
+            assert.match(result, /webkitallowfullscreen mozallowfullscreen allowfullscreen>/i);
+            assert.match(result, /<\/iframe><\/div>/i);
         }
         // jscs:enable
 
