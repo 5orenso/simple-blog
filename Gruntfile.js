@@ -58,7 +58,7 @@ module.exports = function (grunt) {
                     script: 'app/server.js',
                     ext: 'js,json,html',
                     ignore: ['node_modules/**', 'template/current/**'],
-                    args: ['-c', '../config/config-dist.js'],
+                    args: ['-c', '../config/config.js'],
                     env: {
                         nodeEnv: 'development'
                     }

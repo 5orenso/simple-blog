@@ -142,7 +142,8 @@
                     <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
                 </div>
 
-                {% if query.upload %}
+                {% if session.email %}
+                User: {{ session.email }} (time: {{ session.iat }})<br>
                 <!-- ajax fileupload form -->
                 <!--
                   1. Add class="no-js" to the html-tag:

@@ -82,6 +82,8 @@ webRouter.use(morgan('combined', { stream: accessLogStream }));
 
 // Set config
 webRouter.use(setConfig);
+// webRouter.use(require('../../lib/jwt').authenticated);
+webRouter.use(require('../../lib/jwt'));
 
 // Setup static routes
 webRouter.use('/global/', localUtil.setCacheHeaders);
@@ -116,6 +118,9 @@ webRouter.get('/photos/*', (req, res) => {
     requestUrl = requestUrl.replace(/\/photos\//, '');
     res.sendFile(requestUrl, { root: path.normalize(webRouter.config.adapter.markdown.photoPath) });
 });
+
+webRouter.get('/send-magic-link', require('./send-magic-link.js'));
+webRouter.get('/verify-magic-link', require('./verify-magic-link.js'));
 
 // webRouter.post('/ajax/fileupload', webUtil.restrict, require('./post-fileupload.js'));
 webRouter.get('/ajax/fileupload', require('./post-fileupload.js'));
@@ -153,11 +158,10 @@ webRouter.get('/*', (req, res) => {
         const articleAllPath = articleUtil.getArticlePathRelative('/');
         const articlePath = articleUtil.getArticlePathRelative(requestUrl);
 
-        // Stop timer when response is transferred and finish.
-        res.on('finish', () => {
-            // if (timer) { stopwatch.end(); }
-        });
-
+        if (typeof req.session === 'object' && req.session.iat) {
+            const now = (new Date()).getTime() / 1000;
+            req.session.age = now - req.session.iat;
+        }
         // Check for cached file
         // If not cached compile file and store it.
         // TODO: How do we bypass the cache?
@@ -195,6 +199,7 @@ webRouter.get('/*', (req, res) => {
                     blog: webRouter.config.blog,
                     article: resultArticle,
                     query: inputQuery,
+                    session: req.session,
                 }));
             })
             .catch((opt) => {

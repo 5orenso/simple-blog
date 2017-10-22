@@ -10,6 +10,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const _ = require('underscore');
+const fs = require('fs');
 const Logger = require('../../lib/logger');
 const LocalUtil = require('../../lib/local-util');
 
@@ -17,7 +18,7 @@ const logger = new Logger();
 const localUtil = new LocalUtil();
 
 const apiRouter = express.Router();
-apiRouter.setConfig = function (conf, opt) {
+apiRouter.setConfig = function doSetConfig(conf, opt) {
     apiRouter.config = conf;
     apiRouter.opt = opt;
     if (opt) {
@@ -68,7 +69,6 @@ apiRouter.post('/report', (req, res) => {
 
     // Write shit to file.
     const milliseconds = (new Date()).getTime();
-    const fs = require('fs');
     fs.writeFile(`/tmp/javascript-module-performance-${milliseconds}`, JSON.stringify(req.body), (err) => {
         if (err) {
             res.json({ message: `Something went wrong: ${err}`, status: 500 });
