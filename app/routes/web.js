@@ -159,7 +159,7 @@ webRouter.get('/*', (req, res) => {
         const articlePath = articleUtil.getArticlePathRelative(requestUrl);
 
         if (typeof req.session === 'object' && req.session.iat) {
-            const now = (new Date()).getTime() / 1000;
+            const now = parseInt((new Date()).getTime() / 1000, 10);
             req.session.age = now - req.session.iat;
         }
         // Check for cached file
