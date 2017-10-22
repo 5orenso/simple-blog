@@ -19,8 +19,12 @@ buster.testCase('lib/plugins/vimeo', {
         'replacer mode=search': function () {
             var inputStr = 'See my map https://vimeo.com/132249165';
             var result = inputStr.replace(plugin.get('regexp'), plugin.replacer);
-            var regexp = new RegExp('<div class="videoWrapper"><iframe width="560" height="349" src="https://player.vimeo.com/video/132249165" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></div>');
-            assert.match(result, regexp);
+            assert.match(result, /<div class="videoWrapper">/i);
+            assert.match(result, /<iframe width="560" height="349"/i);
+            assert.match(result, /src="https:\/\/player.vimeo.com\/video\/132249165"/i);
+            assert.match(result, /webkitallowfullscreen mozallowfullscreen allowfullscreen/i);
+            assert.match(result, /<\/iframe>/i);
+            assert.match(result, /<\/div>/i);
         }
         // jscs:enable
 

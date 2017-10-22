@@ -2,7 +2,7 @@
 
 var imgLoader = function (image) {
     image.onerror = null;
-    var imageSrc = image.src + '?' + new Date();
+    var imageSrc = image.src;
     image.src = '/img/ajax-loader-2.gif';
     setTimeout(function () {
         image.src = imageSrc;
@@ -15,6 +15,15 @@ var imgLoader = function (image) {
         var div = document.createElement('div');
         return (('draggable' in div) || ('ondragstart' in div && 'ondrop' in div)) && 'FormData' in window && 'FileReader' in window;
     }();
+
+    function makeThumb(file) {
+        console.log(file);
+        var thumb = '<i class="fa fa-file-o" aria-hidden="true"></i>';
+        if (file.thumbLink) {
+            thumb = '<img src="' + file.thumbLink + '" onError="imgLoader(this);" class="fileupload-thumb">';
+        }
+        return thumb;
+    }
 
     // applying the effect for every form
     $('.box').each(function() {
@@ -99,17 +108,14 @@ var imgLoader = function (image) {
                             $successMsg.html(
                                 'Uploaded files:<br>' +
                                 data.files.map(file => '<li>' +
-                                    '<a target="blank" href="' + file.s3Link + '"><img src="' + file.s3ThumbLink +
-                                    '" onError="imgLoader(this);" class="fileupload-thumb">' + file.name +'</a></li>').join('')
+                                    '<a target="blank" href="' + file.webLink + '">' + makeThumb(file) + file.name +'</a></li>').join('')
                             );
                             $hidden.append(
                                 data.files.map(file => '<input type="hidden" name="uploadedFiles" value="' +
                                     encodeURIComponent(JSON.stringify(file)) + '">')
                             );
                             $filelist.append(
-                                data.files.map(file => '<a target="blank" href="' + file.s3Link + '"><img src="' +
-                                    file.s3ThumbLink + '" onError="imgLoader(this);" class="fileupload-thumb">' +
-                                    file.name + '</a>' + '<br>').join('')
+                                data.files.map(file => '<a target="blank" href="' + file.webLink + '">' + makeThumb(file) + file.name + '</a>' + '<br>').join('')
                             );
                         } else {
                             $form.addClass('is-error');

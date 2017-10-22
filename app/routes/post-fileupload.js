@@ -22,20 +22,43 @@ function isImage(file) {
 function pathExists(absolutePath) {
     return new Promise((resolve, reject) => {
         console.log('absolutePath', absolutePath);
-        fs.exists(absolutePath, function(exists) {
+        fs.exists(absolutePath, (exists) => {
             if (!exists) {
-                mkdirp(absolutePath, function(err) {
+                mkdirp(absolutePath, (err) => {
                     if (err) {
                         console.error(err);
                         reject(err);
                     }
-                    console.log('created', absolutePath);
                     resolve(absolutePath);
                 });
             } else {
-                console.log('exists', absolutePath);
                 resolve(absolutePath);
             }
+        });
+    });
+}
+
+function addMarkdownToFile(addToFile, imageFilename, imageDescription) {
+    return new Promise((resolve, reject) => {
+        const markdownForImage = `![${imageDescription}](${imageFilename})\n`;
+        fs.appendFile(addToFile, markdownForImage, (err) => {
+            if (err) {
+                return reject(err);
+            }
+            return resolve('saved');
+        });
+    });
+}
+
+function addImgToFile(addToFile, imageFilename, imageDescription) {
+    return new Promise((resolve, reject) => {
+        const imageContent = `:img ${imageFilename}
+:imgtext ${imageDescription}\n`;
+        fs.appendFile(addToFile, imageContent, (err) => {
+            if (err) {
+                return reject(err);
+            }
+            return resolve('saved');
         });
     });
 }
@@ -48,9 +71,15 @@ module.exports = (req, res) => {
     const filesUploaded = [];
     const allPromises = [];
 
-    const uploadPath = path.normalize(req.config.adapter.markdown.photoPath + req.body.pathPrefix + '/');
+    const uploadPath = path.normalize(`${req.config.adapter.markdown.photoPath}${req.body.pathPrefix}/`);
+    const webPath = req.body.pathPrefix;
+    const addToFile = path.normalize(`${req.config.adapter.markdown.contentPath}${req.body.addToFile}`);
+    const addGalleryImage = req.body.addGalleryImage;
+
     // imagePath: /Users/sorenso/Projects/simple-blog/content/images/outdoor/snow-scooter-alta-2011
-    console.log('imagePath:', uploadPath);
+    console.log('uploadPath:', uploadPath);
+    console.log('webPath:', webPath);
+    console.log('addToFile:', addToFile);
 
     if (!req.files) {
         uploadResult = false;
@@ -61,7 +90,7 @@ module.exports = (req, res) => {
         let files = [];
         if (Array.isArray(req.files['files[]'])) { // Multiple files uploaded
             files = req.files['files[]'];
-        } else {  // One file uploaded
+        } else { // One file uploaded
             files.push(req.files['files[]']);
         }
         for (let i = 0; i < files.length; i += 1) {
@@ -69,22 +98,34 @@ module.exports = (req, res) => {
             const filename = uuidv4();
             file.ext = path.extname(file.name);
             file.newFilename = filenamePrefix + filename + file.ext;
-            file.webLink = `${baseHref}${file.newFilename}`;
+            file.webLink = `${path.normalize(baseHref + webPath)}/${file.newFilename}`;
             const destinationFile = `${uploadPath}${file.newFilename}`;
             allPromises.push(pathExists(uploadPath)
                 .then(() => file.mv(destinationFile))
                 .then(() => {
                     if (isImage(file)) {
-                        file.thumbLink = `${baseHref}${file.newFilename}?w=100`;
+                        file.thumbLink = `${path.normalize(baseHref + webPath)}/${file.newFilename}?w=100`;
                     }
                     delete file.data;
                     filesUploaded.push(file);
+                })
+                .then(() => {
+                    if (isImage(file)) {
+                        if (addGalleryImage) {
+                            return addImgToFile(addToFile, `${path.normalize(webPath)}/${
+                                file.newFilename}`, file.name);
+                        }
+                        return addMarkdownToFile(addToFile, `${path.normalize(baseHref + webPath)}/${
+                            file.newFilename}?w=750`, file.name);
+                    }
+                    return false;
                 }));
         }
     }
 
     Promise.all(allPromises)
         .then(() => {
+            console.log('filesUploaded', filesUploaded);
             webUtil.sendResultResponse(req, res, {
                 uploadResult: {
                     success: uploadResult,

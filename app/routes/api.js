@@ -4,17 +4,19 @@
  * Copyright (c) 2014 Øistein Sørensen
  * Licensed under the MIT license.
  */
-'use strict';
-var express       = require('express'),
-    bodyParser    = require('body-parser'),
-    _             = require('underscore'),
-    appPath       = __dirname + '/../../',
-    Logger        = require(appPath + 'lib/logger'),
-    logger        = new Logger(),
-    LocalUtil     = require(appPath + 'lib/local-util'),
-    localUtil     = new LocalUtil();
 
-var apiRouter = express.Router();
+'use strict';
+
+const express = require('express');
+const bodyParser = require('body-parser');
+const _ = require('underscore');
+const Logger = require('../../lib/logger');
+const LocalUtil = require('../../lib/local-util');
+
+const logger = new Logger();
+const localUtil = new LocalUtil();
+
+const apiRouter = express.Router();
 apiRouter.setConfig = function (conf, opt) {
     apiRouter.config = conf;
     apiRouter.opt = opt;
@@ -30,14 +32,14 @@ apiRouter.setConfig = function (conf, opt) {
     }
 };
 // middleware to use for all requests
-//var accessLogStream = fs.createWriteStream(appPath + '/logs/api-access.log', {flags: 'a'});
+// var accessLogStream = fs.createWriteStream(appPath + '/logs/api-access.log', {flags: 'a'});
 // setup the logger
-//apiRouter.use(morgan('combined', {stream: accessLogStream}));
+// apiRouter.use(morgan('combined', {stream: accessLogStream}));
 apiRouter.use('/*', localUtil.setCacheHeaders);
 // parse application/json
 apiRouter.use(bodyParser.json());
 
-apiRouter.use(function(req, res, next) {
+apiRouter.use((req, res, next) => {
     // do logging
 //    logger.log(
 //        req.method,
@@ -49,32 +51,31 @@ apiRouter.use(function(req, res, next) {
 });
 
 // test route to make sure everything is working (accessed at GET http://localhost:8080/api)
-apiRouter.get('/', function(req, res) {
+apiRouter.get('/', (req, res) => {
     // Stop timer when response is transferred and finish.
-    res.on('finish', function () {
+    res.on('finish', () => {
         // metrics.increment('simpleblog.api.get');
     });
     res.json({ message: 'hooray! welcome to our api!' });
 });
 
 // test route to make sure everything is working (accessed at GET http://localhost:8080/api)
-apiRouter.post('/report', function(req, res) {
+apiRouter.post('/report', (req, res) => {
     // Stop timer when response is transferred and finish.
-    res.on('finish', function () {
+    res.on('finish', () => {
         // metrics.increment('simpleblog.api.post');
     });
 
     // Write shit to file.
-    var milliseconds = (new Date()).getTime();
-    var fs = require('fs');
-    fs.writeFile('/tmp/javascript-module-performance-' + milliseconds, JSON.stringify(req.body), function(err) {
+    const milliseconds = (new Date()).getTime();
+    const fs = require('fs');
+    fs.writeFile(`/tmp/javascript-module-performance-${milliseconds}`, JSON.stringify(req.body), (err) => {
         if (err) {
-            res.json({ message: 'Something went wrong: ' + err, status: 500 });
+            res.json({ message: `Something went wrong: ${err}`, status: 500 });
         } else {
             res.json({ message: 'Thanks for your report.', status: 200 });
         }
     });
-
 });
 
 module.exports = apiRouter;
