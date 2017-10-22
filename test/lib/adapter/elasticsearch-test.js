@@ -99,7 +99,7 @@ buster.testCase('Elasticsearch', {
             });
     },
 
-    'ping server': function (done) {
+    '//ping server': function (done) {
         when(es.ping())
             .done(function (obj) {
                 assert.equals(obj, 'all is well');
