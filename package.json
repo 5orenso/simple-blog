@@ -69,6 +69,7 @@
     "node-dogstatsd": "0.0.6",
     "rest": "^2.0.0",
     "sendgrid": "^5.2.3",
+    "session-file-store": "^1.1.2",
     "strftime": "^0.10.0",
     "swig": "^1.4.2",
     "underscore": "^1.8.3",

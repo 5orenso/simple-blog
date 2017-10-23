@@ -12,6 +12,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const compression = require('compression');
 const session = require('express-session');
+const FileStore = require('session-file-store')(session);
 const commander = require('commander');
 const fileUpload = require('express-fileupload');
 const Logger = require('../lib/logger');
@@ -42,6 +43,7 @@ app.use(compression({
     threshold: 512,
 }));
 app.use(session({
+    name: 'server-session-cookie-id',
     secret: 'mAke noDE.js gREat again!',
     resave: true,
     saveUninitialized: true,
@@ -50,6 +52,7 @@ app.use(session({
         httpOnly: true,
         maxAge: cookieMaxAgeSession,
     },
+    store: new FileStore(),
 }));
 app.use(fileUpload());
 
