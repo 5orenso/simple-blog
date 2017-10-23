@@ -57,7 +57,7 @@ module.exports = function (grunt) {
                 options: {
                     script: 'app/server.js',
                     ext: 'js,json,html',
-                    ignore: ['node_modules/**', 'template/current/**'],
+                    ignore: ['node_modules/**', 'template/current/**', 'sessions/**'],
                     args: ['-c', '../config/config.js'],
                     env: {
                         nodeEnv: 'development'
@@ -69,7 +69,7 @@ module.exports = function (grunt) {
                 options: {
                     script: 'app/server.js',
                     ext: 'js,json,html',
-                    ignore: ['node_modules/**', 'template/current/**'],
+                    ignore: ['node_modules/**', 'template/current/**', 'sessions/**'],
                     args: ['-c', '../config/config-local.js'],
                     env: {
                         nodeEnv: 'development'
