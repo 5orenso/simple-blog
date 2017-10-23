@@ -123,6 +123,9 @@ webRouter.get('/send-magic-link', require('./send-magic-link.js'));
 webRouter.get('/verify-magic-link', require('./verify-magic-link.js'));
 
 // webRouter.post('/ajax/fileupload', webUtil.restrict, require('./post-fileupload.js'));
+webRouter.get('/ajax/savefile', require('./post-savefile.js'));
+webRouter.post('/ajax/savefile', require('./post-savefile.js'));
+
 webRouter.get('/ajax/fileupload', require('./post-fileupload.js'));
 webRouter.post('/ajax/fileupload', require('./post-fileupload.js'));
 
@@ -186,8 +189,8 @@ webRouter.get('/*', (req, res) => {
                 for (let i = 0, l = resultArticle.artlist.length; i < l; i += 1) {
                     const art = resultArticle.artlist[i];
                     if (resultArticle.file === art.file) {
-                        art.next = resultArticle.artlist[i - 1];
-                        art.previous = resultArticle.artlist[i + 1];
+                        resultArticle.next = resultArticle.artlist[i - 1];
+                        resultArticle.previous = resultArticle.artlist[i + 1];
                     }
                 }
                 resultArticle.artlistTotal = resultArticle.artlist.length;
