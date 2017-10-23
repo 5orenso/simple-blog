@@ -325,7 +325,17 @@ $(document).ready(function() {
     </script>
 {% endif %}
 
-<script type="text/javascript" src="/global/js/fileupload.js"></script>
+{% if session.email %}
+    <script type="text/javascript" src="/global/js/fileupload.js"></script>
+    <script type="text/javascript" src="/global/js/simplemde.min.js"></script>
+    <script>
+        var simplemde = new SimpleMDE({
+            element: document.getElementById("markdownEditor"),
+            spellChecker: false,
+        });
+    </script>
+    <script type="text/javascript" src="/global/js/saveForm.js"></script>
+{% endif %}
 
 </body>
 </html>
