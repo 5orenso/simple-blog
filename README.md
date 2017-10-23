@@ -55,9 +55,9 @@ Simply save your article in the correct folder and voila, it's published.
  :teaser Read all about it!
  :body
  ## Hello world!
- 
+
  This is my first blog post.
- 
+
 ```
 
 __That's all there is to it.__
@@ -111,4 +111,10 @@ npm install grunt-shell --save-dev --no-optional
 $ npm install -g npm-check-updates
 $ ncu -u
 $ npm install --save --no-optional
+```
+
+### Howto upgrade editor
+```bash
+$ cp ../simplemde-markdown-editor/dist/simplemde.min.js ./template/global/js/.
+$ cp ../simplemde-markdown-editor/dist/simplemde.min.css ./template/global/css/.
 ```
