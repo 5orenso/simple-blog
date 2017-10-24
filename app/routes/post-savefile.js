@@ -24,8 +24,14 @@ module.exports = (req, res) => {
     const uploadResult = true;
     let errorMessage;
     const filesUploaded = [];
-    const addToFile = path.normalize(`${req.config.adapter.markdown.contentPath}${req.body.addToFile}`);
-
+    let addToFile = path.normalize(`${req.config.adapter.markdown.contentPath}${req.body.addToFile}`);
+    if (req.body.makeNewFile && req.body.filePath) {
+        let newFilename = req.body.makeNewFile.toLowerCase();
+        newFilename = newFilename.replace(/\.md$/, '');
+        newFilename = newFilename.replace(/[^a-z0-9-]/g, '-');
+        addToFile =
+            path.normalize(`${req.config.adapter.markdown.contentPath}${req.body.filePath}${newFilename}.md`);
+    }
     console.log('addToFile:', addToFile);
 
     return saveFile(addToFile, req.body.body)
