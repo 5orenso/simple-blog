@@ -51,6 +51,7 @@
   "keywords": [],
   "dependencies": {
     "body-parser": "^1.14.1",
+    "client-sessions": "^0.8.0",
     "commander": "^2.9.0",
     "compression": "^1.7.1",
     "elasticsearch": "^13.3.1",

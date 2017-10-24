@@ -11,8 +11,9 @@ const _ = require('underscore');
 const express = require('express');
 const bodyParser = require('body-parser');
 const compression = require('compression');
-const session = require('express-session');
-const FileStore = require('session-file-store')(session);
+// const session = require('express-session');
+// const FileStore = require('session-file-store')(session);
+const sessions = require('client-sessions');
 const commander = require('commander');
 const fileUpload = require('express-fileupload');
 const Logger = require('../lib/logger');
@@ -42,18 +43,34 @@ app.use(bodyParser.json());
 app.use(compression({
     threshold: 512,
 }));
-app.use(session({
-    name: 'server-session-cookie-id',
-    secret: 'mAke noDE.js gREat again!',
-    resave: true,
-    saveUninitialized: true,
+
+// app.use(session({
+//     name: 'server-session-cookie-id',
+//     secret: 'mAke noDE.js gREat again!',
+//     resave: true,
+//     saveUninitialized: true,
+//     cookie: {
+//         path: '/',
+//         httpOnly: true,
+//         maxAge: cookieMaxAgeSession,
+//     },
+//     store: new FileStore(),
+// }));
+
+app.use(sessions({
+    cookieName: 'session', // cookie name dictates the key name added to the request object
+    secret: 'mAke noDE.js gREat again!', // should be a large unguessable string
+    duration: cookieMaxAgeSession, // how long the session will stay valid in ms
     cookie: {
-        path: '/',
-        httpOnly: true,
-        maxAge: cookieMaxAgeSession,
+        path: '/', // cookie will only be sent to requests under '/api'
+        maxAge: cookieMaxAgeSession, // duration of the cookie in milliseconds, defaults to duration above
+        ephemeral: false, // when true, cookie expires when the browser closes
+        httpOnly: true, // when true, cookie is not accessible from javascript
+        secure: false, // when true, cookie will only be sent over SSL. use key 'secureProxy' instead if you handle
+        // SSL not in your node process
     },
-    store: new FileStore(),
 }));
+
 app.use(fileUpload());
 
 // Include route handlers ------------------------
