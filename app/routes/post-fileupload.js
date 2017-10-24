@@ -40,7 +40,7 @@ function pathExists(absolutePath) {
 
 function addMarkdownToFile(addToFile, imageFilename, imageDescription) {
     return new Promise((resolve, reject) => {
-        const markdownForImage = `![${imageDescription}](${imageFilename})\n`;
+        const markdownForImage = `\n![${imageDescription}](${imageFilename})\n`;
         fs.appendFile(addToFile, markdownForImage, (err) => {
             if (err) {
                 return reject(err);
@@ -52,7 +52,7 @@ function addMarkdownToFile(addToFile, imageFilename, imageDescription) {
 
 function addImgToFile(addToFile, imageFilename, imageDescription) {
     return new Promise((resolve, reject) => {
-        const imageContent = `:img ${imageFilename}
+        const imageContent = `\n:img ${imageFilename}
 :imgtext ${imageDescription}\n`;
         fs.appendFile(addToFile, imageContent, (err) => {
             if (err) {
