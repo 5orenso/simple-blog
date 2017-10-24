@@ -278,7 +278,7 @@
 <script src="assets/js/jquery-1.12.4.min.js"></script>
 <script src="assets/js/bootstrap.min.js"></script>
 <script src="assets/js/slick.min.js"></script>
-{% if article.gallery %}
+{% if article.gallery || article.img[1] %}
     <script src="assets/js/jquery.prettyPhoto.js"></script>
     <script src="assets/js/jquery.justifiedGallery.min.js"></script>
     <script>
@@ -329,10 +329,19 @@ $(document).ready(function() {
     <script type="text/javascript" src="/global/js/fileupload.js"></script>
     <script type="text/javascript" src="/global/js/simplemde.min.js"></script>
     <script>
+        function customMarkdownParser(markdown, editor) {
+            var result = markdown.replace(/(!\[(.+?)\]\(.+?\))/gm, '$1\n$2');
+            console.log(result);
+            return editor.markdown(result);
+        }
         var simplemde = new SimpleMDE({
             element: document.getElementById("markdownEditor"),
             spellChecker: false,
+            previewRender: function(plainText) {
+		        return customMarkdownParser(plainText, this.parent); // Returns HTML from a custom parser
+	        },
         });
+
     </script>
     <script type="text/javascript" src="/global/js/saveForm.js"></script>
 {% endif %}

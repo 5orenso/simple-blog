@@ -4,10 +4,10 @@
 		<div class="row">
 			<div class="col-sm-8">
 				<article class="single-blog">
-					<div class="post-thumb {% if article.gallery %}gallery-post-format{% endif %}">
+					<div class="post-thumb {% if article.gallery || article.img[1] %}gallery-post-format{% endif %}">
                         {% if article.youtube %}
 						    {{ article.youtube|raw }}
-                        {% elseif article.gallery %}
+                        {% elseif article.gallery || article.img[1] %}
                             <div id="mygallery">
                                 {% set imgnum = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20] %}
                                 {% for i in imgnum %}
@@ -25,7 +25,6 @@
                                         </div>
                                     {% endif %}
                                 {% endfor %}
-
                             </div>
                         {% elseif article.img[0] %}
                             <img src="/pho/{{ article.img[0] }}?w=800" alt="{{ article.title|e }}">
@@ -82,8 +81,17 @@
                             User: {{ session.email }} (age: {{ session.age }} sec)<br>
                             <form class="markdownEditor" method="post" action="/ajax/savefile" novalidate class="box">
                                 <input type="hidden" name="addToFile" value="{{ file.path }}{{ file.name }}.md">
+                                <input type="hidden" name="filePath" value="{{ file.path }}">
+                                <input type="hidden" name="fileName" value="{{ file.name }}">
                                 <textarea id="markdownEditor" name="body">{{ article.data }}</textarea>
-                                <button type="submit">Save</button>
+                                <div class="form-group">
+                                    <label for="filename">New article name (No path, slashes or extentions!):</label>
+                                    <input type="text" class="form-control" id="filename" name="makeNewFile" placeholder="To save as new article, type new name...">
+                                </div>
+                                <span class="pull-right">
+                                    <button class="btn btn-success" type="submit">Save changes</button>
+                                </span>
+                                <div class="clearfix"></div>
                                 <div class="markdown_box__success"><span class="small_info"></span></div>
                                 <div class="markdown_box__error"><span></span></div>
                             </form>
@@ -112,7 +120,7 @@
                                 <form method="post" action="/ajax/fileupload" enctype="multipart/form-data" novalidate class="box">
                                     <input type="hidden" name="pathPrefix" value="{{ file.path }}{{ file.name|fixFilename }}">
                                     <input type="hidden" name="addToFile" value="{{ file.path }}{{ file.name }}.md">
-                                    {% if article.gallery %}
+                                    {% if article.gallery || article.img[1] %}
                                         <input type="hidden" name="addGalleryImage" value="true">
                                     {% endif %}
                                     <div class="box__input controls">

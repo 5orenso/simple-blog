@@ -40,7 +40,7 @@
     							<h2><a href="{{ art.baseHref }}{{ art.file }}">{{ art.title }}</a></h2>
     						</div>
     						<div class="entry-content">
-    							<p>{{ art.body|substring(1, 300)|markdown|cleanHtml }}...</p>
+    							<p>{{ art.body|substring(0, 300)|markdown|cleanHtml }}...</p>
     						</div>
     						<div class="continue-reading text-center text-uppercase">
     							<a href="{{ art.baseHref }}{{ art.file }}">Continue Reading</a>
