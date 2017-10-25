@@ -141,7 +141,7 @@
 
                         {% set end = page * limit %}
                         {% set nextPage = page + 1 %}
-                        {% if total > end %}
+                        {% if total >= end %}
 						    <li><a href="{{ article.baseHref }}?page={{ nextPage }}"><i class="fa fa-angle-double-right"></i></a></li>
                         {% endif %}
 					</ul>
