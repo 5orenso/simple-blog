@@ -4,7 +4,7 @@ if ('serviceWorker' in navigator) {
             registration.onupdatefound = function() {
                 // If updatefound is fired, it means that there's a new service worker being installed.
                 var installingWorker = registration.installing;
-                console.log('A new service worker is being installed:', installingWorker);
+                // console.log('A new service worker is being installed:', installingWorker);
                 // You can listen for changes to the installing service worker's state
                 // via installingWorker.onstatechange
             };
@@ -14,7 +14,7 @@ if ('serviceWorker' in navigator) {
                     .then(function(subscription) {
                         // If a subscription was found, return it.
                         if (subscription) {
-                            console.log('==> subscription found:', subscription);
+                            // console.log('==> subscription found:', subscription);
                             return subscription;
                         }
                         // Otherwise, subscribe the user (userVisibleOnly allows to specify that we don't plan to
@@ -23,8 +23,8 @@ if ('serviceWorker' in navigator) {
                             userVisibleOnly: true,
                         })
                             .then(function(pushSubscription) {
-                                console.log('==> pushSubscription.endpoint:', pushSubscription.endpoint);
-                                console.log('==> pushSubscription.subscriptionId:', pushSubscription.subscriptionId);
+                                // console.log('==> pushSubscription.endpoint:', pushSubscription.endpoint);
+                                // console.log('==> pushSubscription.subscriptionId:', pushSubscription.subscriptionId);
                                 // The push subscription details needed by the application
                                 // server are now available, and can be sent to it using,
                                 // for example, an XMLHttpRequest.
@@ -33,13 +33,13 @@ if ('serviceWorker' in navigator) {
                                 // console. In a production environment it might make sense to
                                 // also report information about errors back to the
                                 // application server.
-                                console.log('==> error: ', error);
+                                console.error('==> error: ', error);
                             });
                     });
             });
         })
         .then(function(subscription) {
-            console.log('==> subscription ready:', subscription);
+            // console.log('==> subscription ready:', subscription);
             // Retrieve the user's public key.
             var rawKey = subscription.getKey ? subscription.getKey('p256dh') : '';
             var key = rawKey ? btoa(String.fromCharCode.apply(null, new Uint8Array(rawKey))) : '';
@@ -61,8 +61,8 @@ if ('serviceWorker' in navigator) {
             });
         })
         .catch(function(error) {
-            console.log('Service worker registration failed:', error);
+            console.error('Service worker registration failed:', error);
         });
 } else {
-    console.log('Service workers are not supported.');
+    console.error('Service workers are not supported.');
 }
