@@ -15,9 +15,6 @@ const path = require('path');
 const mkdirp = require('mkdirp');
 const crypto = require('crypto');
 
-const appPath = `${__dirname}/../../`;
-const notificationPath = path.normalize(`${appPath}content/notifications/`);
-
 function pathExists(absolutePath) {
     return new Promise((resolve, reject) => {
         fs.exists(absolutePath, (exists) => {
@@ -58,6 +55,7 @@ module.exports = (req, res) => {
 
     const hash = crypto.createHash('sha256');
     hash.update(JSON.stringify(req.body));
+    const notificationPath = path.normalize(req.config.adapter.markdown.notificationPath);
     const filename = `${notificationPath}${hash.digest('hex')}`;
 
     pathExists(notificationPath)

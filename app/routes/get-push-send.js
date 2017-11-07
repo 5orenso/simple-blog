@@ -14,9 +14,6 @@ const fs = require('fs');
 const path = require('path');
 const webpush = require('web-push');
 
-const appPath = `${__dirname}/../../`;
-const notificationPath = path.normalize(`${appPath}content/notifications/`);
-
 function findAllFiles(filePath) {
     return new Promise((resolve, reject) => {
         fs.readdir(filePath, (err, files) => {
@@ -61,6 +58,8 @@ function sendNotifications(config, filename, notification) {
 module.exports = (req, res) => {
     const hrstart = process.hrtime();
     webUtil.printIfDev(`Route: ${routePath}/${routeName}`, req.query, req.param, req.body);
+
+    const notificationPath = path.normalize(req.config.adapter.markdown.notificationPath);
 
     // /push-register
     // A real world application would store the subscription info.

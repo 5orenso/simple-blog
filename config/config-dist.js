@@ -97,6 +97,7 @@ module.exports = {
         current: 'markdown',
         //search_adapter: 'elasticsearch',
         markdown: {
+            notificationPath: __dirname + '/../content/notifications/',
             contentPath: __dirname + '/../content/articles/',
             photoPath: __dirname + '/../content/images/',
             maxArticles: 500,
