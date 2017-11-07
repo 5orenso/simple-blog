@@ -76,6 +76,7 @@
     "underscore": "^1.8.3",
     "uuid": "^3.1.0",
     "walk": "^2.3.9",
+    "web-push": "^3.2.4",
     "websequencediagrams": "0.1.0",
     "when": "^3.7.5"
   }

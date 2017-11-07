@@ -80,6 +80,11 @@ webRouter.get('/keybase.txt', (req, res) => {
     res.sendFile(keybase, { root: path.normalize(req.config.adapter.markdown.contentPath) });
 });
 webRouter.use('/photos/', localUtil.setCacheHeaders);
+webRouter.use('/service-worker.js', express.static(`${appPath}template/global/js/service-worker.js`));
+
+webRouter.post('/push-register', require('./post-push-register.js'));
+webRouter.get('/push-send', require('./get-push-send.js'));
+
 webRouter.get('/photos/*', (req, res) => {
     // Resolve filename
     let requestUrl = articleUtil.getUrlFromRequest(req);

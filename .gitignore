@@ -36,6 +36,7 @@ dev/
 config/config.js
 config/config-sitemap.js
 content/articles
+content/notifications
 content/images*
 test/content/images_cached
 template/flot/
