@@ -51,6 +51,26 @@ self.addEventListener('push', function(event) {
     );
 });
 
+// this is the service worker which intercepts all http requests
+self.addEventListener('fetch', function fetcher (event) {
+    var request = event.request;
+    // check if request
+    // console.log('request.url', request.url);
+    if (request.url.match(/.+?\.(jpg|png|css)/i)) {
+        // contentful asset detected
+        event.respondWith(
+            caches.match(event.request)
+                .then(function(response) {
+                    // return from cache, otherwise fetch from network
+                    // console.log('request.url', request.url, response);
+                    return response || fetch(request);
+                })
+        );
+    }
+    // otherwise: ignore event
+});
+
+
 // 'use strict';
 //
 // const protocolPattern = /^http:/;
