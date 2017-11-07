@@ -35,10 +35,10 @@ self.addEventListener('push', function(event) {
             .then(function(subscription) {
                 //   console.log("subscription", subscription, event.data.text());
                 var payload = event.data ? JSON.parse(event.data.text()) : {
-                    title: 'Cronj IT Technoliges Pvt Ltd',
-                    body: 'CronJ combines the power of creativity and experience to employ a highly skilled team of Information Technology professionals who provide high-quality, high-value custom IT solutions to a variety of business enterprises.',
-                    icon: '/img/logos/cronj-logo.png',
-                    url: '//localhost:8080'
+                    title: 'Simple-Blog',
+                    body: 'Come back and visit us :)',
+                    icon: '/template/kotha/img/sorenso-logo.png',
+                    url: '//litt.no/'
                 };
 
                 url.push(payload.url);
