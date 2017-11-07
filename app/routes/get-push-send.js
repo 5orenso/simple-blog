@@ -76,10 +76,14 @@ module.exports = (req, res) => {
         findAllFiles(notificationPath)
             .then(files => Promise.all(files.map(file =>
                 sendNotifications(req.config, `${notificationPath}${file}`, notification))))
-            .then(() => {
+            .then((results) => {
                 // console.log('results', results);
                 webUtil.logFunctionTimer(`router${routePath}`, routeName, req.path, process.hrtime(hrstart));
-                res.sendStatus(201);
+                res.status(201).send('Push notifications sent to: ', JSON.stringify(results));
+            })
+            .catch((error) => {
+                console.error(error);
+                res.status(406).send(error);
             });
     } else {
         webUtil.logFunctionTimer(`router${routePath}`, routeName, req.path, process.hrtime(hrstart));
