@@ -63,13 +63,14 @@ module.exports = (req, res) => {
 
     // /push-register
     // A real world application would store the subscription info.
-    // console.log('==> GET /push-send', req.query, req.body);
+    console.log('==> GET /push-send', req.query, req.body);
     const notification = {
         title: req.query.title,
         body: req.query.body,
         icon: req.query.icon,
         url: req.query.url,
     };
+    console.log('==> GET /push-send.notification', notification);
 
     if (req.session.email) {
         findAllFiles(notificationPath)
