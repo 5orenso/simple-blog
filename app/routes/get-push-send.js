@@ -48,7 +48,9 @@ function sendNotifications(config, filename, notification) {
                         p256dh: notificationOpt.key,
                     },
                 };
-                return webpush.sendNotification(pushSubscription, JSON.stringify(notification));
+                return webpush.sendNotification(pushSubscription, JSON.stringify(notification))
+                    .then(result => resolve(result))
+                    .catch(error => reject(error));
             } catch (e) {
                 return reject(e);
             }
@@ -62,7 +64,7 @@ module.exports = (req, res) => {
 
     // /push-register
     // A real world application would store the subscription info.
-    console.log('==> GET /push-send', req.query, req.body);
+    // console.log('==> GET /push-send', req.query, req.body);
     const notification = {
         title: req.query.title,
         body: req.query.body,
@@ -72,13 +74,10 @@ module.exports = (req, res) => {
 
     if (req.session.email) {
         findAllFiles(notificationPath)
-            .then((files) => {
-                console.log('files', files);
-                return Promise.all(files.map(file =>
-                    sendNotifications(req.config, `${notificationPath}${file}`, notification)));
-            })
-            .then((results) => {
-                console.log('results', results);
+            .then(files => Promise.all(files.map(file =>
+                sendNotifications(req.config, `${notificationPath}${file}`, notification))))
+            .then(() => {
+                // console.log('results', results);
                 webUtil.logFunctionTimer(`router${routePath}`, routeName, req.path, process.hrtime(hrstart));
                 res.sendStatus(201);
             });
