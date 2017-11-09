@@ -83,6 +83,7 @@ webRouter.use('/photos/', localUtil.setCacheHeaders);
 webRouter.use('/service-worker.js', express.static(`${appPath}template/global/js/service-worker.js`));
 
 webRouter.post('/push-register', require('./post-push-register.js'));
+webRouter.post('/push-error', require('./post-push-error.js'));
 webRouter.get('/push-send', require('./get-push-send.js'));
 
 webRouter.get('/photos/*', (req, res) => {
