@@ -94,7 +94,7 @@ const imageRouter = require('./routes/image');
 imageRouter.setConfig(config, {
     workerId: 1, // cluster.worker.id,
     photoPath: config.adapter.markdown.photoPath,
-    photoCachePath: config.blog.domain,
+    photoCachePath: config.adapter.markdown.photoCachePath,
 });
 const searchRouter = require('./routes/search');
 

@@ -101,6 +101,7 @@ module.exports = {
             notificationPath: __dirname + '/../content/notifications/',
             contentPath: __dirname + '/../content/articles/',
             photoPath: __dirname + '/../content/images/',
+            photoCachePath: __dirname + '/../content/images_cached/',
             maxArticles: 500,
         },
         elasticsearch: {

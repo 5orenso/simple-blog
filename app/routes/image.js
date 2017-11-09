@@ -164,7 +164,7 @@ imageRouter.setConfig = function doSetConfig(conf, opt) {
             photoPath = path.normalize(opt.photoPath);
         }
         if (opt.hasOwnProperty('photoCachePath')) {
-            photoCachePath = path.normalize(`${photoCachePath + opt.photoCachePath}/`);
+            photoCachePath = path.normalize(opt.photoCachePath);
         }
     }
     if (conf) {
