@@ -62,6 +62,6 @@ module.exports = (req, res) => {
         .then(() => writeToFile(filename, JSON.stringify(req.body)))
         .then(() => {
             webUtil.logFunctionTimer(`router${routePath}`, routeName, req.path, process.hrtime(hrstart));
-            res.sendStatus(201);
+            res.status(201).send(JSON.stringify({ data: { success: true } }));
         });
 };
