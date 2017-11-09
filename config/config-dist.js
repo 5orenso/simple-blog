@@ -97,6 +97,7 @@ module.exports = {
         current: 'markdown',
         //search_adapter: 'elasticsearch',
         markdown: {
+            notificationErrorPath: __dirname + '/../content/notification-errors/',
             notificationPath: __dirname + '/../content/notifications/',
             contentPath: __dirname + '/../content/articles/',
             photoPath: __dirname + '/../content/images/',
