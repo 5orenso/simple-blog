@@ -1,0 +1,9 @@
+{
+    "globals": {
+        "window": true,
+        "navigator": true,
+        "btoa": true,
+        "Notification": true,
+        "fetch": true
+    }
+}

@@ -11,7 +11,7 @@ module.exports = function (grunt) {
                 config: '.eslintrc.json',
                 reset: true
             },
-            target: ['app/**/*.js', 'lib/**/*.js']
+            target: ['app/**/*.js', 'lib/**/*.js', 'template/global/js/push-notification.js']
             // target: ['app/**/*.js', 'lib/**/*.js', 'test/**/*.js']
         },
         jsdoc: {
@@ -27,13 +27,15 @@ module.exports = function (grunt) {
         },
         watch: {
             all: {
-                files: ['app/**/*.js', 'lib/**/*.js', 'test/**/*.js', 'test/content/**/*.md', 'config/*.js', 'template/**/**/*.html'],
+                files: ['app/**/*.js', 'lib/**/*.js', 'test/**/*.js', 'test/content/**/*.md', 'config/*.js',
+                    'template/**/**/*.html', 'template/global/js/push-notification.js'],
                 tasks: ['lint', 'buster:unit', 'doc']
             }
         },
         watchtest: {
             all: {
-                files: ['app/**/*.js', 'lib/**/*.js', 'test/**/*.js', 'test/content/**/*.md', 'config/*.js', 'template/**/**/*.html'],
+                files: ['app/**/*.js', 'lib/**/*.js', 'test/**/*.js', 'test/content/**/*.md', 'config/*.js',
+                    'template/**/**/*.html', 'template/global/js/push-notification.js'],
                 tasks: ['buster:unit'],
             }
         },
