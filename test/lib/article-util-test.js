@@ -348,8 +348,8 @@ buster.testCase('lib/article-util', {
             var result = articleUtil.replaceTagsWithContent(article);
             assert.equals(article.col, articleObjHtml.col);
             assert.match(article.body, articleObjHtml.tagValues.toc);
-            assert.match(article.body, '<span class="icon fa-link"></span>');
-            assert.match(article.body, '<span class="icon fa-link"></span><span class="icon fa-link"></span>');
+            assert.match(article.body, '<span class="fa fa-link"></span>');
+            assert.match(article.body, '<span class="fa fa-link"></span><span class="fa fa-link"></span>');
             assert.match(article.body, '<span class="comment">// youtube.com');
             assert.match(article.body, '<span class="hash_tag">#<a href="https://twitter.com/search?q=%23video">' +
                 'video</a></span>');
