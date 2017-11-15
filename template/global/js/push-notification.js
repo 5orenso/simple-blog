@@ -31,7 +31,6 @@ function sendErrorToBackend(error) {
         },
         body: JSON.stringify({
             // eslint-disable-next-line
-            email: SESSION_EMAIL,
             error: error.name,
             errorMessage: error.message,
         }),
@@ -69,7 +68,6 @@ function sendSubscriptionToBackEnd(subscription) {
         },
         body: JSON.stringify({
             // eslint-disable-next-line
-            email: SESSION_EMAIL,
             endpoint,
             key,
             authSecret,
