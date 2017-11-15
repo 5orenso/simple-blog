@@ -7,7 +7,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
 	<!-- Page Title -->
-	<title>{{ article.title|e }}</title>
+	<title>{{ article.title|removeLineBreaks|e }}</title>
 	<!-- Fonts -->
 	<link
 		href="https://fonts.googleapis.com/css?family=Lato:300,400,400i,700,700i%7cOswald:300,400,500,600,700%7cPlayfair+Display:400,400i,700,700i"
@@ -32,8 +32,8 @@
     <!-- Verification -->
     <meta name="google-site-verification" content="{{ blog.googleSiteVerification }}" />
     <!-- SEO stuff -->
-    <meta name="description" content="{{ article.teaser|striptags }}" />
-    <meta name="keywords" content="{{ article.tag|striptags|join(',') }}" />
+    <meta name="description" content="{{ article.teaser|striptags|removeLineBreaks|e('html') }} {{ article.ingress|striptags|removeLineBreaks|e('js')|e('html') }}" />
+    <meta name="keywords" content="{{ article.tag|striptags|removeLineBreaks|e('html')|join(',') }}" />
     <script type="application/ld+json">
         // http://schema.org/BlogPosting
         // https://developers.google.com/structured-data/rich-snippets/articles
@@ -43,22 +43,22 @@
           "@type": "BlogPosting",
           "author": "{{ article.author }}",
           "headline": "{{ article.title|striptags|e('js') }}",
-          "alternativeHeadline": "{{ article.teaser|striptags|e('js') }}",
+          "alternativeHeadline": "{{ article.teaser|striptags|removeLineBreaks|e('js') }}",
           "image": [
               {% for img in article.img %}
                   "{{ blog.protocol }}://{{ blog.domain }}/pho/{{ img }}?w=800"
               {% endfor %}
           ],
           "datePublished": "{{ article.published }}",
-          "description": "{{ article.ingress|striptags|e('js') }}",
-          "articleBody": "{{ article.body|striptags|e('js') }} {% for col in article.col %}{{ col }} {% endfor %}"
+          "description": "{{ article.ingress|striptags|removeLineBreaks|e('js') }}",
+          "articleBody": "{{ article.body|striptags|removeLineBreaks|e('js') }} {% for col in article.col %}{{ col }} {% endfor %}"
         }
     </script>
     {% set shareLink = blog.protocol + '://' + blog.domain + article.baseHref + article.file %}
     <meta property="og:url" content="{{ shareLink }}" />
     <meta property="og:type" content="article" />
-    <meta property="og:title" content="{{ article.title|striptags|e('js') }}" />
-    <meta property="og:description" content="{{ article.teaser|striptags|e('js') }} {{ article.ingress|striptags|e('js') }}" />
+    <meta property="og:title" content="{{ article.title|striptags|removeLineBreaks|e('js') }}" />
+    <meta property="og:description" content="{{ article.teaser|striptags|removeLineBreaks|e('js') }} {{ article.ingress|striptags|removeLineBreaks|e('js') }}" />
     {% if article.img[0] %}
         <meta property="og:image" content="{{ blog.protocol }}://{{ blog.domain }}/pho/{{ article.img[0] }}?w=600" />
     {% endif %}
