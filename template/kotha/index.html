@@ -38,6 +38,7 @@
     						<div class="entry-header text-center text-uppercase">
     							<a href="{{ art.baseHref }}" class="post-cat">{{ art.baseHref }}</a>
     							<h2><a href="{{ art.baseHref }}{{ art.file }}">{{ art.title }}</a></h2>
+                                {{ art.teaser|raw }}
     						</div>
     						<div class="entry-content">
     							<p>{{ art.body|substring(0, 300)|markdown|cleanHtml }}...</p>

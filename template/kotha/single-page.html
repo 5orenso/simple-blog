@@ -27,7 +27,11 @@
                                 {% endfor %}
                             </div>
                         {% elseif article.img[0] %}
-                            <img src="/pho/{{ article.img[0] }}?w=800" alt="{{ article.title|e }}">
+                            <div class="image_inline">
+                                <a href="/pho/{{ article.img[0] }}?w=2000" data-smoothzoom="group1" title="{{ article.title|e }}">
+                                    <img src="/pho/{{ article.img[0] }}?w=800" alt="{{ article.title|e }}">
+                                </a>
+                            </div>
                         {% else %}
                             <div class="entry-quote-post-format">
     							<blockquote>
@@ -49,6 +53,7 @@
 						<div class="entry-header text-center text-uppercase">
 							<a href="{{ article.baseHref }}" class="post-cat">{{ article.baseHref }}</a>
 							<h2>{{ article.title }}</h2>
+                            {{ article.teaser|raw }}
 						</div>
 						<div class="entry-content">
                             {{ article.body|safe }}
