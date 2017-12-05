@@ -11,8 +11,6 @@ const _ = require('underscore');
 const express = require('express');
 const bodyParser = require('body-parser');
 const compression = require('compression');
-// const session = require('express-session');
-// const FileStore = require('session-file-store')(session);
 const sessions = require('client-sessions');
 const commander = require('commander');
 const fileUpload = require('express-fileupload');
@@ -43,19 +41,6 @@ app.use(bodyParser.json());
 app.use(compression({
     threshold: 512,
 }));
-
-// app.use(session({
-//     name: 'server-session-cookie-id',
-//     secret: 'mAke noDE.js gREat again!',
-//     resave: true,
-//     saveUninitialized: true,
-//     cookie: {
-//         path: '/',
-//         httpOnly: true,
-//         maxAge: cookieMaxAgeSession,
-//     },
-//     store: new FileStore(),
-// }));
 
 app.use(sessions({
     cookieName: 'session', // cookie name dictates the key name added to the request object
