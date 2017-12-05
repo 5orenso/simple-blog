@@ -33,7 +33,7 @@
     <meta name="google-site-verification" content="{{ blog.googleSiteVerification }}" />
     <!-- SEO stuff -->
     <meta name="description" content="{{ article.teaser|striptags|removeLineBreaks|e('html') }} {{ article.ingress|striptags|removeLineBreaks|e('js')|e('html') }}" />
-    <meta name="keywords" content="{{ article.tag|striptags|removeLineBreaks|e('html')|join(',') }}" />
+    <meta name="keywords" content="{{ article.tags|striptags|removeLineBreaks|e('html') }}" />
     <script type="application/ld+json">
         // http://schema.org/BlogPosting
         // https://developers.google.com/structured-data/rich-snippets/articles
@@ -57,8 +57,8 @@
     {% set shareLink = blog.protocol + '://' + blog.domain + article.baseHref + article.file %}
     <meta property="og:url" content="{{ shareLink }}" />
     <meta property="og:type" content="article" />
-    <meta property="og:title" content="{{ article.title|striptags|removeLineBreaks|e('js') }}" />
-    <meta property="og:description" content="{{ article.teaser|striptags|removeLineBreaks|e('js') }} {{ article.ingress|striptags|removeLineBreaks|e('js') }}" />
+    <meta property="og:title" content="{{ article.title|striptags|removeLineBreaks|e('html') }}" />
+    <meta property="og:description" content="{{ article.teaser|striptags|removeLineBreaks|e('html') }} {{ article.ingress|striptags|removeLineBreaks|e('html') }}" />
     {% if article.img[0] %}
         <meta property="og:image" content="{{ blog.protocol }}://{{ blog.domain }}/pho/{{ article.img[0] }}?w=600" />
     {% endif %}
