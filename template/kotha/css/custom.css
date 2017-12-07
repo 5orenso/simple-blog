@@ -31,6 +31,13 @@
     max-width: 1700px;
 }
 
+p.image_inline {
+    text-align: center;
+    position: relative;
+    left: -40px;
+    width: calc(100% + 80px);
+    background: #808080;
+}
 .image_inline_text:before {
     content: "";
     display: table;
@@ -40,6 +47,9 @@
 .image_inline_text {
     font-size: 0.9em;
     color: #808080;
+}
+p .image_inline_text {
+    color: #ffffff;
 }
 
 .videoWrapper {
