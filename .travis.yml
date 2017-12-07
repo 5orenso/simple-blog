@@ -7,9 +7,10 @@ matrix:
 cache:
   directories:
     - node_modules
+    - $(npm config get prefix)/bin/grunt-cli
 before_install: npm install -g grunt-cli
 install:
-  - npm install
+  - npm install --no-optional
 notifications:
   webhooks:
     urls:
