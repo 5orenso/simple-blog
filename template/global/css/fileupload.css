@@ -3,7 +3,7 @@
     font-size: 1.25rem; /* 20 */
     background-color: #c8dadf;
     position: relative;
-    padding: 100px 20px;
+    padding: 50px 20px;
 }
 .box.has-advanced-upload {
     outline: 2px dashed #92b0b3;
