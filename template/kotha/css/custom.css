@@ -3,15 +3,16 @@ body {
     font-weight: 300;
 }
 .single-blog .post-content h4 {
-    font-size: 20px;
+    font-size: 1.5em;
 }
 p {
-    font-size: 18px;
-    line-height: 30px;
+    font-size: 1.25em;
+    line-height: 1.5em;
+    margin: 0 0 20px;
 }
 .about-me-img p {
-    font-size: 12px;
-    line-height: 20px;
+    font-size: 0.9em;
+    line-height: 1.5em;
 }
 
 
@@ -109,6 +110,8 @@ td p .image_inline_text {
     background: #c0c0c0;
     padding: 10px;
     border-radius: 5px;
+    font-size: 1.15em;
+    line-height: 1.5em;
 }
 .markdown-editor:before {
     content: "";
