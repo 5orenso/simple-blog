@@ -340,8 +340,12 @@ $(document).ready(function() {
         var simplemde = new SimpleMDE({
             element: document.getElementById("markdownEditor"),
             spellChecker: false,
+            showIcons: ["code", "table"],
             previewRender: function(plainText) {
 		        return customMarkdownParser(plainText, this.parent); // Returns HTML from a custom parser
+	        },
+            insertTexts: {
+		        table: ["", "\n\n| Column 1 | Column 2 | Column 3 |\n| -------- | -------- | -------- |\n| Text     | Text      | Text     |\n\n"],
 	        },
         });
 
