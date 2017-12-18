@@ -27,11 +27,11 @@ module.exports = {
         searchResults: 'Blog posts related to ',
         showListOnIndex: 1,
         social: {
-            twitter: '',
-            facebook: '',
+            twitter: 'https://twitter.com/sorenso',
+            facebook: 'https://facebook.com/sorenso',
             googleplus: '',
             pintrest: '',
-            instagram: ''
+            instagram: 'http://instagram.com/sorenso'
         },
         socialUser: {
             twitter: 'sorenso',
