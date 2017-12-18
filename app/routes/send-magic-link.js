@@ -14,7 +14,6 @@ module.exports = (req, res) => {
 
     const generateJwt = account => jwt.sign({ email: account.email }, req.config.jwt.secret);
     const token = generateJwt({ email: req.config.blog.email });
-    console.log('token', token);
 
     const mail = new Mail(req.config);
     mail.sendEmail({
@@ -29,6 +28,11 @@ Click this link to magically login to your blog 👌</a>
 
 Best regard,
 The Simple-Blog server
+
+<i style="color: #c0c0c0;">
+Request header:
+${JSON.stringify(req.headers, null, 4)}
+</i>
 `.replace(/\n/g, '<br>'),
     })
         .then(() => {
