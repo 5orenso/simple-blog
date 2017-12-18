@@ -71,10 +71,17 @@
               "@context": "http://schema.org",
               "@type": "BlogPosting",
               "publisher": {
+                  "@type": "Person",
                   "name": "{{ blog.author.fallback.nameFull|removeLineBreaks|e('html') }}",
-                  "logo": "https://litt.no/template/kotha/img/sorenso-logo.png"
+                  "logo": {
+                      "@type": "imageObject",
+                      "height": 40,
+                      "width": 218,
+                      "url": "https://litt.no/template/kotha/img/sorenso-logo.png"
+                  }
               },
               "author": {
+                  "@type": "Person",
                   "name": "{{ article.author }}"
               },
               "headline": "{{ article.title|striptags|e('js') }}",
