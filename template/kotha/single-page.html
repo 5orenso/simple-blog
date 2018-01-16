@@ -63,7 +63,7 @@
                             {% if isPhoto %}
                                 {{ article.body|inlineImageSize(945)|safe }}
                             {% else %}
-                            {{ article.body|inlineImageSize(750)|safe }}
+                                {{ article.body|inlineImageSize(750)|safe }}
                             {% endif %}
 						</div>
 
