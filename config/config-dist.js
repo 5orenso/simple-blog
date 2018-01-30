@@ -16,7 +16,7 @@ module.exports = {
     },
     blog: {
         title: 'Simple Blog Server',
-        description: 'Her skriver jeg hovedsaklig på norsk om det ikke skulle være noe helt spesielt. Jeg skriver om det jeg bruker tiden min på, som er tur, foto, hundekjøring, hacking, fikling og mye annet.',
+        description: 'Her skriver jeg om det jeg bruker tiden min på. Ekspedisjoner i alle størrelser, foto, hundekjøring, datafikling og mye annet.',
         disqus: 'sorenso',
         slogun: '',
         protocol: 'http',
@@ -31,7 +31,10 @@ module.exports = {
             facebook: 'https://facebook.com/sorenso',
             googleplus: '',
             pintrest: '',
-            instagram: 'http://instagram.com/sorenso'
+            instagram: 'https://instagram.com/sorenso',
+            github: 'https://github.com/5orenso',
+            flickr: 'https://www.flickr.com/photos/159436546@N07/',
+            youtube: 'https://www.youtube.com/user/sorenso',
         },
         socialUser: {
             twitter: 'sorenso',
@@ -49,24 +52,28 @@ module.exports = {
                 imageLarge: '/pho/profile/fish_oistein.jpg?w=150',
                 nameFull: 'Øistein Sørensen',
                 name: '<a href="https://twitter.com/sorenso">Sorenso</a>',
-                description: 'Hacking, foto, fiske, jakt, sykling og skikjøring. Og mange andre ting jeg har altfor lite tid til :P',
+                description: 'Ekspedisjoner, foto, fiske, jakt, sykling og skikjøring. Og mange andre ting jeg har altfor lite tid til.',
                 facebook: 'https://facebook.com/sorenso',
                 twitter: 'https://twitter.com/sorenso',
                 // google_plus: 'https://instagram.com/sorenso',
                 linkedin: 'https://www.linkedin.com/in/sorenso/',
                 instagram: 'https://instagram.com/sorenso',
+                flickr: 'https://www.flickr.com/photos/159436546@N07/',
+                youtube: 'https://www.youtube.com/user/sorenso',
             },
             sorenso: {
                 image: '/pho/profile/fish_oistein.jpg?w=50',
                 imageLarge: '/pho/profile/fish_oistein.jpg?w=150',
                 nameFull: 'Øistein Sørensen',
                 name: '<a href="https://twitter.com/sorenso">Sorenso</a>',
-                description: 'Hacking, foto, fiske, jakt, sykling og skikjøring. Og mange andre ting jeg har altfor lite tid til :P',
+                description: 'Ekspedisjoner, foto, fiske, jakt, sykling og skikjøring. Og mange andre ting jeg har altfor lite tid til.',
                 facebook: 'https://facebook.com/sorenso',
                 twitter: 'https://twitter.com/sorenso',
                 // google_plus: 'https://instagram.com/sorenso',
                 linkedin: 'https://www.linkedin.com/in/sorenso/',
                 instagram: 'https://instagram.com/sorenso',
+                flickr: 'https://www.flickr.com/photos/159436546@N07/',
+                youtube: 'https://www.youtube.com/user/sorenso',
             }
         },
         menu: [
@@ -85,9 +92,9 @@ module.exports = {
     },
     template: {
         // blog: 'template/current/blog.html',
-        blog: 'template/kotha/single-page.html',
+        blog: 'template/bootstrap4/blog.html',
         // index: 'template/current/blog.html'
-        index: 'template/kotha/index.html'
+        index: 'template/bootstrap4/index.html'
     },
     log: {
         level   : 'info', // debug|info|notice|warning|error|crit|alert|emerg

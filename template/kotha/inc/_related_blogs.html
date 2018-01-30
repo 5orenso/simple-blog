@@ -5,7 +5,7 @@
 					</div>
 					<div class="related-post-carousel-items">
                         {% for art in article.artlist %}
-                            {% if loop.index < 10 %}
+                            {% if loop.index < 20 %}
                                 <div class="single-item">
                                     <a href="{{ art.baseHref }}{{ art.file }}">
                                         <img src="/pho/{{ art.img[0] }}?w=200" alt="{{ art.title }}">

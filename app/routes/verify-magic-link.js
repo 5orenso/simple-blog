@@ -25,6 +25,6 @@ module.exports = (req, res) => {
         routePath,
         routeName,
         useTemplatePath: true,
-        useTemplate: '/kotha/single-page.html',
+        useTemplate: '/bootstrap4/blog.html',
     });
 };

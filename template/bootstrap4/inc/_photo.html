@@ -1,0 +1,167 @@
+{% set isPhoto = false %}
+{% set baseHref = article.baseHref|replace('/', '', 'g') %}
+{% if article.baseHref|match('photo') || article.baseHref|match('film') %}
+    {% set isPhoto = true %}
+{% endif %}
+
+{% if isPhoto %}
+<div class="container-fluid">
+    <div class="row">
+        <main class="col-sm-12 col-md-12 pt-3">
+{% else %}
+<div class="container">
+    <div class="row">
+        <main class="col-sm-12 col-md-12 pt-3 blog-main">
+{% endif %}
+
+            <div class="blog-post">
+				<div class="post-thumb {% if article.gallery || article.img[1] %}gallery-post-format{% endif %}">
+                    {% if article.youtube %}
+					    {{ article.youtube|raw }}
+                    {% elseif article.img[0] %}
+                        <div class="image_inline">
+                            <a href="/pho/{{ article.img[0] }}?w=2000" data-smoothzoom="group1" title="{{ article.title|e }}">
+                                <img src="/pho/{{ article.img[0] }}?w={% if isPhoto %}1600{% else %}1050{% endif %}" alt="{{ article.title|e }}" class="img-fluid">
+                            </a>
+                        </div>
+                    {% else %}
+                        <div class="blog-post-quote">
+							<blockquote>
+								<p><i class="fas fa-quote-left"></i>
+                                    {% if article.quote %}
+                                        {{ article.quote|cleanHtml }}
+                                    {% elseif article.teaser %}
+                                        {{ article.teaser|cleanHtml }}
+                                    {% elseif article.title %}
+                                        {{ article.title|cleanHtml }}
+                                    {% endif %}
+                                </p>
+								<h3>{{ article.quoteBy }}</h3>
+							</blockquote>
+						</div>
+                    {% endif %}
+				</div>
+            </div>
+
+        </main>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-8 blog-main">
+
+            <div class="blog-post">
+                <h2 class="blog-post-title">{{ article.title }}</h2>
+                <h5 class="blog-post-teaser">{{ article.teaser|raw }}</h5>
+                <p class="blog-post-meta">
+                    {% if article.published %}
+                        {{ article.published }}
+                    {% endif %}
+                    {% if article.author %}
+                        by {{ article.author }} |
+                    {% endif %}
+                    <a href="{{ article.baseHref }}" class="post-cat">{{ baseHref }}</a>
+                </p>
+
+                {% if isPhoto %}
+                    {{ article.body|inlineImageSize(945)|safe }}
+                {% else %}
+                    {{ article.body|inlineImageSize(750)|safe }}
+                {% endif %}
+
+                <div class="social-share">
+                    Jeg blir veldig 😊 hvis du deler:
+                    {% set shareLink = blog.protocol + '://' + blog.domain + article.baseHref + article.file %}
+                    <a rel="noopener" target="_blank" class="s-facebook" href="https://www.facebook.com/sharer.php?u={{ shareLink|url_encode }}"><i class="fab fa-facebook-square"></i></a>
+                    <a rel="noopener" target="_blank" class="s-twitter" href="https://twitter.com/intent/tweet?url={{ shareLink|url_encode }}&text={{ article.title|url_encode }}.%20{{ article.teaser|striptags|url_encode }}{% if blog.socialUser.twitter %}&via={{ blog.socialUser.twitter }}{% endif %}&hashtags={{ article.tags }}"><i class="fab fa-twitter-square"></i></a>
+                    <a rel="noopener" target="_blank" class="s-google-plus" href="https://plus.google.com/share?url={{ shareLink|url_encode }}"><i class="fab fa-google-plus-square"></i></a>
+                    <a rel="noopener" target="_blank" class="s-linkedin" href="https://www.linkedin.com/shareArticle?mini=true&url={{ shareLink|url_encode }}&summary={{ article.title|url_encode }}.%20{{ article.teaser|striptags|url_encode }}&source={{ blog.domain }}"><i class="fab fa-linkedin"></i></a>
+                </div>
+            </div><!-- /.blog-post -->
+
+
+            <nav class="blog-pagination">
+                <div class="row"><!--blog next previous-->
+                    {% if article.previous %}
+                        {% set art = article.previous %}
+					<div class="col-md-6">
+						<div class="single-blog-box">
+							<a href="{{ art.baseHref}}{{ art.file }}">
+                                <img src="/pho/{{ art.img[0] }}?w=360" alt="{{ art.title|e }}" class="img-fluid">
+								<div class="overlay">
+									<div class="promo-text">
+										<h5>{{ art.title }}</h5>
+									</div>
+								</div>
+							</a>
+                            <a class="btn btn-outline-primary" href="{{ art.baseHref}}{{ art.file }}">&laquo; Older</a>
+						</div>
+					</div>
+                    {% endif %}
+                    {% if article.next %}
+                        {% set art = article.next %}
+					<div class="col-md-6">
+						<div class="single-blog-box">
+                            <a href="{{ art.baseHref}}{{ art.file }}">
+                                <img src="/pho/{{ art.img[0] }}?w=360" alt="{{ art.title|e }}" class="img-fluid">
+								<div class="overlay">
+									<div class="promo-text">
+                                        <h5>{{ art.title }}</h5>
+									</div>
+								</div>
+							</a>
+						</div>
+                        <a class="btn btn-outline-primary" href="{{ art.baseHref}}{{ art.file }}">Newer &raquo;</a>
+					</div>
+                    {% endif %}
+				</div>
+
+
+            </nav>
+
+        </div><!-- /.blog-main -->
+
+        <div class="col-sm-3 offset-sm-1 blog-sidebar">
+            <div class="sidebar-module sidebar-module-inset">
+                <h4>Hvem?</h4>
+                {% set author = blog.author.fallback %}
+                {% if blog.author[article.author] %}
+                    {% set author = blog.author[article.author] %}
+                {% endif %}
+                <p>
+                    <img src="{{ author.imageLarge }}" alt="{{ author.nameFull }}" class="img-fluid">
+                    <h2>{{ author.nameFull }}</h2>
+                    {{ author.description }}
+                </p>
+            </div>
+            <div class="sidebar-module">
+                <h4>Flere i 📂 {{ baseHref }}</h4>
+                <ol class="list-unstyled">
+                    {% set limit = 20 %}
+                    {% for art in article.artlist %}
+                        {% if loop.index < limit %}
+                            <li class="row no-gutters artlist">
+                                <div class="col-sm-4">
+                                    <a href="{{ art.baseHref }}{{ art.file }}" title="{{ art.title|e }} - {{ art.teaser|e }}">
+                                        <img src="/pho/{{ art.img[0] }}?w=60" alt="{{ art.title|e }} - {{ art.teaser|e }}" class="img-fluid">
+                                    </a>
+                                </div>
+                                <div class="col-sm-8">
+                                    <a href="{{ art.baseHref }}{{ art.file }}" title="{{ art.title|e }} - {{ art.teaser|e }}">{{ art.title }}</a>
+                                </div>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                </ol>
+            </div>
+            <div class="sidebar-module">
+                {% include '_elsewhere.html' %}
+            </div>
+        </div><!-- /.blog-sidebar -->
+
+    </div>
+
+    {% include '_markdown_editor.html' %}
+    {% include '_comments.html' %}
+</div>

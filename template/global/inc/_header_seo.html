@@ -1,0 +1,144 @@
+<!-- Verification -->
+<meta name="google-site-verification" content="{{ blog.googleSiteVerification }}" />
+<!-- SEO stuff -->
+<script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "@type": "Person",
+    "name": "{{ blog.author.fallback.nameFull }}",
+    "url": "{{ blog.protocol }}://{{ blog.domain }}",
+    "sameAs": [
+        {% if blog.social.facebook %}"{{ blog.social.facebook }}",{% endif %}
+        {% if blog.social.twitter %}"{{ blog.social.twitter }}",{% endif %}
+        {% if blog.social.googleplus %}"{{ blog.social.googleplus }}",{% endif %}
+        {% if blog.social.pintrest %}"{{ blog.social.pintrest }}",{% endif %}
+        {% if blog.social.instagram %}"{{ blog.social.instagram }}"{% endif %}
+    ]
+}
+</script>
+{% set categoryName = article.baseHref|replace('/', '', 'g')|capitalize %}
+{% if article.file|match('index') %}
+    <meta name="description" content="{{ blog.description|removeLineBreaks|e('html') }}" />
+    <meta name="keywords" content="{{ article.tags|striptags|removeLineBreaks|e('html') }}" />
+    {% set shareLink = blog.protocol + '://' + blog.domain + article.baseHref %}
+    <meta property="og:url" content="{{ shareLink }}" />
+    <meta property="og:type" content="article" />
+    {% set author = blog.author.fallback %}
+    <meta property="og:title" content="{{ author.nameFull|removeLineBreaks|e('html') }} | {{ blog.title|removeLineBreaks|e('html') }}" />
+    <meta property="og:description" content="{{ blog.description|removeLineBreaks|e('html') }}" />
+{% if article.img[0] %}
+    <meta property="og:image" content="{{ blog.protocol }}://{{ blog.domain }}{{ blog.author.fallback.image }}" />
+{% endif %}
+    <script type="application/ld+json">
+        {
+            "@context": "http://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+                {
+                    "@type": "ListItem",
+                    "position": 1,
+                    "item":
+                    {
+                        "@id": "{{ blog.protocol }}://{{ blog.domain }}",
+                        "name": "Frontpage"
+                    }
+                }{% if categoryName %},
+                {
+                    "@type": "ListItem",
+                    "position": 2,
+                    "item":
+                    {
+                        "@id": "{{ blog.protocol }}://{{ blog.domain }}{{ article.baseHref }}",
+                        "name": "{{ categoryName }}"
+                    }
+                }
+            {% endif %}
+            ]
+        }
+    </script>
+{% else %}
+    <meta name="description" content="{{ article.teaser|striptags|removeLineBreaks|e('html') }} {{ article.ingress|striptags|removeLineBreaks|e('js')|e('html') }}" />
+    <meta name="keywords" content="{{ article.tags|striptags|removeLineBreaks|e('html') }}" />
+    {% set shareLink = blog.protocol + '://' + blog.domain + article.baseHref + article.file %}
+    <meta property="og:url" content="{{ shareLink }}" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="{{ article.title|striptags|removeLineBreaks|e('html') }}" />
+    <meta property="og:description" content="{{ article.teaser|striptags|removeLineBreaks|e('html') }} {{ article.ingress|striptags|removeLineBreaks|e('html') }}" />
+    {% if article.img[0] %}
+        <meta property="og:image" content="{{ blog.protocol }}://{{ blog.domain }}/pho/{{ article.img[0] }}?w=600" />
+    {% endif %}
+    {% if article.youtube %}
+        <meta property="og:video" content="{{ article.youtubeRaw }}" />
+    {% endif %}
+    <script type="application/ld+json">
+        // http://schema.org/BlogPosting
+        // https://developers.google.com/structured-data/rich-snippets/articles
+        // https://developers.google.com/structured-data/testing-tool/
+        {
+          "@context": "http://schema.org",
+          "@type": "BlogPosting",
+          "publisher": {
+              "@type": "Organization",
+              "name": "{{ blog.author.fallback.nameFull|removeLineBreaks|e('html') }}",
+              "logo": {
+                  "@type": "imageObject",
+                  "height": 40,
+                  "width": 218,
+                  "url": "https://litt.no/template/kotha/img/sorenso-logo.png"
+              }
+          },
+          "author": {
+              "@type": "Person",
+              "name": "{{ article.author }}"
+          },
+          "headline": "{{ article.title|striptags|e('js') }}",
+          "alternativeHeadline": "{{ article.teaser|striptags|removeLineBreaks|e('js') }}",
+          "image": [
+              {% for img in article.img %}
+                  "{{ blog.protocol }}://{{ blog.domain }}/pho/{{ img }}?w=800"
+              {% endfor %}
+          ],
+          "mainEntityOfPage": "{{ shareLink }}",
+          "datePublished": "{{ article.published }}",
+          "dateModified": "{{ article.updated || article.published }}",
+          "description": "{{ article.ingress|striptags|removeLineBreaks|e('js') }}",
+          "articleBody": "{{ article.body|striptags|removeLineBreaks|e('js') }} {% for col in article.col %}{{ col }} {% endfor %}"
+        }
+    </script>
+    <script type="application/ld+json">
+        {
+            "@context": "http://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+                {
+                    "@type": "ListItem",
+                    "position": 1,
+                    "item":
+                    {
+                        "@id": "{{ blog.protocol }}://{{ blog.domain }}",
+                        "name": "Frontpage"
+                    }
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 2,
+                    "item":
+                    {
+                        "@id": "{{ blog.protocol }}://{{ blog.domain }}{{ article.baseHref }}",
+                        "name": "{{ categoryName }}"
+                    }
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 3,
+                    "item":
+                    {
+                        "@id": "{{ blog.protocol }}://{{ blog.domain }}{{ article.baseHref }}{{ article.file }}",
+                        "name": "{{ article.title|e('js') }}"
+                    }
+                }
+            ]
+        }
+    </script>
+{% endif %}
+<link rel="manifest" href="/global/manifest.json">

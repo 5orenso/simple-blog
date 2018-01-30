@@ -47,6 +47,8 @@ module.exports = (req, res) => {
                 hrstart,
                 routePath,
                 routeName,
+                useTemplatePath: true,
+                useTemplate: '/global/ajax/savefile.html',
             });
         });
 };

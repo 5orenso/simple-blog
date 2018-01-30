@@ -1,0 +1,10 @@
+
+                <h4>Andre steder:</h4>
+                <ol class="list-unstyled">
+                    {% if author.youtube %}<li><a rel="noopener" target="_blank" href="{{ author.youtube }}"><i class="fab fa-youtube"></i> Youtube</a></li>{% endif %}
+                    {% if author.github %}<li><a rel="noopener" target="_blank" href="{{ author.github }}"><i class="fab fa-github"></i> GitHub</a></li>{% endif %}
+                    {% if author.twitter %}<li><a rel="noopener" target="_blank" href="{{ author.twitter }}"><i class="fab fa-twitter"></i> Twitter</a></li>{% endif %}
+                    {% if author.facebook %}<li><a rel="noopener" target="_blank" href="{{ author.facebook }}"><i class="fab fa-facebook"></i> Facebook</a></li>{% endif %}
+                    {% if author.instagram %}<li><a rel="noopener" target="_blank" href="{{ author.instagram }}"><i class="fab fa-instagram"></i> Instagram</a></li>{% endif %}
+                    {% if author.flickr %}<li><a rel="noopener" target="_blank" href="{{ author.flickr }}"><i class="fab fa-flickr"></i> Flickr</a></li>{% endif %}
+                </ol>

@@ -136,6 +136,8 @@ module.exports = (req, res) => {
                 hrstart,
                 routePath,
                 routeName,
+                useTemplatePath: true,
+                useTemplate: '/global/ajax/fileupload.html',
             });
         });
 };

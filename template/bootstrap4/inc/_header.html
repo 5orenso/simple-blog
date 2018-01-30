@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Page Title -->
+    {% if article.file|match('index') %}
+        {% set author = blog.author.fallback %}
+        <title>{{ author.nameFull|removeLineBreaks|e('html') }} | {{ blog.title|removeLineBreaks|e('html') }}</title>
+    {% else %}
+        <title>{{ article.title|removeLineBreaks|e('html') }}</title>
+    {% endif %}
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/dashboard.css" rel="stylesheet">
+    <link href="/css/open-iconic/font/css/open-iconic-bootstrap.css" rel="stylesheet">
+    <link href="/css/blog.css" rel="stylesheet">
+    <link href="/css/custom.css" rel="stylesheet">
+    <script src="/js/jquery-3.2.1.min.js"></script>
+    <script defer src="/js/fontawesome-5.0.6/fontawesome-all.min.js"></script>
+
+    {% include '../../global/inc/_header_fileupload.html' %}
+    {% include '../../global/inc/_header_seo.html' %}
+
+</head>
+<body>
+
+{% include '../../global/inc/_body_header.html' %}
