@@ -2,7 +2,7 @@
 {% if file.path|match('photo') || file.path|match('film') %}
     {% set isPhoto = true %}
 {% endif %}
-{% set limit = 12 %}
+{% set limit = 18 %}
 {% set page = parseInt(query.page) %}
 {% if !page %}
     {% set page = 1 %}
