@@ -2,6 +2,7 @@
 {% if file.path|match('photo') || file.path|match('film') %}
     {% set isPhoto = true %}
 {% endif %}
+{% set baseHref = article.baseHref|replace('/', '', 'g') %}
 {% set limit = 18 %}
 {% set page = parseInt(query.page) %}
 {% if !page %}
@@ -9,6 +10,14 @@
 {% endif %}
 {% set pageStart = page - 1 %}
 {% set pageStart = pageStart * limit %}
+
+
+<div class="blog-header">
+    <div class="container">
+        <h1 class="blog-title">{{ baseHref }}</h1>
+        <p class="lead blog-description">{% if blog.category[baseHref] %}{{ blog.category[baseHref]|raw }}{% endif %}</p>
+    </div>
+</div>
 
 {% if isPhoto %}
 <div class="container-fluid">

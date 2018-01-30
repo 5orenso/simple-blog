@@ -39,6 +39,15 @@ module.exports = {
         socialUser: {
             twitter: 'sorenso',
         },
+        category: {
+            coffee: 'Jeg er veldig glad i kaffe, som sikkert mange vet. Derfor har jeg laget en egen kategori på bloggen min for å samle alle kafferelaterte poster.',
+            film: '',
+            fishing: '',
+            other: '',
+            outdoor: '',
+            photo: '',
+            wiki: '',
+        },
         staticFilesPath: '/Users/sorenso/html/',
         textFilesPath: '/Users/sorenso/text-files/',
         topImage: false, // Don't use image[0] as top image on site. Use topImage instead.

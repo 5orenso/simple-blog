@@ -36,6 +36,9 @@
 .blog-post-quote {
     font-size: 3.0em;
 }
+.blog-header {
+    padding-top: 2rem;
+}
 .artlist {
     margin-bottom: 5px;
     font-size: .8em;
