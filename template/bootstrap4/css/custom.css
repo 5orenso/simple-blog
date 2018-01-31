@@ -3,11 +3,11 @@
     position: relative;
     width: calc(100% + 80px);
 }
-.post-thumb .videoWrapper {
+.blog-top-image .videoWrapper {
     left: 0px;
     width: 100%
 }
-.post-thumb .img-fluid {
+.blog-top-image .img-fluid {
     max-height: calc(100vh - 100px);
 }
 .videoWrapper iframe {
@@ -28,6 +28,35 @@
 .post-content table {
     width: 100%;
 }
+.post-thumb {
+    padding-top: 66%; /* 1:1 Aspect Ratio */
+    position: relative;
+    background-color: #f0f0f0;
+}
+.post-thumb a {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+}
+.post-thumb a img {
+    max-height: 100%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+.post-thumb div {
+    position: absolute;
+    top: 35%;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    padding: 1rem;
+    /* border-top: .05rem solid #e5e5e5;
+    border-bottom: .05rem solid #e5e5e5; */
+}
+
 .blog-main-full {
     padding-left: 0px;
     padding-right: 0px;

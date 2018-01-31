@@ -15,12 +15,12 @@
 {% endif %}
 
             <div class="blog-post">
-				<div class="post-thumb {% if article.gallery || article.img[1] %}gallery-post-format{% endif %}">
+				<div class="blog-top-image {% if article.gallery || article.img[1] %}gallery-post-format{% endif %}">
                     {% if article.youtube %}
 					    {{ article.youtube|raw }}
                     {% elseif article.img[0] %}
-                        <div class="image_inline">
-                            <a href="/pho/{{ article.img[0] }}?w=2000" data-smoothzoom="group1" title="{{ article.title|e }}">
+                        <div>
+                            <a href="/pho/{{ article.img[0] }}?w=2000" title="{{ article.title|e }}">
                                 <img src="/pho/{{ article.img[0] }}?w={% if isPhoto %}1800{% else %}1050{% endif %}" alt="{{ article.title|e }}" class="img-fluid">
                             </a>
                         </div>
