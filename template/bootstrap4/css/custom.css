@@ -72,6 +72,13 @@
     margin-bottom: 5px;
     font-size: .8em;
 }
+.artlist .thumb {
+    height: 60px;
+    background-color: #f0f0f0;
+}
+.artlist .text {
+    padding-left: .5rem;
+}
 
 .pagination li {
     display: flex;

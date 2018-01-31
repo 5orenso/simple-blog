@@ -142,12 +142,14 @@
                     {% for art in article.artlist %}
                         {% if loop.index < limit %}
                             <li class="row no-gutters artlist">
-                                <div class="col-sm-4">
+                                <div class="col-sm-4 thumb">
                                     <a href="{{ art.baseHref }}{{ art.file }}" title="{{ art.title|e }} - {{ art.teaser|e }}">
-                                        <img src="/pho/{{ art.img[0] }}?w=60" alt="{{ art.title|e }} - {{ art.teaser|e }}" class="img-fluid">
+                                        {% if art.img[0] %}
+                                            <img src="/pho/{{ art.img[0] }}?w=70" alt="{{ art.title|e }} - {{ art.teaser|e }}" class="img-fluid"><br clear="all">
+                                        {% endif %}
                                     </a>
                                 </div>
-                                <div class="col-sm-8">
+                                <div class="col-sm-8 text">
                                     <a href="{{ art.baseHref }}{{ art.file }}" title="{{ art.title|e }} - {{ art.teaser|e }}">{{ art.title }}</a>
                                 </div>
                             </li>
