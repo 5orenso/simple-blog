@@ -103,7 +103,9 @@
 .nav-link {
     padding: .5rem;
 }
-
+.image_inline_right {
+    float: right;
+}
 .image_inline_text {
     font-size: 0.9em;
     color: #808080;

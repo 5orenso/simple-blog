@@ -50,7 +50,6 @@
 <div class="container">
     <div class="row">
         <div class="col-sm-8 blog-main">
-
             <div class="blog-post">
                 <h2 class="blog-post-title">{{ article.title }}</h2>
                 <h5 class="blog-post-teaser">{{ article.teaser|raw }}</h5>
@@ -63,6 +62,21 @@
                     {% endif %}
                     <a href="{{ article.baseHref }}" class="post-cat">{{ baseHref }}</a>
                 </p>
+
+                {% if article.img[1] %}
+                    {% set imgs = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20] %}
+                    {% for i in imgs %}
+                        {% if (article.img[i]) %}
+                            <p class="image_inline_right">
+                                <a href="/pho/{{ article.img[i] }}?w=1800" data-smoothzoom="group1" title="{{ article.title|e('html') }}">
+                                    <img src="/pho/{{ article.img[i] }}?w=300" alt="{{ article.title|e('html') }}" title="{{ article.title|e('html') }}" class="img-fluid">
+                                </a>
+                            </p>
+                        {% endif %}
+                    {% endfor %}
+                    <div class="col-sm-6 blog-main">
+                {% endif %}
+
 
                 {% if article.ingress %}
                     {% if isPhoto %}
@@ -87,7 +101,6 @@
                                 <img src="/pho/{{ article['img' + i] }}?w=750" alt="{{ article['title' + i]|e('html') }}" title="{{ article['title' + i]|e('html') }}" class="img-fluid">
                             </a>
                         </p>
-
                     {% endif %}
                     {% if (article['ingress' + i] or article['body' + i] or article['col' + i]) %}
                         {% if article['title' + i] %}
