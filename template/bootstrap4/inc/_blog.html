@@ -20,9 +20,7 @@
 					    {{ article.youtube|raw }}
                     {% elseif article.img[0] %}
                         <div>
-                            <a href="/pho/{{ article.img[0] }}?w=2000" title="{{ article.title|e }}">
-                                <img src="/pho/{{ article.img[0] }}?w={% if isPhoto %}1800{% else %}1050{% endif %}" alt="{{ article.title|e }}" class="img-fluid">
-                            </a>
+                            <img src="/pho/{{ article.img[0] }}?w={% if isPhoto %}1800{% else %}1050{% endif %}" alt="{{ article.title|e }}" class="img-fluid">
                         </div>
                     {% else %}
                         <div class="blog-post-quote">
