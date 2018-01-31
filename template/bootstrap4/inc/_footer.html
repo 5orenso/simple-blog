@@ -54,6 +54,12 @@
                 $('#imageText').html($(this).attr('title'));
                 $('#imagemodal').modal('show');
             });
+            $('.inline-images').click(function(event) {
+                event.preventDefault();
+                $('#imagepreview').attr('src', $(this).attr('href'));
+                $('#imageText').html($(this).attr('title'));
+                $('#imagemodal').modal('show');
+            });
         });
     </script>
 

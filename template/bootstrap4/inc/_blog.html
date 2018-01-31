@@ -67,7 +67,7 @@
                     {% set imgs = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20] %}
                     {% for i in imgs %}
                         {% if (article.img[i]) %}
-                            <a href="/pho/{{ article.img[i] }}?w=1800" data-smoothzoom="group1" title="{{ article.title|e('html') }}">
+                            <a href="/pho/{{ article.img[i] }}?w=1800" data-smoothzoom="group1" title="{{ article.title|e('html') }}" class="inline-images">
                                 <img src="/pho/{{ article.img[i] }}?w=300" alt="{{ article.title|e('html') }}" title="{{ article.title|e('html') }}" class="img-thumbnail rounded float-right">
                             </a>
                         {% endif %}

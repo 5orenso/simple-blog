@@ -118,6 +118,13 @@
     font-size: 1.5em;
 }
 
+.img-thumbnail {
+    clear: both;
+    margin-bottom: 1rem;
+    margin-left: 1rem;
+}
+
+
 .markdown-editor {
     background: #c0c0c0;
     padding: 10px;
