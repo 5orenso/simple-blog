@@ -131,32 +131,50 @@
                     {% if article.previous %}
                         {% set art = article.previous %}
 					<div class="col-md-6">
-						<div class="single-blog-box">
-							<a href="{{ art.baseHref}}{{ art.file }}">
-                                <img src="/pho/{{ art.img[0] }}?w=360" alt="{{ art.title|e }}" class="img-fluid">
-								<div class="overlay">
-									<div class="promo-text">
-										<h5>{{ art.title }}</h5>
-									</div>
-								</div>
-							</a>
-                            <a class="btn btn-outline-primary" href="{{ art.baseHref}}{{ art.file }}">&laquo; Older</a>
-						</div>
+                        <div class="post-thumb">
+                            {% if art.img[0] %}
+                                <a href="{{ art.baseHref }}{{ art.file }}"><img src="/pho/{{ art.img[0] }}?w=800" alt="{{ art.title|e }}" class="img-fluid"></a>
+                            {% else %}
+                                <div class="entry-quote-post-format">
+                                    <blockquote>
+                                        <p><i class="fa fa-quote-left"></i>
+                                            {% if art.quote %}
+                                                {{ art.quote }}
+                                            {% elseif art.teaser %}
+                                                {{ art.teaser }}
+                                            {% elseif art.title %}
+                                                {{ art.title }}
+                                            {% endif %}</p>
+                                        <h3>{{ art.quoteBy }}</h3>
+                                    </blockquote>
+                                </div>
+                            {% endif %}
+                        </div>
+                        <a class="btn btn-outline-primary" href="{{ art.baseHref}}{{ art.file }}">&laquo; Older</a>
 					</div>
                     {% endif %}
                     {% if article.next %}
                         {% set art = article.next %}
 					<div class="col-md-6">
-						<div class="single-blog-box">
-                            <a href="{{ art.baseHref}}{{ art.file }}">
-                                <img src="/pho/{{ art.img[0] }}?w=360" alt="{{ art.title|e }}" class="img-fluid">
-								<div class="overlay">
-									<div class="promo-text">
-                                        <h5>{{ art.title }}</h5>
-									</div>
-								</div>
-							</a>
-						</div>
+                        <div class="post-thumb">
+                            {% if art.img[0] %}
+                                <a href="{{ art.baseHref }}{{ art.file }}"><img src="/pho/{{ art.img[0] }}?w=800" alt="{{ art.title|e }}" class="img-fluid"></a>
+                            {% else %}
+                                <div class="entry-quote-post-format">
+                                    <blockquote>
+                                        <p><i class="fa fa-quote-left"></i>
+                                            {% if art.quote %}
+                                                {{ art.quote }}
+                                            {% elseif art.teaser %}
+                                                {{ art.teaser }}
+                                            {% elseif art.title %}
+                                                {{ art.title }}
+                                            {% endif %}</p>
+                                        <h3>{{ art.quoteBy }}</h3>
+                                    </blockquote>
+                                </div>
+                            {% endif %}
+                        </div>
                         <a class="btn btn-outline-primary" href="{{ art.baseHref}}{{ art.file }}">Newer &raquo;</a>
 					</div>
                     {% endif %}
