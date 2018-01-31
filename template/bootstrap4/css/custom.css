@@ -129,6 +129,8 @@ html {
     clear: both;
     margin-bottom: 1rem;
     margin-left: 1rem;
+    font-size: 0.8em;
+    max-width: 50%;
 }
 
 

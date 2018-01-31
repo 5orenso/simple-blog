@@ -65,9 +65,12 @@
                     {% set imgs = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20] %}
                     {% for i in imgs %}
                         {% if (article.img[i]) %}
-                            <a href="/pho/{{ article.img[i] }}?w=1800" data-smoothzoom="group1" title="{{ article.title|e('html') }}" class="inline-images">
-                                <img src="/pho/{{ article.img[i] }}?w=300" alt="{{ article.title|e('html') }}" title="{{ article.title|e('html') }}" class="img-thumbnail rounded float-right">
-                            </a>
+                            <span class="float-right img-thumbnail rounded">
+                                <a href="/pho/{{ article.img[i] }}?w=1800" data-smoothzoom="group1" title="{{ (article.imgText[i] || article.title)|e('html') }}" class="inline-images">
+                                    <img src="/pho/{{ article.img[i] }}?w=300" alt="{{ (article.imgText[i] || article.title)|e('html') }}" title="{{ (article.imgText[i] || article.title)|e('html') }}" class="img-fluid">
+                                </a><br>
+                                {% if article.imgText[i] %}{{ article.imgText[i] }}{% endif %}
+                            </span>
                         {% endif %}
                     {% endfor %}
                 {% endif %}
@@ -104,6 +107,21 @@
                         {% if article['teaser' + i] %}
                             <h5 class="blog-post-teaser">{{ article['teaser' + i]|raw }}</h5>
                         {% endif %}
+
+                        {% if article['img' + i][1] %}
+                            {% set imgs = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20] %}
+                            {% for i in imgs %}
+                                {% if (article['img' + i][i]) %}
+                                    <span class="float-right img-thumbnail rounded">
+                                        <a href="/pho/{{ article['img' + i][i] }}?w=1800" data-smoothzoom="group1" title="{{ article['imgText' + i][i]|e('html') }}" class="inline-images">
+                                            <img src="/pho/{{ article['img' + i][i] }}?w=300" alt="{{ article['imgText' + i][i]|e('html') }}" title="{{ article['imgText' + i][i]|e('html') }}" class="img-fluid">
+                                        </a><br>
+                                        {% if article['imgText' + i][i] %}{{ article['imgText' + i][i] }}{% endif %}
+                                    </span>
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+
                         {% if article['ingress' + i] %}
                             {% if isPhoto %}
                                 {{ article['ingress' + i]|inlineImageSize(945)|safe }}
