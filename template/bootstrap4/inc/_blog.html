@@ -64,11 +64,57 @@
                     <a href="{{ article.baseHref }}" class="post-cat">{{ baseHref }}</a>
                 </p>
 
+                {% if article.ingress %}
+                    {% if isPhoto %}
+                        {{ article.ingress|inlineImageSize(945)|safe }}
+                    {% else %}
+                        {{ article.ingress|inlineImageSize(750)|safe }}
+                    {% endif %}
+                {% endif %}
+
                 {% if isPhoto %}
                     {{ article.body|inlineImageSize(945)|safe }}
                 {% else %}
                     {{ article.body|inlineImageSize(750)|safe }}
                 {% endif %}
+
+
+                {% set parts = [2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20] %}
+                {% for i in parts %}
+                    {% if (article['img' + i]) %}
+                        <p class="image_inline ">
+                            <a href="/pho/{{ article['img' + i] }}?w=1800" data-smoothzoom="group1" title="{{ article['title' + i]|e('html') }}">
+                                <img src="/pho/{{ article['img' + i] }}?w=750" alt="{{ article['title' + i]|e('html') }}" title="{{ article['title' + i]|e('html') }}" class="img-fluid">
+                            </a>
+                        </p>
+
+                    {% endif %}
+                    {% if (article['ingress' + i] or article['body' + i] or article['col' + i]) %}
+                        {% if article['title' + i] %}
+                            <h2 class="blog-post-title">{{ article['title' + i] }}</h2>
+                        {% endif %}
+                        {% if article['teaser' + i] %}
+                            <h5 class="blog-post-teaser">{{ article['teaser' + i]|raw }}</h5>
+                        {% endif %}
+                        {% if article['ingress' + i] %}
+                            {% if isPhoto %}
+                                {{ article['ingress' + i]|inlineImageSize(945)|safe }}
+                            {% else %}
+                                {{ article['ingress' + i]|inlineImageSize(750)|safe }}
+                            {% endif %}
+                        {% endif %}
+
+                        {% if article['body' + i] %}
+                            {% if isPhoto %}
+                                {{ article['body' + i]|inlineImageSize(945)|safe }}
+                            {% else %}
+                                {{ article['body' + i]|inlineImageSize(750)|safe }}
+                            {% endif %}
+                        {% endif %}
+
+                    {% endif %}
+                {% endfor %}
+
 
                 <div class="social-share">
                     Jeg blir veldig 😊 hvis du deler:
@@ -79,7 +125,6 @@
                     <a rel="noopener" target="_blank" class="s-linkedin" href="https://www.linkedin.com/shareArticle?mini=true&url={{ shareLink|url_encode }}&summary={{ article.title|url_encode }}.%20{{ article.teaser|striptags|url_encode }}&source={{ blog.domain }}"><i class="fab fa-linkedin"></i></a>
                 </div>
             </div><!-- /.blog-post -->
-
 
             <nav class="blog-pagination">
                 <div class="row"><!--blog next previous-->
