@@ -6,9 +6,9 @@
     <!-- Page Title -->
     {% if article.file|match('index') %}
         {% set author = blog.author.fallback %}
-        <title>{{ author.nameFull|removeLineBreaks|e('html') }} | {{ blog.title|removeLineBreaks|e('html') }}</title>
+        <title>{{ author.nameFull|removeLineBreaks|striptags|e('html') }} | {{ blog.title|removeLineBreaks|striptags|e('html') }}</title>
     {% else %}
-        <title>{{ article.title|removeLineBreaks|e('html') }}</title>
+        <title>{{ article.title|removeLineBreaks|striptags|e('html') }}</title>
     {% endif %}
     <link href="/css/bootstrap.min.css" rel="stylesheet">
     <link href="/css/dashboard.css" rel="stylesheet">
