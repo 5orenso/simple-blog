@@ -16,6 +16,14 @@ document.onkeyup = function(event){
     child.innerHTML = key_press;
     document.getElementById('log').appendChild(child);
 }
+document.onkeypress = function(event){
+    var key_press = String.fromCharCode(event.keyCode);
+	var status = document.getElementById('status');
+	status.innerHTML = "UP Event Fired For : "+key_press;
+    const child = document.createElement('span');
+    child.innerHTML = key_press;
+    document.getElementById('log').appendChild(child);
+}
 </script>
 <h2>Javascript Capture Keyboard Input Example</h2>
 <h3>onkeydown - onkeyup</h3>
