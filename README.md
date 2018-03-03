@@ -91,26 +91,11 @@ More to come :)
 - [Swig](https://github.com/paularmstrong/swig)
 
 
-### HOWTO upgrade dev environment
-```bash
-npm install buster --save-dev --no-optional
-npm install buster-istanbul --save-dev --no-optional
-npm install grunt --save-dev --no-optional
-npm install grunt-buster --save-dev --no-optional
-npm install grunt-contrib-jshint --save-dev --no-optional
-npm install grunt-contrib-nodeunit --save-dev --no-optional
-npm install grunt-contrib-watch --save-dev --no-optional
-npm install grunt-coveralls --save-dev --no-optional
-npm install grunt-jscs --save-dev --no-optional
-npm install grunt-nodemon --save-dev --no-optional
-npm install grunt-shell --save-dev --no-optional
-```
-
 ### Howto upgrade modules
 ```bash
 $ npm install -g npm-check-updates
-$ ncu -u
-$ npm install --save --no-optional
+$ ncu --upgrade --upgradeAll
+$ npm install --no-optional
 ```
 
 ### Howto upgrade editor
