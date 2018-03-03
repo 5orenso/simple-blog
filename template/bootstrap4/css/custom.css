@@ -160,3 +160,7 @@ html {
 .markdown_box__success .small_info:empty {
     display: none;
 }
+
+.jumbotron {
+    padding: 2rem 2rem;
+}

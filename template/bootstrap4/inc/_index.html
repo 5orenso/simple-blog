@@ -11,7 +11,7 @@
 {% set pageStart = page - 1 %}
 {% set pageStart = pageStart * limit %}
 
-{% if baseHref %}
+{% if baseHref && !header.bodyRaw %}
 <div class="blog-header">
     <div class="container">
         <h1 class="blog-title">{{ baseHref }}</h1>
@@ -19,6 +19,8 @@
     </div>
 </div>
 {% endif %}
+
+{{ header.bodyRaw|raw }}
 
 {% if isPhoto %}
 <div class="container-fluid">
@@ -30,9 +32,10 @@
         <main class="col-sm-12 col-md-12 pt-3 blog-main">
 {% endif %}
 
+
             {% if 1 == 2 %}
             <div class="jumbotron">
-                  <div class="container">
+                    <div class="container">
                     <h1 class="display-3">Hello, world!</h1>
                     <p>This is a template for a simple marketing or informational website. It includes a large callout called a jumbotron and three supporting pieces of content. Use it as a starting point to create something more unique.</p>
                     <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more »</a></p>
@@ -41,7 +44,6 @@
             {% endif %}
 
             <div class="row">
-
                 {% for art in article.artlist %}
                     {% if loop.index > pageStart && loop.index <= limit * page %}
                         {% if loop.index === 1 %}{% endif %}

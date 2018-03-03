@@ -77,18 +77,28 @@ module.exports = (req, res) => {
         }
         // var template = 'blog.html';
         const tpl = swig.compileFile(template);
+        let headerArticle;
 
         Promise.all([
             category.list('/'),
             article.list(articlePath),
             article.list(articleAllPath),
+            article.load({
+                requestUrl: `${articlePath}_header${file === 'index' ? '' : '_detail'}.md`,
+                catlist: [],
+                artlist: [],
+                artlistAll: [],
+            }).catch(err => console.error(err)),
         ])
-            .then(contentLists => article.load({
-                requestUrl,
-                catlist: contentLists[0],
-                artlist: contentLists[1],
-                artlistall: contentLists[2],
-            }))
+            .then((contentLists) => {
+                headerArticle = contentLists[3];
+                return article.load({
+                    requestUrl,
+                    catlist: contentLists[0],
+                    artlist: contentLists[1],
+                    artlistall: contentLists[2],
+                });
+            })
             .then(($resultArticle) => {
                 const resultArticle = $resultArticle;
                 for (let i = 0, l = resultArticle.artlist.length; i < l; i += 1) {
@@ -104,6 +114,7 @@ module.exports = (req, res) => {
                         name: file,
                         path: articlePath,
                     },
+                    header: headerArticle,
                     blog: req.config.blog,
                     article: resultArticle,
                     query: inputQuery,
@@ -112,6 +123,7 @@ module.exports = (req, res) => {
             })
             .catch((opt) => {
                 res.status(404).send(tpl({
+                    header: headerArticle,
                     blog: req.config.blog,
                     error: opt.error,
                     article: opt.article,
