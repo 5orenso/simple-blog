@@ -19,7 +19,6 @@ module.exports = function (grunt) {
                 reset: true
             },
             target: ['app/**/*.js', 'lib/**/*.js', 'template/global/js/push-notification.js']
-            // target: ['app/**/*.js', 'lib/**/*.js', 'test/**/*.js']
         },
         jsdoc: {
             dist: {
@@ -72,7 +71,7 @@ module.exports = function (grunt) {
                         nodeEnv: 'development'
                     }
                 },
-                tasks: ['jshint', 'buster:unit']
+                tasks: ['eslint', 'buster:unit']
             },
             dev_local: {
                 options: {
@@ -84,7 +83,7 @@ module.exports = function (grunt) {
                         nodeEnv: 'development'
                     }
                 },
-                tasks: ['jshint', 'buster:unit']
+                tasks: ['eslint', 'buster:unit']
             }
         },
         shell: {
@@ -127,7 +126,6 @@ module.exports = function (grunt) {
 
     // These plugins provide necessary tasks.
     grunt.loadNpmTasks('grunt-contrib-nodeunit');
-    grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-watch');
     // Rename watch to watchdev and load it again
     grunt.renameTask('watch', 'watchtest');
