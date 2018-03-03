@@ -1,11 +1,18 @@
 "use strict";
 
+const webpackConfig = require('./webpack.config.js');
+
 module.exports = function (grunt) {
+    require('time-grunt')(grunt);
 
     // Project configuration.
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
 
+        webpack: {
+            prod: webpackConfig,
+            dev: Object.assign({ watch: true }, webpackConfig)
+        },
         eslint: {
             options: {
                 config: '.eslintrc.json',
@@ -134,6 +141,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-coveralls');
     grunt.loadNpmTasks('grunt-retire');
     grunt.loadNpmTasks('grunt-eslint');
+    grunt.loadNpmTasks('grunt-webpack');
 
     // Default task.
     grunt.registerTask('es', ['eslint']);
@@ -147,5 +155,6 @@ module.exports = function (grunt) {
     grunt.registerTask('run-local', ['buster:unit', 'nodemon:dev_local']);
     grunt.registerTask('artifact', ['shell', 'coveralls:real_coverage']);
     grunt.registerTask('report', ['coveralls:real_coverage']);
+    grunt.registerTask('build', ['webpack']);
 
 };
