@@ -9,7 +9,6 @@
 
 const express = require('express');
 const morgan = require('morgan');
-const when = require('when');
 const _ = require('underscore');
 const swig = require('swig');
 const fs = require('fs');
@@ -96,7 +95,10 @@ rssRouter.get('/*', (req, res) => {
     const template = templatePath + (file === 'index' ? 'rss.xml' : 'rss.xml');
     const tpl = swig.compileFile(template);
 
-    when.all([category.list('/'), article.list(articlePath)])
+    Promise.all([
+        category.list('/'),
+        article.list(articlePath),
+    ])
         .then(contentLists => article.load({
             requestUrl,
             catlist: contentLists[0],

@@ -7,7 +7,6 @@
 
 'use strict';
 
-const when = require('when');
 const commander = require('commander');
 const Logger = require('../lib/logger');
 const LocalUtil = require('../lib/local-util');
@@ -51,10 +50,10 @@ const search = new Search({
 lu.timersReset();
 lu.timer('routes/sitemap->request');
 
-when.all([category.list('/'), article.list(articlePath)])
+Promise.all([category.list('/'), article.list(articlePath)])
     .then((contentLists) => {
         lu.timer('routes/sitemap->load_category_and_article_lists');
-        when.all([
+        Promise.all([
             article.sitemap(contentLists[0], contentLists[1]),
             search.indexArtlist(contentLists[1], true),
         ])

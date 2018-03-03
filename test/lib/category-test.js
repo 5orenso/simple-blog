@@ -3,7 +3,6 @@
 var buster       = require('buster'),
     assert       = buster.assert,
     refute       = buster.refute,
-    when         = require('when'),
     Category     = require('../../lib/category'),
     category     = new Category({
         logger: {
@@ -45,21 +44,23 @@ buster.testCase('lib/category', {
     },
     'Test category:': {
         'list existing categories': function (done) {
-            when(category.list('/'))
+            category.list('/')
                 .then(function (obj) {
                     assert.equals(catlist[0].name, obj[0].name);
                     assert.equals(catlist[0].type, obj[0].type);
                     done();
-                }).catch(console.log);
+                })
+                .catch(console.log);
         },
 
         'list non existing categories': function (done) {
-            when(category.list('/non-existing-path/'))
+            category.list('/non-existing-path/')
                 .then(function (obj) {
                     assert.equals([], obj);
                     refute(obj[0]);
                     done();
-                }).catch(console.log);
+                })
+                .catch(console.log);
         }
 
     }

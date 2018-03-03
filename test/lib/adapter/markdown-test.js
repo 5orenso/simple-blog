@@ -3,7 +3,6 @@
 var buster   = require('buster'),
     assert   = buster.assert,
     refute   = buster.refute,
-    when     = require('when'),
     markdown = require('../../../lib/adapter/markdown')({
         logger: {
             log: function () { },
@@ -102,20 +101,20 @@ buster.testCase('lib/adapter/markdown', {
     },
     'Test markdown adapter:': {
         'load existing file': function (done) {
-            when(markdown.load({
+            markdown.load({
                 requestUrl: '/simple-blog/index'
-            }))
-                .done(function (obj) {
+            })
+                .then(function (obj) {
                     assert.equals(obj.file, simpleBlogIndex.file);
                     assert.equals(obj.baseHref, simpleBlogIndex.baseHref);
                     done();
                 });
         },
         'load non existing file': function (done) {
-            when(markdown.load({
+            markdown.load({
                 requestUrl: '/simple-blog/index-does-not-exist'
-            }))
-                .done(function (obj) {
+            })
+                .then(function (obj) {
                     console.log(obj);
                 }, function (obj) {
                     assert.equals(obj.article.file, 'index-does-not-exist');
@@ -125,8 +124,8 @@ buster.testCase('lib/adapter/markdown', {
         },
 
         'list existing articles': function (done) {
-            when(markdown.listArticles('/simple-blog/'))
-                .done(function (obj) {
+            markdown.listArticles('/simple-blog/')
+                .then(function (obj) {
                     assert.equals(obj[0].title, artlist[0].title);
                     assert.equals(obj[0].teaser, artlist[0].teaser);
                     assert.equals(obj[0].file, artlist[0].file);
@@ -136,16 +135,16 @@ buster.testCase('lib/adapter/markdown', {
         },
 
         'list non existing articles': function (done) {
-            when(markdown.listArticles('/simple-blog-does-not-exist/'))
-                .done(function (obj) {
+            markdown.listArticles('/simple-blog-does-not-exist/')
+                .then(function (obj) {
                     assert.equals(obj, []);
                     done();
                 });
         },
 
         'list existing images': function (done) {
-            when(markdown.listImages(simpleBlogIndex))
-                .done(function (article) {
+            markdown.listImages(simpleBlogIndex)
+                .then(function (article) {
                     assert.equals(article.imageList[0].filename, 'test.jpg');
                     assert.equals(article.img[1], 'test.jpg');
                     done();
@@ -153,8 +152,8 @@ buster.testCase('lib/adapter/markdown', {
         },
 
         'list non existing images': function (done) {
-            when(markdown.listImages({}))
-                .done(function (article) {
+            markdown.listImages({})
+                .then(function (article) {
                     refute(article.imageList);
                     refute(article.img);
                     done();
@@ -162,8 +161,8 @@ buster.testCase('lib/adapter/markdown', {
         },
 
         'list categories': function (done) {
-            when(markdown.listCategories('/'))
-                .done(function (catlist) {
+            markdown.listCategories('/')
+                .then(function (catlist) {
                     assert.equals(catlist[0].name, categoryList[0].name);
                     assert.equals(catlist[0].type, categoryList[0].type);
                     done();
@@ -171,8 +170,8 @@ buster.testCase('lib/adapter/markdown', {
         },
 
         'list categories wo/input': function (done) {
-            when(markdown.listCategories())
-                .done(function (catlist) {
+            markdown.listCategories()
+                .then(function (catlist) {
                     assert.equals(catlist, []);
                     done();
                 });

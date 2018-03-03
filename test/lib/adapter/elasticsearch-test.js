@@ -1,8 +1,7 @@
 'use strict';
 
 var buster       = require('buster'),
-    assert       = buster.assert,
-    when         = require('when');
+    assert       = buster.assert;
 
 var article = {
     tagValues: { toc: '', fact: '', artlist: '' },
@@ -52,8 +51,8 @@ buster.testCase('Elasticsearch', {
     },
 
     '//search for existing word and expect one hit': function (done) {
-        when(es.query('one-hit', {}))
-            .done(function (obj) {
+        es.query('one-hit', {})
+            .then(function (obj) {
                 assert.isArray(obj.hits);
                 assert.equals(obj.hits[0].title, article.title);
                 assert.equals(obj.hits[0].published, article.published);
@@ -62,15 +61,16 @@ buster.testCase('Elasticsearch', {
                 assert.equals(obj.hits[0].file, article.file);
                 assert.equals(obj.hits[0].baseHref, article.baseHref);
                 done();
-            }, function (err) {
+            })
+            .catch((err) => {
                 console.log(err);
                 done();
             });
     },
 
     '//search for existing word and expect two hits': function (done) {
-        when(es.query('two-hit', {}))
-            .done(function (obj) {
+        es.query('two-hit', {})
+            .then(function (obj) {
                 assert.isArray(obj.hits);
                 assert.equals(obj.hits[1].title, article.title);
                 assert.equals(obj.hits[1].published, article.published);
@@ -79,54 +79,59 @@ buster.testCase('Elasticsearch', {
                 assert.equals(obj.hits[1].file, article.file);
                 assert.equals(obj.hits[1].baseHref, article.baseHref);
                 done();
-            }, function (err) {
+            })
+            .catch((err) => {
                 console.log(err);
                 done();
             });
     },
 
     '//search for non existing word': function (done) {
-        when(es.query('no-hit', {}))
-            .done(function (obj) {
+        es.query('no-hit', {})
+            .then(function (obj) {
                 assert.isArray(obj.hits);
                 // jscs:disable
                 assert.equals(obj, { hits: [], meta: { maxScore: 0.83, timeMs: 4, total: 0 } });
                 // jscs:enable
                 done();
-            }, function (err) {
+            })
+            .catch((err) => {
                 console.log(err);
                 done();
             });
     },
 
     '//ping server': function (done) {
-        when(es.ping())
-            .done(function (obj) {
+        es.ping()
+            .then(function (obj) {
                 assert.equals(obj, 'all is well');
                 done();
-            }, function (err) {
+            })
+            .catch((err) => {
                 console.log(err);
                 done();
             });
     },
 
     '//index object': function (done) {
-        when(es.index(article))
+        es.index(article)
             .done(function (obj) {
                 assert.equals(obj, { status: 'ok' });
                 done();
-            }, function (err) {
+            })
+            .catch((err) => {
                 console.log(err);
                 done();
             });
     },
 
     '//index object with wrong input': function (done) {
-        when(es.index({}))
+        es.index({})
             .done(function (obj) {
                 console.log(obj);
                 done();
-            }, function (err) {
+            })
+            .catch((err) => {
                 assert.match(err, 'obj.baseHref');
                 assert.match(err, 'obj.file');
                 done();

@@ -3,7 +3,6 @@
 var buster = require('buster'),
     assert = buster.assert,
     refute = buster.refute,
-    when   = require('when'),
     articlePath = '/simple-blog/',
     Category = require('../../lib/category'),
     category = new Category({
@@ -227,19 +226,20 @@ buster.testCase('lib/article', {
     },
     'Test article:': {
         'catlist test': function (done) {
-            when(category.list('/'))
-                .done(function (categoryList) {
+            category.list('/')
+                .then(function (categoryList) {
                     assert.equals(categoryList[0].name, catlist[0].name);
                     assert.equals(categoryList[0].type, catlist[0].type);
                     done();
-                }, function (err) {
+                })
+                .catch(function (err) {
                     console.log(err);
                 });
         },
 
         'artlist test': function (done) {
-            when(article.list(articlePath))
-                .done(function (articleList) {
+            article.list(articlePath)
+                .then(function (articleList) {
                     assert.equals(articleList[0].title, artlist[0].title);
                     assert.equals(articleList[0].baseHref, artlist[0].baseHref);
                     assert.equals(articleList[0].file, artlist[0].file);
@@ -248,12 +248,12 @@ buster.testCase('lib/article', {
         },
 
         'article test': function (done) {
-            when(article.load({
+            article.load({
                 requestUrl: '/simple-blog/index',
                 artlist: artlist,
                 catlist: catlist
-            }))
-                .done(function (article) {
+            })
+                .then(function (article) {
                     assert.equals(article.tagValues.toc, art.tagValues.toc);
                     assert.equals(article.tagValues.artlist, art.tagValues.artlist);
                     assert.equals(article.tagValues.artlistOnepage, art.tagValues.artlistOnepage);
@@ -281,16 +281,17 @@ buster.testCase('lib/article', {
         },
 
         'article not found': function (done) {
-            when(articleNotFound.load({
+            articleNotFound.load({
                 requestUrl: '/simple-blog/index_not_found',
                 artlist: artlist,
                 catlist: catlist
-            }))
-                .done(function (article) {
+            })
+                .then(function (article) {
                     refute(article.title);
                     //delete require.cache[require.resolve('../../lib/article')];
                     done();
-                }, function (response) {
+                })
+                .catch(function (response) {
                     assert.equals(response.statusCode, 404);
                     assert.equals(response.article.tagValues.artlist, artWip.tagValues.artlist);
                     assert.equals(response.article.tagValues.artlistOnepage, artWip.tagValues.artlistOnepage);
@@ -301,12 +302,12 @@ buster.testCase('lib/article', {
         },
 
         'article wip': function (done) {
-            when(articleWip.load({
+            articleWip.load({
                 requestUrl: '/simple-blog/_index_wip',
                 artlist: artlist,
                 catlist: catlist
-            }))
-                .done(function (article) {
+            })
+                .then(function (article) {
                     assert.equals(article.tagValues.toc, artWip.tagValues.toc);
                     assert.equals(article.tagValues.artlist, artWip.tagValues.artlist);
                     assert.equals(article.tagValues.artlistOnepage, artWip.tagValues.artlistOnepage);
@@ -315,24 +316,26 @@ buster.testCase('lib/article', {
                     assert.match(article.body, artWip.body);
                     //delete require.cache[require.resolve('../../lib/article')];
                     done();
-                }, function (err) {
+                })
+                .catch(function (err) {
                     console.log(err);
                 });
 
         },
 
         'article wip not found': function (done) {
-            when(articleWipNotFound.load({
+            articleWipNotFound.load({
                 requestUrl: '/simple-blog/_index_wip_not_found',
                 artlist: artlist,
                 catlist: catlist
-            }))
-                .done(function (article) {
+            })
+                .then(function (article) {
                     assert(false);
                     console.log(article.length);
                     //delete require.cache[require.resolve('../../lib/article')];
                     done();
-                }, function (response) {
+                })
+                .catch(function (response) {
                     assert.equals(response.statusCode, 404);
                     assert.equals(response.article.tagValues.artlist, artWip.tagValues.artlist);
                     assert.equals(response.article.tagValues.artlistOnepage, artWip.tagValues.artlistOnepage);
@@ -343,8 +346,8 @@ buster.testCase('lib/article', {
         },
 
         'sitemap test': function (done) {
-            when(article.sitemap(catlist, artlist))
-                .done(function (xml) {
+            article.sitemap(catlist, artlist)
+                .then(function (xml) {
                     var parseString = require('xml2js').parseString;
                     parseString(xml, function (err, result) {
                         var urls = result.urlset.url;
@@ -358,7 +361,8 @@ buster.testCase('lib/article', {
                         done();
                     });
                     //delete require.cache[require.resolve('../../lib/article')];
-                }, function (err) {
+                })
+                .catch(function (err) {
                     console.log(err);
                 });
 

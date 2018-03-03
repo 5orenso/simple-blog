@@ -9,7 +9,6 @@
 
 const express = require('express');
 const morgan = require('morgan');
-const when = require('when');
 const _ = require('underscore');
 const fs = require('fs');
 const path = require('path');
@@ -35,8 +34,8 @@ const getUrlFromRequest = function getUrlFromRequest(req) {
     return url.parse(imageFilename, true);
 };
 
-const pathExists = function pathExists(absolutePath) {
-    return when.promise((resolve, reject) => {
+function pathExists(absolutePath) {
+    return new Promise((resolve, reject) => {
         fs.exists(absolutePath, (exists) => {
             if (!exists) {
                 mkdirp(path.dirname(absolutePath), (err) => {
@@ -50,22 +49,22 @@ const pathExists = function pathExists(absolutePath) {
             }
         });
     });
-};
+}
 
-const fileExists = function fileExists(absoluteFilename) {
-    return when.promise((resolve, reject) => {
+function fileExists(absoluteFilename) {
+    return new Promise((resolve, reject) => {
         fs.exists(absoluteFilename, (exists) => {
             if (exists) {
                 resolve(absoluteFilename);
             } else {
-                reject(`Not found: ${absoluteFilename}`);
+                reject(new Error(`Not found: ${absoluteFilename}`));
             }
         });
     });
-};
+}
 
 const resizeImage = function resizeImage(opt) {
-    return when.promise((resolve, reject) => {
+    return new Promise((resolve, reject) => {
         fs.exists(opt.imageFilenameResized, (exists) => {
             if (!exists || opt.force) {
                 imagemagick.resize({
@@ -96,7 +95,7 @@ const resizeImage = function resizeImage(opt) {
 };
 
 const serveImage = function serveImage(response, imageFilenameResized) {
-    return when.promise((resolve, reject) => {
+    return new Promise((resolve, reject) => {
         fs.exists(imageFilenameResized, (exists) => {
             if (exists) {
                 fs.readFile(imageFilenameResized, 'binary', (err, file) => {
@@ -115,7 +114,7 @@ const serveImage = function serveImage(response, imageFilenameResized) {
                     }
                 });
             } else {
-                reject(`File does not exist: ${imageFilenameResized}`);
+                reject(new Error(`File does not exist: ${imageFilenameResized}`));
             }
         });
     });
@@ -125,7 +124,7 @@ const serveImage = function serveImage(response, imageFilenameResized) {
 // and it depends on an external resource. I think we should move
 // to a custom router somewhere else.
 const makeWebsequenceDiagram = function makeWebsequenceDiagram(wsdText, wsdLocalPath) {
-    return when.promise((resolve, reject) => {
+    return new Promise((resolve, reject) => {
         // ["default",
         // "earth",
         //    "modern-blue",
@@ -190,13 +189,11 @@ imageRouter.use('/*', localUtil.setCacheHeaders);
 imageRouter.get('/wsd/*', (req, res) => {
     const parsedUrl = getUrlFromRequest(req);
     const filename = `${wsdPath + crypto.createHash('sha256').update(parsedUrl.query.data).digest('hex')}.png`;
-    when(pathExists(wsdPath))
+    pathExists(wsdPath)
         .then(() => fileExists(filename))
         .catch(() => makeWebsequenceDiagram(parsedUrl.query.data, wsdPath))
         .then(wsdFile => serveImage(res, wsdFile))
-        .done(() => {
-            // metrics.increment('simpleblog.image.wsd');
-        }, (error) => {
+        .catch((error) => {
             res.status(404).send(error);
             res.end();
         });
@@ -215,7 +212,7 @@ imageRouter.get('/*', (req, res) => {
         //        if (timer) { stopwatch.end(); }
     });
 
-    when(pathExists(imageFilenameResized))
+    pathExists(imageFilenameResized)
         .then(() => fileExists(imageFilenameAbsolute))
         .then(() => resizeImage({
             imageFilenameAbsolute,
@@ -226,9 +223,7 @@ imageRouter.get('/*', (req, res) => {
         }))
         .then(() => fileExists(imageFilenameResized))
         .then(() => serveImage(res, imageFilenameResized))
-        .done(() => {
-            // metrics.increment('simpleblog.image.regular');
-        }, (error) => {
+        .catch((error) => {
             res.status(404).send(error);
             res.end();
         });

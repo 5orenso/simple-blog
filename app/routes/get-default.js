@@ -7,7 +7,6 @@
 
 'use strict';
 
-const when = require('when');
 const _ = require('underscore');
 const swig = require('../../lib/swig');
 const path = require('path');
@@ -79,7 +78,11 @@ module.exports = (req, res) => {
         // var template = 'blog.html';
         const tpl = swig.compileFile(template);
 
-        when.all([category.list('/'), article.list(articlePath), article.list(articleAllPath)])
+        Promise.all([
+            category.list('/'),
+            article.list(articlePath),
+            article.list(articleAllPath),
+        ])
             .then(contentLists => article.load({
                 requestUrl,
                 catlist: contentLists[0],

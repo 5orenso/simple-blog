@@ -1,8 +1,7 @@
 'use strict';
 
 var buster = require('buster'),
-    assert = buster.assert,
-    when   = require('when');
+    assert = buster.assert;
 
 var Logger = require('../../lib/logger'),
     logger = new Logger();

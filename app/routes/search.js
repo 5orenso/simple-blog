@@ -9,7 +9,6 @@
 
 const express = require('express');
 const morgan = require('morgan');
-const when = require('when');
 const _ = require('underscore');
 const fs = require('fs');
 const swig = require('swig');
@@ -88,7 +87,10 @@ searchRouter.get('/*', (req, res) => {
     const filter = {};
     const inputQuery = req.query;
 
-    when.all([search.query(query, filter), category.list('/')])
+    Promise.all([
+        search.query(query, filter),
+        category.list('/'),
+    ])
         .then(results => results)
         .then((results) => {
             const catlist = results[1];
