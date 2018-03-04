@@ -79,11 +79,13 @@
 
 
                 {% if article.ingress %}
-                    {% if isPhoto %}
-                        {{ article.ingress|inlineImageSize(945)|safe }}
-                    {% else %}
-                        {{ article.ingress|inlineImageSize(750)|safe }}
-                    {% endif %}
+                    <div class="lead">
+                        {% if isPhoto %}
+                            {{ article.ingress|inlineImageSize(945)|safe }}
+                        {% else %}
+                            {{ article.ingress|inlineImageSize(750)|safe }}
+                        {% endif %}
+                    </div>
                 {% endif %}
 
                 {% if isPhoto %}
