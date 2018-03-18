@@ -59,13 +59,7 @@ Promise.all([category.list('/'), article.list(articlePath)])
         ])
             .then(results => results);
     })
-    .catch(() => {
-        lu.timer('routes/sitemap->request');
-        lu.timer('routes/sitemap->load_category_and_article_lists');
-        // lu.sendUdp({timers: lu.timersGet()});
-        // res.status(404).send(tpl({blog: webRouter.config.blog, error: opt.error, article: opt.article}));
-    })
-    .done(() => {
+    .then(() => {
         console.log('done...');
         lu.timer('routes/sitemap->elasticsearch');
         lu.timer('routes/sitemap->request');
@@ -73,4 +67,10 @@ Promise.all([category.list('/'), article.list(articlePath)])
         setTimeout(() => {
             process.exit(1);
         }, 5000);
+    })
+    .catch(() => {
+        lu.timer('routes/sitemap->request');
+        lu.timer('routes/sitemap->load_category_and_article_lists');
+        // lu.sendUdp({timers: lu.timersGet()});
+        // res.status(404).send(tpl({blog: webRouter.config.blog, error: opt.error, article: opt.article}));
     });
