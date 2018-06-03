@@ -161,6 +161,7 @@
                 "name": "{{ (article.imageObject.author || article.author)|e('js')|raw }}"
             },
             "name": "{{ (article.imageObject.name || article.title)|striptags|e('js')|raw }}",
+            "keywords": "{{ (article.imageObject.keywords || article.keywords)|e('js')|raw }}",
             "description": "{{ (article.imageObject.description || article.ingress)|striptags|removeLineBreaks|e('js')|raw }}",
             {% if  article.recipe.image|e('js')|raw %}
                 "contentUrl": "{{ article.imageObject.contentUrl }}",
