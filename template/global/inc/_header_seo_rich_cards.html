@@ -43,13 +43,25 @@
             "url": "{{ blog.protocol }}://{{ blog.domain }}",
             "potentialAction": {
                 "@type": "SearchAction",
-                "target": "{{ blog.protocol }}://{{ blog.domain }}/search/?q={search_term}",
-                "query-input": "required name=search_term"
+                "target": "{{ blog.protocol }}://{{ blog.domain }}/search/?q={search_term_string}",
+                "query-input": "required name=search_term_string"
             }
         }
     </script>
 {%- endmacro -%}
-{%- macro personCard -%}
+{%- macro logoCard -%}
+    {% if blog.logo %}
+        <script type="application/ld+json">
+            {
+              "@context": "http://schema.org",
+              "@type": "Organization",
+              "url": "{{ blog.protocol }}://{{ blog.domain }}",
+              "logo": "{{ blog.protocol }}://{{ blog.domain }}{{ blog.logo }}"
+            }
+        </script>
+    {% endif %}
+{%- endmacro -%}
+{%- macro socialCard -%}
     <script type="application/ld+json">
     {
         "@context": "http://schema.org",
@@ -68,40 +80,144 @@
 {%- endmacro -%}
 {%- macro blogPostingCard -%}
     <script type="application/ld+json">
-        {
-          "@context": "http://schema.org",
-          "@type": "BlogPosting",
-          "publisher": {
-              "@type": "Organization",
-              "name": "{{ blog.author.fallback.nameFull|removeLineBreaks|e('html') }}",
-              "logo": {
-                  "@type": "imageObject",
-                  "height": 40,
-                  "width": 218,
-                  "url": "https://litt.no/template/kotha/img/sorenso-logo.png"
-              }
-          },
-          "author": {
-              "@type": "Person",
-              "name": "{{ article.author }}"
-          },
-          "headline": "{{ article.title|striptags|e('js') }}",
-          "alternativeHeadline": "{{ article.teaser|striptags|removeLineBreaks|e('js') }}",
-          "image": [
-              {% for img in article.img %}
-                  "{{ blog.protocol }}://{{ blog.domain }}/pho/{{ img }}?w=800"
-              {% endfor %}
-          ],
-          "mainEntityOfPage": "{{ shareLink }}",
-          "datePublished": "{{ article.published }}",
-          "dateModified": "{{ article.updated || article.published }}",
-          "description": "{{ article.ingress|striptags|removeLineBreaks|e('js') }}",
-          "articleBody": "{{ article.body|striptags|removeLineBreaks|e('js') }} {% for col in article.col %}{{ col }} {% endfor %}"
-        }
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "publisher": {
+            "@type": "Organization",
+            "name": "{{ blog.author.fallback.nameFull|removeLineBreaks|e('html') }}",
+            "logo": {
+                "@type": "imageObject",
+                "height": 40,
+                "width": 218,
+                "url": "https://litt.no/template/kotha/img/sorenso-logo.png"
+            }
+        },
+        "author": {
+            "@type": "Person",
+            "name": "{{ article.author }}"
+        },
+        "headline": "{{ article.title|striptags|e('js') }}",
+        "alternativeHeadline": "{{ article.teaser|striptags|removeLineBreaks|e('js') }}",
+        "image": [
+            {% for img in article.img %}
+            "{{ blog.protocol }}://{{ blog.domain }}/pho/{{ img }}?w=800"
+            {% endfor %}
+        ],
+        "mainEntityOfPage": "{{ shareLink }}",
+        "datePublished": "{{ article.published }}",
+        "dateModified": "{{ article.updated || article.published }}",
+        "description": "{{ article.ingress|striptags|removeLineBreaks|e('js') }}",
+        "articleBody": "{{ article.body|striptags|removeLineBreaks|e('js') }} {% for col in article.col %}{{ col }} {% endfor %}",
+        "keywords": "{{ article.tags|striptags|removeLineBreaks|e('js') }}"
+    }
     </script>
+{%- endmacro -%}
+{%- macro recipeCard -%}
+    {% if article.recipe %}
+        <script type="application/ld+json">
+        {
+            "@context": "http://schema.org",
+            "@type": "Recipe",
+            "author": {
+                "@type": "Person",
+                "name": "{{ (article.recipe.author || article.author)|e('js')|raw }}"
+            },
+            "datePublished": "{{ (article.recipe.published || article.published)|e('js')|raw }}",
+            "name": "{{ (article.recipe.name || article.title)|striptags|e('js')|raw }}",
+            "description": "{{ (article.recipe.description || article.ingress)|striptags|removeLineBreaks|e('js')|raw }}",
+            "keywords": "{{ (article.recipe.keywords)|e('js')|raw }}",
+            "recipeCategory": "{{ (article.recipe.recipeCategory)|e('js')|raw }}",
+            "recipeCuisine": "{{ (article.recipe.recipeCuisine)|e('js')|raw }}",
+            "prepTime": "{{ article.recipe.prepTime|e('js')|raw }}",
+            "cookTime": "{{ article.recipe.cookTime|e('js')|raw }}",
+            {% if  article.recipe.image|e('js')|raw %}
+                "image": "{{ article.recipe.image }}",
+            {% elseif article.img[0] %}
+                "image": "{{ blog.protocol }}://{{ blog.domain }}/pho/{{ article.img[0] }}?w=800",
+            {% endif %}
+            "recipeIngredient": [
+                {% for ingredient in article.recipe.recipeIngredient %}
+                    "{{ ingredient|e('js')|raw }}"{% if !loop.last %},{% endif %}
+                {% endfor %}
+            ],
+            "recipeInstructions": [
+                {% for instruction in article.recipe.recipeInstructions %}
+                    "{{ instruction|e('js')|raw }}"{% if !loop.last %},{% endif %}
+                {% endfor %}
+            ]
+        }
+        </script>
+    {% endif %}
+{%- endmacro -%}
+{%- macro imageObjectCard -%}
+    {% if article.imageObject %}
+        <script type="application/ld+json">
+        {
+            "@context": "http://schema.org",
+            "@type": "ImageObject",
+            "author": {
+                "@type": "Person",
+                "name": "{{ (article.imageObject.author || article.author)|e('js')|raw }}"
+            },
+            "name": "{{ (article.imageObject.name || article.title)|striptags|e('js')|raw }}",
+            "description": "{{ (article.imageObject.description || article.ingress)|striptags|removeLineBreaks|e('js')|raw }}",
+            {% if  article.recipe.image|e('js')|raw %}
+                "contentUrl": "{{ article.imageObject.contentUrl }}",
+            {% elseif article.img[0] %}
+                "contentUrl": "{{ blog.protocol }}://{{ blog.domain }}/pho/{{ article.img[0] }}?w=800",
+            {% endif %}
+            "datePublished": "{{ (article.imageObject.published || article.published)|e('js')|raw }}",
+            "contentLocation": {
+                "@type": "Place",
+                "geo": {
+                    "@type": "GeoCoordinates",
+                        "latitude": {{ article.imageObject.lat }},
+                        "longitude": {{ article.imageObject.lon }}
+                    },
+                "name": "{{ article.imageObject.contentLocation|e('js')|raw }}"
+            },
+            "exifData": [
+                {
+                    "@type": "PropertyValue",
+                    "name": "Camera",
+                    "value": "{{ article.imageObject.camera|e('js')|raw }}"
+                },
+                {
+                    "@type": "PropertyValue",
+                    "name": "Lens",
+                    "value": "{{ article.imageObject.lens|e('js')|raw }}"
+                },
+                {
+                    "@type": "PropertyValue",
+                    "name": "ShutterSpeed",
+                    "value": "{{ article.imageObject.shutter|e('js')|raw }}"
+                },
+                {
+                    "@type": "PropertyValue",
+                    "name": "FocalLength",
+                    "value": "{{ article.imageObject.focal|e('js')|raw }}"
+                },
+                {
+                    "@type": "PropertyValue",
+                    "name": "Aperture",
+                    "value": "{{ article.imageObject.aperture|e('js')|raw }}"
+                },
+                {
+                    "@type": "PropertyValue",
+                    "name": "ISO",
+                    "value": "{{ article.imageObject.iso|e('js')|raw }}"
+                }
+            ]
+        }
+        </script>
+    {% endif %}
 {%- endmacro -%}
 
 {{ breadCrumpListCard()|oneline }}
 {{ websiteActionCard()|oneline }}
-{{ personCard()|oneline }}
+{{ logoCard()|oneline }}
+{{ socialCard()|oneline }}
 {{ blogPostingCard()|oneline }}
+{{ recipeCard()|oneline }}
+{{ imageObjectCard()|oneline }}
