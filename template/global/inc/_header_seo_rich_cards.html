@@ -214,7 +214,54 @@
         </script>
     {% endif %}
 {%- endmacro -%}
+{%- macro itemListCard -%}
+    {% if article.artlist %}
+        {% set shareLinkPage = blog.protocol + '://' + blog.domain + article.baseHref + article.file %}
+        <script type="application/ld+json">
+        {
+            "@context": "http://schema.org",
+            "@type": "ItemList",
+            "url": "{{ shareLinkPage }}",
+            "numberOfItems": "{{ article.artlistTotal }}",
+            "itemListElement": [
+                {% for art in article.artlist %}
+                    {
+                        "@type": "ListItem",
+                        "position": {{ loop.index }},
+                        "item": {
+                            {% set shareLink = blog.protocol + '://' + blog.domain + art.baseHref + art.file %}
+                                "@type": "BlogPosting",
+                                "publisher": {
+                                    "@type": "Organization",
+                                    "name": "{{ blog.author.fallback.nameFull|removeLineBreaks|e('html') }}",
+                                    "logo": {
+                                        "@type": "imageObject",
+                                        "height": 40,
+                                        "width": 218,
+                                        "url": "https://litt.no/template/kotha/img/sorenso-logo.png"
+                                    }
+                                },
+                                {% if art.img[0] %}"image": "{{ blog.protocol }}://{{ blog.domain }}/pho/{{ art.img[0] }}?w=800",{% endif %}
+                                "url": "{{ shareLink }}",
+                                "name": "{{ art.title|e('js') }}",
+                                "author": {
+                                    "@type": "Person",
+                                    "name": "{{ art.author }}"
+                                },
+                                "headline": "{{ art.title|striptags|e('js') }}",
+                                "mainEntityOfPage": "{{ shareLink }}",
+                                "datePublished": "{{ article.published }}",
+                                "dateModified": "{{ article.updated || article.published }}"
+                        }
+                    }{% if !loop.last %},{% endif %}
+                {% endfor %}
+            ]
+        }
+        </script>
+    {% endif %}
+{%- endmacro -%}
 
+{{ itemListCard()|oneline }}
 {{ breadCrumpListCard()|oneline }}
 {{ websiteActionCard()|oneline }}
 {{ logoCard()|oneline }}
