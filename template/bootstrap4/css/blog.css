@@ -96,8 +96,12 @@ h6, .h6 {
   color: #999;
 }
 
+.card-img-top {
+    max-height: 200px;
+}
 .card-body {
-    padding: 1rel;
+    font-size: .9em;
+    padding: 10px;
 }
 
 @media (min-width: 40em) {
