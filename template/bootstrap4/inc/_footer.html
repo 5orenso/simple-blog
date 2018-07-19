@@ -2,7 +2,7 @@
     <footer class="blog-footer bd-footer text-muted">
         <div class="row">
             <div class="col-sm-4">
-                <h4>Kategorier</h4>
+                <h4>{{ blog.categoryHeader || 'Kategorier' }}</h4>
                 <ul class="list-unstyled">
                     {% for cat in article.catlist %}
                         <li class="">
@@ -12,7 +12,7 @@
                 </ul>
             </div>
             <div class="col-sm-4">
-                <h4>Om meg</h4>
+                <h4>{{ blog.descriptionHeader || 'Om meg' }}</h4>
                 <p>{{ blog.description }}</p>
             </div>
             <div class="col-sm-4">

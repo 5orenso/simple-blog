@@ -147,7 +147,7 @@
 
 
                 <div class="social-share">
-                    Jeg blir veldig 😊 hvis du deler:
+                    {{ blog.sharingHeader || 'Jeg blir veldig 😊 hvis du deler' }}:
                     {% set shareLink = blog.protocol + '://' + blog.domain + article.baseHref + article.file %}
                     <a rel="noopener" target="_blank" class="s-facebook" href="https://www.facebook.com/sharer.php?u={{ shareLink|url_encode }}"><i class="fab fa-facebook-square"></i></a>
                     <a rel="noopener" target="_blank" class="s-twitter" href="https://twitter.com/intent/tweet?url={{ shareLink|url_encode }}&text={{ article.title|url_encode }}.%20{{ article.teaser|striptags|url_encode }}{% if blog.socialUser.twitter %}&via={{ blog.socialUser.twitter }}{% endif %}&hashtags={{ article.tags }}"><i class="fab fa-twitter-square"></i></a>
@@ -180,7 +180,7 @@
                                 </div>
                             {% endif %}
                         </div>
-                        <a class="btn btn-outline-primary" href="{{ art.baseHref}}{{ art.file }}">&laquo; Older</a>
+                        <a class="btn btn-outline-primary" href="{{ art.baseHref}}{{ art.file }}">{{ blog.olderHeader || '&laquo; Older' }}</a>
 					</div>
                     {% endif %}
                     {% if article.next %}
@@ -205,7 +205,7 @@
                                 </div>
                             {% endif %}
                         </div>
-                        <a class="btn btn-outline-primary" href="{{ art.baseHref}}{{ art.file }}">Newer &raquo;</a>
+                        <a class="btn btn-outline-primary" href="{{ art.baseHref}}{{ art.file }}">{{ blog.newerHeader || 'Newer &raquo;' }}</a>
 					</div>
                     {% endif %}
 				</div>
@@ -217,7 +217,7 @@
 
         <div class="col-sm-3 offset-sm-1 blog-sidebar">
             <div class="sidebar-module sidebar-module-inset">
-                <h4>Hvem?</h4>
+                <h4>{{ blog.whoHeader || 'Hvem?' }}:</h4>
                 {% set author = blog.author.fallback %}
                 {% if blog.author[article.author] %}
                     {% set author = blog.author[article.author] %}
@@ -229,7 +229,7 @@
                 </p>
             </div>
             <div class="sidebar-module">
-                <h4>Flere i 📂 {{ baseHref }}</h4>
+                <h4>{{ blog.moreHeader || 'Flere i 📂' }} {{ baseHref }}</h4>
                 <ol class="list-unstyled">
                     {% set limit = 20 %}
                     {% for art in article.artlist %}

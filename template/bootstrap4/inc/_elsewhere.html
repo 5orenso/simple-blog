@@ -1,5 +1,5 @@
 
-                <h4>Andre steder:</h4>
+                <h4>{{ blog.otherHeader || 'Andre steder' }}</h4>
                 <ol class="list-unstyled">
                     {% if author.youtube %}<li><a rel="noopener" target="_blank" href="{{ author.youtube }}"><i class="fab fa-youtube"></i> Youtube</a></li>{% endif %}
                     {% if author.github %}<li><a rel="noopener" target="_blank" href="{{ author.github }}"><i class="fab fa-github"></i> GitHub</a></li>{% endif %}
