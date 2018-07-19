@@ -96,6 +96,10 @@ h6, .h6 {
   color: #999;
 }
 
+.card-body {
+    padding: 1rel;
+}
+
 @media (min-width: 40em) {
   .blog-title {
     font-size: 3.5rem;
