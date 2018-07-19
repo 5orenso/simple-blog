@@ -96,6 +96,10 @@ h6, .h6 {
   color: #999;
 }
 
+.card {
+    padding: 0px !important;
+    margin-left: 15px !important;
+}
 .card-img-top {
     max-height: 200px;
 }
