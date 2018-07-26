@@ -101,7 +101,7 @@ h6, .h6 {
     margin-left: 15px !important;
 }
 .card-img-top {
-    max-height: 200px;
+    width: 100%;
 }
 .card-body {
     font-size: .9em;
