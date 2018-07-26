@@ -95,6 +95,12 @@ html {
 .artlist .text {
     padding-left: .5rem;
 }
+.artlist blockquote {
+    font-size: .7em;
+    text-align: center;
+    max-height: 100%;
+    overflow: hidden;
+}
 
 .pagination li {
     display: flex;

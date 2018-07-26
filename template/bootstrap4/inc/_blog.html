@@ -258,7 +258,19 @@
                                     <a href="{{ art.baseHref }}{{ art.file }}" title="{{ art.title|e }} - {{ art.teaser|e }}">
                                         {% if art.img[0] %}
                                             <img src="/pho/{{ art.img[0] }}?w=70" alt="{{ art.title|e }} - {{ art.teaser|e }}" class="img-fluid"><br clear="all">
-                                        {% endif %}
+                                        {% else %}
+                                            <blockquote>
+                                                <p><i class="fa fa-quote-left"></i>
+                                                    {% if art.quote %}
+                                                        {{ art.quote }}
+                                                    {% elseif art.teaser %}
+                                                        {{ art.teaser }}
+                                                    {% elseif art.title %}
+                                                        {{ art.title }}
+                                                    {% endif %}</p>
+                                                <h3>{{ art.quoteBy }}</h3>
+                                            </blockquote>
+                                            {% endif %}
                                     </a>
                                 </div>
                                 <div class="col-sm-8 text">
