@@ -94,6 +94,16 @@
                     {{ article.body|inlineImageSize(750)|safe }}
                 {% endif %}
 
+                {% if article.col %}
+                    <div class="row">
+                        {% set arr = [0,1,2, 3,4,5, 6,7,8, 9,10,11, 12,13,14, 15,16,17] %}
+                        {% for c in arr %}
+                            {% if article.col[c] %}
+                                <div class="col-md-4 col-sm-6">{{ article.col[c]|raw }}</div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                {% endif %}
 
                 {% set parts = [2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20] %}
                 {% for i in parts %}
@@ -132,6 +142,15 @@
                             {% else %}
                                 {{ article['ingress' + i]|inlineImageSize(750)|safe }}
                             {% endif %}
+                        {% endif %}
+
+                        {% if article['col' + i] %}
+                            {% set arr = [0,1,2, 3,4,5, 6,7,8, 9,10,11, 12,13,14, 15,16,17] %}
+                            {% for c in arr %}
+                                {% if article['col' + i][c] %}
+                                    <div class="col-3">{{ article['col' + i][c]|raw }}</div>
+                                {% endif %}
+                            {% endfor %}
                         {% endif %}
 
                         {% if article['body' + i] %}

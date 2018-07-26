@@ -53,17 +53,19 @@
                                     <a href="{{ art.baseHref }}{{ art.file }}"><img src="/pho/{{ art.img[0] }}?w=800" alt="{{ art.title|e }}" class="img-fluid"></a>
                                 {% else %}
                                     <div class="entry-quote-post-format">
-                                        <blockquote>
-                                            <p><i class="fa fa-quote-left"></i>
-                                                {% if art.quote %}
-                                                    {{ art.quote }}
-                                                {% elseif art.teaser %}
-                                                    {{ art.teaser }}
-                                                {% elseif art.title %}
-                                                    {{ art.title }}
-                                                {% endif %}</p>
-                                            <h3>{{ art.quoteBy }}</h3>
-                                        </blockquote>
+                                        <a href="{{ art.baseHref }}{{ art.file }}">
+                                            <blockquote>
+                                                <p><i class="fa fa-quote-left"></i>
+                                                    {% if art.quote %}
+                                                        {{ art.quote }}
+                                                    {% elseif art.teaser %}
+                                                        {{ art.teaser }}
+                                                    {% elseif art.title %}
+                                                        {{ art.title }}
+                                                    {% endif %}</p>
+                                                <h3>{{ art.quoteBy }}</h3>
+                                            </blockquote>
+                                        </a>
                                     </div>
                                 {% endif %}
                             </div>

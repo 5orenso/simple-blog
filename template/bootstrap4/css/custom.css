@@ -44,6 +44,7 @@ html {
     padding-top: 66%; /* 1:1 Aspect Ratio */
     position: relative;
     background-color: #f0f0f0;
+    text-align: center;
 }
 .post-thumb a {
     position: absolute;
@@ -51,6 +52,7 @@ html {
     left: 0;
     bottom: 0;
     right: 0;
+    color: #a0a0a0;
 }
 .post-thumb a img {
     max-height: 100%;
@@ -75,7 +77,9 @@ html {
     padding-top: .7rem;
 }
 .blog-post-quote {
-    font-size: 3.0em;
+    font-size: 2.5em;
+    color: #a0a0a0;
+    text-align: center;
 }
 .blog-header {
     padding-top: 2rem;
