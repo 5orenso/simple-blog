@@ -22,9 +22,6 @@
 
 {{ header.bodyRaw|raw }}
 
-
-"{{ query.q }}"
-
 {% if query.q %}
     <div class="container-fluid">
         <div class="row">
@@ -38,6 +35,9 @@
     </div>
 {% endif %}
 
+<xmp>
+    {{ article|json(4) }}
+</xmp>
 
 {% if isPhoto %}
 <div class="container-fluid">
