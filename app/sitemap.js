@@ -57,7 +57,8 @@ Promise.all([category.list('/'), article.list(articlePath)])
             article.sitemap(contentLists[0], contentLists[1]),
             search.indexArtlist(contentLists[1], true),
         ])
-            .then(results => results);
+            .then(results => results)
+            .catch(err => console.error(err));
     })
     .then(() => {
         console.log('done...');
