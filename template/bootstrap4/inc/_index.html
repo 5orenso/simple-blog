@@ -27,7 +27,7 @@
         <div class="row">
             <main class="col-sm-12 col-md-12 blog-main-full">
                 <code>
-                    {{ searchMeta.total }}
+                    {{ searchMeta.total || 0 }}
                     {{ blog.searchResults || "blog posts related to" }} "{{ query.q }}":
                 </code>
             </main>
