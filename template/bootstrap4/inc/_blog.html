@@ -189,11 +189,11 @@
                                     <blockquote>
                                         <p><i class="fa fa-quote-left"></i>
                                             {% if art.quote %}
-                                                {{ art.quote }}
+                                                {{ art.quote|striptags }}
                                             {% elseif art.teaser %}
-                                                {{ art.teaser }}
+                                                {{ art.teaser|striptags }}
                                             {% elseif art.title %}
-                                                {{ art.title }}
+                                                {{ art.title|striptags }}
                                             {% endif %}</p>
                                         <h3>{{ art.quoteBy }}</h3>
                                     </blockquote>
@@ -214,11 +214,11 @@
                                     <blockquote>
                                         <p><i class="fa fa-quote-left"></i>
                                             {% if art.quote %}
-                                                {{ art.quote }}
+                                                {{ art.quote|striptags }}
                                             {% elseif art.teaser %}
-                                                {{ art.teaser }}
+                                                {{ art.teaser|striptags }}
                                             {% elseif art.title %}
-                                                {{ art.title }}
+                                                {{ art.title|striptags }}
                                             {% endif %}</p>
                                         <h3>{{ art.quoteBy }}</h3>
                                     </blockquote>
@@ -263,11 +263,11 @@
                                             <blockquote>
                                                 <p><i class="fa fa-quote-left"></i>
                                                     {% if art.quote %}
-                                                        {{ art.quote }}
+                                                        {{ art.quote|striptags }}
                                                     {% elseif art.teaser %}
-                                                        {{ art.teaser }}
+                                                        {{ art.teaser|striptags }}
                                                     {% elseif art.title %}
-                                                        {{ art.title }}
+                                                        {{ art.title|striptags }}
                                                     {% endif %}</p>
                                                 <h3>{{ art.quoteBy }}</h3>
                                             </blockquote>

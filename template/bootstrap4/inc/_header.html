@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- Page Title -->
     {% if query.q %}
-        <title>{{ searchMeta.total || 0 }} {{ blog.searchResults || "blog posts related to" }} "{{ query.q }}"</title>
+        <title>{{ searchMeta.total || 0 }} {{ blog.searchResults || "blog posts related to" }} "{{ query.q|striptags|e('html') }}"</title>
     {% elseif article.file|match('index') %}
         {% set author = blog.author.fallback %}
         <title>{{ author.nameFull|removeLineBreaks|striptags|e('html') }} | {{ blog.title|removeLineBreaks|striptags|e('html') }}</title>
