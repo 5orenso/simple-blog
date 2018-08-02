@@ -108,7 +108,7 @@ searchRouter.get('/*', (req, res) => {
                     }
                 }
                 categoryUtil.formatCatlist(article, catlist);
-                articleUtil.formatArtlist(article, article.artlist);
+                articleUtil.formatArtlist(article, article.artlist, true);
                 articleUtil.formatArticleSections(article);
                 articleUtil.replaceTagsWithContent(article);
             } else {
