@@ -6,6 +6,21 @@
 
 {{ header.bodyRaw|raw }}
 
+
+{% if query.q %}
+    <div class="container-fluid">
+        <div class="row">
+            <main class="col-sm-12 col-md-12 blog-main-full">
+                <code>
+                    {{ searchMeta.total }}
+                    {{ blog.searchResults || "blog posts related to" }} "{{ query.q }}":
+                </code>
+            </main>
+        </div>
+    </div>
+{% endif %}
+
+
 {% if isPhoto %}
 <div class="container-fluid">
     <div class="row">
