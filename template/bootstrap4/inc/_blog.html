@@ -182,23 +182,25 @@
                         {% set art = article.previous %}
 					<div class="col-md-6">
                         <div class="post-thumb">
-                            {% if art.img[0] %}
-                                <a href="{{ art.baseHref }}{{ art.file }}"><img src="/pho/{{ art.img[0] }}?w=800" alt="{{ art.title|e }}" class="img-fluid"></a>
-                            {% else %}
-                                <div class="entry-quote-post-format">
-                                    <blockquote>
-                                        <p><i class="fa fa-quote-left"></i>
-                                            {% if art.quote %}
-                                                {{ art.quote|striptags }}
-                                            {% elseif art.teaser %}
-                                                {{ art.teaser|striptags }}
-                                            {% elseif art.title %}
-                                                {{ art.title|striptags }}
-                                            {% endif %}</p>
-                                        <h3>{{ art.quoteBy }}</h3>
-                                    </blockquote>
-                                </div>
-                            {% endif %}
+                            <a href="{{ art.baseHref }}{{ art.file }}">
+                                {% if art.img[0] %}
+                                    <img src="/pho/{{ art.img[0] }}?w=800" alt="{{ art.title|e }}" class="img-fluid"><br clear="all">
+                                {% else %}
+                                    <div class="entry-quote-post-format">
+                                        <blockquote>
+                                            <p><i class="fa fa-quote-left"></i>
+                                                {% if art.quote %}
+                                                    {{ art.quote|striptags }}
+                                                {% elseif art.teaser %}
+                                                    {{ art.teaser|striptags }}
+                                                {% elseif art.title %}
+                                                    {{ art.title|striptags }}
+                                                {% endif %}</p>
+                                            <h3>{{ art.quoteBy }}</h3>
+                                        </blockquote>
+                                    </div>
+                                {% endif %}
+                            </a>
                         </div>
                         <a class="btn btn-outline-primary" href="{{ art.baseHref}}{{ art.file }}">{{ blog.olderHeader || '👈 Older' }}</a>
 					</div>
@@ -207,23 +209,25 @@
                         {% set art = article.next %}
 					<div class="col-md-6">
                         <div class="post-thumb">
-                            {% if art.img[0] %}
-                                <a href="{{ art.baseHref }}{{ art.file }}"><img src="/pho/{{ art.img[0] }}?w=800" alt="{{ art.title|e }}" class="img-fluid"></a>
-                            {% else %}
-                                <div class="entry-quote-post-format">
-                                    <blockquote>
-                                        <p><i class="fa fa-quote-left"></i>
-                                            {% if art.quote %}
-                                                {{ art.quote|striptags }}
-                                            {% elseif art.teaser %}
-                                                {{ art.teaser|striptags }}
-                                            {% elseif art.title %}
-                                                {{ art.title|striptags }}
-                                            {% endif %}</p>
-                                        <h3>{{ art.quoteBy }}</h3>
-                                    </blockquote>
-                                </div>
-                            {% endif %}
+                            <a href="{{ art.baseHref }}{{ art.file }}">
+                                {% if art.img[0] %}
+                                    <img src="/pho/{{ art.img[0] }}?w=800" alt="{{ art.title|e }}" class="img-fluid"><br clear="all">
+                                {% else %}
+                                    <div class="entry-quote-post-format">
+                                        <blockquote>
+                                            <p><i class="fa fa-quote-left"></i>
+                                                {% if art.quote %}
+                                                    {{ art.quote|striptags }}
+                                                {% elseif art.teaser %}
+                                                    {{ art.teaser|striptags }}
+                                                {% elseif art.title %}
+                                                    {{ art.title|striptags }}
+                                                {% endif %}</p>
+                                            <h3>{{ art.quoteBy }}</h3>
+                                        </blockquote>
+                                    </div>
+                                {% endif %}
+                            </a>
                         </div>
                         <a class="btn btn-outline-primary" href="{{ art.baseHref}}{{ art.file }}">{{ blog.newerHeader || 'Newer 👉' }}</a>
 					</div>
