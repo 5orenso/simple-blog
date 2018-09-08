@@ -98,8 +98,19 @@ $ ncu --upgrade --upgradeAll
 $ npm install --no-optional
 ```
 
+
 ### Howto upgrade editor
 ```bash
 $ cp ../simplemde-markdown-editor/dist/simplemde.min.js ./template/global/js/.
 $ cp ../simplemde-markdown-editor/dist/simplemde.min.css ./template/global/css/.
 ```
+
+
+## Other Resources
+
+* [AWS Basic setup with Cloudformation](https://github.com/5orenso/aws-cloudformation-base)
+* [AWS Server setup with Cloudformation](https://github.com/5orenso/aws-cloudformation-servers)
+* [AWS Lambda boilerplate](https://github.com/5orenso/aws-lambda-boilerplate)
+* [Automated AWS Lambda update](https://github.com/5orenso/aws-lambda-autodeploy-lambda)
+* [AWS API Gateway setup with Cloudformation](https://github.com/5orenso/aws-cloudformation-api-gateway)
+* [AWS IoT setup with Cloudformation](https://github.com/5orenso/aws-cloudformation-iot)
