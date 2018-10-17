@@ -179,3 +179,7 @@ html {
 .jumbotron {
     padding: 2rem 2rem;
 }
+
+.jumbotron .display-3 a {
+    color: #303030;
+}
