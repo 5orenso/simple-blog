@@ -41,17 +41,19 @@
             <main class="col-sm-12 col-md-12 pt-3">
 {% else %}
 
-    {% set art = article.artlist[0] %}
-    <div class="jumbotron">
-        <div class="container">
-            {% if art.img[0] %}
-                <a href="{{ art.baseHref }}{{ art.file }}"><img src="/pho/{{ art.img[0] }}?w=1014" alt="{{ art.title|e }}" class="img-fluid"></a>
-            {% endif %}
-            <h1 class="display-3"><a href="{{ art.baseHref }}{{ art.file }}">{{ art.title }}</a></h1>
-            <p>{{ art.teaser|raw }}</p>
-            <p><a class="btn btn-primary btn-lg" href="{{ art.baseHref }}{{ art.file }}" role="button">Les mer &raquo;</a></p>
+    {% if !query.q %}
+        {% set art = article.artlist[0] %}
+        <div class="jumbotron">
+            <div class="container">
+                {% if art.img[0] %}
+                    <a href="{{ art.baseHref }}{{ art.file }}"><img src="/pho/{{ art.img[0] }}?w=1014" alt="{{ art.title|e }}" class="img-fluid"></a>
+                {% endif %}
+                <h1 class="display-3"><a href="{{ art.baseHref }}{{ art.file }}">{{ art.title }}</a></h1>
+                <p>{{ art.teaser|raw }}</p>
+                <p><a class="btn btn-primary btn-lg" href="{{ art.baseHref }}{{ art.file }}" role="button">Les mer &raquo;</a></p>
+            </div>
         </div>
-    </div>
+    {% endif %}
 
     <div class="container">
         <div class="row">
@@ -136,24 +138,26 @@
                     <ul class="pagination text-left">
                         {% set pages = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20] %}
                         {% set total = article.artlistTotal %}
-                        {% if page > 1 %}
-                            <li><a href="{{ file.path }}?page={{ page - 1 }}"><i class="fa fa-angle-double-left"></i></a></li>
-                        {% endif %}
-
-                        {% for p in pages %}
-                            {% set sp = p - 1 %}
-                            {% set s = sp * limit %}
-                            {% set s = s + 1 %}
-                            {% set e = p * limit %}
-                            {% if s <= total %}
-                                <li class="{% if p == page %}active{% endif %}"><a href="{{ file.path }}?page={{ p }}" title="{{ s }}-{{ e }}">{{ p }}</a></li>
+                        {% if total > 1 %}
+                            {% if page > 1 %}
+                                <li><a href="{{ file.path }}?page={{ page - 1 }}"><i class="fa fa-angle-double-left"></i></a></li>
                             {% endif %}
-                        {% endfor %}
 
-                        {% set end = page * limit %}
-                        {% set nextPage = page + 1 %}
-                        {% if total >= end %}
-                            <li><a href="{{ file.path }}?page={{ nextPage }}"><i class="fa fa-angle-double-right"></i></a></li>
+                            {% for p in pages %}
+                                {% set sp = p - 1 %}
+                                {% set s = sp * limit %}
+                                {% set s = s + 1 %}
+                                {% set e = p * limit %}
+                                {% if s <= total %}
+                                    <li class="{% if p == page %}active{% endif %}"><a href="{{ file.path }}?page={{ p }}" title="{{ s }}-{{ e }}">{{ p }}</a></li>
+                                {% endif %}
+                            {% endfor %}
+
+                            {% set end = page * limit %}
+                            {% set nextPage = page + 1 %}
+                            {% if total >= end %}
+                                <li><a href="{{ file.path }}?page={{ nextPage }}"><i class="fa fa-angle-double-right"></i></a></li>
+                            {% endif %}
                         {% endif %}
                     </ul>
                 </div>
