@@ -76,7 +76,7 @@
                 <div class="row">
                     {% for art in article.artlist %}
                         {% if loop.index > pageStart && loop.index <= limit * page %}
-                            {% if loop.index === 1 %}
+                            {% if loop.index === 1 && !query.q %}
 
                             {% else %}
                                 <div class="col-sm-6 col-lg-4">
