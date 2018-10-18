@@ -84,6 +84,22 @@ html {
 .blog-header {
     padding-top: 2rem;
 }
+.blog-drop-letter {
+    display: block;
+    position: relative;
+    float: left;
+    font-style: normal !important;
+    font-weight: 500 !important;
+    font-size: 62px;
+    padding-right: 7px;
+    padding-top: 0px;
+    line-height: 0.9em;
+}
+.blog-post hr {
+    border-top: 5px dotted rgba(0,0,0,.1);
+    width: 30px;
+}
+
 .artlist {
     margin-bottom: 5px;
     font-size: .8em;

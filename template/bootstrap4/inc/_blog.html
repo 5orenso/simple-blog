@@ -90,9 +90,9 @@
                 {% endif %}
 
                 {% if isPhoto %}
-                    {{ article.body|inlineImageSize(945)|safe }}
+                    {{ article.body|inlineImageSize(945)|dropFirstLetterAfterHr|dropFirstLetter|safe }}
                 {% else %}
-                    {{ article.body|inlineImageSize(750)|safe }}
+                    {{ article.body|inlineImageSize(750)|dropFirstLetterAfterHr|dropFirstLetter|safe }}
                 {% endif %}
 
                 {% if article.col %}
@@ -156,9 +156,9 @@
 
                         {% if article['body' + i] %}
                             {% if isPhoto %}
-                                {{ article['body' + i]|inlineImageSize(945)|safe }}
+                                {{ article['body' + i]|inlineImageSize(945)|dropFirstLetterAfterHr|dropFirstLetter|safe }}
                             {% else %}
-                                {{ article['body' + i]|inlineImageSize(750)|safe }}
+                                {{ article['body' + i]|inlineImageSize(750)|dropFirstLetterAfterHr|dropFirstLetter|safe }}
                             {% endif %}
                         {% endif %}
 
