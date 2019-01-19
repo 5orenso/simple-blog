@@ -13,6 +13,7 @@ const path = require('path');
 const Category = require('../../lib/category');
 const Article = require('../../lib/article');
 const ArticleUtil = require('../../lib/article-util');
+const webUtil = require('../../lib/web-util');
 const Logger = require('../../lib/logger');
 
 const articleUtil = new ArticleUtil();
@@ -36,6 +37,7 @@ module.exports = (req, res) => {
     // Resolve filename
     let requestUrl = articleUtil.getUrlFromRequest(req);
     const inputQuery = req.query;
+    let footerFileContent;
 
     // Check for redirect
     let isRedirect = false;
@@ -61,6 +63,16 @@ module.exports = (req, res) => {
         // Load content based on filename
         const articleAllPath = articleUtil.getArticlePathRelative('/');
         const articlePath = articleUtil.getArticlePathRelative(requestUrl);
+
+        const absoluteContentPath = path.normalize(req.config.adapter.markdown.contentPath + articlePath);
+        const footerFilePromise = webUtil.loadFile(absoluteContentPath + '_footer.html')
+            .then((result) => {
+                footerFileContent = result;
+            })
+            .catch((err) => {
+                console.error('NOT FOUND', err);
+                return undefined;
+            });
 
         if (typeof req.session === 'object' && req.session.iat) {
             const now = parseInt((new Date()).getTime() / 1000, 10);
@@ -89,6 +101,7 @@ module.exports = (req, res) => {
                 artlist: [],
                 artlistAll: [],
             }).catch(err => console.error(err)),
+            footerFilePromise,
         ])
             .then((contentLists) => {
                 headerArticle = contentLists[3];
@@ -109,7 +122,7 @@ module.exports = (req, res) => {
                     }
                 }
                 resultArticle.artlistTotal = resultArticle.artlist.length;
-                res.send(tpl({
+                let htmlContent = tpl({
                     file: {
                         name: file,
                         path: articlePath,
@@ -119,7 +132,13 @@ module.exports = (req, res) => {
                     article: resultArticle,
                     query: inputQuery,
                     session: req.session,
-                }));
+                });
+
+                if (footerFileContent) {
+                    htmlContent = htmlContent.replace(/\[\[FOOTER\]\]/, footerFileContent);
+                }
+
+                res.send(htmlContent);
             })
             .catch((opt) => {
                 res.status(404).send(tpl({
