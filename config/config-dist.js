@@ -135,5 +135,8 @@ module.exports = {
         port: 9990,
         prefix: 'simpleblog.dev',
         host: 'litt.no'
-    }
+    },
+    mongo: {
+        url: 'mongodb://localhost:27017/simpleBlog?safe=true&auto_reconnect=true&poolSize=20',
+    },
 };

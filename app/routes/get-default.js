@@ -65,7 +65,7 @@ module.exports = (req, res) => {
         const articlePath = articleUtil.getArticlePathRelative(requestUrl);
 
         const absoluteContentPath = path.normalize(req.config.adapter.markdown.contentPath + articlePath);
-        const footerFilePromise = webUtil.loadFile(absoluteContentPath + '_footer.html')
+        const footerFilePromise = webUtil.loadFile(`${absoluteContentPath}_footer.html`)
             .then((result) => {
                 footerFileContent = result;
             })
