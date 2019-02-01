@@ -1,13 +1,13 @@
 language: node_js
 node_js:
-  - '6'
+  - '8.11'
 matrix:
   fast_finish: true
+services: mongodb
 cache:
   directories:
     - node_modules
     - $(npm config get prefix)/bin/grunt-cli
-before_install: npm install -g grunt-cli
 install:
   - npm install --no-optional
 sudo: false
