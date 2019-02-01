@@ -1,14 +1,15 @@
 'use strict';
 
-const util = require('../../lib/utilities');
-const webUtil = require('../../lib/web-util');
 const uuidv4 = require('uuid/v4');
+const webUtil = require('../../lib/web-util');
 
-module.exports = function(opt) {
+module.exports = (opt) => {
+    // eslint-disable-next-line
     const routeName = opt.__filename.slice(opt.__dirname.length + 1, -3);
+    // eslint-disable-next-line
     const routePath = opt.__dirname.replace(/.+\/routes/, '');
 
-    const run = function(req) {
+    const run = (req) => {
         const hrstart = process.hrtime();
         const runId = uuidv4();
 
@@ -20,7 +21,7 @@ module.exports = function(opt) {
             reqQuery: req.query,
             reqParams: req.params,
         });
-        return { hrstart, runId }
+        return { hrstart, runId };
     };
 
     return {

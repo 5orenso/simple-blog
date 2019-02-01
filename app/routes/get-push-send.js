@@ -7,11 +7,11 @@
 
 'use strict';
 
-const { routeName, routePath, run, webUtil } = require('../middleware/init')({ __filename, __dirname });
-
 const fs = require('fs');
 const path = require('path');
 const webpush = require('web-push');
+
+const { routeName, routePath, run, webUtil } = require('../middleware/init')({ __filename, __dirname });
 
 function findAllFiles(filePath) {
     return new Promise((resolve, reject) => {
@@ -55,7 +55,7 @@ function sendNotifications(config, filename, notification) {
 }
 
 module.exports = (req, res) => {
-    const { hrstart, runId }  = run(req);
+    const { hrstart, runId } = run(req);
 
     const notificationPath = path.normalize(req.config.adapter.markdown.notificationPath);
 
@@ -70,8 +70,8 @@ module.exports = (req, res) => {
 
     if (req.session.email) {
         findAllFiles(notificationPath)
-            .then(files => Promise.all(files.map(file =>
-                sendNotifications(req.config, `${notificationPath}${file}`, notification))))
+            .then(files => Promise.all(files.map(file => sendNotifications(req.config,
+                `${notificationPath}${file}`, notification))))
             .then((results) => {
                 webUtil.logFunctionTimer({ runId, routePath, routeName, hrstart }, req);
                 res.status(201).send('Push notifications sent to: ', JSON.stringify(results));

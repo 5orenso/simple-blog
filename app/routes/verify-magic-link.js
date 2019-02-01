@@ -16,8 +16,8 @@ module.exports = (req, res) => {
         article: {
             title: 'Magic link verified',
             teaser: 'Abra Kadabra!',
-            body: 'You are now logged in and able to do cools stuff inside your blog.\n' +
-                '<a href="/">Jump to the frontpage</a> to get started.',
+            body: 'You are now logged in and able to do cools stuff inside your blog.\n'
+                + '<a href="/">Jump to the frontpage</a> to get started.',
         },
         blog: req.config.blog,
     }, {

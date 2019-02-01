@@ -4,14 +4,15 @@
  * Copyright (c) 2014-2019 Øistein Sørensen
  * Licensed under the MIT license.
  */
-'use strict';
 
-const { routeName, routePath, run, webUtil } = require('../middleware/init')({ __filename, __dirname });
+'use strict';
 
 const fs = require('fs');
 const path = require('path');
 const mkdirp = require('mkdirp');
 const crypto = require('crypto');
+
+const { routeName, routePath, run, webUtil } = require('../middleware/init')({ __filename, __dirname });
 
 function pathExists(absolutePath) {
     return new Promise((resolve, reject) => {
@@ -48,7 +49,7 @@ function writeToFile(absoluteFilename, data) {
 }
 
 module.exports = (req, res) => {
-    const { hrstart, runId }  = run(req);
+    const { hrstart, runId } = run(req);
 
     const hash = crypto.createHash('sha256');
     hash.update(JSON.stringify(req.body));

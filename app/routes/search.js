@@ -76,8 +76,8 @@ searchRouter.get('/*', (req, res) => {
     let template = templatePath + (file === 'index' ? 'index.html' : 'blog.html');
 
     if (_.isObject(searchRouter.config.template)) {
-        template = appPath + (file === 'index' ?
-            searchRouter.config.template.index : searchRouter.config.template.blog);
+        template = appPath + (file === 'index'
+            ? searchRouter.config.template.index : searchRouter.config.template.blog);
     }
     // var template = 'blog.html';
     const tpl = swig.compileFile(template);

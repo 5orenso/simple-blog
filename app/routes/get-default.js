@@ -8,8 +8,8 @@
 'use strict';
 
 const _ = require('underscore');
-const swig = require('../../lib/swig');
 const path = require('path');
+const swig = require('../../lib/swig');
 const Category = require('../../lib/category');
 const Article = require('../../lib/article');
 const ArticleUtil = require('../../lib/article-util');

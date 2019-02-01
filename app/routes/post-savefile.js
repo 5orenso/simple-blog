@@ -2,9 +2,10 @@
 
 const routeName = __filename.slice(__dirname.length + 1, -3);
 const routePath = __dirname.replace(/.+\/routes/, '');
-const webUtil = require('../../lib/web-util');
+
 const fs = require('fs');
 const path = require('path');
+const webUtil = require('../../lib/web-util');
 
 function saveFile(filename, $fileContent) {
     return new Promise((resolve, reject) => {
@@ -29,8 +30,7 @@ module.exports = (req, res) => {
         let newFilename = req.body.makeNewFile.toLowerCase();
         newFilename = newFilename.replace(/\.md$/, '');
         newFilename = newFilename.replace(/[^a-z0-9-]/g, '-');
-        addToFile =
-            path.normalize(`${req.config.adapter.markdown.contentPath}${req.body.filePath}${newFilename}.md`);
+        addToFile = path.normalize(`${req.config.adapter.markdown.contentPath}${req.body.filePath}${newFilename}.md`);
     }
     console.log('addToFile:', addToFile);
 

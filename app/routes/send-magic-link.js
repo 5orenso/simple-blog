@@ -2,8 +2,8 @@
 
 const routeName = __filename.slice(__dirname.length + 1, -3);
 const routePath = __dirname.replace(/.+\/routes/, '');
-const webUtil = require('../../lib/web-util');
 const jwt = require('jsonwebtoken');
+const webUtil = require('../../lib/web-util');
 const Mail = require('../../lib/mail');
 
 const emailSender = 'simple-blog@litt.no';
