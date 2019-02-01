@@ -4,15 +4,7 @@
     {% set isPhoto = true %}
 {% endif %}
 
-{{ header.bodyRaw|raw }}
-
-<xmp>
-params:
-{{ params|json(4)|raw }}
-
-Query
-{{ queryString|json(4)|raw }}
-</xmp>
+{{ header.bodyRaw|safe }}
 
 {% if isPhoto %}
 <div class="container-fluid">
@@ -27,7 +19,7 @@ Query
             <div class="blog-post">
 				<div class="blog-top-image {% if article.gallery || article.img[1] %}gallery-post-format{% endif %}">
                     {% if article.youtube %}
-					    {{ article.youtube|raw }}
+					    {{ article.youtube|safe }}
                     {% elseif article.img[0] %}
                         <div>
                             <img src="/pho/{{ article.img[0] }}?w={% if isPhoto %}1800{% else %}1050{% endif %}" alt="{{ article.title|e }}" class="img-fluid">
@@ -60,7 +52,7 @@ Query
         <div class="col-sm-8 blog-main">
             <div class="blog-post">
                 <h2 class="blog-post-title">{{ article.title }}</h2>
-                <h5 class="blog-post-teaser">{{ article.teaser|raw }}</h5>
+                <h5 class="blog-post-teaser">{{ article.teaser|safe }}</h5>
                 <p class="blog-post-meta">
                     {% if article.published %}
                         {{ article.published|date('Y-m-d') }}
@@ -89,17 +81,17 @@ Query
                 {% if article.ingress %}
                     <div class="lead">
                         {% if isPhoto %}
-                            {{ article.ingress|inlineImageSize(945)|safe }}
+                            {{ article.ingress|imgSize(945)|safe }}
                         {% else %}
-                            {{ article.ingress|inlineImageSize(750)|safe }}
+                            {{ article.ingress|imgSize(750)|safe }}
                         {% endif %}
                     </div>
                 {% endif %}
 
                 {% if isPhoto %}
-                    {{ article.body|inlineImageSize(945)|dropFirstLetterAfterHr|dropFirstLetter|safe }}
+                    {{ article.body|imgSize(945)|dropFirstLetterAfterHr|dropFirstLetter|dataTags(article)|md|safe }}
                 {% else %}
-                    {{ article.body|inlineImageSize(750)|dropFirstLetterAfterHr|dropFirstLetter|safe }}
+                    {{ article.body|imgSize(750)|dropFirstLetterAfterHr|dropFirstLetter|dataTags(article)|md|safe }}
                 {% endif %}
 
                 {% if article.col %}
@@ -107,7 +99,7 @@ Query
                         {% set arr = [0,1,2, 3,4,5, 6,7,8, 9,10,11, 12,13,14, 15,16,17] %}
                         {% for c in arr %}
                             {% if article.col[c] %}
-                                <div class="col-md-4 col-sm-6">{{ article.col[c]|raw }}</div>
+                                <div class="col-md-4 col-sm-6">{{ article.col[c]|safe }}</div>
                             {% endif %}
                         {% endfor %}
                     </div>
@@ -127,7 +119,7 @@ Query
                             <h2 class="blog-post-title">{{ article['title' + i] }}</h2>
                         {% endif %}
                         {% if article['teaser' + i] %}
-                            <h5 class="blog-post-teaser">{{ article['teaser' + i]|raw }}</h5>
+                            <h5 class="blog-post-teaser">{{ article['teaser' + i]|safe }}</h5>
                         {% endif %}
 
                         {% if article['img' + i][1] %}
@@ -146,9 +138,9 @@ Query
 
                         {% if article['ingress' + i] %}
                             {% if isPhoto %}
-                                {{ article['ingress' + i]|inlineImageSize(945)|safe }}
+                                {{ article['ingress' + i]|imgSize(945)|safe }}
                             {% else %}
-                                {{ article['ingress' + i]|inlineImageSize(750)|safe }}
+                                {{ article['ingress' + i]|imgSize(750)|safe }}
                             {% endif %}
                         {% endif %}
 
@@ -156,16 +148,16 @@ Query
                             {% set arr = [0,1,2, 3,4,5, 6,7,8, 9,10,11, 12,13,14, 15,16,17] %}
                             {% for c in arr %}
                                 {% if article['col' + i][c] %}
-                                    <div class="col-3">{{ article['col' + i][c]|raw }}</div>
+                                    <div class="col-3">{{ article['col' + i][c]|safe }}</div>
                                 {% endif %}
                             {% endfor %}
                         {% endif %}
 
                         {% if article['body' + i] %}
                             {% if isPhoto %}
-                                {{ article['body' + i]|inlineImageSize(945)|dropFirstLetterAfterHr|dropFirstLetter|safe }}
+                                {{ article['body' + i]|imgSize(945)|dropFirstLetterAfterHr|dropFirstLetter|dataTags(article)|md|safe }}
                             {% else %}
-                                {{ article['body' + i]|inlineImageSize(750)|dropFirstLetterAfterHr|dropFirstLetter|safe }}
+                                {{ article['body' + i]|imgSize(750)|dropFirstLetterAfterHr|dropFirstLetter|dataTags(article)|md|safe }}
                             {% endif %}
                         {% endif %}
 

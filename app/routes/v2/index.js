@@ -1,10 +1,10 @@
 'use strict';
 
-const webUtil = require('../../../lib/web-util');
-
 const router = require('express').Router();
+const wrap = require('../../middleware/wrap');
 
-router.get('/:category/:title/:id', require('./get-article.js'));
-router.get('/:category/:filename', require('./get-article.js'));
+router.get('/:category/:title/:id', wrap(require('./get-article.js')));
+router.get('/:category/:filename', wrap(require('./get-article.js')));
+router.get('/:category/', wrap(require('./get-article.js')));
 
 module.exports = router;

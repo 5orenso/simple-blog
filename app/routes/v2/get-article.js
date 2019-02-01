@@ -4,40 +4,36 @@
  * Copyright (c) 2019 Øistein Sørensen
  * Licensed under the MIT license.
  */
-
 'use strict';
 
-const routeName = __filename.slice(__dirname.length + 1, -3);
-const routePath = __dirname.replace(/.+\/routes/, '');
-const webUtil = require('../../../lib/web-util');
+const { routeName, routePath, run, webUtil } = require('../../middleware/init')({ __filename, __dirname });
+
 const Article = require('../../../lib/class/article');
+const Category = require('../../../lib/class/category');
 
 module.exports = async (req, res) => {
-    const hrstart = process.hrtime();
-    webUtil.printIfDev(`Route: ${routePath}/${routeName}`, req.query, req.param);
-    const article = new Article();
+    const { hrstart, runId }  = run(req);
+
+    const art = new Article();
+    const cat = new Category();
 
     let query = {
         id: req.params.id,
     };
-    if (!req.params.id && req.params.filename) {
+    if (!req.params.id && req.params.category) {
         query = {
             category: req.params.category,
             filename: req.params.filename,
         };
     }
 
-    const myArticle = await article.findOne(query)
-    const artlist = await article.find({ category: req.params.category });
+    const article = await art.findOne(query);
+    const artlist = await art.find({ category: req.params.category });
+    const catlist = await cat.find();
 
     webUtil.sendResultResponse(req, res, {
-        article: myArticle,
+        article,
         artlist,
-    }, {
-        hrstart,
-        routePath,
-        routeName,
-        useTemplatePath: true,
-        useTemplate: '/bootstrap4/blog_v2.html',
-    });
+        catlist,
+    }, { runId, routePath, routeName, hrstart, useTemplate: '/bootstrap4/blog_v2.html' });
 };

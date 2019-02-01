@@ -90,6 +90,20 @@ app.use('/search/', searchRouter);
 
 app.use('/', webRouter);
 
+app.use((error, req, res, next) => {
+    const message = {};
+    if (process.env.nodeEnv === 'development') {
+        message.name = error.name;
+        message.message = error.message;
+        message.stack = error.stack;
+    } else {
+        message.name = error.name;
+        message.message = error.message;
+    }
+
+    res.json({ message });
+});
+
 // Start the server ------------------------------
 const server = app.listen(config.app.port, () => {
     const host = server.address().address;

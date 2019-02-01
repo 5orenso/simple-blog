@@ -119,8 +119,8 @@ const main = async () => {
         })
         .catch(error => console.error(error));
 
-    //
-    //
+    // //
+    // //
     // const myProduct = await article.findOne({
     //     id: 135,
     // });
@@ -129,8 +129,8 @@ const main = async () => {
     // myProduct.body = 'foobargomle';
     // await myProduct.save();
     // // await article.save(myProduct);
-    //
-    // // await article.save(myProduct);
+    // //
+    // // // await article.save(myProduct);
 
 };
 

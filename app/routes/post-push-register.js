@@ -1,15 +1,13 @@
 /*
  * https://github.com/5orenso
  *
- * Copyright (c) 2014 Øistein Sørensen
+ * Copyright (c) 2014-2019 Øistein Sørensen
  * Licensed under the MIT license.
  */
-
 'use strict';
 
-const routeName = __filename.slice(__dirname.length + 1, -3);
-const routePath = __dirname.replace(/.+\/routes/, '');
-const webUtil = require('../../lib/web-util');
+const { routeName, routePath, run, webUtil } = require('../middleware/init')({ __filename, __dirname });
+
 const fs = require('fs');
 const path = require('path');
 const mkdirp = require('mkdirp');
@@ -50,8 +48,7 @@ function writeToFile(absoluteFilename, data) {
 }
 
 module.exports = (req, res) => {
-    const hrstart = process.hrtime();
-    webUtil.printIfDev(`Route: ${routePath}/${routeName}`, req.query, req.param, req.body);
+    const { hrstart, runId }  = run(req);
 
     const hash = crypto.createHash('sha256');
     hash.update(JSON.stringify(req.body));
@@ -61,7 +58,7 @@ module.exports = (req, res) => {
     pathExists(notificationPath)
         .then(() => writeToFile(filename, JSON.stringify(req.body)))
         .then(() => {
-            webUtil.logFunctionTimer(`router${routePath}`, routeName, req.path, process.hrtime(hrstart));
+            webUtil.logFunctionTimer({ runId, routePath, routeName, hrstart }, req);
             res.status(201).send(JSON.stringify({ data: { success: true } }));
         });
 };

@@ -23,11 +23,15 @@ describe('Article Class', () => {
                     expect(result.title).toEqual('test3');
                     expect(result.body).toEqual('foobar');
 
+                    return article.save({ id: result.id, title: 'test4' });
+                })
+                .then((result) => {
+                    expect(result.title).toEqual('test4');
                     return article.delete({ id: result.id });
                 })
                 .then((result) => {
                     // console.log('article.delete.result', result);
-                    expect(result).toEqual({ n: 1, ok: 1, deletedCount: 1 });
+                    expect(result).toEqual(true);
                 })
                 .catch(error => console.error(error));
         });
@@ -42,7 +46,7 @@ describe('Article Class', () => {
         });
 
         test('Should load articles as an array of objects', () => {
-            article.find({})
+            article.find({}, {}, { limit: 1 })
                .then((result) => {
                    // console.log('article.find.result', result);
                    expect(Array.isArray(result)).toBeTruthy();
@@ -50,8 +54,8 @@ describe('Article Class', () => {
                .catch(err => console.error(err));
         });
 
-        test('Should search  and return articles as an array of objects', () => {
-            article.search('test')
+        test('Should search and return articles as an array of objects', () => {
+            article.search('test', {}, { limit: 1 })
                .then((result) => {
                    // console.log('article.search.result', result);
                    expect(Array.isArray(result)).toBeTruthy();

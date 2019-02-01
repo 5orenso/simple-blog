@@ -7,9 +7,8 @@
 
 'use strict';
 
-const routeName = __filename.slice(__dirname.length + 1, -3);
-const routePath = __dirname.replace(/.+\/routes/, '');
-const webUtil = require('../../lib/web-util');
+const { routeName, routePath, run, webUtil } = require('../middleware/init')({ __filename, __dirname });
+
 const fs = require('fs');
 const path = require('path');
 const webpush = require('web-push');
@@ -56,29 +55,25 @@ function sendNotifications(config, filename, notification) {
 }
 
 module.exports = (req, res) => {
-    const hrstart = process.hrtime();
-    webUtil.printIfDev(`Route: ${routePath}/${routeName}`, req.query, req.param, req.body);
+    const { hrstart, runId }  = run(req);
 
     const notificationPath = path.normalize(req.config.adapter.markdown.notificationPath);
 
     // /push-register
     // A real world application would store the subscription info.
-    console.log('==> GET /push-send', req.query, req.body);
     const notification = {
         title: req.query.title,
         body: req.query.body,
         icon: req.query.icon,
         url: req.query.url,
     };
-    console.log('==> GET /push-send.notification', notification);
 
     if (req.session.email) {
         findAllFiles(notificationPath)
             .then(files => Promise.all(files.map(file =>
                 sendNotifications(req.config, `${notificationPath}${file}`, notification))))
             .then((results) => {
-                // console.log('results', results);
-                webUtil.logFunctionTimer(`router${routePath}`, routeName, req.path, process.hrtime(hrstart));
+                webUtil.logFunctionTimer({ runId, routePath, routeName, hrstart }, req);
                 res.status(201).send('Push notifications sent to: ', JSON.stringify(results));
             })
             .catch((error) => {
@@ -86,7 +81,7 @@ module.exports = (req, res) => {
                 res.status(406).send(error);
             });
     } else {
-        webUtil.logFunctionTimer(`router${routePath}`, routeName, req.path, process.hrtime(hrstart));
+        webUtil.logFunctionTimer({ runId, routePath, routeName, hrstart }, req);
         res.sendStatus(201);
     }
 };
