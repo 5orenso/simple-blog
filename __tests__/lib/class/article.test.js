@@ -5,12 +5,13 @@ const article = new Article();
 
 const config = {
     mongo: {
-        url: 'mongodb://localhost:27017/simpleBlog?safe=true&auto_reconnect=true&poolSize=20',
+        url: 'mongodb://localhost:27017/simpleBlogTEST?safe=true&auto_reconnect=true&poolSize=20',
     },
 };
 
 beforeAll(async () => {
     await myMongoose.init(config);
+    await article.save({ title: 'test3', body: 'foobar' });
 });
 
 afterAll(async () => {
@@ -21,7 +22,7 @@ describe('Article Class', () => {
     describe('Method tests', () => {
 
         test('Should save article, check content and delete it again', async () => {
-            await article.save({ title: 'test3', body: 'foobar' })
+            return await article.save({ title: 'test3', body: 'foobar' })
                 .then((result) => {
                     // console.log('article.save.result', result);
                     expect(result.title).toEqual('test3');
@@ -37,34 +38,30 @@ describe('Article Class', () => {
                     // console.log('article.delete.result', result);
                     expect(result).toEqual(true);
                 })
-                .catch(error => console.error(error));
         });
 
         test('Should load 1 article as object', async () => {
-            await article.findOne({})
+            return await article.findOne({})
                .then((result) => {
                    // console.log('article.findOne.result', result);
                    expect(typeof result === 'object' && !Array.isArray(result)).toBeTruthy();
                })
-               .catch(err => console.error(err));
         });
 
         test('Should load articles as an array of objects', async () => {
-            await article.find({}, {}, { limit: 1 })
+            return await article.find({}, {}, { limit: 1 })
                .then((result) => {
                    // console.log('article.find.result', result);
                    expect(Array.isArray(result)).toBeTruthy();
-               })
-               .catch(err => console.error(err));
+               });
         });
 
         test('Should search and return articles as an array of objects', async () => {
-            await article.search('test', {}, { limit: 1 })
+            return await article.search('test', {}, { limit: 1 })
                .then((result) => {
                    // console.log('article.search.result', result);
                    expect(Array.isArray(result)).toBeTruthy();
-               })
-               .catch(err => console.error(err));
+               });
         });
     });
 });
