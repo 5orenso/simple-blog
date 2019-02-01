@@ -1,13 +1,13 @@
 const myMongoose = require('../../../lib/class/mongoose');
 const Article = require('../../../lib/class/article');
 
-const article = new Article();
-
 const config = {
     mongo: {
         url: 'mongodb://localhost:27017/simpleBlogTEST?safe=true&auto_reconnect=true&poolSize=20',
     },
 };
+
+const article = new Article();
 
 beforeAll(async () => {
     await myMongoose.init(config);
@@ -15,7 +15,7 @@ beforeAll(async () => {
 });
 
 afterAll(async () => {
-    await myMongoose.close();
+    await article.dropCollection(true, 'yes-i-am-sure');
 });
 
 describe('Article Class', () => {
