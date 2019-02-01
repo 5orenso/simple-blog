@@ -13,11 +13,15 @@ beforeAll(async () => {
     await myMongoose.init(config);
 });
 
+afterAll(async () => {
+    await myMongoose.close();
+});
+
 describe('Article Class', () => {
     describe('Method tests', () => {
 
-        test('Should save article, check content and delete it again', () => {
-            article.save({ title: 'test3', body: 'foobar' })
+        test('Should save article, check content and delete it again', async () => {
+            await article.save({ title: 'test3', body: 'foobar' })
                 .then((result) => {
                     // console.log('article.save.result', result);
                     expect(result.title).toEqual('test3');
@@ -36,8 +40,8 @@ describe('Article Class', () => {
                 .catch(error => console.error(error));
         });
 
-        test('Should load 1 article as object', () => {
-            article.findOne({})
+        test('Should load 1 article as object', async () => {
+            await article.findOne({})
                .then((result) => {
                    // console.log('article.findOne.result', result);
                    expect(typeof result === 'object' && !Array.isArray(result)).toBeTruthy();
@@ -45,8 +49,8 @@ describe('Article Class', () => {
                .catch(err => console.error(err));
         });
 
-        test('Should load articles as an array of objects', () => {
-            article.find({}, {}, { limit: 1 })
+        test('Should load articles as an array of objects', async () => {
+            await article.find({}, {}, { limit: 1 })
                .then((result) => {
                    // console.log('article.find.result', result);
                    expect(Array.isArray(result)).toBeTruthy();
@@ -54,8 +58,8 @@ describe('Article Class', () => {
                .catch(err => console.error(err));
         });
 
-        test('Should search and return articles as an array of objects', () => {
-            article.search('test', {}, { limit: 1 })
+        test('Should search and return articles as an array of objects', async () => {
+            await article.search('test', {}, { limit: 1 })
                .then((result) => {
                    // console.log('article.search.result', result);
                    expect(Array.isArray(result)).toBeTruthy();

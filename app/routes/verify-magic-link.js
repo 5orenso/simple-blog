@@ -8,7 +8,6 @@ module.exports = (req, res) => {
     const hrstart = process.hrtime();
     webUtil.printIfDev(`Route: ${routePath}/${routeName}`, req.query, req.param);
 
-    console.log('req.user', req.user);
     req.session.email = req.user.email;
     req.session.iat = req.user.iat;
 
