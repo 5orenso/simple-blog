@@ -7,9 +7,6 @@ services: mongodb
 cache:
   directories:
     - node_modules
-    - $(npm config get prefix)/bin/grunt-cli
 install:
   - npm install --no-optional
 sudo: false
-
-#after_script: "istanbul cover ./all-tests.js"
