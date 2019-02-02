@@ -7,7 +7,7 @@
 
 'use strict';
 
-const myMongoose = require('../lib/class/mongoose');
+const MongooseHelper = require('../lib/class/mongoose');
 const _ = require('underscore');
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -31,8 +31,7 @@ commander
 // eslint-disable-next-line
 const config = require(commander.config);
 if (config) {
-    myMongoose.init(config);
-
+    MongooseHelper.connectGlobal(config);
     if (_.isObject(config) && _.isObject(config.log)) {
         logger.set('log', config.log);
     }

@@ -1,4 +1,3 @@
-const myMongoose = require('../../../lib/class/mongoose');
 const Category = require('../../../lib/class/category');
 
 const config = {
@@ -7,61 +6,48 @@ const config = {
     },
 };
 
-const category = new Category();
+const category = new Category(config);
 
 beforeAll(async () => {
-    await myMongoose.init(config);
+    console.log('beforeAll');
+    await category.connect();
     await category.save({ title: 'test3', url: 'foobar' });
 });
 
 afterAll(async () => {
+    console.log('afterAll');
     await category.dropCollection(true, 'yes-i-am-sure');
+    await category.close();
 });
 
-describe('Category Class', () => {
-    describe('Method tests', () => {
+describe('Category Class', async () => {
+    describe('Method tests', async () => {
 
         test('Should save category, check content and delete it again', async () => {
-            return await category.save({ title: 'test3', url: '/foobar' })
-                .then((result) => {
-                    // console.log('category.save.result', result);
-                    expect(result.title).toEqual('test3');
-                    expect(result.url).toEqual('/foobar');
+            const result = await category.save({ title: 'test3', url: '/foobar' })
+            expect(result.title).toEqual('test3');
+            expect(result.url).toEqual('/foobar');
 
-                    return category.save({ id: result.id, title: 'test4' });
-                })
-                .then((result) => {
-                    expect(result.title).toEqual('test4');
-                    return category.delete({ id: result.id });
-                })
-                .then((result) => {
-                    // console.log('article.delete.result', result);
-                    expect(result).toEqual(true);
-                })
+            const result2 = await category.save({ id: result.id, title: 'test4' });
+            expect(result2.title).toEqual('test4');
+
+            const result3 = await category.delete({ id: result.id });
+            expect(result3).toEqual(true);
         });
 
         test('Should load 1 category as object', async () => {
-            return await category.findOne({})
-               .then((result) => {
-                   // console.log('article.findOne.result', result);
-                   expect(typeof result === 'object' && !Array.isArray(result)).toBeTruthy();
-               })
+            const result = await category.findOne({});
+            expect(typeof result === 'object' && !Array.isArray(result)).toBeTruthy();
         });
 
         test('Should load categorys as an array of objects', async () => {
-            return await category.find({}, {}, { limit: 1 })
-               .then((result) => {
-                   // console.log('category.find.result', result);
-                   expect(Array.isArray(result)).toBeTruthy();
-               });
+            const result = await category.find({}, {}, { limit: 1 });
+            expect(Array.isArray(result)).toBeTruthy();
         });
 
         test('Should search and return categorys as an array of objects', async () => {
-            return await category.search('test', {}, { limit: 1 })
-               .then((result) => {
-                   // console.log('category.search.result', result);
-                   expect(Array.isArray(result)).toBeTruthy();
-               });
+            const result = await category.search('test', {}, { limit: 1 });
+            expect(Array.isArray(result)).toBeTruthy();
         });
     });
 });

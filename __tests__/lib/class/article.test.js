@@ -1,4 +1,3 @@
-const myMongoose = require('../../../lib/class/mongoose');
 const Article = require('../../../lib/class/article');
 
 const config = {
@@ -7,61 +6,48 @@ const config = {
     },
 };
 
-const article = new Article();
+const article = new Article(config);
 
 beforeAll(async () => {
-    await myMongoose.init(config);
+    console.log('beforeAll');
+    await article.connect();
     await article.save({ title: 'test3', body: 'foobar' });
 });
 
 afterAll(async () => {
+    console.log('afterAll');
     await article.dropCollection(true, 'yes-i-am-sure');
+    await article.close();
 });
 
-describe('Article Class', () => {
-    describe('Method tests', () => {
+describe('Article Class', async () => {
+    describe('Method tests', async () => {
 
         test('Should save article, check content and delete it again', async () => {
-            return await article.save({ title: 'test3', body: 'foobar' })
-                .then((result) => {
-                    // console.log('article.save.result', result);
-                    expect(result.title).toEqual('test3');
-                    expect(result.body).toEqual('foobar');
+            const result = await article.save({ title: 'test3', body: 'foobar' });
+            expect(result.title).toEqual('test3');
+            expect(result.body).toEqual('foobar');
 
-                    return article.save({ id: result.id, title: 'test4' });
-                })
-                .then((result) => {
-                    expect(result.title).toEqual('test4');
-                    return article.delete({ id: result.id });
-                })
-                .then((result) => {
-                    // console.log('article.delete.result', result);
-                    expect(result).toEqual(true);
-                })
+            const result2 = await article.save({ id: result.id, title: 'test4' });
+            expect(result2.title).toEqual('test4');
+
+            const result3 = await article.delete({ id: result.id });
+            expect(result3).toEqual(true);
         });
 
         test('Should load 1 article as object', async () => {
-            return await article.findOne({})
-               .then((result) => {
-                   // console.log('article.findOne.result', result);
-                   expect(typeof result === 'object' && !Array.isArray(result)).toBeTruthy();
-               })
+            const result = await article.findOne({});
+            expect(typeof result === 'object' && !Array.isArray(result)).toBeTruthy();
         });
 
         test('Should load articles as an array of objects', async () => {
-            return await article.find({}, {}, { limit: 1 })
-               .then((result) => {
-                   // console.log('article.find.result', result);
-                   expect(Array.isArray(result)).toBeTruthy();
-               });
+            const result = await article.find({}, {}, { limit: 1 });
+            expect(Array.isArray(result)).toBeTruthy();
         });
 
         test('Should search and return articles as an array of objects', async () => {
-            return await article.search('test', {}, { limit: 1 })
-               .then((result) => {
-                   // console.log('article.search.result', result);
-                   expect(Array.isArray(result)).toBeTruthy();
-               });
+            const result = await article.search('test', {}, { limit: 1 });
+            expect(Array.isArray(result)).toBeTruthy();
         });
     });
 });
