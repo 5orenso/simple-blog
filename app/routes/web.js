@@ -15,6 +15,7 @@ const path = require('path');
 const Logger = require('../../lib/logger');
 const ArticleUtil = require('../../lib/article-util');
 const LocalUtil = require('../../lib/local-util');
+const util = require('../../lib/utilities');
 
 const logger = new Logger();
 const articleUtil = new ArticleUtil();
@@ -54,6 +55,7 @@ webRouter.use(setConfig);
 webRouter.use(require('../../lib/jwt'));
 
 webRouter.use('/v2/', require('./v2/'));
+webRouter.use('/api/', require('./api/'));
 
 // Setup static routes
 webRouter.use('/global/', localUtil.setCacheHeaders);
@@ -98,12 +100,11 @@ webRouter.get('/photos/*', (req, res) => {
 webRouter.get('/send-magic-link', require('./send-magic-link.js'));
 webRouter.get('/verify-magic-link', require('./verify-magic-link.js'));
 
-// webRouter.post('/ajax/fileupload', webUtil.restrict, require('./post-fileupload.js'));
-webRouter.get('/ajax/savefile', require('./post-savefile.js'));
-webRouter.post('/ajax/savefile', require('./post-savefile.js'));
+webRouter.get('/ajax/savefile', util.restrict, require('./post-savefile.js'));
+webRouter.post('/ajax/savefile', util.restrict, require('./post-savefile.js'));
 
-webRouter.get('/ajax/fileupload', require('./post-fileupload.js'));
-webRouter.post('/ajax/fileupload', require('./post-fileupload.js'));
+webRouter.get('/ajax/fileupload', util.restrict, require('./post-fileupload.js'));
+webRouter.post('/ajax/fileupload', util.restrict, require('./post-fileupload.js'));
 
 // Main route for blog articles.
 webRouter.use('/*', localUtil.setNoCacheHeaders);

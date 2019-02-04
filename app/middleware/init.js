@@ -2,6 +2,7 @@
 
 const uuidv4 = require('uuid/v4');
 const webUtil = require('../../lib/web-util');
+const utilHtml = require('../../lib/util-html');
 
 module.exports = (opt) => {
     // eslint-disable-next-line
@@ -29,5 +30,6 @@ module.exports = (opt) => {
         routePath,
         run,
         webUtil,
+        utilHtml,
     };
 };
