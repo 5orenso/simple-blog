@@ -22,13 +22,13 @@ module.exports = async (req, res) => {
             category: req.query.category,
         };
     }
-    query = webUtil.cleanObject(query);
 
     let apiContent;
     if (query.id) {
         apiContent = await art.findOne(query);
     } else {
-        apiContent = await art.find(query, {}, { limit: 10 });
+        apiContent = await art.find(query);
+
     }
 
     utilHtml.renderApi(req, res, 200, apiContent);

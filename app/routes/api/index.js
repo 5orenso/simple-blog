@@ -3,6 +3,7 @@
 const router = require('express').Router();
 const cors = require('cors');
 const wrap = require('../../middleware/wrap');
+const util = require('../../../lib/utilities');
 
 router.use(cors({
     origin: true,
@@ -13,6 +14,7 @@ router.use(cors({
 
 router.get('/article/', wrap(require('./get-article.js')));
 router.get('/article/:id', wrap(require('./get-article.js')));
-// router.patch('/article/:id', wrap(require('./patch-article.js')));
+
+router.patch('/article/:id', util.restrict, wrap(require('./patch-article.js')));
 
 module.exports = router;
