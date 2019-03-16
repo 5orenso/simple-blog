@@ -30,6 +30,8 @@
     "sass-loader": "^6.0.6"
   },
   "dependencies": {
+    "highlight.js": "^9.14.2",
+    "marked": "^0.6.0",
     "preact": "^8.2.5",
     "preact-compat": "^3.17.0",
     "preact-habitat": "^3.1.0",

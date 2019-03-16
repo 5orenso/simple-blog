@@ -10,3 +10,8 @@
     -moz-transition: width 1.0s ease;
     transition: width 1.0s ease;
 }
+
+.textareaAutoHeight {
+    height: 200px;
+    overflow-y: hidden;
+}

@@ -2,16 +2,18 @@ import { h, Component } from 'preact';
 
 import styles from './style.css';
 import util from '../../../lib/util';
+import utilHtml from '../../../lib/util-html';
 import ProgressBar from '../../../lib/components/progressbar';
 
 const widgetName = 'simpleBlogCms';
-const debug = true;
+const debug = false;
 const initialState = {
     infoStatus: '',
     loadingProgress: 0,
     article: {},
     artlist: [],
 };
+const editMode = 'textarea'; // div
 
 export default class SimpleBlogCms extends Component {
     constructor($props) {
@@ -25,8 +27,7 @@ export default class SimpleBlogCms extends Component {
         util.fetchApi('/api/article/', {}, this)
             .then((result) => {
                 this.setState({
-                    article: result.article,
-                    artlist: result.artlist,
+                    artlist: result,
                 })
             });
     }
@@ -39,11 +40,44 @@ export default class SimpleBlogCms extends Component {
         // this.saveHistoryToLocalStorage('productsInBasket', []);
     }
 
+    doHandleTextareaInput(element) {
+        console.log('doHandleTextareaInput:', element);
+        element.style.height = 'auto';
+        element.style.height = `${element.scrollHeight}px`;
+    }
+
     // - - - [ Events ] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // eslint-disable-next-line
-    handleSelectRegister = (event) => {
+    handleArtlistClick = (event) => {
         event.preventDefault();
-    }
+        const trElement = event.target.closest('tr');
+        const artId = parseInt(trElement.dataset.id, 10);
+        util.fetchApi(`/api/article/${artId}`, {}, this)
+            .then((result) => {
+                this.setState({
+                    article: result,
+                });
+            });
+
+    };
+
+    handleClickSave = (event) => {
+        event.preventDefault();
+        // const body = document.getElementById('bodyInput');
+        // console.log(body.innerText);
+        // console.log(body.innerHTML);
+        //
+        // const body = document.getElementById('bodyInput');
+    };
+
+    handleTextareaInput = (event) => {
+        event.preventDefault();
+        const el = event.target;
+        const article = this.state.article;
+        article.body = el.value;
+        this.setState({ article });
+        // this.doHandleTextareaInput(el);
+    };
 
     // - - - [ Component events from Preact it self: ] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     componentWillMount() {
@@ -57,6 +91,11 @@ export default class SimpleBlogCms extends Component {
             console.log(widgetName, 'componentDidMount', this.props);
         }
         window.addEventListener('beforeunload', () => this.componentCleanup());
+
+        // const tx = document.getElementsByTagName('textarea');
+        // for (var i = 0; i < tx.length; i++) {
+        //     tx[i].setAttribute('style', 'height:' + (tx[i].scrollHeight) + 'px;overflow-y:hidden;');
+        // }
     }
 
     componentWillUnmount() {
@@ -77,12 +116,14 @@ export default class SimpleBlogCms extends Component {
         if (debug) {
             console.log(widgetName, 'componentDidUpdate', prevProps, prevState, this.state);
         }
+        const body = document.getElementById('bodyInput');
+        this.doHandleTextareaInput(body);
     }
 
     // Render the shit:
     render() {
         return (
-            <div class="container">
+            <div class="container-fluid">
                 <ProgressBar styles={styles} loadingProgress={this.state.loadingProgress} />
                 <div class="row">
                     <div class="col-12">
@@ -90,18 +131,20 @@ export default class SimpleBlogCms extends Component {
                             <thead>
                                 <tr>
                                     <th scope="col">#</th>
-                                    <th scope="col">First</th>
-                                    <th scope="col">Last</th>
-                                    <th scope="col">Handle</th>
+                                    <th scope="col">Kategori</th>
+                                    <th scope="col">Tittel</th>
+                                    <th scope="col">Pub.dato</th>
+                                    <th scope="col">Forfatter</th>
                                 </tr>
                             </thead>
                         <tbody>
                         {this.state.artlist.map(art =>
-                            <tr>
+                            <tr data-id={art.id} onClick={this.handleArtlistClick}>
                                 <th scope="row">{art.id}</th>
+                                <td>{art.category}</td>
                                 <td>{art.title}</td>
-                                <td>Otto</td>
-                                <td>@mdo</td>
+                                <td>{art.published}</td>
+                                <td>{art.author}</td>
                             </tr>
                         )}
                         </tbody>
@@ -111,45 +154,44 @@ export default class SimpleBlogCms extends Component {
                 </div>
                 <div class="row">
                     <div class="col-12">
-                        <form>
-                            <div class="form-group">
-                                <label for="exampleFormControlInput1">Email address</label>
-                                <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com" />
-                            </div>
-                            <div class="form-group">
-                                <label for="exampleFormControlSelect1">Example select</label>
-                                <select class="form-control" id="exampleFormControlSelect1">
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                    <option>4</option>
-                                    <option>5</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="exampleFormControlSelect2">Example multiple select</label>
-                                <select multiple class="form-control" id="exampleFormControlSelect2">
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                    <option>4</option>
-                                    <option>5</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="exampleFormControlTextarea1">Example textarea</label>
-                                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-                            </div>
-                            <div class="form-group">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="gridCheck" />
-                                    <label class="form-check-label" for="gridCheck">
-                                        Check me out
-                                    </label>
-                                </div>
-                            </div>
-                            <button type="submit" class="btn btn-primary">Save</button>
-                        </form>
+                        <div class="form-group">
+                            <label for="titleInput">Tittel</label>
+                            <input type="text" class="form-control" id="titleInput" placeholder="Tittel" value={this.state.article.title} />
+                        </div>
+                        <div class="form-group">
+                            <label for="teaserInput">Teaser</label>
+                            <input type="text" class="form-control" id="teaserInput" placeholder="Teaser" value={this.state.article.teaser} />
+                        </div>
+                        <div class="form-group">
+                            <label for="authorInput">Forfatter</label>
+                            <input type="text" class="form-control" id="authorInput" placeholder="Forfatter" value={this.state.article.author} />
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label for="bodyInput">Brødtekst</label>
+                            {editMode === 'textarea' ? (
+                                <textarea name='body' class={`${styles.textareaAutoHeight} form-control`} id="bodyInput" rows="3"
+                                    onKeyup={this.handleTextareaInput}
+                                    onPaste={this.handleTextareaInput}
+                                    value={this.state.article.body} />
+                            ) : (
+                                <div id='fakeBody' contenteditable dangerouslySetInnerHTML={{
+                                    __html: utilHtml.replaceMarked(
+                                        utilHtml.replaceDataTags(this.state.article.body, this.state.article)
+                                    ),
+                                }}></div>
+                            )}
+                        </div>
+                        <button type="submit" class="btn btn-primary" onClick={this.handleClickSave}>Lagre</button>
+                    </div>
+                    <div class="col-6">
+                        <label for="bodyInput">Forhåndsvisning</label>
+                        <div id='bodyDisplay' dangerouslySetInnerHTML={{
+                            __html: utilHtml.replaceMarked(
+                                utilHtml.replaceDataTags(this.state.article.body, this.state.article)
+                            ),
+                        }}></div>
                     </div>
                 </div>
             </div>

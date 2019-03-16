@@ -178,6 +178,7 @@ class Utilities {
         }
         return obj;
     }
+
 }
 
 module.exports = Utilities;
