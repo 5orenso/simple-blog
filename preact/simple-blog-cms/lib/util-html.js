@@ -7,11 +7,20 @@ const renderer = new marked.Renderer();
 
 // Markdown setup.
 marked.setOptions({
-    highlight(code) {
-        // eslint-disable-next-line
+    renderer: renderer,
+    highlight: function(code) {
         return require('highlight.js').highlightAuto(code).value;
     },
+    pedantic: false,
+    gfm: true,
+    tables: true,
+    breaks: true,
+    sanitize: false,
+    smartLists: true,
+    smartypants: true,
+    xhtml: false,
 });
+
 renderer.heading = function heading(text, level) {
     const escapedText = text.toLowerCase().replace(/[^\w]+/g, '-');
     return `<h${level} class="toc-${level}"><a name="${
@@ -21,8 +30,13 @@ renderer.heading = function heading(text, level) {
     }"><span class="header-link"></span></a>${
         text}</h${level}>`;
 };
+
 renderer.image = function image($href, title, text) {
-    const src = $href;
+    let serverName;
+    if (document.domain === 'localhost') {
+        serverName = 'http://localhost:8080';
+    }
+    const src = `${serverName}${$href}`;
     const href = $href.replace(/(w=[0-9]+)/, 'w=1800');
     const mediaClass = [];
     const result = src.match(/#([a-z,]+)$/);
@@ -38,12 +52,22 @@ renderer.image = function image($href, title, text) {
 };
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 function htmlUtilities() {
     function replaceMarked(input) {
         if (typeof input === 'string') {
-            return marked(input, { renderer });
+            const fixedInput = fixImageLinksWhiteSpace(input);
+            return marked(fixedInput);
         }
+    }
+
+    function fixImageLinksWhiteSpace(input) {
+        function replacerImageWhiteSpace(match, p1, p2, p3) {
+            const imageSrc = p2.replace(/ /g, '%20');
+            const result = `![${p1}](${imageSrc}${p3})`;
+            return result;
+        }
+        const reg = /\!\[(.+?)\]\((.+?\.[a-z]{3,4})(.*?)\)/gi;
+        return input.replace(reg, replacerImageWhiteSpace);
     }
 
     function inlineImageSize($input, $size) {

@@ -1,8 +1,11 @@
 'use strict';
 
 const uuidv4 = require('uuid/v4');
+const path = require('path');
 const webUtil = require('../../lib/web-util');
 const utilHtml = require('../../lib/util-html');
+const util = require('../../lib/Utilities');
+const appPath = path.normalize(`${__dirname}/../../`);
 
 module.exports = (opt) => {
     // eslint-disable-next-line
@@ -28,7 +31,9 @@ module.exports = (opt) => {
     return {
         routeName,
         routePath,
+        appPath,
         run,
+        util,
         webUtil,
         utilHtml,
     };

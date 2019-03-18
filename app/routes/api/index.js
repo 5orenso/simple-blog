@@ -16,5 +16,6 @@ router.get('/article/', wrap(require('./get-article.js')));
 router.get('/article/:id', wrap(require('./get-article.js')));
 
 router.patch('/article/:id', util.restrict, wrap(require('./patch-article.js')));
+router.post('/fileupload/', util.restrict, wrap(require('./post-fileupload.js')));
 
 module.exports = router;

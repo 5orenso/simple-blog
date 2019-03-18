@@ -1,10 +1,10 @@
 {% set isPhoto = false %}
-{% set baseHref = article.baseHref|replace('/', '', 'g') %}
-{% if article.baseHref|match('photo') || article.baseHref|match('film') %}
+{% set baseHref = article.category|replace('/', '', 'g') %}
+{% if baseHref|match('photo') || baseHref|match('film') %}
     {% set isPhoto = true %}
 {% endif %}
 
-{{ header.bodyRaw|safe }}
+{{ category.headerDetail|safe }}
 
 {% if isPhoto %}
 <div class="container-fluid">
@@ -22,7 +22,7 @@
 					    {{ article.youtube|safe }}
                     {% elseif article.img[0] %}
                         <div>
-                            <img src="/pho/{{ article.img[0] }}?w={% if isPhoto %}1800{% else %}1050{% endif %}" alt="{{ article.title|e }}" class="img-fluid">
+                            <img src="/pho/{{ article.img[0].src }}?w={% if isPhoto %}1800{% else %}1050{% endif %}" alt="{{ article.title|e }}" class="img-fluid">
                         </div>
                     {% else %}
                         <div class="blog-post-quote">
@@ -68,8 +68,8 @@
                     {% for i in imgs %}
                         {% if (article.img[i]) %}
                             <span class="float-right img-thumbnail rounded">
-                                <a href="/pho/{{ article.img[i] }}?w=1800" data-smoothzoom="group1" title="{{ (article.imgText[i] || article.title)|e('html') }}" class="inline-images">
-                                    <img src="/pho/{{ article.img[i] }}?w=300" alt="{{ (article.imgText[i] || article.title)|e('html') }}" title="{{ (article.imgText[i] || article.title)|e('html') }}" class="img-fluid">
+                                <a href="/pho/{{ article.img[i].src }}?w=1800" data-smoothzoom="group1" title="{{ (article.imgText[i] || article.title)|e('html') }}" class="inline-images">
+                                    <img src="/pho/{{ article.img[i].src }}?w=300" alt="{{ (article.imgText[i] || article.title)|e('html') }}" title="{{ (article.imgText[i] || article.title)|e('html') }}" class="img-fluid">
                                 </a><br>
                                 {% if article.imgText[i] %}{{ article.imgText[i] }}{% endif %}
                             </span>
@@ -164,7 +164,7 @@
                     {% endif %}
                 {% endfor %}
 
-                [[FOOTER]]
+                {{ category.footerDetail|safe }}
 
                 <div class="social-share">
                     {{ blog.sharingHeader || 'Jeg blir veldig 😊 hvis du deler' }}:
@@ -184,7 +184,7 @@
                         <div class="post-thumb">
                             <a href="{{ art.baseHref }}{{ art.file }}">
                                 {% if art.img[0] %}
-                                    <img src="/pho/{{ art.img[0] }}?w=800" alt="{{ art.title|e }}" class="img-fluid"><br clear="all">
+                                    <img src="/pho/{{ art.img[0].src }}?w=800" alt="{{ art.title|e }}" class="img-fluid"><br clear="all">
                                 {% else %}
                                     <div class="entry-quote-post-format">
                                         <blockquote>
@@ -211,7 +211,7 @@
                         <div class="post-thumb">
                             <a href="{{ art.baseHref }}{{ art.file }}">
                                 {% if art.img[0] %}
-                                    <img src="/pho/{{ art.img[0] }}?w=800" alt="{{ art.title|e }}" class="img-fluid"><br clear="all">
+                                    <img src="/pho/{{ art.img[0].src }}?w=800" alt="{{ art.title|e }}" class="img-fluid"><br clear="all">
                                 {% else %}
                                     <div class="entry-quote-post-format">
                                         <blockquote>
@@ -262,7 +262,7 @@
                                 <div class="col-sm-4 thumb">
                                     <a href="/v2/{{ art.category }}/{{ art.filename }}" title="{{ art.title|e }} - {{ art.teaser|e }}">
                                         {% if art.img[0] %}
-                                            <img src="/pho/{{ art.img[0] }}?w=70" alt="{{ art.title|e }} - {{ art.teaser|e }}" class="img-fluid"><br clear="all">
+                                            <img src="/pho/{{ art.img[0].src }}?w=70" alt="{{ art.title|e }} - {{ art.teaser|e }}" class="img-fluid"><br clear="all">
                                         {% else %}
                                             <blockquote>
                                                 <p><i class="fa fa-quote-left"></i>

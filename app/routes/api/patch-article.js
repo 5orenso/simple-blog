@@ -17,19 +17,16 @@ module.exports = async (req, res) => {
     let query = {
         id: req.params.id,
     };
-    if (!req.params.id && req.query.category) {
-        query = {
-            category: req.query.category,
-        };
-    }
 
     let apiContent;
     if (query.id) {
-        apiContent = await art.findOne(query);
-    } else {
-        apiContent = await art.find(query);
+        const data = webUtil.cleanObject(req.body, { nullIsUndefined: true });
 
+        apiContent = await art.save(data);
+        return utilHtml.renderApi(req, res, 202, apiContent);
     }
-
-    utilHtml.renderApi(req, res, 200, apiContent);
+    utilHtml.renderApi(req, res, 404, {
+        params: req.params,
+        error: 'Article not found',
+    });
 };

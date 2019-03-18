@@ -5,11 +5,14 @@ const OldArticle = require('../lib/article');
 const OldArticleUtil = require('../lib/article-util');
 const OldLogger = require('../lib/logger');
 
+const fs = require('fs');
+const im = require('imagemagick');
 const path = require('path');
 const appPath = `${__dirname}/../`;
-const photoPath = path.normalize(`${appPath}../content/images/`);
+const photoPath = path.normalize(`${appPath}/content/images/`);
 
 const config = require('../config/config-dist.js');
+
 const oldArtUtil = new OldArticleUtil();
 const logger = new OldLogger();
 const oldArticle = new OldArticle({
@@ -43,10 +46,60 @@ function parseDate(input) {
     return newDate;
 }
 
-const article = new Article();
+function isImage(file) {
+    if (file.mimetype.match(/^image\/(jpg|jpeg|png|gif)/i)) {
+        return true;
+    }
+    return false;
+}
+
+function convertDMSToDD(degrees, minutes, seconds, direction) {
+    const dd = degrees + minutes / 60 + seconds / (60 * 60);
+    if (direction === 'S' || direction === 'W') {
+        dd = dd * -1;
+    } // Don't do anything for N or E
+    return dd;
+}
+
+function readExif(file) {
+    return new Promise((resolve, reject) => {
+        im.readMetadata(file, (err, metadata) => {
+            if (err) reject(err);
+            // console.log('Shot at ' + metadata.exif.dateTimeOriginal);
+            // console.log('meta', metadata);
+            // console.log('exif done');
+
+            // gpsLatitude: "70/1, 8/1, 3183/100"
+            // ​gpsLatitudeRef: "N"
+
+            if (metadata.exif && metadata.exif.gpsLatitude) {
+                const latParts = metadata.exif.gpsLatitude.split(/, /).map(val => eval(val));
+                metadata.exif.lat = convertDMSToDD(latParts[0], latParts[1], latParts[2],
+                    metadata.exif.gpsLatitudeRef);
+
+                // gpsLongitude: "29/1, 18/1, 4090/100"
+                // gpsLongitudeRef: "E"
+                const lngParts = metadata.exif.gpsLongitude.split(/, /).map(val => eval(val));
+                metadata.exif.lng = convertDMSToDD(lngParts[0], lngParts[1], lngParts[2],
+                    metadata.exif.gpsLongitudeRef);
+            }
+            resolve(metadata.exif);
+        });
+    });
+}
+
+function readFileInfo(file) {
+    return new Promise((resolve, reject) => {
+        fs.stat(file, (err, stats) => {
+            if (err) reject(err);
+            resolve(stats);
+        });
+    });
+}
 
 const main = async () => {
-    await myMongoose.init(config);
+    await myMongoose.connectGlobal(config);
+    const article = new Article();
 
     oldArticle.list(articlePath)
         .then(async (list) => {
@@ -56,7 +109,7 @@ const main = async () => {
                 const newArt = {
                     filename: art.file,
                     author: art.author,
-                    published: parseDate(art.published),
+                    published: parseDate(art.published || '2000-01-01 00:00:00'),
                     tags: (art.tags && art.tags.split(', ')),
                     category: parsePath(art.baseHref),
                     title: art.title,
@@ -82,6 +135,20 @@ const main = async () => {
                     });
                 }
 
+                if (Array.isArray(newArt.img)) {
+                    for (let j = 0, m = newArt.img.length; j < m; j += 1) {
+                        newArt.img[j] = {
+                            src: newArt.img[j],
+                            text: newArt.imgText[j],
+                        };
+                        const filename = `${photoPath}${newArt.img[j].src}`;
+                        const exif = await readExif(filename);
+                        const filestats = await readFileInfo(filename);
+                        newArt.img[j].exif = exif;
+                        newArt.img[j].stats = filestats;
+                    }
+                }
+
                 if (art.imageObject) {
                     newArt.imageObject = {
                         author: art.imageObject.author,
@@ -102,7 +169,7 @@ const main = async () => {
                         iso: art.imageObject.iso,
                     };
                 }
-                // console.log('newArt', newArt);
+                console.log('newArt', newArt);
                 await article.save(newArt);
 
                 // const keys = Object.keys(art);
@@ -115,7 +182,7 @@ const main = async () => {
                 // }
             }
             // console.log(articleKeys);
-            await myMongoose.close();
+            await article.close();
         })
         .catch(error => console.error(error));
 

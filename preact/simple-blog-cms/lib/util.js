@@ -52,7 +52,7 @@ class Utilities {
             });
         }
         const fetchOpt = {
-            credentials: 'same-origin',
+            credentials: 'omit',
             method: 'GET',
             mode: 'cors',
             cache: 'default',
@@ -68,7 +68,6 @@ class Utilities {
         }
         let qs = '';
         if (opts.method === 'POST' || opts.method === 'PUT' || opts.method === 'PATCH' || opts.method === 'DELETE') {
-            fetchOpt.credentials = 'include';
             fetchOpt.method = opts.method;
             delete opts.method;
             fetchOpt.body = JSON.stringify(opts);
@@ -84,6 +83,7 @@ class Utilities {
                 });
             }
         }
+        console.log('fetchOpt', fetchOpt);
         return fetch(`${main.props.apiServer}${endpoint}${qs ? `?${qs}` : ''}`, fetchOpt)
             .then((response) => {
                 if (typeof settings.skipSettingState === 'undefined' || settings.skipSettingState === false) {
@@ -179,6 +179,28 @@ class Utilities {
         return obj;
     }
 
+    static formatBytes($bytes, decimals) {
+        const bytes = parseInt($bytes, 10);
+        if (isNumber(bytes)) {
+            if (bytes === 0) {
+                return '0 Bytes';
+            }
+            const k = 1024;
+            const dm = decimals || 2;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return `${parseFloat((bytes / Math.pow(k, i)).toFixed(dm))} ${sizes[i]}`;
+        }
+        return '';
+    }
+
+    static htmlIdSafe($string) {
+        if (typeof $string === 'string') {
+            const string = $string.toLowerCase().replace(/[^a-z0-9]/gi, '-');
+            return string;
+        }
+        return $string;
+    }
 }
 
 module.exports = Utilities;
