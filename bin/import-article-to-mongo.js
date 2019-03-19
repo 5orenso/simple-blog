@@ -9,9 +9,9 @@ const fs = require('fs');
 const im = require('imagemagick');
 const path = require('path');
 const appPath = `${__dirname}/../`;
-const photoPath = path.normalize(`${appPath}/content/images/`);
 
-const config = require(process.argv[2] || '../config/config-dist.js');
+const config = require('../config/config-dist.js');
+const photoPath = config.adapter.markdown.photoPath;
 
 const oldArtUtil = new OldArticleUtil();
 const logger = new OldLogger();
