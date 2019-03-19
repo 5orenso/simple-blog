@@ -7,7 +7,7 @@ const article = new Article();
 const category = new Category();
 
 const main = async () => {
-    await myMongoose.init(config);
+    await myMongoose.connectGlobal(config);
     const artlist = await article.find();
 
     const catRef = {};
