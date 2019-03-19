@@ -14,6 +14,7 @@ export default class ArticleEdit extends Component {
         super(props);
         this.state = Object.assign({}, initialState);
         this.parent = props.that;
+        this.imageServer = this.parent.props.apiServer;
     }
 
     handleClickCode = (event) => {
@@ -41,7 +42,7 @@ export default class ArticleEdit extends Component {
         const images = article.img || [];
         const renderImages = images.slice(0, 1).map(img => {
             return (
-                <img src={`http://localhost:8080/pho/${img.src}?w=750`} alt='' title='' class='img-fluid' />
+                <img src={`${this.imageServer}/pho/${img.src}?w=750`} alt='' title='' class='img-fluid' />
             );
         });
 
@@ -150,7 +151,7 @@ export default class ArticleEdit extends Component {
                                         <button class='btn btn-danger btn-sm' data-image={idx} onClick={handleRemoveImageClick}>X</button>
                                     </div>
                                     <div class='d-flex w-100 justify-content-between'>
-                                        <p><img src={`http://localhost:8080/pho/${img.src}?w=150`} height='50' /></p>
+                                        <p><img src={`${this.imageServer}/pho/${img.src}?w=150`} height='50' /></p>
                                         <small>
                                             <button class='btn btn-sm m-2' onClick={this.handleClickCode} data-content={`![${img.text}](/pho/${img.src}?w=750)\n`}>
                                                 Markdown
