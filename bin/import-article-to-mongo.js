@@ -11,7 +11,7 @@ const path = require('path');
 const appPath = `${__dirname}/../`;
 const photoPath = path.normalize(`${appPath}/content/images/`);
 
-const config = require('../config/config-dist.js');
+const config = require(process.argv[2] || '../config/config-dist.js');
 
 const oldArtUtil = new OldArticleUtil();
 const logger = new OldLogger();
