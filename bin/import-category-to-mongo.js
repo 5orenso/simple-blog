@@ -1,4 +1,4 @@
-const config = require('../config/config-dist.js');
+const config = require(process.argv[2] || '../config/config-dist.js');
 const myMongoose = require('../lib/class/mongoose');
 const Article = require('../lib/class/article');
 const Category = require('../lib/class/category');
