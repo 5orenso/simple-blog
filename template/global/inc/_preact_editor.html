@@ -1,0 +1,20 @@
+
+{% if session.email %}
+<div class="container-fluid">
+    <div class="row">
+        <main class="col-sm-12 col-md-12 pt-3 blog-main">
+            User: {{ session.email }} (age: {{ session.age }} sec)<br>
+            <div data-widget="simpleBlogCms">
+                <script type="text/props">
+                    {
+                        "apiServer": "{{ blog.protocol }}://{{ blog.domain }}",
+                        "jwtToken": "{{ jwtToken }}",
+                        "articleId": "{{ article.id }}"
+                    }
+                </script>
+            </div>
+            <script async src="/preact/simple-blog-cms/bundle.js"></script>
+        </main>
+    </div>
+</div>
+{% endif %}

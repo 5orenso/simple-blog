@@ -85,7 +85,12 @@ export default class ImageUpload extends Component {
         uploadedFilesData[file.name].uploadDone = file.newFilename;
         this.setState({ uploadedFilesData });
 
-        this.handleAddImage(file);
+        this.handleAddImage(file, () => {
+            this.setState({
+                uploadedFiles: [],
+                uploadedFilesData: {},
+            });
+        });
     }
 
     render(props) {

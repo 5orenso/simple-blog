@@ -63,14 +63,26 @@ function convertDMSToDD(degrees, minutes, seconds, direction) {
 
 function readExif(file) {
     return new Promise((resolve, reject) => {
+        const fractionKeys = ['exposureTime'];
         im.readMetadata(file, (err, metadata) => {
-            if (err) reject(err);
-            // console.log('Shot at ' + metadata.exif.dateTimeOriginal);
-            // console.log('meta', metadata);
-            // console.log('exif done');
-
-            // gpsLatitude: "70/1, 8/1, 3183/100"
-            // ​gpsLatitudeRef: "N"
+            if (err) {
+                return reject(err);
+            }
+            if (typeof metadata.exif === 'object') {
+                const keys = Object.keys(metadata.exif);
+                for (let i = 0, l = keys.length; i < l; i += 1) {
+                    const key = keys[i];
+                    const val = metadata.exif[key];
+                    if (typeof val === 'string') {
+                        if (val.match(/^\d+\/\d+$/)) {
+                            metadata.exif[key] = eval(val);
+                        }
+                        if (fractionKeys.indexOf(key) != -1) {
+                            metadata.exif[key] = `1/${Math.round(1 / metadata.exif[key])}`;
+                        }
+                    }
+                }
+            }
 
             if (metadata.exif && metadata.exif.gpsLatitude) {
                 const latParts = metadata.exif.gpsLatitude.split(/, /).map(val => eval(val));
@@ -83,7 +95,7 @@ function readExif(file) {
                 metadata.exif.lng = convertDMSToDD(lngParts[0], lngParts[1], lngParts[2],
                     metadata.exif.gpsLongitudeRef);
             }
-            resolve(metadata.exif);
+            return resolve(metadata.exif);
         });
     });
 }
@@ -107,6 +119,7 @@ const main = async () => {
             for (let i = 0, l = list.length; i < l; i += 1) {
                 const art = list[i];
                 const newArt = {
+                    status: 2,
                     filename: art.file,
                     author: art.author,
                     published: parseDate(art.published || '2000-01-01 00:00:00'),

@@ -15,6 +15,7 @@ module.exports = {
         apiKey: 'Your Sendgrid API key which should be kept secret.',
     },
     blog: {
+        version: 2,
         title: 'Simple Blog Server',
         description: 'Her skriver jeg om det jeg bruker tiden min på. Ekspedisjoner i alle størrelser, foto, hundekjøring, datafikling og mye annet.',
         disqus: 'sorenso',

@@ -24,6 +24,10 @@ const templatePath = path.normalize(`${appPath}template/current/`);
 const photoPath = path.normalize(`${appPath}content/images/`);
 
 module.exports = (req, res) => {
+    if (req.config.blog.version === 2) {
+        return res.redirect(`/v2${req.originalUrl}`);
+    }
+
     const article = new Article({
         logger,
         photoPath,

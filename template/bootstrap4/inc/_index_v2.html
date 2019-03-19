@@ -46,11 +46,11 @@
         <div class="jumbotron">
             <div class="container">
                 {% if art.img[0] %}
-                    <a href="{{ art.baseHref }}{{ art.title|lower|url_encode }}/{{ art.id }}"><img src="/pho/{{ art.img[0].src }}?w=1014" alt="{{ art.title|e }}" class="img-fluid"></a>
+                    <a href="/v2/{{ art.category|url_encode }}/{{ art.title|lower|url_encode }}/{{ art.id }}"><img src="/pho/{{ art.img[0].src }}?w=1014" alt="{{ art.title|e }}" class="img-fluid"></a>
                 {% endif %}
-                <h1 class="display-3"><a href="{{ art.baseHref }}{{ art.title|lower|url_encode }}/{{ art.id }}">{{ art.title }}</a></h1>
+                <h1 class="display-3"><a href="/v2/{{ art.category|url_encode }}/{{ art.title|lower|url_encode }}/{{ art.id }}">{{ art.title }}</a></h1>
                 <p>{{ art.teaser|raw }}</p>
-                <p><a class="btn btn-primary btn-lg" href="{{ art.baseHref }}{{ art.title|lower|url_encode }}/{{ art.id }}" role="button">Les mer &raquo;</a></p>
+                <p><a class="btn btn-primary btn-lg" href="/v2/{{ art.category|url_encode }}/{{ art.title|lower|url_encode }}/{{ art.id }}" role="button">Les mer &raquo;</a></p>
             </div>
         </div>
     {% endif %}
@@ -70,10 +70,10 @@
                                 <div class="col-sm-6 col-lg-4">
                                     <div class="post-thumb">
                                         {% if art.img[0] %}
-                                            <a href="{{ art.baseHref }}{{ art.title|lower|url_encode }}/{{ art.id }}"><img src="/pho/{{ art.img[0].src }}?w=800" alt="{{ art.title|e }}" class="img-fluid"></a>
+                                            <a href="/v2/{{ art.category|url_encode }}/{{ art.title|lower|url_encode }}/{{ art.id }}"><img src="/pho/{{ art.img[0].src }}?w=800" alt="{{ art.title|e }}" class="img-fluid"></a>
                                         {% else %}
                                             <div class="entry-quote-post-format">
-                                                <a href="{{ art.baseHref }}{{ art.title|lower|url_encode }}/{{ art.id }}">
+                                                <a href="/v2/{{ art.category|url_encode }}/{{ art.title|lower|url_encode }}/{{ art.id }}">
                                                     <blockquote>
                                                         <p><i class="fa fa-quote-left"></i>
                                                             {% if art.quote %}
@@ -91,12 +91,12 @@
                                     </div>
                                     <div class="post-content">
                                         {% if 1 == 2 %}
-                                            <a href="{{ art.baseHref }}{{ art.title|lower|url_encode }}/{{ art.id }}" class="post-cat">{{ art.baseHref }}</a>
+                                            <a href="/v2/{{ art.category|url_encode }}/{{ art.title|lower|url_encode }}/{{ art.id }}" class="post-cat">{{ art.baseHref }}</a>
                                         {% endif %}
-                                        <h3><a href="{{ art.baseHref }}{{ art.title|lower|url_encode }}/{{ art.id }}">{{ art.title }}</a></h3>
+                                        <h3><a href="/v2/{{ art.category|url_encode }}/{{ art.title|lower|url_encode }}/{{ art.id }}">{{ art.title }}</a></h3>
                                         <h5>{{ art.teaser|raw }}</h5>
                                         <!-- <p class="lead">{{ art.body|substring(0, 150)|markdown|cleanHtml }}...</p> -->
-                                        <a href="{{ art.baseHref }}{{ art.title|lower|url_encode }}/{{ art.id }}" class="btn btn-secondary" role="button">Les mer &raquo;</a>
+                                        <a href="/v2/{{ art.category|url_encode }}/{{ art.title|lower|url_encode }}/{{ art.id }}" class="btn btn-secondary" role="button">Les mer &raquo;</a>
 
                                     </div>
                                 </div>

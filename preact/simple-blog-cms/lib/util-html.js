@@ -124,6 +124,16 @@ function htmlUtilities() {
                     }
                 }
                 return result;
+            } else if (typeof p2 !== 'undefined') {
+                const command = p2.trim();
+                let result = util.getString(article, p1.split('.')) || '';
+                if (command === 'size') {
+                    result = util.formatBytes(result, 2);
+                } else if (command === 'date') {
+                    result = util.isoDateNormalized(result);
+                }
+
+                return result;
             }
             return util.getString(article, p1.split('.')) || '';
         }

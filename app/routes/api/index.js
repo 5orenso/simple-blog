@@ -14,8 +14,13 @@ router.use(cors({
 
 router.get('/article/', wrap(require('./get-article.js')));
 router.get('/article/:id', wrap(require('./get-article.js')));
-
 router.patch('/article/:id', util.restrict, wrap(require('./patch-article.js')));
+router.post('/article/', util.restrict, wrap(require('./post-article.js')));
+
+router.get('/category/', wrap(require('./get-category.js')));
+router.get('/category/:id', wrap(require('./get-category.js')));
+router.patch('/category/:id', util.restrict, wrap(require('./patch-category.js')));
+
 router.post('/fileupload/', util.restrict, wrap(require('./post-fileupload.js')));
 
 module.exports = router;

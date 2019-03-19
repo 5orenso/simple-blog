@@ -7,34 +7,30 @@
 'use strict';
 
 const { routeName, routePath, run, webUtil, utilHtml } = require('../../middleware/init')({ __filename, __dirname });
-const Article = require('../../../lib/class/article');
+const Category = require('../../../lib/class/category');
 
 const fields = {
     id: 1,
-    status: 1,
-    published: 1,
-    author: 1,
-    category: 1,
+    createdDate: 1,
     title: 1,
-    teaser: 1,
-    body: 1,
-    img: 1,
-    tags: 1,
-    youtube: 1,
-    imageObject: 1,
+    url: 1,
+    header: 1,
+    headerDetail: 1,
+    footer: 1,
+    footerDetail: 1,
 };
 
 module.exports = async (req, res) => {
     const { hrstart, runId }  = run(req);
 
-    const art = new Article();
+    const cat = new Category();
 
     let query = {
         id: req.params.id,
     };
     if (!req.params.id && req.query.category) {
         query = {
-            category: req.query.category,
+            title: req.query.category,
         };
     }
     query = webUtil.cleanObject(query);
@@ -45,12 +41,12 @@ module.exports = async (req, res) => {
     let total;
     let data = {};
     if (query.id) {
-        apiContent = await art.findOne(query, fields);
-        data.article = apiContent;
+        apiContent = await cat.findOne(query, fields);
+        data.category = apiContent;
     } else {
-        apiContent = await art.find(query, fields, { limit, skip });
-        data.artlist = apiContent;
-        total = await art.count(query);
+        apiContent = await cat.find(query, fields, { limit, skip });
+        data.catlist = apiContent;
+        total = await cat.count(query);
         data.total = total;
     }
 

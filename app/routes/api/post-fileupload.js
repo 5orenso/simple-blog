@@ -33,8 +33,27 @@ function convertDMSToDD(degrees, minutes, seconds, direction) {
 
 function readExif(file) {
     return new Promise((resolve, reject) => {
+        const fractionKeys = ['exposureTime'];
         im.readMetadata(file, (err, metadata) => {
-            if (err) reject(err);
+            if (err) {
+                return reject(err);
+            }
+
+            if (typeof metadata.exif === 'object') {
+                const keys = Object.keys(metadata.exif);
+                for (let i = 0, l = keys.length; i < l; i += 1) {
+                    const key = keys[i];
+                    const val = metadata.exif[key];
+                    if (typeof val === 'string') {
+                        if (val.match(/^\d+\/\d+$/)) {
+                            metadata.exif[key] = eval(val);
+                        }
+                        if (fractionKeys.indexOf(key) != -1) {
+                            metadata.exif[key] = `1/${Math.round(1 / metadata.exif[key])}`;
+                        }
+                    }
+                }
+            }
             if (metadata.exif && metadata.exif.gpsLatitude) {
                 // gpsLatitude: "70/1, 8/1, 3183/100"
                 // ​gpsLatitudeRef: "N"
@@ -48,7 +67,7 @@ function readExif(file) {
                 metadata.exif.lng = convertDMSToDD(lngParts[0], lngParts[1], lngParts[2],
                     metadata.exif.gpsLongitudeRef);
             }
-            resolve(metadata.exif);
+            return resolve(metadata.exif);
         });
     });
 }

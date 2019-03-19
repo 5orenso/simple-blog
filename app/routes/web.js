@@ -86,6 +86,8 @@ webRouter.get('/keybase.txt', (req, res) => {
 webRouter.use('/photos/', localUtil.setCacheHeaders);
 webRouter.use('/service-worker.js', express.static(`${appPath}template/global/js/service-worker.js`));
 
+webRouter.use('/preact/simple-blog-cms/', express.static(`${appPath}preact/simple-blog-cms/build/`));
+
 webRouter.post('/push-register', require('./post-push-register.js'));
 webRouter.post('/push-error', require('./post-push-error.js'));
 webRouter.get('/push-send', require('./get-push-send.js'));
@@ -105,6 +107,8 @@ webRouter.post('/ajax/savefile', util.restrict, require('./post-savefile.js'));
 
 webRouter.get('/ajax/fileupload', util.restrict, require('./post-fileupload.js'));
 webRouter.post('/ajax/fileupload', util.restrict, require('./post-fileupload.js'));
+
+webRouter.get('/admin', util.restrict, require('./get-admin.js'));
 
 // Main route for blog articles.
 webRouter.use('/*', localUtil.setNoCacheHeaders);

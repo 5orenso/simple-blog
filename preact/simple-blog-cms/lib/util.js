@@ -23,22 +23,49 @@ function isNumber(number) {
 
 class Utilities {
     static isoDate(dateString) {
-        if (typeof dateString === 'string') {
-            if (dateString.match(/\d{4}-\d{2}-\d{2}/)) {
-                // "d.m.y"
-                const availDate = new Date(dateString);
-                const mm = availDate.getMonth() + 1;
-                const dd = availDate.getDate();
-                const yy = availDate.getFullYear();
-                const hh = availDate.getHours();
-                const mi = availDate.getMinutes();
-                const ss = availDate.getSeconds();
-                const tzo = -availDate.getTimezoneOffset();
-                const dif = tzo >= 0 ? '+' : '-';
+        let availDate;
+        if (typeof dateString === 'string' && dateString.match(/\d{4}-\d{2}-\d{2}/)) {
+            availDate = new Date(dateString);
+        } else if (typeof dateString === 'number') {
+            availDate = new Date(0); // The 0 there is the key, which sets the date to the epoch
+            availDate.setUTCSeconds(dateString);
+        }
 
-                return `${pad(yy)}-${pad(mm)}-${pad(dd)}T`
-                    + `${pad(hh)}:${pad(mi)}:${pad(ss)}${dif}${pad(tzo / 60)}:${pad(tzo % 60)}`;
-            }
+        if (availDate) {
+            const mm = availDate.getMonth() + 1;
+            const dd = availDate.getDate();
+            const yy = availDate.getFullYear();
+            const hh = availDate.getHours();
+            const mi = availDate.getMinutes();
+            const ss = availDate.getSeconds();
+            const tzo = -availDate.getTimezoneOffset();
+            const dif = tzo >= 0 ? '+' : '-';
+            return `${pad(yy)}-${pad(mm)}-${pad(dd)}T`
+                + `${pad(hh)}:${pad(mi)}:${pad(ss)}${dif}${pad(tzo / 60)}:${pad(tzo % 60)}`;
+        }
+        return dateString;
+    }
+
+    static isoDateNormalized(dateString) {
+        let availDate;
+        if (typeof dateString === 'string' && dateString.match(/\d{4}-\d{2}-\d{2}/)) {
+            availDate = new Date(dateString);
+        } else if (typeof dateString === 'number') {
+            availDate = new Date(0); // The 0 there is the key, which sets the date to the epoch
+            availDate.setUTCSeconds(dateString);
+        }
+
+        if (availDate) {
+            const mm = availDate.getMonth() + 1;
+            const dd = availDate.getDate();
+            const yy = availDate.getFullYear();
+            const hh = availDate.getHours();
+            const mi = availDate.getMinutes();
+            const ss = availDate.getSeconds();
+            const tzo = -availDate.getTimezoneOffset();
+            const dif = tzo >= 0 ? '+' : '-';
+            return `${pad(yy)}-${pad(mm)}-${pad(dd)} `
+                + `${pad(hh)}:${pad(mi)}`;
         }
         return dateString;
     }
@@ -83,7 +110,7 @@ class Utilities {
                 });
             }
         }
-        console.log('fetchOpt', fetchOpt);
+        // console.log('fetchOpt', fetchOpt);
         return fetch(`${main.props.apiServer}${endpoint}${qs ? `?${qs}` : ''}`, fetchOpt)
             .then((response) => {
                 if (typeof settings.skipSettingState === 'undefined' || settings.skipSettingState === false) {
@@ -200,6 +227,28 @@ class Utilities {
             return string;
         }
         return $string;
+    }
+
+    static getStatus(status) {
+        if (status === 1) {
+            return 'in progress';
+        } else if (status === 2) {
+            return 'live';
+        } else if (status === 3) {
+            return 'offline';
+        }
+        return 'unknown';
+    }
+
+    static getStatusClass(status) {
+        if (status === 1) {
+            return 'secondary';
+        } else if (status === 2) {
+            return 'success';
+        } else if (status === 3) {
+            return 'danger';
+        }
+        return '';
     }
 }
 
