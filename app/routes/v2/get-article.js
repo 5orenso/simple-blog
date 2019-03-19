@@ -34,10 +34,13 @@ module.exports = async (req, res) => {
     if (req.params.category) {
         queryList.category = req.params.category;
     }
+    const page = parseInt(req.query.page, 10);
+    const limit = parseInt(req.query.limit || 10, 10);
+    const skip = parseInt((page - 1) * limit || 0, 10);
 
     const article = await art.findOne(query);
-    const artlist = await art.find(queryList);
-    const artlistTotal = artlist.length;
+    const artlist = await art.find(queryList, {}, { limit, skip });
+    const artlistTotal = await art.count(queryList);
 
     const category = await cat.findOne({ title: req.params.category });
     const catlist = await cat.find();
@@ -52,5 +55,8 @@ module.exports = async (req, res) => {
         artlistTotal,
         category,
         catlist,
+        limit,
+        page,
+        skip,
     }, { runId, routePath, routeName, hrstart, useTemplate: template });
 };
