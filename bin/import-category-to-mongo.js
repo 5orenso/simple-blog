@@ -3,11 +3,12 @@ const myMongoose = require('../lib/class/mongoose');
 const Article = require('../lib/class/article');
 const Category = require('../lib/class/category');
 
-const article = new Article();
-const category = new Category();
 
 const main = async () => {
     await myMongoose.connectGlobal(config);
+    const article = new Article();
+    const category = new Category();
+
     const artlist = await article.find();
 
     const catRef = {};
