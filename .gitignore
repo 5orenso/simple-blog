@@ -57,5 +57,4 @@ preact/npm-debug.log
 # nyc / coverage
 .nyc_output/
 
-preact/**/build
 preact/**/src/index.ejs
