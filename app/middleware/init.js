@@ -4,7 +4,7 @@ const uuidv4 = require('uuid/v4');
 const path = require('path');
 const webUtil = require('../../lib/web-util');
 const utilHtml = require('../../lib/util-html');
-const util = require('../../lib/Utilities');
+const util = require('../../lib/utilities');
 const appPath = path.normalize(`${__dirname}/../../`);
 
 module.exports = (opt) => {
