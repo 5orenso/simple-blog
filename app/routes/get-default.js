@@ -8,8 +8,8 @@
 'use strict';
 
 const _ = require('underscore');
-const swig = require('../../lib/swig');
 const path = require('path');
+const swig = require('../../lib/swig');
 const Category = require('../../lib/category');
 const Article = require('../../lib/article');
 const ArticleUtil = require('../../lib/article-util');
@@ -24,6 +24,10 @@ const templatePath = path.normalize(`${appPath}template/current/`);
 const photoPath = path.normalize(`${appPath}content/images/`);
 
 module.exports = (req, res) => {
+    if (req.config.blog.version === 2) {
+        return res.redirect(`/v2${req.originalUrl}`);
+    }
+
     const article = new Article({
         logger,
         photoPath,
@@ -65,7 +69,7 @@ module.exports = (req, res) => {
         const articlePath = articleUtil.getArticlePathRelative(requestUrl);
 
         const absoluteContentPath = path.normalize(req.config.adapter.markdown.contentPath + articlePath);
-        const footerFilePromise = webUtil.loadFile(absoluteContentPath + '_footer.html')
+        const footerFilePromise = webUtil.loadFile(`${absoluteContentPath}_footer.html`)
             .then((result) => {
                 footerFileContent = result;
             })

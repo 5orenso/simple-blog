@@ -7,6 +7,7 @@
 
 'use strict';
 
+const MongooseHelper = require('../lib/class/mongoose');
 const _ = require('underscore');
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -17,9 +18,7 @@ const fileUpload = require('express-fileupload');
 const Logger = require('../lib/logger');
 const LocalUtil = require('../lib/local-util');
 
-const logger = new Logger({
-    workerId: 1, // cluster.worker.id
-});
+const logger = new Logger();
 const localUtil = new LocalUtil();
 const cookieMaxAgeSession = (30 * 86400 * 1000);
 
@@ -32,6 +31,7 @@ commander
 // eslint-disable-next-line
 const config = require(commander.config);
 if (config) {
+    MongooseHelper.connectGlobal(config);
     if (_.isObject(config) && _.isObject(config.log)) {
         logger.set('log', config.log);
     }
@@ -61,31 +61,22 @@ app.use(fileUpload());
 // Include route handlers ------------------------
 const rssRouter = require('./routes/rss');
 
-rssRouter.setConfig(config, {
-    workerId: 1, // cluster.worker.id,
-});
+rssRouter.setConfig(config);
 const apiRouter = require('./routes/api');
 
-apiRouter.setConfig(config, {
-    workerId: 1, // cluster.worker.id,
-});
+apiRouter.setConfig(config);
 const webRouter = require('./routes/web');
 
-webRouter.setConfig(config, {
-    workerId: 1, // cluster.worker.id,
-});
+webRouter.setConfig(config);
 const imageRouter = require('./routes/image');
 
 imageRouter.setConfig(config, {
-    workerId: 1, // cluster.worker.id,
     photoPath: config.adapter.markdown.photoPath,
     photoCachePath: config.adapter.markdown.photoCachePath,
 });
 const searchRouter = require('./routes/search');
 
-searchRouter.setConfig(config, {
-    workerId: 1, // cluster.worker.id,
-});
+searchRouter.setConfig(config);
 
 // Register routes -------------------------------
 app.use('/api', apiRouter);
@@ -97,6 +88,20 @@ app.use('/pho/', imageRouter);
 app.use('/search/', searchRouter);
 
 app.use('/', webRouter);
+
+app.use((error, req, res, next) => {
+    const message = {};
+    if (process.env.nodeEnv === 'development') {
+        message.name = error.name;
+        message.message = error.message;
+        message.stack = error.stack;
+    } else {
+        message.name = error.name;
+        message.message = error.message;
+    }
+
+    res.json({ message });
+});
 
 // Start the server ------------------------------
 const server = app.listen(config.app.port, () => {

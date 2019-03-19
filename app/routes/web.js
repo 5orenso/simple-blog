@@ -15,6 +15,7 @@ const path = require('path');
 const Logger = require('../../lib/logger');
 const ArticleUtil = require('../../lib/article-util');
 const LocalUtil = require('../../lib/local-util');
+const util = require('../../lib/utilities');
 
 const logger = new Logger();
 const articleUtil = new ArticleUtil();
@@ -53,6 +54,9 @@ webRouter.use(morgan('combined', { stream: accessLogStream }));
 webRouter.use(setConfig);
 webRouter.use(require('../../lib/jwt'));
 
+webRouter.use('/v2/', require('./v2/'));
+webRouter.use('/api/', require('./api/'));
+
 // Setup static routes
 webRouter.use('/global/', localUtil.setCacheHeaders);
 webRouter.use('/global/', express.static(`${appPath}template/global/`));
@@ -82,6 +86,8 @@ webRouter.get('/keybase.txt', (req, res) => {
 webRouter.use('/photos/', localUtil.setCacheHeaders);
 webRouter.use('/service-worker.js', express.static(`${appPath}template/global/js/service-worker.js`));
 
+webRouter.use('/preact/simple-blog-cms/', express.static(`${appPath}preact/simple-blog-cms/build/`));
+
 webRouter.post('/push-register', require('./post-push-register.js'));
 webRouter.post('/push-error', require('./post-push-error.js'));
 webRouter.get('/push-send', require('./get-push-send.js'));
@@ -96,12 +102,13 @@ webRouter.get('/photos/*', (req, res) => {
 webRouter.get('/send-magic-link', require('./send-magic-link.js'));
 webRouter.get('/verify-magic-link', require('./verify-magic-link.js'));
 
-// webRouter.post('/ajax/fileupload', webUtil.restrict, require('./post-fileupload.js'));
-webRouter.get('/ajax/savefile', require('./post-savefile.js'));
-webRouter.post('/ajax/savefile', require('./post-savefile.js'));
+webRouter.get('/ajax/savefile', util.restrict, require('./post-savefile.js'));
+webRouter.post('/ajax/savefile', util.restrict, require('./post-savefile.js'));
 
-webRouter.get('/ajax/fileupload', require('./post-fileupload.js'));
-webRouter.post('/ajax/fileupload', require('./post-fileupload.js'));
+webRouter.get('/ajax/fileupload', util.restrict, require('./post-fileupload.js'));
+webRouter.post('/ajax/fileupload', util.restrict, require('./post-fileupload.js'));
+
+webRouter.get('/admin', util.restrict, require('./get-admin.js'));
 
 // Main route for blog articles.
 webRouter.use('/*', localUtil.setNoCacheHeaders);

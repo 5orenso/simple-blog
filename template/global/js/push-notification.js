@@ -26,9 +26,7 @@ function askPermission() {
 function sendErrorToBackend(error) {
     return fetch('/push-error', {
         method: 'post',
-        headers: {
-            'Content-type': 'application/json',
-        },
+        headers: { 'Content-type': 'application/json' },
         body: JSON.stringify({
             // eslint-disable-next-line
             error: error.name,
@@ -63,9 +61,7 @@ function sendSubscriptionToBackEnd(subscription) {
     // Send the subscription details to the server using the Fetch API.
     return fetch('/push-register', {
         method: 'post',
-        headers: {
-            'Content-type': 'application/json',
-        },
+        headers: { 'Content-type': 'application/json' },
         body: JSON.stringify({
             // eslint-disable-next-line
             endpoint,
@@ -100,13 +96,11 @@ function subscribeUserToPush() {
                     console.log('[push]  pushManager.getSubscription.subscription:', subscription);
                     return resolve(subscription);
                 }
-                console.log('[push]  pushManager.getSubscription: No subscription found. ' +
-                    'Asking for permission.');
+                console.log('[push]  pushManager.getSubscription: No subscription found. '
+                    + 'Asking for permission.');
                 return askPermission()
                     .then(() => {
-                        const subscribeOptions = {
-                            userVisibleOnly: true,
-                        };
+                        const subscribeOptions = { userVisibleOnly: true };
                         console.log(`[push] pushManager.subscribe(${JSON.stringify(subscribeOptions)})`);
                         return serviceWorkerRegistration.pushManager.subscribe(subscribeOptions);
                     })

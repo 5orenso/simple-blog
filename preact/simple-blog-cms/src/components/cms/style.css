@@ -1,0 +1,21 @@
+.progress {
+    height: 1px;
+    -webkit-transition: all 1.5s ease;
+    -moz-transition: all 1.5s ease;
+    transition: all 1.5s ease;
+}
+.progressBar {
+    height: 1px;
+    -webkit-transition: width 1.0s ease;
+    -moz-transition: width 1.0s ease;
+    transition: width 1.0s ease;
+}
+
+.condensed {
+    font-size: .8rem;
+}
+
+.textareaAutoHeight {
+    height: 200px;
+    overflow-y: hidden;
+}

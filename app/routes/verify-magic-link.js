@@ -8,7 +8,6 @@ module.exports = (req, res) => {
     const hrstart = process.hrtime();
     webUtil.printIfDev(`Route: ${routePath}/${routeName}`, req.query, req.param);
 
-    console.log('req.user', req.user);
     req.session.email = req.user.email;
     req.session.iat = req.user.iat;
 
@@ -16,8 +15,8 @@ module.exports = (req, res) => {
         article: {
             title: 'Magic link verified',
             teaser: 'Abra Kadabra!',
-            body: 'You are now logged in and able to do cools stuff inside your blog.\n' +
-                '<a href="/">Jump to the frontpage</a> to get started.',
+            body: 'You are now logged in and able to do cools stuff inside your blog.\n'
+                + '<a href="/">Jump to the frontpage</a> to get started.',
         },
         blog: req.config.blog,
     }, {

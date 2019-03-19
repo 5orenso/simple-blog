@@ -1,0 +1,139 @@
+{% set isPhoto = false %}
+{% if file.path|match('photo') || file.path|match('film') %}
+    {% set isPhoto = true %}
+{% endif %}
+{% set baseHref = file.path|replace('/', '', 'g') %}
+{% set limit = 18 %}
+{% set page = parseInt(query.page) %}
+{% if !page %}
+    {% set page = 1 %}
+{% endif %}
+{% set pageStart = page - 1 %}
+{% set pageStart = pageStart * limit %}
+
+{% if baseHref && !cateogry.header %}
+    <div class="blog-header">
+        <div class="container">
+            <h1 class="blog-title">{{ baseHref }}</h1>
+            <p class="lead blog-description">{% if blog.category[baseHref] %}{{ blog.category[baseHref]|raw }}{% endif %}</p>
+        </div>
+    </div>
+{% endif %}
+
+{{ cateogry.header|safe }}
+
+{% if query.q %}
+    <div class="container">
+        <div class="row">
+            <main class="col-sm-12 col-md-12 blog-main-full">
+                <code>
+                    {{ searchMeta.total || 0 }}
+                    {{ blog.searchResults || "blog posts related to" }} "{{ query.q|striptags|e('html') }}":
+                </code>
+            </main>
+        </div>
+    </div>
+{% endif %}
+
+{% if isPhoto %}
+    <div class="container-fluid">
+        <div class="row">
+            <main class="col-sm-12 col-md-12 pt-3">
+{% else %}
+
+    {% if !query.q %}
+        {% set art = artlist[0] %}
+        <div class="jumbotron">
+            <div class="container">
+                {% if art.img[0] %}
+                    <a href="/v2/{{ art.category|url_encode }}/{{ art.title|lower|url_encode }}/{{ art.id }}"><img src="/pho/{{ art.img[0].src }}?w=1014" alt="{{ art.title|e }}" class="img-fluid"></a>
+                {% endif %}
+                <h1 class="display-3"><a href="/v2/{{ art.category|url_encode }}/{{ art.title|lower|url_encode }}/{{ art.id }}">{{ art.title }}</a></h1>
+                <p>{{ art.teaser|raw }}</p>
+                <p><a class="btn btn-primary btn-lg" href="/v2/{{ art.category|url_encode }}/{{ art.title|lower|url_encode }}/{{ art.id }}" role="button">Les mer &raquo;</a></p>
+            </div>
+        </div>
+    {% endif %}
+
+    <div class="container">
+        <div class="row">
+            <main class="col-sm-12 col-md-12 pt-3 blog-main">
+{% endif %}
+
+
+                <div class="row">
+                    {% for art in artlist %}
+                        {% if loop.index > pageStart && loop.index <= limit * page %}
+                            {% if loop.index === 1 && !query.q %}
+
+                            {% else %}
+                                <div class="col-sm-6 col-lg-4">
+                                    <div class="post-thumb">
+                                        {% if art.img[0] %}
+                                            <a href="/v2/{{ art.category|url_encode }}/{{ art.title|lower|url_encode }}/{{ art.id }}"><img src="/pho/{{ art.img[0].src }}?w=800" alt="{{ art.title|e }}" class="img-fluid"></a>
+                                        {% else %}
+                                            <div class="entry-quote-post-format">
+                                                <a href="/v2/{{ art.category|url_encode }}/{{ art.title|lower|url_encode }}/{{ art.id }}">
+                                                    <blockquote>
+                                                        <p><i class="fa fa-quote-left"></i>
+                                                            {% if art.quote %}
+                                                                {{ art.quote|striptags }}
+                                                            {% elseif art.teaser %}
+                                                                {{ art.teaser|striptags }}
+                                                            {% elseif art.title %}
+                                                                {{ art.title|striptags }}
+                                                            {% endif %}</p>
+                                                        <h3>{{ art.quoteBy }}</h3>
+                                                    </blockquote>
+                                                </a>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="post-content">
+                                        {% if 1 == 2 %}
+                                            <a href="/v2/{{ art.category|url_encode }}/{{ art.title|lower|url_encode }}/{{ art.id }}" class="post-cat">{{ art.baseHref }}</a>
+                                        {% endif %}
+                                        <h3><a href="/v2/{{ art.category|url_encode }}/{{ art.title|lower|url_encode }}/{{ art.id }}">{{ art.title }}</a></h3>
+                                        <h5>{{ art.teaser|raw }}</h5>
+                                        <!-- <p class="lead">{{ art.body|substring(0, 150)|markdown|cleanHtml }}...</p> -->
+                                        <a href="/v2/{{ art.category|url_encode }}/{{ art.title|lower|url_encode }}/{{ art.id }}" class="btn btn-secondary" role="button">Les mer &raquo;</a>
+
+                                    </div>
+                                </div>
+                            {% endif %}
+
+                        {% endif %}
+                    {% endfor %}
+                </div>
+
+                <div class="post-pagination  clearfix">
+                    <ul class="pagination text-left">
+                        {% set pages = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20] %}
+                        {% set total = artlistTotal %}
+                        {% if total > 1 %}
+                            {% if page > 1 %}
+                                <li><a href="{{ file.path }}?page={{ page - 1 }}"><i class="fa fa-angle-double-left"></i></a></li>
+                            {% endif %}
+
+                            {% for p in pages %}
+                                {% set sp = p - 1 %}
+                                {% set s = sp * limit %}
+                                {% set s = s + 1 %}
+                                {% set e = p * limit %}
+                                {% if s <= total %}
+                                    <li class="{% if p == page %}active{% endif %}"><a href="{{ file.path }}?page={{ p }}" title="{{ s }}-{{ e }}">{{ p }}</a></li>
+                                {% endif %}
+                            {% endfor %}
+
+                            {% set end = page * limit %}
+                            {% set nextPage = page + 1 %}
+                            {% if total >= end %}
+                                <li><a href="{{ file.path }}?page={{ nextPage }}"><i class="fa fa-angle-double-right"></i></a></li>
+                            {% endif %}
+                        {% endif %}
+                    </ul>
+                </div>
+
+            </main>
+        </div>
+    </div>

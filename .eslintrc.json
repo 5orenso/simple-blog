@@ -1,6 +1,7 @@
 {
     "env": {
-        "node": true
+        "node": true,
+        "jest": true
     },
     "extends": "airbnb-base",
     "plugins": [
@@ -21,6 +22,14 @@
                 "object": false
             }, {
                 "enforceForRenamedProperties": false
+            }
+        ],
+        "object-curly-newline": [
+            "error", {
+                "ObjectExpression": { "multiline": true, "consistent": false, "minProperties": 6 },
+                "ObjectPattern": { "multiline": true, "consistent": false, "minProperties": 6 },
+                "ImportDeclaration": { "multiline": true, "consistent": false, "minProperties": 6 },
+                "ExportDeclaration": { "multiline": true, "consistent": false, "minProperties": 6 }
             }
         ]
     }
