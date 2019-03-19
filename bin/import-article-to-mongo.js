@@ -10,7 +10,7 @@ const im = require('imagemagick');
 const path = require('path');
 const appPath = `${__dirname}/../`;
 
-const config = require('../config/config-dist.js');
+const config = require(process.argv[2] || '../config/config-dist.js');
 const photoPath = config.adapter.markdown.photoPath;
 
 const oldArtUtil = new OldArticleUtil();
