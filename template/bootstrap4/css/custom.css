@@ -220,7 +220,7 @@ html {
 /* Medium devices (tablets, 768px and up) */
 @media (min-width: 768px) {
     html {
-      font-size: 1.2rem;
+      font-size: 1.1rem;
     }
     .display-3 {
         font-size: 3.0rem;
@@ -229,7 +229,7 @@ html {
 /* Large devices (desktops, 992px and up) */
 @media (min-width: 992px) {
     html {
-      font-size: 1.4rem;
+      font-size: 1.2rem;
     }
     .display-3 {
         font-size: 3.5rem;
@@ -238,7 +238,7 @@ html {
 /* Extra large devices (large desktops, 1200px and up) */
 @media (min-width: 1200px) {
     html {
-      font-size: 1.4rem;
+      font-size: 1.2rem;
     }
     .display-3 {
         font-size: 4rem;
