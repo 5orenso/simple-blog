@@ -63,21 +63,6 @@
                     <a href="{{ article.baseHref }}" class="post-cat">{{ baseHref }}</a>
                 </p>
 
-                {% if article.img[1] %}
-                    {% set imgs = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20] %}
-                    {% for i in imgs %}
-                        {% if (article.img[i]) %}
-                            <span class="float-right img-thumbnail rounded">
-                                <a href="/pho/{{ article.img[i].src }}?w=1800" data-smoothzoom="group1" title="{{ (article.imgText[i] || article.title)|e('html') }}" class="inline-images">
-                                    <img src="/pho/{{ article.img[i].src }}?w=300" alt="{{ (article.imgText[i] || article.title)|e('html') }}" title="{{ (article.imgText[i] || article.title)|e('html') }}" class="img-fluid">
-                                </a><br>
-                                {% if article.imgText[i] %}{{ article.imgText[i] }}{% endif %}
-                            </span>
-                        {% endif %}
-                    {% endfor %}
-                {% endif %}
-
-
                 {% if article.ingress %}
                     <div class="lead">
                         {% if isPhoto %}
