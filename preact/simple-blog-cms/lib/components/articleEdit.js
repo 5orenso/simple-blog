@@ -151,7 +151,7 @@ export default class ArticleEdit extends Component {
                                         <button class='btn btn-danger btn-sm' data-image={idx} onClick={handleRemoveImageClick}>X</button>
                                     </div>
                                     <div class='d-flex w-100 justify-content-between'>
-                                        <p><img src={`${this.imageServer}/pho/${img.src}?w=150`} height='50' /></p>
+                                        <p><img src={`${this.imageServer}/pho/${img.src}?w=150`} height='50'  class='img-fluid' /></p>
                                         <small>
                                             <button class='btn btn-sm m-2' onClick={this.handleClickCode} data-content={`![${img.text}](/pho/${img.src}?w=750)\n`}>
                                                 Markdown

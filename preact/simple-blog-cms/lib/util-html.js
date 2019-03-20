@@ -32,7 +32,7 @@ renderer.heading = function heading(text, level) {
 };
 
 renderer.image = function image($href, title, text) {
-    let serverName;
+    let serverName = '';
     if (document.domain === 'localhost') {
         serverName = 'http://localhost:8080';
     }

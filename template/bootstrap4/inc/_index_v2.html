@@ -20,13 +20,14 @@
 
 {{ cateogry.header|safe }}
 
-{% if query.q %}
-    <div class="container">
+{% if queryString.q %}
+    {% set startArt = 0 %}
+    <div class="container pt-3">
         <div class="row">
             <main class="col-sm-12 col-md-12 blog-main-full">
                 <code>
-                    {{ searchMeta.total || 0 }}
-                    {{ blog.searchResults || "blog posts related to" }} "{{ query.q|striptags|e('html') }}":
+                    {{ artlistTotal || 0 }}
+                    {{ blog.searchResults || "blog posts related to" }} "{{ queryString.q|striptags|e('html') }}":
                 </code>
             </main>
         </div>
@@ -38,8 +39,8 @@
         <div class="row">
             <main class="col-sm-12 col-md-12 pt-3">
 {% else %}
-
-    {% if !query.q %}
+    {% if !queryString.q %}
+        {% set startArt = 1 %}
         {% set art = artlist[0] %}
         <div class="jumbotron">
             <div class="container">
@@ -61,7 +62,7 @@
 
                 <div class="row">
                     {% for art in artlist %}
-                        {% if loop.index > 1 %}
+                        {% if loop.index > startArt %}
                             <div class="col-sm-6 col-lg-4">
                                 <div class="post-thumb">
                                     {% if art.img[0] %}

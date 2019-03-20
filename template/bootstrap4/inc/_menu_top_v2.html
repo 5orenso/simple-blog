@@ -5,15 +5,14 @@
     <a class="navbar-brand" href="/">{{ blog.title|removeLineBreaks|raw }}</a>
     <div class="collapse navbar-collapse" id="navbarsExampleDefault">
         <ul class="navbar-nav mr-auto">
-
             {% for cat in catlist %}
                 <li class="nav-item {% if originalUrlPath == cat.url %}active{% endif %}">
                     <a class="nav-link" href="{{ cat.url }}">{{ cat.title }}</a>
                 </li>
             {% endfor %}
         </ul>
-        <form class="form-inline mt-2 mt-md-0" action="/search/">
-            <input class="form-control mr-sm-2" placeholder="Search" type="text" name="q">
+        <form class="form-inline mt-2 mt-md-0" action="/v2/search/">
+            <input class="form-control mr-sm-2" placeholder="Search" type="text" name="q" value="{{ queryString.q }}">
             <button class="btn my-2 my-sm-0" type="submit">Search</button>
         </form>
     </div>

@@ -51,7 +51,7 @@
     <div class="row">
         <div class="col-sm-8 blog-main">
             <div class="blog-post">
-                <h2 class="blog-post-title">{{ article.title }}</h2>
+                <h1>{{ article.title }}</h1>
                 <h5 class="blog-post-teaser">{{ article.teaser|safe }}</h5>
                 <p class="blog-post-meta">
                     {% if article.published %}
@@ -254,37 +254,35 @@
             </div>
             <div class="sidebar-module">
                 <h4>{{ blog.moreHeader || 'Flere i 📂' }} {{ baseHref }}</h4>
-                <ol class="list-unstyled">
-                    {% set limit = 20 %}
+                {% set limit = 20 %}
+                <div class="container-fluid p-0">
+                <div class="row artlist">
                     {% for art in artlist %}
                         {% if loop.index < limit %}
-                            <li class="row no-gutters artlist">
-                                <div class="col-sm-4 thumb">
-                                    <a href="/v2/{{ art.category }}/{{ art.filename }}" title="{{ art.title|e }} - {{ art.teaser|e }}">
-                                        {% if art.img[0] %}
-                                            <img src="/pho/{{ art.img[0].src }}?w=70" alt="{{ art.title|e }} - {{ art.teaser|e }}" class="img-fluid"><br clear="all">
-                                        {% else %}
-                                            <blockquote>
-                                                <p><i class="fa fa-quote-left"></i>
-                                                    {% if art.quote %}
-                                                        {{ art.quote|striptags }}
-                                                    {% elseif art.teaser %}
-                                                        {{ art.teaser|striptags }}
-                                                    {% elseif art.title %}
-                                                        {{ art.title|striptags }}
-                                                    {% endif %}</p>
-                                                <h3>{{ art.quoteBy }}</h3>
-                                            </blockquote>
-                                            {% endif %}
-                                    </a>
-                                </div>
-                                <div class="col-sm-8 text">
-                                    <a href="/v2/{{ art.category }}/{{ art.filename }}" title="{{ art.title|e }} - {{ art.teaser|e }}">{{ art.title }}</a>
-                                </div>
-                            </li>
+                            <div class="col-6 col-sm-12 col-md-12 thumb">
+                                <a href="/v2/{{ art.category }}/{{ art.filename }}" title="{{ art.title|e }} - {{ art.teaser|e }}">
+                                    {% if art.img[0] %}
+                                        <img src="/pho/{{ art.img[0].src }}?w=250" alt="{{ art.title|e }} - {{ art.teaser|e }}" class="img-fluid"><br clear="all">
+                                    {% else %}
+                                        <blockquote>
+                                            <p><i class="fa fa-quote-left"></i>
+                                                {% if art.quote %}
+                                                    {{ art.quote|striptags }}
+                                                {% elseif art.teaser %}
+                                                    {{ art.teaser|striptags }}
+                                                {% elseif art.title %}
+                                                    {{ art.title|striptags }}
+                                                {% endif %}</p>
+                                            <h3>{{ art.quoteBy }}</h3>
+                                        </blockquote>
+                                        {% endif %}
+                                </a>
+                                <a href="/v2/{{ art.category }}/{{ art.filename }}" title="{{ art.title|e }} - {{ art.teaser|e }}">{{ art.title }}</a>
+                            </div>
                         {% endif %}
                     {% endfor %}
-                </ol>
+                </div>
+                </div>
             </div>
             <div class="sidebar-module">
                 {% include '_elsewhere.html' %}

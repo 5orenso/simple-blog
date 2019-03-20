@@ -1,6 +1,8 @@
+
 html {
-    font-size: 19px;
+    font-size: 1rem;
 }
+
 .container {
     max-width: 55rem;
 }
@@ -95,6 +97,9 @@ html {
     padding-top: 0px;
     line-height: 0.9em;
 }
+.blog-post {
+    margin-bottom: 2rem;
+}
 .blog-post hr {
     border-top: 5px dotted rgba(0,0,0,.1);
     width: 30px;
@@ -105,7 +110,7 @@ html {
     font-size: .8em;
 }
 .artlist .thumb {
-    height: 60px;
+    min-height: 60px;
     background-color: #f0f0f0;
 }
 .artlist .text {
@@ -198,4 +203,44 @@ html {
 
 .jumbotron .display-3 a {
     color: #303030;
+}
+
+/* Small devices (landscape phones, 544px and up) */
+.display-3 {
+    font-size: 2rem;
+}
+@media (min-width: 544px) {
+    html {
+      font-size: 1rem;
+    }
+    .display-3 {
+        font-size: 2.5rem;
+    }
+}
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+    html {
+      font-size: 1.2rem;
+    }
+    .display-3 {
+        font-size: 3.0rem;
+    }
+}
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+    html {
+      font-size: 1.4rem;
+    }
+    .display-3 {
+        font-size: 3.5rem;
+    }
+}
+/* Extra large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+    html {
+      font-size: 1.4rem;
+    }
+    .display-3 {
+        font-size: 4rem;
+    }
 }
