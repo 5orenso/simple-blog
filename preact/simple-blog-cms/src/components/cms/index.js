@@ -205,7 +205,6 @@ export default class SimpleBlogCms extends Component {
         event.preventDefault();
         const data = {
             method: 'POST',
-            ...this.state.article,
         }
         // console.log('trying to save', this.state.article);
         util.fetchApi(`/api/article/`, data, this)
