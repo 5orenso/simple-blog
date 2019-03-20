@@ -54,7 +54,10 @@ webRouter.use(morgan('combined', { stream: accessLogStream }));
 webRouter.use(setConfig);
 webRouter.use(require('../../lib/jwt'));
 
+webRouter.use('/v2/', localUtil.setNoCacheHeaders);
 webRouter.use('/v2/', require('./v2/'));
+
+webRouter.use('/api/', localUtil.setNoCacheHeaders);
 webRouter.use('/api/', require('./api/'));
 
 // Setup static routes
