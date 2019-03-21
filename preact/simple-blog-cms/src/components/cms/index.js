@@ -20,6 +20,8 @@ const initialState = {
     currentMenu: 'articles',
     messages: [],
 
+    query: {},
+
     article: {},
     artlist: [],
     artlistTotal: 0,
@@ -73,7 +75,8 @@ export default class SimpleBlogCms extends Component {
     loadArtlist(currentPage = 1) {
         const limit = this.state.articlesPerPage;
         const offset = (currentPage - 1) * this.state.articlesPerPage;
-        util.fetchApi('/api/article/', { limit, offset }, this)
+        const { query } = this.state;
+        util.fetchApi(`/api/article/`, { query, limit, offset }, this)
             .then((result) => {
                 // console.log('result', result);
                 this.setState({
@@ -264,6 +267,20 @@ export default class SimpleBlogCms extends Component {
         this.setState({ article });
     };
 
+    handleArticleSearchInput = (event) => {
+        // event.preventDefault();
+        const el = event.target;
+        const name = el.name;
+        const query = el.value;
+        this.setState({ query });
+    };
+    handleArticleSearchClick = (event) => {
+        // event.preventDefault();
+        const currentPage = 1;
+        this.setState({ currentPage });
+        this.loadArtlist(currentPage);
+    };
+
     handleCategoryInput = (event) => {
         // event.preventDefault();
         const el = event.target;
@@ -398,6 +415,8 @@ export default class SimpleBlogCms extends Component {
                         <ArticleList styles={styles}
                             articleId={article.id || articleId}
                             artlist={artlist}
+                            handleInput={this.handleArticleSearchInput}
+                            handleSubmit={this.handleArticleSearchClick}
                             handleArtlistClick={this.handleArtlistClick}
                         />
                     </div>
@@ -455,12 +474,18 @@ export default class SimpleBlogCms extends Component {
                         />
                     </div>
                     <div class='row'>
+                        <Messages styles={styles} messages={messages} />
+                    </div>
+                    <div class='row'>
                         <CategoryEdit styles={styles}
                             category={category}
                             handleInput={this.handleCategoryInput}
                             handleTextareaInput={this.handleCategoryTextareaInput}
                             handleClickSave={this.handleCategoryClickSave}
                         />
+                    </div>
+                    <div class='row'>
+                        <Messages styles={styles} messages={messages} />
                     </div>
                 </div>
             );

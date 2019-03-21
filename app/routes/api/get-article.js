@@ -22,6 +22,9 @@ const fields = {
     tags: 1,
     youtube: 1,
     imageObject: 1,
+    video: 1,
+    aggregateRating: 1,
+    nutrition: 1,
 };
 
 module.exports = async (req, res) => {
@@ -29,14 +32,13 @@ module.exports = async (req, res) => {
 
     const art = new Article();
 
-    let query = {
-        id: req.params.id,
-    };
-    if (!req.params.id && req.query.category) {
-        query = {
-            category: req.query.category,
-        };
+    let query = {};
+    if (req.params.id) {
+        query.id = parseInt(req.params.id, 10);
+    } else if (req.params.category) {
+        query.category = req.params.category;
     }
+
     query = webUtil.cleanObject(query);
     const limit = parseInt(req.query.limit || 10, 10);
     const skip = parseInt(req.query.offset || 0, 10);
@@ -44,7 +46,11 @@ module.exports = async (req, res) => {
     let apiContent;
     let total;
     let data = {};
-    if (query.id) {
+    if (req.query.query) {
+        const { list, total } = await art.search(req.query.query, {}, { limit, skip, query });
+        data.artlist = list;
+        data.total = total;
+    } else if (query.id) {
         apiContent = await art.findOne(query, fields);
         data.article = apiContent;
     } else {

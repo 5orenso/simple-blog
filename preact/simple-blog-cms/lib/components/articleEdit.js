@@ -219,8 +219,14 @@ export default class ArticleEdit extends Component {
                                     <div class='d-flex w-100 justify-content-between'>
                                         <p><img src={`${this.imageServer}/pho/${img.src}?w=150`} height='50'  class='img-fluid' /></p>
                                         <small>
-                                            <button class='btn btn-sm m-2' onClick={this.handleClickCode} data-content={`![${img.text || ''}](/pho/${img.src}?w=750)\n`}>
-                                                Markdown
+                                            <button class='btn btn-sm m-2' onClick={this.handleClickCode} data-content={`![${img.text || 'Image title'}](/pho/${img.src}?w=750 "Image description")\n`}>
+                                                Image
+                                            </button>
+                                            <button class='btn btn-sm m-2' onClick={this.handleClickCode} data-content={`![${img.text || 'Image title'}](/pho/${img.src}?w=750#card "Image description")\n`}>
+                                                Card
+                                            </button>
+                                            <button class='btn btn-sm m-2' onClick={this.handleClickCode} data-content={`![${img.text || 'Image title'}](/pho/${img.src}?w=750#card2 "Image description")\n`}>
+                                                Card 2
                                             </button>
                                             <button class='btn btn-sm m-2' onClick={this.handleClickCode} data-content={`<h5>Detaljer om bildet</h5>
 <ul>

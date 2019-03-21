@@ -19,7 +19,7 @@ module.exports = async (req, res) => {
 
     let isDetailView = false;
     let isCategoryView = false;
-    let query = {
+    const query = {
         status: 2,
     };
     if (req.params.id) {
@@ -28,7 +28,7 @@ module.exports = async (req, res) => {
     } else if (req.params.filename) {
         isDetailView = true;
         query.filename = req.params.filename;
-    } else {
+    } else if (req.params.category) {
         query.category = req.params.category;
     }
 

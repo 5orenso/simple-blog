@@ -29,7 +29,7 @@ export default class CategoryList extends Component {
                 <tbody>
                 {catlist.map(cat =>
                     <tr data-id={cat.id} onClick={handleCatlistClick}>
-                        <th scope='row'>{cat.id}</th>
+                        <td scope='row'>{cat.id}</td>
                         <td>{cat.title}</td>
                         <td>{util.isoDateNormalized(cat.createdDate)}</td>
                         <td>{cat.url}</td>

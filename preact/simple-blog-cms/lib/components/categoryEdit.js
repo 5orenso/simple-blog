@@ -32,6 +32,7 @@ export default class CategoryEdit extends Component {
 
                 <div class='row'>
                     <div class='col-6'>
+                        &nbsp;
                     </div>
                     <div class='col-6'>
                         <label for='bodyInput'>Forhåndsvisning</label>
@@ -67,6 +68,9 @@ export default class CategoryEdit extends Component {
                     <div class='col-6'>
                         <label for='headerInput'>Header</label>
                     </div>
+                    <div class='col-6'>
+                        &nbsp;
+                    </div>
                 </div>
                 <div class='row'>
                     <div class='col-6'>
@@ -87,6 +91,9 @@ export default class CategoryEdit extends Component {
                 <div class='row'>
                     <div class='col-6'>
                         <label for='headerInput'>Header detail</label>
+                    </div>
+                    <div class='col-6'>
+                        &nbsp;
                     </div>
                 </div>
                 <div class='row'>
@@ -110,6 +117,9 @@ export default class CategoryEdit extends Component {
                     <div class='col-6'>
                         <label for='footerInput'>Footer</label>
                     </div>
+                    <div class='col-6'>
+                        &nbsp;
+                    </div>
                 </div>
                 <div class='row'>
                     <div class='col-6'>
@@ -130,6 +140,9 @@ export default class CategoryEdit extends Component {
                 <div class='row'>
                     <div class='col-6'>
                         <label for='footerInput'>Footer detail</label>
+                    </div>
+                    <div class='col-6'>
+                        &nbsp;
                     </div>
                 </div>
                 <div class='row'>
