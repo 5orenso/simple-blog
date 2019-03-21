@@ -54,6 +54,7 @@ export default class ArticleEdit extends Component {
         const handleClickNew = props.handleClickNew;
 
         const images = article.img || [];
+        const imagesTotal = images.length;
         const renderImages = images.slice(0, 1).map(img => {
             return (
                 <img src={`${this.imageServer}/pho/${img.src}?w=750`} alt='' title='' class='img-fluid' />
@@ -65,7 +66,7 @@ export default class ArticleEdit extends Component {
                 <a class={`nav-item nav-link ${currentMenu === 'preview' ? 'active' : ''}`} href='#'
                     onClick={this.handleMenuClick} data-menu='preview'>Forhåndsvisning</a>
                 <a class={`nav-item nav-link ${currentMenu === 'images' ? 'active' : ''}`} href='#'
-                    onClick={this.handleMenuClick} data-menu='images'>Bilder</a>
+                    onClick={this.handleMenuClick} data-menu='images'>Bilder ({imagesTotal})</a>
             </nav>
         );
 
