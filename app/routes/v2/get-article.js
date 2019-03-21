@@ -17,23 +17,31 @@ module.exports = async (req, res) => {
     const art = new Article();
     const cat = new Category();
 
+    let isDetailView = false;
+    let isCategoryView = false;
     let query = {
         status: 2,
-        id: parseInt(req.params.id, 10),
     };
-    if (!req.params.id && req.params.category) {
-        query = {
-            status: 2,
-            category: req.params.category,
-            filename: req.params.filename,
-        };
+    if (req.params.id) {
+        isDetailView = true;
+        query.id = parseInt(req.params.id, 10);
+    } else if (req.params.filename) {
+        isDetailView = true;
+        query.filename = req.params.filename;
+    } else {
+        query.category = req.params.category;
     }
+
     const queryList = {
         status: 2,
     };
+    const queryCategory = {};
     if (req.params.category) {
+        isCategoryView = true;
         queryList.category = req.params.category;
+        queryCategory.title = req.params.category;
     }
+
     const page = parseInt(req.query.page, 10);
     const limit = parseInt(req.query.limit || 10, 10);
     const skip = parseInt((page - 1) * limit || 0, 10);
@@ -42,7 +50,7 @@ module.exports = async (req, res) => {
     const artlist = await art.find(queryList, {}, { limit, skip });
     const artlistTotal = await art.count(queryList);
 
-    const category = await cat.findOne({ title: req.params.category });
+    const category = await cat.findOne(queryCategory);
     const catlist = await cat.find();
 
     utilHtml.runPlugins(article);
@@ -58,5 +66,7 @@ module.exports = async (req, res) => {
         limit,
         page,
         skip,
+        isDetailView,
+        isCategoryView,
     }, { runId, routePath, routeName, hrstart, useTemplate: template });
 };

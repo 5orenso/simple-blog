@@ -6,8 +6,14 @@
     <!-- Page Title -->
     {% if header.title %}
         <title>{{ header.title }}</title>
-    {% elseif query.q %}
+    {% elseif queryString.q %}
         <title>{{ searchMeta.total || 0 }} {{ blog.searchResults || "blog posts related to" }} "{{ query.q|striptags|e('html') }}"</title>
+    {% elseif !isDetailView %}
+        {% if isCategoryView %}
+            <title>{{ category.title|removeLineBreaks|striptags|e('html') }} - {{ blog.title|removeLineBreaks|striptags|e('html') }}</title>
+        {% else %}
+            <title>{{ blog.title|removeLineBreaks|striptags|e('html') }}</title>
+        {% endif %}
     {% elseif article.file|match('index') %}
         {% set author = blog.author.fallback %}
         <title>{{ author.nameFull|removeLineBreaks|striptags|e('html') }} | {{ blog.title|removeLineBreaks|striptags|e('html') }}</title>
@@ -30,3 +36,5 @@
     {% include '../../global/inc/_header_seo_rich_cards.html' %}
 
 {% include '../../global/inc/_body_header.html' %}
+
+FOO: {{ isDetailView }}

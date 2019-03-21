@@ -5,7 +5,9 @@ import ImageUpload from './imageUpload';
 import util from '../util';
 import utilHtml from '../util-html';
 
-const initialState = {};
+const initialState = {
+    currentMenu: 'preview',
+};
 const debug = false;
 const editMode = 'textarea'; // div
 
@@ -16,6 +18,17 @@ export default class ArticleEdit extends Component {
         this.parent = props.that;
         this.imageServer = this.parent.props.apiServer;
     }
+
+    handleMenuClick = (event) => {
+        event.preventDefault();
+        const el = event.target;
+
+        const currentMenu = el.dataset.menu;
+        this.setState({ currentMenu });
+        // if (currentMenu === 'preview') {
+        // } else if (currentMenu === 'images') {
+        // }
+    };
 
     handleClickCode = (event) => {
         event.preventDefault();
@@ -30,6 +43,7 @@ export default class ArticleEdit extends Component {
     };
 
     render(props) {
+        const { currentMenu } = this.state;
         const styles = props.styles;
         const article = props.article;
         const handleInput = props.handleInput;
@@ -45,6 +59,15 @@ export default class ArticleEdit extends Component {
                 <img src={`${this.imageServer}/pho/${img.src}?w=750`} alt='' title='' class='img-fluid' />
             );
         });
+
+        const renderedMenu = (
+            <nav class='nav nav-pills nav-fill mb-3'>
+                <a class={`nav-item nav-link ${currentMenu === 'preview' ? 'active' : ''}`} href='#'
+                    onClick={this.handleMenuClick} data-menu='preview'>Forhåndsvisning</a>
+                <a class={`nav-item nav-link ${currentMenu === 'images' ? 'active' : ''}`} href='#'
+                    onClick={this.handleMenuClick} data-menu='images'>Bilder</a>
+            </nav>
+        );
 
         return (
             <div class='container-fluid'>
@@ -135,13 +158,52 @@ export default class ArticleEdit extends Component {
                     <div class='col-6'>
                     </div>
                     <div class='col-6'>
-                        <label for='bodyInput'>Forhåndsvisning</label>
+                        {renderedMenu}
                     </div>
                 </div>
 
                 <div class='row'>
-                    <div class='col-6'>
+                    <div class='col-6' style="display: flex; flex-direction: column;   justify-content: space-around;">
+                        <div class='form-group'>
+                            <label for='titleInput'>Tittel</label>
+                            <input type='text' class='form-control' id='titleInput' placeholder='Tittel'
+                                name='title'
+                                onKeyup={handleInput}
+                                onPaste={handleInput}
+                                value={article.title} />
+                        </div>
+                        <div class='form-group'>
+                            <label for='teaserInput'>Teaser</label>
+                            <input type='text' class='form-control' id='teaserInput' placeholder='Teaser'
+                                name='teaser'
+                                onKeyup={handleInput}
+                                onPaste={handleInput}
+                                value={article.teaser} />
+                        </div>
+                        <div class='form-group' style='flex: 1;'>
+                            <label for='bodyInput'>Brødtekst</label>
+                            <textarea name='body' class={`${styles.textareaAutoHeight} form-control`} id='bodyInput' rows='10'
+                                onKeyup={handleTextareaInput}
+                                onFocus={this.handleTextareaFocus}
+                                value={article.body} />
+                        </div>
 
+                        <button type='submit' class='btn btn-success' onClick={handleClickSave}>Lagre</button>
+                    </div>
+                    {currentMenu === 'preview' && (
+                        <div class='col-6'>
+                            {renderImages}
+                            <h1>{article.title}</h1>
+                            <h5>{article.teaser}</h5>
+                            <div id='bodyDisplay' dangerouslySetInnerHTML={{
+                                __html: utilHtml.replaceMarked(
+                                    utilHtml.replaceDataTags(article.body, article)
+                                ),
+                            }}></div>
+                        </div>
+                    )}
+                    {currentMenu === 'images' && (
+                        <div class='col-6'>
                         <ul class='list-group'>
                             {article && article.img && article.img.map((img, idx) => (
                                 <li class='list-group-item list-group-item-action flex-column align-items-start'>
@@ -181,56 +243,8 @@ export default class ArticleEdit extends Component {
                                 </li>
                             ))}
                         </ul>
-
-                        <div class='form-group'>
-                            <label for='titleInput'>Tittel</label>
-                            <input type='text' class='form-control' id='titleInput' placeholder='Tittel'
-                                name='title'
-                                onKeyup={handleInput}
-                                onPaste={handleInput}
-                                value={article.title} />
                         </div>
-                        <div class='form-group'>
-                            <label for='teaserInput'>Teaser</label>
-                            <input type='text' class='form-control' id='teaserInput' placeholder='Teaser'
-                                name='teaser'
-                                onKeyup={handleInput}
-                                onPaste={handleInput}
-                                value={article.teaser} />
-                        </div>
-                    </div>
-                    <div class='col-6'>
-                        {renderImages}
-                        <h1>{article.title}</h1>
-                        <h5>{article.teaser}</h5>
-                    </div>
-                </div>
-                <div class='row'>
-                    <div class='col-6'>
-                        <label for='bodyInput'>Brødtekst</label>
-                    </div>
-                </div>
-                <div class='row'>
-                    <div class='col-6'>
-                        <div class='form-group h-100'>
-                            <textarea name='body' class={`form-control h-100`} id='bodyInput' rows='3'
-                                onKeyup={handleTextareaInput}
-                                onFocus={this.handleTextareaFocus}
-                                value={article.body} />
-                        </div>
-                    </div>
-                    <div class='col-6'>
-                        <div id='bodyDisplay' dangerouslySetInnerHTML={{
-                            __html: utilHtml.replaceMarked(
-                                utilHtml.replaceDataTags(article.body, article)
-                            ),
-                        }}></div>
-                    </div>
-                </div>
-                <div class='row'>
-                    <div class='col-12'>
-                        <button type='submit' class='btn btn-success' onClick={handleClickSave}>Lagre</button>
-                    </div>
+                    )}
                 </div>
             </div>
         );
