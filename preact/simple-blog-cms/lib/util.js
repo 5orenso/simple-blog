@@ -242,7 +242,7 @@ class Utilities {
 
     static getStatusClass(status) {
         if (status === 1) {
-            return 'secondary';
+            return 'warning';
         } else if (status === 2) {
             return 'success';
         } else if (status === 3) {
