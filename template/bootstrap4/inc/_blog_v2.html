@@ -74,9 +74,9 @@
                 {% endif %}
 
                 {% if isPhoto %}
-                    {{ article.body|imgSize(945)|dropFirstLetterAfterHr|dropFirstLetter|dataTags(article)|md|safe }}
+                    {{ article.body|imgSize(945)|dataTags(article)|md|safe }}
                 {% else %}
-                    {{ article.body|imgSize(750)|dropFirstLetterAfterHr|dropFirstLetter|dataTags(article)|md|safe }}
+                    {{ article.body|imgSize(750)|dataTags(article)|md|safe }}
                 {% endif %}
 
                 {% if article.col %}
@@ -140,9 +140,9 @@
 
                         {% if article['body' + i] %}
                             {% if isPhoto %}
-                                {{ article['body' + i]|imgSize(945)|dropFirstLetterAfterHr|dropFirstLetter|dataTags(article)|md|safe }}
+                                {{ article['body' + i]|imgSize(945)|dataTags(article)|md|safe }}
                             {% else %}
-                                {{ article['body' + i]|imgSize(750)|dropFirstLetterAfterHr|dropFirstLetter|dataTags(article)|md|safe }}
+                                {{ article['body' + i]|imgSize(750)|dataTags(article)|md|safe }}
                             {% endif %}
                         {% endif %}
 
