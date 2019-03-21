@@ -205,6 +205,13 @@ html {
     color: #303030;
 }
 
+pre code {
+    display: block;
+    overflow-x: auto;
+    padding: 0.5em;
+    background: #F0F0F0;
+}
+
 /* Small devices (landscape phones, 544px and up) */
 .display-3 {
     font-size: 2rem;

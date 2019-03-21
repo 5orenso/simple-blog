@@ -138,6 +138,6 @@ module.exports = {
         host: 'litt.no'
     },
     mongo: {
-        url: 'mongodb://localhost:27017/simpleBlog?safe=true&auto_reconnect=true&poolSize=20',
+        url: 'mongodb://localhost:27017/simpleBlogLittno?safe=true&auto_reconnect=true&poolSize=20',
     },
 };
