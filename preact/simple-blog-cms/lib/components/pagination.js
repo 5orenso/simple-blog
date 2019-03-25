@@ -9,6 +9,41 @@ export default class Pagination extends Component {
     constructor(props) {
         super(props);
         this.state = Object.assign({}, initialState);
+        this.totalPages = 10;
+    }
+
+    makePageArray(allPages) {
+        const pages = [];
+        const currentPage = this.props.currentPage;
+
+        const total = allPages.length;
+
+        let isPartOfStart = false;
+        let start = currentPage - 5;
+        if (start <= 1) {
+            isPartOfStart = true;
+            start = 1;
+        }
+
+        let isPartOfEnd = false;
+        let end = currentPage + 5;
+        if (end >= total) {
+            isPartOfEnd = true;
+            end = total;
+        }
+
+        if (!isPartOfStart) {
+            pages.push(1);
+            pages.push('.');
+        }
+        for (let i = start, l = this.totalPages; i <= end; i += 1) {
+            pages.push(i);
+        }
+        if (!isPartOfEnd) {
+            pages.push('.');
+            pages.push(total);
+        }
+        return pages;
     }
 
     render(props) {
@@ -26,8 +61,16 @@ export default class Pagination extends Component {
         for (let i = 1; i <= Math.ceil(artlistTotal / articlesPerPage); i++) {
             pageNumbers.push(i);
         }
+        const pages = this.makePageArray(pageNumbers);
 
-        const renderPageNumbers = pageNumbers.map(number => {
+        const renderPageNumbers = pages.map(number => {
+            if (number === '.') {
+                return (
+                    <li class='page-item disabled'>
+                        <a class='page-link'>...</a>
+                    </li>
+                );
+            }
             return (
                 <li class={`page-item ${currentPage === number ? 'active' : ''}`}>
                     <a class='page-link'
@@ -47,7 +90,7 @@ export default class Pagination extends Component {
                             href='#'>Previous</a>
                     </li>
                     {renderPageNumbers}
-                    <li class={`page-item ${currentPage < pageNumbers.length ? '' : 'disabled'}`}>
+                    <li class={`page-item ${currentPage <= pageNumbers.length ? '' : 'disabled'}`}>
                         <a class='page-link'
                             onClick={handlePaginationIncClick}
                             href='#'>Next</a>

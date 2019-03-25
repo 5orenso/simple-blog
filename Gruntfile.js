@@ -33,7 +33,7 @@ module.exports = function (grunt) {
         },
         watch: {
             all: {
-                files: ['app/**/*.js', 'lib/**/*.js', 'test/**/*.js', 'test/content/**/*.md', 'config/*.js',
+                files: ['app/**/**/*.js', 'lib/**/**/*.js', 'test/**/**/*.js', 'test/content/**/*.md', 'config/*.js',
                     'template/**/**/*.html', 'template/global/js/push-notification.js'],
                 tasks: ['lint', 'buster:unit', 'doc']
             }
@@ -65,7 +65,7 @@ module.exports = function (grunt) {
                 options: {
                     script: 'app/server.js',
                     ext: 'js,json,html',
-                    ignore: ['node_modules/**', 'template/current/**', 'sessions/**'],
+                    ignore: ['node_modules/*', 'template/*', 'sessions/*', 'preact/*'],
                     args: ['-c', '../config/config.js'],
                     env: {
                         nodeEnv: 'development'
@@ -77,7 +77,7 @@ module.exports = function (grunt) {
                 options: {
                     script: 'app/server.js',
                     ext: 'js,json,html',
-                    ignore: ['node_modules/**', 'template/current/**', 'sessions/**'],
+                    ignore: ['node_modules/*', 'template/*', 'sessions/*', 'preact/*'],
                     args: ['-c', '../config/config-local.js'],
                     env: {
                         nodeEnv: 'development'

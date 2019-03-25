@@ -99,7 +99,7 @@ export default class ImageUpload extends Component {
         return (
             <div>
                 <ProgressBar styles={styles} loadingProgress={this.state.loadingProgress} />
-                <input type='file' id='image-file' onchange={this.handleUpload} multiple />
+                <input class='btn btn-info' type='file' id='image-file' onchange={this.handleUpload} multiple />
                 <div>
                     {Object.keys(uploadedFilesData).length > 0 ? (<h3>Uploaded files</h3>) : ''}
                     <ul class='list-group'>

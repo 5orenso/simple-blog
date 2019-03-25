@@ -23,7 +23,7 @@ export default class CategoryEdit extends Component {
         const handleClickSave = props.handleClickSave;
 
         return (
-            <div class='container-fluid'>
+            <div class='container-fluid col-12'>
                 <div class='row'>
                     <div class='col-12'>
                         <h3>Redigering</h3>

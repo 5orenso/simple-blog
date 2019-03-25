@@ -32,7 +32,6 @@ export default class ArticleList extends Component {
                 <div class='d-flex justify-content-center'>
                     <div class="col-4 mb-2">
                         <input type="text" class="form-control" placeholder="Søk etter artikler" name="q"
-                            onChange={handleInput}
                             onKeypress={this.handleSearchKeypress}
                         />
                     </div>

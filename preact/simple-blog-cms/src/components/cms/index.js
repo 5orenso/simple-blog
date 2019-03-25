@@ -6,6 +6,7 @@ import utilHtml from '../../../lib/util-html';
 import ProgressBar from '../../../lib/components/progressbar';
 import Messages from '../../../lib/components/messages';
 import ArticleList from '../../../lib/components/articleList';
+import ImageList from '../../../lib/components/imageList';
 import CategoryList from '../../../lib/components/categoryList';
 import ArticleEdit from '../../../lib/components/articleEdit';
 import CategoryEdit from '../../../lib/components/categoryEdit';
@@ -20,11 +21,13 @@ const initialState = {
     currentMenu: 'articles',
     messages: [],
 
-    query: {},
-
     article: {},
     artlist: [],
     artlistTotal: 0,
+
+    image: {},
+    imglist: [],
+    imglistTotal: 0,
 
     category: {},
     catlist: [],
@@ -86,17 +89,43 @@ export default class SimpleBlogCms extends Component {
             });
     }
 
+    loadImglist(currentPage = 1, $limit) {
+        const limit = $limit || this.state.articlesPerPage;
+        const offset = (currentPage - 1) * limit;
+        const { queryImage } = this.state;
+        const query = queryImage;
+        util.fetchApi(`/api/image/`, { query, limit, offset }, this)
+            .then((result) => {
+                console.log('result', result);
+                this.setState({
+                    imglist: result.imglist,
+                    imglistTotal: result.total,
+                })
+            });
+    }
+
     loadCatlist(currentPage = 1) {
         const limit = this.state.categoriesPerPage;
         const offset = (currentPage - 1) * this.state.categoriesPerPage;
         util.fetchApi('/api/category/', { limit, offset }, this)
             .then((result) => {
-                console.log('result', result);
+                // console.log('result', result);
                 this.setState({
                     catlist: result.catlist,
                     catlistTotal: result.total,
                 })
             });
+    }
+
+    loadPage(currentPage) {
+        const currentMenu = this.state.currentMenu;
+        if (currentMenu === 'articles') {
+            this.loadArtlist(currentPage);
+        } else if (currentMenu === 'categories') {
+            this.loadCatlist(currentPage);
+        } else if (currentMenu === 'images') {
+            this.loadImglist(currentPage);
+        }
     }
 
     typeInTextarea(el, newText) {
@@ -152,13 +181,14 @@ export default class SimpleBlogCms extends Component {
 
         const currentMenu = el.dataset.menu;
         const currentPage = 1;
-        this.setState({ currentMenu, currentPage });
+        const query = '';
+        this.setState({ currentMenu, currentPage, query });
         if (currentMenu === 'articles') {
             this.loadArtlist();
         } else if (currentMenu === 'categories') {
             this.loadCatlist();
-        } else if (currentMenu === 'categories') {
-
+        } else if (currentMenu === 'images') {
+            this.loadImglist();
         }
     };
 
@@ -170,6 +200,19 @@ export default class SimpleBlogCms extends Component {
             .then((result) => {
                 this.setState({
                     article: result.article,
+                });
+            });
+
+    };
+
+    handleImglistClick = (event) => {
+        event.preventDefault();
+        const trElement = event.target.closest('tr');
+        const imgId = parseInt(trElement.dataset.id, 10);
+        util.fetchApi(`/api/image/${imgId}`, {}, this)
+            .then((result) => {
+                this.setState({
+                    image: result.image,
                 });
             });
 
@@ -269,17 +312,55 @@ export default class SimpleBlogCms extends Component {
 
     handleArticleSearchInput = (event) => {
         // event.preventDefault();
-        const el = event.target;
-        const name = el.name;
-        const query = el.value;
-        this.setState({ query });
+        if (event.key === 'Enter') {
+            this.handleArticleSearchClick(event);
+        } else {
+            const el = event.target;
+            const name = el.name;
+            const query = el.value + event.key;
+            this.setState({ query });
+        }
     };
+
     handleArticleSearchClick = (event) => {
         // event.preventDefault();
         const currentPage = 1;
         this.setState({ currentPage });
         this.loadArtlist(currentPage);
     };
+
+    handleImageSearchInput = (event, limit) => {
+        // event.preventDefault();
+        if (event.key === 'Enter') {
+            this.handleImageSearchClick(event, limit);
+        } else {
+            const el = event.target;
+            const name = el.name;
+            const queryImage = el.value + event.key;
+            this.setState({ queryImage });
+        }
+    };
+
+    handleImageSearchClick = (event, limit) => {
+        // event.preventDefault();
+        const currentPage = 1;
+        this.setState({ currentPage });
+        this.loadImglist(currentPage, limit);
+    };
+
+    handleImageSearchResultClick = (event) => {
+        event.preventDefault();
+        const el = event.target;
+        const imageIdx = el.dataset.idx;
+        const image = this.state.imglist[imageIdx];
+
+        const article = this.state.article;
+        if (!Array.isArray(article.img)) {
+            article.img = [];
+        }
+        article.img.push(image);
+        this.setState({ article });
+    }
 
     handleCategoryInput = (event) => {
         // event.preventDefault();
@@ -298,21 +379,21 @@ export default class SimpleBlogCms extends Component {
         event.preventDefault();
         const currentPage = Number(event.target.id);
         this.setState({ currentPage });
-        this.loadArtlist(currentPage);
+        this.loadPage(currentPage);
     };
 
     handlePaginationDecClick = (event) => {
         event.preventDefault();
         const currentPage = Number(this.state.currentPage - 1);
         this.setState({ currentPage });
-        this.loadArtlist(currentPage);
+        this.loadPage(currentPage);
     };
 
     handlePaginationIncClick = (event) => {
         event.preventDefault();
         const currentPage = Number(this.state.currentPage + 1);
         this.setState({ currentPage });
-        this.loadArtlist(currentPage);
+        this.loadPage(currentPage);
     };
 
     handleRemoveImageClick = (event) => {
@@ -384,6 +465,10 @@ export default class SimpleBlogCms extends Component {
             artlist,
             artlistTotal,
 
+            image,
+            imglist,
+            imglistTotal,
+
             category,
             catlist,
             catlistTotal,
@@ -411,7 +496,7 @@ export default class SimpleBlogCms extends Component {
                     <ProgressBar styles={styles} loadingProgress={this.state.loadingProgress} />
                     {renderedMenu}
 
-                    <div class='row'>
+                    <div class='d-flex justify-content-center'>
                         <ArticleList styles={styles}
                             articleId={article.id || articleId}
                             artlist={artlist}
@@ -430,10 +515,10 @@ export default class SimpleBlogCms extends Component {
                             handlePaginationIncClick={this.handlePaginationIncClick}
                         />
                     </div>
-                    <div class='row'>
+                    <div class='d-flex justify-content-center'>
                         <Messages styles={styles} messages={messages} />
                     </div>
-                    <div class='row'>
+                    <div class='d-flex justify-content-center'>
                         <ArticleEdit styles={styles}
                             articleId={articleId}
                             article={article}
@@ -444,9 +529,14 @@ export default class SimpleBlogCms extends Component {
                             handleTextareaInput={this.handleArticleTextareaInput}
                             handleClickSave={this.handleArticleClickSave}
                             handleClickNew={this.handleArticleClickNew}
+
+                            imglist={imglist}
+                            handleImageInput={this.handleImageSearchInput}
+                            handleImageSubmit={this.handleImageSearchClick}
+                            handleImglistClick={this.handleImageSearchResultClick}
                         />
                     </div>
-                    <div class='row'>
+                    <div class='d-flex justify-content-center'>
                         <Messages styles={styles} messages={messages} />
                     </div>
                 </div>
@@ -457,7 +547,7 @@ export default class SimpleBlogCms extends Component {
                     <ProgressBar styles={styles} loadingProgress={this.state.loadingProgress} />
                     {renderedMenu}
 
-                    <div class='row'>
+                    <div class='d-flex justify-content-center'>
                         <CategoryList styles={styles}
                             catlist={catlist}
                             handleCatlistClick={this.handleCatlistClick}
@@ -473,10 +563,10 @@ export default class SimpleBlogCms extends Component {
                             handlePaginationIncClick={this.handlePaginationIncClick}
                         />
                     </div>
-                    <div class='row'>
+                    <div class='d-flex justify-content-center'>
                         <Messages styles={styles} messages={messages} />
                     </div>
-                    <div class='row'>
+                    <div class='d-flex justify-content-center'>
                         <CategoryEdit styles={styles}
                             category={category}
                             handleInput={this.handleCategoryInput}
@@ -484,7 +574,7 @@ export default class SimpleBlogCms extends Component {
                             handleClickSave={this.handleCategoryClickSave}
                         />
                     </div>
-                    <div class='row'>
+                    <div class='d-flex justify-content-center'>
                         <Messages styles={styles} messages={messages} />
                     </div>
                 </div>
@@ -495,8 +585,28 @@ export default class SimpleBlogCms extends Component {
                     <ProgressBar styles={styles} loadingProgress={this.state.loadingProgress} />
                     {renderedMenu}
 
-                    <div class='row'>
-                        list of images
+                    <div class='d-flex justify-content-center'>
+                        <ImageList styles={styles}
+                            that={this}
+                            imageId={image.id}
+                            imglist={imglist}
+                            handleInput={this.handleImageSearchInput}
+                            handleSubmit={this.handleImageSearchClick}
+                            handleImglistClick={this.handleImglistClick}
+                        />
+                    </div>
+                    <div class='d-flex justify-content-center'>
+                        <Pagination styles={styles}
+                            artlistTotal={imglistTotal}
+                            currentPage={currentPage}
+                            articlesPerPage={categoriesPerPage}
+                            handlePaginationClick={this.handlePaginationClick}
+                            handlePaginationDecClick={this.handlePaginationDecClick}
+                            handlePaginationIncClick={this.handlePaginationIncClick}
+                        />
+                    </div>
+                    <div class='d-flex justify-content-center'>
+                        <Messages styles={styles} messages={messages} />
                     </div>
                 </div>
             );
