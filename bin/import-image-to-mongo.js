@@ -221,19 +221,24 @@ const main = async () => {
             if (imgRef[src]) {
                 // Image already exists inside db. Only run updates and save.
                 console.log(`Image already exists.: ${filename}`);
+                let isUpdated = false;
                 const updateImg = {
                     id: imgRef[src].id,
                 };
                 if (!imgRef[src].predictionsCocoSsd) {
+                    isUpdated = true;
                     const predictions = await classifyCocoSsd(filename);
                     updateImg.predictionsCocoSsd = predictions;
                 }
                 if (!imgRef[src].predictions) {
+                    isUpdated = true;
                     const predictions = await classify(filename);
                     updateImg.predictions = predictions;
                 }
-                console.log(updateImg);
-                await image.save(updateImg);
+                if (isUpdated) {
+                    console.log(updateImg);
+                    await image.save(updateImg);
+                }
             } else {
                 const newImg = {
                     src,
