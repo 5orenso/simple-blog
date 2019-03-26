@@ -30,11 +30,11 @@ export default class ImageList extends Component {
                 const colors = ['red', 'green', 'yellow', 'cyan', 'pink', 'blue'];
                 const c = document.getElementById(`layer-${img.id}`)
                 const ctx = c.getContext('2d');
-                const width = img.exif ? img.exif.pixelXDimension : imageWidth;
+                const width = img.exif ? (img.exif.pixelXDimension || img.exif.exifImageWidth) : imageWidth;
                 const sizeRatio = imageWidth / width;
 
-                if (img.exif && img.exif.pixelXDimension) {
-                    const imageRatio = img.exif.pixelYDimension / img.exif.pixelXDimension;
+                if (img.exif && width) {
+                    const imageRatio = img.exif.pixelYDimension / width;
                     c.width = imageWidth;
                     c.height = Math.ceil(imageWidth * imageRatio);
                 }
@@ -130,7 +130,11 @@ export default class ImageList extends Component {
                                             , {util.getString(img, 'exif', 'focalLength')} mm
                                             , {util.getString(img, 'exif', 'exposureTime')} sec
                                             , ISO: {util.getString(img, 'exif', 'photographicSensitivity')}
-                                            , <i class="fas fa-image"></i> {util.getString(img, 'exif', 'pixelXDimension')}x{util.getString(img, 'exif', 'pixelYDimension')}px
+                                            , <i class="fas fa-image"></i> {
+                                                util.getString(img, 'exif', 'pixelXDimension') || util.getString(img, 'exif', 'exifImageWidth')
+                                            }x{
+                                                util.getString(img, 'exif', 'pixelYDimension') || util.getString(img, 'exif', 'exifImageLength')
+                                            }px
                                         </small><br />
                                         <small class='text-muted'>
                                             {img.exif.lat && <span>

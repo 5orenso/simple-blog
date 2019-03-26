@@ -116,12 +116,15 @@ $ cp ../simplemde-markdown-editor/dist/simplemde.min.css ./template/global/css/.
 ```bash
 $ node ./bin/import-article-to-mongo.js /srv/config/simple-blog/config-litt.no.js
 $ node ./bin/import-category-to-mongo.js /srv/config/simple-blog/config-litt.no.js
+$ node ./bin/import-image-to-mongo.js /srv/config/simple-blog/config-litt.no.js
 
 $ node ./bin/import-article-to-mongo.js /srv/config/simple-blog/config-kaffeogkode.no.js
 $ node ./bin/import-category-to-mongo.js /srv/config/simple-blog/config-kaffeogkode.no.js
+$ node ./bin/import-image-to-mongo.js /srv/config/simple-blog/config-kaffeogkode.no.js
 
 $ node ./bin/import-article-to-mongo.js /srv/config/simple-blog/config-zu.no.js
 $ node ./bin/import-category-to-mongo.js /srv/config/simple-blog/config-zu.no.js
+$ node ./bin/import-image-to-mongo.js /srv/config/simple-blog/config-zu.no.js
 ```
 
 ## Other Resources
