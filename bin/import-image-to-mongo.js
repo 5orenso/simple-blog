@@ -227,8 +227,8 @@ const main = async () => {
                 };
                 if (!imgRef[src].predictionsCocoSsd) {
                     isUpdated = true;
-                    const predictions = await classifyCocoSsd(filename);
-                    updateImg.predictionsCocoSsd = predictions;
+                    const predictionsCocoSsd = await classifyCocoSsd(filename);
+                    updateImg.predictionsCocoSsd = predictionsCocoSsd;
                 }
                 if (!imgRef[src].predictions) {
                     isUpdated = true;
@@ -245,9 +245,11 @@ const main = async () => {
                     src,
                 };
                 const predictions = await classify(filename);
+                const predictionsCocoSsd = await classifyCocoSsd(filename);
                 const exif = await readExif(filename);
                 const filestats = await readFileInfo(filename);
                 newImg.predictions = predictions;
+                newImg.predictionsCocoSsd = predictionsCocoSsd;
                 newImg.exif = exif;
                 newImg.stats = filestats;
                 console.log(newImg);
