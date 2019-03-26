@@ -224,8 +224,14 @@ const main = async () => {
                 const updateImg = {
                     id: imgRef[src].id,
                 };
-                const predictions = await classifyCocoSsd(filename);
-                updateImg.predictionsCocoSsd = predictions;
+                if (!imgRef[src].predictionsCocoSsd) {
+                    const predictions = await classifyCocoSsd(filename);
+                    updateImg.predictionsCocoSsd = predictions;
+                }
+                if (!imgRef[src].predictions) {
+                    const predictions = await classify(filename);
+                    updateImg.predictions = predictions;
+                }
                 console.log(updateImg);
                 await image.save(updateImg);
             } else {
