@@ -32,7 +32,7 @@ export default class ImageList extends Component {
                 const c = document.getElementById(`layer-${img.id}`)
                 const ctx = c.getContext('2d');
                 const width = img.exif ? (img.exif.pixelXDimension || img.exif.exifImageWidth) : imageWidth;
-                const height = img.exif ? (img.exif.pixelYDimension || img.exif.exifImageHeight) : imageHeight;
+                const height = img.exif ? (img.exif.pixelYDimension || img.exif.exifImageLength) : imageHeight;
                 const sizeRatio = imageWidth / width;
 
                 if (img.exif && width) {
