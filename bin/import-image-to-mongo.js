@@ -240,6 +240,7 @@ const main = async () => {
                     await image.save(updateImg);
                 }
             } else {
+                console.log(`New Image: ${filename}`);
                 const newImg = {
                     src,
                 };
