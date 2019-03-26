@@ -6,6 +6,7 @@ const widgetName = 'ImageList';
 const initialState = {};
 const debug = false;
 const imageWidth = 150;
+const imageHeight = 100;
 
 export default class ImageList extends Component {
     constructor(props) {
@@ -31,10 +32,11 @@ export default class ImageList extends Component {
                 const c = document.getElementById(`layer-${img.id}`)
                 const ctx = c.getContext('2d');
                 const width = img.exif ? (img.exif.pixelXDimension || img.exif.exifImageWidth) : imageWidth;
+                const height = img.exif ? (img.exif.pixelYDimension || img.exif.exifImageHeight) : imageHeight;
                 const sizeRatio = imageWidth / width;
 
                 if (img.exif && width) {
-                    const imageRatio = img.exif.pixelYDimension / width;
+                    const imageRatio = height / width;
                     c.width = imageWidth;
                     c.height = Math.ceil(imageWidth * imageRatio);
                 }
