@@ -137,7 +137,7 @@ export default class ImageList extends Component {
                                             }px
                                         </small><br />
                                         <small class='text-muted'>
-                                            {img.exif.lat && <span>
+                                            {img.exif && img.exif.lat && <span>
                                                 <i class="fas fa-location-arrow"></i> {util.format(img.exif.lat, 3)}, {util.format(img.exif.lng, 3)}
                                             </span>}
 
