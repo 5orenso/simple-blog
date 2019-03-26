@@ -81,7 +81,7 @@ export default class ArticleEdit extends Component {
         return (
             <div class='container-fluid col-12'>
                 <div class='row'>
-                    <div class='col-6' id='editColumn'>
+                    <div class='col-12 col-md-6 mb-5 mb-md-0' id='editColumn'>
                         <div class='row h-100'>
                             <div class='col-12'>
                                 <button type='submit' class='btn btn-success float-right ml-2' onClick={handleClickSave}>Lagre</button>
@@ -152,7 +152,10 @@ export default class ArticleEdit extends Component {
                             </div>
                         </div>
                     </div>
-                    <div class='col-6' id='previewColumn'>
+                    <div class='d-md-none' style='height: 75px;'>
+                        &nbsp;
+                    </div>
+                    <div class='col-12 col-md-6 mt-5 mt-md-0' id='previewColumn'>
                         <div class='row'>
                             {renderedMenu}
                             {currentMenu === 'preview' && (
