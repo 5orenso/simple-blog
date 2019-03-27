@@ -17,14 +17,41 @@ export default class ImageList extends Component {
         this.imageServer = this.parent.props.apiServer;
     }
 
+    getWidth(img) {
+        if (img.features) {
+            return img.features.width;
+        } else if (img.exif) {
+            return img.exif.pixelXDimension || img.exif.exifImageWidth;
+        }
+    }
+
+    getHeight(img) {
+        if (img.features) {
+            return img.features.height;
+        } else if (img.exif) {
+            return img.exif.pixelYDimension || img.exif.exifImageLength;
+        }
+    }
+
+    formatPrintSize(size) {
+        const parts = String(size).split('x');
+        const width = util.format(parts[0], 0);
+        const height = util.format(parts[1], 0);
+        return `${width}x${height}cm`;
+    }
+
+    formatQuality(quality) {
+        return `${util.format(quality * 100, 0)}%`;
+    }
+
     drawCanvases() {
         this.props.imglist.map(img => {
             try {
                 const colors = ['red', 'green', 'yellow', 'cyan', 'pink', 'blue'];
                 const c = document.getElementById(`layer-${img.id}`)
                 const ctx = c.getContext('2d');
-                const width = img.exif ? (img.exif.pixelXDimension || img.exif.exifImageWidth) : imageWidth;
-                const height = img.exif ? (img.exif.pixelYDimension || img.exif.exifImageLength) : imageHeight;
+                const width = this.getWidth(img);
+                const height = this.getHeight(img);
                 const sizeRatio = imageWidth / width;
 
                 if (img.exif && width) {
@@ -118,25 +145,27 @@ export default class ImageList extends Component {
                                     </td>
                                     <td>
                                         {img.src}<br />
-                                        <small class='text-muted'>
-                                            <i class="fas fa-camera"></i> {util.getString(img, 'exif', 'model')}
-                                            , {util.getString(img, 'exif', 'lensModel')}
-                                            , f/{util.getString(img, 'exif', 'fNumber')}
-                                            , {util.getString(img, 'exif', 'focalLength')} mm
-                                            , {util.getString(img, 'exif', 'exposureTime')} sec
-                                            , ISO: {util.getString(img, 'exif', 'photographicSensitivity')}
-                                            , <i class="fas fa-image"></i> {
-                                                util.getString(img, 'exif', 'pixelXDimension') || util.getString(img, 'exif', 'exifImageWidth')
-                                            }x{
-                                                util.getString(img, 'exif', 'pixelYDimension') || util.getString(img, 'exif', 'exifImageLength')
-                                            }px
-                                        </small><br />
-                                        <small class='text-muted'>
-                                            {img.exif && img.exif.lat && <span>
-                                                <i class="fas fa-location-arrow"></i> {util.format(img.exif.lat, 3)}, {util.format(img.exif.lng, 3)}
+                                        <div class='text-muted'>
+                                            {img.exif && img.exif.model && <span class='mr-1 badge badge-secondary'><i class="fas fa-camera"></i> {util.getString(img, 'exif', 'model')}</span>}
+                                            {img.exif && img.exif.lensModel && <span class='mr-1 badge badge-secondary'>{util.getString(img, 'exif', 'lensModel')}</span>}
+                                            {img.exif && img.exif.fNumber && <span class='mr-1 badge badge-secondary'>f/{util.getString(img, 'exif', 'fNumber')}</span>}
+                                            {img.exif && img.exif.focalLength && <span class='mr-1 badge badge-secondary'>{util.getString(img, 'exif', 'focalLength')} mm</span>}
+                                            {img.exif && img.exif.exposureTime && <span class='mr-1 badge badge-secondary'>{util.getString(img, 'exif', 'exposureTime')} sec</span>}
+                                            {img.exif && img.exif.photographicSensitivity && <span class='mr-1 badge badge-secondary'>ISO: {util.getString(img, 'exif', 'photographicSensitivity')}</span>}
+                                            <span class='mr-1 badge badge-secondary'><i class="fas fa-image"></i> {this.getWidth(img)}x{this.getHeight(img)}px</span>
+                                        </div>
+                                        <div class='text-muted'>
+                                            {img.exif && img.exif.lat && <span class='mr-1 badge badge-info'>
+                                                <i class="fas fa-location-arrow"></i> {util.format(img.exif.lat, 5, '.')}, {util.format(img.exif.lng, 5, '.')}
                                             </span>}
-
-                                        </small>
+                                            {img.features}
+                                            {img.features && img.features['print size'] && <span class='mr-1 badge badge-info'>
+                                                <i class="fas fa-print"></i> {this.formatPrintSize(img.features['print size'])}
+                                            </span>}
+                                            {img.features && img.features.quality && <span class='mr-1 badge badge-info'>
+                                                <i class="fas fa-thermometer-three-quarters"></i> {this.formatQuality(img.features.quality)}
+                                            </span>}
+                                        </div>
                                     </td>
                                     <td>
                                         {util.isoDateNormalized(util.getString(img, 'exif', 'dateTimeOriginal') ||

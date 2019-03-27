@@ -123,6 +123,17 @@ function convertDMSToDD(degrees, minutes, seconds, direction) {
     return dd;
 }
 
+function readFeatures(file) {
+    return new Promise((resolve, reject) => {
+        im.identify(file, (err, features) => {
+            if (err) {
+                return reject(err);
+            }
+            return resolve(features);
+        });
+    });
+}
+
 function readExif(file) {
     return new Promise((resolve, reject) => {
         const fractionKeys = ['exposureTime'];
@@ -235,6 +246,11 @@ const main = async () => {
                     const predictions = await classify(filename);
                     updateImg.predictions = predictions;
                 }
+                if (!imgRef[src].features) {
+                    isUpdated = true;
+                    const features = await readFeatures(filename);
+                    updateImg.features = features;
+                }
                 if (isUpdated) {
                     console.log(updateImg);
                     await image.save(updateImg);
@@ -247,10 +263,12 @@ const main = async () => {
                 const predictions = await classify(filename);
                 const predictionsCocoSsd = await classifyCocoSsd(filename);
                 const exif = await readExif(filename);
+                const features = await readFeatures(filename);
                 const filestats = await readFileInfo(filename);
                 newImg.predictions = predictions;
                 newImg.predictionsCocoSsd = predictionsCocoSsd;
                 newImg.exif = exif;
+                newImg.features = features;
                 newImg.stats = filestats;
                 console.log(newImg);
                 await image.save(newImg);

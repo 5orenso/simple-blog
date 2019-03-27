@@ -23,6 +23,7 @@ const fields = {
     newFilename: 1,
     stats: 1,
     exif: 1,
+    features: 1,
     predictions: 1,
     predictionsCocoSsd: 1,
 };
