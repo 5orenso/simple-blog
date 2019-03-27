@@ -221,6 +221,18 @@ class Utilities {
         return '';
     }
 
+    static formatDim(input) {
+        const parts = String(input).split('x');
+        const width = Utilities.format(parts[0], 0);
+        const height = Utilities.format(parts[1], 0);
+        return `${width} x ${height}`;
+    }
+
+    static formatPosition(input) {
+        const pos = parseFloat(input);
+        return Utilities.format(pos, 5, '.');
+    }
+
     static htmlIdSafe($string) {
         if (typeof $string === 'string') {
             const string = $string.toLowerCase().replace(/[^a-z0-9]/gi, '-');

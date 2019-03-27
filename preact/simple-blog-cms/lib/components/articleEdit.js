@@ -210,9 +210,11 @@ export default class ArticleEdit extends Component {
     <li>Brennvidde: [:img.${idx}.exif.focalLength] mm</li>
     <li>Eksponering: [:img.${idx}.exif.exposureTime] sec</li>
     <li>ISO: [:img.${idx}.exif.photographicSensitivity]</li>
-    <li>Oppløsning: [:img.${idx}.exif.pixelXDimension]x[:img.${idx}.exif.pixelYDimension]px ([:img.${idx}.stats.size size])</li>
+    <li>Oppløsning: [:img.${idx}.features.width] x [:img.${idx}.features.height]px ([:img.${idx}.stats.size size])</li>
     <li><i class="fas fa-clock"></i> [:img.${idx}.exif.dateTimeOriginal date]</li>
     <li><i class="fas fa-mountain"></i> [:img.${idx}.exif.gpsAltitude] moh</li>
+    <li><i class="fas fa-location-arrow"></i> [:img.${idx}.exif.lat position], [:img.${idx}.exif.lng position]</li>
+    <li><i class="fas fa-print"></i> [:img.${idx}.features.print+size dim] cm</li>
 </ul>
 `}><i class="fas fa-info-circle"></i> Bildeinfo
                                                         </button>

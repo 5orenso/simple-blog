@@ -152,7 +152,7 @@ export default class ImageList extends Component {
                                             {img.exif && img.exif.focalLength && <span class='mr-1 badge badge-success'>{util.getString(img, 'exif', 'focalLength')} mm</span>}
                                             {img.exif && img.exif.exposureTime && <span class='mr-1 badge badge-success'>{util.getString(img, 'exif', 'exposureTime')} sec</span>}
                                             {img.exif && img.exif.photographicSensitivity && <span class='mr-1 badge badge-success'>ISO: {util.getString(img, 'exif', 'photographicSensitivity')}</span>}
-                                            <span class='mr-1 badge badge-success'><i class="fas fa-image"></i> {this.getWidth(img)}x{this.getHeight(img)}px</span>
+                                            <span class='mr-1 badge badge-success'><i class="fas fa-image"></i> {this.getWidth(img)} x {this.getHeight(img)}px</span>
                                         </div>
                                         <div class='text-muted'>
                                             {img.exif && img.exif.lat && <span class='mr-1 badge badge-info'>
@@ -160,7 +160,7 @@ export default class ImageList extends Component {
                                             </span>}
                                             {img.features}
                                             {img.features && img.features['print size'] && <span class='mr-1 badge badge-info'>
-                                                <i class="fas fa-print"></i> {this.formatPrintSize(img.features['print size'])}
+                                                <i class="fas fa-print"></i> {this.formatPrintSize(img.features['print size'])} cm
                                             </span>}
                                             {img.features && img.features.quality && <span class='mr-1 badge badge-info'>
                                                 <i class="fas fa-thermometer-three-quarters"></i> {this.formatQuality(img.features.quality)}

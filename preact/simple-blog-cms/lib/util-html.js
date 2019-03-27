@@ -147,7 +147,8 @@ function htmlUtilities() {
             return $content;
         }
         let content = $content;
-        function replacerTags(match, p1, p2) {
+        function replacerTags(match, $p1, $p2) {
+            const p1 = $p1.replace(/\+/g, ' ');
             // console.log('replacerTags', match, p1, p2);
             if (p1.match(/^fa-/)) {
                 let result = `<span class="fa ${p1}"></span>`;
@@ -158,13 +159,18 @@ function htmlUtilities() {
                     }
                 }
                 return result;
-            } else if (typeof p2 !== 'undefined') {
+            } else if (typeof $p2 !== 'undefined') {
+                const p2 = $p2.replace(/\+/g, ' ');
                 const command = p2.trim();
                 let result = util.getString(article, p1.split('.')) || '';
                 if (command === 'size') {
                     result = util.formatBytes(result, 2);
                 } else if (command === 'date') {
                     result = util.isoDateNormalized(result);
+                } else if (command === 'dim') {
+                    result = util.formatDim(result);
+                } else if (command === 'position') {
+                    result = util.formatPosition(result);
                 }
 
                 return result;
@@ -172,7 +178,7 @@ function htmlUtilities() {
             return util.getString(article, p1.split('.')) || '';
         }
 
-        const reg = /\[:([a-z_\-0-9.]+)(\s[a-z_\-0-9]+)*?\]/gi;
+        const reg = /\[:([a-z_\-0-9.\+]+)(\s[a-z_\-0-9.\+]+)*?\]/gi;
         content = content.replace(reg, replacerTags);
         return content;
     }
