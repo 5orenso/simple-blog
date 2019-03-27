@@ -146,13 +146,13 @@ export default class ImageList extends Component {
                                     <td>
                                         {img.src}<br />
                                         <div class='text-muted'>
-                                            {img.exif && img.exif.model && <span class='mr-1 badge badge-secondary'><i class="fas fa-camera"></i> {util.getString(img, 'exif', 'model')}</span>}
-                                            {img.exif && img.exif.lensModel && <span class='mr-1 badge badge-secondary'>{util.getString(img, 'exif', 'lensModel')}</span>}
-                                            {img.exif && img.exif.fNumber && <span class='mr-1 badge badge-secondary'>f/{util.getString(img, 'exif', 'fNumber')}</span>}
-                                            {img.exif && img.exif.focalLength && <span class='mr-1 badge badge-secondary'>{util.getString(img, 'exif', 'focalLength')} mm</span>}
-                                            {img.exif && img.exif.exposureTime && <span class='mr-1 badge badge-secondary'>{util.getString(img, 'exif', 'exposureTime')} sec</span>}
-                                            {img.exif && img.exif.photographicSensitivity && <span class='mr-1 badge badge-secondary'>ISO: {util.getString(img, 'exif', 'photographicSensitivity')}</span>}
-                                            <span class='mr-1 badge badge-secondary'><i class="fas fa-image"></i> {this.getWidth(img)}x{this.getHeight(img)}px</span>
+                                            {img.exif && img.exif.model && <span class='mr-1 badge badge-success'><i class="fas fa-camera"></i> {util.getString(img, 'exif', 'model')}</span>}
+                                            {img.exif && img.exif.lensModel && <span class='mr-1 badge badge-success'>{util.getString(img, 'exif', 'lensModel')}</span>}
+                                            {img.exif && img.exif.fNumber && <span class='mr-1 badge badge-success'>f/{util.getString(img, 'exif', 'fNumber')}</span>}
+                                            {img.exif && img.exif.focalLength && <span class='mr-1 badge badge-success'>{util.getString(img, 'exif', 'focalLength')} mm</span>}
+                                            {img.exif && img.exif.exposureTime && <span class='mr-1 badge badge-success'>{util.getString(img, 'exif', 'exposureTime')} sec</span>}
+                                            {img.exif && img.exif.photographicSensitivity && <span class='mr-1 badge badge-success'>ISO: {util.getString(img, 'exif', 'photographicSensitivity')}</span>}
+                                            <span class='mr-1 badge badge-success'><i class="fas fa-image"></i> {this.getWidth(img)}x{this.getHeight(img)}px</span>
                                         </div>
                                         <div class='text-muted'>
                                             {img.exif && img.exif.lat && <span class='mr-1 badge badge-info'>
