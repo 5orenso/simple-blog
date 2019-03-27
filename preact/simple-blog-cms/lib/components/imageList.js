@@ -17,14 +17,6 @@ export default class ImageList extends Component {
         this.imageServer = this.parent.props.apiServer;
     }
 
-    handleSearchKeypress = (event) => {
-        if (event.key === 'Enter') {
-            this.props.handleSubmit(event);
-        } else {
-            this.props.handleInput(event);
-        }
-    };
-
     drawCanvases() {
         this.props.imglist.map(img => {
             try {
@@ -93,7 +85,8 @@ export default class ImageList extends Component {
                 <div class='d-flex justify-content-center'>
                     <div class="col-4 mb-2">
                         <input type="text" class="form-control" placeholder="Søk etter bilder" name="q"
-                            onKeypress={this.handleSearchKeypress}
+                            onKeypress={handleInput}
+                            onChange={handleInput}
                         />
                     </div>
                     <div class="col-2">

@@ -45,16 +45,16 @@ export default class CategoryEdit extends Component {
                             <label for='titleInput'>Tittel</label>
                             <input type='text' class='form-control' id='titleInput' placeholder='Tittel'
                                 name='title'
-                                onKeyup={handleInput}
-                                onPaste={handleInput}
+                                onKeypress={handleInput}
+                                onChange={handleInput}
                                 value={category.title} />
                         </div>
                         <div class='form-group'>
                             <label for='urlInput'>URL</label>
                             <input type='text' class='form-control' id='urlInput' placeholder='url'
                                 name='url'
-                                onKeyup={handleInput}
-                                onPaste={handleInput}
+                                onKeypress={handleInput}
+                                onChange={handleInput}
                                 value={category.url} />
                         </div>
                     </div>
@@ -76,7 +76,7 @@ export default class CategoryEdit extends Component {
                     <div class='col-6'>
                         <div class='form-group h-100'>
                             <textarea name='header' class={`form-control h-100`} id='headerInput' rows='3'
-                                onKeyup={handleTextareaInput}
+                                onKeypress={handleTextareaInput}
                                 value={category.header} />
                         </div>
                     </div>
@@ -100,7 +100,7 @@ export default class CategoryEdit extends Component {
                     <div class='col-6'>
                         <div class='form-group h-100'>
                             <textarea name='headerDetail' class={`form-control h-100`} id='headerDetailInput' rows='3'
-                                onKeyup={handleTextareaInput}
+                                onKeypress={handleTextareaInput}
                                 value={category.headerDetail} />
                         </div>
                     </div>
@@ -125,7 +125,7 @@ export default class CategoryEdit extends Component {
                     <div class='col-6'>
                         <div class='form-group h-100'>
                             <textarea name='footer' class={`form-control h-100`} id='footerInput' rows='3'
-                                onKeyup={handleTextareaInput}
+                                onKeypress={handleTextareaInput}
                                 value={category.footer} />
                         </div>
                     </div>
@@ -149,7 +149,7 @@ export default class CategoryEdit extends Component {
                     <div class='col-6'>
                         <div class='form-group h-100'>
                             <textarea name='footerDetail' class={`form-control h-100`} id='footerDetailInput' rows='3'
-                                onKeyup={handleTextareaInput}
+                                onKeypress={handleTextareaInput}
                                 value={category.footerDetail} />
                         </div>
                     </div>

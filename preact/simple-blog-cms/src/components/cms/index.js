@@ -96,7 +96,7 @@ export default class SimpleBlogCms extends Component {
         const query = queryImage;
         util.fetchApi(`/api/image/`, { query, limit, offset }, this)
             .then((result) => {
-                console.log('result', result);
+                // console.log('result', result);
                 this.setState({
                     imglist: result.imglist,
                     imglistTotal: result.total,
@@ -310,39 +310,46 @@ export default class SimpleBlogCms extends Component {
         this.setState({ article });
     };
 
-    handleArticleSearchInput = (event) => {
-        // event.preventDefault();
+    handleArticleSearchInput = (event, limit) => {
+        const el = event.target;
+        const name = el.name;
+        let query = el.value;
+
         if (event.key === 'Enter') {
-            this.handleArticleSearchClick(event);
+            this.setState({ query }, () => {
+                this.handleArticleSearchClick(event, limit);
+            });
         } else {
-            const el = event.target;
-            const name = el.name;
-            const query = el.value + event.key;
+            if (event.key) {
+                query += event.key;
+            }
             this.setState({ query });
         }
     };
 
-    handleArticleSearchClick = (event) => {
-        // event.preventDefault();
+    handleArticleSearchClick = (event, limit) => {
         const currentPage = 1;
         this.setState({ currentPage });
-        this.loadArtlist(currentPage);
+        this.loadArtlist(currentPage, limit);
     };
 
     handleImageSearchInput = (event, limit) => {
-        // event.preventDefault();
+        const el = event.target;
+        const name = el.name;
+        let queryImage = el.value;
         if (event.key === 'Enter') {
-            this.handleImageSearchClick(event, limit);
+            this.setState({ queryImage }, () => {
+                this.handleImageSearchClick(event, limit);
+            });
         } else {
-            const el = event.target;
-            const name = el.name;
-            const queryImage = el.value + event.key;
+            if (event.key) {
+                queryImage += event.key;
+            }
             this.setState({ queryImage });
         }
     };
 
     handleImageSearchClick = (event, limit) => {
-        // event.preventDefault();
         const currentPage = 1;
         this.setState({ currentPage });
         this.loadImglist(currentPage, limit);
