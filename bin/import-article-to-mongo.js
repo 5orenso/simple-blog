@@ -155,9 +155,12 @@ const main = async () => {
                             text: newArt.imgText[j],
                         };
                         const filename = `${photoPath}${newArt.img[j].src}`;
-                        const exif = await readExif(filename);
+                        let exif;
+                        if (filename.match(/(jpg|jpeg)/i)) {
+                            exif = await readExif(filename);
+                            newArt.img[j].exif = exif;
+                        }
                         const filestats = await readFileInfo(filename);
-                        newArt.img[j].exif = exif;
                         newArt.img[j].stats = filestats;
                     }
                 }

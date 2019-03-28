@@ -125,6 +125,10 @@ $ node ./bin/import-image-to-mongo.js /srv/config/simple-blog/config-kaffeogkode
 $ node ./bin/import-article-to-mongo.js /srv/config/simple-blog/config-zu.no.js
 $ node ./bin/import-category-to-mongo.js /srv/config/simple-blog/config-zu.no.js
 $ node ./bin/import-image-to-mongo.js /srv/config/simple-blog/config-zu.no.js
+
+$ node ./bin/import-article-to-mongo.js /srv/config/simple-blog/config-lovetolearnmore.no.js
+$ node ./bin/import-category-to-mongo.js /srv/config/simple-blog/config-lovetolearnmore.no.js
+$ node ./bin/import-image-to-mongo.js /srv/config/simple-blog/config-lovetolearnmore.no.js
 ```
 
 ## Other Resources
