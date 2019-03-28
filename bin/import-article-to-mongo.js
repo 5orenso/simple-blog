@@ -154,14 +154,18 @@ const main = async () => {
                             src: newArt.img[j],
                             text: newArt.imgText[j],
                         };
-                        const filename = `${photoPath}${newArt.img[j].src}`;
-                        let exif;
-                        if (filename.match(/(jpg|jpeg)/i)) {
-                            exif = await readExif(filename);
-                            newArt.img[j].exif = exif;
+                        try {
+                            const filename = `${photoPath}${newArt.img[j].src}`;
+                            let exif;
+                            if (filename.match(/(jpg|jpeg)/i)) {
+                                exif = await readExif(filename);
+                                newArt.img[j].exif = exif;
+                            }
+                            const filestats = await readFileInfo(filename);
+                            newArt.img[j].stats = filestats;
+                        } catch (error) {
+                            console.log(`Error when reading image: ${error}`);
                         }
-                        const filestats = await readFileInfo(filename);
-                        newArt.img[j].stats = filestats;
                     }
                 }
 
