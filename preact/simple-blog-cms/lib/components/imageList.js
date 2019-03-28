@@ -37,11 +37,45 @@ export default class ImageList extends Component {
         const parts = String(size).split('x');
         const width = util.format(parts[0], 0);
         const height = util.format(parts[1], 0);
-        return `${width}x${height}cm`;
+        return `${width} x ${height}`;
     }
 
     formatQuality(quality) {
         return `${util.format(quality * 100, 0)}%`;
+    }
+
+    getCardinal($angle) {
+        //easy to customize by changing the number of directions you have
+        const directions = 8;
+
+        const degree = 360 / directions;
+        const angle = $angle + degree / 2;
+
+        if (angle >= 0 * degree && angle < 1 * degree) {
+            return 'N';
+        }
+        if (angle >= 1 * degree && angle < 2 * degree) {
+            return 'NE';
+        }
+        if (angle >= 2 * degree && angle < 3 * degree) {
+            return 'E';
+        }
+        if (angle >= 3 * degree && angle < 4 * degree) {
+            return 'SE';
+        }
+        if (angle >= 4 * degree && angle < 5 * degree) {
+            return 'S';
+        }
+        if (angle >= 5 * degree && angle < 6 * degree) {
+            return 'SW';
+        }
+        if (angle >= 6 * degree && angle < 7 * degree) {
+            return 'W';
+        }
+        if (angle >= 7 * degree && angle < 8 * degree) {
+            return 'NW';
+        }
+        return 'N';
     }
 
     drawCanvases() {
@@ -110,14 +144,14 @@ export default class ImageList extends Component {
         return (
             <div class='col-12'>
                 <div class='d-flex justify-content-center'>
-                    <div class="col-4 mb-2">
-                        <input type="text" class="form-control" placeholder="Søk etter bilder" name="q"
+                    <div class='col-4 mb-2'>
+                        <input type='text' class='form-control' placeholder='Søk etter bilder' name='q'
                             onKeypress={handleInput}
                             onChange={handleInput}
                         />
                     </div>
-                    <div class="col-2">
-                        <button class="btn btn-success" onclick={handleSubmit}>Søk</button>
+                    <div class='col-2'>
+                        <button class='btn btn-success' onclick={handleSubmit}>Søk</button>
                     </div>
                 </div>
                 <table class={`table table-sm ${styles.condensed}`}>
@@ -144,26 +178,35 @@ export default class ImageList extends Component {
                                         </div>
                                     </td>
                                     <td>
-                                        {img.src}<br />
+                                        {img.exif && img.exif.artist && <h6 class='mb-0'>{util.getString(img, 'exif', 'artist')}</h6>}
+                                        <span>{img.src}</span>
                                         <div class='text-muted'>
-                                            {img.exif && img.exif.model && <span class='mr-1 badge badge-success'><i class="fas fa-camera"></i> {util.getString(img, 'exif', 'model')}</span>}
+                                            {img.exif && img.exif.model && <span class='mr-1 badge badge-success'><i class='fas fa-camera'></i> {util.getString(img, 'exif', 'model')}</span>}
                                             {img.exif && img.exif.lensModel && <span class='mr-1 badge badge-success'>{util.getString(img, 'exif', 'lensModel')}</span>}
                                             {img.exif && img.exif.fNumber && <span class='mr-1 badge badge-success'>f/{util.getString(img, 'exif', 'fNumber')}</span>}
                                             {img.exif && img.exif.focalLength && <span class='mr-1 badge badge-success'>{util.getString(img, 'exif', 'focalLength')} mm</span>}
                                             {img.exif && img.exif.exposureTime && <span class='mr-1 badge badge-success'>{util.getString(img, 'exif', 'exposureTime')} sec</span>}
                                             {img.exif && img.exif.photographicSensitivity && <span class='mr-1 badge badge-success'>ISO: {util.getString(img, 'exif', 'photographicSensitivity')}</span>}
-                                            <span class='mr-1 badge badge-success'><i class="fas fa-image"></i> {this.getWidth(img)} x {this.getHeight(img)}px</span>
+                                            <span class='mr-1 badge badge-success'><i class='fas fa-image'></i> {this.getWidth(img)} x {this.getHeight(img)}px</span>
                                         </div>
                                         <div class='text-muted'>
                                             {img.exif && img.exif.lat && <span class='mr-1 badge badge-info'>
-                                                <i class="fas fa-location-arrow"></i> {util.format(img.exif.lat, 5, '.')}, {util.format(img.exif.lng, 5, '.')}
+                                                <i class='fas fa-location-arrow'></i> {util.format(img.exif.lat, 5, '.')}, {util.format(img.exif.lng, 5, '.')}
                                             </span>}
-                                            {img.features}
                                             {img.features && img.features['print size'] && <span class='mr-1 badge badge-info'>
-                                                <i class="fas fa-print"></i> {this.formatPrintSize(img.features['print size'])} cm
+                                                <i class='fas fa-print'></i> {this.formatPrintSize(img.features['print size'])} cm
                                             </span>}
                                             {img.features && img.features.quality && <span class='mr-1 badge badge-info'>
-                                                <i class="fas fa-thermometer-three-quarters"></i> {this.formatQuality(img.features.quality)}
+                                                <i class='fas fa-thermometer-three-quarters'></i> {this.formatQuality(img.features.quality)}
+                                            </span>}
+                                            {img.exif && img.exif.software && <span class='mr-1 badge badge-info'>
+                                                <i class='fas fa-edit'></i> {util.getString(img, 'exif', 'software')}
+                                            </span>}
+                                            {img.exif && img.exif.gpsSpeed > 0 && <span class='mr-1 badge badge-info'>
+                                                <i class='fas fa-tachometer-alt'></i> {util.format(img.exif.gpsSpeed, 1)} km/h
+                                            </span>}
+                                            {img.exif && img.exif.gpsImgDirection && <span class='mr-1 badge badge-info'>
+                                                <i class="fas fa-compass"></i> {this.getCardinal(img.exif.gpsImgDirection)}
                                             </span>}
                                         </div>
                                     </td>

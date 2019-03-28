@@ -49,8 +49,9 @@ module.exports = async (req, res) => {
     let apiContent;
     let total;
     let data = {};
-    if (req.query.query.trim()) {
-        const { list, total } = await img.search(req.query.query, {}, { limit, skip, query });
+    const searchQuery = (req.query.query || '').trim();
+    if (searchQuery) {
+        const { list, total } = await img.search(searchQuery, {}, { limit, skip, query });
         data.imglist = list;
         data.total = total;
     } else if (query.id) {
