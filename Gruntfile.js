@@ -18,7 +18,13 @@ module.exports = function (grunt) {
                 config: '.eslintrc.json',
                 reset: true
             },
-            target: ['app/**/*.js', 'lib/**/*.js', 'template/global/js/push-notification.js']
+            target: [
+                'app/**/*.js',
+                'lib/**/*.js',
+                'template/global/js/push-notification.js',
+                // 'preact/repair*/lib/**/*.js',
+                // 'preact/repair*/src/**/*.js',
+            ]
         },
         jsdoc: {
             dist: {
@@ -65,7 +71,7 @@ module.exports = function (grunt) {
                 options: {
                     script: 'app/server.js',
                     ext: 'js,json,html',
-                    ignore: ['node_modules/*', 'template/*', 'sessions/*', 'preact/*'],
+                    ignore: ['template/*', 'sessions/*', 'preact/*'],
                     args: ['-c', '../config/config.js'],
                     env: {
                         nodeEnv: 'development'
@@ -77,7 +83,7 @@ module.exports = function (grunt) {
                 options: {
                     script: 'app/server.js',
                     ext: 'js,json,html',
-                    ignore: ['node_modules/*', 'template/*', 'sessions/*', 'preact/*'],
+                    ignore: ['template/*', 'sessions/*', 'preact/*'],
                     args: ['-c', '../config/config-local.js'],
                     env: {
                         nodeEnv: 'development'

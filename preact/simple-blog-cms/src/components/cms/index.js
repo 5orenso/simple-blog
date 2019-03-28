@@ -36,6 +36,10 @@ const initialState = {
     currentPage: 1,
     articlesPerPage: 10,
     categoriesPerPage: 10,
+
+    query: '',
+    queryImage: '',
+    filterQuery: {},
 };
 
 export default class SimpleBlogCms extends Component {
@@ -92,9 +96,15 @@ export default class SimpleBlogCms extends Component {
     loadImglist(currentPage = 1, $limit) {
         const limit = $limit || this.state.articlesPerPage;
         const offset = (currentPage - 1) * limit;
-        const { queryImage } = this.state;
-        const query = queryImage;
-        util.fetchApi(`/api/image/`, { query, limit, offset }, this)
+        const { queryImage, filterQuery } = this.state;
+        const query = {
+            ...filterQuery,
+        };
+        if (queryImage.length > 0) {
+            query.query = queryImage;
+        }
+        console.log('loadImglist.query for API:', query);
+        util.fetchApi(`/api/image/`, { ...query, limit, offset }, this)
             .then((result) => {
                 // console.log('result', result);
                 this.setState({
@@ -182,7 +192,8 @@ export default class SimpleBlogCms extends Component {
         const currentMenu = el.dataset.menu;
         const currentPage = 1;
         const query = '';
-        this.setState({ currentMenu, currentPage, query });
+        const queryImage = '';
+        this.setState({ currentMenu, currentPage, query, queryImage });
         if (currentMenu === 'articles') {
             this.loadArtlist();
         } else if (currentMenu === 'categories') {
@@ -369,6 +380,20 @@ export default class SimpleBlogCms extends Component {
         this.setState({ article });
     }
 
+    handleImageTagClick = (event) => {
+        const el = event.target;
+        const name = el.dataset.name;
+        const value = el.dataset.value;
+        const { filterQuery } = this.state;
+        if (filterQuery[name] === value) {
+            delete filterQuery[name];
+        } else {
+            filterQuery[name] = value;
+        }
+        this.setState({ filterQuery });
+        this.handleImageSearchClick(event, 0, filterQuery);
+    };
+
     handleCategoryInput = (event) => {
         // event.preventDefault();
         const el = event.target;
@@ -538,9 +563,11 @@ export default class SimpleBlogCms extends Component {
                             handleClickNew={this.handleArticleClickNew}
 
                             imglist={imglist}
+                            filterQuery={this.state.filterQuery}
                             handleImageInput={this.handleImageSearchInput}
                             handleImageSubmit={this.handleImageSearchClick}
                             handleImglistClick={this.handleImageSearchResultClick}
+                            handleImageTagClick={this.handleImageTagClick}
                         />
                     </div>
                     <div class='d-flex justify-content-center'>
@@ -599,6 +626,8 @@ export default class SimpleBlogCms extends Component {
                             imglist={imglist}
                             handleInput={this.handleImageSearchInput}
                             handleSubmit={this.handleImageSearchClick}
+                            handleTagClick={this.handleImageTagClick}
+                            filterQuery={this.state.filterQuery}
                             handleImglistClick={this.handleImglistClick}
                         />
                     </div>

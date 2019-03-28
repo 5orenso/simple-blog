@@ -42,9 +42,53 @@ module.exports = async (req, res) => {
         query.category = req.params.category;
     }
 
+    // Fields to consider:
+    const queryFieldsString = [
+        'exif.model',
+        'exif.lensModel',
+        'exif.exposureTime',
+        'exif.photographicSensitivity',
+    ];
+    const queryFieldsNumber = [
+        'exif.fNumber',
+        'exif.focalLength',
+    ];
+    const queryFieldsArrayObject = [
+        ['predictions.className', { probability: { $gte: 0.2 } }],
+        ['predictionsCocoSsd.class', { score: { $gte: 0 } }],
+    ];
+    for (let i = 0, l = queryFieldsString.length; i < l; i += 1) {
+        const field = queryFieldsString[i];
+        if (req.query.hasOwnProperty(field)) {
+            // TODO: Should santitize this field.
+            query[field] = { $regex: req.query[field], $options: 'i' };
+        }
+    }
+    for (let i = 0, l = queryFieldsNumber.length; i < l; i += 1) {
+        const field = queryFieldsNumber[i];
+        if (req.query.hasOwnProperty(field)) {
+            // TODO: Should santitize this field.
+            query[field] = parseFloat(req.query[field]);
+        }
+    }
+    for (let i = 0, l = queryFieldsArrayObject.length; i < l; i += 1) {
+        const arrayField = queryFieldsArrayObject[i];
+        const field = arrayField[0];
+        const fieldQuery = arrayField[1];
+        if (req.query.hasOwnProperty(field)) {
+            // TODO: Should santitize this field.
+            const parts = field.split('.');
+            const arrayName = parts[0];
+            const objKey = parts[1];
+            query[arrayName] = { $elemMatch: { [objKey]: req.query[field], ...fieldQuery } };
+        }
+    }
+
     query = webUtil.cleanObject(query);
     const limit = parseInt(req.query.limit || 10, 10);
     const skip = parseInt(req.query.offset || 0, 10);
+
+console.log('query', query);
 
     let apiContent;
     let total;

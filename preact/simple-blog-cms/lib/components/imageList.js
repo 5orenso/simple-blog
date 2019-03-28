@@ -3,7 +3,8 @@ import { h, Component } from 'preact';
 import util from '../util';
 
 const widgetName = 'ImageList';
-const initialState = {};
+const initialState = {
+};
 const debug = false;
 const imageWidth = 150;
 const imageHeight = 100;
@@ -11,7 +12,7 @@ const imageHeight = 100;
 export default class ImageList extends Component {
     constructor(props) {
         super(props);
-        this.state = Object.assign({}, initialState);
+        this.state = { ...initialState };
         this.parent = props.that;
         this.props = props;
         this.imageServer = this.parent.props.apiServer;
@@ -78,6 +79,22 @@ export default class ImageList extends Component {
         return 'N';
     }
 
+    getSceneCaptureType(input) {
+        // if (input === 0) {
+        //     return <span><i class="far fa-image"></i> Standard</span>;
+        // }
+        if (input === 1) {
+            return <span><i class="fas fa-mountain"></i> Landscape</span>;
+        }
+        if (input === 2) {
+            return <span><i class="fas fa-user"></i> Portrait</span>;
+        }
+        if (input === 3) {
+            return <span><i class="fas fa-moon"></i> Night scene</span>;
+        }
+        return '';
+    }
+
     drawCanvases() {
         this.props.imglist.map(img => {
             try {
@@ -140,7 +157,9 @@ export default class ImageList extends Component {
         const handleImglistClick = props.handleImglistClick;
         const handleInput = props.handleInput;
         const handleSubmit = props.handleSubmit;
+        const handleTagClick = props.handleTagClick;
         const imageId = props.imageId;
+        const filterQuery = props.filterQuery;
         return (
             <div class='col-12'>
                 <div class='d-flex justify-content-center'>
@@ -181,15 +200,65 @@ export default class ImageList extends Component {
                                         {img.exif && img.exif.artist && <h6 class='mb-0'>{util.getString(img, 'exif', 'artist')}</h6>}
                                         <span>{img.src}</span>
                                         <div class='text-muted'>
-                                            {img.exif && img.exif.model && <span class='mr-1 badge badge-success'><i class='fas fa-camera'></i> {util.getString(img, 'exif', 'model')}</span>}
-                                            {img.exif && img.exif.lensModel && <span class='mr-1 badge badge-success'>{util.getString(img, 'exif', 'lensModel')}</span>}
-                                            {img.exif && img.exif.fNumber && <span class='mr-1 badge badge-success'>f/{util.getString(img, 'exif', 'fNumber')}</span>}
-                                            {img.exif && img.exif.focalLength && <span class='mr-1 badge badge-success'>{util.getString(img, 'exif', 'focalLength')} mm</span>}
-                                            {img.exif && img.exif.exposureTime && <span class='mr-1 badge badge-success'>{util.getString(img, 'exif', 'exposureTime')} sec</span>}
-                                            {img.exif && img.exif.photographicSensitivity && <span class='mr-1 badge badge-success'>ISO: {util.getString(img, 'exif', 'photographicSensitivity')}</span>}
-                                            <span class='mr-1 badge badge-success'><i class='fas fa-image'></i> {this.getWidth(img)} x {this.getHeight(img)}px</span>
+                                            {img.exif && img.exif.model && (
+                                                <span class={`mr-1 badge badge-${filterQuery['exif.model'] ? 'danger' : 'success'}`}
+                                                    data-name='exif.model'
+                                                    data-value={util.getString(img, 'exif', 'model')}
+                                                    onClick={handleTagClick}
+                                                >
+                                                    <i class='fas fa-camera'></i> {util.getString(img, 'exif', 'model')}
+                                                </span>
+                                            )}
+                                            {img.exif && img.exif.lensModel && (
+                                                <span class={`mr-1 badge badge-${filterQuery['exif.lensModel'] ? 'danger' : 'success'}`}
+                                                    data-name='exif.lensModel'
+                                                    data-value={util.getString(img, 'exif', 'lensModel')}
+                                                    onClick={handleTagClick}
+                                                >
+                                                    {util.getString(img, 'exif', 'lensModel')}
+                                                </span>
+                                            )}
+                                            {img.exif && img.exif.fNumber && (
+                                                <span class={`mr-1 badge badge-${filterQuery['exif.fNumber'] ? 'danger' : 'success'}`}
+                                                    data-name='exif.fNumber'
+                                                    data-value={util.getString(img, 'exif', 'fNumber')}
+                                                    onClick={handleTagClick}
+                                                >
+                                                    f/{util.getString(img, 'exif', 'fNumber')}
+                                                </span>
+                                            )}
+                                            {img.exif && img.exif.focalLength && (
+                                                <span class={`mr-1 badge badge-${filterQuery['exif.focalLength'] ? 'danger' : 'success'}`}
+                                                    data-name='exif.focalLength'
+                                                    data-value={util.getString(img, 'exif', 'focalLength')}
+                                                    onClick={handleTagClick}
+                                                >
+                                                    {util.getString(img, 'exif', 'focalLength')} mm
+                                                </span>
+                                            )}
+                                            {img.exif && img.exif.exposureTime && (
+                                                <span class={`mr-1 badge badge-${filterQuery['exif.exposureTime'] ? 'danger' : 'success'}`}
+                                                    data-name='exif.exposureTime'
+                                                    data-value={util.getString(img, 'exif', 'exposureTime')}
+                                                    onClick={handleTagClick}
+                                                >
+                                                    {util.getString(img, 'exif', 'exposureTime')} sec
+                                                </span>
+                                            )}
+                                            {img.exif && img.exif.photographicSensitivity && (
+                                                <span class={`mr-1 badge badge-${filterQuery['exif.photographicSensitivity'] ? 'danger' : 'success'}`}
+                                                    data-name='exif.photographicSensitivity'
+                                                    data-value={util.getString(img, 'exif', 'photographicSensitivity')}
+                                                    onClick={handleTagClick}
+                                                >
+                                                    ISO: {util.getString(img, 'exif', 'photographicSensitivity')}
+                                                </span>
+                                            )}
                                         </div>
                                         <div class='text-muted'>
+                                            <span class='mr-1 badge badge-info'>
+                                                <i class='fas fa-image'></i> {this.getWidth(img)} x {this.getHeight(img)}px
+                                            </span>
                                             {img.exif && img.exif.lat && <span class='mr-1 badge badge-info'>
                                                 <i class='fas fa-location-arrow'></i> {util.format(img.exif.lat, 5, '.')}, {util.format(img.exif.lng, 5, '.')}
                                             </span>}
@@ -205,8 +274,14 @@ export default class ImageList extends Component {
                                             {img.exif && img.exif.gpsSpeed > 0 && <span class='mr-1 badge badge-info'>
                                                 <i class='fas fa-tachometer-alt'></i> {util.format(img.exif.gpsSpeed, 1)} km/h
                                             </span>}
+                                            {img.exif && img.exif.gpsAltitude > 0 && <span class='mr-1 badge badge-info'>
+                                                <i class='fas fa-mountain'></i> {util.format(img.exif.gpsAltitude, 0)} moh
+                                            </span>}
                                             {img.exif && img.exif.gpsImgDirection && <span class='mr-1 badge badge-info'>
                                                 <i class="fas fa-compass"></i> {this.getCardinal(img.exif.gpsImgDirection)}
+                                            </span>}
+                                            {img.exif && img.exif.hasOwnProperty('sceneCaptureType') && <span class='mr-1 badge badge-info'>
+                                                {this.getSceneCaptureType(img.exif.sceneCaptureType)}
                                             </span>}
                                         </div>
                                     </td>
@@ -216,12 +291,20 @@ export default class ImageList extends Component {
                                     </td>
                                     <td>
                                         {img.predictions && img.predictions.filter(pre => pre.probability > 0.2).map((pre) =>
-                                            <span class='badge badge-info p-2 mb-1 ml-2'>
+                                            <span class={`badge badge-${filterQuery['predictions.className'] === pre.className ? 'danger' : 'info'} p-2 mb-1 ml-2`}
+                                                data-name='predictions.className'
+                                                data-value={pre.className}
+                                                onClick={handleTagClick}
+                                            >
                                                 {pre.className} ({util.format(pre.probability * 100, 0)}%)
                                             </span>
                                         )}
                                         {img.predictionsCocoSsd && img.predictionsCocoSsd.map((pre) =>
-                                            <span class='badge badge-warning p-2 mb-1 ml-2'>
+                                            <span class={`badge badge-${filterQuery['predictionsCocoSsd.class'] === pre.class ? 'danger' : 'warning'} p-2 mb-1 ml-2`}
+                                                data-name='predictionsCocoSsd.class'
+                                                data-value={pre.class}
+                                                onClick={handleTagClick}
+                                            >
                                                 {pre.class} ({util.format(pre.score * 100, 0)}%)
                                             </span>
                                         )}

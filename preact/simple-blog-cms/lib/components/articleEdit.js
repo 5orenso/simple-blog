@@ -56,8 +56,10 @@ export default class ArticleEdit extends Component {
         const handleImageInput = props.handleImageInput;
         const handleImageSubmit = props.handleImageSubmit;
         const handleImglistClick = props.handleImglistClick;
+        const handleImageTagClick = props.handleImageTagClick;
 
         const imglist = props.imglist;
+        const filterQuery = props.filterQuery;
 
         const images = article.img || [];
         const imagesTotal = images.length;
@@ -233,7 +235,7 @@ export default class ArticleEdit extends Component {
                                     <h3>Bildearkivet:</h3>
                                     <div class='col-12'>
                                         <div class='d-flex justify-content-center'>
-                                            <div class="col-8 mb-2">
+                                            <div class="col-10 mb-2">
                                                 <input type="text" class="form-control" placeholder="Søk etter bilder" name="q"
                                                     onKeypress={e => handleImageInput(e, 54)}
                                                 />
@@ -241,16 +243,28 @@ export default class ArticleEdit extends Component {
                                             <div class="col-2">
                                                 <button class="btn btn-success" onclick={e => handleImageSubmit(e, 54)}>Søk</button>
                                             </div>
+
                                         </div>
                                     </div>
                                     <div class='row'>
-                                    {imglist.map((img, idx) => {
-                                        return (
-                                            <div class='col-2 p-1'>
-                                                <img src={`${this.imageServer}/pho/${img.src}?w=${imageWidth}`} class='img-fluid' data-idx={idx} onclick={handleImglistClick} />
-                                            </div>
-                                        );
-                                    })}
+                                        <div class='col-12'>
+                                            {Object.keys(filterQuery).map(key =>
+                                                <span class={`mr-1 badge badge-danger`}
+                                                    data-name={key}
+                                                    data-value={filterQuery[key]}
+                                                    onClick={handleImageTagClick}
+                                                >
+                                                    {key}: {filterQuery[key]}
+                                                </span>
+                                            )}
+                                        </div>
+                                        {imglist.map((img, idx) => {
+                                            return (
+                                                <div class='col-2 p-1'>
+                                                    <img src={`${this.imageServer}/pho/${img.src}?w=${imageWidth}`} class='img-fluid' data-idx={idx} onclick={handleImglistClick} />
+                                                </div>
+                                            );
+                                        })}
                                     </div>
                                 </div>
                             )}
