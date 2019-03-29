@@ -25,7 +25,7 @@ const main = async () => {
         });
     }
 
-    await myMongoose.close();
+    await myMongoose.closeAll();
 };
 
 main();

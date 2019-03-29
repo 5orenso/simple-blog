@@ -202,7 +202,7 @@ const main = async () => {
                 // }
             }
             // console.log(articleKeys);
-            await article.close();
+            await myMongoose.closeAll();
         })
         .catch(error => console.error(error));
 
