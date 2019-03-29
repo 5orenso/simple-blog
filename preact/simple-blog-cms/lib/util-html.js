@@ -44,7 +44,7 @@ renderer.image = function image($href, title, text) {
         const allClasses = result[1].split(',');
         if (allClasses[0] === 'card') {
             return `
-                <div class="card float-right col-lg-4 col-md-6 col-sm-12 p-0">
+                <div class="card float-right col-lg-4 col-md-6 col-sm-12 p-0 ml-2 mb-2 mt-2">
                     <a href="${href}" data-smoothzoom="group1" title="${title || text}">
                         <img class="card-img-top" src="${src}" alt="${title || text}">
                     </a>
@@ -55,7 +55,7 @@ renderer.image = function image($href, title, text) {
                 </div>`;
         } else if (allClasses[0] === 'card2') {
             return `
-                <div class="float-right card col-lg-7 col-md-7 col-sm-12 p-0">
+                <div class="float-right card col-lg-7 col-md-7 col-sm-12 p-0 ml-2 mb-2 mt-2">
                     <div class="row no-gutters">
                         <div class="col-md-4">
                             <a href="${href}" data-smoothzoom="group1" title="${title || text}">
