@@ -123,8 +123,7 @@ export default class ArticleEdit extends Component {
                                 </div>
                             </div>
 
-                            <div class='col-12 h-100' style="display: flex; flex-direction: column; justify-content: space-around;">
-
+                            <div class='col-12 h-100 d-flex flex-column'>
                                 <div class='form-group'>
                                     <label for='titleInput'>Tittel</label>
                                     <input type='text' class='form-control' id='titleInput' placeholder='Tittel'
@@ -141,16 +140,16 @@ export default class ArticleEdit extends Component {
                                         onKeypress={handleInput}
                                         value={article.teaser} />
                                 </div>
-                                <div class='form-group' style='flex: 1;'>
+                                <div class='form-group flex-grow-1'>
                                     <label for='bodyInput'>Brødtekst</label>
                                     <textarea name='body' class={`${styles.textareaAutoHeight} form-control`} id='bodyInput' rows='10'
                                         onChange={handleTextareaInput}
-                                        onKeypress={handleInput}
+                                        onKeypress={handleTextareaInput}
                                         onFocus={this.handleTextareaFocus}
                                         value={article.body} />
+                                    <button type='submit' class='btn btn-success' onClick={handleClickSave}>Lagre</button>
                                 </div>
 
-                                <button type='submit' class='btn btn-success' onClick={handleClickSave}>Lagre</button>
                             </div>
                         </div>
                     </div>

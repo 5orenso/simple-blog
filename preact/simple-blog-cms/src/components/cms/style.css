@@ -1,11 +1,11 @@
 .progress {
-    height: 1px;
+    height: 2px;
     -webkit-transition: all 1.5s ease;
     -moz-transition: all 1.5s ease;
     transition: all 1.5s ease;
 }
 .progressBar {
-    height: 1px;
+    height: 2px;
     -webkit-transition: width 1.0s ease;
     -moz-transition: width 1.0s ease;
     transition: width 1.0s ease;
@@ -17,6 +17,6 @@
 
 .textareaAutoHeight {
     box-sizing: border-box; /* fit parent width */
-    height: 95%;
-    min-height: 350px;
+    height: 95% !important;
+    min-height: 300px;
 }

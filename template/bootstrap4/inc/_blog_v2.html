@@ -24,21 +24,6 @@
                         <div>
                             <img src="/pho/{{ article.img[0].src }}?w={% if isPhoto %}1800{% else %}1050{% endif %}" alt="{{ article.title|e }}" class="img-fluid">
                         </div>
-                    {% else %}
-                        <div class="blog-post-quote">
-							<blockquote>
-								<p><i class="fas fa-quote-left"></i>
-                                    {% if article.quote %}
-                                        {{ article.quote|cleanHtml }}
-                                    {% elseif article.teaser %}
-                                        {{ article.teaser|cleanHtml }}
-                                    {% elseif article.title %}
-                                        {{ article.title|cleanHtml }}
-                                    {% endif %}
-                                </p>
-								<h3>{{ article.quoteBy }}</h3>
-							</blockquote>
-						</div>
                     {% endif %}
 				</div>
             </div>

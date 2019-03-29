@@ -76,7 +76,7 @@ html {
 .blog-main-full {
     padding-left: 0px;
     padding-right: 0px;
-    padding-top: .7rem;
+    /* padding-top: .7rem; */
 }
 .blog-post-quote {
     font-size: 2.5em;

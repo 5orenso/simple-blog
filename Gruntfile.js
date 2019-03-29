@@ -71,7 +71,7 @@ module.exports = function (grunt) {
                 options: {
                     script: 'app/server.js',
                     ext: 'js,json,html',
-                    ignore: ['template/*', 'sessions/*', 'preact/*'],
+                    ignore: ['sessions/*', 'preact/*'],
                     args: ['-c', '../config/config.js'],
                     env: {
                         nodeEnv: 'development'

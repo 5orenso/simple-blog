@@ -174,14 +174,13 @@ export default class SimpleBlogCms extends Component {
         }
     }
 
-    handleAddImage = (file, cb) => {
+    handleAddImage = (file) => {
         const article = this.state.article;
         if (!Array.isArray(article.img)) {
             article.img = [];
         }
         article.img.push(file);
         this.setState({ article });
-        cb();
     }
 
     // - - - [ Events ] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -290,33 +289,45 @@ export default class SimpleBlogCms extends Component {
     };
 
     handleArticleTextareaInput = (event) => {
-        // event.preventDefault();
+        event.preventDefault();
         const el = event.target;
         const name = el.name;
         const article = this.state.article;
-        article[name] = el.value;
+        let value = el.value;
+        if (event.key) {
+            value += event.key;
+        }
+        article[name] = value;
         this.setState({ article });
         // this.doHandleTextareaInput(el);
     };
 
     handleCategoryTextareaInput = (event) => {
-        // event.preventDefault();
+        event.preventDefault();
         const el = event.target;
         const name = el.name;
+        let value = el.value;
+        if (event.key) {
+            value += event.key;
+        }
         const category = this.state.category;
-        category[name] = el.value;
+        category[name] = value;
         this.setState({ category });
     };
 
     handleArticleInput = (event) => {
-        // event.preventDefault();
+        event.preventDefault();
         const el = event.target;
         const name = el.name;
         const article = this.state.article;
+        let value = el.value;
+        if (event.key) {
+            value += event.key;
+        }
         if (typeof article[name] === 'object' && Array.isArray(article[name])) {
-            article[name] = el.value.split(/, ?/);
+            article[name] = value.split(/, ?/);
         } else {
-            article[name] = el.value;
+            article[name] = value;
         }
         this.setState({ article });
     };
@@ -395,14 +406,18 @@ export default class SimpleBlogCms extends Component {
     };
 
     handleCategoryInput = (event) => {
-        // event.preventDefault();
+        event.preventDefault();
         const el = event.target;
         const name = el.name;
         const category = this.state.category;
+        let value = el.value;
+        if (event.key) {
+            value += event.key;
+        }
         if (typeof category[name] === 'object' && Array.isArray(category[name])) {
-            category[name] = el.value.split(/, ?/);
+            category[name] = value.split(/, ?/);
         } else {
-            category[name] = el.value;
+            category[name] = value;
         }
         this.setState({ category });
     };

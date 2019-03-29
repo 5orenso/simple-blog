@@ -18,8 +18,6 @@
     </div>
 {% endif %}
 
-{{ cateogry.header|safe }}
-
 {% if queryString.q %}
     {% set startArt = 0 %}
     <div class="container pt-3">
@@ -33,6 +31,8 @@
         </div>
     </div>
 {% endif %}
+
+{{ category.header|safe }}
 
 {% if isPhoto %}
     <div class="container-fluid">
@@ -64,27 +64,11 @@
                     {% for art in artlist %}
                         {% if loop.index > startArt %}
                             <div class="col-sm-6 col-lg-4">
-                                <div class="post-thumb">
-                                    {% if art.img[0] %}
-                                        <a href="/v2/{{ art.category|url_encode }}/{{ art.title|lower|url_encode }}/{{ art.id }}"><img src="/pho/{{ art.img[0].src }}?w=800" alt="{{ art.title|e }}" class="img-fluid"></a>
-                                    {% else %}
-                                        <div class="entry-quote-post-format">
-                                            <a href="/v2/{{ art.category|url_encode }}/{{ art.title|lower|url_encode }}/{{ art.id }}">
-                                                <blockquote>
-                                                    <p><i class="fa fa-quote-left"></i>
-                                                        {% if art.quote %}
-                                                            {{ art.quote|striptags }}
-                                                        {% elseif art.teaser %}
-                                                            {{ art.teaser|striptags }}
-                                                        {% elseif art.title %}
-                                                            {{ art.title|striptags }}
-                                                        {% endif %}</p>
-                                                    <h3>{{ art.quoteBy }}</h3>
-                                                </blockquote>
-                                            </a>
-                                        </div>
-                                    {% endif %}
-                                </div>
+                                {% if art.img[0] %}
+                                    <div class="post-thumb">
+                                        <a href="/v2/{{ art.category|url_encode }}/{{ art.title|lower|url_encode }}/{{ art.id }}"><img src="/pho/{{ art.img[0].src }}?w=800" alt="{{ art.title|e }}" class="img-fluid"></a>                                        
+                                    </div>
+                                {% endif %}
                                 <div class="post-content">
                                     {% if 1 == 2 %}
                                         <a href="/v2/{{ art.category|url_encode }}/{{ art.title|lower|url_encode }}/{{ art.id }}" class="post-cat">{{ art.baseHref }}</a>
@@ -130,3 +114,5 @@
             </main>
         </div>
     </div>
+
+    {{ category.footer|safe }}
