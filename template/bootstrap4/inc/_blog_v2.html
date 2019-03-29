@@ -235,7 +235,7 @@
                                         <img src="/pho/{{ art.img[0].src }}?w=250" alt="{{ art.title|e }} - {{ art.teaser|e }}" class="img-fluid"><br clear="all">
                                     {% endif %}
                                 </a>
-                                <a href="/v2/{{ art.category }}/{{ art.filename }}" title="{{ art.title|e }} - {{ art.teaser|e }}">{{ art.title }}</a>
+                                <h6><a href="/v2/{{ art.category }}/{{ art.filename }}" title="{{ art.title|e }} - {{ art.teaser|e }}"><i class="fas fa-angle-right"></i> {{ art.title }}</a></h6>
                             </div>
                         {% endif %}
                     {% endfor %}
