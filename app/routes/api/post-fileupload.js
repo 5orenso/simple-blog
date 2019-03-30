@@ -42,7 +42,7 @@ module.exports = async (req, res) => {
     const filesUploaded = [];
 
     const imageUtil = new ImageUtil();
-    await imageUtil.loadModels();
+    // await imageUtil.loadModels();
 
     const photoPath = util.returnString(req, 'config', 'adapter', 'markdown', 'photoPath');
 
@@ -67,7 +67,7 @@ module.exports = async (req, res) => {
             file.src = `${req.query.category}/${req.query.title}/${file.newFilename}`;
             delete file.data;
 
-            const imageInfo = await imageUtil.read(tmpFile);
+            const imageInfo = await imageUtil.read(tmpFile, true);
             const fileData = { ...file, ...imageInfo };
 
             const image = new Image();
