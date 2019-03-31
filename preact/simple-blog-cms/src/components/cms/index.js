@@ -289,15 +289,15 @@ export default class SimpleBlogCms extends Component {
     };
 
     handleArticleTextareaInput = (event) => {
-        event.preventDefault();
+        // event.preventDefault();
         const el = event.target;
         const name = el.name;
         const article = this.state.article;
-        let value = el.value;
-        if (event.key) {
-            value += event.key;
-        }
-        article[name] = value;
+        // let value = el.value;
+        // if (event.key) {
+        //     value += event.key;
+        // }
+        article[name] = el.value;
         this.setState({ article });
         // this.doHandleTextareaInput(el);
     };
@@ -306,12 +306,12 @@ export default class SimpleBlogCms extends Component {
         event.preventDefault();
         const el = event.target;
         const name = el.name;
-        let value = el.value;
-        if (event.key) {
-            value += event.key;
-        }
+        // let value = el.value;
+        // if (event.key) {
+        //     value += event.key;
+        // }
         const category = this.state.category;
-        category[name] = value;
+        category[name] = el.value;
         this.setState({ category });
     };
 
