@@ -563,13 +563,12 @@ export default class SimpleBlogCms extends Component {
                         />
                     </div>
                     <div class='d-flex justify-content-center'>
-                        <Messages styles={styles} messages={messages} />
-                    </div>
-                    <div class='d-flex justify-content-center'>
                         <ArticleEdit styles={styles}
                             articleId={articleId}
                             article={article}
                             that={this}
+                            messages={messages}
+
                             handleInput={this.handleArticleInput}
                             handleAddImage={this.handleAddImage}
                             handleRemoveImageClick={this.handleRemoveImageClick}
@@ -655,9 +654,6 @@ export default class SimpleBlogCms extends Component {
                             handlePaginationDecClick={this.handlePaginationDecClick}
                             handlePaginationIncClick={this.handlePaginationIncClick}
                         />
-                    </div>
-                    <div class='d-flex justify-content-center'>
-                        <Messages styles={styles} messages={messages} />
                     </div>
                 </div>
             );

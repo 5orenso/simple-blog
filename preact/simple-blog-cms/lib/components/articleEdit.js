@@ -1,6 +1,7 @@
 import { h, Component } from 'preact';
 
 import ImageUpload from './imageUpload';
+import MessagesLite from './messagesLite';
 
 import util from '../util';
 import utilHtml from '../util-html';
@@ -45,6 +46,7 @@ export default class ArticleEdit extends Component {
     render(props) {
         const { currentMenu } = this.state;
         const styles = props.styles;
+        const messages = props.messages;
         const article = props.article;
         const handleInput = props.handleInput;
         const handleAddImage = props.handleAddImage;
@@ -70,7 +72,7 @@ export default class ArticleEdit extends Component {
         });
 
         const renderedMenu = (
-            <nav class='nav nav-pills nav-fill mb-3 sticky-top'>
+            <nav class='nav nav-pills nav-fill mb-3 sticky-top bg-light'>
                 <a class={`nav-item nav-link ${currentMenu === 'preview' ? 'active' : ''}`} href='#'
                     onClick={this.handleMenuClick} data-menu='preview'>Forhåndsvisning</a>
                 <a class={`nav-item nav-link ${currentMenu === 'images' ? 'active' : ''}`} href='#'
@@ -83,7 +85,6 @@ export default class ArticleEdit extends Component {
         const renderedEditArticle = (
             <div class='row vh-100'>
                 <div class='col-12'>
-                    <button type='submit' class='btn btn-success float-right ml-2' onClick={handleClickSave}>Lagre</button>
                     <button class='btn btn-info float-right ml-2' onClick={handleClickNew}>+ Ny artikkel</button>
                     <h3>Redigering</h3>
                 </div>
@@ -145,6 +146,7 @@ export default class ArticleEdit extends Component {
                             onFocus={this.handleTextareaFocus}
                             value={article.body} />
                         <button type='submit' class='btn btn-success' onClick={handleClickSave}>Lagre</button>
+                        <MessagesLite styles={styles} messages={messages} />
                     </div>
 
                 </div>
