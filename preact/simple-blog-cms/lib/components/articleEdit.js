@@ -95,8 +95,7 @@ export default class ArticleEdit extends Component {
                         <input type='number' class='form-control' id='statusInput' placeholder='Status'
                             min='1' max='3' step='1'
                             name='status'
-                            onChange={handleInput}
-                            onKeypress={handleInput}
+                            onInput={handleInput}
                             value={article.status} />
                     </div>
                 </div>
@@ -105,8 +104,7 @@ export default class ArticleEdit extends Component {
                         <label for='authorInput'>Forfatter</label>
                         <input type='text' class='form-control' id='authorInput' placeholder='Forfatter'
                             name='author'
-                            onChange={handleInput}
-                            onKeypress={handleInput}
+                            onInput={handleInput}
                             value={article.author} />
                     </div>
                 </div>
@@ -115,8 +113,7 @@ export default class ArticleEdit extends Component {
                         <label for='categoryInput'>Kategori</label>
                         <input type='text' class='form-control' id='categoryInput' placeholder='Kategori'
                             name='category'
-                            onChange={handleInput}
-                            onKeypress={handleInput}
+                            onInput={handleInput}
                             value={article.category} />
                     </div>
                 </div>
@@ -126,23 +123,20 @@ export default class ArticleEdit extends Component {
                         <label for='titleInput'>Tittel</label>
                         <input type='text' class='form-control' id='titleInput' placeholder='Tittel'
                             name='title'
-                            onChange={handleInput}
-                            onKeypress={handleInput}
+                            onInput={handleInput}
                             value={article.title} />
                     </div>
                     <div class='form-group'>
                         <label for='teaserInput'>Teaser</label>
                         <input type='text' class='form-control' id='teaserInput' placeholder='Teaser'
                             name='teaser'
-                            onChange={handleInput}
-                            onKeypress={handleInput}
+                            onInput={handleInput}
                             value={article.teaser} />
                     </div>
                     <div class='form-group flex-grow-1'>
                         <label for='bodyInput'>Brødtekst</label>
                         <textarea name='body' class={`${styles.textareaAutoHeight} form-control`} id='bodyInput' rows='10'
-                            onChange={handleTextareaInput}
-                            onKeypress={handleTextareaInput}
+                            onInput={handleTextareaInput}
                             onFocus={this.handleTextareaFocus}
                             value={article.body} />
                         <button type='submit' class='btn btn-success' onClick={handleClickSave}>Lagre</button>
@@ -271,8 +265,7 @@ export default class ArticleEdit extends Component {
                             <label for='publishedInput'>Published</label>
                             <input type='text' class='form-control' id='publishedInput' placeholder='Publiseringsdato'
                                 name='published'
-                                onChange={handleInput}
-                                onKeypress={handleInput}
+                                onInput={handleInput}
                                 value={util.isoDateNormalized(article.published)} />
                         </div>
                     </div>
@@ -281,8 +274,7 @@ export default class ArticleEdit extends Component {
                             <label for='tagsInput'>Tags</label>
                             <input type='text' class='form-control' id='tagsInput' placeholder='Tags'
                                 name='tags'
-                                onChange={handleInput}
-                                onKeypress={handleInput}
+                                onInput={handleInput}
                                 value={article.tags} />
                         </div>
                     </div>
@@ -291,8 +283,7 @@ export default class ArticleEdit extends Component {
                             <label for='youtubeInput'>Youtube link</label>
                             <input type='text' class='form-control' id='youtubeInput' placeholder='Youtube link'
                                 name='youtube'
-                                onChange={handleInput}
-                                onKeypress={handleInput}
+                                onInput={handleInput}
                                 value={article.youtube} />
                         </div>
                     </div>
