@@ -17,6 +17,6 @@
 
 .textareaAutoHeight {
     box-sizing: border-box; /* fit parent width */
-    height: 95% !important;
+    height: 90% !important;
     min-height: 300px;
 }
