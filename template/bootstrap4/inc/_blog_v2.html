@@ -45,7 +45,13 @@
                     {% if article.author %}
                         by {{ article.author }} |
                     {% endif %}
-                    <a href="{{ article.baseHref }}" class="post-cat">{{ baseHref }}</a>
+                    <a href="/v2/{{ category.title }}/" class="post-cat">{{ category.title }}</a>
+
+                    {% if article.status %}
+                        | <span class="badge badge-{{ article.status|getStatusClass }}">
+                            {{ article.status|getStatus }}
+                        </span>
+                    {% endif %}
                 </p>
 
                 {% if article.ingress %}

@@ -17,11 +17,16 @@ module.exports = async (req, res) => {
     const art = new Article();
     const cat = new Category();
 
+console.log('session', req.session.email);
+
     let isDetailView = false;
     let isCategoryView = false;
     const query = {
         status: 2,
     };
+    if (req.session.email) {
+        delete query.status;
+    }
     if (req.params.id) {
         isDetailView = true;
         query.id = parseInt(req.params.id, 10);
