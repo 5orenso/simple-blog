@@ -8,7 +8,6 @@
 'use strict';
 
 const express = require('express');
-const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const _ = require('underscore');
 const fs = require('fs');
@@ -54,9 +53,6 @@ webRouter.use(morgan('combined', { stream: accessLogStream }));
 // Set config
 webRouter.use(setConfig);
 webRouter.use(require('../../lib/jwt'));
-
-webRouter.use(bodyParser.json({ limit: '50mb' }));
-webRouter.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 
 webRouter.use('/v2/', localUtil.setNoCacheHeaders);
 webRouter.use('/v2/', require('./v2/'));

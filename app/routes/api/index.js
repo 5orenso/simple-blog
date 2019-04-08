@@ -14,7 +14,7 @@ router.use(cors({
 }));
 
 router.use(bodyParser.json({ limit: '50mb' }));
-router.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
+// router.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 
 router.get('/article/', wrap(require('./get-article.js')));
 router.get('/article/:id', wrap(require('./get-article.js')));
