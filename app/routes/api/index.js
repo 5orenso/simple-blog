@@ -1,6 +1,7 @@
 'use strict';
 
 const router = require('express').Router();
+const bodyParser = require('body-parser');
 const cors = require('cors');
 const wrap = require('../../middleware/wrap');
 const util = require('../../../lib/utilities');
@@ -11,6 +12,9 @@ router.use(cors({
     credentials: true,
     preflightContinue: true, // All domains should be allowed by default to contact our API.
 }));
+
+router.use(bodyParser.json({ limit: '50mb' }));
+router.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 
 router.get('/article/', wrap(require('./get-article.js')));
 router.get('/article/:id', wrap(require('./get-article.js')));
