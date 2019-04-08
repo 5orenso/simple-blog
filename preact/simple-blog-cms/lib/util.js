@@ -101,7 +101,6 @@ class Utilities {
             fetchOpt.headers['Content-Type'] = 'application/json';
         } else {
             qs = querystring.stringify(opts);
-console.log('fetchApi:', opts, qs);
         }
         if (typeof settings.skipSettingState === 'undefined' || settings.skipSettingState === false) {
             if (typeof settings.skipSettingState === 'undefined' || settings.skipSettingState === false) {

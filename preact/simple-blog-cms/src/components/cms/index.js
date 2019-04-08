@@ -103,7 +103,6 @@ export default class SimpleBlogCms extends Component {
         if (queryImage.length > 0) {
             query.query = queryImage;
         }
-        console.log('loadImglist.query for API:', query);
         util.fetchApi(`/api/image/`, { ...query, limit, offset }, this)
             .then((result) => {
                 // console.log('result', result);

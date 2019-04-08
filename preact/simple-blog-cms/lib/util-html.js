@@ -38,10 +38,10 @@ renderer.image = function image($href, title, text) {
             return p3;
         });
         // <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/${youtubeVideo}?rel=0" allowfullscreen  width="1900" height="1200"></iframe>
-
         return `
-            <div class="embed-responsive embed-responsive-16by9">
-                <img class="embed-responsive-item" src="https://img.youtube.com/vi/${youtubeVideo}/maxresdefault.jpg" width="1280" height="720">
+            <div class="youtube" data-embed="${youtubeVideo}">
+                <div class="play-button"></div>
+                <img src="https://img.youtube.com/vi/${youtubeVideo}/sddefault.jpg">
             </div>
             <div class="image_inline_text"><strong>${text || ''}</strong> ${title || ''}</div>
         `;
