@@ -83,10 +83,12 @@ export default class ArticleEdit extends Component {
         );
 
         const renderedEditArticle = (
-            <div class='row vh-100'>
-                <div class='col-12'>
+            <div class='row bg-secondary'>
+                <div class='col-12 sticky-top'>
                     <button class='btn btn-info float-right ml-2' onClick={handleClickNew}>+ Ny artikkel</button>
-                    <h3>Redigering</h3>
+
+                    <button type='submit' class='btn btn-success' onClick={handleClickSave}>Lagre</button>
+                    <MessagesLite styles={styles} messages={messages} />
                 </div>
 
                 <div class='col-2'>
@@ -118,7 +120,7 @@ export default class ArticleEdit extends Component {
                     </div>
                 </div>
 
-                <div class='col-12 h-75 d-flex flex-column'>
+                <div class='col-12 d-flex flex-column'>
                     <div class='form-group'>
                         <label for='titleInput'>Tittel</label>
                         <input type='text' class='form-control' id='titleInput' placeholder='Tittel'
@@ -139,8 +141,6 @@ export default class ArticleEdit extends Component {
                             onInput={handleTextareaInput}
                             onFocus={this.handleTextareaFocus}
                             value={article.body} />
-                        <button type='submit' class='btn btn-success' onClick={handleClickSave}>Lagre</button>
-                        <MessagesLite styles={styles} messages={messages} />
                     </div>
 
                 </div>
@@ -163,7 +163,6 @@ export default class ArticleEdit extends Component {
         const renderedImages = (
             <div class='col-12'>
                 <div class='form-group'>
-                    <label for='imageInput'>Bilder</label>
                     <ImageUpload that={this.parent} styles={styles}
                         category={article.category}
                         title={article.title}

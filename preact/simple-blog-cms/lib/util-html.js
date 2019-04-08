@@ -32,6 +32,18 @@ renderer.heading = function heading(text, level) {
 };
 
 renderer.image = function image($href, title, text) {
+    if ($href.match(/youtube.com/)) {
+        const regexp = /(^|[\s\t\n]+)https*:\/\/(www\.)*youtube\.com\/(.*?v=([^&\s]+)(&[^\s]+)*)/gi;
+        const youtubeVideo = $href.replace(regexp, (match, p0, p1, p2, p3) => {
+            return p3;
+        });
+        return `
+            <div class="embed-responsive embed-responsive-16by9">
+                <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/${youtubeVideo}?rel=0" allowfullscreen></iframe>
+            </div>
+            <div class="image_inline_text"><strong>${text || ''}</strong> ${title || ''}</div>
+        `;
+    }
     let serverName = '';
     if (document.domain === 'localhost') {
         serverName = 'http://localhost:8080';

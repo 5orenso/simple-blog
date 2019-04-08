@@ -584,9 +584,6 @@ export default class SimpleBlogCms extends Component {
                             handleImageTagClick={this.handleImageTagClick}
                         />
                     </div>
-                    <div class='d-flex justify-content-center'>
-                        <Messages styles={styles} messages={messages} />
-                    </div>
                 </div>
             );
         } else if (currentMenu === 'categories') {
