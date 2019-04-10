@@ -93,7 +93,7 @@ export default class ArticleEdit extends Component {
 
                 <div class='col-2'>
                     <div class='form-group'>
-                        <label for='statusInput'>Status</label>
+                        <label for='statusInput' class='text-white-50'>Status</label>
                         <input type='number' class='form-control' id='statusInput' placeholder='Status'
                             min='1' max='3' step='1'
                             name='status'
@@ -103,7 +103,7 @@ export default class ArticleEdit extends Component {
                 </div>
                 <div class='col-4'>
                     <div class='form-group'>
-                        <label for='authorInput'>Forfatter</label>
+                        <label for='authorInput' class='text-white-50'>Forfatter</label>
                         <input type='text' class='form-control' id='authorInput' placeholder='Forfatter'
                             name='author'
                             onInput={handleInput}
@@ -112,7 +112,7 @@ export default class ArticleEdit extends Component {
                 </div>
                 <div class='col-6'>
                     <div class='form-group'>
-                        <label for='categoryInput'>Kategori</label>
+                        <label for='categoryInput' class='text-white-50'>Kategori</label>
                         <input type='text' class='form-control' id='categoryInput' placeholder='Kategori'
                             name='category'
                             onInput={handleInput}
@@ -122,21 +122,21 @@ export default class ArticleEdit extends Component {
 
                 <div class='col-12 d-flex flex-column'>
                     <div class='form-group'>
-                        <label for='titleInput'>Tittel</label>
+                        <label for='titleInput' class='text-white-50'>Tittel</label>
                         <input type='text' class='form-control' id='titleInput' placeholder='Tittel'
                             name='title'
                             onInput={handleInput}
                             value={article.title} />
                     </div>
                     <div class='form-group'>
-                        <label for='teaserInput'>Teaser</label>
+                        <label for='teaserInput' class='text-white-50'>Teaser</label>
                         <input type='text' class='form-control' id='teaserInput' placeholder='Teaser'
                             name='teaser'
                             onInput={handleInput}
                             value={article.teaser} />
                     </div>
                     <div class='form-group flex-grow-1'>
-                        <label for='bodyInput'>Brødtekst</label>
+                        <label for='bodyInput' class='text-white-50'>Brødtekst</label>
                         <textarea name='body' class={`${styles.textareaAutoHeight} form-control`} id='bodyInput' rows='10'
                             onInput={handleTextareaInput}
                             onFocus={this.handleTextareaFocus}
@@ -175,23 +175,23 @@ export default class ArticleEdit extends Component {
                     {article && article.img && article.img.map((img, idx) => (
                         <li class='list-group-item list-group-item-action flex-column align-items-start'>
                             <div class='d-flex w-100 justify-content-between'>
-                                <span class='mb-1'>{img.src}</span>
+                                <span class='mb-1'><small>{img.src}</small></span>
                                 <small>{util.formatBytes(util.getString(img, 'stats', 'size'), 2)}</small>
                                 <button class='btn btn-danger btn-sm' data-image={idx} onClick={handleRemoveImageClick}>X</button>
                             </div>
                             <div class='d-flex w-100 justify-content-between'>
                                 <p><img src={`${this.imageServer}/pho/${img.src}?w=150`} height='50'  class='img-fluid' /></p>
                                 <small>
-                                    <button class='btn btn-sm m-2' onClick={this.handleClickCode} data-content={`![${img.text || 'Image title'}](/pho/${img.src}?w=750 "Image description")\n`}>
+                                    <button class='btn btn-sm m-1' onClick={this.handleClickCode} data-content={`![${img.text || 'Image title'}](/pho/${img.src}?w=750 "Image description")\n`}>
                                         <i class="fas fa-image"></i> Image
                                     </button>
-                                    <button class='btn btn-sm m-2' onClick={this.handleClickCode} data-content={`![${img.text || 'Image title'}](/pho/${img.src}?w=750#card "Image description")\n`}>
+                                    <button class='btn btn-sm m-1' onClick={this.handleClickCode} data-content={`![${img.text || 'Image title'}](/pho/${img.src}?w=750#card "Image description")\n`}>
                                         <i class="fas fa-file-image"></i> Card
                                     </button>
-                                    <button class='btn btn-sm m-2' onClick={this.handleClickCode} data-content={`![${img.text || 'Image title'}](/pho/${img.src}?w=750#card2 "Image description")\n`}>
+                                    <button class='btn btn-sm m-1' onClick={this.handleClickCode} data-content={`![${img.text || 'Image title'}](/pho/${img.src}?w=750#card2 "Image description")\n`}>
                                         <i class="far fa-image"></i> Card 2
                                     </button>
-                                    <button class='btn btn-sm m-2' onClick={this.handleClickCode} data-content={`<h5>Detaljer om bildet</h5>
+                                    <button class='btn btn-sm m-1' onClick={this.handleClickCode} data-content={`<h5>Detaljer om bildet</h5>
 <ul>
 <li><i class="fas fa-camera"></i> [:img.${idx}.exif.model]</li>
 <li>Objektiv: [:img.${idx}.exif.lensModel]</li>
@@ -207,10 +207,10 @@ export default class ArticleEdit extends Component {
 </ul>
 `}><i class="fas fa-info-circle"></i> Bildeinfo
                                     </button>
-                                    <button class='btn btn-sm m-2' onClick={this.handleClickCode} data-content={`@[:img.${idx}.exif.lat],[:img.${idx}.exif.lng]\n`}>
+                                    <button class='btn btn-sm m-1' onClick={this.handleClickCode} data-content={`@[:img.${idx}.exif.lat],[:img.${idx}.exif.lng]\n`}>
                                         <i class="fas fa-location-arrow"></i> GPS
                                     </button>
-                                    <button class='btn btn-sm m-2' onClick={this.handleClickCode} data-content={`**Dette bildet er tilsalgs. Send meg en _[e-post](mailto:sorenso@gmail.com?subject=Henvendelse%20ang%20bilde:%20[:img.${idx}.src])_ eller ta kontakt på _[Facebook](http://facebook.com/sorenso)_ om du er interessert.**\n`}>
+                                    <button class='btn btn-sm m-1' onClick={this.handleClickCode} data-content={`**Dette bildet er tilsalgs. Send meg en _[e-post](mailto:sorenso@gmail.com?subject=Henvendelse%20ang%20bilde:%20[:img.${idx}.src])_ eller ta kontakt på _[Facebook](http://facebook.com/sorenso)_ om du er interessert.**\n`}>
                                         <i class="fas fa-shopping-cart"></i> Kjøp
                                     </button>
                                 </small>

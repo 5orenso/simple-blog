@@ -48,7 +48,8 @@ class Utilities {
 
     static isoDateNormalized(dateString) {
         let availDate;
-        if (typeof dateString === 'string' && dateString.match(/\d{4}-\d{2}-\d{2}/)) {
+        if (typeof dateString === 'string'
+            && (dateString.match(/^\d{4}-\d{2}-\d{2}$/) || dateString.match(/^\d{4}-\d{2}-\d{2}[ T]\d{2}:\d{2}/))) {
             availDate = new Date(dateString);
         } else if (typeof dateString === 'number') {
             availDate = new Date(0); // The 0 there is the key, which sets the date to the epoch
