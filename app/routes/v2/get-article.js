@@ -73,6 +73,7 @@ module.exports = async (req, res) => {
     const category = await cat.findOne(queryCategory);
     const catlist = await cat.find();
 
+    article.body = utilHtml.replaceDataTags(article.body, article);
     utilHtml.runPlugins(article);
 
     const template = (req.params.id || req.params.filename) ? '/bootstrap4/blog_v2.html' : '/bootstrap4/index_v2.html';
