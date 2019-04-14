@@ -151,20 +151,20 @@
     {% endif %}
 {%- endmacro -%}
 {%- macro imageObjectCard -%}
-    {% if article.imageObject %}
+    {% if article.img[0] %}
         <script type="application/ld+json">
         {
             "@context": "http://schema.org",
             "@type": "ImageObject",
             "author": {
                 "@type": "Person",
-                "name": "{{ (article.imageObject.author || article.author)|e('js')|raw }}"
+                "name": "{{ (article.img[0].author || article.author)|e('js')|raw }}"
             },
-            "name": "{{ (article.imageObject.name || article.title)|striptags|e('js')|raw }}",
-            "keywords": "{{ (article.imageObject.keywords || article.keywords)|e('js')|raw }}",
-            "description": "{{ (article.imageObject.description || article.ingress)|striptags|removeLineBreaks|e('js')|raw }}",
+            "name": "{{ (article.img[0].name || article.title)|striptags|e('js')|raw }}",
+            "keywords": "{{ (article.img[0]|imageKeywords || article.keywords)|e('js')|raw }}",
+            "description": "{{ (article.img[0].description || article.ingress)|striptags|removeLineBreaks|e('js')|raw }}",
             {% if  article.recipe.image|e('js')|raw %}
-                "contentUrl": "{{ article.imageObject.contentUrl }}",
+                "contentUrl": "{{ article.img[0].contentUrl }}",
             {% elseif article.img[0] %}
                 "contentUrl": "{{ blog.protocol }}://{{ blog.domain }}/pho/{{ article.img[0].src }}?w=800",
             {% endif %}
@@ -173,41 +173,41 @@
                 "@type": "Place",
                 "geo": {
                     "@type": "GeoCoordinates",
-                        "latitude": {{ article.imageObject.lat }},
-                        "longitude": {{ article.imageObject.lon }}
+                        "latitude": {{ article.img[0].exif.lat }},
+                        "longitude": {{ article.img[0].exif.lng }}
                     },
-                "name": "{{ article.imageObject.contentLocation|e('js')|raw }}"
+                "name": "{{ article.img[0].contentLocation|e('js')|raw }}"
             },
             "exifData": [
                 {
                     "@type": "PropertyValue",
                     "name": "Camera",
-                    "value": "{{ article.imageObject.camera|e('js')|raw }}"
+                    "value": "{{ article.img[0].exif.model|e('js')|raw }}"
                 },
                 {
                     "@type": "PropertyValue",
                     "name": "Lens",
-                    "value": "{{ article.imageObject.lens|e('js')|raw }}"
+                    "value": "{{ article.img[0].exif.lensModel|e('js')|raw }}"
                 },
                 {
                     "@type": "PropertyValue",
                     "name": "ShutterSpeed",
-                    "value": "{{ article.imageObject.shutter|e('js')|raw }}"
+                    "value": "{{ article.img[0].exif.exposureTime|e('js')|raw }}"
                 },
                 {
                     "@type": "PropertyValue",
                     "name": "FocalLength",
-                    "value": "{{ article.imageObject.focal|e('js')|raw }}"
+                    "value": "{{ article.img[0].exif.focalLength|e('js')|raw }}"
                 },
                 {
                     "@type": "PropertyValue",
                     "name": "Aperture",
-                    "value": "{{ article.imageObject.aperture|e('js')|raw }}"
+                    "value": "{{ article.img[0].exif.fNumber|e('js')|raw }}"
                 },
                 {
                     "@type": "PropertyValue",
                     "name": "ISO",
-                    "value": "{{ article.imageObject.iso|e('js')|raw }}"
+                    "value": "{{ article.img[0].exif.photographicSensitivity|e('js')|raw }}"
                 }
             ]
         }
