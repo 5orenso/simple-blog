@@ -9,6 +9,16 @@
 {% set pageStart = page - 1 %}
 {% set pageStart = pageStart * limit %}
 
+{% if queryString.tag %}
+    <nav class="navbar navbar-dark" style="background-color: #a0a0a0;">
+        <div class="col-6 text-light">
+            <h5>
+                Tag: <span class="badge badge-info">{{ queryString.tag }}</span>
+            </h5>
+        </div>
+    </nav>
+{% endif %}
+
 {% if baseHref && !cateogry.header %}
     <div class="blog-header">
         <div class="container">
@@ -32,20 +42,22 @@
     </div>
 {% endif %}
 
-{{ category.header|safe }}
+{% if !queryString.tag && !queryString.q %}
+    {{ category.header|safe }}
+{% endif %}
 
 {% if isPhoto %}
     <div class="container-fluid">
         <div class="row">
             <main class="col-sm-12 col-md-12 pt-3">
 {% else %}
-    {% if !queryString.q %}
+    {% if !queryString.q && !queryString.tag %}
         {% set startArt = 1 %}
         {% set art = artlist[0] %}
         <div class="jumbotron">
             <div class="container">
                 {% if art.img[0] %}
-                    <a href="/v2/{{ art.category|url_encode }}/{{ art.title|lower|url_encode }}/{{ art.id }}"><img src="/pho/{{ art.img[0].src }}?w=1014" alt="{{ art.title|e }}" class="img-fluid"></a>
+                    <a href="/v2/{{ art.category|url_encode }}/{{ art.title|lower|url_encode }}/{{ art.id }}"><img src="/pho/{{ art.img[0].src }}?w=1014" alt="{{ art.title|e }}" class="img-fluid rounded"></a>
                 {% endif %}
                 <h1 class="display-3"><a href="/v2/{{ art.category|url_encode }}/{{ art.title|lower|url_encode }}/{{ art.id }}">{{ art.title }}</a></h1>
                 <p>{{ art.teaser|raw }}</p>
@@ -66,7 +78,7 @@
                             <div class="col-sm-6 col-lg-4">
                                 {% if art.img[0] %}
                                     <div class="post-thumb">
-                                        <a href="/v2/{{ art.category|url_encode }}/{{ art.title|lower|url_encode }}/{{ art.id }}"><img src="/pho/{{ art.img[0].src }}?w=800" alt="{{ art.title|e }}" class="img-fluid"></a>                                        
+                                        <a href="/v2/{{ art.category|url_encode }}/{{ art.title|lower|url_encode }}/{{ art.id }}"><img src="/pho/{{ art.img[0].src }}?w=800" alt="{{ art.title|e }}" class="img-fluid rounded"></a>
                                     </div>
                                 {% endif %}
                                 <div class="post-content">
@@ -89,7 +101,7 @@
                         {% set total = artlistTotal %}
                         {% if total > 1 %}
                             {% if page > 1 %}
-                                <li><a href="{{ file.path }}?page={{ page - 1 }}"><i class="fa fa-angle-double-left"></i></a></li>
+                                <li><a href="{{ file.path }}?page={{ page - 1 }}{% if queryString.tag %}&tag={{ queryString.tag }}{% endif %}"><i class="fa fa-angle-double-left"></i></a></li>
                             {% endif %}
 
                             {% for p in pages %}
@@ -98,14 +110,14 @@
                                 {% set s = s + 1 %}
                                 {% set e = p * limit %}
                                 {% if s <= total %}
-                                    <li class="{% if p == page %}active{% endif %}"><a href="{{ file.path }}?page={{ p }}" title="{{ s }}-{{ e }}">{{ p }}</a></li>
+                                    <li class="{% if p == page %}active{% endif %}"><a href="{{ file.path }}?page={{ p }}{% if queryString.tag %}&tag={{ queryString.tag }}{% endif %}" title="{{ s }}-{{ e }}">{{ p }}</a></li>
                                 {% endif %}
                             {% endfor %}
 
                             {% set end = page * limit %}
                             {% set nextPage = page + 1 %}
                             {% if total >= end %}
-                                <li><a href="{{ file.path }}?page={{ nextPage }}"><i class="fa fa-angle-double-right"></i></a></li>
+                                <li><a href="{{ file.path }}?page={{ nextPage }}{% if queryString.tag %}&tag={{ queryString.tag }}{% endif %}"><i class="fa fa-angle-double-right"></i></a></li>
                             {% endif %}
                         {% endif %}
                     </ul>
@@ -115,4 +127,6 @@
         </div>
     </div>
 
+{% if !queryString.tag && !queryString.q %}
     {{ category.footer|safe }}
+{% endif %}

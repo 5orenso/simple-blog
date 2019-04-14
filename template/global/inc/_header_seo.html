@@ -1,22 +1,24 @@
 {% macro title %}
-    {% if article.file|match('index') %}
-        {{ author.nameFull|removeLineBreaks|e('html') }} | {{ blog.title|removeLineBreaks|e('html') }}
-    {% else %}
+    {% if isDetailView %}
         {{ article.title|striptags|removeLineBreaks|e('html') }}
+    {% else %}
+        {{ author.nameFull|removeLineBreaks|e('html') }} | {{ blog.title|removeLineBreaks|e('html') }}
     {% endif %}
 {% endmacro %}
+
 {% macro image %}
-    {% if article.file|match('index') %}
-        {{ blog.protocol }}://{{ blog.domain }}{{ blog.author.fallback.image }}
+    {% if isDetailView %}
+        {{ blog.protocol }}://{{ blog.domain }}/pho/{{ article.img[0].src }}?w=600
     {% else %}
-        {{ blog.protocol }}://{{ blog.domain }}/pho/{{ article.img[0] }}?w=600
+        {{ blog.protocol }}://{{ blog.domain }}{{ blog.author.fallback.image }}
     {% endif %}
 {% endmacro %}
+
 {% macro description %}
-    {% if article.file|match('index') %}
-        {{ blog.description|removeLineBreaks|e('html') }}
-    {% else %}
+    {% if isDetailView %}
         {{ article.teaser|striptags|removeLineBreaks|e('html') }} {{ article.ingress|striptags|removeLineBreaks|e('html') }}
+    {% else %}
+        {{ blog.description|removeLineBreaks|e('html') }}
     {% endif %}
 {% endmacro %}
 
@@ -25,20 +27,7 @@
 <!-- SEO stuff -->
 
 {% set categoryName = article.baseHref|replace('/', '', 'g')|capitalize %}
-{% if article.file|match('index') %}
-    <meta name="description" content="{{ description()|oneline }}" />
-    <meta name="keywords" content="{{ article.tags|striptags|removeLineBreaks|e('html') }}" />
-    {% set shareLink = blog.protocol + '://' + blog.domain + article.baseHref %}
-    <meta property="og:url" content="{{ shareLink }}" />
-    <meta property="og:type" content="article" />
-    {% set author = blog.author.fallback %}
-    <meta property="og:title" content="{{ title()|oneline }}" />
-    <meta property="og:description" content="{{ description()|oneline }}" />
-    {% if article.img[0] %}
-        <meta property="og:image" content="{{ image()|oneline }}" />
-        <meta name="thumbnail" content="{{ image()|oneline }}" />
-    {% endif %}
-{% else %}
+{% if isDetailView %}
     <meta name="description" content="{{ article.teaser|striptags|removeLineBreaks|e('html') }} {{ article.ingress|striptags|removeLineBreaks|e('js')|e('html') }}" />
     <meta name="keywords" content="{{ article.tags|striptags|removeLineBreaks|e('html') }}" />
     {% set shareLink = blog.protocol + '://' + blog.domain + article.baseHref + article.file %}
@@ -66,6 +55,20 @@
     {%- endif %}
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:creator" content="{{ blog.social.twitter }}" />
+
+{% else %}
+    <meta name="description" content="{{ description()|oneline }}" />
+    <meta name="keywords" content="{{ article.tags|striptags|removeLineBreaks|e('html') }}" />
+    {% set shareLink = blog.protocol + '://' + blog.domain + article.baseHref %}
+    <meta property="og:url" content="{{ shareLink }}" />
+    <meta property="og:type" content="article" />
+    {% set author = blog.author.fallback %}
+    <meta property="og:title" content="{{ title()|oneline }}" />
+    <meta property="og:description" content="{{ description()|oneline }}" />
+    {% if article.img[0] %}
+        <meta property="og:image" content="{{ image()|oneline }}" />
+        <meta name="thumbnail" content="{{ image()|oneline }}" />
+    {% endif %}
 
 {% endif %}
 <link rel="manifest" href="/global/manifest.json">

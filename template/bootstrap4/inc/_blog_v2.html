@@ -16,13 +16,13 @@
         <main class="col-sm-12 col-md-12 pt-3 blog-main">
 {% endif %}
 
-            <div class="blog-post">
+            <div class="blog-post {% if isPhoto %}photo-top py-4{% endif %}">
 				<div class="blog-top-image {% if article.gallery || article.img[1] %}gallery-post-format{% endif %}">
                     {% if article.youtube %}
 					    {{ article.youtube|safe }}
                     {% elseif article.img[0] %}
                         <div>
-                            <img src="/pho/{{ article.img[0].src }}?w={% if isPhoto %}1800{% else %}1050{% endif %}" alt="{{ article.title|e }}" class="img-fluid">
+                            <img src="/pho/{{ article.img[0].src }}?w={% if isPhoto %}1800{% else %}1050{% endif %}" alt="{{ article.title|e }}" class="img-fluid rounded mx-auto d-block">
                         </div>
                     {% endif %}
 				</div>
@@ -51,6 +51,13 @@
                         | <span class="badge badge-{{ article.status|getStatusClass }}">
                             {{ article.status|getStatus }}
                         </span>
+                    {% endif %}
+
+                    {% if article.tags %}
+                        <br />
+                        {% for tag in article.tags %}
+                            <a href="/v2/?tag={{ tag|url_encode }}" class="badge badge-info">{{ tag }}</a>
+                        {% endfor %}
                     {% endif %}
                 </p>
 
@@ -86,7 +93,7 @@
                     {% if (article['img' + i]) %}
                         <p class="image_inline ">
                             <a href="/pho/{{ article['img' + i] }}?w=1800" data-smoothzoom="group1" title="{{ article['title' + i]|e('html') }}">
-                                <img src="/pho/{{ article['img' + i] }}?w=750" alt="{{ article['title' + i]|e('html') }}" title="{{ article['title' + i]|e('html') }}" class="img-fluid">
+                                <img src="/pho/{{ article['img' + i] }}?w=750" alt="{{ article['title' + i]|e('html') }}" title="{{ article['title' + i]|e('html') }}" class="img-fluid rounded">
                             </a>
                         </p>
                     {% endif %}
@@ -104,7 +111,7 @@
                                 {% if (article['img' + i][i]) %}
                                     <span class="float-right img-thumbnail rounded">
                                         <a href="/pho/{{ article['img' + i][i] }}?w=1800" data-smoothzoom="group1" title="{{ article['imgText' + i][i]|e('html') }}" class="inline-images">
-                                            <img src="/pho/{{ article['img' + i][i] }}?w=300" alt="{{ article['imgText' + i][i]|e('html') }}" title="{{ article['imgText' + i][i]|e('html') }}" class="img-fluid">
+                                            <img src="/pho/{{ article['img' + i][i] }}?w=300" alt="{{ article['imgText' + i][i]|e('html') }}" title="{{ article['imgText' + i][i]|e('html') }}" class="img-fluid rounded">
                                         </a><br>
                                         {% if article['imgText' + i][i] %}{{ article['imgText' + i][i] }}{% endif %}
                                     </span>
@@ -153,60 +160,63 @@
             </div><!-- /.blog-post -->
 
             <nav class="blog-pagination">
-                <div class="row"><!--blog next previous-->
-                    {% if article.previous %}
-                        {% set art = article.previous %}
-					<div class="col-md-6">
-                        <div class="post-thumb">
-                            <a href="{{ art.baseHref }}{{ art.file }}">
-                                {% if art.img[0] %}
-                                    <img src="/pho/{{ art.img[0].src }}?w=800" alt="{{ art.title|e }}" class="img-fluid"><br clear="all">
-                                {% else %}
-                                    <div class="entry-quote-post-format">
-                                        <blockquote>
-                                            <p><i class="fa fa-quote-left"></i>
-                                                {% if art.quote %}
-                                                    {{ art.quote|striptags }}
-                                                {% elseif art.teaser %}
-                                                    {{ art.teaser|striptags }}
-                                                {% elseif art.title %}
-                                                    {{ art.title|striptags }}
-                                                {% endif %}</p>
-                                            <h3>{{ art.quoteBy }}</h3>
-                                        </blockquote>
-                                    </div>
-                                {% endif %}
-                            </a>
+                <div class="row justify-content-between"><!--blog next previous-->
+                    {% if previousArticle %}
+                        {% set art = previousArticle %}
+    					<div class="col-md-4">
+                            <div class="post-thumb">
+                                <a href="/v2/{{ art.category|url_encode }}/{{ art.title|lower|url_encode }}/{{ art.id }}">
+                                    {% if art.img[0] %}
+                                        <img src="/pho/{{ art.img[0].src }}?w=800" alt="{{ art.title|e }}" class="img-fluid rounded"><br clear="all">
+                                    {% else %}
+                                        <div class="entry-quote-post-format">
+                                            <blockquote>
+                                                <p><i class="fa fa-quote-left"></i>
+                                                    {% if art.quote %}
+                                                        {{ art.quote|striptags }}
+                                                    {% elseif art.teaser %}
+                                                        {{ art.teaser|striptags }}
+                                                    {% elseif art.title %}
+                                                        {{ art.title|striptags }}
+                                                    {% endif %}</p>
+                                                <h3>{{ art.quoteBy }}</h3>
+                                            </blockquote>
+                                        </div>
+                                    {% endif %}
+                                </a>
+                            </div>
+                            <a class="btn btn-outline-primary" href="/v2/{{ art.category|url_encode }}/{{ art.title|lower|url_encode }}/{{ art.id }}">{{ blog.olderHeader || '👈 Older' }}</a>
+    					</div>
+                    {% else %}
+                        <div class="col-md-4">
                         </div>
-                        <a class="btn btn-outline-primary" href="{{ art.baseHref}}{{ art.file }}">{{ blog.olderHeader || '👈 Older' }}</a>
-					</div>
                     {% endif %}
-                    {% if article.next %}
-                        {% set art = article.next %}
-					<div class="col-md-6">
-                        <div class="post-thumb">
-                            <a href="{{ art.baseHref }}{{ art.file }}">
-                                {% if art.img[0] %}
-                                    <img src="/pho/{{ art.img[0].src }}?w=800" alt="{{ art.title|e }}" class="img-fluid"><br clear="all">
-                                {% else %}
-                                    <div class="entry-quote-post-format">
-                                        <blockquote>
-                                            <p><i class="fa fa-quote-left"></i>
-                                                {% if art.quote %}
-                                                    {{ art.quote|striptags }}
-                                                {% elseif art.teaser %}
-                                                    {{ art.teaser|striptags }}
-                                                {% elseif art.title %}
-                                                    {{ art.title|striptags }}
-                                                {% endif %}</p>
-                                            <h3>{{ art.quoteBy }}</h3>
-                                        </blockquote>
-                                    </div>
-                                {% endif %}
-                            </a>
-                        </div>
-                        <a class="btn btn-outline-primary" href="{{ art.baseHref}}{{ art.file }}">{{ blog.newerHeader || 'Newer 👉' }}</a>
-					</div>
+                    {% if nextArticle %}
+                        {% set art = nextArticle %}
+    					<div class="col-md-4 text-right">
+                            <div class="post-thumb align-items-center">
+                                <a href="/v2/{{ art.category|url_encode }}/{{ art.title|lower|url_encode }}/{{ art.id }}">
+                                    {% if art.img[0] %}
+                                        <img src="/pho/{{ art.img[0].src }}?w=800" alt="{{ art.title|e }}" class="img-fluid rounded"><br clear="all">
+                                    {% else %}
+                                        <div class="entry-quote-post-format">
+                                            <blockquote>
+                                                <p><i class="fa fa-quote-left"></i>
+                                                    {% if art.quote %}
+                                                        {{ art.quote|striptags }}
+                                                    {% elseif art.teaser %}
+                                                        {{ art.teaser|striptags }}
+                                                    {% elseif art.title %}
+                                                        {{ art.title|striptags }}
+                                                    {% endif %}</p>
+                                                <h3>{{ art.quoteBy }}</h3>
+                                            </blockquote>
+                                        </div>
+                                    {% endif %}
+                                </a>
+                            </div>
+                            <a class="btn btn-outline-primary" href="/v2/{{ art.category|url_encode }}/{{ art.title|lower|url_encode }}/{{ art.id }}">{{ blog.newerHeader || 'Newer 👉' }}</a>
+    					</div>
                     {% endif %}
 				</div>
 
@@ -223,7 +233,7 @@
                     {% set author = blog.author[article.author] %}
                 {% endif %}
                 <p>
-                    <img src="{{ author.imageLarge }}" alt="{{ author.nameFull }}" class="img-fluid">
+                    <img src="{{ author.imageLarge }}" alt="{{ author.nameFull }}" class="img-fluid rounded">
                     <h2>{{ author.nameFull }}</h2>
                     {{ author.description }}
                 </p>
@@ -238,7 +248,7 @@
                                 <div class="col-6 col-sm-12 col-md-12 thumb p-2">
                                     <a href="/v2/{{ art.category }}/{{ art.filename }}" title="{{ art.title|e }} - {{ art.teaser|e }}">
                                         {% if art.img[0] %}
-                                            <img src="/pho/{{ art.img[0].src }}?w=250" alt="{{ art.title|e }} - {{ art.teaser|e }}" class="img-fluid"><br clear="all">
+                                            <img src="/pho/{{ art.img[0].src }}?w=250" alt="{{ art.title|e }} - {{ art.teaser|e }}" class="img-fluid rounded"><br clear="all">
                                         {% endif %}
                                     </a>
                                     <h6>

@@ -205,6 +205,10 @@ html {
     color: #303030;
 }
 
+.photo-top {
+    background-color: #808080;
+}
+
 pre code {
     display: block;
     overflow-x: auto;

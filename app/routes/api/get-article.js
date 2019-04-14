@@ -43,6 +43,13 @@ module.exports = async (req, res) => {
     const limit = parseInt(req.query.limit || 10, 10);
     const skip = parseInt(req.query.offset || 0, 10);
 
+    if (req.query.category) {
+        query.category = req.query.category;
+    }
+    if (req.query.status) {
+        query.status = req.query.status;
+    }
+
     let apiContent;
     let total;
     let data = {};

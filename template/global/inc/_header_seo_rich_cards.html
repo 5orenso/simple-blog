@@ -101,12 +101,12 @@
         "alternativeHeadline": "{{ article.teaser|striptags|removeLineBreaks|e('js') }}",
         "image": [
             {% for img in article.img %}
-            "{{ blog.protocol }}://{{ blog.domain }}/pho/{{ img }}?w=800"
+            "{{ blog.protocol }}://{{ blog.domain }}/pho/{{ img.src }}?w=800"
             {% endfor %}
         ],
         "mainEntityOfPage": "{{ shareLink }}",
-        "datePublished": "{{ article.published }}",
-        "dateModified": "{{ article.updated || article.published }}",
+        "datePublished": "{{ article.published|date('Y-m-d H:i:s') }}",
+        "dateModified": "{{ (article.updated || article.published)|date('Y-m-d H:i:s') }}",
         "description": "{{ article.ingress|striptags|removeLineBreaks|e('js') }}",
         "articleBody": "{{ article.body|striptags|removeLineBreaks|e('js') }} {% for col in article.col %}{{ col }} {% endfor %}",
         "keywords": "{{ article.tags|striptags|removeLineBreaks|e('js') }}"
@@ -123,7 +123,7 @@
                 "@type": "Person",
                 "name": "{{ (article.recipe.author || article.author)|e('js')|raw }}"
             },
-            "datePublished": "{{ (article.recipe.published || article.published)|e('js')|raw }}",
+            "datePublished": "{{ (article.recipe.published || article.published)|date('Y-m-d H:i:s') }}",
             "name": "{{ (article.recipe.name || article.title)|striptags|e('js')|raw }}",
             "description": "{{ (article.recipe.description || article.ingress)|striptags|removeLineBreaks|e('js')|raw }}",
             "keywords": "{{ (article.recipe.keywords)|e('js')|raw }}",
@@ -134,7 +134,7 @@
             {% if  article.recipe.image|e('js')|raw %}
                 "image": "{{ article.recipe.image }}",
             {% elseif article.img[0] %}
-                "image": "{{ blog.protocol }}://{{ blog.domain }}/pho/{{ article.img[0] }}?w=800",
+                "image": "{{ blog.protocol }}://{{ blog.domain }}/pho/{{ article.img[0].src }}?w=800",
             {% endif %}
             "recipeIngredient": [
                 {% for ingredient in article.recipe.recipeIngredient %}
@@ -166,9 +166,9 @@
             {% if  article.recipe.image|e('js')|raw %}
                 "contentUrl": "{{ article.imageObject.contentUrl }}",
             {% elseif article.img[0] %}
-                "contentUrl": "{{ blog.protocol }}://{{ blog.domain }}/pho/{{ article.img[0] }}?w=800",
+                "contentUrl": "{{ blog.protocol }}://{{ blog.domain }}/pho/{{ article.img[0].src }}?w=800",
             {% endif %}
-            "datePublished": "{{ (article.imageObject.published || article.published)|e('js')|raw }}",
+            "datePublished": "{{ (article.img.published || article.published)|date('Y-m-d H:i:s') }}",
             "contentLocation": {
                 "@type": "Place",
                 "geo": {
@@ -241,7 +241,7 @@
                                         "url": "https://litt.no/template/kotha/img/sorenso-logo.png"
                                     }
                                 },
-                                {% if art.img[0] %}"image": "{{ blog.protocol }}://{{ blog.domain }}/pho/{{ art.img[0] }}?w=800",{% endif %}
+                                {% if art.img[0] %}"image": "{{ blog.protocol }}://{{ blog.domain }}/pho/{{ art.img[0].src }}?w=800",{% endif %}
                                 "url": "{{ shareLink }}",
                                 "name": "{{ art.title|e('js') }}",
                                 "author": {
@@ -250,8 +250,8 @@
                                 },
                                 "headline": "{{ art.title|striptags|e('js') }}",
                                 "mainEntityOfPage": "{{ shareLink }}",
-                                "datePublished": "{{ article.published }}",
-                                "dateModified": "{{ article.updated || article.published }}"
+                                "datePublished": "{{ article.published|date('Y-m-d H:i:s') }}",
+                                "dateModified": "{{ (article.updated || article.published)|date('Y-m-d H:i:s') }}"
                         }
                     }{% if !loop.last %},{% endif %}
                 {% endfor %}

@@ -17,10 +17,10 @@ module.exports = async (req, res) => {
     const art = new Article();
     const cat = new Category();
 
-console.log('session', req.session.email);
-
     let isDetailView = false;
     let isCategoryView = false;
+    let previousArticle;
+    let nextArticle;
     const query = {
         status: 2,
     };
@@ -51,8 +51,23 @@ console.log('session', req.session.email);
     const limit = parseInt(req.query.limit || 10, 10);
     const skip = parseInt((page - 1) * limit || 0, 10);
 
+    if (req.query.tag) {
+        queryList.tags = req.query.tag;
+    }
+
     const article = await art.findOne(query);
     const artlist = await art.find(queryList, {}, { limit, skip });
+
+    if (isDetailView) {
+        const currentIdx = artlist.findIndex(x => x.id === article.id);
+        if (typeof artlist[currentIdx - 1] === 'object') {
+            previousArticle = artlist[currentIdx - 1]
+        }
+        if (typeof artlist[currentIdx + 1] === 'object') {
+            nextArticle = artlist[currentIdx + 1]
+        }
+    }
+
     const artlistTotal = await art.count(queryList);
 
     const category = await cat.findOne(queryCategory);
@@ -64,6 +79,8 @@ console.log('session', req.session.email);
 
     webUtil.sendResultResponse(req, res, {
         article,
+        previousArticle,
+        nextArticle,
         artlist,
         artlistTotal,
         category,
