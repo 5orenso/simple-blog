@@ -7,7 +7,7 @@
 {% endmacro %}
 
 {% macro image %}
-    {% if isDetailView %}
+    {% if isDetailView && article.img[0] %}
         {{ blog.protocol }}://{{ blog.domain }}/pho/{{ article.img[0].src }}?w=600
     {% else %}
         {{ blog.protocol }}://{{ blog.domain }}{{ blog.author.fallback.image }}

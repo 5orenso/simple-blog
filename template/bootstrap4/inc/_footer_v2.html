@@ -26,7 +26,7 @@
                 <small>
                     <a href="/send-magic-link">Send a magic link 🎩  to login.</a><br>
                     {% if session.email && article.title %}
-                        <a href="/push-send?title={{ article.title|url_encode }}&body={{ article.teaser|cleanHtml|url_encode }}&icon={{ ('/pho/' + article.img[0].src + '?w=80')|url_encode }}&url=%2F%2F{{ blog.domain }}{{ (article.baseHref + article.file)|url_encode }}">Send notification</a><br>
+                        <a href="/push-send?title={{ article.title|url_encode }}&body={{ article.teaser|cleanHtml|url_encode }}{% if article.img[0] %}&icon={{ ('/pho/' + article.img[0].src + '?w=80')|url_encode }}{% endif %}&url=%2F%2F{{ blog.domain }}{{ (article.baseHref + article.file)|url_encode }}">Send notification</a><br>
                     {% endif %}
 
                     <p>&copy; 2014-2019 <a href="https://litt.no/">Sorenso </a> - Published with <i class="fas fa-heart"></i> by <a href="https://github.com/5orenso/simple-blog">simple-blog</a></p>

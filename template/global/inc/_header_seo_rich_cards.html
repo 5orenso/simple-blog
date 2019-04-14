@@ -101,7 +101,7 @@
         "alternativeHeadline": "{{ article.teaser|striptags|removeLineBreaks|e('js') }}",
         "image": [
             {% for img in article.img %}
-            "{{ blog.protocol }}://{{ blog.domain }}/pho/{{ img.src }}?w=800"
+                "{{ blog.protocol }}://{{ blog.domain }}/pho/{{ img.src }}?w=800"
             {% endfor %}
         ],
         "mainEntityOfPage": "{{ shareLink }}",
