@@ -40,6 +40,7 @@ const initialState = {
     query: '',
     queryImage: '',
     filterQuery: {},
+    filter: {},
 };
 
 export default class SimpleBlogCms extends Component {
@@ -53,6 +54,7 @@ export default class SimpleBlogCms extends Component {
         this.updateTimeIntervalMs = 5 * 1000;
         this.messageAgeInSeconds = 5;
         this.loadArtlist();
+        this.loadCatlist();
         const articleId = this.props.articleId;
         if (articleId) {
             util.fetchApi(`/api/article/${articleId}`, {}, this)
@@ -83,9 +85,10 @@ export default class SimpleBlogCms extends Component {
         const limit = this.state.articlesPerPage;
         const offset = (currentPage - 1) * this.state.articlesPerPage;
         const { query } = this.state;
-        util.fetchApi(`/api/article/`, { query, limit, offset }, this)
+        const filter = this.state.filter;
+
+        util.fetchApi(`/api/article/`, { query, limit, offset, ...filter }, this)
             .then((result) => {
-                // console.log('result', result);
                 this.setState({
                     artlist: result.artlist,
                     artlistTotal: result.total,
@@ -238,6 +241,21 @@ export default class SimpleBlogCms extends Component {
                 });
             });
 
+    };
+
+    handleFilterClick = (event) => {
+        event.preventDefault();
+        const el = event.target;
+        const key = el.dataset.key;
+        const val = util.isNumber(el.dataset.val) ? parseFloat(el.dataset.val) : el.dataset.val;
+        const filter = this.state.filter;
+        if (filter[key] && (filter[key] === val || val === '')) {
+            delete filter[key];
+        } else {
+            filter[key] = val;
+        }
+        this.setState({ filter });
+        this.loadArtlist(1);
     };
 
     handleArticleClickSave = (event) => {
@@ -522,6 +540,8 @@ export default class SimpleBlogCms extends Component {
             currentPage,
             articlesPerPage,
             categoriesPerPage,
+
+            filter,
         } = this.state;
         const articleId = this.props.articleId;
 
@@ -546,9 +566,12 @@ export default class SimpleBlogCms extends Component {
                         <ArticleList styles={styles}
                             articleId={article.id || articleId}
                             artlist={artlist}
+                            catlist={catlist}
                             handleInput={this.handleArticleSearchInput}
                             handleSubmit={this.handleArticleSearchClick}
                             handleArtlistClick={this.handleArtlistClick}
+                            handleFilterClick={this.handleFilterClick}
+                            filter={filter}
                         />
                     </div>
                     <div class='d-flex justify-content-center'>

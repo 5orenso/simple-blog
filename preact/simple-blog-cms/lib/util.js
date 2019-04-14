@@ -112,6 +112,7 @@ class Utilities {
             }
         }
         // console.log('fetchOpt', fetchOpt);
+        // console.log(`${main.props.apiServer}${endpoint}${qs ? `?${qs}` : ''}`);
         return fetch(`${main.props.apiServer}${endpoint}${qs ? `?${qs}` : ''}`, fetchOpt)
             .then((response) => {
                 if (typeof settings.skipSettingState === 'undefined' || settings.skipSettingState === false) {
@@ -262,6 +263,22 @@ class Utilities {
             return 'danger';
         }
         return '';
+    }
+
+    static isNumber(number) {
+        return !isNaN(parseFloat(number)) && isFinite(number);
+    }
+
+    static asInteger(num) {
+        return parseInt(num, 10);
+    }
+
+    static isInteger(num) {
+        return Number.isInteger(num);
+    }
+
+    static isPositiveInteger(num) {
+        return isInteger(num) && num > 0;
     }
 }
 
