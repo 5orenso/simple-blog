@@ -9,8 +9,8 @@
   "scripts": {
     "test": "NODE_ENV=test jest",
     "start": "if-env NODE_ENV=production && npm run -s serve || PORT=8181 npm run -s dev",
-    "build": "preact build --no-prerender --clean --template src/index.ejs --service-worker false",
-    "serve": "npm run build && preact serve",
+    "build": "preact build --no-prerender --clean --template src/index.ejs  --service-worker false",
+    "serve": "preact build --service-worker false && preact serve",
     "dev": "preact watch --template src/index.ejs",
     "dist": "microbundle --entry src/components/hello-world/index.js"
   },
@@ -27,7 +27,8 @@
     "preact-cli": "^2.0.2",
     "preact-render-to-string": "^3.7.0",
     "preact-widget-scripts": "^0.6.0",
-    "sass-loader": "^6.0.6"
+    "sass-loader": "^6.0.6",
+    "workbox-webpack-plugin": "^4.2.0"
   },
   "dependencies": {
     "highlight.js": "^9.14.2",

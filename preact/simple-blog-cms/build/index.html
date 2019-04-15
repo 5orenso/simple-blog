@@ -48,7 +48,15 @@
       width: 100%;
       top: 0;
       left: 0;
-  }</style><link rel="shortcut icon" href="/favicon.ico"></head><body><div data-widget="simpleBlogCms"><script type="text/props">{
+  }</style><script>if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/service-worker.js')
+        .then(function (registration) {
+          console.log('Service Worker registration successful with scope: ', registration.scope)
+        })
+        .catch(function (err) {
+          console.log('Service Worker registration failed: ', err)
+        })
+    }</script><link rel="shortcut icon" href="/favicon.ico"></head><body><div data-widget="simpleBlogCms"><script type="text/props">{
                 "apiServer": "http://localhost:8080",
                 "jwtToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNvcmVuc29AZ21haWwuY29tIiwiaWF0IjoxNTUyNzQzNjY0fQ.hH6KvN2MskaUm1wukTsTBxty7ZvnAKLaCdyUV2eIG-M"
             }</script></div><script async src="/bundle.js"></script></body></html>
