@@ -163,7 +163,7 @@
                 <div class="row justify-content-between"><!--blog next previous-->
                     {% if previousArticle %}
                         {% set art = previousArticle %}
-    					<div class="col-md-4">
+    					<div class="col-4">
                             <div class="post-thumb">
                                 <a href="/v2/{{ art.category|url_encode }}/{{ art.title|lower|url_encode }}/{{ art.id }}">
                                     {% if art.img[0] %}
@@ -188,12 +188,12 @@
                             <a class="btn btn-outline-primary" href="/v2/{{ art.category|url_encode }}/{{ art.title|lower|url_encode }}/{{ art.id }}">{{ blog.olderHeader || '👈 Older' }}</a>
     					</div>
                     {% else %}
-                        <div class="col-md-4">
+                        <div class="col-4">
                         </div>
                     {% endif %}
                     {% if nextArticle %}
                         {% set art = nextArticle %}
-    					<div class="col-md-4 text-right">
+    					<div class="col-4 text-right">
                             <div class="post-thumb align-items-center">
                                 <a href="/v2/{{ art.category|url_encode }}/{{ art.title|lower|url_encode }}/{{ art.id }}">
                                     {% if art.img[0] %}
