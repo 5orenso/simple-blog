@@ -1,8 +1,6 @@
 importScripts("/precache-manifest.c5e755b638ae680a0791c706e7469891.js", "https://storage.googleapis.com/workbox-cdn/releases/4.2.0/workbox-sw.js");
 
-importScripts('https://storage.googleapis.com/workbox-cdn/releases/4.2.0/workbox-sw.js');
-
-// workbox.precaching.precacheAndRoute(self.__precacheManifest || []);
+workbox.precaching.precacheAndRoute(self.__precacheManifest || []);
 
 workbox.routing.registerRoute(
     /\.(?:js|css|ico|png|gif|jpg|jpeg|svg)$/,
@@ -11,7 +9,6 @@ workbox.routing.registerRoute(
     })
 );
 
-// workbox Precaching did not find a match for https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css workbox-core.dev.js:45:22
 // Cache the underlying font files with a cache-first strategy for 1 year.
 workbox.routing.registerRoute(
     /^https:\/\/stackpath\.bootstrapcdn\.com/,
@@ -29,7 +26,6 @@ workbox.routing.registerRoute(
     })
 );
 
-// workbox Precaching did not find a match for https://use.fontawesome.com/releases/v5.5.0/css/all.css workbox-core.dev.js:45:22
 // Cache the underlying font files with a cache-first strategy for 1 year.
 workbox.routing.registerRoute(
     /^https:\/\/use\.fontawesome\.com/,
@@ -47,7 +43,6 @@ workbox.routing.registerRoute(
     })
 );
 
-// workbox Precaching did not find a match for https://cdnjs.cloudflare.com/ajax/libs/pubsub-js/1.5.8/pubsub.min.js workbox-core.dev.js:45:22
 // Cache the underlying font files with a cache-first strategy for 1 year.
 workbox.routing.registerRoute(
     /^https:\/\/cdnjs\.cloudflare\.com/,
