@@ -246,13 +246,13 @@
                         {% for art in artlist %}
                             {% if loop.index < limit %}
                                 <div class="col-6 col-sm-12 col-md-12 thumb p-2">
-                                    <a href="/v2/{{ art.category }}/{{ art.filename }}" title="{{ art.title|e }} - {{ art.teaser|e }}">
+                                    <a href="/v2/{{ art.category|url_encode }}/{{ art.title|lower|url_encode }}/{{ art.id }}" title="{{ art.title|e }} - {{ art.teaser|e }}">
                                         {% if art.img[0] %}
                                             <img src="/pho/{{ art.img[0].src }}?w=250" alt="{{ art.title|e }} - {{ art.teaser|e }}" class="img-fluid rounded"><br clear="all">
                                         {% endif %}
                                     </a>
                                     <h6>
-                                        <a href="/v2/{{ art.category }}/{{ art.filename }}" title="{{ art.title|e }} - {{ art.teaser|e }}">
+                                        <a href="/v2/{{ art.category|url_encode }}/{{ art.title|lower|url_encode }}/{{ art.id }}" title="{{ art.title|e }} - {{ art.teaser|e }}">
                                             📎 {{ art.title }}
                                         </a>
                                     </h6>
