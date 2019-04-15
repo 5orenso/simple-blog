@@ -87,7 +87,7 @@ webRouter.get('/keybase.txt', (req, res) => {
     res.sendFile(keybase, { root: path.normalize(req.config.adapter.markdown.contentPath) });
 });
 webRouter.use('/photos/', localUtil.setCacheHeaders);
-webRouter.use('/service-worker.js', express.static(`${appPath}template/global/js/service-worker.js`));
+webRouter.use('/service-worker.js', express.static(`${appPath}preact/simple-blog-cms/build/service-worker.js`));
 
 webRouter.use('/preact/simple-blog-cms/', express.static(`${appPath}preact/simple-blog-cms/build/`));
 
