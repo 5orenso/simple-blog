@@ -88,9 +88,6 @@ webRouter.get('/keybase.txt', (req, res) => {
 });
 webRouter.use('/photos/', localUtil.setCacheHeaders);
 webRouter.use('/service-worker.js', express.static(`${appPath}preact/simple-blog-cms/build/service-worker.js`));
-webRouter.use('/precache-manifest.c5e755b638ae680a0791c706e7469891.js',
-    express.static(`${appPath}preact/simple-blog-cms/build/precache-manifest.c5e755b638ae680a0791c706e7469891.js`));
-
 webRouter.use('/preact/simple-blog-cms/', express.static(`${appPath}preact/simple-blog-cms/build/`));
 
 webRouter.post('/push-register', require('./post-push-register.js'));
