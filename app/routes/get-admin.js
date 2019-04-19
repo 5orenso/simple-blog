@@ -18,19 +18,18 @@ module.exports = async (req, res) => {
     const cat = new Category();
 
     let query = {
-        id: req.params.id,
         status: 2,
     };
-    if (!req.params.id && req.params.category) {
-        query = {
-            status: 2,
-            category: req.params.category,
-            filename: req.params.filename,
-        };
-    }
+    const queryList = {
+        status: 2,
+    };
+
+    const page = parseInt(req.query.page, 10);
+    const limit = parseInt(req.query.limit || 10, 10);
+    const skip = parseInt((page - 1) * limit || 0, 10);
 
     const article = await art.findOne(query);
-    const artlist = await art.find({ category: req.params.category, status: 2 });
+    const artlist = await art.find(queryList, {}, { limit, skip });
     const artlistTotal = artlist.length;
 
     const category = await cat.findOne({ title: req.params.category });

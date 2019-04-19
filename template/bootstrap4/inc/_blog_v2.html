@@ -185,7 +185,7 @@
                                     {% endif %}
                                 </a>
                             </div>
-                            <a class="btn btn-outline-primary" href="/v2/{{ art.category|url_encode }}/{{ art.title|lower|url_encode }}/{{ art.id }}">{{ blog.olderHeader || '👈 Older' }}</a>
+                            <a class="btn btn-outline-primary" href="/v2/{{ art.category|url_encode }}/{{ art.title|lower|url_encode }}/{{ art.id }}">{{ blog.newerHeader || '👈 Newer' }}</a>
     					</div>
                     {% else %}
                         <div class="col-4">
@@ -215,7 +215,7 @@
                                     {% endif %}
                                 </a>
                             </div>
-                            <a class="btn btn-outline-primary" href="/v2/{{ art.category|url_encode }}/{{ art.title|lower|url_encode }}/{{ art.id }}">{{ blog.newerHeader || 'Newer 👉' }}</a>
+                            <a class="btn btn-outline-primary" href="/v2/{{ art.category|url_encode }}/{{ art.title|lower|url_encode }}/{{ art.id }}">{{ blog.olderHeader || 'Older 👉' }}</a>
     					</div>
                     {% endif %}
 				</div>
