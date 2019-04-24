@@ -60,6 +60,8 @@ export default class ArticleEdit extends Component {
         const handleImglistClick = props.handleImglistClick;
         const handleImageTagClick = props.handleImageTagClick;
 
+        const taglist = props.taglist;
+
         const imglist = props.imglist;
         const filterQuery = props.filterQuery;
 
@@ -272,9 +274,44 @@ export default class ArticleEdit extends Component {
                         <div class='form-group'>
                             <label for='tagsInput'>Tags</label>
                             <input type='text' class='form-control' id='tagsInput' placeholder='Tags'
-                                name='tags'
-                                onInput={handleInput}
-                                value={article.tags} />
+                                name='tagSearch'
+                                onInput={e => handleInput(e, {
+                                    action: 'search',
+                                    name: 'tags',
+                                    type: 'array',
+                                })}
+                                onKeypress={e => {
+                                    if (e.key === 'Enter') {
+                                        handleInput(e, {
+                                            action: 'add',
+                                            name: 'tags',
+                                            type: 'array',
+                                        });
+                                    }
+                                }}
+                                value={article.tagSearch} />
+
+                            {Array.isArray(taglist) && taglist.map(tag =>
+                                <span class='badge badge-warning mr-1'
+                                    onClick={e => handleInput(e, {
+                                        action: 'add',
+                                        name: 'tags',
+                                        value: tag.title,
+                                        type: 'array',
+                                    })}
+                                >{tag.title} <i class='fas fa-plus'></i></span>
+                            )}
+
+                            {Array.isArray(article.tags) && article.tags.map(tag =>
+                                <span class='badge badge-info mr-1'>{tag} <i class='fas fa-times-circle'
+                                    onClick={e => handleInput(e, {
+                                        action: 'remove',
+                                        name: 'tags',
+                                        value: tag,
+                                        type: 'array',
+                                    })}
+                                ></i></span>
+                            )}
                         </div>
                     </div>
                     <div class='col-12'>

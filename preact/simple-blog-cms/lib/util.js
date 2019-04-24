@@ -71,6 +71,57 @@ class Utilities {
         return dateString;
     }
 
+    static displayDate(dt) {
+        if (typeof dt === 'number') {
+            dt = new Date(dt);
+        } else {
+            return 'n/a';
+        }
+        const now = new Date();
+        const nowEpoch = parseInt(now.getTime() / 1000, 10);
+        const epoch = parseInt(dt.getTime() / 1000, 10);
+        const msDiff = nowEpoch - epoch;
+        const nowDay = Utilities.pad(now.getDate());
+        const day = Utilities.pad(dt.getDate());
+        if (msDiff > 86000) {
+            const month = Utilities.pad(dt.getMonth() + 1);
+            const year = Utilities.pad(dt.getFullYear());
+            return `${year}-${month}-${day} `;
+        }
+        return '';
+    }
+    static displayTime(dt, human = true, showSec = false) {
+        if (typeof dt === 'number') {
+            dt = new Date(dt);
+        } else {
+            return 'n/a';
+        }
+        const now = new Date();
+        const nowEpoch = parseInt(now.getTime() / 1000, 10);
+        const epoch = parseInt(dt.getTime() / 1000, 10);
+        const msDiff = nowEpoch - epoch;
+        if (human && msDiff < 60) {
+            return `just now`;
+        // } else if (msDiff < 60) {
+        //     return `${msDiff} sec ago`;
+        } else if (human && msDiff < 3600) {
+            return `${parseInt(msDiff / 60, 10)} min ago`;
+        } else if (human && msDiff < 86400) {
+            return `${parseInt(msDiff / 3600, 10)} hours ago`;
+        } else {
+            if (showSec) {
+                const hour = dt.getHours() < 10 ? `0${dt.getHours()}` : dt.getHours();
+                const min = dt.getMinutes() < 10 ? `0${dt.getMinutes()}` : dt.getMinutes();
+                const sec = dt.getSeconds() < 10 ? `0${dt.getSeconds()}` : dt.getSeconds();
+                return `${hour}:${min}:${sec}`;
+            } else {
+                const hour = dt.getHours() < 10 ? `0${dt.getHours()}` : dt.getHours();
+                const min = dt.getMinutes() < 10 ? `0${dt.getMinutes()}` : dt.getMinutes();
+                return `${hour}:${min}`;
+            }
+        }
+    }
+
     static fetchApi(endpoint, $opts, main, settings = {}) {
         const opts = $opts;
         if (typeof settings.skipSettingState === 'undefined' || settings.skipSettingState === false) {

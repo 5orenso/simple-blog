@@ -33,9 +33,13 @@ const initialState = {
     catlist: [],
     catlistTotal: 0,
 
+    taglist: [],
+    taglistTotal: 0,
+
     currentPage: 1,
     articlesPerPage: 10,
     categoriesPerPage: 10,
+    tagsPerPage: 10,
 
     query: '',
     queryImage: '',
@@ -125,6 +129,24 @@ export default class SimpleBlogCms extends Component {
                 this.setState({
                     catlist: result.catlist,
                     catlistTotal: result.total,
+                })
+            });
+    }
+
+    loadTaglist(currentPage = 1, query) {
+        const limit = this.state.tagsPerPage;
+        const offset = (currentPage - 1) * this.state.tagsPerPage;
+        const article = this.state.article;
+        let titleNin;
+        if (typeof article.tags === 'object' && Array.isArray(article.tags)) {
+            titleNin = article.tags.join(',');
+        }
+        util.fetchApi('/api/tag/', { query, titleNin, limit, offset }, this)
+            .then((result) => {
+                // console.log('result', result);
+                this.setState({
+                    taglist: result.taglist,
+                    taglistTotal: result.total,
                 })
             });
     }
@@ -264,6 +286,12 @@ export default class SimpleBlogCms extends Component {
             method: 'PATCH',
             ...this.state.article,
         }
+
+        util.fetchApi(`/api/tag/`, { method: 'POST', tags: data.tags }, this)
+            .then((result) => {
+                console.log('/api/tag/ result', result);
+            });
+
         // console.log('trying to save', this.state.article);
         util.fetchApi(`/api/article/${this.state.article.id}`, data, this)
             .then((result) => {
@@ -332,21 +360,61 @@ export default class SimpleBlogCms extends Component {
         this.setState({ category });
     };
 
-    handleArticleInput = (event) => {
-        event.preventDefault();
-        const el = event.target;
-        const name = el.name;
+    articleInputAdd(name, value, type) {
         const article = this.state.article;
-        let value = el.value;
-        if (event.key) {
-            value += event.key;
-        }
-        if (typeof article[name] === 'object' && Array.isArray(article[name])) {
-            article[name] = value.split(/, ?/);
+        const taglist = this.state.taglist;
+        if (type === 'array') {
+            if (typeof article[name] !== 'object' && !Array.isArray(article[name])) {
+                article[name] = [];
+            }
+            if (value && article[name].indexOf(value) === -1) {
+                article[name].push(value);
+                const idx = taglist.findIndex(x => x.title === value);
+                taglist.splice(idx, 1);
+            }
         } else {
             article[name] = value;
         }
+        this.setState({ article, taglist });
+    }
+
+    articleInputRemove(name, value, type) {
+        const article = this.state.article;
+        if (type === 'array') {
+            if (typeof article[name] === 'object' && Array.isArray(article[name])) {
+                const idx = article[name].indexOf(value);
+                article[name].splice(idx, 1);
+            }
+        } else {
+            delete article[name];
+        }
         this.setState({ article });
+    }
+
+    handleArticleInput = (event, opt = {}) => {
+        event.preventDefault();
+        const el = event.target;
+        const name = el.name;
+        let value = el.value || '';
+
+        if (opt.name && (opt.action === 'add' || value.match(/[, ]$/))) {
+            let val = opt.value || value;
+            val = val.replace(/[, ]+$/, '');
+            this.articleInputAdd(opt.name, val, opt.type);
+            value = '';
+        }
+
+        if (opt.name && opt.action === 'remove') {
+            return this.articleInputRemove(opt.name, opt.value, opt.type);
+        }
+
+        if (opt.action === 'search') {
+            if (opt.name === 'tags' && value.length >= 1) {
+                this.loadTaglist(1, value);
+            }
+        }
+
+        this.articleInputAdd(name, value);
     };
 
     handleArticleSearchInput = (event, limit) => {
@@ -537,6 +605,9 @@ export default class SimpleBlogCms extends Component {
             catlist,
             catlistTotal,
 
+            taglist,
+            taglistTotal,
+
             currentPage,
             articlesPerPage,
             categoriesPerPage,
@@ -590,6 +661,8 @@ export default class SimpleBlogCms extends Component {
                             article={article}
                             that={this}
                             messages={messages}
+
+                            taglist={taglist}
 
                             handleInput={this.handleArticleInput}
                             handleAddImage={this.handleAddImage}

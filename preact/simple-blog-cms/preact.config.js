@@ -7,9 +7,6 @@ export default (config, env, helpers) => {
             swSrc: './service-worker.js',
             swDest: './service-worker.js',
             include: [/\.html$/, /\.js$/, /\.svg$/, /\.css$/, /\.png$/, /\.ico$/],
-            modifyURLPrefix: {
-                '/': '/preact-stuff/',
-            },
         })
     );
     delete config.entry.polyfills;

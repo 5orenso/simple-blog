@@ -24,6 +24,14 @@ router.get('/category/', wrap(require('./get-category.js')));
 router.get('/category/:id', wrap(require('./get-category.js')));
 router.patch('/category/:id', util.restrict, wrap(require('./patch-category.js')));
 
+router.get('/tag/', wrap(require('./get-tag.js')));
+router.get('/tag/:id', wrap(require('./get-tag.js')));
+router.post('/tag/', util.restrict, wrap(require('./post-tag.js')));
+
+router.get('/author/', wrap(require('./get-author.js')));
+router.get('/author/:id', wrap(require('./get-author.js')));
+router.post('/author/', util.restrict, wrap(require('./post-author.js')));
+
 router.post('/fileupload/', util.restrict, wrap(require('./post-fileupload.js')));
 
 module.exports = router;
