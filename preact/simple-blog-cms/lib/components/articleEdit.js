@@ -8,6 +8,8 @@ import utilHtml from '../util-html';
 
 const initialState = {
     currentMenu: 'preview',
+    currentTagIdx: -1,
+    currentTag: '',
 };
 const debug = false;
 const editMode = 'textarea'; // div
@@ -43,8 +45,70 @@ export default class ArticleEdit extends Component {
         this.setState({ currentTextarea: el });
     };
 
+    handleKeydown = (event, handleInput, taglist) => {
+        let currentTagIdx = this.state.currentTagIdx;
+        let currentTag;
+        const total = taglist.length;
+        if (event.key === 'Enter') {
+            handleInput(event, {
+                action: 'add',
+                name: 'tags',
+                type: 'array',
+            });
+            currentTagIdx = 0;
+            if (taglist[currentTagIdx]) {
+                currentTag = taglist[currentTagIdx].title;
+            }
+        } else if (event.key === 'Backspace' || event.key === 'Escape') {
+            currentTagIdx = -1;
+        } else if (event.key === 'ArrowUp') {
+            event.preventDefault();
+            currentTagIdx = currentTagIdx - 1;
+            if (currentTagIdx <= -1) {
+                currentTagIdx = -1;
+            } else {
+                currentTag = taglist[currentTagIdx].title;
+            }
+        } else if (event.key === 'ArrowDown') {
+            event.preventDefault();
+            currentTagIdx = currentTagIdx + 1;
+            if (currentTagIdx >= total) {
+                currentTagIdx = 0;
+            }
+            currentTag = taglist[currentTagIdx].title;
+        }
+        this.setState({ currentTagIdx, currentTag });
+        return true;
+    };
+
+    handleTagsInput = (event, handleInput) => {
+        handleInput(event, {
+            action: 'search',
+            name: 'tags',
+            type: 'array',
+        });
+    };
+
+    handleTagAdd = (event, handleInput, tag) => {
+        handleInput(event, {
+            action: 'add',
+            name: 'tags',
+            value: tag,
+            type: 'array',
+        });
+    };
+
+    handleTagRemove = (event, handleInput, tag) => {
+        handleInput(event, {
+            action: 'remove',
+            name: 'tags',
+            value: tag,
+            type: 'array',
+        });
+    };
+
     render(props) {
-        const { currentMenu } = this.state;
+        const { currentMenu, currentTagIdx, currentTag } = this.state;
         const styles = props.styles;
         const messages = props.messages;
         const article = props.article;
@@ -154,6 +218,16 @@ export default class ArticleEdit extends Component {
                 {renderImages}
                 <h1>{article.title}</h1>
                 <h5>{article.teaser}</h5>
+                <div>
+                    {util.isoDateNormalized(article.published)} by {article.author} |
+                    &nbsp;{article.category} |
+                    &nbsp;<span class={`badge badge-${util.getStatusClass(article.status)} p-2`}>{util.getStatus(article.status)}</span>
+                </div>
+                <div class='mb-3'>
+                    {Array.isArray(article.tags) && article.tags.map(tag =>
+                        <span class='badge badge-info mr-1'>{tag}</span>
+                    )}
+                </div>
                 <div id='bodyDisplay' dangerouslySetInnerHTML={{
                     __html: utilHtml.replaceMarked(
                         utilHtml.replaceDataTags(article.body, article)
@@ -261,57 +335,13 @@ export default class ArticleEdit extends Component {
         const renderedMeta = (
             <div class='col-12'>
                 <div class='row'>
-                    <div class='col-6'>
+                    <div class='col-12'>
                         <div class='form-group'>
                             <label for='publishedInput'>Published</label>
                             <input type='text' class='form-control' id='publishedInput' placeholder='Publiseringsdato'
                                 name='published'
                                 onInput={handleInput}
                                 value={util.isoDateNormalized(article.published)} />
-                        </div>
-                    </div>
-                    <div class='col-6'>
-                        <div class='form-group'>
-                            <label for='tagsInput'>Tags</label>
-                            <input type='text' class='form-control' id='tagsInput' placeholder='Tags'
-                                name='tagSearch'
-                                onInput={e => handleInput(e, {
-                                    action: 'search',
-                                    name: 'tags',
-                                    type: 'array',
-                                })}
-                                onKeypress={e => {
-                                    if (e.key === 'Enter') {
-                                        handleInput(e, {
-                                            action: 'add',
-                                            name: 'tags',
-                                            type: 'array',
-                                        });
-                                    }
-                                }}
-                                value={article.tagSearch} />
-
-                            {Array.isArray(taglist) && taglist.map(tag =>
-                                <span class='badge badge-warning mr-1'
-                                    onClick={e => handleInput(e, {
-                                        action: 'add',
-                                        name: 'tags',
-                                        value: tag.title,
-                                        type: 'array',
-                                    })}
-                                >{tag.title} <i class='fas fa-plus'></i></span>
-                            )}
-
-                            {Array.isArray(article.tags) && article.tags.map(tag =>
-                                <span class='badge badge-info mr-1'>{tag} <i class='fas fa-times-circle'
-                                    onClick={e => handleInput(e, {
-                                        action: 'remove',
-                                        name: 'tags',
-                                        value: tag,
-                                        type: 'array',
-                                    })}
-                                ></i></span>
-                            )}
                         </div>
                     </div>
                     <div class='col-12'>
@@ -321,6 +351,52 @@ export default class ArticleEdit extends Component {
                                 name='youtube'
                                 onInput={handleInput}
                                 value={article.youtube} />
+                        </div>
+                    </div>
+                    <div class='col-12'>
+                        <div class='form-group'>
+                            <label for='tagsInput'>Tags</label>
+                            <input type='text' class='form-control' id='tagsInput' placeholder='Tags'
+                                name='tagSearch'
+                                onInput={e => this.handleTagsInput(e, handleInput)}
+                                onKeydown={e => this.handleKeydown(e, handleInput, taglist)}
+                                value={currentTag || article.tagSearch} />
+
+                            {Array.isArray(taglist) && taglist.map((tag, idx) =>
+                                <span class={`badge badge-${currentTagIdx === idx ? 'warning' : 'light'} mr-1`}
+                                    onClick={e => this.handleTagAdd(e, handleInput, tag.title)}
+                                >{tag.title} <small class='text-muted'>({tag.count})</small> <i class='fas fa-plus'></i></span>
+                            )}
+
+                            {Array.isArray(article.tags) && article.tags.map(tag =>
+                                <span class='badge badge-info mr-1'>{tag} <i class='fas fa-times-circle'
+                                    onClick={e => this.handleTagRemove(e, handleInput, tag)}
+                                ></i></span>
+                            )}
+                            <small>
+                                {Array.isArray(article.img) && article.img.map(img =>
+                                    <div class='row mb-3'>
+                                        <div class='col-12'>
+                                            <h5>Image recognition</h5>
+                                        </div>
+                                        <div class='col-4'>
+                                            <img src={`${this.imageServer}/pho/${img.src}?w=500`} class='img-fluid' />
+                                        </div>
+                                        <div class='col-8'>
+                                            {Array.isArray(img.predictions) && img.predictions.map(pre =>
+                                                <span class='badge badge-secondary mr-1'
+                                                    onClick={e => this.handleTagAdd(e, handleInput, pre.className)}
+                                                >{pre.className} <i class='fas fa-plus'></i></span>
+                                            )}
+                                            {Array.isArray(img.predictionsCocoSsd) && img.predictionsCocoSsd.map(pre =>
+                                                <span class='badge badge-dark mr-1'
+                                                    onClick={e => this.handleTagAdd(e, handleInput, pre.class)}
+                                                >{pre.class} <i class='fas fa-plus'></i></span>
+                                            )}
+                                        </div>
+                                    </div>
+                                )}
+                            </small>
                         </div>
                     </div>
                 </div>

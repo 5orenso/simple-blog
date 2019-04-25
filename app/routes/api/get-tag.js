@@ -6,19 +6,22 @@
  */
 'use strict';
 
-const { routeName, routePath, run, webUtil, utilHtml } = require('../../middleware/init')({ __filename, __dirname });
+const { routeName, routePath, run, webUtil, utilHtml, util } = require('../../middleware/init')({ __filename, __dirname });
 const Tag = require('../../../lib/class/tag');
+const Article = require('../../../lib/class/article');
 
 const fields = {
     id: 1,
     createdDate: 1,
     title: 1,
+    count: 1,
 };
 
 module.exports = async (req, res) => {
     const { hrstart, runId }  = run(req);
 
     const tag = new Tag();
+    const art = new Article();
 
     let query = {
         id: req.params.id,
@@ -45,13 +48,39 @@ module.exports = async (req, res) => {
         data.taglist = list;
         data.total = total;
     } else if (query.id) {
-        apiContent = await tag.findOne(query, fields);
-        data.tag = apiContent;
+        data.tag = await tag.findOne(query, fields);
+        data.tag.count = await art.count({ tags: data.tag.title });
     } else {
-        apiContent = await tag.find(query, fields, { limit, skip });
-        data.taglist = apiContent;
+        data.taglist = await tag.find(query, fields, { limit, skip });
         total = await tag.count(query);
         data.total = total;
+    }
+
+    if (data.taglist) {
+        const tagCounts = await art.aggregate([
+            {
+                $unwind: "$tags"
+            },
+            {
+                $group: {
+                    _id: "$tags",
+                    count: { $sum: 1 }
+                }
+            },
+            {
+                $project: {
+                    tag: "$_id",
+                    count: "$count"
+                }
+            }
+        ]);
+        const tagRef = util.toRef(tagCounts, 'tag');
+
+        for (let i = 0, l = data.taglist.length; i < l; i += 1) {
+            const t = data.taglist[i];
+            t.count = tagRef[t.title].count;
+            console.log(t);
+        }
     }
 
     utilHtml.renderApi(req, res, 200, data);

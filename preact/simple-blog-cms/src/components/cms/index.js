@@ -410,7 +410,10 @@ export default class SimpleBlogCms extends Component {
 
         if (opt.action === 'search') {
             if (opt.name === 'tags' && value.length >= 1) {
-                this.loadTaglist(1, value);
+                let loadTaglistTimer = this.state.loadTaglistTimer;
+                clearTimeout(loadTaglistTimer);
+                loadTaglistTimer = setTimeout(() => this.loadTaglist(1, value), 500);
+                this.setState({ loadTaglistTimer });
             }
         }
 
