@@ -187,7 +187,8 @@ export default class ImageList extends Component {
                     <tbody>
                         {imglist.map(img => {
                             let geoInfo = [];
-                            ['cafe', 'pedestrian', 'suburb', 'address29', 'road', 'suburb', 'village', 'town', 'county', 'postcode', 'country'].map(key => {
+                            ['ferry_terminal', 'city_district', 'city', 'cafe', 'pedestrian', 'suburb', 'address29',
+                                'road', 'suburb', 'village', 'town', 'county', 'postcode', 'country'].map(key => {
                                 const geoData = util.getString(img, 'geo', 'address', key);
                                 if (geoData) {
                                     geoInfo.push(geoData);
