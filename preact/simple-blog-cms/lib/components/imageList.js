@@ -186,6 +186,22 @@ export default class ImageList extends Component {
                     </thead>
                     <tbody>
                         {imglist.map(img => {
+                            const geoInfo = [];
+                            ['address29', 'road', 'suburb', 'village', 'town', 'county', 'postcode', 'country'].map(key => {
+                                const geoData = util.getString(img, 'geo', 'address', key);
+                                if (geoData) {
+                                    geoInfo.push(geoData);
+                                }
+                            });
+                            const geoDisplayName = util.getString(img, 'geo', 'display_name');
+                            if (geoDisplayName) {
+                                geoDisplayName.split(', ').map(val => {
+                                    if (val && geoInfo.indexOf(val) === -1) {
+                                        geoInfo.push(geoData);
+                                    }
+                                })
+                            }
+
                             return (
                                 <tr data-id={img.id} class={imageId == img.id ? 'bg-primary text-white' : ''} onClick={handleImglistClick}>
                                     <td scope='row'>{img.id}</td>
@@ -285,16 +301,11 @@ export default class ImageList extends Component {
                                             </span>}
                                         </div>
                                         <div class='text-muted'>
-                                            {['road', 'town', 'county', 'postcode', 'country'].map(key => {
-                                                const geoData = util.getString(img, 'geo', 'address', key);
-                                                if (geoData) {
-                                                    return (
-                                                        <span class='badge badge-primary mr-1'>
-                                                            {geoData}
-                                                        </span>
-                                                    );
-                                                }
-                                            })}
+                                            {geoInfo.map(info =>
+                                                <span class='badge badge-primary mr-1'>
+                                                    {info}
+                                                </span>
+                                            )}
                                         </div>
                                     </td>
                                     <td>

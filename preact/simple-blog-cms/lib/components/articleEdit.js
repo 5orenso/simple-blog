@@ -386,37 +386,51 @@ export default class ArticleEdit extends Component {
                             <div class='mb-3'>
                                 <small>
                                     {Array.isArray(article.img) ? <h5>Image recognition</h5> : ''}
-                                    {Array.isArray(article.img) && article.img.map(img =>
-                                        <div class='row mb-3'>
-                                            <div class='col-4'>
-                                                <img src={`${this.imageServer}/pho/${img.src}?w=500`} class='img-fluid' />
-                                            </div>
-                                            <div class='col-8'>
-                                                {['road', 'town', 'county', 'postcode', 'country'].map(key => {
-                                                    const geoData = util.getString(img, 'geo', 'address', key);
-                                                    if (geoData) {
-                                                        return (
-                                                            <span class='badge badge-primary mr-1'
-                                                                onClick={e => this.handleTagAdd(e, handleInput, geoData)}
-                                                            >{geoData} <i class='fas fa-plus'></i></span>
-                                                        );
-                                                    }
-                                                })}
-                                                <br />
+                                    {Array.isArray(article.img) && article.img.map(img => {
+                                        const geoInfo = [];
+                                        ['address29', 'road', 'suburb', 'village', 'town', 'county', 'postcode', 'country'].map(key => {
+                                            const geoData = util.getString(img, 'geo', 'address', key);
+                                            if (geoData) {
+                                                geoInfo.push(geoData);
+                                            }
+                                        });
+                                        const geoDisplayName = util.getString(img, 'geo', 'display_name');
+                                        if (geoDisplayName) {
+                                            geoDisplayName.split(', ').map(val => {
+                                                if (val && geoInfo.indexOf(val) === -1) {
+                                                    geoInfo.push(geoData);
+                                                }
+                                            })
+                                        }
+                                        return (
+                                            <div class='row mb-3'>
+                                                <div class='col-4'>
+                                                    <img src={`${this.imageServer}/pho/${img.src}?w=500`} class='img-fluid' />
+                                                </div>
+                                                <div class='col-8'>
+                                                    {geoInfo.map(info =>
+                                                        <span class='badge badge-primary mr-1'
+                                                            onClick={e => this.handleTagAdd(e, handleInput, info)}
+                                                        >
+                                                            {info} <i class='fas fa-plus'></i>
+                                                        </span>
+                                                    )}
+                                                    <br />
 
-                                                {Array.isArray(img.predictions) && img.predictions.map(pre =>
-                                                    <span class='badge badge-secondary mr-1'
-                                                        onClick={e => this.handleTagAdd(e, handleInput, pre.className)}
-                                                    >{pre.className} <i class='fas fa-plus'></i></span>
-                                                )}
-                                                {Array.isArray(img.predictionsCocoSsd) && img.predictionsCocoSsd.map(pre =>
-                                                    <span class='badge badge-dark mr-1'
-                                                        onClick={e => this.handleTagAdd(e, handleInput, pre.class)}
-                                                    >{pre.class} <i class='fas fa-plus'></i></span>
-                                                )}
+                                                    {Array.isArray(img.predictions) && img.predictions.map(pre =>
+                                                        <span class='badge badge-secondary mr-1'
+                                                            onClick={e => this.handleTagAdd(e, handleInput, pre.className)}
+                                                        >{pre.className} <i class='fas fa-plus'></i></span>
+                                                    )}
+                                                    {Array.isArray(img.predictionsCocoSsd) && img.predictionsCocoSsd.map(pre =>
+                                                        <span class='badge badge-dark mr-1'
+                                                            onClick={e => this.handleTagAdd(e, handleInput, pre.class)}
+                                                        >{pre.class} <i class='fas fa-plus'></i></span>
+                                                    )}
+                                                </div>
                                             </div>
-                                        </div>
-                                    )}
+                                        );
+                                    })}
                                 </small>
                             </div>
                         </div>
