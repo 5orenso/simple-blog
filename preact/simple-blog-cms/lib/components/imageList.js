@@ -284,6 +284,18 @@ export default class ImageList extends Component {
                                                 {this.getSceneCaptureType(img.exif.sceneCaptureType)}
                                             </span>}
                                         </div>
+                                        <div class='text-muted'>
+                                            {['road', 'town', 'county', 'postcode', 'country'].map(key => {
+                                                const geoData = util.getString(img, 'geo', 'address', key);
+                                                if (geoData) {
+                                                    return (
+                                                        <span class='badge badge-primary mr-1'>
+                                                            {geoData}
+                                                        </span>
+                                                    );
+                                                }
+                                            })}
+                                        </div>
                                     </td>
                                     <td>
                                         {util.isoDateNormalized(util.getString(img, 'exif', 'dateTimeOriginal') ||
