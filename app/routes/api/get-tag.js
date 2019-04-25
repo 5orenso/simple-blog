@@ -79,7 +79,6 @@ module.exports = async (req, res) => {
         for (let i = 0, l = data.taglist.length; i < l; i += 1) {
             const t = data.taglist[i];
             t.count = tagRef[t.title].count;
-            console.log(t);
         }
     }
 
