@@ -58,7 +58,7 @@ const main = async () => {
 
             // Checking for geo
             const field = 'geo';
-            if (imgRef[src].exif && !imgRef[src][field]) {
+            if (imgRef[src].exif && imgRef[src].exif.lat && imgRef[src].exif.lng && !imgRef[src][field]) {
                 needsUpdate = true;
                 console.log(`    > Missing info in field: ${field}`);
             }
