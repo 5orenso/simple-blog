@@ -197,7 +197,7 @@ export default class ImageList extends Component {
                             if (geoDisplayName) {
                                 geoDisplayName.split(', ').map(val => {
                                     if (val && geoInfo.indexOf(val) === -1) {
-                                        geoInfo.push(geoData);
+                                        geoInfo.push(val);
                                     }
                                 })
                             }
