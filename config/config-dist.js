@@ -140,4 +140,7 @@ module.exports = {
     mongo: {
         url: 'mongodb://localhost:27017/simpleBlogLittno?safe=true&auto_reconnect=true&poolSize=20',
     },
+    locationiq_com: {
+        apiKey: 'you key here',
+    },
 };

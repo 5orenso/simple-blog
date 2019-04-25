@@ -47,7 +47,7 @@ const main = async () => {
             // Image already exists inside db. Only run updates and save.
             console.log(`Image already exists.: ${filename}`);
             let needsUpdate = false;
-            const requiredFields = ['predictions', 'predictionsCocoSsd', 'features', 'stats'];
+            const requiredFields = ['predictions', 'predictionsCocoSsd', 'features', 'stats', 'geo'];
             for (let i = 0, l = requiredFields.length; i < l; i += 1) {
                 const field = requiredFields[i];
                 if (!imgRef[src][field]) {
@@ -56,7 +56,7 @@ const main = async () => {
                 }
             }
             if (needsUpdate) {
-                const imageInfo = await imageUtil.read(filename);
+                const imageInfo = await imageUtil.read(filename, false, { config });
                 const updateImg = {
                     id: imgRef[src].id,
                     ...imageInfo,
@@ -66,7 +66,7 @@ const main = async () => {
             }
         } else {
             console.log(`New Image: ${filename}`);
-            const imageInfo = await imageUtil.read(filename);
+            const imageInfo = await imageUtil.read(filename, false, { config });
             const newImg = {
                 src,
                 ...imageInfo,

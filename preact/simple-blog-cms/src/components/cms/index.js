@@ -364,7 +364,7 @@ export default class SimpleBlogCms extends Component {
         const article = this.state.article;
         const taglist = this.state.taglist;
         if (type === 'array') {
-            if (typeof article[name] !== 'object' && !Array.isArray(article[name])) {
+            if (!Array.isArray(article[name])) {
                 article[name] = [];
             }
             if (value && article[name].indexOf(value) === -1) {

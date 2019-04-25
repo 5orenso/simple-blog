@@ -373,30 +373,52 @@ export default class ArticleEdit extends Component {
                                     onClick={e => this.handleTagRemove(e, handleInput, tag)}
                                 ></i></span>
                             )}
-                            <small>
-                                {Array.isArray(article.img) && article.img.map(img =>
-                                    <div class='row mb-3'>
-                                        <div class='col-12'>
-                                            <h5>Image recognition</h5>
+                            <div class='mt-3 mb-3'>
+                                <small>
+                                    {Array.isArray(article.relevantWords) ? <h5>Language processing</h5> : ''}
+                                    {Array.isArray(article.relevantWords) && article.relevantWords.map(word =>
+                                        <span class='badge badge-danger mr-1'
+                                            onClick={e => this.handleTagAdd(e, handleInput, word)}
+                                        >{word} <i class='fas fa-plus'></i></span>
+                                    )}
+                                </small>
+                            </div>
+                            <div class='mb-3'>
+                                <small>
+                                    {Array.isArray(article.img) ? <h5>Image recognition</h5> : ''}
+                                    {Array.isArray(article.img) && article.img.map(img =>
+                                        <div class='row mb-3'>
+                                            <div class='col-4'>
+                                                <img src={`${this.imageServer}/pho/${img.src}?w=500`} class='img-fluid' />
+                                            </div>
+                                            <div class='col-8'>
+                                                {['town', 'county', 'postcode', 'country'].map(key => {
+                                                    const geoData = util.getString(img, 'geo', 'address', key);
+                                                    if (geoData) {
+                                                        return (
+                                                            <span class='badge badge-primary mr-1'
+                                                                onClick={e => this.handleTagAdd(e, handleInput, geoData)}
+                                                            >{geoData} <i class='fas fa-plus'></i></span>
+                                                        );
+                                                    }
+                                                })}
+                                                <br />
+
+                                                {Array.isArray(img.predictions) && img.predictions.map(pre =>
+                                                    <span class='badge badge-secondary mr-1'
+                                                        onClick={e => this.handleTagAdd(e, handleInput, pre.className)}
+                                                    >{pre.className} <i class='fas fa-plus'></i></span>
+                                                )}
+                                                {Array.isArray(img.predictionsCocoSsd) && img.predictionsCocoSsd.map(pre =>
+                                                    <span class='badge badge-dark mr-1'
+                                                        onClick={e => this.handleTagAdd(e, handleInput, pre.class)}
+                                                    >{pre.class} <i class='fas fa-plus'></i></span>
+                                                )}
+                                            </div>
                                         </div>
-                                        <div class='col-4'>
-                                            <img src={`${this.imageServer}/pho/${img.src}?w=500`} class='img-fluid' />
-                                        </div>
-                                        <div class='col-8'>
-                                            {Array.isArray(img.predictions) && img.predictions.map(pre =>
-                                                <span class='badge badge-secondary mr-1'
-                                                    onClick={e => this.handleTagAdd(e, handleInput, pre.className)}
-                                                >{pre.className} <i class='fas fa-plus'></i></span>
-                                            )}
-                                            {Array.isArray(img.predictionsCocoSsd) && img.predictionsCocoSsd.map(pre =>
-                                                <span class='badge badge-dark mr-1'
-                                                    onClick={e => this.handleTagAdd(e, handleInput, pre.class)}
-                                                >{pre.class} <i class='fas fa-plus'></i></span>
-                                            )}
-                                        </div>
-                                    </div>
-                                )}
-                            </small>
+                                    )}
+                                </small>
+                            </div>
                         </div>
                     </div>
                 </div>

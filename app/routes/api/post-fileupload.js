@@ -20,7 +20,7 @@ const filenamePrefix = 'simpleBlog-';
 
 function pathExists(absolutePath) {
     return new Promise((resolve, reject) => {
-        console.log('absolutePath', absolutePath);
+        // console.log('absolutePath', absolutePath);
         fs.exists(absolutePath, (exists) => {
             if (!exists) {
                 mkdirp(absolutePath, (err) => {
@@ -67,7 +67,7 @@ module.exports = async (req, res) => {
             file.src = `${req.query.category}/${req.query.title}/${file.newFilename}`;
             delete file.data;
 
-            const imageInfo = await imageUtil.read(tmpFile, true);
+            const imageInfo = await imageUtil.read(tmpFile, true, { config: req.config });
             const fileData = { ...file, ...imageInfo };
 
             const image = new Image();

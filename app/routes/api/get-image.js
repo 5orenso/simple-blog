@@ -23,6 +23,7 @@ const fields = {
     newFilename: 1,
     stats: 1,
     exif: 1,
+    geo: 1,
     features: 1,
     predictions: 1,
     predictionsCocoSsd: 1,
@@ -87,8 +88,6 @@ module.exports = async (req, res) => {
     query = webUtil.cleanObject(query);
     const limit = parseInt(req.query.limit || 10, 10);
     const skip = parseInt(req.query.offset || 0, 10);
-
-console.log('query', query);
 
     let apiContent;
     let total;

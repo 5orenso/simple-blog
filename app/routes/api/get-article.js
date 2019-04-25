@@ -6,7 +6,7 @@
  */
 'use strict';
 
-const { routeName, routePath, run, webUtil, utilHtml } = require('../../middleware/init')({ __filename, __dirname });
+const { routeName, routePath, run, webUtil, utilHtml, util } = require('../../middleware/init')({ __filename, __dirname });
 const Article = require('../../../lib/class/article');
 
 const fields = {
@@ -25,6 +25,7 @@ const fields = {
     video: 1,
     aggregateRating: 1,
     nutrition: 1,
+    relevantWords: 1,
 };
 
 module.exports = async (req, res) => {
@@ -65,6 +66,20 @@ module.exports = async (req, res) => {
         data.artlist = apiContent;
         total = await art.count(query);
         data.total = total;
+    }
+
+    // Find relevant words.
+    if (data.article) {
+        data.article.relevantWords = [];
+        const tokens = util.tokenizeAndStem(data.article.body);
+        const wordCount = util.termsCount(tokens, data.article.body);
+        const words = Object.keys(wordCount);
+        for (let i = 0, l = words.length; i < l; i += 1) {
+            const word = words[i];
+            if (wordCount[word] >= 2 && word.length > 3) {
+                data.article.relevantWords.push(word);
+            }
+        }
     }
 
     utilHtml.renderApi(req, res, 200, data);
