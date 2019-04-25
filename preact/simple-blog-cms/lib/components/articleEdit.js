@@ -392,7 +392,7 @@ export default class ArticleEdit extends Component {
                                                 <img src={`${this.imageServer}/pho/${img.src}?w=500`} class='img-fluid' />
                                             </div>
                                             <div class='col-8'>
-                                                {['town', 'county', 'postcode', 'country'].map(key => {
+                                                {['road', 'town', 'county', 'postcode', 'country'].map(key => {
                                                     const geoData = util.getString(img, 'geo', 'address', key);
                                                     if (geoData) {
                                                         return (

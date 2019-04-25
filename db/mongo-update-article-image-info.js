@@ -12,6 +12,7 @@ db.image.find({
     }, {
         $set: {
             "img.$.exif": img.exif,
+            "img.$.geo": img.geo,
             "img.$.stats": img.stats,
             "img.$.features": img.features,
             "img.$.predictions": img.predictions,
