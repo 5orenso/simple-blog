@@ -331,6 +331,23 @@ class Utilities {
     static isPositiveInteger(num) {
         return isInteger(num) && num > 0;
     }
+
+    static asUniqArray(array, parseToInteger = false) {
+        const temp = {};
+        for (let i = 0; i < array.length; i += 1) {
+            temp[array[i]] = true;
+        }
+        const result = [];
+        const keys = Object.keys(temp);
+        for (let i = 0; i < keys.length; i += 1) {
+            let key = keys[i];
+            if (parseToInteger) {
+                key = parseInt(key, 10);
+            }
+            result.push(key);
+        }
+        return result;
+    }
 }
 
 module.exports = Utilities;

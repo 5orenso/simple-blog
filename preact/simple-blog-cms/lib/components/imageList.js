@@ -186,8 +186,8 @@ export default class ImageList extends Component {
                     </thead>
                     <tbody>
                         {imglist.map(img => {
-                            const geoInfo = [];
-                            ['address29', 'road', 'suburb', 'village', 'town', 'county', 'postcode', 'country'].map(key => {
+                            let geoInfo = [];
+                            ['cafe', 'pedestrian', 'suburb', 'address29', 'road', 'suburb', 'village', 'town', 'county', 'postcode', 'country'].map(key => {
                                 const geoData = util.getString(img, 'geo', 'address', key);
                                 if (geoData) {
                                     geoInfo.push(geoData);
@@ -201,6 +201,7 @@ export default class ImageList extends Component {
                                     }
                                 })
                             }
+                            geoInfo = util.asUniqArray(geoInfo);
 
                             return (
                                 <tr data-id={img.id} class={imageId == img.id ? 'bg-primary text-white' : ''} onClick={handleImglistClick}>

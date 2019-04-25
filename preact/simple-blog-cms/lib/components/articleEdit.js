@@ -387,8 +387,8 @@ export default class ArticleEdit extends Component {
                                 <small>
                                     {Array.isArray(article.img) ? <h5>Image recognition</h5> : ''}
                                     {Array.isArray(article.img) && article.img.map(img => {
-                                        const geoInfo = [];
-                                        ['address29', 'road', 'suburb', 'village', 'town', 'county', 'postcode', 'country'].map(key => {
+                                        let geoInfo = [];
+                                        ['cafe', 'pedestrian', 'suburb', 'address29', 'road', 'suburb', 'village', 'town', 'county', 'postcode', 'country'].map(key => {
                                             const geoData = util.getString(img, 'geo', 'address', key);
                                             if (geoData) {
                                                 geoInfo.push(geoData);
@@ -402,6 +402,8 @@ export default class ArticleEdit extends Component {
                                                 }
                                             })
                                         }
+                                        geoInfo = util.asUniqArray(geoInfo);
+
                                         return (
                                             <div class='row mb-3'>
                                                 <div class='col-4'>
