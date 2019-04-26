@@ -388,12 +388,15 @@ export default class ArticleEdit extends Component {
                                     {Array.isArray(article.img) ? <h5>Image recognition</h5> : ''}
                                     {Array.isArray(article.img) && article.img.map(img => {
                                         let geoInfo = [];
-                                        ['hill', 'ferry_terminal', 'city_district', 'city', 'cafe', 'pedestrian',
-                                            'suburb', 'address29', 'house_number', 'neighbourhood', 'road', 'suburb',
-                                            'village', 'town', 'county', 'postcode', 'country'].map(key => {
+                                        let geoInfoExtra = [];
+                                        util.geoAddressFields().map(key => {
                                             const geoData = util.getString(img, 'geo', 'address', key);
                                             if (geoData) {
                                                 geoInfo.push(geoData);
+                                                const geoDataExtra = util.geoAddressGetExtraTags(key);
+                                                if (geoDataExtra) {
+                                                    geoInfoExtra = geoInfoExtra.concat(geoDataExtra);
+                                                }
                                             }
                                         });
                                         const geoDisplayName = util.getString(img, 'geo', 'display_name');
@@ -414,6 +417,13 @@ export default class ArticleEdit extends Component {
                                                 <div class='col-8'>
                                                     {geoInfo.map(info =>
                                                         <span class='badge badge-primary mr-1'
+                                                            onClick={e => this.handleTagAdd(e, handleInput, info)}
+                                                        >
+                                                            {info} <i class='fas fa-plus'></i>
+                                                        </span>
+                                                    )}
+                                                    {geoInfoExtra.map(info =>
+                                                        <span class='badge badge-danger mr-1'
                                                             onClick={e => this.handleTagAdd(e, handleInput, info)}
                                                         >
                                                             {info} <i class='fas fa-plus'></i>

@@ -65,7 +65,7 @@ const main = async () => {
             }
 
             if (needsUpdate) {
-                const imageInfo = await imageUtil.read(filename, skipAi, { config });
+                const imageInfo = await imageUtil.read(filename, skipAi, { config, img: imgRef[src] });
                 const updateImg = {
                     id: imgRef[src].id,
                     ...imageInfo,

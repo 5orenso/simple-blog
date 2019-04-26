@@ -9,6 +9,41 @@
 
 const querystring = require('querystring');
 
+const GEO_ADDRESS_FIELDS = [
+    'information', 'parking', 'water', 'nature_reserve', 'library', 'bus_stop', 'restaurant', 'sports', 'attraction',
+    'hospital', 'monument', 'picnic_site', 'retail', 'swimming_pool', 'townhall', 'pharmacy', 'sports_centre',
+    'hamlet', 'path', 'hill', 'ferry_terminal', 'cafe', 'pedestrian',
+    'address29', 'road', 'house_number', 'neighbourhood', 'suburb',
+    'postcode', 'city_district', 'city', 'village', 'town',
+    'county', 'state', 'country',
+];
+
+const GEO_ADDRESS_FIELDS_TAGS = {
+    information: ['information'],
+    parking: ['parking'],
+    water: ['water'],
+    nature_reserve: ['nature_reserve'],
+    library: ['library'],
+    bus_stop: ['bus_stop'],
+    restaurant: ['restaurant'],
+    sports: ['sports'],
+    attraction: ['attraction'],
+    hospital: ['hospital'],
+    monument: ['monument'],
+    picnic_site: ['picnic_site'],
+    retail: ['retail'],
+    swimming_pool: ['swimming_pool'],
+    townhall: ['townhall'],
+    pharmacy: ['pharmacy'],
+    sports_centre: ['sports_centre'],
+    hamlet: ['hamlet'],
+    path: ['path'],
+    hill: ['hill'],
+    ferry_terminal: ['ferry_terminal'],
+    cafe: ['cafe'],
+    pedestrian: ['pedestrian'],
+};
+
 function pad(number) {
     let r = String(number);
     if (r.length === 1) {
@@ -347,6 +382,14 @@ class Utilities {
             result.push(key);
         }
         return result;
+    }
+
+    static geoAddressFields() {
+        return GEO_ADDRESS_FIELDS;
+    }
+
+    static geoAddressGetExtraTags(key) {
+        return GEO_ADDRESS_FIELDS_TAGS[key];
     }
 }
 
