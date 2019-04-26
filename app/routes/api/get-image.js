@@ -27,6 +27,7 @@ const fields = {
     features: 1,
     predictions: 1,
     predictionsCocoSsd: 1,
+    faceDetections: 1,
 };
 
 // db.getCollection('image').find({ predictions: { $elemMatch: { className: 'alp', probability: { $gt: 0.5 } } } })

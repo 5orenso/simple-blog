@@ -82,6 +82,8 @@ export default class ArticleEdit extends Component {
     };
 
     handleTagsInput = (event, handleInput) => {
+        // TODO: Add force to lower case function.
+        event.target.value = event.target.value.toLowerCase();
         handleInput(event, {
             action: 'search',
             name: 'tags',
