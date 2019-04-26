@@ -6,6 +6,7 @@ const fs = require('fs');
 const path = require('path');
 
 const config = require(process.argv[2] || '../config/config-dist.js');
+const skipAi = process.argv[3] ? true : false;
 const photoPath = path.normalize(config.adapter.markdown.photoPath);
 
 const { promisify } = require('util');
@@ -64,7 +65,7 @@ const main = async () => {
             }
 
             if (needsUpdate) {
-                const imageInfo = await imageUtil.read(filename, false, { config });
+                const imageInfo = await imageUtil.read(filename, skipAi, { config });
                 const updateImg = {
                     id: imgRef[src].id,
                     ...imageInfo,
