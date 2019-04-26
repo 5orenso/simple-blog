@@ -93,7 +93,7 @@ export default class ArticleEdit extends Component {
         handleInput(event, {
             action: 'add',
             name: 'tags',
-            value: tag,
+            value: tag.toLowerCase(),
             type: 'array',
         });
     };
@@ -102,7 +102,7 @@ export default class ArticleEdit extends Component {
         handleInput(event, {
             action: 'remove',
             name: 'tags',
-            value: tag,
+            value: tag.toLowerCase(),
             type: 'array',
         });
     };

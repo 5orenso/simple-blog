@@ -397,7 +397,7 @@ export default class SimpleBlogCms extends Component {
         const name = el.name;
         let value = el.value || '';
 
-        if (opt.name && (opt.action === 'add' || value.match(/[, ]$/))) {
+        if (opt.name && (opt.action === 'add' || value.match(/[,]$/))) {
             let val = opt.value || value;
             val = val.replace(/[, ]+$/, '');
             this.articleInputAdd(opt.name, val, opt.type);
