@@ -10,6 +10,7 @@ config['My tests'] = {
     sources: [
         'lib/**/**/*.js',
         'app/routes/**/*.js',
-        '!Gruntfile.js'
+        '!Gruntfile.js',
+        '!app/routes/api/fileupload/*'
     ]
 };

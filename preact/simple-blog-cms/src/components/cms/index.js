@@ -198,6 +198,27 @@ export default class SimpleBlogCms extends Component {
         }
     }
 
+    saveArticle() {
+        const data = {
+            method: 'PATCH',
+            ...this.state.article,
+        }
+
+        util.fetchApi(`/api/tag/`, { method: 'POST', tags: data.tags }, this)
+            .then((result) => {
+                console.log('/api/tag/ result', result);
+            });
+
+        // console.log('trying to save', this.state.article);
+        util.fetchApi(`/api/article/${this.state.article.id}`, data, this)
+            .then((result) => {
+                const messages = this.state.messages;
+                messages.push([parseInt(new Date().getTime() / 1000, 10), 'Artikkel oppdatert']);
+                this.setState({ messages });
+                this.loadArtlist();
+            });
+    }
+
     handleAddImage = (file) => {
         const article = this.state.article;
         if (!Array.isArray(article.img)) {
@@ -205,6 +226,7 @@ export default class SimpleBlogCms extends Component {
         }
         article.img.push(file);
         this.setState({ article });
+        this.saveArticle();
     }
 
     // - - - [ Events ] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -282,24 +304,7 @@ export default class SimpleBlogCms extends Component {
 
     handleArticleClickSave = (event) => {
         event.preventDefault();
-        const data = {
-            method: 'PATCH',
-            ...this.state.article,
-        }
-
-        util.fetchApi(`/api/tag/`, { method: 'POST', tags: data.tags }, this)
-            .then((result) => {
-                console.log('/api/tag/ result', result);
-            });
-
-        // console.log('trying to save', this.state.article);
-        util.fetchApi(`/api/article/${this.state.article.id}`, data, this)
-            .then((result) => {
-                const messages = this.state.messages;
-                messages.push([parseInt(new Date().getTime() / 1000, 10), 'Artikkel oppdatert']);
-                this.setState({ messages });
-                this.loadArtlist();
-            });
+        this.saveArticle();
     };
 
     handleArticleClickNew = (event) => {

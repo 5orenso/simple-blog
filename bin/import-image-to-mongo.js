@@ -1,5 +1,6 @@
 const myMongoose = require('../lib/class/mongoose');
 const Image = require('../lib/class/image');
+const Article = require('../lib/class/article');
 const ImageUtil = require('../lib/class/image-util');
 
 const fs = require('fs');
@@ -27,6 +28,7 @@ async function getFiles(dir) {
 const main = async () => {
     await myMongoose.connectGlobal(config);
     const image = new Image();
+    const article = new Article();
     const imageUtil = new ImageUtil();
     await imageUtil.loadModels();
 
@@ -72,6 +74,21 @@ const main = async () => {
                 };
                 console.log(`    > Updating image with info:`, updateImg);
                 await image.save(updateImg);
+
+                // Update all articles with the same image.
+                await article.rawUpdate({
+                    'img.src': src
+                }, {
+                    $set: {
+                        'img.$.exif': img.exif,
+                        'img.$.geo': img.geo,
+                        'img.$.stats': img.stats,
+                        'img.$.features': img.features,
+                        'img.$.predictions': img.predictions,
+                        'img.$.predictionsCocoSsd': img.predictionsCocoSsd,
+                        'img.$.faceDetections': img.faceDetections,
+                    }
+                });
             }
         } else {
             console.log(`New Image: ${filename}`);

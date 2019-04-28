@@ -16,7 +16,8 @@ db.image.find({
             "img.$.stats": img.stats,
             "img.$.features": img.features,
             "img.$.predictions": img.predictions,
-            "img.$.predictionsCocoSsd": img.predictionsCocoSsd
+            "img.$.predictionsCocoSsd": img.predictionsCocoSsd,
+            "img.$.faceDetections": img.faceDetections,
         }
     });
 });

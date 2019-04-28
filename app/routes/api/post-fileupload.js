@@ -11,6 +11,7 @@ const path = require('path');
 const fs = require('fs');
 const mkdirp = require('mkdirp');
 const im = require('imagemagick');
+const { spawn } = require('child_process');
 
 const { routeName, routePath, run, util, webUtil, utilHtml } = require('../../middleware/init')({ __filename, __dirname });
 const Image = require('../../../lib/class/image');
@@ -71,8 +72,37 @@ module.exports = async (req, res) => {
             const fileData = { ...file, ...imageInfo };
 
             const image = new Image();
-            await image.save(fileData);
+            const imageObject = await image.save(fileData);
             filesUploaded.push(fileData);
+
+            // console.log('__filename, __dirname', __filename, __dirname);
+            // console.log('spawning:', 'node', [`${__dirname}/fileupload/process-image.js`, '--imageid', imageObject.id]);
+            // console.log(process.env);
+            // console.log(process.argv);
+            let configFile = process.argv[3];
+            if (configFile.match(/^\./)) {
+                configFile = path.normalize(`${__dirname}/../../${process.argv[3]}`);
+            }
+            // console.log(configFile);
+            const child = spawn('node', [
+                './fileupload/process-image.js',
+                '--imageid', imageObject.id,
+                '--config', configFile,
+            ], {
+                detached: true,
+                stdio: 'ignore',
+                cwd: __dirname,
+            });
+            // child.stdout.on('data', (data) => {
+            //     console.log(`child stdout:\n${data}`);
+            // });
+            // child.stderr.on('data', (data) => {
+            //     console.log(`stderr: ${data}`);
+            // });
+            // child.on('close', (code) => {
+            //     console.log(`child process exited with code ${code}`);
+            // });
+            child.unref();
         }
     }
 
