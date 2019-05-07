@@ -6,8 +6,8 @@ const widgetName = 'ImageList';
 const initialState = {
 };
 const debug = false;
-const imageWidth = 150;
-const imageHeight = 100;
+const imageWidth = 300;
+const imageHeight = 200;
 
 export default class ImageList extends Component {
     constructor(props) {
@@ -132,6 +132,35 @@ export default class ImageList extends Component {
                         ctx.fillStyle = classColor[pre.class];
                         ctx.fillText(pre.class, x1, y1);
                     });
+                }
+
+                if (img.faceDetections) {
+                    for (let i = 0, l = img.faceDetections.length; i < l; i += 1) {
+                        const face = img.faceDetections[i].detection;
+                        const faceDesc = img.faceDetections[i].descriptor;
+                        const faceExpression = img.faceDetections[i].expressions.sort((a, b) => a.probability > b.probability).pop();
+
+                        console.log(`face ${i}: ${JSON.stringify(faceExpression, null, 4)}`);
+                        // console.log(`face ${i}: ${JSON.stringify(face, null, 4)}`);
+                        // console.log(`face ${i}: ${JSON.stringify(faceDesc, null, 4)}`);
+
+                        const x = Math.ceil(sizeRatio * face.box.x);
+                        const y = Math.ceil(sizeRatio * face.box.y);
+                        const w = Math.ceil(sizeRatio * face.box.width);
+                        const h = Math.ceil(sizeRatio * face.box.height);
+                        // console.log(x,y,w,h);
+
+                        const faceColor = colors.shift();
+
+                        ctx.lineWidth = 1;
+                        ctx.strokeStyle = faceColor;
+                        ctx.strokeRect(x, y, w, h);
+                        // Text
+                        ctx.font = '10px Georgia';
+                        ctx.fillStyle = faceColor;
+
+                        ctx.fillText(`${util.format(face.score, 2, '.')} / ${faceExpression.expression}`, x, y);
+                    }
                 }
             } catch (err) {
                 console.log(err);
@@ -308,12 +337,14 @@ export default class ImageList extends Component {
                                         </div>
                                         <div class='text-muted'>
                                             {geoInfo.map(info =>
-                                                <span class='badge badge-primary mr-1'>
+                                                <span class='badge badge-pill badge-primary mr-1'>
+                                                    <i class="fas fa-map-marker-alt mr-1"></i>
                                                     {info}
                                                 </span>
                                             )}
                                             {geoInfoExtra.map(info =>
-                                                <span class='badge badge-danger mr-1'>
+                                                <span class='badge badge-pill badge-secondary mr-1'>
+                                                    <i class="fas fa-map-marker-alt mr-1"></i>
                                                     {info}
                                                 </span>
                                             )}
