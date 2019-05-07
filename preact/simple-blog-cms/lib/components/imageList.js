@@ -138,9 +138,11 @@ export default class ImageList extends Component {
                     for (let i = 0, l = img.faceDetections.length; i < l; i += 1) {
                         const face = img.faceDetections[i].detection;
                         const faceDesc = img.faceDetections[i].descriptor;
-                        const faceExpression = img.faceDetections[i].expressions.sort((a, b) => a.probability > b.probability).pop();
-
-                        console.log(`face ${i}: ${JSON.stringify(faceExpression, null, 4)}`);
+                        let faceExpression = {};
+                        if (Array.isArray(img.faceDetections[i].expressions)) {
+                            faceExpression = img.faceDetections[i].expressions.sort((a, b) => a.probability > b.probability).pop();
+                        }
+                        // console.log(`face ${i}: ${JSON.stringify(faceExpression, null, 4)}`);
                         // console.log(`face ${i}: ${JSON.stringify(face, null, 4)}`);
                         // console.log(`face ${i}: ${JSON.stringify(faceDesc, null, 4)}`);
 
