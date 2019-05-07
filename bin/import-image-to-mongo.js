@@ -73,7 +73,7 @@ const main = async () => {
                     ...imageInfo,
                 };
                 console.log(`    > Updating image with info:`, updateImg);
-                await image.save(updateImg);
+                const img = await image.save(updateImg);
 
                 // Update all articles with the same image.
                 await article.rawUpdate({
