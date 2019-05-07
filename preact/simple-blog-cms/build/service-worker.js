@@ -1,4 +1,4 @@
-importScripts("/preact/simple-blog-cms/precache-manifest.565effedc65cb0e4fec28e33f00d7c28.js", "https://storage.googleapis.com/workbox-cdn/releases/4.3.0/workbox-sw.js");
+importScripts("/preact/simple-blog-cms/precache-manifest.fc3102826b0ed89aca326bcd8a7c7425.js", "https://storage.googleapis.com/workbox-cdn/releases/4.3.0/workbox-sw.js");
 
 workbox.precaching.precacheAndRoute(self.__precacheManifest || []);
 
