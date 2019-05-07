@@ -169,6 +169,7 @@
                 "contentUrl": "{{ blog.protocol }}://{{ blog.domain }}/pho/{{ article.img[0].src }}?w=800",
             {% endif %}
             "datePublished": "{{ (article.img.published || article.published)|date('Y-m-d H:i:s') }}",
+            {% if article.img[0].exif %}
             "contentLocation": {
                 "@type": "Place",
                 "geo": {
@@ -210,6 +211,7 @@
                     "value": "{{ article.img[0].exif.photographicSensitivity|e('js')|raw }}"
                 }
             ]
+            {% endif %}
         }
         </script>
     {% endif %}
