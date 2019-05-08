@@ -168,6 +168,9 @@ export default class SimpleBlogCms extends Component {
         const name = el.name;
 
         const article = this.state.article;
+        if (typeof article[name] !== 'string') {
+            article[name] = '';
+        }
         const before = article[name].substring(0, start);
         const after  = article[name].substring(end, article[name].length);
         article[name] = (before + newText + after);
