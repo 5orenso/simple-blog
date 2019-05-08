@@ -17,6 +17,7 @@ const fields = {
     category: 1,
     title: 1,
     teaser: 1,
+    ingress: 1,
     body: 1,
     img: 1,
     tags: 1,

@@ -203,6 +203,13 @@ export default class ArticleEdit extends Component {
                             onInput={handleInput}
                             value={article.teaser} />
                     </div>
+                    <div class='form-group'>
+                        <label for='ingressInput' class='text-white-50'>Ingress</label>
+                        <textarea name='ingress' class={`form-control`} id='ingressInput' rows='3'
+                            onInput={handleTextareaInput}
+                            onFocus={this.handleTextareaFocus}
+                            value={article.ingress} />
+                    </div>
                     <div class='form-group flex-grow-1'>
                         <label for='bodyInput' class='text-white-50'>Brødtekst</label>
                         <textarea name='body' class={`${styles.textareaAutoHeight} form-control`} id='bodyInput' rows='10'
@@ -230,6 +237,11 @@ export default class ArticleEdit extends Component {
                         <span class='badge badge-info mr-1'>{tag}</span>
                     )}
                 </div>
+                <div class='font-weight-bolder' id='ingressDisplay' dangerouslySetInnerHTML={{
+                    __html: utilHtml.replaceMarked(
+                        utilHtml.replaceDataTags(article.ingress, article)
+                    ),
+                }}></div>
                 <div id='bodyDisplay' dangerouslySetInnerHTML={{
                     __html: utilHtml.replaceMarked(
                         utilHtml.replaceDataTags(article.body, article)
