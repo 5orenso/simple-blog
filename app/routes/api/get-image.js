@@ -59,6 +59,7 @@ module.exports = async (req, res) => {
     const queryFieldsArrayObject = [
         ['predictions.className', { probability: { $gte: 0.2 } }],
         ['predictionsCocoSsd.class', { score: { $gte: 0 } }],
+        ['faceDetections.expressions.expression', { probability: { $gte: 0.6 } }],
     ];
     for (let i = 0, l = queryFieldsString.length; i < l; i += 1) {
         const field = queryFieldsString[i];
@@ -81,11 +82,13 @@ module.exports = async (req, res) => {
         if (req.query.hasOwnProperty(field)) {
             // TODO: Should santitize this field.
             const parts = field.split('.');
-            const arrayName = parts[0];
-            const objKey = parts[1];
+            const objKey = parts.pop();
+            const arrayName = parts.join('.');
             query[arrayName] = { $elemMatch: { [objKey]: req.query[field], ...fieldQuery } };
         }
     }
+
+    // console.log('====> query', query);
 
     query = webUtil.cleanObject(query);
     const limit = parseInt(req.query.limit || 10, 10);

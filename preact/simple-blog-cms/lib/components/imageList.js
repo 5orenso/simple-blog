@@ -152,10 +152,10 @@ export default class ImageList extends Component {
                         const faceDesc = img.faceDetections[i].descriptor;
                         let faceExpressionText = '';
                         if (Array.isArray(img.faceDetections[i].expressions)) {
-                            img.faceDetections[i].expressions.sort(ImageList.sortByProbability);
+                            img.faceDetections[i].expressions.sort(ImageList.sortByProbability).reverse();
                             const expressionsSorted = img.faceDetections[i].expressions;
-                            console.log(expressionsSorted);
-                            const faceExpression = expressionsSorted.pop();
+                            // console.log(expressionsSorted);
+                            const faceExpression = expressionsSorted[0];
                             // console.log(faceExpression);
                             faceExpressionText = faceExpression.expression;
                         }
@@ -397,6 +397,20 @@ export default class ImageList extends Component {
                                                 {pre.class} ({util.format(pre.score * 100, 0)}%)
                                             </span>
                                         )}
+
+                                        {img.faceDetections && img.faceDetections.map((face) => {
+                                            face.expressions.sort(ImageList.sortByProbability).reverse();
+                                            const expression = face.expressions[0];
+                                            return (
+                                                <span class={`badge badge-${filterQuery['faceDetections.expressions.expression'] === expression.expression ? 'danger' : 'dark'} p-2 mb-1 ml-2`}
+                                                    data-name='faceDetections.expressions.expression'
+                                                    data-value={expression.expression}
+                                                    onClick={handleTagClick}
+                                                >
+                                                    {expression.expression} ({util.format(expression.probability * 100, 0)}%)
+                                                </span>
+                                            );
+                                        })}
                                     </td>
                                     <td>{util.formatBytes(util.getString(img, 'stats', 'size'), 2)}</td>
                                 </tr>
