@@ -268,12 +268,12 @@ export default class SimpleBlogCms extends Component {
         event.preventDefault();
         const trElement = event.target.closest('tr');
         const imgId = parseInt(trElement.dataset.id, 10);
-        util.fetchApi(`/api/image/${imgId}`, {}, this)
-            .then((result) => {
-                this.setState({
-                    image: result.image,
-                });
-            });
+        // util.fetchApi(`/api/image/${imgId}`, {}, this)
+        //     .then((result) => {
+        //         this.setState({
+        //             image: result.image,
+        //         });
+        //     });
 
     };
 

@@ -95,6 +95,18 @@ export default class ImageList extends Component {
         return '';
     }
 
+    static sortByProbability(a, b) {
+        const valA = parseFloat(a.probability);
+        const valB = parseFloat(b.probability);
+        if (valA < valB){
+            return -1;
+        }
+        if (valA > valB){
+            return 1;
+        }
+        return 0;
+    }
+
     drawCanvases() {
         this.props.imglist.map(img => {
             try {
@@ -138,30 +150,36 @@ export default class ImageList extends Component {
                     for (let i = 0, l = img.faceDetections.length; i < l; i += 1) {
                         const face = img.faceDetections[i].detection;
                         const faceDesc = img.faceDetections[i].descriptor;
-                        let faceExpression = {};
+                        let faceExpressionText = '';
                         if (Array.isArray(img.faceDetections[i].expressions)) {
-                            faceExpression = img.faceDetections[i].expressions.sort((a, b) => a.probability > b.probability).pop();
+                            img.faceDetections[i].expressions.sort(ImageList.sortByProbability);
+                            const expressionsSorted = img.faceDetections[i].expressions;
+                            console.log(expressionsSorted);
+                            const faceExpression = expressionsSorted.pop();
+                            // console.log(faceExpression);
+                            faceExpressionText = faceExpression.expression;
                         }
                         // console.log(`face ${i}: ${JSON.stringify(faceExpression, null, 4)}`);
                         // console.log(`face ${i}: ${JSON.stringify(face, null, 4)}`);
                         // console.log(`face ${i}: ${JSON.stringify(faceDesc, null, 4)}`);
+                        if (typeof face === 'object') {
+                            const x = Math.ceil(sizeRatio * face.box.x);
+                            const y = Math.ceil(sizeRatio * face.box.y);
+                            const w = Math.ceil(sizeRatio * face.box.width);
+                            const h = Math.ceil(sizeRatio * face.box.height);
+                            // console.log(x,y,w,h);
 
-                        const x = Math.ceil(sizeRatio * face.box.x);
-                        const y = Math.ceil(sizeRatio * face.box.y);
-                        const w = Math.ceil(sizeRatio * face.box.width);
-                        const h = Math.ceil(sizeRatio * face.box.height);
-                        // console.log(x,y,w,h);
+                            const faceColor = colors.shift();
 
-                        const faceColor = colors.shift();
+                            ctx.lineWidth = 1;
+                            ctx.strokeStyle = faceColor;
+                            ctx.strokeRect(x, y, w, h);
+                            // Text
+                            ctx.font = '10px Georgia';
+                            ctx.fillStyle = faceColor;
 
-                        ctx.lineWidth = 1;
-                        ctx.strokeStyle = faceColor;
-                        ctx.strokeRect(x, y, w, h);
-                        // Text
-                        ctx.font = '10px Georgia';
-                        ctx.fillStyle = faceColor;
-
-                        ctx.fillText(`${util.format(face.score, 2, '.')} / ${faceExpression.expression}`, x, y);
+                            ctx.fillText(`${util.format(face.score, 2, '.')} / ${faceExpressionText}`, x, y);
+                        }
                     }
                 }
             } catch (err) {
@@ -339,7 +357,11 @@ export default class ImageList extends Component {
                                         </div>
                                         <div class='text-muted'>
                                             {geoInfo.map(info =>
-                                                <span class='badge badge-pill badge-primary mr-1'>
+                                                <span class={`badge badge-pill badge-${filterQuery['geo.display_name'] === info ? 'danger' : 'primary'} mr-1`}
+                                                    data-name='geo.display_name'
+                                                    data-value={info}
+                                                    onClick={handleTagClick}
+                                                >
                                                     <i class="fas fa-map-marker-alt mr-1"></i>
                                                     {info}
                                                 </span>

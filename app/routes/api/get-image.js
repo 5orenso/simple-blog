@@ -50,6 +50,7 @@ module.exports = async (req, res) => {
         'exif.lensModel',
         'exif.exposureTime',
         'exif.photographicSensitivity',
+        'geo.display_name',
     ];
     const queryFieldsNumber = [
         'exif.fNumber',

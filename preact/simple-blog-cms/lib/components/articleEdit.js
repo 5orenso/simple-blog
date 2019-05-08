@@ -304,6 +304,13 @@ export default class ArticleEdit extends Component {
                                         <i class="fas fa-shopping-cart"></i> Kjøp
                                     </button>
                                 </small>
+                                <br />
+
+                            </div>
+                            <div class='d-flex w-100 justify-content-between'>
+                                {idx === 0 && <div class="col-12 alert alert-primary" role="alert">
+                                    Bilde 1 blir brukt som hovedbilde i artikkelen.
+                                </div>}
                             </div>
                         </li>
                     ))}
