@@ -13,6 +13,7 @@ const fields = {
     id: 1,
     status: 1,
     published: 1,
+    updatedDate: 1,
     author: 1,
     category: 1,
     title: 1,

@@ -407,9 +407,7 @@ export default class SimpleBlogCms extends Component {
             val = val.replace(/[, ]+$/, '');
             this.articleInputAdd(opt.name, val, opt.type);
             value = '';
-        }
-
-        if (opt.name && opt.action === 'remove') {
+        } else if (opt.name && opt.action === 'remove') {
             return this.articleInputRemove(opt.name, opt.value, opt.type);
         } else if (opt.action === 'search') {
             if (opt.name === 'tags' && value.length >= 1) {

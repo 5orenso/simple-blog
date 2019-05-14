@@ -161,7 +161,9 @@ export default class ArticleList extends Component {
                                 <td scope='row'>{art.id}</td>
                                 <td>
                                     {art.img && Array.isArray(art.img) && art.img[0] && (
-                                        <img src={`${this.imageServer}/pho/${art.img[0].src}?w=150`} style='max-height: 50px;' class='img-fluid' />
+                                        <span>
+                                            <img src={`${this.imageServer}/pho/${art.img[0].src}?w=150`} style='max-height: 50px;' class='img-fluid' /> ({art.img.length})
+                                        </span>
                                     )}
                                 </td>
                                 <td>{art.category}</td>
@@ -173,7 +175,12 @@ export default class ArticleList extends Component {
                                         )}
                                     </small>
                                 </td>
-                                <td>{util.isoDateNormalized(art.published)}</td>
+                                <td>
+                                    {util.isoDateNormalized(art.published)}<br />
+                                    <span class='text-muted'>
+                                        <small><i class="fas fa-user-edit"></i> {util.isoDateNormalized(art.updatedDate)}</small>
+                                    </span>
+                                </td>
                                 <td><span class={`badge badge-${util.getStatusClass(art.status)} p-2`}>{util.getStatus(art.status)}</span></td>
                                 <td>{art.author}</td>
                                 <td>
