@@ -21,6 +21,7 @@ const fields = {
     ingress: 1,
     body: 1,
     img: 1,
+    youtubeVideos: 1,
     tags: 1,
     youtube: 1,
     imageObject: 1,

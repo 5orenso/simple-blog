@@ -12,6 +12,17 @@ export default class MessagesLite extends Component {
         this.state = Object.assign({}, initialState);
     };
 
+
+    getMessageColor(type) {
+        if (type === 'error') {
+            return 'danger';
+        } else if (type === 'warning') {
+            return 'warning';
+        } else {
+            return 'success';
+        }
+    }
+
     render(props, state) {
         const styles = this.props.styles;
         const messages = this.props.messages;
@@ -21,8 +32,12 @@ export default class MessagesLite extends Component {
                 <ul class="list-group">
                     {messages.map((msg) => {
                         return (
-                            <li class='list-group-item bg-success text-white'>
-                                <i class="fas fa-check"></i> {util.isoDateNormalized(msg[0])}: {msg[1]}
+                            <li class={`list-group-item bg-${this.getMessageColor(msg[2])} text-white`}>
+                                {msg[2] === 'error' && <i class="fas fa-exclamation-triangle mr-2"></i>}
+                                {msg[2] === 'info' && <i class="fas fa-info-circle mr-2"></i>}
+                                {msg[2] === 'done' && <i class="fas fa-check mr-2"></i>}
+                                {msg[2] === 'warning' && <i class="fas fa-exclamation-circle mr-2"></i>}
+                                {util.isoDateNormalized(msg[0])}: {msg[1]}
                             </li>
                         );
                     })}

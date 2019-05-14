@@ -1,5 +1,7 @@
 import { h, Component } from 'preact';
 
+import linkstate from 'linkstate';
+
 import ImageUpload from './imageUpload';
 import MessagesLite from './messagesLite';
 
@@ -11,6 +13,9 @@ const initialState = {
     currentTagIdx: -1,
     currentTag: '',
     toggleDropdown: {},
+    youtube: {},
+    youtubeTitle: {},
+    youtubeText: {},
 };
 const debug = false;
 const editMode = 'textarea'; // div
@@ -56,7 +61,11 @@ export default class ArticleEdit extends Component {
     handleClickCode = (event) => {
         event.preventDefault();
         const el = event.target;
-        this.parent.typeInTextarea(this.state.currentTextarea, el.dataset.content || el.innerHTML);
+        if (el && this.state.currentTextarea) {
+            this.parent.typeInTextarea(this.state.currentTextarea, el.dataset.content || el.innerHTML);
+        } else {
+            this.parent.addWarning('Textarea not selected.');
+        }
     };
 
     handleTextareaFocus = (event) => {
@@ -130,6 +139,7 @@ export default class ArticleEdit extends Component {
 
     render(props) {
         const { currentMenu, currentTagIdx, currentTag, toggleDropdown } = this.state;
+        const that = props.that;
         const styles = props.styles;
         const messages = props.messages;
         const article = props.article;
@@ -168,6 +178,8 @@ export default class ArticleEdit extends Component {
                     onClick={this.handleMenuClick} data-menu='preview'><i class="fas fa-eye"></i> Forhåndsvisning</a>
                 <a class={`nav-item nav-link ${currentMenu === 'images' ? 'active' : ''}`} href='#'
                     onClick={this.handleMenuClick} data-menu='images'><i class="fas fa-images"></i> Bilder ({imagesTotal})</a>
+                <a class={`nav-item nav-link ${currentMenu === 'youtube' ? 'active' : ''}`} href='#'
+                    onClick={this.handleMenuClick} data-menu='youtube'><i class="fas fa-video"></i> Youtube</a>
                 <a class={`nav-item nav-link ${currentMenu === 'meta' ? 'active' : ''}`} href='#'
                     onClick={this.handleMenuClick} data-menu='meta'><i class="fas fa-tags"></i> Meta</a>
             </nav>
@@ -359,8 +371,55 @@ export default class ArticleEdit extends Component {
             </div>
         );
 
+        const renderedYoutube = (
+            <div class='col-12'>
+                <h5>Legg til Youtube video:</h5>
+                <ul class='list-group'>
+                    {[0, 1, 2].map(val =>
+                        <li class='list-group-item list-group-item-action flex-column align-items-start'>
+                            <div class='form-group row'>
+                                <div class='col-6'>
+                                    <label for='youtubeTitle'>Title {val + 1}</label>
+                                    <input class='form-control' id='youtubeTitle'
+                                        onInput={linkstate(that, `article.youtubeVideos.${val}.title`)}
+                                        value={util.getString(article, 'youtubeVideos', val, 'title')}
+                                    />
+                                </div>
+                                <div class='col-6'>
+                                    <label for='youtubeText'>Text {val + 1}</label>
+                                    <input class='form-control' id='youtubeText'
+                                        onInput={linkstate(that, `article.youtubeVideos.${val}.text`)}
+                                        value={util.getString(article, 'youtubeVideos', val, 'text')}
+                                    />
+                                </div>
+                                <div class='col-8'>
+                                    <label for='youtube'>YouTube URL {val + 1}</label>
+                                    <input class='form-control' id='youtube'
+                                        onInput={linkstate(that, `article.youtubeVideos.${val}.url`)}
+                                        value={util.getString(article, 'youtubeVideos', val, 'url')}
+                                        placeholder='https://www.youtube.com/watch?v=O4P8QkpT5Cc'
+                                    />
+                                    <small id="youtubeHelp" class="form-text text-muted">Youtube watch URL.</small>
+                                </div>
+                                <div class='col-4'>
+                                    <label>&nbsp;</label>
+                                    <button class='form-control btn btn-dark m-1'
+                                        onClick={this.handleClickCode}
+                                        data-content={`![${util.getString(article, 'youtubeVideos', val, 'title')}](${util.getString(article, 'youtubeVideos', val, 'url')} "${util.getString(article, 'youtubeVideos', val, 'text')}")\n`}>
+                                        Add YouTube {val + 1}
+                                    </button>
+                                </div>
+                            </div>
+                        </li>
+                    )}
+                </ul>
+            </div>
+        );
+
         const renderedImages = (
             <div class='col-12'>
+
+                <h3>Last opp nytt bilde:</h3>
                 <div class='form-group'>
                     <ImageUpload that={this.parent} styles={styles}
                         category={article.category}
@@ -381,13 +440,13 @@ export default class ArticleEdit extends Component {
                             <div class='d-flex w-100 justify-content-between'>
                                 <p><img src={`${this.imageServer}/pho/${img.src}?w=150`} height='50'  class='img-fluid' /></p>
                                 <small>
-                                    <button class='btn btn-sm m-1' onClick={this.handleClickCode} data-content={`![${img.text || 'Image title'}](/pho/${img.src}?w=750 "Image description")\n`}>
+                                    <button class='btn btn-sm m-1' onClick={this.handleClickCode} data-content={`![${img.title || 'Image title'}](/pho/${img.src}?w=750 "${img.text || 'Image description'}")\n`}>
                                         <i class="fas fa-image"></i> Image
                                     </button>
-                                    <button class='btn btn-sm m-1' onClick={this.handleClickCode} data-content={`![${img.text || 'Image title'}](/pho/${img.src}?w=750#card "Image description")\n`}>
+                                    <button class='btn btn-sm m-1' onClick={this.handleClickCode} data-content={`![${img.title || 'Image title'}](/pho/${img.src}?w=750#card "${img.text || 'Image description'}")\n`}>
                                         <i class="fas fa-file-image"></i> Card
                                     </button>
-                                    <button class='btn btn-sm m-1' onClick={this.handleClickCode} data-content={`![${img.text || 'Image title'}](/pho/${img.src}?w=750#card2 "Image description")\n`}>
+                                    <button class='btn btn-sm m-1' onClick={this.handleClickCode} data-content={`![${img.title || 'Image title'}](/pho/${img.src}?w=750#card2 "${img.text || 'Image description'}")\n`}>
                                         <i class="far fa-image"></i> Card 2
                                     </button>
                                     <button class='btn btn-sm m-1' onClick={this.handleClickCode} data-content={`<h5>Detaljer om bildet</h5>
@@ -416,10 +475,28 @@ export default class ArticleEdit extends Component {
                                 <br />
 
                             </div>
-                            <div class='d-flex w-100 justify-content-between'>
+                            <div class='d-flex w-100 justify-content-between row'>
                                 {idx === 0 && <div class="col-12 alert alert-primary" role="alert">
                                     Bilde 1 blir brukt som hovedbilde i artikkelen.
                                 </div>}
+
+                                <div class='form-group col-2'>
+                                    <label for={`img${idx}Title`}>Tittel {idx + 1}</label>
+                                </div>
+                                <div class='form-group col-10'>
+                                    <input type='text' class='form-control' id={`img${idx}Title`}
+                                        onInput={linkstate(that, `article.img.${idx}.title`)}
+                                        value={article.img[idx].title} />
+                                </div>
+                                <div class='form-group col-2'>
+                                    <label for={`img${idx}Text`}>Tekst {idx + 1}</label>
+                                </div>
+                                <div class='form-group col-10'>
+                                    <textarea class='form-control' id={`img${idx}Text`}
+                                        onInput={linkstate(that, `article.img.${idx}.text`)}
+                                        value={article.img[idx].text} />
+                                </div>
+
                             </div>
                         </li>
                     ))}
@@ -455,6 +532,13 @@ export default class ArticleEdit extends Component {
                             </span>
                         )}
                     </div>
+                    {imglist.length <= 0 && (
+                        <div class='col-12 text-center text-muted'>
+                            <h1><i class="fas fa-images"></i> No images in list</h1>
+                            <h5>Try searching for something else...</h5>
+                            <br /><br /><br /><br /><br />
+                        </div>
+                    )}
                     {imglist.map((img, idx) => {
                         return (
                             <div class='col-2 p-1'>
@@ -598,6 +682,7 @@ export default class ArticleEdit extends Component {
                             {renderedMenu}
                             {currentMenu === 'preview' && renderedPreview}
                             {currentMenu === 'images' && renderedImages}
+                            {currentMenu === 'youtube' && renderedYoutube}
                             {currentMenu === 'meta' && renderedMeta}
                         </div>
                     </div>

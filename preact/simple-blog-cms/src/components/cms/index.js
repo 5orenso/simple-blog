@@ -88,7 +88,8 @@ export default class SimpleBlogCms extends Component {
                     artlist: result.artlist,
                     artlistTotal: result.total,
                 })
-            });
+            })
+            .catch(error => this.addError(error.toString()));
     }
 
     loadImglist(currentPage = 1, $limit) {
@@ -107,8 +108,9 @@ export default class SimpleBlogCms extends Component {
                 this.setState({
                     imglist: result.imglist,
                     imglistTotal: result.total,
-                })
-            });
+                });
+            })
+            .catch(error => this.addError(error.toString()));
     }
 
     loadCatlist(currentPage = 1) {
@@ -120,8 +122,9 @@ export default class SimpleBlogCms extends Component {
                 this.setState({
                     catlist: result.catlist,
                     catlistTotal: result.total,
-                })
-            });
+                });
+            })
+            .catch(error => this.addError(error.toString()));
     }
 
     loadTaglist(currentPage = 1, query) {
@@ -138,8 +141,9 @@ export default class SimpleBlogCms extends Component {
                 this.setState({
                     taglist: result.taglist,
                     taglistTotal: result.total,
-                })
-            });
+                });
+            })
+            .catch(error => this.addError(error.toString()));
     }
 
     loadPage(currentPage) {
@@ -154,27 +158,29 @@ export default class SimpleBlogCms extends Component {
     }
 
     typeInTextarea(el, newText) {
-        const start = el.selectionStart;
-        const end = el.selectionEnd;
-        const name = el.name;
+        if (el && newText) {
+            const start = el.selectionStart;
+            const end = el.selectionEnd;
+            const name = el.name;
 
-        const article = this.state.article;
-        if (typeof article[name] !== 'string') {
-            article[name] = '';
-        }
-        const before = article[name].substring(0, start);
-        const after  = article[name].substring(end, article[name].length);
-        article[name] = (before + newText + after);
-
-        this.setState({
-            article,
-        }, () => {
-            if (el) {
-                el.focus();
-                el.selectionStart = start + newText.length;
-                el.selectionEnd = start + newText.length;
+            const article = this.state.article;
+            if (typeof article[name] !== 'string') {
+                article[name] = '';
             }
-        });
+            const before = article[name].substring(0, start);
+            const after  = article[name].substring(end, article[name].length);
+            article[name] = (before + newText + after);
+
+            this.setState({
+                article,
+            }, () => {
+                if (el) {
+                    el.focus();
+                    el.selectionStart = start + newText.length;
+                    el.selectionEnd = start + newText.length;
+                }
+            });
+        }
     }
 
     cleanMessages() {
@@ -192,6 +198,24 @@ export default class SimpleBlogCms extends Component {
         }
     }
 
+    addMessage(msg, type) {
+        const messages = this.state.messages;
+        messages.push([parseInt(new Date().getTime() / 1000, 10), msg, type]);
+        this.setState({ messages });
+    }
+
+    addError(msg) {
+        const messages = this.state.messages;
+        messages.push([parseInt(new Date().getTime() / 1000, 10), msg, 'error']);
+        this.setState({ messages });
+    }
+
+    addWarning(msg) {
+        const messages = this.state.messages;
+        messages.push([parseInt(new Date().getTime() / 1000, 10), msg, 'warning']);
+        this.setState({ messages });
+    }
+
     saveArticle() {
         const data = {
             method: 'PATCH',
@@ -201,16 +225,16 @@ export default class SimpleBlogCms extends Component {
         util.fetchApi(`/api/tag/`, { method: 'POST', tags: data.tags }, this)
             .then((result) => {
                 console.log('/api/tag/ result', result);
-            });
+            })
+            .catch(error => this.addError(error.toString()));
 
         // console.log('trying to save', this.state.article);
         util.fetchApi(`/api/article/${this.state.article.id}`, data, this)
             .then((result) => {
-                const messages = this.state.messages;
-                messages.push([parseInt(new Date().getTime() / 1000, 10), 'Artikkel oppdatert']);
-                this.setState({ messages });
+                this.addMessage('Artikkel oppdatert', 'done');
                 this.loadArtlist();
-            });
+            })
+            .catch(error => this.addError(error.toString()));
     }
 
     handleAddImage = (file) => {
@@ -256,8 +280,8 @@ export default class SimpleBlogCms extends Component {
                 this.setState({
                     article: result.article,
                 });
-            });
-
+            })
+            .catch(error => this.addError(error.toString()));
     };
 
     handleImglistClick = (event) => {
@@ -282,8 +306,8 @@ export default class SimpleBlogCms extends Component {
                 this.setState({
                     category: result.category,
                 });
-            });
-
+            })
+            .catch(error => this.addError(error.toString()));
     };
 
     handleFilterClick = (event) => {
@@ -320,7 +344,8 @@ export default class SimpleBlogCms extends Component {
                 messages.push([parseInt(new Date().getTime() / 1000, 10), 'Artikkel opprettet']);
                 this.setState({ messages, article });
                 this.loadArtlist();
-            });
+            })
+            .catch(error => this.addError(error.toString()));
     };
 
     handleCategoryClickSave = (event) => {
@@ -335,7 +360,8 @@ export default class SimpleBlogCms extends Component {
                 const messages = this.state.messages;
                 messages.push([parseInt(new Date().getTime() / 1000, 10), 'Kategori oppdatert']);
                 this.setState({ messages });
-            });
+            })
+            .catch(error => this.addError(error.toString()));
     };
 
     handleArticleTextareaInput = (event) => {
@@ -668,6 +694,10 @@ export default class SimpleBlogCms extends Component {
                             handlePaginationIncClick={this.handlePaginationIncClick}
                         />
                     </div>}
+                    {!article.id && <div class='d-flex justify-content-center'>
+                        <Messages styles={styles} messages={messages} />
+                    </div>}
+
                     {article.id && <div class='d-flex justify-content-center'>
                         <ArticleEdit styles={styles}
                             sessionEmail={sessionEmail}
@@ -695,6 +725,7 @@ export default class SimpleBlogCms extends Component {
                             handleImageTagClick={this.handleImageTagClick}
                         />
                     </div>}
+
                 </div>
             );
         } else if (currentMenu === 'categories') {

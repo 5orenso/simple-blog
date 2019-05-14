@@ -161,7 +161,7 @@ export default class ArticleList extends Component {
                                 <td scope='row'>{art.id}</td>
                                 <td>
                                     {art.img && Array.isArray(art.img) && art.img[0] && (
-                                        <span>
+                                        <span class='text-muted'>
                                             <img src={`${this.imageServer}/pho/${art.img[0].src}?w=150`} style='max-height: 50px;' class='img-fluid' /> ({art.img.length})
                                         </span>
                                     )}
