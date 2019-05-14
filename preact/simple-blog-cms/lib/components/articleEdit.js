@@ -420,7 +420,7 @@ export default class ArticleEdit extends Component {
                                     {Array.isArray(article.relevantWords) && article.relevantWords.map(word =>
                                         <span class='badge badge-danger mr-1'
                                             onClick={e => this.handleTagAdd(e, handleInput, word)}
-                                        >{word} <i class='fas fa-plus'></i></span>
+                                        ><i class="fas fa-comment-dots mr-1"></i> {word} <i class='fas fa-plus'></i></span>
                                     )}
                                 </small>
                             </div>
@@ -460,14 +460,14 @@ export default class ArticleEdit extends Component {
                                                         <span class='badge badge-primary mr-1'
                                                             onClick={e => this.handleTagAdd(e, handleInput, info)}
                                                         >
-                                                            {info} <i class='fas fa-plus'></i>
+                                                            <i class="fas fa-map-marker-alt mr-1"></i> {info} <i class='fas fa-plus'></i>
                                                         </span>
                                                     )}
                                                     {geoInfoExtra.map(info =>
                                                         <span class='badge badge-danger mr-1'
                                                             onClick={e => this.handleTagAdd(e, handleInput, info)}
                                                         >
-                                                            {info} <i class='fas fa-plus'></i>
+                                                            <i class="fas fa-map-marker-alt mr-1"></i> {info} <i class='fas fa-plus'></i>
                                                         </span>
                                                     )}
                                                     <br />
@@ -475,12 +475,12 @@ export default class ArticleEdit extends Component {
                                                     {Array.isArray(img.predictions) && img.predictions.map(pre =>
                                                         <span class='badge badge-secondary mr-1'
                                                             onClick={e => this.handleTagAdd(e, handleInput, pre.className)}
-                                                        >{pre.className} <i class='fas fa-plus'></i></span>
+                                                        ><i class="fas fa-tag mr-1"></i> {pre.className} <i class='fas fa-plus'></i></span>
                                                     )}
                                                     {Array.isArray(img.predictionsCocoSsd) && img.predictionsCocoSsd.map(pre =>
                                                         <span class='badge badge-dark mr-1'
                                                             onClick={e => this.handleTagAdd(e, handleInput, pre.class)}
-                                                        >{pre.class} <i class='fas fa-plus'></i></span>
+                                                        ><i class="fas fa-tag mr-1"></i> {pre.class} <i class='fas fa-plus'></i></span>
                                                     )}
                                                 </div>
                                             </div>

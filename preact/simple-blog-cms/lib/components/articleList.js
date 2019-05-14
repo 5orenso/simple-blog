@@ -136,7 +136,7 @@ export default class ArticleList extends Component {
                         />
                     </div>
                     <div class="col-3 col-sm-2">
-                        <button class="btn btn-success" onclick={handleSubmit}>Søk</button>
+                        <button class="btn btn-success" onclick={handleSubmit}><i class="fas fa-search"></i> Søk</button>
                     </div>
 
                 </div>

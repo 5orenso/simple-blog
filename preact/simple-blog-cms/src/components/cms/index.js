@@ -493,7 +493,8 @@ export default class SimpleBlogCms extends Component {
     }
 
     handleImageTagClick = (event) => {
-        const el = event.target;
+        // const el = event.target;
+        const el = event.target.closest('span');
         const name = el.dataset.name;
         const value = el.dataset.value;
         const { filterQuery } = this.state;
@@ -639,11 +640,11 @@ export default class SimpleBlogCms extends Component {
             renderedMenu = (
                 <nav class='nav nav-pills nav-fill mb-3'>
                     <a class={`nav-item nav-link ${currentMenu === 'articles' ? 'active' : ''}`} href='#'
-                        onClick={this.handleMenuClick} data-menu='articles'>Articles</a>
+                        onClick={this.handleMenuClick} data-menu='articles'><i class="fas fa-newspaper"></i> Articles</a>
                     <a class={`nav-item nav-link ${currentMenu === 'categories' ? 'active' : ''}`} href='#'
-                        onClick={this.handleMenuClick} data-menu='categories'>Categories</a>
+                        onClick={this.handleMenuClick} data-menu='categories'><i class="fas fa-folder-open"></i> Categories</a>
                     <a class={`nav-item nav-link ${currentMenu === 'images' ? 'active' : ''}`} href='#'
-                        onClick={this.handleMenuClick} data-menu='images'>Images</a>
+                        onClick={this.handleMenuClick} data-menu='images'><i class="fas fa-images"></i> Images</a>
                 </nav>
             );
         }

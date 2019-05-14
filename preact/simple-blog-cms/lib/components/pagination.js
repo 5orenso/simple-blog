@@ -87,13 +87,13 @@ export default class Pagination extends Component {
                     <li class={`page-item ${currentPage > 1 ? '' : 'disabled'}`}>
                         <a class='page-link'
                             onClick={handlePaginationDecClick}
-                            href='#'>Previous</a>
+                            href='#'><i class="fas fa-arrow-left"></i> Previous</a>
                     </li>
                     {renderPageNumbers}
                     <li class={`page-item ${currentPage <= pageNumbers.length ? '' : 'disabled'}`}>
                         <a class='page-link'
                             onClick={handlePaginationIncClick}
-                            href='#'>Next</a>
+                            href='#'>Next <i class="fas fa-arrow-right"></i></a>
                     </li>
                 </ul>
             </nav>

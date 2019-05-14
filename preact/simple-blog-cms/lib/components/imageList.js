@@ -219,7 +219,7 @@ export default class ImageList extends Component {
                         />
                     </div>
                     <div class='col-2'>
-                        <button class='btn btn-success' onclick={handleSubmit}>Søk</button>
+                        <button class='btn btn-success' onclick={handleSubmit}><i class="fas fa-search"></i> Søk</button>
                     </div>
                 </div>
                 <div class='d-flex justify-content-center mb-2'>
@@ -295,6 +295,7 @@ export default class ImageList extends Component {
                                                     onClick={handleTagClick}
                                                 >
                                                     <i class='fas fa-camera'></i> {util.getString(img, 'exif', 'model')}
+                                                    {filterQuery['exif.model'] && <i class="fas fa-times-circle ml-2"></i>}
                                                 </span>
                                             )}
                                             {img.exif && img.exif.lensModel && (
@@ -304,6 +305,7 @@ export default class ImageList extends Component {
                                                     onClick={handleTagClick}
                                                 >
                                                     {util.getString(img, 'exif', 'lensModel')}
+                                                    {filterQuery['exif.lensModel'] && <i class="fas fa-times-circle ml-2"></i>}
                                                 </span>
                                             )}
                                             {img.exif && img.exif.fNumber && (
@@ -313,6 +315,7 @@ export default class ImageList extends Component {
                                                     onClick={handleTagClick}
                                                 >
                                                     f/{util.getString(img, 'exif', 'fNumber')}
+                                                    {filterQuery['exif.fNumber'] && <i class="fas fa-times-circle ml-2"></i>}
                                                 </span>
                                             )}
                                             {img.exif && img.exif.focalLength && (
@@ -322,6 +325,7 @@ export default class ImageList extends Component {
                                                     onClick={handleTagClick}
                                                 >
                                                     {util.getString(img, 'exif', 'focalLength')} mm
+                                                    {filterQuery['exif.focalLength'] && <i class="fas fa-times-circle ml-2"></i>}
                                                 </span>
                                             )}
                                             {img.exif && img.exif.exposureTime && (
@@ -331,6 +335,7 @@ export default class ImageList extends Component {
                                                     onClick={handleTagClick}
                                                 >
                                                     {util.getString(img, 'exif', 'exposureTime')} sec
+                                                    {filterQuery['exif.exposureTime'] && <i class="fas fa-times-circle ml-2"></i>}
                                                 </span>
                                             )}
                                             {img.exif && img.exif.photographicSensitivity && (
@@ -340,6 +345,7 @@ export default class ImageList extends Component {
                                                     onClick={handleTagClick}
                                                 >
                                                     ISO: {util.getString(img, 'exif', 'photographicSensitivity')}
+                                                    {filterQuery['exif.photographicSensitivity'] && <i class="fas fa-times-circle ml-2"></i>}
                                                 </span>
                                             )}
                                         </div>
@@ -381,6 +387,7 @@ export default class ImageList extends Component {
                                                 >
                                                     <i class="fas fa-map-marker-alt mr-1"></i>
                                                     {info}
+                                                    {filterQuery['geo.display_name'] === info && <i class="fas fa-times-circle ml-2"></i>}
                                                 </span>
                                             )}
                                             {geoInfoExtra.map(info =>
@@ -402,7 +409,8 @@ export default class ImageList extends Component {
                                                 data-value={pre.className}
                                                 onClick={handleTagClick}
                                             >
-                                                {pre.className} ({util.format(pre.probability * 100, 0)}%)
+                                                <i class="fas fa-tag mr-1"></i> {pre.className} ({util.format(pre.probability * 100, 0)}%)
+                                                {filterQuery['predictions.className'] === pre.className && <i class="fas fa-times-circle ml-2"></i>}
                                             </span>
                                         )}
                                         {img.predictionsCocoSsd && img.predictionsCocoSsd.map((pre) =>
@@ -411,7 +419,8 @@ export default class ImageList extends Component {
                                                 data-value={pre.class}
                                                 onClick={handleTagClick}
                                             >
-                                                {pre.class} ({util.format(pre.score * 100, 0)}%)
+                                                <i class="fas fa-tag mr-1"></i> {pre.class} ({util.format(pre.score * 100, 0)}%)
+                                                {filterQuery['predictionsCocoSsd.class'] === pre.class && <i class="fas fa-times-circle ml-2"></i>}
                                             </span>
                                         )}
 
@@ -424,7 +433,8 @@ export default class ImageList extends Component {
                                                     data-value={expression.expression}
                                                     onClick={handleTagClick}
                                                 >
-                                                    {expression.expression} ({util.format(expression.probability * 100, 0)}%)
+                                                    <i class="far fa-smile mr-1"></i> {expression.expression} ({util.format(expression.probability * 100, 0)}%)
+                                                    {filterQuery['faceDetections.expressions.expression'] === expression.expression && <i class="fas fa-times-circle ml-2"></i>}
                                                 </span>
                                             );
                                         })}
