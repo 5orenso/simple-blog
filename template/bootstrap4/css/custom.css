@@ -123,21 +123,6 @@ html {
     overflow: hidden;
 }
 
-.pagination li {
-    display: flex;
-    /* flex-direction: column;*/
-    align-items: center;
-    /* justify-content: center;*/
-    float:left;
-    width: 2rem;
-    padding: 1rem;
-    height: 2rem;
-}
-.pagination li.active {
-    font-size: 2.0em;
-}
-
-
 .modal-lg {
     max-width: 1800px;
     max-height: 90%;
@@ -254,4 +239,8 @@ pre code {
     .display-3 {
         font-size: 4rem;
     }
+}
+
+.text-small {
+    font-size: 80% !important;
 }

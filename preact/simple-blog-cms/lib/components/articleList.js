@@ -149,6 +149,7 @@ export default class ArticleList extends Component {
                             <th scope='col'>Pub.dato</th>
                             <th scope='col'>Status</th>
                             <th scope='col'>Forfatter</th>
+                            <th scope='col'>Vis</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -160,6 +161,11 @@ export default class ArticleList extends Component {
                                 <td>{util.isoDateNormalized(art.published)}</td>
                                 <td><span class={`badge badge-${util.getStatusClass(art.status)} p-2`}>{util.getStatus(art.status)}</span></td>
                                 <td>{art.author}</td>
+                                <td>
+                                    <a class='btn btn-primary' target='_blank' href={`/v2/${encodeURIComponent(art.category || 'no-category')}/${encodeURIComponent(art.title || 'no-title')}/${art.id}`}>
+                                        <i class="fas fa-external-link-alt"></i>
+                                    </a>
+                                </td>
                             </tr>
                         )}
                     </tbody>

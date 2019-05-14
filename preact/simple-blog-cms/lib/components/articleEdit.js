@@ -154,16 +154,16 @@ export default class ArticleEdit extends Component {
         const renderedEditArticle = (
             <div class='row bg-secondary'>
                 <div class='col-12 sticky-top d-flex justify-content-between'>
-                    <div class='col-4'>
+                    <div class='col-3'>
                         <button type='button' class='btn btn-warning mr-2' onclick={handleArticleEditBackClick}><i class="fas fa-arrow-left"></i> Tilbake</button>
                     </div>
-                    <div class='col-4'>
+                    <div class='col-6 text-center'>
                         <button type='submit' class='btn btn-success mr-2' onClick={handleClickSave}><i class="fas fa-save"></i> Lagre</button>
-                        <a class='btn btn-info' target='_blank' href={`/v2/${encodeURIComponent(article.category || 'no-category')}/${encodeURIComponent(article.title || 'no-title')}/${article.id}`}>
+                        <a class='btn btn-primary' target='_blank' href={`/v2/${encodeURIComponent(article.category || 'no-category')}/${encodeURIComponent(article.title || 'no-title')}/${article.id}`}>
                             <i class="fas fa-external-link-alt"></i> Preview
                         </a>
                     </div>
-                    <div class='col-4'>
+                    <div class='col-3'>
                         <button class='btn btn-info float-right ml-2' onClick={handleClickNew}>+ Ny artikkel</button>
                     </div>
                 </div>

@@ -2,17 +2,18 @@
 {% if session.email %}
 <div class="container-fluid">
     <div class="row">
-        <main class="col-sm-12 col-md-12 pt-3 blog-main">
-            User: {{ session.email }} (age: {{ session.age }} sec)<br>
+        <main class="col-sm-12 col-md-12 pt-0 text-small">
             <div data-widget="simpleBlogCms">
                 <script type="text/props">
                     {
                         "apiServer": "{{ blog.protocol }}://{{ blog.domain }}",
-                        "jwtToken": "{{ jwtToken }}"
+                        "jwtToken": "{{ jwtToken }}",
+                        "sessionEmail": "{{ session.email }}",
+                        "sessionAge": "{{ session.age }}"
                     }
                 </script>
             </div>
-            <script async src="/preact/simple-blog-cms/bundle.js"></script>
+            <script async src="/preact/simple-blog-cms/bundle.js?time={{ env.epoch }}"></script>
         </main>
     </div>
 </div>
