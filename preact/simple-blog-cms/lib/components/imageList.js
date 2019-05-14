@@ -222,6 +222,23 @@ export default class ImageList extends Component {
                         <button class='btn btn-success' onclick={handleSubmit}>Søk</button>
                     </div>
                 </div>
+                <div class='d-flex justify-content-center mb-2'>
+                    <div class='col-1 text-right text-muted'>
+                        {Object.keys(filterQuery).length > 0 && 'Filters:'}
+                    </div>
+                    <div class='col-10'>
+                        {Object.keys(filterQuery).map(key =>
+                            <span class={`mr-2 p-2 badge badge-danger`}
+                                data-name={key}
+                                data-value={filterQuery[key]}
+                                onClick={handleTagClick}
+                            >
+                                {filterQuery[key]}
+                                <i class="ml-1 fas fa-times-circle"></i>
+                            </span>
+                        )}
+                    </div>
+                </div>
                 <table class={`table table-sm ${styles.condensed}`}>
                     <thead>
                         <tr>

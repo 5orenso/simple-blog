@@ -18,15 +18,15 @@ export default class MessagesLite extends Component {
 
         if (typeof messages === 'object' && messages.length > 0) {
             return (
-                <span class='float-right badge badge-success'>
+                <ul class="list-group">
                     {messages.map((msg) => {
                         return (
-                            <span>
-                                {util.isoDateNormalized(msg[0])}: {msg[1]}
-                            </span>
+                            <li class='list-group-item bg-success text-white'>
+                                <i class="fas fa-check"></i> {util.isoDateNormalized(msg[0])}: {msg[1]}
+                            </li>
                         );
                     })}
-                </span>
+                </ul>
             );
         }
     }

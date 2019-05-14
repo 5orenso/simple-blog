@@ -37,9 +37,9 @@ const initialState = {
     taglistTotal: 0,
 
     currentPage: 1,
-    articlesPerPage: 10,
-    categoriesPerPage: 10,
-    tagsPerPage: 10,
+    articlesPerPage: 20,
+    categoriesPerPage: 20,
+    tagsPerPage: 20,
 
     query: '',
     queryImage: '',
@@ -249,6 +249,11 @@ export default class SimpleBlogCms extends Component {
         } else if (currentMenu === 'images') {
             this.loadImglist();
         }
+    };
+
+    handleArticleEditBackClick = (event) => {
+        event.preventDefault();
+        this.setState({ article: {} });
     };
 
     handleArtlistClick = (event) => {
@@ -627,24 +632,28 @@ export default class SimpleBlogCms extends Component {
         } = this.state;
         const articleId = this.props.articleId;
 
-        const renderedMenu = (
-            <nav class='nav nav-pills nav-fill mb-3'>
-                <a class={`nav-item nav-link ${currentMenu === 'articles' ? 'active' : ''}`} href='#'
-                    onClick={this.handleMenuClick} data-menu='articles'>Articles</a>
-                <a class={`nav-item nav-link ${currentMenu === 'categories' ? 'active' : ''}`} href='#'
-                    onClick={this.handleMenuClick} data-menu='categories'>Categories</a>
-                <a class={`nav-item nav-link ${currentMenu === 'images' ? 'active' : ''}`} href='#'
-                    onClick={this.handleMenuClick} data-menu='images'>Images</a>
-            </nav>
-        );
+        let renderedMenu;
+        if (article.id) {
+            renderedMenu = '';
+        } else {
+            renderedMenu = (
+                <nav class='nav nav-pills nav-fill mb-3'>
+                    <a class={`nav-item nav-link ${currentMenu === 'articles' ? 'active' : ''}`} href='#'
+                        onClick={this.handleMenuClick} data-menu='articles'>Articles</a>
+                    <a class={`nav-item nav-link ${currentMenu === 'categories' ? 'active' : ''}`} href='#'
+                        onClick={this.handleMenuClick} data-menu='categories'>Categories</a>
+                    <a class={`nav-item nav-link ${currentMenu === 'images' ? 'active' : ''}`} href='#'
+                        onClick={this.handleMenuClick} data-menu='images'>Images</a>
+                </nav>
+            );
+        }
 
         if (currentMenu === 'articles') {
             return (
                 <div class={`container-fluid ${styles.mainApp}`}>
                     <ProgressBar styles={styles} loadingProgress={this.state.loadingProgress} />
                     {renderedMenu}
-
-                    <div class='d-flex justify-content-center'>
+                    {!article.id && <div class='d-flex justify-content-center'>
                         <ArticleList styles={styles}
                             articleId={article.id || articleId}
                             artlist={artlist}
@@ -655,8 +664,8 @@ export default class SimpleBlogCms extends Component {
                             handleFilterClick={this.handleFilterClick}
                             filter={filter}
                         />
-                    </div>
-                    <div class='d-flex justify-content-center'>
+                    </div>}
+                    {!article.id && <div class='d-flex justify-content-center'>
                         <Pagination styles={styles}
                             artlistTotal={artlistTotal}
                             currentPage={currentPage}
@@ -665,8 +674,8 @@ export default class SimpleBlogCms extends Component {
                             handlePaginationDecClick={this.handlePaginationDecClick}
                             handlePaginationIncClick={this.handlePaginationIncClick}
                         />
-                    </div>
-                    <div class='d-flex justify-content-center'>
+                    </div>}
+                    {article.id && <div class='d-flex justify-content-center'>
                         <ArticleEdit styles={styles}
                             articleId={articleId}
                             article={article}
@@ -681,6 +690,7 @@ export default class SimpleBlogCms extends Component {
                             handleTextareaInput={this.handleArticleTextareaInput}
                             handleClickSave={this.handleArticleClickSave}
                             handleClickNew={this.handleArticleClickNew}
+                            handleArticleEditBackClick={this.handleArticleEditBackClick}
 
                             imglist={imglist}
                             filterQuery={this.state.filterQuery}
@@ -689,7 +699,7 @@ export default class SimpleBlogCms extends Component {
                             handleImglistClick={this.handleImageSearchResultClick}
                             handleImageTagClick={this.handleImageTagClick}
                         />
-                    </div>
+                    </div>}
                 </div>
             );
         } else if (currentMenu === 'categories') {

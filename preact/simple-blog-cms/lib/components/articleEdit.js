@@ -120,6 +120,7 @@ export default class ArticleEdit extends Component {
         const handleTextareaInput = props.handleTextareaInput;
         const handleClickSave = props.handleClickSave;
         const handleClickNew = props.handleClickNew;
+        const handleArticleEditBackClick = props.handleArticleEditBackClick;
 
         const handleImageInput = props.handleImageInput;
         const handleImageSubmit = props.handleImageSubmit;
@@ -142,22 +143,37 @@ export default class ArticleEdit extends Component {
         const renderedMenu = (
             <nav class='nav nav-pills nav-fill mb-3 sticky-top bg-light'>
                 <a class={`nav-item nav-link ${currentMenu === 'preview' ? 'active' : ''}`} href='#'
-                    onClick={this.handleMenuClick} data-menu='preview'>Forhåndsvisning</a>
+                    onClick={this.handleMenuClick} data-menu='preview'><i class="fas fa-eye"></i> Forhåndsvisning</a>
                 <a class={`nav-item nav-link ${currentMenu === 'images' ? 'active' : ''}`} href='#'
-                    onClick={this.handleMenuClick} data-menu='images'>Bilder ({imagesTotal})</a>
+                    onClick={this.handleMenuClick} data-menu='images'><i class="fas fa-images"></i> Bilder ({imagesTotal})</a>
                 <a class={`nav-item nav-link ${currentMenu === 'meta' ? 'active' : ''}`} href='#'
-                    onClick={this.handleMenuClick} data-menu='meta'>Meta</a>
+                    onClick={this.handleMenuClick} data-menu='meta'><i class="fas fa-tags"></i> Meta</a>
             </nav>
         );
 
         const renderedEditArticle = (
             <div class='row bg-secondary'>
-                <div class='col-12 sticky-top'>
-                    <button class='btn btn-info float-right ml-2' onClick={handleClickNew}>+ Ny artikkel</button>
-
-                    <button type='submit' class='btn btn-success' onClick={handleClickSave}>Lagre</button>
-                    <MessagesLite styles={styles} messages={messages} />
+                <div class='col-12 sticky-top d-flex justify-content-between'>
+                    <div class='col-4'>
+                        <button type='button' class='btn btn-warning mr-2' onclick={handleArticleEditBackClick}><i class="fas fa-arrow-left"></i> Tilbake</button>
+                    </div>
+                    <div class='col-4'>
+                        <button type='submit' class='btn btn-success mr-2' onClick={handleClickSave}><i class="fas fa-save"></i> Lagre</button>
+                        <a class='btn btn-info' target='_blank' href={`/v2/${encodeURIComponent(article.category || 'no-category')}/${encodeURIComponent(article.title || 'no-title')}/${article.id}`}>
+                            <i class="fas fa-external-link-alt"></i> Preview
+                        </a>
+                    </div>
+                    <div class='col-4'>
+                        <button class='btn btn-info float-right ml-2' onClick={handleClickNew}>+ Ny artikkel</button>
+                    </div>
                 </div>
+
+                <div class='col-12 fixed-bottom'>
+                    <small>
+                        <MessagesLite styles={styles} messages={messages} />
+                    </small>
+                </div>
+
 
                 <div class='col-2'>
                     <div class='form-group'>
@@ -325,12 +341,15 @@ export default class ArticleEdit extends Component {
                             />
                         </div>
                         <div class="col-2">
-                            <button class="btn btn-success" onclick={e => handleImageSubmit(e, 54)}>Søk</button>
+                            <button class="btn btn-success" onclick={e => handleImageSubmit(e, 54)}><i class="fas fa-search"></i> Søk</button>
                         </div>
 
                     </div>
                 </div>
                 <div class='row'>
+                    <div class='col-1 text-right text-muted'>
+                        {Object.keys(filterQuery).length > 0 && 'Filters:'}
+                    </div>
                     <div class='col-12'>
                         {Object.keys(filterQuery).map(key =>
                             <span class={`mr-1 badge badge-danger`}
@@ -338,7 +357,8 @@ export default class ArticleEdit extends Component {
                                 data-value={filterQuery[key]}
                                 onClick={handleImageTagClick}
                             >
-                                {key}: {filterQuery[key]}
+                                {filterQuery[key]}
+                                <i class="ml-1 fas fa-times-circle"></i>
                             </span>
                         )}
                     </div>
