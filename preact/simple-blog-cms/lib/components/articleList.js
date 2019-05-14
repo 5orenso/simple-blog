@@ -11,6 +11,8 @@ export default class ArticleList extends Component {
     constructor(props) {
         super(props);
         this.state = Object.assign({}, initialState);
+        this.parent = props.that;
+        this.imageServer = this.parent.props.apiServer;
     }
 
     handleDropdownClick = (event, key) => {
@@ -47,7 +49,7 @@ export default class ArticleList extends Component {
 
         const { toggleDropdown } = this.state;
 
-        const statuslist = [
+        const statusList = [
             { value: 1, title: 'I arbeid' },
             { value: 2, title: 'Live' },
         ];
@@ -98,7 +100,7 @@ export default class ArticleList extends Component {
                                 onClick={e => this.handleDropdownClick(e, 'status')}
                             >
                                 {filter.status ?
-                                    statuslist.find(x => x.value === filter.status).title : 'Velg status'}
+                                    statusList.find(x => x.value === filter.status).title : 'Velg status'}
                             </button>
                             <div class={`dropdown-menu ${toggleDropdown.status ? 'show' : ''}`} style='z-index: 1200;'>
                                 <a class="dropdown-item" href="#"
@@ -111,7 +113,7 @@ export default class ArticleList extends Component {
                                 >
                                     Alle
                                 </a>
-                                {statuslist.map(stat =>
+                                {statusList.map(stat =>
                                     <a class={`dropdown-item ${filter.status === stat.value ? 'text-success' : ''}`} href="#"
                                         data-key='status'
                                         data-val={stat.value}
@@ -144,6 +146,7 @@ export default class ArticleList extends Component {
                     <thead>
                         <tr>
                             <th scope='col'>#</th>
+                            <th scope='col'>Bilde</th>
                             <th scope='col'>Kategori</th>
                             <th scope='col'>Tittel</th>
                             <th scope='col'>Pub.dato</th>
@@ -156,8 +159,20 @@ export default class ArticleList extends Component {
                         {artlist.map(art =>
                             <tr data-id={art.id} class={articleId == art.id ? 'bg-primary text-white' : ''} onClick={handleArtlistClick}>
                                 <td scope='row'>{art.id}</td>
+                                <td>
+                                    {art.img && Array.isArray(art.img) && art.img[0] && (
+                                        <img src={`${this.imageServer}/pho/${art.img[0].src}?w=150`} style='max-height: 50px;' class='img-fluid' />
+                                    )}
+                                </td>
                                 <td>{art.category}</td>
-                                <td>{art.title}</td>
+                                <td>
+                                    {art.title}<br />
+                                    <small>
+                                        {Array.isArray(art.tags) && art.tags.map(tag =>
+                                            <span class='badge badge-info mr-1'>{tag}</span>
+                                        )}
+                                    </small>
+                                </td>
                                 <td>{util.isoDateNormalized(art.published)}</td>
                                 <td><span class={`badge badge-${util.getStatusClass(art.status)} p-2`}>{util.getStatus(art.status)}</span></td>
                                 <td>{art.author}</td>

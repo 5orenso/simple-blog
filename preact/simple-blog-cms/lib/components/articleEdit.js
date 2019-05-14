@@ -10,10 +10,16 @@ const initialState = {
     currentMenu: 'preview',
     currentTagIdx: -1,
     currentTag: '',
+    toggleDropdown: {},
 };
 const debug = false;
 const editMode = 'textarea'; // div
 const imageWidth = 150;
+
+const statusList = [
+    { value: 1, title: 'I arbeid' },
+    { value: 2, title: 'Live' },
+];
 
 export default class ArticleEdit extends Component {
     constructor(props) {
@@ -21,6 +27,19 @@ export default class ArticleEdit extends Component {
         this.state = Object.assign({}, initialState);
         this.parent = props.that;
         this.imageServer = this.parent.props.apiServer;
+    }
+
+    handleDropdownClick = (event, key) => {
+        event.preventDefault();
+        const el = event.target;
+
+        let { toggleDropdown } = this.state;
+        if (toggleDropdown[key]) {
+            toggleDropdown[key] = false;
+        } else {
+            toggleDropdown[key] = true;
+        }
+        this.setState({ toggleDropdown });
     }
 
     handleMenuClick = (event) => {
@@ -110,10 +129,11 @@ export default class ArticleEdit extends Component {
     };
 
     render(props) {
-        const { currentMenu, currentTagIdx, currentTag } = this.state;
+        const { currentMenu, currentTagIdx, currentTag, toggleDropdown } = this.state;
         const styles = props.styles;
         const messages = props.messages;
         const article = props.article;
+        const sessionEmail = props.sessionEmail;
         const handleInput = props.handleInput;
         const handleAddImage = props.handleAddImage;
         const handleRemoveImageClick = props.handleRemoveImageClick;
@@ -128,9 +148,11 @@ export default class ArticleEdit extends Component {
         const handleImageTagClick = props.handleImageTagClick;
 
         const taglist = props.taglist;
-
         const imglist = props.imglist;
+        const catlist = props.catlist;
         const filterQuery = props.filterQuery;
+
+        const authorDefault = sessionEmail.replace(/\@.+$/, '');
 
         const images = article.img || [];
         const imagesTotal = images.length;
@@ -164,7 +186,10 @@ export default class ArticleEdit extends Component {
                         </a>
                     </div>
                     <div class='col-3'>
-                        <button class='btn btn-info float-right ml-2' onClick={handleClickNew}>+ Ny artikkel</button>
+                        <button class='btn btn-info float-right ml-2' onClick={e => handleClickNew(e, {
+                            author: authorDefault,
+                            category: catlist[0].title,
+                        })}>+ Ny artikkel</button>
                     </div>
                 </div>
 
@@ -178,11 +203,88 @@ export default class ArticleEdit extends Component {
                 <div class='col-2'>
                     <div class='form-group'>
                         <label for='statusInput' class='text-white-50'>Status</label>
-                        <input type='number' class='form-control' id='statusInput' placeholder='Status'
-                            min='1' max='3' step='1'
-                            name='status'
-                            onInput={handleInput}
-                            value={article.status} />
+                        <div class="dropdown">
+                            <button class="btn btn-light dropdown-toggle"
+                                type="button"
+                                onClick={e => this.handleDropdownClick(e, 'status')}
+                            >
+                                {article.status ? statusList.find(x => x.value === article.status).title : 'Velg status'}
+                            </button>
+                            <div class={`dropdown-menu ${toggleDropdown.status ? 'show' : ''}`} style='z-index: 1200;'>
+                                <a class="dropdown-item" href="#"
+                                    data-key='status'
+                                    data-val=''
+                                    onClick={e => {
+                                        this.handleDropdownClick(e, 'status');
+                                        handleInput(e, {
+                                            name: 'status',
+                                            value: 0,
+                                        });
+                                    }}
+                                >
+                                    Alle
+                                </a>
+                                {statusList.map(status =>
+                                    <a class={`dropdown-item ${article.status === status.value ? 'text-success' : ''}`} href="#"
+                                        data-key='status'
+                                        data-val={status.title}
+                                        onClick={e => {
+                                            this.handleDropdownClick(e, 'status');
+                                            handleInput(e, {
+                                                name: 'status',
+                                                value: status.value,
+                                            });
+                                        }}
+                                    >
+                                        {status.title}
+                                    </a>
+                                )}
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class='col-6'>
+                    <div class='form-group'>
+                        <label for='categoryInput' class='text-white-50'>Kategori</label>
+                        <div class="dropdown">
+                            <button class="btn btn-light dropdown-toggle"
+                                type="button"
+                                onClick={e => this.handleDropdownClick(e, 'category')}
+                            >
+                                {article.category ? article.category : 'Velg kategori'}
+                            </button>
+                            <div class={`dropdown-menu ${toggleDropdown.category ? 'show' : ''}`} style='z-index: 1200;'>
+                                <a class="dropdown-item" href="#"
+                                    data-key='category'
+                                    data-val=''
+                                    onClick={e => {
+                                        this.handleDropdownClick(e, 'category');
+                                        handleInput(e, {
+                                            name: 'category',
+                                            value: '',
+                                        });
+                                    }}
+                                >
+                                    Alle
+                                </a>
+                                {catlist.map(cat =>
+                                    <a class={`dropdown-item ${article.category === cat.title ? 'text-success' : ''}`} href="#"
+                                        data-key='category'
+                                        data-val={cat.title}
+                                        onClick={e => {
+                                            this.handleDropdownClick(e, 'category');
+                                            handleInput(e, {
+                                                name: 'category',
+                                                value: cat.title,
+                                            });
+                                        }}
+                                    >
+                                        {cat.title}
+                                    </a>
+                                )}
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class='col-4'>
@@ -192,15 +294,6 @@ export default class ArticleEdit extends Component {
                             name='author'
                             onInput={handleInput}
                             value={article.author} />
-                    </div>
-                </div>
-                <div class='col-6'>
-                    <div class='form-group'>
-                        <label for='categoryInput' class='text-white-50'>Kategori</label>
-                        <input type='text' class='form-control' id='categoryInput' placeholder='Kategori'
-                            name='category'
-                            onInput={handleInput}
-                            value={article.category} />
                     </div>
                 </div>
 

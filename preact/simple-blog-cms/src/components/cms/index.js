@@ -59,15 +59,6 @@ export default class SimpleBlogCms extends Component {
         this.messageAgeInSeconds = 5;
         this.loadArtlist();
         this.loadCatlist();
-        const articleId = this.props.articleId;
-        if (articleId) {
-            util.fetchApi(`/api/article/${articleId}`, {}, this)
-                .then((result) => {
-                    this.setState({
-                        article: result.article,
-                    });
-                });
-        }
     }
 
     // - - - [ Functions ] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -315,10 +306,11 @@ export default class SimpleBlogCms extends Component {
         this.saveArticle();
     };
 
-    handleArticleClickNew = (event) => {
+    handleArticleClickNew = (event, article = {}) => {
         event.preventDefault();
         const data = {
             method: 'POST',
+            ...article,
         }
         // console.log('trying to save', this.state.article);
         util.fetchApi(`/api/article/`, data, this)
@@ -407,7 +399,7 @@ export default class SimpleBlogCms extends Component {
     handleArticleInput = (event, opt = {}) => {
         event.preventDefault();
         const el = event.target;
-        const name = el.name;
+        let name = el.name;
         let value = el.value || '';
 
         if (opt.name && (opt.action === 'add' || value.match(/[,]$/))) {
@@ -419,15 +411,16 @@ export default class SimpleBlogCms extends Component {
 
         if (opt.name && opt.action === 'remove') {
             return this.articleInputRemove(opt.name, opt.value, opt.type);
-        }
-
-        if (opt.action === 'search') {
+        } else if (opt.action === 'search') {
             if (opt.name === 'tags' && value.length >= 1) {
                 let loadTaglistTimer = this.state.loadTaglistTimer;
                 clearTimeout(loadTaglistTimer);
                 loadTaglistTimer = setTimeout(() => this.loadTaglist(1, value), 500);
                 this.setState({ loadTaglistTimer });
             }
+        } else if (opt.name && opt.value) {
+            name = opt.name;
+            value = opt.value;
         }
 
         this.articleInputAdd(name, value);
@@ -631,7 +624,8 @@ export default class SimpleBlogCms extends Component {
 
             filter,
         } = this.state;
-        const articleId = this.props.articleId;
+        const sessionEmail = this.props.sessionEmail;
+        const sessionAge = this.props.sessionAge;
 
         let renderedMenu;
         if (article.id) {
@@ -656,7 +650,7 @@ export default class SimpleBlogCms extends Component {
                     {renderedMenu}
                     {!article.id && <div class='d-flex justify-content-center'>
                         <ArticleList styles={styles}
-                            articleId={article.id || articleId}
+                            that={this}
                             artlist={artlist}
                             catlist={catlist}
                             handleInput={this.handleArticleSearchInput}
@@ -678,8 +672,10 @@ export default class SimpleBlogCms extends Component {
                     </div>}
                     {article.id && <div class='d-flex justify-content-center'>
                         <ArticleEdit styles={styles}
-                            articleId={articleId}
+                            sessionEmail={sessionEmail}
+
                             article={article}
+                            catlist={catlist}
                             that={this}
                             messages={messages}
 
