@@ -162,7 +162,10 @@ export default class ArticleList extends Component {
                                 <td><span class={`badge badge-${util.getStatusClass(art.status)} p-2`}>{util.getStatus(art.status)}</span></td>
                                 <td>{art.author}</td>
                                 <td>
-                                    <a class='btn btn-primary' target='_blank' href={`/v2/${encodeURIComponent(art.category || 'no-category')}/${encodeURIComponent(art.title || 'no-title')}/${art.id}`}>
+                                    <a class='btn btn-sm btn-primary' target='_blank'
+                                        href={`/v2/${encodeURIComponent(art.category || 'no-category')}/${encodeURIComponent(art.title || 'no-title')}/${art.id}`}
+                                        onClick={e => e.stopPropagation()}
+                                    >
                                         <i class="fas fa-external-link-alt"></i>
                                     </a>
                                 </td>
