@@ -47,6 +47,8 @@ html {
     position: relative;
     background-color: #f0f0f0;
     text-align: center;
+    border: 1px solid #dee2e6;
+    border-radius: .25rem;
 }
 .post-thumb a {
     position: absolute;
