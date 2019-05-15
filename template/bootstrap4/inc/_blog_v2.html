@@ -25,6 +25,12 @@
                             <img src="/pho/{{ article.img[0].src }}?w={% if isPhoto %}1800{% else %}1050{% endif %}" alt="{{ article.title|e }}" class="img-fluid rounded mx-auto d-block">
                         </div>
                     {% endif %}
+                    {% if article.img[0].title %}
+                        <div class="image_inline_text">
+                            <strong>{{ article.img[0].title }}</strong>
+                            {{ article.img[0].text }}
+                        </div>
+                    {% endif %}
 				</div>
             </div>
 
@@ -109,7 +115,7 @@
                             {% set imgs = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20] %}
                             {% for i in imgs %}
                                 {% if (article['img' + i][i]) %}
-                                    <span class="float-right img-thumbnail rounded">
+                                    <span class="float-right img-thumbnail image-thumbnail rounded">
                                         <a href="/pho/{{ article['img' + i][i] }}?w=1800" data-smoothzoom="group1" title="{{ article['imgText' + i][i]|e('html') }}" class="inline-images">
                                             <img src="/pho/{{ article['img' + i][i] }}?w=300" alt="{{ article['imgText' + i][i]|e('html') }}" title="{{ article['imgText' + i][i]|e('html') }}" class="img-fluid rounded">
                                         </a><br>

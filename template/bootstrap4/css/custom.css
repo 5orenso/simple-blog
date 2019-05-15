@@ -131,22 +131,25 @@ html {
 .nav-link {
     padding: .5rem;
 }
+.image_inline {
+    border: 1px solid #dee2e6;
+    border-radius: .25rem;
+    background-color: #f6f6f6;
+    margin-bottom: 0;
+}
+.image_inline img {
+    border-radius: .25rem;
+}
 .image_inline_right {
     float: right;
 }
 .image_inline_text {
     font-size: 0.9em;
-    color: #808080;
+    font-weight: 400;
+    color: #a0a0a0;
 }
 
-.social-share {
-    border-top: 1px solid #c0c0c0;
-}
-.social-share a {
-    font-size: 1.5em;
-}
-
-.img-thumbnail {
+.image-thumbnail {
     clear: both;
     margin-bottom: 1rem;
     margin-left: 1rem;
@@ -155,6 +158,12 @@ html {
     max-width: 50%;
 }
 
+.social-share {
+    border-top: 1px solid #c0c0c0;
+}
+.social-share a {
+    font-size: 1.5em;
+}
 
 .markdown-editor {
     background: #c0c0c0;
