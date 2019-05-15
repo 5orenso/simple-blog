@@ -30,7 +30,7 @@
 {% if isDetailView %}
     <meta name="description" content="{{ article.teaser|striptags|removeLineBreaks|e('html') }} {{ article.ingress|striptags|removeLineBreaks|e('js')|e('html') }}" />
     <meta name="keywords" content="{{ article.tags|striptags|removeLineBreaks|e('html') }}" />
-    {% set shareLink = blog.protocol + '://' + blog.domain + article.baseHref + article.file %}
+    {% set shareLink = blog.protocol + '://' + blog.domain + '/' + article.category|url_encode + '/' + article.title|url_encode + '/' + article.id %}
     <meta property="og:url" content="{{ shareLink }}" />
     <meta property="og:type" content="article" />
     <meta property="og:locale" content="no_NO" />
@@ -59,7 +59,7 @@
 {% else %}
     <meta name="description" content="{{ description()|oneline }}" />
     <meta name="keywords" content="{{ article.tags|striptags|removeLineBreaks|e('html') }}" />
-    {% set shareLink = blog.protocol + '://' + blog.domain + article.baseHref %}
+    {% set shareLink = blog.protocol + '://' + blog.domain + '/' + article.category|url_encode + '/' %}
     <meta property="og:url" content="{{ shareLink }}" />
     <meta property="og:type" content="article" />
     {% set author = blog.author.fallback %}

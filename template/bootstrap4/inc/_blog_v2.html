@@ -157,11 +157,12 @@
 
                 <div class="social-share">
                     {{ blog.sharingHeader || 'Jeg blir veldig 😊 hvis du deler' }}:
-                    {% set shareLink = blog.protocol + '://' + blog.domain + article.baseHref + article.file %}
+                    {% set shareLink = blog.protocol + '://' + blog.domain + '/' + article.category|url_encode + '/' + article.title|url_encode + '/' + article.id %}
                     <a rel="noopener" target="_blank" class="s-facebook" href="https://www.facebook.com/sharer.php?u={{ shareLink|url_encode }}"><i class="fab fa-facebook-square"></i></a>
                     <a rel="noopener" target="_blank" class="s-twitter" href="https://twitter.com/intent/tweet?url={{ shareLink|url_encode }}&text={{ article.title|url_encode }}.%20{{ article.teaser|striptags|url_encode }}{% if blog.socialUser.twitter %}&via={{ blog.socialUser.twitter }}{% endif %}&hashtags={{ article.tags }}"><i class="fab fa-twitter-square"></i></a>
                     <a rel="noopener" target="_blank" class="s-google-plus" href="https://plus.google.com/share?url={{ shareLink|url_encode }}"><i class="fab fa-google-plus-square"></i></a>
                     <a rel="noopener" target="_blank" class="s-linkedin" href="https://www.linkedin.com/shareArticle?mini=true&url={{ shareLink|url_encode }}&summary={{ article.title|url_encode }}.%20{{ article.teaser|striptags|url_encode }}&source={{ blog.domain }}"><i class="fab fa-linkedin"></i></a>
+                    <a rel="noopener" target="_blank" class="s-mail" href="mailto:?subject=Tips: {{ article.title|url_encode }}&body=Tips fra {{ blog.domain }}:%0D%0A%0D%0A{{ article.title|upper|url_encode }}%0D%0A%0D%0A{{ (article.teaser || article.ingress)|url_encode }}%0D%0A%0D%0ALes mer: {{ shareLink|url_encode }}"><i class="far fa-envelope"></i></a>
                 </div>
             </div><!-- /.blog-post -->
 

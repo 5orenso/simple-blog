@@ -32,6 +32,10 @@ export default class ArticleEdit extends Component {
         this.state = Object.assign({}, initialState);
         this.parent = props.that;
         this.imageServer = this.parent.props.apiServer;
+        this.serverName = '';
+        if (document.domain === 'localhost') {
+            this.serverName = 'http://localhost:8080';
+        }
     }
 
     handleDropdownClick = (event, key) => {
@@ -193,7 +197,7 @@ export default class ArticleEdit extends Component {
                     </div>
                     <div class='col-6 text-center'>
                         <button type='submit' class='btn btn-success mr-2' onClick={handleClickSave}><i class="fas fa-save"></i> Lagre</button>
-                        <a class='btn btn-primary' target='_blank' href={`/v2/${encodeURIComponent(article.category || 'no-category')}/${encodeURIComponent(article.title || 'no-title')}/${article.id}`}>
+                        <a class='btn btn-primary' target='_blank' href={`${this.serverName}/v2/${encodeURIComponent(article.category || 'no-category')}/${encodeURIComponent(article.title || 'no-title')}/${article.id}`}>
                             <i class="fas fa-external-link-alt"></i> Preview
                         </a>
                     </div>
@@ -378,16 +382,16 @@ export default class ArticleEdit extends Component {
                     {[0, 1, 2].map(val =>
                         <li class='list-group-item list-group-item-action flex-column align-items-start'>
                             <div class='form-group row'>
-                                <div class='col-6'>
+                                <div class='col-3'>
                                     <label for='youtubeTitle'>Title {val + 1}</label>
                                     <input class='form-control' id='youtubeTitle'
                                         onInput={linkstate(that, `article.youtubeVideos.${val}.title`)}
                                         value={util.getString(article, 'youtubeVideos', val, 'title')}
                                     />
                                 </div>
-                                <div class='col-6'>
+                                <div class='col-9'>
                                     <label for='youtubeText'>Text {val + 1}</label>
-                                    <input class='form-control' id='youtubeText'
+                                    <textarea class='form-control' id='youtubeText'
                                         onInput={linkstate(that, `article.youtubeVideos.${val}.text`)}
                                         value={util.getString(article, 'youtubeVideos', val, 'text')}
                                     />

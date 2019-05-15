@@ -13,6 +13,10 @@ export default class ArticleList extends Component {
         this.state = Object.assign({}, initialState);
         this.parent = props.that;
         this.imageServer = this.parent.props.apiServer;
+        this.serverName = '';
+        if (document.domain === 'localhost') {
+            this.serverName = 'http://localhost:8080';
+        }
     }
 
     handleDropdownClick = (event, key) => {
@@ -185,7 +189,7 @@ export default class ArticleList extends Component {
                                 <td>{art.author}</td>
                                 <td>
                                     <a class='btn btn-sm btn-primary' target='_blank'
-                                        href={`/v2/${encodeURIComponent(art.category || 'no-category')}/${encodeURIComponent(art.title || 'no-title')}/${art.id}`}
+                                        href={`${this.serverName}/v2/${encodeURIComponent(art.category || 'no-category')}/${encodeURIComponent(art.title || 'no-title')}/${art.id}`}
                                         onClick={e => e.stopPropagation()}
                                     >
                                         <i class="fas fa-external-link-alt"></i>

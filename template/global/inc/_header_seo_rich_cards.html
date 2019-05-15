@@ -218,7 +218,7 @@
 {%- endmacro -%}
 {%- macro itemListCard -%}
     {% if article.artlist %}
-        {% set shareLinkPage = blog.protocol + '://' + blog.domain + article.baseHref + article.file %}
+        {% set shareLinkPage = blog.protocol + '://' + blog.domain + '/' + article.category|url_encode + '/' %}
         <script type="application/ld+json">
         {
             "@context": "http://schema.org",
@@ -231,7 +231,8 @@
                         "@type": "ListItem",
                         "position": {{ loop.index }},
                         "item": {
-                            {% set shareLink = blog.protocol + '://' + blog.domain + art.baseHref + art.file %}
+                            {% set shareLink = blog.protocol + '://' + blog.domain + '/' + art.category|url_encode + '/' + art.title|url_encode + '/' + art.id %}
+
                                 "@type": "BlogPosting",
                                 "publisher": {
                                     "@type": "Organization",
