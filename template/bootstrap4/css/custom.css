@@ -97,6 +97,13 @@ html {
     padding-top: 0px;
     line-height: 0.9em;
 }
+.blog-top-image {
+    border: 1px solid #dee2e6;
+    border-radius: .25rem;
+    background-color: #f6f6f6;
+    margin-bottom: 0;
+    text-align: center;
+}
 .blog-post {
     margin-bottom: 2rem;
 }
@@ -136,6 +143,7 @@ html {
     border-radius: .25rem;
     background-color: #f6f6f6;
     margin-bottom: 0;
+    text-align: center;
 }
 .image_inline img {
     border-radius: .25rem;
