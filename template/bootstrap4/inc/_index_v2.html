@@ -95,13 +95,14 @@
                         {% endif %}
                     {% endfor %}
                 </div>
-                <div class="post-pagination  clearfix">
-                    <ul class="pagination text-left">
+
+                <nav aria-label="Page navigation">
+                    <ul class="pagination">
                         {% set pages = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20] %}
                         {% set total = artlistTotal %}
                         {% if total > 1 %}
                             {% if page > 1 %}
-                                <li><a href="{{ file.path }}?page={{ page - 1 }}{% if queryString.tag %}&tag={{ queryString.tag }}{% endif %}"><i class="fa fa-angle-double-left"></i></a></li>
+                                <li class="page-item"><a class="page-link" href="{{ file.path }}?page={{ page - 1 }}{% if queryString.tag %}&tag={{ queryString.tag }}{% endif %}"><i class="fa fa-angle-double-left"></i></a></li>
                             {% endif %}
 
                             {% for p in pages %}
@@ -110,18 +111,18 @@
                                 {% set s = s + 1 %}
                                 {% set e = p * limit %}
                                 {% if s <= total %}
-                                    <li class="{% if p == page %}active{% endif %}"><a href="{{ file.path }}?page={{ p }}{% if queryString.tag %}&tag={{ queryString.tag }}{% endif %}" title="{{ s }}-{{ e }}">{{ p }}</a></li>
+                                    <li class="page-item {% if p == page %}active{% endif %}"><a class="page-link" href="{{ file.path }}?page={{ p }}{% if queryString.tag %}&tag={{ queryString.tag }}{% endif %}" title="{{ s }}-{{ e }}">{{ p }}</a></li>
                                 {% endif %}
                             {% endfor %}
 
                             {% set end = page * limit %}
                             {% set nextPage = page + 1 %}
                             {% if total >= end %}
-                                <li><a href="{{ file.path }}?page={{ nextPage }}{% if queryString.tag %}&tag={{ queryString.tag }}{% endif %}"><i class="fa fa-angle-double-right"></i></a></li>
+                                <li class="page-item"><a class="page-link" href="{{ file.path }}?page={{ nextPage }}{% if queryString.tag %}&tag={{ queryString.tag }}{% endif %}"><i class="fa fa-angle-double-right"></i></a></li>
                             {% endif %}
                         {% endif %}
                     </ul>
-                </div>
+                </nav>
 
             </main>
         </div>
