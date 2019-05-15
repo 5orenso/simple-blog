@@ -83,6 +83,9 @@ html {
     color: #a0a0a0;
     text-align: center;
 }
+.blog-post-meta {
+    line-height: 0.9em;
+}
 .blog-header {
     padding-top: 2rem;
 }
@@ -222,6 +225,7 @@ pre code {
 .display-3 {
     font-size: 2rem;
 }
+
 @media (min-width: 544px) {
     html {
       font-size: 1rem;

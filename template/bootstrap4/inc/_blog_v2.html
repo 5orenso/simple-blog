@@ -25,13 +25,13 @@
                             <img src="/pho/{{ article.img[0].src }}?w={% if isPhoto %}1800{% else %}1050{% endif %}" alt="{{ article.title|e }}" class="img-fluid rounded mx-auto d-block">
                         </div>
                     {% endif %}
-                    {% if article.img[0].title %}
-                        <div class="image_inline_text">
-                            <strong>{{ article.img[0].title }}</strong>
-                            {{ article.img[0].text }}
-                        </div>
-                    {% endif %}
 				</div>
+                {% if article.img[0] && article.img[0].title %}
+                    <div class="image_inline_text">
+                        <strong>{{ article.img[0].title }}</strong>
+                        {{ article.img[0].text }}
+                    </div>
+                {% endif %}
             </div>
 
         </main>
@@ -45,30 +45,44 @@
                 <h1>{{ article.title }}</h1>
                 <h5 class="blog-post-teaser">{{ article.teaser|safe }}</h5>
                 <p class="blog-post-meta">
-                    {% if article.published %}
-                        {{ article.published|date('Y-m-d') }}
-                    {% endif %}
-                    {% if article.author %}
-                        by {{ article.author }} |
-                    {% endif %}
-                    <a href="/v2/{{ category.title }}/" class="post-cat">{{ category.title }}</a>
+                    <small>
+                        {% if article.published %}
+                            {{ blog.textPublished || 'Publisert' }}: {{ article.published|date('Y-m-d') }}
+                        {% endif %}
+                        {% if article.updatedDate %}
+                            <span class='text-muted'>| {{ blog.textLastUpdated || 'Oppdatert' }}: {{ article.updatedDate|date('Y-m-d') }}</span>
+                        {% endif %}
+                        | <a href="/v2/{{ category.title }}/" class="post-cat">{{ category.title }}</a>
+                        {% if article.status %}
+                            | <span class="badge badge-{{ article.status|getStatusClass }}">
+                                {{ article.status|getStatus }}
+                            </span>
+                        {% endif %}
 
-                    {% if article.status %}
-                        | <span class="badge badge-{{ article.status|getStatusClass }}">
-                            {{ article.status|getStatus }}
-                        </span>
-                    {% endif %}
+                        |
+                        {% set shareLink = blog.protocol + '://' + blog.domain + '/' + article.category|url_encode + '/' + article.title|url_encode + '/' + article.id %}
+                        <a rel="noopener" target="_blank" href="https://www.facebook.com/sharer.php?u={{ shareLink|url_encode }}">
+                            <i class="fab fa-facebook"></i>
+                        </a>
+                        <a rel="noopener" target="_blank" href="https://twitter.com/intent/tweet?url={{ shareLink|url_encode }}&text={{ article.title|url_encode }}.%20{{ article.teaser|striptags|url_encode }}{% if blog.socialUser.twitter %}&via={{ blog.socialUser.twitter }}{% endif %}&hashtags={{ article.tags }}">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a rel="noopener" target="_blank" href="https://www.linkedin.com/shareArticle?mini=true&url={{ shareLink|url_encode }}&summary={{ article.title|url_encode }}.%20{{ article.teaser|striptags|url_encode }}&source={{ blog.domain }}">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                        <a rel="noopener" target="_blank" href="mailto:?subject=Tips: {{ article.title|url_encode }}&body=Tips fra {{ blog.domain }}:%0D%0A%0D%0A{{ article.title|upper|url_encode }}%0D%0A%0D%0A{{ (article.teaser || article.ingress)|url_encode }}%0D%0A%0D%0ALes mer: {{ shareLink|url_encode }}"><i class="far fa-envelope"></i></a>
 
-                    {% if article.tags %}
-                        <br />
-                        {% for tag in article.tags %}
-                            <a href="/v2/?tag={{ tag|url_encode }}" class="badge badge-info">{{ tag }}</a>
-                        {% endfor %}
-                    {% endif %}
+                        {% if article.tags %}
+                            <br />
+                            {% for tag in article.tags %}
+                                <a href="/v2/?tag={{ tag|url_encode }}" class="badge badge-info">{{ tag }}</a>
+                            {% endfor %}
+                        {% endif %}
+                    </small>
                 </p>
 
                 {% if article.ingress %}
-                    <div class="lead">
+                    <div class="lead mb-3">
                         {% if isPhoto %}
                             {{ article.ingress|imgSize(945)|safe }}
                         {% else %}
@@ -158,11 +172,18 @@
                 <div class="social-share">
                     {{ blog.sharingHeader || 'Jeg blir veldig 😊 hvis du deler' }}:
                     {% set shareLink = blog.protocol + '://' + blog.domain + '/' + article.category|url_encode + '/' + article.title|url_encode + '/' + article.id %}
-                    <a rel="noopener" target="_blank" class="s-facebook" href="https://www.facebook.com/sharer.php?u={{ shareLink|url_encode }}"><i class="fab fa-facebook-square"></i></a>
-                    <a rel="noopener" target="_blank" class="s-twitter" href="https://twitter.com/intent/tweet?url={{ shareLink|url_encode }}&text={{ article.title|url_encode }}.%20{{ article.teaser|striptags|url_encode }}{% if blog.socialUser.twitter %}&via={{ blog.socialUser.twitter }}{% endif %}&hashtags={{ article.tags }}"><i class="fab fa-twitter-square"></i></a>
-                    <a rel="noopener" target="_blank" class="s-google-plus" href="https://plus.google.com/share?url={{ shareLink|url_encode }}"><i class="fab fa-google-plus-square"></i></a>
-                    <a rel="noopener" target="_blank" class="s-linkedin" href="https://www.linkedin.com/shareArticle?mini=true&url={{ shareLink|url_encode }}&summary={{ article.title|url_encode }}.%20{{ article.teaser|striptags|url_encode }}&source={{ blog.domain }}"><i class="fab fa-linkedin"></i></a>
-                    <a rel="noopener" target="_blank" class="s-mail" href="mailto:?subject=Tips: {{ article.title|url_encode }}&body=Tips fra {{ blog.domain }}:%0D%0A%0D%0A{{ article.title|upper|url_encode }}%0D%0A%0D%0A{{ (article.teaser || article.ingress)|url_encode }}%0D%0A%0D%0ALes mer: {{ shareLink|url_encode }}"><i class="far fa-envelope"></i></a>
+                    <a rel="noopener" target="_blank" href="https://www.facebook.com/sharer.php?u={{ shareLink|url_encode }}">
+                        <i class="fab fa-facebook-square"></i>
+                    </a>
+                    <a rel="noopener" target="_blank" href="https://twitter.com/intent/tweet?url={{ shareLink|url_encode }}&text={{ article.title|url_encode }}.%20{{ article.teaser|striptags|url_encode }}{% if blog.socialUser.twitter %}&via={{ blog.socialUser.twitter }}{% endif %}&hashtags={{ article.tags }}">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a rel="noopener" target="_blank" href="https://www.linkedin.com/shareArticle?mini=true&url={{ shareLink|url_encode }}&summary={{ article.title|url_encode }}.%20{{ article.teaser|striptags|url_encode }}&source={{ blog.domain }}">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                    <a rel="noopener" target="_blank" href="mailto:?subject=Tips: {{ article.title|url_encode }}&body=Tips fra {{ blog.domain }}:%0D%0A%0D%0A{{ article.title|upper|url_encode }}%0D%0A%0D%0A{{ (article.teaser || article.ingress)|url_encode }}%0D%0A%0D%0ALes mer: {{ shareLink|url_encode }}">
+                        <i class="far fa-envelope"></i>
+                    </a>
                 </div>
             </div><!-- /.blog-post -->
 
