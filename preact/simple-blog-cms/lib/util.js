@@ -167,11 +167,11 @@ class Utilities {
         const epoch = parseInt(dt.getTime() / 1000, 10);
         const msDiff = nowEpoch - epoch;
         if (human && msDiff < 60) {
-            return `just now`;
-        // } else if (msDiff < 60) {
-        //     return `${msDiff} sec ago`;
+            return `akkurat nå`;
         } else if (human && msDiff < 3600) {
             return `${parseInt(msDiff / 60, 10)} min siden`;
+        } else if (human && msDiff < 7200) {
+            return `${parseInt(msDiff / 3600, 10)} time siden`;
         } else if (human && msDiff < 86400) {
             return `${parseInt(msDiff / 3600, 10)} timer siden`;
         } else {
