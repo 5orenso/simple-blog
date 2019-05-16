@@ -245,6 +245,10 @@ pre code {
     font-size: 2rem;
 }
 
+.hljs {
+    border-radius: .25em;
+}
+
 @media (min-width: 544px) {
     html {
       font-size: 1rem;
