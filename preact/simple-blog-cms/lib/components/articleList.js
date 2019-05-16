@@ -181,9 +181,9 @@ export default class ArticleList extends Component {
                                 </td>
                                 <td>
                                     {util.isoDateNormalized(art.published)}<br />
-                                    <span class='text-muted'>
+                                    {art.published !== art.updatedDate && <span class='text-muted'>
                                         <small><i class="fas fa-user-edit"></i> {util.isoDateNormalized(art.updatedDate)}</small>
-                                    </span>
+                                    </span>}
                                 </td>
                                 <td><span class={`badge badge-${util.getStatusClass(art.status)} p-2`}>{util.getStatus(art.status)}</span></td>
                                 <td>{art.author}</td>

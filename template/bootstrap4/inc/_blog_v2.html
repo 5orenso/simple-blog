@@ -47,10 +47,10 @@
                 <p class="blog-post-meta">
                     <small>
                         {% if article.published %}
-                            {{ blog.textPublished || 'Publisert' }}: {{ article.published|date('Y-m-d') }}
+                            {{ blog.textPublished || 'Publisert' }}: {{ article.published|asHumanReadable }}
                         {% endif %}
                         {% if article.updatedDate %}
-                            <span class='text-muted'>| {{ blog.textLastUpdated || 'Oppdatert' }}: {{ article.updatedDate|date('Y-m-d') }}</span>
+                            <span class='text-muted'>| {{ blog.textLastUpdated || 'Oppdatert' }}: {{ article.updatedDate|asHumanReadable }}</span>
                         {% endif %}
                         | <a href="/v2/{{ category.title }}/" class="post-cat">{{ category.title }}</a>
                         {% if article.status %}
@@ -60,22 +60,22 @@
                         {% endif %}
 
                         |
-                        {% set shareLink = blog.protocol + '://' + blog.domain + '/' + article.category|url_encode + '/' + article.title|url_encode + '/' + article.id %}
-                        <a rel="noopener" target="_blank" href="https://www.facebook.com/sharer.php?u={{ shareLink|url_encode }}">
+                        {% set shareLink = blog.protocol + '://' + blog.domain + '/' + article.category|asLinkPart + '/' + article.title|asLinkPart + '/' + article.id %}
+                        <a rel="noopener" target="_blank" href="https://www.facebook.com/sharer.php?u={{ shareLink|asUrlSafe }}">
                             <i class="fab fa-facebook"></i>
                         </a>
-                        <a rel="noopener" target="_blank" href="https://twitter.com/intent/tweet?url={{ shareLink|url_encode }}&text={{ article.title|url_encode }}.%20{{ article.teaser|striptags|url_encode }}{% if blog.socialUser.twitter %}&via={{ blog.socialUser.twitter }}{% endif %}&hashtags={{ article.tags }}">
+                        <a rel="noopener" target="_blank" href="https://twitter.com/intent/tweet?url={{ shareLink|asUrlSafe }}&text={{ article.title|asUrlSafe }}.%20{{ (article.teaser || article.ingress)|striptags|asUrlSafe }}{% if blog.socialUser.twitter %}&via={{ blog.socialUser.twitter|asUrlSafe }}{% endif %}&hashtags={{ article.tags|asUrlSafe }}">
                             <i class="fab fa-twitter"></i>
                         </a>
-                        <a rel="noopener" target="_blank" href="https://www.linkedin.com/shareArticle?mini=true&url={{ shareLink|url_encode }}&summary={{ article.title|url_encode }}.%20{{ article.teaser|striptags|url_encode }}&source={{ blog.domain }}">
+                        <a rel="noopener" target="_blank" href="https://www.linkedin.com/shareArticle?mini=true&url={{ shareLink|asUrlSafe }}&summary={{ article.title|asUrlSafe }}.%20{{ (article.teaser || article.ingress)|asUrlSafe }}&source={{ blog.domain }}">
                             <i class="fab fa-linkedin-in"></i>
                         </a>
-                        <a rel="noopener" target="_blank" href="mailto:?subject=Tips: {{ article.title|url_encode }}&body=Tips fra {{ blog.domain }}:%0D%0A%0D%0A{{ article.title|upper|url_encode }}%0D%0A%0D%0A{{ (article.teaser || article.ingress)|url_encode }}%0D%0A%0D%0ALes mer: {{ shareLink|url_encode }}"><i class="far fa-envelope"></i></a>
+                        <a rel="noopener" target="_blank" href="mailto:?subject=Tips: {{ article.title|asUrlSafe }}&body=Tips fra {{ blog.domain }}:%0D%0A%0D%0A{{ article.title|uc|asUrlSafe }}%0D%0A%0D%0A{{ (article.teaser || article.ingress)|asUrlSafe }}%0D%0A%0D%0ALes mer: {{ shareLink|asUrlSafe }}"><i class="far fa-envelope"></i></a>
 
                         {% if article.tags %}
                             <br />
                             {% for tag in article.tags %}
-                                <a href="/v2/?tag={{ tag|url_encode }}" class="badge badge-info">{{ tag }}</a>
+                                <a href="/v2/?tag={{ tag|asUrlSafe }}" class="badge badge-info">{{ tag }}</a>
                             {% endfor %}
                         {% endif %}
                     </small>
@@ -171,17 +171,17 @@
 
                 <div class="social-share">
                     {{ blog.sharingHeader || 'Jeg blir veldig 😊 hvis du deler' }}:
-                    {% set shareLink = blog.protocol + '://' + blog.domain + '/' + article.category|url_encode + '/' + article.title|url_encode + '/' + article.id %}
-                    <a rel="noopener" target="_blank" href="https://www.facebook.com/sharer.php?u={{ shareLink|url_encode }}">
+                    {% set shareLink = blog.protocol + '://' + blog.domain + '/' + article.category|asLinkPart + '/' + article.title|asLinkPart + '/' + article.id %}
+                    <a rel="noopener" target="_blank" href="https://www.facebook.com/sharer.php?u={{ shareLink|asUrlSafe }}">
                         <i class="fab fa-facebook-square"></i>
                     </a>
-                    <a rel="noopener" target="_blank" href="https://twitter.com/intent/tweet?url={{ shareLink|url_encode }}&text={{ article.title|url_encode }}.%20{{ article.teaser|striptags|url_encode }}{% if blog.socialUser.twitter %}&via={{ blog.socialUser.twitter }}{% endif %}&hashtags={{ article.tags }}">
+                    <a rel="noopener" target="_blank" href="https://twitter.com/intent/tweet?url={{ shareLink|asUrlSafe }}&text={{ article.title|asUrlSafe }}.%20{{ (article.teaser || article.ingress)|asUrlSafe }}{% if blog.socialUser.twitter|asUrlSafe %}&via={{ blog.socialUser.twitter|asUrlSafe }}{% endif %}&hashtags={{ article.tags|asUrlSafe }}">
                         <i class="fab fa-twitter"></i>
                     </a>
-                    <a rel="noopener" target="_blank" href="https://www.linkedin.com/shareArticle?mini=true&url={{ shareLink|url_encode }}&summary={{ article.title|url_encode }}.%20{{ article.teaser|striptags|url_encode }}&source={{ blog.domain }}">
+                    <a rel="noopener" target="_blank" href="https://www.linkedin.com/shareArticle?mini=true&url={{ shareLink|asUrlSafe }}&summary={{ article.title|asUrlSafe }}.%20{{ (article.teaser || article.ingress)|asUrlSafe }}&source={{ blog.domain }}">
                         <i class="fab fa-linkedin-in"></i>
                     </a>
-                    <a rel="noopener" target="_blank" href="mailto:?subject=Tips: {{ article.title|url_encode }}&body=Tips fra {{ blog.domain }}:%0D%0A%0D%0A{{ article.title|upper|url_encode }}%0D%0A%0D%0A{{ (article.teaser || article.ingress)|url_encode }}%0D%0A%0D%0ALes mer: {{ shareLink|url_encode }}">
+                    <a rel="noopener" target="_blank" href="mailto:?subject=Tips: {{ article.title|asUrlSafe }}&body=Tips fra {{ blog.domain }}:%0D%0A%0D%0A{{ article.title|uc|asUrlSafe }}%0D%0A%0D%0A{{ (article.teaser || article.ingress)|asUrlSafe }}%0D%0A%0D%0ALes mer: {{ shareLink|asUrlSafe }}">
                         <i class="far fa-envelope"></i>
                     </a>
                 </div>
@@ -193,7 +193,7 @@
                         {% set art = previousArticle %}
     					<div class="col-4">
                             <div class="post-thumb">
-                                <a href="/v2/{{ art.category|url_encode }}/{{ art.title|lower|url_encode }}/{{ art.id }}">
+                                <a href="/v2/{{ art.category }}/{{ art.title|asLinkPart }}/{{ art.id }}">
                                     {% if art.img[0] %}
                                         <img src="/pho/{{ art.img[0].src }}?w=800" alt="{{ art.title|e }}" class="img-fluid rounded"><br clear="all">
                                     {% else %}
@@ -213,7 +213,7 @@
                                     {% endif %}
                                 </a>
                             </div>
-                            <a class="btn btn-outline-primary" href="/v2/{{ art.category|url_encode }}/{{ art.title|lower|url_encode }}/{{ art.id }}">{{ blog.newerHeader || '👈 Newer' }}</a>
+                            <a class="btn btn-outline-primary" href="/v2/{{ art.category }}/{{ art.title|asLinkPart }}/{{ art.id }}">{{ blog.newerHeader || '👈 Newer' }}</a>
     					</div>
                     {% else %}
                         <div class="col-4">
@@ -223,7 +223,7 @@
                         {% set art = nextArticle %}
     					<div class="col-4 text-right">
                             <div class="post-thumb align-items-center">
-                                <a href="/v2/{{ art.category|url_encode }}/{{ art.title|lower|url_encode }}/{{ art.id }}">
+                                <a href="/v2/{{ art.category }}/{{ art.title|asLinkPart }}/{{ art.id }}">
                                     {% if art.img[0] %}
                                         <img src="/pho/{{ art.img[0].src }}?w=800" alt="{{ art.title|e }}" class="img-fluid rounded"><br clear="all">
                                     {% else %}
@@ -243,7 +243,7 @@
                                     {% endif %}
                                 </a>
                             </div>
-                            <a class="btn btn-outline-primary" href="/v2/{{ art.category|url_encode }}/{{ art.title|lower|url_encode }}/{{ art.id }}">{{ blog.olderHeader || 'Older 👉' }}</a>
+                            <a class="btn btn-outline-primary" href="/v2/{{ art.category }}/{{ art.title|asLinkPart }}/{{ art.id }}">{{ blog.olderHeader || 'Older 👉' }}</a>
     					</div>
                     {% endif %}
 				</div>
@@ -255,7 +255,7 @@
 
         <div class="col-sm-3 offset-sm-1 blog-sidebar">
             <div class="sidebar-module sidebar-module-inset">
-                <h4>{{ blog.whoHeader || 'Hvem?' }}:</h4>
+                <h4>{{ blog.whoHeader || 'Skrevet av' }}:</h4>
                 {% set author = blog.author.fallback %}
                 {% if blog.author[article.author] %}
                     {% set author = blog.author[article.author] %}
@@ -267,6 +267,9 @@
                 </p>
             </div>
             <div class="sidebar-module">
+                {% include '_elsewhere.html' %}
+            </div>
+            <div class="sidebar-module">
                 <h4>{{ blog.moreHeader || 'Flere i 📂' }} {{ baseHref }}</h4>
                 {% set limit = 20 %}
                 <div class="container-fluid">
@@ -274,13 +277,13 @@
                         {% for art in artlist %}
                             {% if loop.index < limit %}
                                 <div class="col-6 col-sm-12 col-md-12 thumb p-2">
-                                    <a href="/v2/{{ art.category|url_encode }}/{{ art.title|lower|url_encode }}/{{ art.id }}" title="{{ art.title|e }} - {{ art.teaser|e }}">
+                                    <a href="/v2/{{ art.category }}/{{ art.title|asLinkPart }}/{{ art.id }}" title="{{ art.title|e }} - {{ art.teaser|e }}">
                                         {% if art.img[0] %}
                                             <img src="/pho/{{ art.img[0].src }}?w=250" alt="{{ art.title|e }} - {{ art.teaser|e }}" class="img-fluid rounded"><br clear="all">
                                         {% endif %}
                                     </a>
                                     <h6>
-                                        <a href="/v2/{{ art.category|url_encode }}/{{ art.title|lower|url_encode }}/{{ art.id }}" title="{{ art.title|e }} - {{ art.teaser|e }}">
+                                        <a href="/v2/{{ art.category }}/{{ art.title|asLinkPart }}/{{ art.id }}" title="{{ art.title|e }} - {{ art.teaser|e }}">
                                             📎 {{ art.title }}
                                         </a>
                                     </h6>
@@ -290,9 +293,7 @@
                     </div>
                 </div>
             </div>
-            <div class="sidebar-module">
-                {% include '_elsewhere.html' %}
-            </div>
+
         </div><!-- /.blog-sidebar -->
 
     </div>

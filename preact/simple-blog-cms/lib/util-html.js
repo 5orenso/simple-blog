@@ -47,7 +47,7 @@ renderer.image = function image($href, title, text) {
         `;
     }
     let serverName = '';
-    if (document.domain === 'localhost') {
+    if (document.domain === 'localhost' && !$href.match(/^http/)) {
         serverName = 'http://localhost:8080';
     }
     const src = `${serverName}${$href}`;
@@ -59,9 +59,7 @@ renderer.image = function image($href, title, text) {
         if (allClasses[0] === 'card') {
             return `
                 <div class="card float-right col-lg-4 col-md-6 col-sm-12 p-0 ml-2 mb-2 mt-2">
-                    <a href="${href}" data-smoothzoom="group1" title="${title || text}">
-                        <img class="card-img-top" src="${src}" alt="${title || text}">
-                    </a>
+                    <img class="card-img-top" src="${src}" alt="${title || text}">
                     <div class="card-body">
                         <h5 class="card-title">${text || ''}</h5>
                         <p class="card-text">${title || ''}</p>
@@ -72,9 +70,7 @@ renderer.image = function image($href, title, text) {
                 <div class="float-right card col-lg-7 col-md-7 col-sm-12 p-0 ml-2 mb-2 mt-2">
                     <div class="row no-gutters">
                         <div class="col-md-4">
-                            <a href="${href}" data-smoothzoom="group1" title="${title || text}">
-                                <img class="card-img img-fluid" src="${src}" alt="${title || text}">
-                            </a>
+                            <img class="card-img img-fluid" src="${src}" alt="${title || text}">
                         </div>
                         <div class="col-md-8">
                             <div class="card-body">
@@ -197,6 +193,37 @@ function htmlUtilities() {
         return content;
     }
 
+    function mapNorwegianLetter(match, letter) {
+        switch (letter) {
+            case 'æ': return 'a';
+            case 'ø': return 'o';
+            case 'å': return 'a';
+            default: return letter;
+        }
+    }
+
+    function asUrlSafe($input) {
+        return encodeURIComponent(
+            stripTags($input),
+        );
+    }
+
+    function asLinkPart($input) {
+        let input = String($input).toLowerCase();
+        input = input.replace(/([æøå])/gi, mapNorwegianLetter);
+        input = input.replace(/[^a-z0-9_-]/g, '-');
+        input = input.replace(/-+/g, '-');
+        return input;
+    }
+
+    function stripTags($input) {
+        return String($input).replace(/<[^>]*>/g, '');
+    }
+
+    function uc($input) {
+        return String($input).toUpperCase();
+    }
+
     return {
         replaceMarked,
         inlineImageSize,
@@ -205,6 +232,10 @@ function htmlUtilities() {
         dropFirstLetterAfterHr,
         cleanHtml,
         replaceDataTags,
+        asUrlSafe,
+        asLinkPart,
+        stripTags,
+        uc,
     };
 };
 

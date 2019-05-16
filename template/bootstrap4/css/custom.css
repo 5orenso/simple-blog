@@ -216,6 +216,23 @@ html {
     background-color: #808080;
 }
 
+.card-title {
+    color: #606060;
+}
+.card-text {
+    color: #606060;
+}
+
+.sidebar-module {
+    font-size: .9em;
+}
+.sidebar-module h2 {
+    font-size: 1.5em;
+}
+.sidebar-module h4 {
+    font-size: 1.3em;
+}
+
 pre code {
     display: block;
     overflow-x: auto;

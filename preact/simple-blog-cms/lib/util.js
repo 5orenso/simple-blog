@@ -44,6 +44,8 @@ const GEO_ADDRESS_FIELDS_TAGS = {
     pedestrian: ['pedestrian'],
 };
 
+const MONTHS = ['jan', 'feb', 'mar', 'apr', 'mai', 'jun', 'jul', 'aug', 'sep', 'okt', 'nov', 'des'];
+
 function pad(number) {
     let r = String(number);
     if (r.length === 1) {
@@ -57,6 +59,32 @@ function isNumber(number) {
 }
 
 class Utilities {
+    static epoch($date) {
+        if (typeof $date !== 'undefined') {
+            return new Date($date).getTime();
+        }
+        return new Date().getTime();
+    }
+
+    static asHumanReadable(date) {
+        const epochNow = Utilities.epoch();
+        const epochDate = Utilities.epoch(date);
+        const ageInSec = epochNow / 1000 - epochDate / 1000;
+        const days = parseInt(ageInSec / 86400, 10);
+        const weeks = parseInt(days / 7, 10);
+        const months = parseInt(weeks / 4, 10);
+        if (weeks > 1) {
+            return Utilities.isoDateNormalized(epochDate / 1000);
+        } else if (weeks === 1) {
+            return `${weeks} uke siden`;
+        } else if (days > 1) {
+            return `${days} dager siden`;
+        } else if (days === 1) {
+            return `i går ${Utilities.displayTime(epochDate)}`;
+        }
+        return `${Utilities.displayTime(epochDate)}`;
+    }
+
     static isoDate(dateString) {
         let availDate;
         if (typeof dateString === 'string' && dateString.match(/\d{4}-\d{2}-\d{2}/)) {
@@ -92,7 +120,8 @@ class Utilities {
         }
 
         if (availDate) {
-            const mm = availDate.getMonth() + 1;
+            // const mm = availDate.getMonth() + 1;
+            const month = MONTHS[availDate.getMonth()];
             const dd = availDate.getDate();
             const yy = availDate.getFullYear();
             const hh = availDate.getHours();
@@ -100,8 +129,9 @@ class Utilities {
             const ss = availDate.getSeconds();
             const tzo = -availDate.getTimezoneOffset();
             const dif = tzo >= 0 ? '+' : '-';
-            return `${pad(yy)}-${pad(mm)}-${pad(dd)} `
-                + `${pad(hh)}:${pad(mi)}`;
+            // return `${pad(yy)}-${pad(mm)}-${pad(dd)} `
+            //     + `${pad(hh)}:${pad(mi)}`;
+            return `${dd}.${month} ${yy} kl.${pad(hh)}:${pad(mi)}`
         }
         return dateString;
     }
@@ -125,6 +155,7 @@ class Utilities {
         }
         return '';
     }
+
     static displayTime(dt, human = true, showSec = false) {
         if (typeof dt === 'number') {
             dt = new Date(dt);
@@ -140,9 +171,9 @@ class Utilities {
         // } else if (msDiff < 60) {
         //     return `${msDiff} sec ago`;
         } else if (human && msDiff < 3600) {
-            return `${parseInt(msDiff / 60, 10)} min ago`;
+            return `${parseInt(msDiff / 60, 10)} min siden`;
         } else if (human && msDiff < 86400) {
-            return `${parseInt(msDiff / 3600, 10)} hours ago`;
+            return `${parseInt(msDiff / 3600, 10)} timer siden`;
         } else {
             if (showSec) {
                 const hour = dt.getHours() < 10 ? `0${dt.getHours()}` : dt.getHours();
@@ -152,7 +183,7 @@ class Utilities {
             } else {
                 const hour = dt.getHours() < 10 ? `0${dt.getHours()}` : dt.getHours();
                 const min = dt.getMinutes() < 10 ? `0${dt.getMinutes()}` : dt.getMinutes();
-                return `${hour}:${min}`;
+                return `kl.${hour}:${min}`;
             }
         }
     }

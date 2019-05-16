@@ -179,13 +179,13 @@ export default class ArticleEdit extends Component {
         const renderedMenu = (
             <nav class='nav nav-pills nav-fill mb-3 sticky-top bg-light'>
                 <a class={`nav-item nav-link ${currentMenu === 'preview' ? 'active' : ''}`} href='#'
-                    onClick={this.handleMenuClick} data-menu='preview'><i class="fas fa-eye"></i> Forhåndsvisning</a>
+                    onClick={this.handleMenuClick} data-menu='preview'><i class='fas fa-eye'></i> Forhåndsvisning</a>
                 <a class={`nav-item nav-link ${currentMenu === 'images' ? 'active' : ''}`} href='#'
-                    onClick={this.handleMenuClick} data-menu='images'><i class="fas fa-images"></i> Bilder ({imagesTotal})</a>
+                    onClick={this.handleMenuClick} data-menu='images'><i class='fas fa-images'></i> Bilder ({imagesTotal})</a>
                 <a class={`nav-item nav-link ${currentMenu === 'youtube' ? 'active' : ''}`} href='#'
-                    onClick={this.handleMenuClick} data-menu='youtube'><i class="fas fa-video"></i> Youtube</a>
+                    onClick={this.handleMenuClick} data-menu='youtube'><i class='fas fa-video'></i> Youtube</a>
                 <a class={`nav-item nav-link ${currentMenu === 'meta' ? 'active' : ''}`} href='#'
-                    onClick={this.handleMenuClick} data-menu='meta'><i class="fas fa-tags"></i> Meta</a>
+                    onClick={this.handleMenuClick} data-menu='meta'><i class='fas fa-tags'></i> Meta</a>
             </nav>
         );
 
@@ -193,12 +193,12 @@ export default class ArticleEdit extends Component {
             <div class='row bg-secondary'>
                 <div class='col-12 sticky-top d-flex justify-content-between'>
                     <div class='col-3'>
-                        <button type='button' class='btn btn-warning mr-2' onclick={handleArticleEditBackClick}><i class="fas fa-arrow-left"></i> Tilbake</button>
+                        <button type='button' class='btn btn-warning mr-2' onclick={handleArticleEditBackClick}><i class='fas fa-arrow-left'></i> Tilbake</button>
                     </div>
                     <div class='col-6 text-center'>
-                        <button type='submit' class='btn btn-success mr-2' onClick={handleClickSave}><i class="fas fa-save"></i> Lagre</button>
-                        <a class='btn btn-primary' target='_blank' href={`${this.serverName}/v2/${encodeURIComponent(article.category || 'no-category')}/${encodeURIComponent(article.title || 'no-title')}/${article.id}`}>
-                            <i class="fas fa-external-link-alt"></i> Preview
+                        <button type='submit' class='btn btn-success mr-2' onClick={handleClickSave}><i class='fas fa-save'></i> Lagre</button>
+                        <a class='btn btn-primary' target='_blank' href={`${this.serverName}/v2/${utilHtml.asUrlSafe(article.category || 'no-category')}/${utilHtml.asUrlSafe(article.title || 'no-title')}/${article.id}`}>
+                            <i class='fas fa-external-link-alt'></i> Preview
                         </a>
                     </div>
                     <div class='col-3'>
@@ -219,15 +219,15 @@ export default class ArticleEdit extends Component {
                 <div class='col-2'>
                     <div class='form-group'>
                         <label for='statusInput' class='text-white-50'>Status</label>
-                        <div class="dropdown">
-                            <button class="btn btn-light dropdown-toggle"
-                                type="button"
+                        <div class='dropdown'>
+                            <button class='btn btn-light dropdown-toggle'
+                                type='button'
                                 onClick={e => this.handleDropdownClick(e, 'status')}
                             >
                                 {article.status ? statusList.find(x => x.value === article.status).title : 'Velg status'}
                             </button>
                             <div class={`dropdown-menu ${toggleDropdown.status ? 'show' : ''}`} style='z-index: 1200;'>
-                                <a class="dropdown-item" href="#"
+                                <a class='dropdown-item' href='#'
                                     data-key='status'
                                     data-val=''
                                     onClick={e => {
@@ -241,7 +241,7 @@ export default class ArticleEdit extends Component {
                                     Alle
                                 </a>
                                 {statusList.map(status =>
-                                    <a class={`dropdown-item ${article.status === status.value ? 'text-success' : ''}`} href="#"
+                                    <a class={`dropdown-item ${article.status === status.value ? 'text-success' : ''}`} href='#'
                                         data-key='status'
                                         data-val={status.title}
                                         onClick={e => {
@@ -263,15 +263,15 @@ export default class ArticleEdit extends Component {
                 <div class='col-6'>
                     <div class='form-group'>
                         <label for='categoryInput' class='text-white-50'>Kategori</label>
-                        <div class="dropdown">
-                            <button class="btn btn-light dropdown-toggle"
-                                type="button"
+                        <div class='dropdown'>
+                            <button class='btn btn-light dropdown-toggle'
+                                type='button'
                                 onClick={e => this.handleDropdownClick(e, 'category')}
                             >
                                 {article.category ? article.category : 'Velg kategori'}
                             </button>
                             <div class={`dropdown-menu ${toggleDropdown.category ? 'show' : ''}`} style='z-index: 1200;'>
-                                <a class="dropdown-item" href="#"
+                                <a class='dropdown-item' href='#'
                                     data-key='category'
                                     data-val=''
                                     onClick={e => {
@@ -285,7 +285,7 @@ export default class ArticleEdit extends Component {
                                     Alle
                                 </a>
                                 {catlist.map(cat =>
-                                    <a class={`dropdown-item ${article.category === cat.title ? 'text-success' : ''}`} href="#"
+                                    <a class={`dropdown-item ${article.category === cat.title ? 'text-success' : ''}`} href='#'
                                         data-key='category'
                                         data-val={cat.title}
                                         onClick={e => {
@@ -347,22 +347,55 @@ export default class ArticleEdit extends Component {
             </div>
         );
 
+        const shareLink = `${this.imageServer}/${utilHtml.asLinkPart(article.category)}/${utilHtml.asLinkPart(article.title)}/${article.id}`;
         const renderedPreview = (
             <div class='col-12'>
                 {renderImages}
                 <h1>{article.title}</h1>
                 <h5>{article.teaser}</h5>
                 <div>
-                    {util.isoDateNormalized(article.published)} by {article.author} |
-                    &nbsp;{article.category} |
-                    &nbsp;<span class={`badge badge-${util.getStatusClass(article.status)} p-2`}>{util.getStatus(article.status)}</span>
+                    <small>
+                        Publisert: {util.asHumanReadable(article.published)}
+                        {article.published !== article.updatedDate && <span class='text-muted'> | Sist oppdatert: {util.asHumanReadable(article.updatedDate)}</span>}
+                        &nbsp; | {article.category}
+                        &nbsp; | <span class={`badge badge-${util.getStatusClass(article.status)} p-2`}>
+                                    {util.getStatus(article.status)}
+                                </span>
+                        &nbsp;<a rel='noopener' target='_blank' href={`https://www.facebook.com/sharer.php?u=${shareLink}`}>
+                            <i class='fab fa-facebook'></i>
+                        </a>
+                        &nbsp;<a rel='noopener' target='_blank' href={`https://twitter.com/intent/tweet?url=${shareLink}`
+                            + `&text=${utilHtml.asUrlSafe(article.title)}.%20`
+                            + `${utilHtml.asUrlSafe(article.teaser || article.ingress)}`
+                            + `&via=${utilHtml.asUrlSafe(this.imageServer)}`
+                            + `&hashtags=${utilHtml.asUrlSafe(article.tags)}`}>
+                            <i class='fab fa-twitter'></i>
+                        </a>
+                        &nbsp;<a rel='noopener' target='_blank' href={`https://www.linkedin.com/shareArticle?mini=true`
+                            + `&url=${shareLink}`
+                            + `&summary=${utilHtml.asUrlSafe(article.title)}.%20`
+                            + `${utilHtml.asUrlSafe(article.teaser || article.ingress)}`
+                            + `&source=${utilHtml.asUrlSafe(this.imageServer)}`}>
+                            <i class='fab fa-linkedin-in'></i>
+                        </a>
+                        &nbsp;<a rel='noopener' target='_blank' href={`mailto:?subject=Tips: `
+                            + `${utilHtml.asUrlSafe(article.title)}`
+                            + `&body=Tips fra ${utilHtml.asUrlSafe(this.imageServer)}:%0D%0A%0D%0A`
+                            + `${utilHtml.asUrlSafe(utilHtml.uc(article.title))}%0D%0A%0D%0A`
+                            + `${utilHtml.asUrlSafe(article.teaser || article.ingress)}%0D%0A%0D%0A`
+                            + `Les mer: ${shareLink}`}>
+                            <i class='far fa-envelope'></i>
+                        </a>
+                    </small>
                 </div>
                 <div class='mb-3'>
-                    {Array.isArray(article.tags) && article.tags.map(tag =>
-                        <span class='badge badge-info mr-1'>{tag}</span>
-                    )}
+                    <small>
+                        {Array.isArray(article.tags) && article.tags.map(tag =>
+                            <span class='badge badge-info mr-1'>{tag}</span>
+                        )}
+                    </small>
                 </div>
-                <div class='font-weight-bolder' id='ingressDisplay' dangerouslySetInnerHTML={{
+                <div class='lead' id='ingressDisplay' dangerouslySetInnerHTML={{
                     __html: utilHtml.replaceMarked(
                         utilHtml.replaceDataTags(article.ingress, article)
                     ),
@@ -379,38 +412,38 @@ export default class ArticleEdit extends Component {
             <div class='col-12'>
                 <h5>Legg til Youtube video:</h5>
                 <ul class='list-group'>
-                    {[0, 1, 2].map(val =>
-                        <li class='list-group-item list-group-item-action flex-column align-items-start'>
+                    {[0, 1, 2, 3].map((val, idx) =>
+                        <li class={`list-group-item list-group-item-action flex-column align-items-start ${idx % 2 > 0 ? 'list-group-item-secondary' : ''}`}>
                             <div class='form-group row'>
                                 <div class='col-3'>
-                                    <label for='youtubeTitle'>Title {val + 1}</label>
+                                    <label for='youtubeTitle'>Title</label>
                                     <input class='form-control' id='youtubeTitle'
                                         onInput={linkstate(that, `article.youtubeVideos.${val}.title`)}
                                         value={util.getString(article, 'youtubeVideos', val, 'title')}
                                     />
                                 </div>
                                 <div class='col-9'>
-                                    <label for='youtubeText'>Text {val + 1}</label>
+                                    <label for='youtubeText'>Text</label>
                                     <textarea class='form-control' id='youtubeText'
                                         onInput={linkstate(that, `article.youtubeVideos.${val}.text`)}
                                         value={util.getString(article, 'youtubeVideos', val, 'text')}
                                     />
                                 </div>
                                 <div class='col-8'>
-                                    <label for='youtube'>YouTube URL {val + 1}</label>
+                                    <label for='youtube'>YouTube URL</label>
                                     <input class='form-control' id='youtube'
                                         onInput={linkstate(that, `article.youtubeVideos.${val}.url`)}
                                         value={util.getString(article, 'youtubeVideos', val, 'url')}
                                         placeholder='https://www.youtube.com/watch?v=O4P8QkpT5Cc'
                                     />
-                                    <small id="youtubeHelp" class="form-text text-muted">Youtube watch URL.</small>
+                                    <small id='youtubeHelp' class='form-text text-muted'>Youtube watch URL.</small>
                                 </div>
                                 <div class='col-4'>
                                     <label>&nbsp;</label>
                                     <button class='form-control btn btn-dark m-1'
                                         onClick={this.handleClickCode}
-                                        data-content={`![${util.getString(article, 'youtubeVideos', val, 'title')}](${util.getString(article, 'youtubeVideos', val, 'url')} "${util.getString(article, 'youtubeVideos', val, 'text')}")\n`}>
-                                        Add YouTube {val + 1}
+                                        data-content={`![${util.getString(article, 'youtubeVideos', val, 'title')}](${util.getString(article, 'youtubeVideos', val, 'url')} '${util.getString(article, 'youtubeVideos', val, 'text')}')\n`}>
+                                        Add YouTube
                                     </button>
                                 </div>
                             </div>
@@ -435,7 +468,7 @@ export default class ArticleEdit extends Component {
                 <h3>Bilder i artikkelen:</h3>
                 <ul class='list-group'>
                     {article && article.img && article.img.map((img, idx) => (
-                        <li class='list-group-item list-group-item-action flex-column align-items-start'>
+                        <li class={`list-group-item list-group-item-action flex-column align-items-start ${idx % 2 > 0 ? 'list-group-item-secondary' : ''}`}>
                             <div class='d-flex w-100 justify-content-between'>
                                 <span class='mb-1'><small>{img.src}</small></span>
                                 <small>{util.formatBytes(util.getString(img, 'stats', 'size'), 2)}</small>
@@ -444,56 +477,69 @@ export default class ArticleEdit extends Component {
                             <div class='d-flex w-100 justify-content-between'>
                                 <p><img src={`${this.imageServer}/pho/${img.src}?w=150`} height='50'  class='img-fluid' /></p>
                                 <small>
-                                    <button class='btn btn-sm m-1' onClick={this.handleClickCode} data-content={`![${img.title || 'Image title'}](/pho/${img.src}?w=750 "${img.text || 'Image description'}")\n`}>
-                                        <i class="fas fa-image"></i> Image
+                                    <button class='btn btn-sm m-1' onClick={this.handleClickCode} data-content={`![${img.title || 'Image title'}](/pho/${img.src}?w=750 '${img.text || 'Image description'}')\n`}>
+                                        <i class='fas fa-image'></i> Image
                                     </button>
-                                    <button class='btn btn-sm m-1' onClick={this.handleClickCode} data-content={`![${img.title || 'Image title'}](/pho/${img.src}?w=750#card "${img.text || 'Image description'}")\n`}>
-                                        <i class="fas fa-file-image"></i> Card
+                                    <button class='btn btn-sm m-1' onClick={this.handleClickCode} data-content={`[![${img.title || 'Image title'}](/pho/${img.src}?w=750#card '${img.text || 'Image description'}')](${img.url})\n`}>
+                                        <i class='fas fa-link'></i> Link
                                     </button>
-                                    <button class='btn btn-sm m-1' onClick={this.handleClickCode} data-content={`![${img.title || 'Image title'}](/pho/${img.src}?w=750#card2 "${img.text || 'Image description'}")\n`}>
-                                        <i class="far fa-image"></i> Card 2
+                                    <button class='btn btn-sm m-1' onClick={this.handleClickCode} data-content={`![${img.title || 'Image title'}](/pho/${img.src}?w=750#card '${img.text || 'Image description'}')\n`}>
+                                        <i class='fas fa-file-image'></i> Card
+                                    </button>
+                                    <button class='btn btn-sm m-1' onClick={this.handleClickCode} data-content={`![${img.title || 'Image title'}](/pho/${img.src}?w=750#card2 '${img.text || 'Image description'}')\n`}>
+                                        <i class='far fa-image'></i> Card 2
                                     </button>
                                     <button class='btn btn-sm m-1' onClick={this.handleClickCode} data-content={`<h5>Detaljer om bildet</h5>
 <ul>
-<li><i class="fas fa-camera"></i> [:img.${idx}.exif.model]</li>
+<li><i class='fas fa-camera'></i> [:img.${idx}.exif.model]</li>
 <li>Objektiv: [:img.${idx}.exif.lensModel]</li>
 <li>Blender: f/[:img.${idx}.exif.fNumber]</li>
 <li>Brennvidde: [:img.${idx}.exif.focalLength] mm</li>
 <li>Eksponering: [:img.${idx}.exif.exposureTime] sec</li>
 <li>ISO: [:img.${idx}.exif.photographicSensitivity]</li>
 <li>Oppløsning: [:img.${idx}.features.width] x [:img.${idx}.features.height]px ([:img.${idx}.stats.size size])</li>
-<li><i class="fas fa-clock"></i> [:img.${idx}.exif.dateTimeOriginal date]</li>
-<li><i class="fas fa-mountain"></i> [:img.${idx}.exif.gpsAltitude] moh</li>
-<li><i class="fas fa-location-arrow"></i> [:img.${idx}.exif.lat position], [:img.${idx}.exif.lng position]</li>
-<li><i class="fas fa-print"></i> [:img.${idx}.features.print+size dim] cm</li>
+<li><i class='fas fa-clock'></i> [:img.${idx}.exif.dateTimeOriginal date]</li>
+<li><i class='fas fa-mountain'></i> [:img.${idx}.exif.gpsAltitude] moh</li>
+<li><i class='fas fa-location-arrow'></i> [:img.${idx}.exif.lat position], [:img.${idx}.exif.lng position]</li>
+<li><i class='fas fa-print'></i> [:img.${idx}.features.print+size dim] cm</li>
 </ul>
-`}><i class="fas fa-info-circle"></i> Bildeinfo
+`}><i class='fas fa-info-circle'></i> Bildeinfo
                                     </button>
                                     <button class='btn btn-sm m-1' onClick={this.handleClickCode} data-content={`@[:img.${idx}.exif.lat],[:img.${idx}.exif.lng]\n`}>
-                                        <i class="fas fa-location-arrow"></i> GPS
+                                        <i class='fas fa-location-arrow'></i> GPS
                                     </button>
                                     <button class='btn btn-sm m-1' onClick={this.handleClickCode} data-content={`**Dette bildet er tilsalgs. Send meg en _[e-post](mailto:sorenso@gmail.com?subject=Henvendelse%20ang%20bilde:%20[:img.${idx}.src])_ eller ta kontakt på _[Facebook](http://facebook.com/sorenso)_ om du er interessert.**\n`}>
-                                        <i class="fas fa-shopping-cart"></i> Kjøp
+                                        <i class='fas fa-shopping-cart'></i> Kjøp
                                     </button>
                                 </small>
                                 <br />
 
                             </div>
                             <div class='d-flex w-100 justify-content-between row'>
-                                {idx === 0 && <div class="col-12 alert alert-primary" role="alert">
+                                {idx === 0 && <div class='col-12 alert alert-primary' role='alert'>
                                     Bilde 1 blir brukt som hovedbilde i artikkelen.
                                 </div>}
 
                                 <div class='form-group col-2'>
-                                    <label for={`img${idx}Title`}>Tittel {idx + 1}</label>
+                                    <label for={`img${idx}Title`}>Tittel</label>
                                 </div>
                                 <div class='form-group col-10'>
                                     <input type='text' class='form-control' id={`img${idx}Title`}
                                         onInput={linkstate(that, `article.img.${idx}.title`)}
                                         value={article.img[idx].title} />
                                 </div>
+
                                 <div class='form-group col-2'>
-                                    <label for={`img${idx}Text`}>Tekst {idx + 1}</label>
+                                    <label for={`img${idx}URL`}>URL</label>
+                                </div>
+                                <div class='form-group col-10'>
+                                    <input type='text' class='form-control' id={`img${idx}URL`}
+                                        onInput={linkstate(that, `article.img.${idx}.url`)}
+                                        value={article.img[idx].url} />
+                                </div>
+
+                                <div class='form-group col-2'>
+                                    <label for={`img${idx}Text`}>Tekst</label>
                                 </div>
                                 <div class='form-group col-10'>
                                     <textarea class='form-control' id={`img${idx}Text`}
@@ -509,13 +555,13 @@ export default class ArticleEdit extends Component {
                 <h3>Bildearkivet:</h3>
                 <div class='col-12'>
                     <div class='d-flex justify-content-center'>
-                        <div class="col-10 mb-2">
-                            <input type="text" class="form-control" placeholder="Søk etter bilder" name="q"
+                        <div class='col-10 mb-2'>
+                            <input type='text' class='form-control' placeholder='Søk etter bilder' name='q'
                                 onKeypress={e => handleImageInput(e, 54)}
                             />
                         </div>
-                        <div class="col-2">
-                            <button class="btn btn-success" onclick={e => handleImageSubmit(e, 54)}><i class="fas fa-search"></i> Søk</button>
+                        <div class='col-2'>
+                            <button class='btn btn-success' onclick={e => handleImageSubmit(e, 54)}><i class='fas fa-search'></i> Søk</button>
                         </div>
 
                     </div>
@@ -532,13 +578,13 @@ export default class ArticleEdit extends Component {
                                 onClick={handleImageTagClick}
                             >
                                 {filterQuery[key]}
-                                <i class="ml-1 fas fa-times-circle"></i>
+                                <i class='ml-1 fas fa-times-circle'></i>
                             </span>
                         )}
                     </div>
                     {imglist.length <= 0 && (
                         <div class='col-12 text-center text-muted'>
-                            <h1><i class="fas fa-images"></i> No images in list</h1>
+                            <h1><i class='fas fa-images'></i> No images in list</h1>
                             <h5>Try searching for something else...</h5>
                             <br /><br /><br /><br /><br />
                         </div>
@@ -601,7 +647,7 @@ export default class ArticleEdit extends Component {
                                     {Array.isArray(article.relevantWords) && article.relevantWords.map(word =>
                                         <span class='badge badge-danger mr-1'
                                             onClick={e => this.handleTagAdd(e, handleInput, word)}
-                                        ><i class="fas fa-comment-dots mr-1"></i> {word} <i class='fas fa-plus'></i></span>
+                                        ><i class='fas fa-comment-dots mr-1'></i> {word} <i class='fas fa-plus'></i></span>
                                     )}
                                 </small>
                             </div>
@@ -641,14 +687,14 @@ export default class ArticleEdit extends Component {
                                                         <span class='badge badge-primary mr-1'
                                                             onClick={e => this.handleTagAdd(e, handleInput, info)}
                                                         >
-                                                            <i class="fas fa-map-marker-alt mr-1"></i> {info} <i class='fas fa-plus'></i>
+                                                            <i class='fas fa-map-marker-alt mr-1'></i> {info} <i class='fas fa-plus'></i>
                                                         </span>
                                                     )}
                                                     {geoInfoExtra.map(info =>
                                                         <span class='badge badge-danger mr-1'
                                                             onClick={e => this.handleTagAdd(e, handleInput, info)}
                                                         >
-                                                            <i class="fas fa-map-marker-alt mr-1"></i> {info} <i class='fas fa-plus'></i>
+                                                            <i class='fas fa-map-marker-alt mr-1'></i> {info} <i class='fas fa-plus'></i>
                                                         </span>
                                                     )}
                                                     <br />
@@ -656,12 +702,12 @@ export default class ArticleEdit extends Component {
                                                     {Array.isArray(img.predictions) && img.predictions.map(pre =>
                                                         <span class='badge badge-secondary mr-1'
                                                             onClick={e => this.handleTagAdd(e, handleInput, pre.className)}
-                                                        ><i class="fas fa-tag mr-1"></i> {pre.className} <i class='fas fa-plus'></i></span>
+                                                        ><i class='fas fa-tag mr-1'></i> {pre.className} <i class='fas fa-plus'></i></span>
                                                     )}
                                                     {Array.isArray(img.predictionsCocoSsd) && img.predictionsCocoSsd.map(pre =>
                                                         <span class='badge badge-dark mr-1'
                                                             onClick={e => this.handleTagAdd(e, handleInput, pre.class)}
-                                                        ><i class="fas fa-tag mr-1"></i> {pre.class} <i class='fas fa-plus'></i></span>
+                                                        ><i class='fas fa-tag mr-1'></i> {pre.class} <i class='fas fa-plus'></i></span>
                                                     )}
                                                 </div>
                                             </div>
