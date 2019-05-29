@@ -1,7 +1,7 @@
 'use strict';
 
 const idb = require('idb');
-const util = require('./util');
+import util from '../util';
 
 const debug = false;
 const verbose = false;

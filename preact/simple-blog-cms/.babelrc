@@ -1,3 +1,14 @@
 {
-  "presets": ["preact-widget-scripts/babel"]
+    "presets": ["preact-widget-scripts/babel"],
+    "plugins": [
+        ["transform-runtime", {
+            "polyfill": false,
+            "regenerator": true
+        }],
+        ["transform-regenerator", {
+            "asyncGenerators": true,
+            "generators": true,
+            "async": true
+        }]
+    ]
 }

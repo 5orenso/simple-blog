@@ -453,14 +453,18 @@ export default class ArticleEdit extends Component {
             </div>
         );
 
+        const apiUrl = `/api/fileupload/?category=${article.category || 'no-category'}`
+            + `&title=${util.htmlIdSafe(article.title) || 'no-title'}`;
         const renderedImages = (
             <div class='col-12'>
 
                 <h3>Last opp nytt bilde:</h3>
                 <div class='form-group'>
-                    <ImageUpload that={this.parent} styles={styles}
-                        category={article.category}
-                        title={article.title}
+                    <ImageUpload
+                        that={this.parent}
+                        apiUrl={apiUrl}
+                        apiServer={that.props.apiServer}
+                        jwtToken={that.props.jwtToken}
                         handleAddImage={handleAddImage}
                     />
                 </div>
@@ -475,7 +479,7 @@ export default class ArticleEdit extends Component {
                                 <button class='btn btn-danger btn-sm' data-image={idx} onClick={handleRemoveImageClick}>X</button>
                             </div>
                             <div class='d-flex w-100 justify-content-between'>
-                                <p><img src={`${this.imageServer}/pho/${img.src}?w=150`} height='50'  class='img-fluid' /></p>
+                                <p><img src={`${this.imageServer}/pho/${img.src}?w=150`} style='max-height: 150px;'  class='img-fluid' /></p>
                                 <small>
                                     <button class='btn btn-sm m-1' onClick={this.handleClickCode} data-content={`![${img.title || 'Image title'}](/pho/${img.src}?w=750 '${img.text || 'Image description'}')\n`}>
                                         <i class='fas fa-image'></i> Image

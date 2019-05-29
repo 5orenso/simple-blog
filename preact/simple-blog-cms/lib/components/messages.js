@@ -1,6 +1,6 @@
 import { h, Component } from 'preact';
 
-const util = require('../util');
+import util from '../util';
 
 const widgetName = 'Messages';
 const debug = false;

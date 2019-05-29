@@ -1,6 +1,6 @@
 'use strict';
 
-const util = require('./util');
+import util from './util';
 const marked = require('marked');
 
 const renderer = new marked.Renderer();
@@ -96,15 +96,15 @@ renderer.image = function image($href, title, text) {
 };
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-function htmlUtilities() {
-    function replaceMarked(input) {
+class HtmlUtilities {
+    static replaceMarked(input) {
         if (typeof input === 'string') {
-            const fixedInput = fixImageLinksWhiteSpace(input);
+            const fixedInput = HtmlUtilities.fixImageLinksWhiteSpace(input);
             return marked(fixedInput);
         }
     }
 
-    function fixImageLinksWhiteSpace(input) {
+    static fixImageLinksWhiteSpace(input) {
         function replacerImageWhiteSpace(match, p1, p2, p3) {
             const imageSrc = p2.replace(/ /g, '%20');
             const result = `![${p1}](${imageSrc}${p3})`;
@@ -114,16 +114,16 @@ function htmlUtilities() {
         return input.replace(reg, replacerImageWhiteSpace);
     }
 
-    function inlineImageSize($input, $size) {
+    static inlineImageSize($input, $size) {
         const input = $input.replace(/(<img.+?)\?w=[0-9]+/gi, `$1?w=${$size}`);
         return input;
     }
 
-    function replaceAt(string, index, replace) {
+    static replaceAt(string, index, replace) {
         return string.substring(0, index) + replace + string.substring(index + 1);
     }
 
-    function dropFirstLetter($string) {
+    static dropFirstLetter($string) {
         let mode = 0;
         for (let i = 0, l = $string.length; i < l; i += 1) {
             const letter = $string.charAt(i);
@@ -133,26 +133,26 @@ function htmlUtilities() {
                 mode = 0;
             }
             if (mode === 0 && letter.match(/\w/)) {
-                return replaceAt($string, i, `<span class="blog-drop-letter">${letter}</span>`);
+                return HtmlUtilities.replaceAt($string, i, `<span class="blog-drop-letter">${letter}</span>`);
             }
         }
         return $string;
     }
 
-    function dropFirstLetterAfterHr($string) {
+    static dropFirstLetterAfterHr($string) {
         const stringParts = $string.split('<hr>');
         for (let i = 0, l = stringParts.length; i < l; i += 1) {
-            stringParts[i] = dropFirstLetter(stringParts[i]);
+            stringParts[i] = HtmlUtilities.dropFirstLetter(stringParts[i]);
         }
         return stringParts.join('<hr>');
     }
 
-    function cleanHtml($input) {
+    static cleanHtml($input) {
         const input = $input.replace(/<(h[1-9]).+?>.+?<\/\1>/gi, '');
         return input.replace(/<.+?>/g, ' ');
     }
 
-    function replaceDataTags($content, article) {
+    static replaceDataTags($content, article) {
         if (typeof $content !== 'string') {
             return $content;
         }
@@ -193,7 +193,7 @@ function htmlUtilities() {
         return content;
     }
 
-    function mapNorwegianLetter(match, letter) {
+    static mapNorwegianLetter(match, letter) {
         switch (letter) {
             case 'æ': return 'a';
             case 'ø': return 'o';
@@ -202,41 +202,27 @@ function htmlUtilities() {
         }
     }
 
-    function asUrlSafe($input) {
+    static asUrlSafe($input) {
         return encodeURIComponent(
-            stripTags($input),
+            HtmlUtilities.stripTags($input),
         );
     }
 
-    function asLinkPart($input) {
+    static asLinkPart($input) {
         let input = String($input).toLowerCase();
-        input = input.replace(/([æøå])/gi, mapNorwegianLetter);
+        input = input.replace(/([æøå])/gi, HtmlUtilities.mapNorwegianLetter);
         input = input.replace(/[^a-z0-9_-]/g, '-');
         input = input.replace(/-+/g, '-');
         return input;
     }
 
-    function stripTags($input) {
+    static stripTags($input) {
         return String($input).replace(/<[^>]*>/g, '');
     }
 
-    function uc($input) {
+    static uc($input) {
         return String($input).toUpperCase();
     }
+}
 
-    return {
-        replaceMarked,
-        inlineImageSize,
-        replaceAt,
-        dropFirstLetter,
-        dropFirstLetterAfterHr,
-        cleanHtml,
-        replaceDataTags,
-        asUrlSafe,
-        asLinkPart,
-        stripTags,
-        uc,
-    };
-};
-
-module.exports = htmlUtilities();
+export default HtmlUtilities;
