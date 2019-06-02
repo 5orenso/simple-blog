@@ -83,16 +83,25 @@ module.exports = async (req, res) => {
             if (configFile.match(/^\./)) {
                 configFile = path.normalize(`${__dirname}/../../${process.argv[3]}`);
             }
-            // console.log(configFile);
+            console.log('====> spawn: node', [
+                './fileupload/process-image.js',
+                '--imageid', imageObject.id,
+                '--config', configFile,
+            ], {
+                detached: true,
+                stdio: 'inherit',
+                cwd: __dirname,
+            });
             const child = spawn('node', [
                 './fileupload/process-image.js',
                 '--imageid', imageObject.id,
                 '--config', configFile,
             ], {
                 detached: true,
-                stdio: 'ignore',
+                stdio: 'inherit',
                 cwd: __dirname,
             });
+            console.log('----> spawn.child: ', child);
             // child.stdout.on('data', (data) => {
             //     console.log(`child stdout:\n${data}`);
             // });

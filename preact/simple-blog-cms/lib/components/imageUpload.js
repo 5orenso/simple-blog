@@ -2,8 +2,6 @@ import { h, Component } from 'preact';
 
 import util from '../util';
 
-const Buffer = require('buffer').Buffer;
-
 const initialState = {
     loadingProgress: 0,
     uploadedFiles: [],
@@ -20,7 +18,7 @@ export default class ImageUpload extends Component {
         this.fileInput;
     }
 
-    handleAddFiles = async (event) => {
+    handleAddFiles = (event) => {
         event.preventDefault();
         const el = event.target;
         if (debug) {
@@ -29,15 +27,15 @@ export default class ImageUpload extends Component {
         for (let i = 0, l = el.files.length; i < l; i += 1) {
             const photo = el.files[i];
             if (photo.type.match('image.*')) {
-                await this.readLocalFile(photo);
-                this.handleUpload(photo)
+                this.readLocalFile(photo);
             }
         }
     };
 
     handleEvent = (e, fileObject) => {
         if (debug) {
-            console.log(`${debugName}.handleEvent[${fileObject.name}]: ${e.type}: ${e.loaded} bytes transferred of ${e.total}. Is lengthComputable: ${e.lengthComputable}: ${JSON.stringify(e)}`);
+            console.log(`${debugName}.handleEvent[${fileObject.name}]: ${e.type}: ${e.loaded} bytes transferred of `
+                + `${e.total}. Is lengthComputable: ${e.lengthComputable}: ${JSON.stringify(e)}`);
         }
     }
 
@@ -50,7 +48,6 @@ export default class ImageUpload extends Component {
         const uploadMeta = {
             progress: 1,
         };
-        const that = this.props.that;
 
         uploadMeta.xhr = new XMLHttpRequest();
 
@@ -100,6 +97,7 @@ export default class ImageUpload extends Component {
         this.setState({ uploadedFilesData });
     };
 
+    // eslint-disable-next-line
     readLocalFile = (fileObject) => {
         return new Promise((resolve, reject) => {
             const reader = new FileReader();
@@ -113,15 +111,18 @@ export default class ImageUpload extends Component {
 
             reader.addEventListener('load', (event) => {
                 if (debug) {
-                    console.log(`${debugName}.FileReader: File: ${fileObject.name} read successfully: ${JSON.stringify(event)}`);
+                    console.log(`${debugName}.FileReader: File: ${fileObject.name} read successfully: `
+                        + `${JSON.stringify(event)}`);
                 }
-                const filename = fileObject.name;
+                const photo = fileObject;
+                const filename = photo.name;
                 const uploadedFilesData = this.state.uploadedFilesData;
                 if (!uploadedFilesData[filename]) {
                     uploadedFilesData[filename] = {};
                 }
                 uploadedFilesData[filename].event = event;
                 this.setState({ uploadedFilesData });
+                this.handleUpload(photo)
                 resolve(event);
             });
 
@@ -172,13 +173,17 @@ export default class ImageUpload extends Component {
         this.handleAddImage(file);
     }
 
-    render(props) {
+    render() {
         const uploadedFilesData = this.state.uploadedFilesData;
         return (
             <div>
-                <input class='btn btn-info' type='file' id='image-file' onchange={this.handleAddFiles} multiple ref={(c) => {
-                    this.fileInput = c;
-                }} />
+                <input class='btn btn-info' type='file' multiple
+                    id='image-file'
+                    onchange={this.handleAddFiles}
+                    ref={(c) => {
+                        this.fileInput = c;
+                    }}
+                />
                 <div>
                     {Object.keys(uploadedFilesData).length > 0 ? (<h3>Uploaded images</h3>) : ''}
                     <ul class='list-group'>
@@ -191,7 +196,10 @@ export default class ImageUpload extends Component {
                                         <small>{util.formatBytes(uploadedFilesData[key].event.total, 2)}</small>
                                     </div>
                                     <div class='d-flex w-100 justify-content-between'>
-                                        <img class='img-fluid' src={uploadedFilesData[key].event.target.result} style='max-height: 150px;' />
+                                        <img class='img-fluid'
+                                            src={uploadedFilesData[key].event.target.result}
+                                            style='max-height: 150px;'
+                                        />
                                         <small>{uploadedFilesData[key].event.uploadDone}</small>
                                         Uploading image. Please wait...
                                     </div>

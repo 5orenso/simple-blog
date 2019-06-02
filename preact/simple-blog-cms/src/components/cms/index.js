@@ -221,7 +221,7 @@ export default class SimpleBlogCms extends Component {
             method: 'PATCH',
             ...this.state.article,
         }
-
+console.log('data', data);
         util.fetchApi(`/api/tag/`, { method: 'POST', tags: data.tags }, this)
             .then((result) => {
                 console.log('/api/tag/ result', result);

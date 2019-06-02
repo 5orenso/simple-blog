@@ -20,9 +20,21 @@ module.exports = async (req, res) => {
 
     let apiContent;
     if (query.id) {
-        const data = webUtil.cleanObject(req.body, { nullIsUndefined: true });
+        const updateArticle = webUtil.cleanObject(req.body, { nullIsUndefined: true });
 
-        apiContent = await art.save(data);
+        // We want to preserve the AI and file info resolved in the background:
+        const currentArticle = await art.findOne(query, { img: 1 });
+        if (currentArticle.img && Array.isArray(currentArticle.img)) {
+            for (let i = 0, l = currentArticle.img.length; i < l; i += 1) {
+                const currentImg = currentArticle.img[i];
+                updateArticle.img[i] = {
+                    ...currentImg,
+                    ...updateArticle.img[i],
+                };
+            }
+        }
+
+        apiContent = await art.save(updateArticle);
         return utilHtml.renderApi(req, res, 202, apiContent);
     }
     utilHtml.renderApi(req, res, 404, {

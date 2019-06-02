@@ -458,19 +458,8 @@ export default class ArticleEdit extends Component {
         const renderedImages = (
             <div class='col-12'>
 
-                <h3>Last opp nytt bilde:</h3>
-                <div class='form-group'>
-                    <ImageUpload
-                        that={this.parent}
-                        apiUrl={apiUrl}
-                        apiServer={that.props.apiServer}
-                        jwtToken={that.props.jwtToken}
-                        handleAddImage={handleAddImage}
-                    />
-                </div>
-
                 <h3>Bilder i artikkelen:</h3>
-                <ul class='list-group'>
+                <ul class='list-group mb-3'>
                     {article && article.img && article.img.map((img, idx) => (
                         <li class={`list-group-item list-group-item-action flex-column align-items-start ${idx % 2 > 0 ? 'list-group-item-secondary' : ''}`}>
                             <div class='d-flex w-100 justify-content-between'>
@@ -555,6 +544,16 @@ export default class ArticleEdit extends Component {
                         </li>
                     ))}
                 </ul>
+
+                <h3>Last opp nytt bilde:</h3>
+                <div class='form-group mb-3'>
+                    <ImageUpload
+                        apiUrl={apiUrl}
+                        apiServer={that.props.apiServer}
+                        jwtToken={that.props.jwtToken}
+                        handleAddImage={handleAddImage}
+                    />
+                </div>
 
                 <h3>Bildearkivet:</h3>
                 <div class='col-12'>

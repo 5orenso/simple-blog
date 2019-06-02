@@ -46,18 +46,6 @@ const GEO_ADDRESS_FIELDS_TAGS = {
 
 const MONTHS = ['jan', 'feb', 'mar', 'apr', 'mai', 'jun', 'jul', 'aug', 'sep', 'okt', 'nov', 'des'];
 
-function pad(number) {
-    let r = String(number);
-    if (r.length === 1) {
-        r = `0${r}`;
-    }
-    return r;
-}
-
-function isNumber(number) {
-    return !Number.isNaN(parseFloat(number)) && Number.isFinite(number);
-}
-
 class Utilities {
     static epoch($date) {
         if (typeof $date !== 'undefined') {
@@ -103,8 +91,9 @@ class Utilities {
             const ss = availDate.getSeconds();
             const tzo = -availDate.getTimezoneOffset();
             const dif = tzo >= 0 ? '+' : '-';
-            return `${pad(yy)}-${pad(mm)}-${pad(dd)}T`
-                + `${pad(hh)}:${pad(mi)}:${pad(ss)}${dif}${pad(tzo / 60)}:${pad(tzo % 60)}`;
+            return `${Utilities.pad(yy)}-${Utilities.pad(mm)}-${Utilities.pad(dd)}T`
+                + `${Utilities.pad(hh)}:${Utilities.pad(mi)}:${Utilities.pad(ss)}`
+                + `${dif}${Utilities.pad(tzo / 60)}:${Utilities.pad(tzo % 60)}`;
         }
         return dateString;
     }
@@ -129,9 +118,9 @@ class Utilities {
             const ss = availDate.getSeconds();
             const tzo = -availDate.getTimezoneOffset();
             const dif = tzo >= 0 ? '+' : '-';
-            // return `${pad(yy)}-${pad(mm)}-${pad(dd)} `
-            //     + `${pad(hh)}:${pad(mi)}`;
-            return `${dd}.${month} ${yy} kl.${pad(hh)}:${pad(mi)}`
+            // return `${Utilities.pad(yy)}-${Utilities.pad(mm)}-${Utilities.pad(dd)} `
+            //     + `${Utilities.pad(hh)}:${Utilities.pad(mi)}`;
+            return `${dd}.${month} ${yy} kl.${Utilities.pad(hh)}:${Utilities.pad(mi)}`
         }
         return dateString;
     }
@@ -259,7 +248,7 @@ class Utilities {
         const number = Math.abs($number || 0);
         const sign = $number < 0 ? '-' : '';
 
-        if (isNumber(number)) {
+        if (Utilities.isNumber(number)) {
             const intPart = String(parseInt(number.toFixed(decimals), 10));
             const j = intPart.length > 3 ? intPart.length % 3 : 0;
 
@@ -327,7 +316,7 @@ class Utilities {
 
     static formatBytes($bytes, decimals) {
         const bytes = parseInt($bytes, 10);
-        if (isNumber(bytes)) {
+        if (Utilities.isNumber(bytes)) {
             if (bytes === 0) {
                 return '0 Bytes';
             }
@@ -383,7 +372,7 @@ class Utilities {
     }
 
     static isNumber(number) {
-        return !isNaN(parseFloat(number)) && isFinite(number);
+        return !Number.isNaN(parseFloat(number)) && Number.isFinite(number);
     }
 
     static asInteger(num) {
@@ -396,6 +385,14 @@ class Utilities {
 
     static isPositiveInteger(num) {
         return isInteger(num) && num > 0;
+    }
+
+    static pad(number) {
+        let r = String(number);
+        if (r.length === 1) {
+            r = `0${r}`;
+        }
+        return r;
     }
 
     static asUniqArray(array, parseToInteger = false) {
