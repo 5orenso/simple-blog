@@ -101,7 +101,7 @@
         "alternativeHeadline": "{{ article.teaser|striptags|removeLineBreaks|e('js') }}",
         "image": [
             {% for img in article.img %}
-                "{{ blog.protocol }}://{{ blog.domain }}/pho/{{ img.src }}?w=800"
+                "{{ blog.protocol }}://{{ blog.domain }}/pho/{{ img.src }}?w=800"{% if !loop.last %},{% endif %}
             {% endfor %}
         ],
         "mainEntityOfPage": "{{ shareLink }}",
@@ -168,49 +168,52 @@
             {% elseif article.img[0] %}
                 "contentUrl": "{{ blog.protocol }}://{{ blog.domain }}/pho/{{ article.img[0].src }}?w=800",
             {% endif %}
-            "datePublished": "{{ (article.img.published || article.published)|date('Y-m-d H:i:s') }}",
+            "datePublished": "{{ (article.img.published || article.published)|date('Y-m-d H:i:s') }}"
             {% if article.img[0].exif %}
-            "contentLocation": {
-                "@type": "Place",
-                "geo": {
-                    "@type": "GeoCoordinates",
-                        "latitude": {{ article.img[0].exif.lat }},
-                        "longitude": {{ article.img[0].exif.lng }}
+                ,
+                {% if article.img[0].exif.lat > 0 %}
+                    "contentLocation": {
+                        "@type": "Place",
+                        "geo": {
+                            "@type": "GeoCoordinates",
+                                "latitude": {{ article.img[0].exif.lat }},
+                                "longitude": {{ article.img[0].exif.lng }}
+                            },
+                        "name": "{{ article.img[0].contentLocation|e('js')|raw }}"
                     },
-                "name": "{{ article.img[0].contentLocation|e('js')|raw }}"
-            },
-            "exifData": [
-                {
-                    "@type": "PropertyValue",
-                    "name": "Camera",
-                    "value": "{{ article.img[0].exif.model|e('js')|raw }}"
-                },
-                {
-                    "@type": "PropertyValue",
-                    "name": "Lens",
-                    "value": "{{ article.img[0].exif.lensModel|e('js')|raw }}"
-                },
-                {
-                    "@type": "PropertyValue",
-                    "name": "ShutterSpeed",
-                    "value": "{{ article.img[0].exif.exposureTime|e('js')|raw }}"
-                },
-                {
-                    "@type": "PropertyValue",
-                    "name": "FocalLength",
-                    "value": "{{ article.img[0].exif.focalLength|e('js')|raw }}"
-                },
-                {
-                    "@type": "PropertyValue",
-                    "name": "Aperture",
-                    "value": "{{ article.img[0].exif.fNumber|e('js')|raw }}"
-                },
-                {
-                    "@type": "PropertyValue",
-                    "name": "ISO",
-                    "value": "{{ article.img[0].exif.photographicSensitivity|e('js')|raw }}"
-                }
-            ]
+                {% endif %}
+                "exifData": [
+                    {
+                        "@type": "PropertyValue",
+                        "name": "Camera",
+                        "value": "{{ article.img[0].exif.model|e('js')|raw }}"
+                    },
+                    {
+                        "@type": "PropertyValue",
+                        "name": "Lens",
+                        "value": "{{ article.img[0].exif.lensModel|e('js')|raw }}"
+                    },
+                    {
+                        "@type": "PropertyValue",
+                        "name": "ShutterSpeed",
+                        "value": "{{ article.img[0].exif.exposureTime|e('js')|raw }}"
+                    },
+                    {
+                        "@type": "PropertyValue",
+                        "name": "FocalLength",
+                        "value": "{{ article.img[0].exif.focalLength|e('js')|raw }}"
+                    },
+                    {
+                        "@type": "PropertyValue",
+                        "name": "Aperture",
+                        "value": "{{ article.img[0].exif.fNumber|e('js')|raw }}"
+                    },
+                    {
+                        "@type": "PropertyValue",
+                        "name": "ISO",
+                        "value": "{{ article.img[0].exif.photographicSensitivity|e('js')|raw }}"
+                    }
+                ]
             {% endif %}
         }
         </script>
