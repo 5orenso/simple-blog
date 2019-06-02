@@ -44,12 +44,16 @@ export default class ArticleList extends Component {
         const styles = props.styles;
         const artlist = props.artlist;
         const catlist = props.catlist;
+        const sessionEmail = props.sessionEmail;
         const handleArtlistClick = props.handleArtlistClick;
         const handleFilterClick = props.handleFilterClick;
         const handleInput = props.handleInput;
         const handleSubmit = props.handleSubmit;
+        const handleClickNew = props.handleClickNew;
         const articleId = props.articleId;
         const filter = props.filter;
+
+        const authorDefault = sessionEmail.replace(/\@.+$/, '');
 
         const { toggleDropdown } = this.state;
 
@@ -62,7 +66,7 @@ export default class ArticleList extends Component {
             <div class='col-12'>
                 <div class='row mb-2'>
 
-                    <div class="col-5 col-sm-3 col-md-2">
+                    <div class="col-6 col-sm-3 col-md-2">
                         <div class="dropdown">
                             <button class="btn btn-secondary dropdown-toggle"
                                 type="button"
@@ -97,7 +101,7 @@ export default class ArticleList extends Component {
                         </div>
                     </div>
 
-                    <div class="col-5 col-sm-3 col-md-2">
+                    <div class="col-6 col-sm-3 col-md-2">
                         <div class="dropdown">
                             <button class="btn btn-secondary dropdown-toggle"
                                 type="button"
@@ -133,16 +137,21 @@ export default class ArticleList extends Component {
                         </div>
                     </div>
 
-
-
-                    <div class="col-9 col-sm-4">
+                    <div class="col-9 col-sm-2 col-md-4">
                         <input type="text" class="form-control" placeholder="Søk etter artikler" name="q"
                             onChange={handleInput}
                             onKeypress={handleInput}
                         />
                     </div>
-                    <div class="col-3 col-sm-2">
+                    <div class="col-3 col-sm-2 col-md-2">
                         <button class="btn btn-success" onclick={handleSubmit}><i class="fas fa-search"></i> Søk</button>
+                    </div>
+
+                    <div class="col-12 col-sm-2 col-md-2 text-right">
+                        <button class='btn btn-info float-right ml-2' onClick={e => handleClickNew(e, {
+                            author: authorDefault,
+                            category: catlist[0].title,
+                        })}>+ Ny artikkel</button>
                     </div>
 
                 </div>

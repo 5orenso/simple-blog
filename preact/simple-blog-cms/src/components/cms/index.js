@@ -221,10 +221,9 @@ export default class SimpleBlogCms extends Component {
             method: 'PATCH',
             ...this.state.article,
         }
-console.log('data', data);
         util.fetchApi(`/api/tag/`, { method: 'POST', tags: data.tags }, this)
             .then((result) => {
-                console.log('/api/tag/ result', result);
+                // console.log('/api/tag/ result', result);
             })
             .catch(error => this.addError(error.toString()));
 
@@ -674,6 +673,8 @@ console.log('data', data);
                     {renderedMenu}
                     {!article.id && <div class='d-flex justify-content-center'>
                         <ArticleList styles={styles}
+                            sessionEmail={sessionEmail}
+
                             that={this}
                             artlist={artlist}
                             catlist={catlist}
@@ -681,6 +682,7 @@ console.log('data', data);
                             handleSubmit={this.handleArticleSearchClick}
                             handleArtlistClick={this.handleArtlistClick}
                             handleFilterClick={this.handleFilterClick}
+                            handleClickNew={this.handleArticleClickNew}
                             filter={filter}
                         />
                     </div>}

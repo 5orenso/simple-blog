@@ -459,7 +459,18 @@ export default class ArticleEdit extends Component {
             <div class='col-12'>
 
                 <h3>Bilder i artikkelen:</h3>
-                <ul class='list-group mb-3'>
+                <ul class='list-group mb-4'>
+                    {article && (!article.img || article.img.length <= 0) && (
+                        <div class='col-12 text-center text-muted'>
+                            <h1><i class='fas fa-images'></i> Ingen bilder i artikkelen</h1>
+                            <h5>Slik legger du til bilder:</h5>
+                            <ul>
+                                <li>Last opp nye bilder med bildeopplastingen under.</li>
+                                <li>Søk etter bilder du allerede har i arkivet.</li>
+                            </ul>
+                            <br /><br /><br /><br /><br />
+                        </div>
+                    )}
                     {article && article.img && article.img.map((img, idx) => (
                         <li class={`list-group-item list-group-item-action flex-column align-items-start ${idx % 2 > 0 ? 'list-group-item-secondary' : ''}`}>
                             <div class='d-flex w-100 justify-content-between'>
@@ -546,7 +557,7 @@ export default class ArticleEdit extends Component {
                 </ul>
 
                 <h3>Last opp nytt bilde:</h3>
-                <div class='form-group mb-3'>
+                <div class='form-group mb-4'>
                     <ImageUpload
                         apiUrl={apiUrl}
                         apiServer={that.props.apiServer}
@@ -569,7 +580,7 @@ export default class ArticleEdit extends Component {
 
                     </div>
                 </div>
-                <div class='row'>
+                <div class='row mb-4'>
                     <div class='col-1 text-right text-muted'>
                         {Object.keys(filterQuery).length > 0 && 'Filters:'}
                     </div>
@@ -587,8 +598,9 @@ export default class ArticleEdit extends Component {
                     </div>
                     {imglist.length <= 0 && (
                         <div class='col-12 text-center text-muted'>
-                            <h1><i class='fas fa-images'></i> No images in list</h1>
-                            <h5>Try searching for something else...</h5>
+                            <h1><i class='fas fa-images'></i> Ingen bilder å vise...</h1>
+                            <h5>Du kan forsøke å søke etter stikkord i bildene.</h5>
+                            Feks: "person", "norway", "kolsås", "dog", "ski"
                             <br /><br /><br /><br /><br />
                         </div>
                     )}
