@@ -11,6 +11,13 @@ Base idea of this server is to keep it as lean as possible. There should be no h
 
 Search capabilities is added with an ElasticSearch integration adapter.
 
+## Sites using simple-blog
+
+- My personal blog: [litt.no](https://www.litt.no/)
+- An Apple help site in Norwegian: [lovetolearnmore.no](https://www.lovetolearnmore.no/)
+- My coffe&code site: [kaffeogkode.no](https://www.kaffeogkode.no/)
+
+
 ## This is how it works
 
 ```
