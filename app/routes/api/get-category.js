@@ -12,6 +12,7 @@ const Category = require('../../../lib/class/category');
 const fields = {
     id: 1,
     createdDate: 1,
+    updatedDate: 1,
     title: 1,
     url: 1,
     header: 1,

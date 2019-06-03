@@ -16,6 +16,10 @@ const initialState = {
     youtube: {},
     youtubeTitle: {},
     youtubeText: {},
+    markdown: {
+        tableX: 3,
+        tableY: 5,
+    },
 };
 const debug = false;
 const editMode = 'textarea'; // div
@@ -36,6 +40,61 @@ export default class ArticleEdit extends Component {
         if (document.domain === 'localhost') {
             this.serverName = 'http://localhost:8080';
         }
+    }
+
+    markdownTable(csvContent = '') {
+        const lines = csvContent.split('\n');
+        let markdownTable = '\n\n';
+
+        let maxLengthCols = [];
+        let isNumberCols = [];
+        for (let i = 0, l = lines.length; i < l; i += 1) {
+            const cols = lines[i].split('\t');
+            for (let j = 0, m = cols.length; j < m; j += 1) {
+                const col = cols[j].trim();
+                if (!maxLengthCols[j] || col.length > maxLengthCols[j]) {
+                    maxLengthCols[j] = col.length;
+                }
+                if (i > 0) {
+                    isNumberCols[j] = util.isNumber(util.asNumber(col));
+                }
+            }
+        }
+
+        let headLine;
+        for (let i = 0, l = lines.length; i < l; i += 1) {
+            const cols = lines[i].split('\t');
+            markdownTable += '| ';
+            if (i === 0) {
+                headLine = '| ';
+            }
+            for (let j = 0, m = cols.length; j < m; j += 1) {
+                const col = String(cols[j]);
+                const newCol = col.padStart(maxLengthCols[j], ' ');
+                markdownTable += `${newCol} |`;
+                if (i === 0) {
+                    headLine += `${newCol}${isNumberCols[j] ? ':' : ''}|`;
+                }
+            }
+            markdownTable += '\n';
+            if (i === 0) {
+                const sep = headLine.replace(/[^|:]/g, '-');
+                markdownTable += `${sep}\n`;
+            }
+        }
+        markdownTable += '\n\n';
+        return markdownTable;
+    }
+
+    markdownQuote(quote) {
+        const lines = quote.split('\n');
+        let markdownQuote = '\n\n';
+        for (let i = 0, l = lines.length; i < l; i += 1) {
+            const line = lines[i];
+            markdownQuote += `> ${line}\n`;
+        }
+        markdownQuote += '\n\n';
+        return markdownQuote;
     }
 
     handleDropdownClick = (event, key) => {
@@ -154,7 +213,7 @@ export default class ArticleEdit extends Component {
         const handleTextareaInput = props.handleTextareaInput;
         const handleClickSave = props.handleClickSave;
         const handleClickNew = props.handleClickNew;
-        const handleArticleEditBackClick = props.handleArticleEditBackClick;
+        const handleClickBack = props.handleClickBack;
 
         const handleImageInput = props.handleImageInput;
         const handleImageSubmit = props.handleImageSubmit;
@@ -184,8 +243,12 @@ export default class ArticleEdit extends Component {
                     onClick={this.handleMenuClick} data-menu='images'><i class='fas fa-images'></i> Bilder ({imagesTotal})</a>
                 <a class={`nav-item nav-link ${currentMenu === 'youtube' ? 'active' : ''}`} href='#'
                     onClick={this.handleMenuClick} data-menu='youtube'><i class='fas fa-video'></i> Youtube</a>
+                <a class={`nav-item nav-link ${currentMenu === 'links' ? 'active' : ''}`} href='#'
+                    onClick={this.handleMenuClick} data-menu='links'><i class='fas fa-link'></i> Lenker</a>
                 <a class={`nav-item nav-link ${currentMenu === 'meta' ? 'active' : ''}`} href='#'
                     onClick={this.handleMenuClick} data-menu='meta'><i class='fas fa-tags'></i> Meta</a>
+                <a class={`nav-item nav-link ${currentMenu === 'markdown' ? 'active' : ''}`} href='#'
+                    onClick={this.handleMenuClick} data-menu='markdown'><i class='fas fa-code'></i> Annet</a>
             </nav>
         );
 
@@ -193,7 +256,7 @@ export default class ArticleEdit extends Component {
             <div class='row bg-secondary'>
                 <div class='col-12 sticky-top d-flex justify-content-between'>
                     <div class='col-3'>
-                        <button type='button' class='btn btn-warning mr-2' onclick={handleArticleEditBackClick}><i class='fas fa-arrow-left'></i> Tilbake</button>
+                        <button type='button' class='btn btn-warning mr-2' onclick={handleClickBack}><i class='fas fa-arrow-left'></i> Tilbake</button>
                     </div>
                     <div class='col-6 text-center'>
                         <button type='submit' class='btn btn-success mr-2' onClick={handleClickSave}><i class='fas fa-save'></i> Lagre</button>
@@ -415,16 +478,16 @@ export default class ArticleEdit extends Component {
                     {[0, 1, 2, 3].map((val, idx) =>
                         <li class={`list-group-item list-group-item-action flex-column align-items-start ${idx % 2 > 0 ? 'list-group-item-secondary' : ''}`}>
                             <div class='form-group row'>
-                                <div class='col-3'>
-                                    <label for='youtubeTitle'>Title</label>
+                                <div class='col-5'>
+                                    <label for='youtubeTitle'>Tittel</label>
                                     <input class='form-control' id='youtubeTitle'
                                         onInput={linkstate(that, `article.youtubeVideos.${val}.title`)}
                                         value={util.getString(article, 'youtubeVideos', val, 'title')}
                                     />
                                 </div>
-                                <div class='col-9'>
-                                    <label for='youtubeText'>Text</label>
-                                    <textarea class='form-control' id='youtubeText'
+                                <div class='col-7'>
+                                    <label for='youtubeText'>Tekst</label>
+                                    <input class='form-control' id='youtubeText'
                                         onInput={linkstate(that, `article.youtubeVideos.${val}.text`)}
                                         value={util.getString(article, 'youtubeVideos', val, 'text')}
                                     />
@@ -434,7 +497,7 @@ export default class ArticleEdit extends Component {
                                     <input class='form-control' id='youtube'
                                         onInput={linkstate(that, `article.youtubeVideos.${val}.url`)}
                                         value={util.getString(article, 'youtubeVideos', val, 'url')}
-                                        placeholder='https://www.youtube.com/watch?v=O4P8QkpT5Cc'
+                                        placeholder='Link til Youtube video'
                                     />
                                     <small id='youtubeHelp' class='form-text text-muted'>Youtube watch URL.</small>
                                 </div>
@@ -443,13 +506,99 @@ export default class ArticleEdit extends Component {
                                     <button class='form-control btn btn-dark m-1'
                                         onClick={this.handleClickCode}
                                         data-content={`![${util.getString(article, 'youtubeVideos', val, 'title')}](${util.getString(article, 'youtubeVideos', val, 'url')} '${util.getString(article, 'youtubeVideos', val, 'text')}')\n`}>
-                                        Add YouTube
+                                        Sett inn video i tekst
                                     </button>
                                 </div>
                             </div>
                         </li>
                     )}
                 </ul>
+            </div>
+        );
+
+        const renderedLinks = (
+            <div class='col-12'>
+                <h5>Legg til lenker:</h5>
+                <ul class='list-group'>
+                    {[0, 1, 2, 3].map((val, idx) =>
+                        <li class={`list-group-item list-group-item-action flex-column align-items-start ${idx % 2 > 0 ? 'list-group-item-secondary' : ''}`}>
+                            <div class='form-group row'>
+                                <div class='col-5'>
+                                    <label for='linkTitle'>Tittel på siden '{val}' '{idx}'</label>
+                                    <input class='form-control' id='linkTitle'
+                                        onInput={linkstate(that, `article.links.${val}.title`)}
+                                        value={util.getString(article, 'links', val, 'title')}
+                                        placeholder='Ie: Litt.no / Sorensos Blog'
+                                    />
+                                </div>
+                                <div class='col-7'>
+                                    <label for='linkText'>Linktekst</label>
+                                    <input class='form-control' id='linkText'
+                                        onInput={linkstate(that, `article.links.${val}.text`)}
+                                        value={util.getString(article, 'links', val, 'text')}
+                                    />
+                                </div>
+                                <div class='col-8'>
+                                    <label for='link'>Link</label>
+                                    <input class='form-control' id='link'
+                                        onInput={linkstate(that, `article.links.${val}.url`)}
+                                        value={util.getString(article, 'links', val, 'url')}
+                                        placeholder='Link til side...'
+                                    />
+                                </div>
+                                <div class='col-4'>
+                                    <label>&nbsp;</label>
+                                    <button class='form-control btn btn-dark m-1'
+                                        onClick={this.handleClickCode}
+                                        data-content={`[${util.getString(article, 'links', val, 'title')}](${util.getString(article, 'links', val, 'url')} '${util.getString(article, 'links', val, 'text')}')\n`}>
+                                        Sett inn link i tekst
+                                    </button>
+                                </div>
+                            </div>
+                        </li>
+                    )}
+                </ul>
+            </div>
+        );
+
+        const renderedMarkdown = (
+            <div class='col-12'>
+                <h5>Annen markdown som er kjekk å vite om:</h5>
+                <div class='form-group row mt-4'>
+                    <div class='col-sm-2'>
+                        <label for='link'>Table</label>
+                    </div>
+                    <div class='col-sm-10'>
+                        <textarea class='form-control'
+                            onInput={linkstate(this, `markdown.tableCsv`)}
+                            value={util.getString(this, 'state', 'markdown', 'tableCsv')}
+                            placeholder='Copy & paste fra Excel'
+                        />
+                    </div>
+                    <button class='form-control btn btn-dark m-1'
+                        onClick={this.handleClickCode}
+                        data-content={this.markdownTable(util.getString(this, 'state', 'markdown', 'tableCsv'))}>
+                        Sett inn tabell
+                    </button>
+                </div>
+
+                <div class='form-group row mt-4'>
+                    <div class='col-sm-2'>
+                        <label for='link'>Sitat</label>
+                    </div>
+                    <div class='col-sm-10'>
+                        <textarea class='form-control'
+                            onInput={linkstate(this, `markdown.quote`)}
+                            value={util.getString(this, 'state', 'markdown', 'quote')}
+                            placeholder='Skriv inn sitat'
+                        />
+                    </div>
+                    <button class='form-control btn btn-dark m-1'
+                        onClick={this.handleClickCode}
+                        data-content={this.markdownQuote(util.getString(this, 'state', 'markdown', 'quote'))}>
+                        Sett inn sitat
+                    </button>
+                </div>
             </div>
         );
 
@@ -600,7 +749,7 @@ export default class ArticleEdit extends Component {
                         <div class='col-12 text-center text-muted'>
                             <h1><i class='fas fa-images'></i> Ingen bilder å vise...</h1>
                             <h5>Du kan forsøke å søke etter stikkord i bildene.</h5>
-                            Feks: "person", "norway", "kolsås", "dog", "ski"
+                            Feks: 'person', 'norway', 'kolsås', 'dog', 'ski'
                             <br /><br /><br /><br /><br />
                         </div>
                     )}
@@ -748,7 +897,9 @@ export default class ArticleEdit extends Component {
                             {currentMenu === 'preview' && renderedPreview}
                             {currentMenu === 'images' && renderedImages}
                             {currentMenu === 'youtube' && renderedYoutube}
+                            {currentMenu === 'links' && renderedLinks}
                             {currentMenu === 'meta' && renderedMeta}
+                            {currentMenu === 'markdown' && renderedMarkdown}
                         </div>
                     </div>
 

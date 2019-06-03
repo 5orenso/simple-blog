@@ -45,7 +45,7 @@ export default class ArticleList extends Component {
         const artlist = props.artlist;
         const catlist = props.catlist;
         const sessionEmail = props.sessionEmail;
-        const handleArtlistClick = props.handleArtlistClick;
+        const handleListClick = props.handleListClick;
         const handleFilterClick = props.handleFilterClick;
         const handleInput = props.handleInput;
         const handleSubmit = props.handleSubmit;
@@ -170,7 +170,7 @@ export default class ArticleList extends Component {
                     </thead>
                     <tbody>
                         {artlist.map(art =>
-                            <tr data-id={art.id} class={articleId == art.id ? 'bg-primary text-white' : ''} onClick={handleArtlistClick}>
+                            <tr data-id={art.id} class={articleId == art.id ? 'bg-primary text-white' : ''} onClick={handleListClick}>
                                 <td scope='row'>{art.id}</td>
                                 <td>
                                     {art.img && Array.isArray(art.img) && art.img[0] && (

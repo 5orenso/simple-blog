@@ -14,29 +14,46 @@ export default class CategoryList extends Component {
     render(props) {
         const styles = props.styles;
         const catlist = props.catlist;
-        const handleCatlistClick = props.handleCatlistClick;
+        const handleListClick = props.handleListClick;
+        const handleClickNew = props.handleClickNew;
+
         return (
             <div class='col-12'>
-                <table class={`table table-sm ${styles.condensed}`}>
-                    <thead>
-                        <tr>
-                            <th scope='col'>#</th>
-                            <th scope='col'>Tittel</th>
-                            <th scope='col'>Opprettet</th>
-                            <th scope='col'>URL</th>
+                <div class='row mb-2'>
+                    <div class="col-12 col-sm-10 col-md-10">
+                        &nbsp;
+                    </div>
+                    <div class="col-12 col-sm-2 col-md-2 text-right mb-2">
+                        <button class='btn btn-info float-right ml-2' onClick={e => handleClickNew(e, { title: 'Trenger en fin ny tittel' })}>
+                            + Ny kategori
+                        </button>
+                    </div>
+                    <table class={`table table-sm ${styles.condensed}`}>
+                        <thead>
+                            <tr>
+                                <th scope='col'>#</th>
+                                <th scope='col'>Tittel</th>
+                                <th scope='col'>Opprettet</th>
+                                <th scope='col'>URL</th>
+                            </tr>
+                        </thead>
+                    <tbody>
+                    {catlist.map(cat =>
+                        <tr data-id={cat.id} onClick={handleListClick}>
+                            <td scope='row'>{cat.id}</td>
+                            <td>{cat.title}</td>
+                            <td>
+                                {util.isoDateNormalized(cat.createdDate)}<br />
+                                {cat.createdDate !== cat.updatedDate && <span class='text-muted'>
+                                    <small><i class="fas fa-user-edit"></i> {util.isoDateNormalized(cat.updatedDate)}</small>
+                                </span>}
+                            </td>
+                            <td>{cat.url}</td>
                         </tr>
-                    </thead>
-                <tbody>
-                {catlist.map(cat =>
-                    <tr data-id={cat.id} onClick={handleCatlistClick}>
-                        <td scope='row'>{cat.id}</td>
-                        <td>{cat.title}</td>
-                        <td>{util.isoDateNormalized(cat.createdDate)}</td>
-                        <td>{cat.url}</td>
-                    </tr>
-                )}
-                </tbody>
-                </table>
+                    )}
+                    </tbody>
+                    </table>
+                </div>
             </div>
         );
     }

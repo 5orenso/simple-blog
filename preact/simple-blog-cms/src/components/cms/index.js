@@ -270,6 +270,12 @@ export default class SimpleBlogCms extends Component {
         this.setState({ article: {} });
     };
 
+    handleCategoryEditBackClick = (event) => {
+        event.preventDefault();
+        console.log('handleCategoryEditBackClick');
+        this.setState({ category: {} });
+    };
+
     handleArtlistClick = (event) => {
         event.preventDefault();
         const trElement = event.target.closest('tr');
@@ -347,6 +353,24 @@ export default class SimpleBlogCms extends Component {
             .catch(error => this.addError(error.toString()));
     };
 
+    handleCategoryClickNew = (event, category = {}) => {
+        event.preventDefault();
+        const data = {
+            method: 'POST',
+            ...category,
+        }
+        // console.log('trying to save', this.state.category);
+        util.fetchApi(`/api/category/`, data, this)
+            .then((result) => {
+                const category = result;
+                const messages = this.state.messages;
+                messages.push([parseInt(new Date().getTime() / 1000, 10), 'Kategori opprettet']);
+                this.setState({ messages, category });
+                this.loadCatlist();
+            })
+            .catch(error => this.addError(error.toString()));
+    };
+
     handleCategoryClickSave = (event) => {
         event.preventDefault();
         const data = {
@@ -359,6 +383,7 @@ export default class SimpleBlogCms extends Component {
                 const messages = this.state.messages;
                 messages.push([parseInt(new Date().getTime() / 1000, 10), 'Kategori oppdatert']);
                 this.setState({ messages });
+                this.loadCatlist();
             })
             .catch(error => this.addError(error.toString()));
     };
@@ -680,7 +705,7 @@ export default class SimpleBlogCms extends Component {
                             catlist={catlist}
                             handleInput={this.handleArticleSearchInput}
                             handleSubmit={this.handleArticleSearchClick}
-                            handleArtlistClick={this.handleArtlistClick}
+                            handleListClick={this.handleArtlistClick}
                             handleFilterClick={this.handleFilterClick}
                             handleClickNew={this.handleArticleClickNew}
                             filter={filter}
@@ -717,7 +742,7 @@ export default class SimpleBlogCms extends Component {
                             handleTextareaInput={this.handleArticleTextareaInput}
                             handleClickSave={this.handleArticleClickSave}
                             handleClickNew={this.handleArticleClickNew}
-                            handleArticleEditBackClick={this.handleArticleEditBackClick}
+                            handleClickBack={this.handleArticleEditBackClick}
 
                             imglist={imglist}
                             filterQuery={this.state.filterQuery}
@@ -727,7 +752,6 @@ export default class SimpleBlogCms extends Component {
                             handleImageTagClick={this.handleImageTagClick}
                         />
                     </div>}
-
                 </div>
             );
         } else if (currentMenu === 'categories') {
@@ -736,13 +760,14 @@ export default class SimpleBlogCms extends Component {
                     <ProgressBar styles={styles} loadingProgress={this.state.loadingProgress} />
                     {renderedMenu}
 
-                    <div class='d-flex justify-content-center'>
+                    {!category.id && <div class='d-flex justify-content-center'>
                         <CategoryList styles={styles}
                             catlist={catlist}
-                            handleCatlistClick={this.handleCatlistClick}
+                            handleListClick={this.handleCatlistClick}
+                            handleClickNew={this.handleCategoryClickNew}
                         />
-                    </div>
-                    <div class='d-flex justify-content-center'>
+                    </div>}
+                    {!category.id && <div class='d-flex justify-content-center'>
                         <Pagination styles={styles}
                             artlistTotal={catlistTotal}
                             currentPage={currentPage}
@@ -751,21 +776,21 @@ export default class SimpleBlogCms extends Component {
                             handlePaginationDecClick={this.handlePaginationDecClick}
                             handlePaginationIncClick={this.handlePaginationIncClick}
                         />
-                    </div>
-                    <div class='d-flex justify-content-center'>
+                    </div>}
+                    {!category.id && <div class='d-flex justify-content-center'>
                         <Messages styles={styles} messages={messages} />
-                    </div>
-                    <div class='d-flex justify-content-center'>
+                    </div>}
+                    {category.id && <div class='d-flex justify-content-center'>
                         <CategoryEdit styles={styles}
                             category={category}
+                            messages={messages}
                             handleInput={this.handleCategoryInput}
                             handleTextareaInput={this.handleCategoryTextareaInput}
                             handleClickSave={this.handleCategoryClickSave}
+                            handleClickNew={this.handleCategoryClickNew}
+                            handleClickBack={this.handleCategoryEditBackClick}
                         />
-                    </div>
-                    <div class='d-flex justify-content-center'>
-                        <Messages styles={styles} messages={messages} />
-                    </div>
+                    </div>}
                 </div>
             );
         } else if (currentMenu === 'images') {

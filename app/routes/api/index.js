@@ -23,6 +23,7 @@ router.get('/image/:id', wrap(require('./get-image.js')));
 router.get('/category/', wrap(require('./get-category.js')));
 router.get('/category/:id', wrap(require('./get-category.js')));
 router.patch('/category/:id', util.restrict, wrap(require('./patch-category.js')));
+router.post('/category/', util.restrict, wrap(require('./post-category.js')));
 
 router.get('/tag/', wrap(require('./get-tag.js')));
 router.get('/tag/:id', wrap(require('./get-tag.js')));

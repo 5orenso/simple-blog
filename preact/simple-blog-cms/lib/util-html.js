@@ -23,12 +23,28 @@ marked.setOptions({
 
 renderer.heading = function heading(text, level) {
     const escapedText = text.toLowerCase().replace(/[^\w]+/g, '-');
-    return `<h${level} class="toc-${level}"><a name="${
+    return `<h${level} class='toc-${level}'><a name='${
         escapedText
-    }" class="anchor" href="#${
+    }' class='anchor' href='#${
         escapedText
-    }"><span class="header-link"></span></a>${
+    }'><span class='header-link'></span></a>${
         text}</h${level}>`;
+};
+
+renderer.table = function table(header, body) {
+    return `<table class='table table-striped table-hover'>
+        <thead class='thead-dark'>${header}</thead>
+        <tbody>${body}</tbody>
+    </table>`;
+};
+
+renderer.blockquote = function blockquote(quote) {
+    return `<blockquote class='blockquote text-muted ml-5'>
+        <span class='display-4 float-left mr-4'>
+            <i class="fas fa-quote-right"></i>
+        </span>
+        <p class='mb-0'>${quote}</p>
+    </blockquote>`;
 };
 
 renderer.image = function image($href, title, text) {
@@ -37,13 +53,13 @@ renderer.image = function image($href, title, text) {
         const youtubeVideo = $href.replace(regexp, (match, p0, p1, p2, p3) => {
             return p3;
         });
-        // <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/${youtubeVideo}?rel=0" allowfullscreen  width="1900" height="1200"></iframe>
+        // <iframe class='embed-responsive-item' src='https://www.youtube.com/embed/${youtubeVideo}?rel=0' allowfullscreen  width='1900' height='1200'></iframe>
         return `
-            <div class="youtube" data-embed="${youtubeVideo}">
-                <div class="play-button"></div>
-                <img src="https://img.youtube.com/vi/${youtubeVideo}/sddefault.jpg">
+            <div class='youtube' data-embed='${youtubeVideo}'>
+                <div class='play-button'></div>
+                <img src='https://img.youtube.com/vi/${youtubeVideo}/sddefault.jpg'>
             </div>
-            <div class="image_inline_text"><strong>${text || ''}</strong> ${title || ''}</div>
+            <div class='image_inline_text'><strong>${text || ''}</strong> ${title || ''}</div>
         `;
     }
     let serverName = '';
@@ -58,24 +74,24 @@ renderer.image = function image($href, title, text) {
         const allClasses = result[1].split(',');
         if (allClasses[0] === 'card') {
             return `
-                <div class="card float-right col-lg-4 col-md-6 col-sm-12 p-0 ml-2 mb-2 mt-2">
-                    <img class="card-img-top" src="${src}" alt="${title || text}">
-                    <div class="card-body">
-                        <h5 class="card-title">${text || ''}</h5>
-                        <p class="card-text">${title || ''}</p>
+                <div class='card float-right col-lg-4 col-md-6 col-sm-12 p-0 ml-2 mb-2 mt-2'>
+                    <img class='card-img-top' src='${src}' alt='${title || text}'>
+                    <div class='card-body'>
+                        <h5 class='card-title'>${text || ''}</h5>
+                        <p class='card-text'>${title || ''}</p>
                     </div>
                 </div>`;
         } else if (allClasses[0] === 'card2') {
             return `
-                <div class="float-right card col-lg-7 col-md-7 col-sm-12 p-0 ml-2 mb-2 mt-2">
-                    <div class="row no-gutters">
-                        <div class="col-md-4">
-                            <img class="card-img img-fluid" src="${src}" alt="${title || text}">
+                <div class='float-right card col-lg-7 col-md-7 col-sm-12 p-0 ml-2 mb-2 mt-2'>
+                    <div class='row no-gutters'>
+                        <div class='col-md-4'>
+                            <img class='card-img img-fluid' src='${src}' alt='${title || text}'>
                         </div>
-                        <div class="col-md-8">
-                            <div class="card-body">
-                                <h5 class="card-title">${text || ''}</h5>
-                                <p class="card-text">${title || ''}</p>
+                        <div class='col-md-8'>
+                            <div class='card-body'>
+                                <h5 class='card-title'>${text || ''}</h5>
+                                <p class='card-text'>${title || ''}</p>
                             </div>
                         </div>
                     </div>
@@ -87,11 +103,11 @@ renderer.image = function image($href, title, text) {
         }
     }
     return `
-        <p class="image_inline ${mediaClass.join(' ')}">
-            <a href="${href}" data-smoothzoom="group1" title="${title || text}">
-                <img src="${src}" alt="${title || text}" title="${title || text}" class="img-fluid">
+        <p class='image_inline ${mediaClass.join(' ')}'>
+            <a href='${href}' data-smoothzoom='group1' title='${title || text}'>
+                <img src='${src}' alt='${title || text}' title='${title || text}' class='img-fluid'>
             </a>
-            <div class="image_inline_text"><strong>${text || ''}</strong> ${title || ''}</div>
+            <div class='image_inline_text'><strong>${text || ''}</strong> ${title || ''}</div>
         </p>`;
 };
 
@@ -133,7 +149,7 @@ class HtmlUtilities {
                 mode = 0;
             }
             if (mode === 0 && letter.match(/\w/)) {
-                return HtmlUtilities.replaceAt($string, i, `<span class="blog-drop-letter">${letter}</span>`);
+                return HtmlUtilities.replaceAt($string, i, `<span class='blog-drop-letter'>${letter}</span>`);
             }
         }
         return $string;
@@ -161,7 +177,7 @@ class HtmlUtilities {
             const p1 = $p1.replace(/\+/g, ' ');
             // console.log('replacerTags', match, p1, p2);
             if (p1.match(/^fa-/)) {
-                let result = `<span class="fa ${p1}"></span>`;
+                let result = `<span class='fa ${p1}'></span>`;
                 if (typeof p2 !== 'undefined') {
                     const count = parseInt(p2.trim(), 10);
                     if (typeof count === 'number') {

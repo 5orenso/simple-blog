@@ -379,6 +379,10 @@ class Utilities {
         return parseInt(num, 10);
     }
 
+    static asNumber(num) {
+        return parseFloat(num);
+    }
+
     static isInteger(num) {
         return Number.isInteger(num);
     }
