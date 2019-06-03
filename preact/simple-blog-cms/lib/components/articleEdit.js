@@ -524,7 +524,7 @@ export default class ArticleEdit extends Component {
                         <li class={`list-group-item list-group-item-action flex-column align-items-start ${idx % 2 > 0 ? 'list-group-item-secondary' : ''}`}>
                             <div class='form-group row'>
                                 <div class='col-5'>
-                                    <label for='linkTitle'>Tittel på siden '{val}' '{idx}'</label>
+                                    <label for='linkTitle'>Tittel på siden du linker til</label>
                                     <input class='form-control' id='linkTitle'
                                         onInput={linkstate(that, `article.links.${val}.title`)}
                                         value={util.getString(article, 'links', val, 'title')}
@@ -773,7 +773,7 @@ export default class ArticleEdit extends Component {
                             <input type='text' class='form-control' id='publishedInput' placeholder='Publiseringsdato'
                                 name='published'
                                 onInput={handleInput}
-                                value={util.isoDateNormalized(article.published)} />
+                                value={article.published} />
                         </div>
                     </div>
                     <div class='col-12'>
