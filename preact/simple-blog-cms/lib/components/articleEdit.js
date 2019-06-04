@@ -862,6 +862,14 @@ export default class ArticleEdit extends Component {
                             )}
                             <div class='mt-3 mb-3'>
                                 <small>
+                                    {Array.isArray(article.classifiedWords) ? <h5>Language classification</h5> : ''}
+                                    {Array.isArray(article.classifiedWords) && article.classifiedWords.map(word =>
+                                        <span class='badge badge-success mr-1'
+                                            onClick={e => this.handleTagAdd(e, handleInput, word)}
+                                        ><i class='fas fa-comment-dots mr-1'></i> {word} <i class='fas fa-plus'></i></span>
+                                    )}
+                                </small>
+                                <small>
                                     {Array.isArray(article.relevantWords) ? <h5>Language processing</h5> : ''}
                                     {Array.isArray(article.relevantWords) && article.relevantWords.map(word =>
                                         <span class='badge badge-danger mr-1'

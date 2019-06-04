@@ -30,6 +30,7 @@ const fields = {
     aggregateRating: 1,
     nutrition: 1,
     relevantWords: 1,
+    classifiedWords: 1,
 };
 
 module.exports = async (req, res) => {
@@ -76,14 +77,21 @@ module.exports = async (req, res) => {
     if (data.article) {
         data.article.relevantWords = [];
         const tokens = util.tokenizeAndStem(data.article.body);
+        // console.log('---> tokens', tokens);
         const wordCount = util.termsCount(tokens, data.article.body);
         const words = Object.keys(wordCount);
         for (let i = 0, l = words.length; i < l; i += 1) {
             const word = words[i];
-            if (wordCount[word] >= 2 && word.length > 3) {
+            // console.log('===> ', word, wordCount[word]);
+            if (wordCount[word] >= 3 && word.length > 3) {
                 data.article.relevantWords.push(word);
             }
         }
+        // BayesClassifier:
+        // if (data.article.body) {
+        //     const artlistClassify = await art.find({}, { id: 1, title: 1, tags: 1, body: 1 }, { limit: 500 });
+        //     data.article.classifiedWords = util.classifyArticle(artlistClassify, data.article);
+        // }
     }
 
     utilHtml.renderApi(req, res, 200, data);
