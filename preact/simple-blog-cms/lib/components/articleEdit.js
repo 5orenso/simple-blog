@@ -97,6 +97,14 @@ export default class ArticleEdit extends Component {
         return markdownQuote;
     }
 
+    markdownCode(code, lang) {
+        const quote = '```';
+        let markdownCode = `\n\n${quote}${lang}\n`;
+        markdownCode += code;
+        markdownCode += `\n${quote}\n\n`;
+        return markdownCode;
+    }
+
     handleDropdownClick = (event, key) => {
         event.preventDefault();
         const el = event.target;
@@ -112,7 +120,7 @@ export default class ArticleEdit extends Component {
 
     handleMenuClick = (event) => {
         event.preventDefault();
-        const el = event.target;
+        const el = event.target.closest('a');
 
         const currentMenu = el.dataset.menu;
         this.setState({ currentMenu });
@@ -566,20 +574,22 @@ export default class ArticleEdit extends Component {
                 <h5>Annen markdown som er kjekk å vite om:</h5>
                 <div class='form-group row mt-4'>
                     <div class='col-sm-2'>
-                        <label for='link'>Table</label>
+                        <label for='link'>Tabell</label>
                     </div>
                     <div class='col-sm-10'>
                         <textarea class='form-control'
                             onInput={linkstate(this, `markdown.tableCsv`)}
                             value={util.getString(this, 'state', 'markdown', 'tableCsv')}
-                            placeholder='Copy & paste fra Excel'
+                            placeholder='Klipp og lim fra Excel...'
                         />
                     </div>
-                    <button class='form-control btn btn-dark m-1'
-                        onClick={this.handleClickCode}
-                        data-content={this.markdownTable(util.getString(this, 'state', 'markdown', 'tableCsv'))}>
-                        Sett inn tabell
-                    </button>
+                    <div class='offset-sm-2 col-sm-10'>
+                        <button class='form-control btn btn-dark m-1'
+                            onClick={this.handleClickCode}
+                            data-content={this.markdownTable(util.getString(this, 'state', 'markdown', 'tableCsv'))}>
+                            Sett inn tabell
+                        </button>
+                    </div>
                 </div>
 
                 <div class='form-group row mt-4'>
@@ -590,14 +600,59 @@ export default class ArticleEdit extends Component {
                         <textarea class='form-control'
                             onInput={linkstate(this, `markdown.quote`)}
                             value={util.getString(this, 'state', 'markdown', 'quote')}
-                            placeholder='Skriv inn sitat'
+                            placeholder='Skriv inn sitat...'
                         />
                     </div>
-                    <button class='form-control btn btn-dark m-1'
-                        onClick={this.handleClickCode}
-                        data-content={this.markdownQuote(util.getString(this, 'state', 'markdown', 'quote'))}>
-                        Sett inn sitat
-                    </button>
+                    <div class='offset-sm-2 col-sm-10'>
+                        <button class='form-control btn btn-dark m-1'
+                            onClick={this.handleClickCode}
+                            data-content={this.markdownQuote(util.getString(this, 'state', 'markdown', 'quote'))}>
+                            Sett inn sitat
+                        </button>
+                    </div>
+                </div>
+
+                <div class='form-group row mt-4'>
+                    <div class='col-sm-2'>
+                        <label for='link'>Kode</label>
+                    </div>
+                    <div class='col-sm-10'>
+                        <select class='form-control'
+                            onInput={linkstate(this, `markdown.codeLanguage`)}
+                            value={util.getString(this, 'state', 'markdown', 'codeLanguage')}
+                        >
+                            <option value=''>-- velg språk ---</option>
+                            <option>arduino</option>
+                            <option>bash</option>
+                            <option>c++</option>
+                            <option>css</option>
+                            <option>excel</option>
+                            <option>diff</option>
+                            <option>go</option>
+                            <option>html</option>
+                            <option>javascript</option>
+                            <option>json</option>
+                            <option>markdown</option>
+                            <option>perl</option>
+                            <option>php</option>
+                            <option>python</option>
+                            <option>rust</option>
+                            <option>sql</option>
+                            <option>yaml</option>
+                        </select>
+                        <textarea class='form-control'
+                            onInput={linkstate(this, `markdown.code`)}
+                            value={util.getString(this, 'state', 'markdown', 'code')}
+                            placeholder='Skriv inn kodelinjene dine...'
+                        />
+                    </div>
+                    <div class='offset-sm-2 col-sm-10'>
+                        <button class='form-control btn btn-dark m-1'
+                            onClick={this.handleClickCode}
+                            data-content={this.markdownCode(util.getString(this, 'state', 'markdown', 'code'), util.getString(this, 'state', 'markdown', 'codeLanguage'))}>
+                            Sett inn koden
+                        </button>
+                    </div>
                 </div>
             </div>
         );

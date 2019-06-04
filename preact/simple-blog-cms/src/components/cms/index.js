@@ -249,7 +249,7 @@ export default class SimpleBlogCms extends Component {
     // - - - [ Events ] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     handleMenuClick = (event) => {
         event.preventDefault();
-        const el = event.target;
+        const el = event.target.closest('a');
 
         const currentMenu = el.dataset.menu;
         const currentPage = 1;

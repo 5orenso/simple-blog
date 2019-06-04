@@ -54,6 +54,14 @@ class Utilities {
         return new Date().getTime();
     }
 
+    static get(key) {
+        return localStorage.getItem(key);
+    }
+
+    static set(key, val) {
+        return localStorage.setItem(key, val);
+    }
+
     static asHumanReadable(date) {
         const epochNow = Utilities.epoch();
         const epochDate = Utilities.epoch(date);

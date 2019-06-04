@@ -2,14 +2,25 @@
 
 import util from './util';
 const marked = require('marked');
-
+const hljs = require('highlight.js');
+import 'highlight.js/styles/atom-one-dark.css';
 const renderer = new marked.Renderer();
+
+hljs.configure({
+  tabReplace: '    ',      // 4 spaces
+  classPrefix: 'hljs-',     // don't append class prefix
+                           // … other options aren't changed
+});
 
 // Markdown setup.
 marked.setOptions({
     renderer: renderer,
-    highlight: function(code) {
-        return require('highlight.js').highlightAuto(code).value;
+    highlight: function(code, language) {
+        // console.log(code, language);
+        // if (language) {
+        //     return hljs.highlight(language, code).value;
+        // }
+        return hljs.highlightAuto(code).value;
     },
     pedantic: false,
     gfm: true,
@@ -45,6 +56,14 @@ renderer.blockquote = function blockquote(quote) {
         </span>
         <p class='mb-0'>${quote}</p>
     </blockquote>`;
+};
+
+renderer.code = function code(code, infostring, escaped) {
+    return `<pre>
+        <code class="language-${infostring} hljs rounded-lg">${
+            infostring ? hljs.highlight(infostring, code).value : hljs.highlightAuto(code).value
+        }</code>
+    </pre>`;
 };
 
 renderer.image = function image($href, title, text) {
