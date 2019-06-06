@@ -19,6 +19,7 @@ const initialState = {
     markdown: {
         tableX: 3,
         tableY: 5,
+        codeLanguage: util.get('markdownCodeLanguage'),
     },
 };
 const debug = false;
@@ -42,9 +43,9 @@ export default class ArticleEdit extends Component {
         }
     }
 
-    markdownTable(csvContent = '') {
+    markdownTable(csvContent = '', title = '') {
         const lines = csvContent.split('\n');
-        let markdownTable = '\n\n';
+        let markdownTable = `\n\n#### ${title}\n`;
 
         let maxLengthCols = [];
         let isNumberCols = [];
@@ -98,6 +99,7 @@ export default class ArticleEdit extends Component {
     }
 
     markdownCode(code, lang) {
+        util.set('markdownCodeLanguage', lang);
         const quote = '```';
         let markdownCode = `\n\n${quote}${lang}\n`;
         markdownCode += code;
@@ -264,19 +266,29 @@ export default class ArticleEdit extends Component {
             <div class='row bg-secondary'>
                 <div class='col-12 sticky-top d-flex justify-content-between'>
                     <div class='col-3'>
-                        <button type='button' class='btn btn-warning mr-2' onclick={handleClickBack}><i class='fas fa-arrow-left'></i> Tilbake</button>
+                        <button type='button' class='btn btn-warning mr-2' onclick={handleClickBack}>
+                            <span class='d-sm-none'><i class='fas fa-arrow-left'></i></span>
+                            <span class='d-none d-sm-block'><i class='fas fa-arrow-left'></i> Tilbake</span>
+                        </button>
                     </div>
                     <div class='col-6 text-center'>
-                        <button type='submit' class='btn btn-success mr-2' onClick={handleClickSave}><i class='fas fa-save'></i> Lagre</button>
+                        <button type='submit' class='btn btn-success mr-2' onClick={handleClickSave}>
+                            <span class='d-sm-none'><i class='fas fa-save'></i></span>
+                            <span class='d-none d-sm-block'><i class='fas fa-save'></i> Lagre</span>
+                        </button>
                         <a class='btn btn-primary' target='_blank' href={`${this.serverName}/v2/${utilHtml.asUrlSafe(article.category || 'no-category')}/${utilHtml.asUrlSafe(article.title || 'no-title')}/${article.id}`}>
-                            <i class='fas fa-external-link-alt'></i> Preview
+                            <span class='d-sm-none'><i class='fas fa-external-link-alt'></i></span>
+                            <span class='d-none d-sm-block'><i class='fas fa-external-link-alt'></i> Preview</span>
                         </a>
                     </div>
                     <div class='col-3'>
                         <button class='btn btn-info float-right ml-2' onClick={e => handleClickNew(e, {
                             author: authorDefault,
                             category: catlist[0].title,
-                        })}>+ Ny artikkel</button>
+                        })}>
+                            <span class='d-sm-none'><i class='fas fa-plus'></i></span>
+                            <span class='d-none d-sm-block'><i class='fas fa-plus'></i> Ny artikkel</span>
+                        </button>
                     </div>
                 </div>
 
@@ -577,6 +589,11 @@ export default class ArticleEdit extends Component {
                         <label for='link'>Tabell</label>
                     </div>
                     <div class='col-sm-10'>
+                        <input class='form-control'
+                            onInput={linkstate(this, `markdown.tableTitle`)}
+                            value={util.getString(this, 'state', 'markdown', 'tableTitle')}
+                            placeholder='Tittel på tabellen...'
+                        />
                         <textarea class='form-control'
                             onInput={linkstate(this, `markdown.tableCsv`)}
                             value={util.getString(this, 'state', 'markdown', 'tableCsv')}
@@ -586,7 +603,10 @@ export default class ArticleEdit extends Component {
                     <div class='offset-sm-2 col-sm-10'>
                         <button class='form-control btn btn-dark m-1'
                             onClick={this.handleClickCode}
-                            data-content={this.markdownTable(util.getString(this, 'state', 'markdown', 'tableCsv'))}>
+                            data-content={this.markdownTable(
+                                util.getString(this, 'state', 'markdown', 'tableCsv'),
+                                util.getString(this, 'state', 'markdown', 'tableTitle'),
+                            )}>
                             Sett inn tabell
                         </button>
                     </div>
@@ -951,10 +971,10 @@ export default class ArticleEdit extends Component {
         return (
             <div class='container-fluid col-12 vh-100'>
                 <div class='row'>
-                    <div class='col-12 col-md-6 mb-5 mb-md-0 overflow-auto vh-100' id='editColumn'>
+                    <div class='col-12 col-md-6 mb-2 mb-md-0 overflow-auto vh-100' id='editColumn'>
                         {renderedEditArticle}
                     </div>
-                    <div class='col-12 col-md-6 mt-5 mt-md-0 overflow-auto vh-100' id='previewColumn'>
+                    <div class='col-12 col-md-6 mt-2 mt-md-0 overflow-auto vh-100' id='previewColumn'>
                         <div class='row'>
                             {renderedMenu}
                             {currentMenu === 'preview' && renderedPreview}

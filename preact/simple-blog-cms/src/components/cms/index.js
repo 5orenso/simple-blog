@@ -693,7 +693,7 @@ export default class SimpleBlogCms extends Component {
 
         if (currentMenu === 'articles') {
             return (
-                <div class={`container-fluid ${styles.mainApp}`}>
+                <div class={`container-fluid p-0 ${styles.mainApp}`}>
                     <ProgressBar styles={styles} loadingProgress={this.state.loadingProgress} />
                     {renderedMenu}
                     {!article.id && <div class='d-flex justify-content-center'>
@@ -756,7 +756,7 @@ export default class SimpleBlogCms extends Component {
             );
         } else if (currentMenu === 'categories') {
             return (
-                <div class={`container-fluid ${styles.mainApp}`}>
+                <div class={`container-fluid p-0 ${styles.mainApp}`}>
                     <ProgressBar styles={styles} loadingProgress={this.state.loadingProgress} />
                     {renderedMenu}
 
@@ -795,7 +795,7 @@ export default class SimpleBlogCms extends Component {
             );
         } else if (currentMenu === 'images') {
             return (
-                <div class={`container-fluid ${styles.mainApp}`}>
+                <div class={`container-fluid p-0 ${styles.mainApp}`}>
                     <ProgressBar styles={styles} loadingProgress={this.state.loadingProgress} />
                     {renderedMenu}
 
