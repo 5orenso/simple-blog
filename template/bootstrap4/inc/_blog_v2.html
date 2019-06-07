@@ -44,7 +44,7 @@
             <div class="blog-post">
                 <h1>{{ article.title }}</h1>
                 <h5 class="blog-post-teaser">{{ article.teaser|safe }}</h5>
-                <p class="blog-post-meta">
+                <p class="blog-post-meta mt-1">
                     <small>
                         {% if article.published %}
                             {{ blog.textPublished || 'Publisert' }}: {{ article.published|asHumanReadable }}
@@ -78,6 +78,12 @@
                                 <a href="/v2/?tag={{ tag|asUrlSafe }}" class="badge badge-info">{{ tag }}</a>
                             {% endfor %}
                         {% endif %}
+                        <span class="float-right text-right">
+                            <a target="_blank" href="http://translate.google.com/translate?u={{ shareLink|asUrlSafe }}&hl=en&ie=UTF8&sl=no&tl=en" title="Translate to english"><span class="flag-icon flag-icon-gb"></span></a>
+                            <a target="_blank" href="http://translate.google.com/translate?u={{ shareLink|asUrlSafe }}&hl=de&ie=UTF8&sl=no&tl=de" title="Uberseztung ins Deutsch"><span class="flag-icon flag-icon-de"></span></a>
+                            <a target="_blank" href="http://translate.google.com/translate?u={{ shareLink|asUrlSafe }}&hl=fr&ie=UTF8&sl=no&tl=fr" title="Traduire en Français"><span class="flag-icon flag-icon-fr"></span></a>
+                        </span>
+
                     </small>
                 </p>
 
