@@ -57,7 +57,7 @@ function fixIotResults(iotResults) {
                 finalResult[device][type] = val[1].value;
             });
         }
-        console.log('finalResult', JSON.stringify(finalResult, null, 4));
+        // console.log('finalResult', JSON.stringify(finalResult, null, 4));
     }
 
     return finalResult;
