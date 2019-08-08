@@ -27,7 +27,7 @@ function fixIotResults(iotResults) {
             mainBucket.forEach((bucket) => {
                 if (tc.isObject(bucket[3].buckets)) {
                     const dataBuckets = bucket[3].buckets;
-                    console.log('dataBuckets', dataBuckets);
+                    // console.log('dataBuckets', dataBuckets);
                     // dataBuckets { 
                     //     Kontor: { '1': { value: 49.56250031789144 }, doc_count: 72 },
                     //     Soverom: { '1': { value: 58.35000038146973 }, doc_count: 8 },
@@ -36,7 +36,7 @@ function fixIotResults(iotResults) {
                     // }
                     Object.keys(dataBuckets).forEach((device) => {
                         const dataBucket = dataBuckets[device];
-                        console.log('dataBucket', dataBucket);
+                        // console.log('dataBucket', dataBucket);
 
                         if (!tc.isObject(finalResult[device])) {
                             finalResult[device] = {};
@@ -48,7 +48,9 @@ function fixIotResults(iotResults) {
                         let value;
                         if (tc.isNumber(dataBucket[1].value)) {
                             value = dataBucket[1].value;
-                        } else if (tc.isNumber(dataBucket[1].values[0].value)) {
+                        } else if (tc.isObject(dataBucket[1])
+                            && tc.isArray(dataBucket[1].values)
+                            && tc.isNumber(dataBucket[1].values[0].value)) {
                             value = dataBucket[1].values[0].value;
                         }
                         finalResult[device][type].push([bucket.key, value]);
@@ -71,7 +73,7 @@ function fixIotResults(iotResults) {
                 finalResult[device][type] = val[1].value;
             });
         }
-        console.log('finalResult', JSON.stringify(finalResult, null, 4));
+        // console.log('finalResult', JSON.stringify(finalResult, null, 4));
     }
 
     return finalResult;
