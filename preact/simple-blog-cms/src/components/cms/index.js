@@ -7,9 +7,11 @@ import ProgressBar from '../../../lib/components/progressbar';
 import Messages from '../../../lib/components/messages';
 import ArticleList from '../../../lib/components/articleList';
 import ImageList from '../../../lib/components/imageList';
+import IotList from '../../../lib/components/iotList';
 import CategoryList from '../../../lib/components/categoryList';
 import ArticleEdit from '../../../lib/components/articleEdit';
 import CategoryEdit from '../../../lib/components/categoryEdit';
+import IotEdit from '../../../lib/components/iotEdit';
 import Pagination from '../../../lib/components/pagination';
 
 const widgetName = 'simpleBlogCms';
@@ -28,6 +30,10 @@ const initialState = {
     image: {},
     imglist: [],
     imglistTotal: 0,
+
+    iot: {},
+    iotlist: [],
+    iotlistTotal: 0,
 
     category: {},
     catlist: [],
@@ -113,6 +119,27 @@ export default class SimpleBlogCms extends Component {
             .catch(error => this.addError(error.toString()));
     }
 
+    loadIotlist(currentPage = 1, $limit) {
+        const limit = $limit || this.state.articlesPerPage;
+        const offset = (currentPage - 1) * limit;
+        const { queryImage, filterQuery } = this.state;
+        const query = {
+            ...filterQuery,
+        };
+        if (queryImage.length > 0) {
+            query.query = queryImage;
+        }
+        util.fetchApi(`/api/iot/`, { ...query, limit, offset }, this)
+            .then((result) => {
+                // console.log('result', result);
+                this.setState({
+                    iotlist: result.iotlist,
+                    iotlistTotal: result.total,
+                });
+            })
+            .catch(error => this.addError(error.toString()));
+    }
+
     loadCatlist(currentPage = 1) {
         const limit = this.state.categoriesPerPage;
         const offset = (currentPage - 1) * this.state.categoriesPerPage;
@@ -154,6 +181,8 @@ export default class SimpleBlogCms extends Component {
             this.loadCatlist(currentPage);
         } else if (currentMenu === 'images') {
             this.loadImglist(currentPage);
+        } else if (currentMenu === 'iot') {
+            this.loadIotlist(currentPage);
         }
     }
 
@@ -262,6 +291,8 @@ export default class SimpleBlogCms extends Component {
             this.loadCatlist();
         } else if (currentMenu === 'images') {
             this.loadImglist();
+        } else if (currentMenu === 'iot') {
+            this.loadIotlist();
         }
     };
 
@@ -274,6 +305,12 @@ export default class SimpleBlogCms extends Component {
         event.preventDefault();
         console.log('handleCategoryEditBackClick');
         this.setState({ category: {} });
+    };
+
+    handleIotEditBackClick = (event) => {
+        event.preventDefault();
+        console.log('handleIotEditBackClick');
+        this.setState({ iot: {} });
     };
 
     handleArtlistClick = (event) => {
@@ -310,6 +347,19 @@ export default class SimpleBlogCms extends Component {
             .then((result) => {
                 this.setState({
                     category: result.category,
+                });
+            })
+            .catch(error => this.addError(error.toString()));
+    };
+
+    handleIotlistClick = (event) => {
+        event.preventDefault();
+        const trElement = event.target.closest('tr');
+        const artId = parseInt(trElement.dataset.id, 10);
+        util.fetchApi(`/api/iot/${artId}`, {}, this)
+            .then((result) => {
+                this.setState({
+                    iot: result.iot,
                 });
             })
             .catch(error => this.addError(error.toString()));
@@ -388,6 +438,41 @@ export default class SimpleBlogCms extends Component {
             .catch(error => this.addError(error.toString()));
     };
 
+    handleIotClickNew = (event, iot = {}) => {
+        event.preventDefault();
+        const data = {
+            method: 'POST',
+            ...iot,
+        }
+        // console.log('trying to save', this.state.category);
+        util.fetchApi(`/api/iot/`, data, this)
+            .then((result) => {
+                const iot = result;
+                const messages = this.state.messages;
+                messages.push([parseInt(new Date().getTime() / 1000, 10), 'Iot query opprettet']);
+                this.setState({ messages, iot });
+                this.loadIotlist();
+            })
+            .catch(error => this.addError(error.toString()));
+    };
+
+    handleIotClickSave = (event) => {
+        event.preventDefault();
+        const data = {
+            method: 'PATCH',
+            ...this.state.iot,
+        }
+        // console.log('trying to save', this.state.article);
+        util.fetchApi(`/api/iot/${this.state.iot.id}`, data, this)
+            .then((result) => {
+                const messages = this.state.messages;
+                messages.push([parseInt(new Date().getTime() / 1000, 10), 'Iot query oppdatert']);
+                this.setState({ messages });
+                this.loadIotlist();
+            })
+            .catch(error => this.addError(error.toString()));
+    };
+
     handleArticleTextareaInput = (event) => {
         // event.preventDefault();
         const el = event.target;
@@ -413,6 +498,19 @@ export default class SimpleBlogCms extends Component {
         const category = this.state.category;
         category[name] = el.value;
         this.setState({ category });
+    };
+
+    handleIotTextareaInput = (event) => {
+        event.preventDefault();
+        const el = event.target;
+        const name = el.name;
+        // let value = el.value;
+        // if (event.key) {
+        //     value += event.key;
+        // }
+        const iot = this.state.iot;
+        iot[name] = el.value;
+        this.setState({ iot });
     };
 
     articleInputAdd(name, value, type) {
@@ -565,6 +663,23 @@ export default class SimpleBlogCms extends Component {
         this.setState({ category });
     };
 
+    handleIotInput = (event) => {
+        event.preventDefault();
+        const el = event.target;
+        const name = el.name;
+        const iot = this.state.iot;
+        let value = el.value;
+        if (event.key) {
+            value += event.key;
+        }
+        if (typeof iot[name] === 'object' && Array.isArray(iot[name])) {
+            iot[name] = value.split(/, ?/);
+        } else {
+            iot[name] = value;
+        }
+        this.setState({ iot });
+    };
+
     handlePaginationClick = (event) => {
         event.preventDefault();
         const currentPage = Number(event.target.id);
@@ -659,6 +774,10 @@ export default class SimpleBlogCms extends Component {
             imglist,
             imglistTotal,
 
+            iot,
+            iotlist,
+            iotlistTotal,
+
             category,
             catlist,
             catlistTotal,
@@ -687,6 +806,8 @@ export default class SimpleBlogCms extends Component {
                         onClick={this.handleMenuClick} data-menu='categories'><i class="fas fa-folder-open"></i> Categories</a>
                     <a class={`nav-item nav-link ${currentMenu === 'images' ? 'active' : ''}`} href='#'
                         onClick={this.handleMenuClick} data-menu='images'><i class="fas fa-images"></i> Images</a>
+                    <a class={`nav-item nav-link ${currentMenu === 'iot' ? 'active' : ''}`} href='#'
+                        onClick={this.handleMenuClick} data-menu='iot'><i class="fas fa-temperature-low"></i> Iot</a>
                 </nav>
             );
         }
@@ -821,6 +942,47 @@ export default class SimpleBlogCms extends Component {
                             handlePaginationIncClick={this.handlePaginationIncClick}
                         />
                     </div>
+                </div>
+            );
+        } else if (currentMenu === 'iot') {
+            return (
+                <div class={`container-fluid p-0 ${styles.mainApp}`}>
+                    <ProgressBar styles={styles} loadingProgress={this.state.loadingProgress} />
+                    {renderedMenu}
+
+                    {!iot.id && <div class='d-flex justify-content-center'>
+                        <IotList styles={styles}
+                            that={this}
+                            imageId={iot.id}
+                            iotlist={iotlist}
+                            handleListClick={this.handleIotlistClick}
+                            handleClickNew={this.handleIotClickNew}
+                        />
+                    </div>}
+                    {!iot.id && <div class='d-flex justify-content-center'>
+                        <Pagination styles={styles}
+                            artlistTotal={iotlistTotal}
+                            currentPage={currentPage}
+                            articlesPerPage={categoriesPerPage}
+                            handlePaginationClick={this.handlePaginationClick}
+                            handlePaginationDecClick={this.handlePaginationDecClick}
+                            handlePaginationIncClick={this.handlePaginationIncClick}
+                        />
+                    </div>}
+                    {!iot.id && <div class='d-flex justify-content-center'>
+                        <Messages styles={styles} messages={messages} />
+                    </div>}
+                    {iot.id && <div class='d-flex justify-content-center'>
+                        <IotEdit styles={styles}
+                            iot={iot}
+                            messages={messages}
+                            handleInput={this.handleIotInput}
+                            handleTextareaInput={this.handleIotTextareaInput}
+                            handleClickSave={this.handleIotClickSave}
+                            handleClickNew={this.handleIotClickNew}
+                            handleClickBack={this.handleIotEditBackClick}
+                        />
+                    </div>}
                 </div>
             );
         }

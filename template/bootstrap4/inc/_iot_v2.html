@@ -1,0 +1,59 @@
+{% set isPhoto = false %}
+{% if file.path|match('photo') || file.path|match('film') %}
+    {% set isPhoto = true %}
+{% endif %}
+{% set baseHref = file.path|replace('/', '', 'g') %}
+{% if !page %}
+    {% set page = 1 %}
+{% endif %}
+{% set pageStart = page - 1 %}
+{% set pageStart = pageStart * limit %}
+
+    <div class='container-full'>
+        <div class='row'>
+            {% for bucket, value in iotResultsFixed %}
+                <div class='col-sm-3 text-center'>
+                    <span class='text-muted'>
+                        <i class='fas fa-temperature-low'></i> {{ bucket }}
+                    </span>
+                    <h2>{{ value.tempGauge|format(1) }}°C</h2>
+
+                    <div data-widget-host="simpleGraph">
+                        <script type="text/props">
+                          {
+                            "jsonData": "{{ value.simpleGraph|json|addslashes|raw }}",
+                            "width": 600,
+                            "height": 200,
+                            "yMax": 30,
+                            "tickCount": 3,
+                            "showYTicks": 1,
+                            "yTicks": "[\"30°C\",\"15°C\",\"0°C\"]",
+                            "paddingLeft": 20,
+                            "showXTicks": 1,
+                            
+                            "xTicks": "[\"48h\",\"24h\",\"0h\"]",
+                            "paddingBottom": 20
+                          }
+                        </script>
+                    </div>
+
+                </div>
+            {% endfor %}
+
+            <main class='col-sm-12 col-md-12 pt-3 blog-main'>
+                <h1>iotResultsFixed</h1>
+                <xmp>
+                    {{ iotResultsFixed|json(2)|raw }}
+                </xmp>
+            </main>
+            <main class='col-sm-12 col-md-12 pt-3 blog-main'>
+                <h1>iotlist</h1>
+                <xmp>
+                    {{ iotlist|json(2)|raw }}
+                </xmp>
+            </main>
+        </div>
+    </div>
+
+
+    <script type="text/javascript" src="/global/js/simple-graphs-0.1.0.js"></script>
