@@ -21,7 +21,9 @@
                     <div data-widget-host="simpleGraph">
                         <script type="text/props">
                           {
-                            "jsonData": "{{ value.simpleGraph|json|addslashes|raw }}",
+                            "jsonData": "{{ value.tempGraphSimpleGraph|json|addslashes|raw }}",
+                            "jsonData2": "{{ value.humidityGraphSimpleGraph|json|addslashes|raw }}",
+                            "jsonData3": "{{ value.pressureGraphSimpleGraph|json|addslashes|raw }}",
                             "width": 600,
                             "height": 200,
                             "yMax": 30,
@@ -41,6 +43,5 @@
             {% endfor %}
         </div>
     </div>
-
 
     <script type="text/javascript" src="/global/js/simple-graphs-0.1.0.js"></script>

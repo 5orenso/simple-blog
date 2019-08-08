@@ -27,24 +27,38 @@ function fixIotResults(iotResults) {
             mainBucket.forEach((bucket) => {
                 if (tc.isObject(bucket[3].buckets)) {
                     const dataBuckets = bucket[3].buckets;
+                    console.log('dataBuckets', dataBuckets);
+                    // dataBuckets { 
+                    //     Kontor: { '1': { value: 49.56250031789144 }, doc_count: 72 },
+                    //     Soverom: { '1': { value: 58.35000038146973 }, doc_count: 8 },
+                    //     Stue: { '1': { value: 52.29999923706055 }, doc_count: 5 },
+                    //     Ute: { '1': { value: 65.9000015258789 }, doc_count: 6 }
+                    // }
                     Object.keys(dataBuckets).forEach((device) => {
                         const dataBucket = dataBuckets[device];
+                        console.log('dataBucket', dataBucket);
+
                         if (!tc.isObject(finalResult[device])) {
                             finalResult[device] = {};
                         }
                         if (!tc.isArray(finalResult[device][type])) {
                             finalResult[device][type] = [];
-                            finalResult[device].simpleGraph = [];
+                            finalResult[device][`${type}SimpleGraph`] = [];
                         }
-                        finalResult[device][type].push([bucket.key, dataBucket[1].values[0].value]);
-                        if (tc.isNumber(dataBucket[1].values[0].value)) {
-                            finalResult[device].simpleGraph.push({
-                                x: finalResult[device].simpleGraph.length,
-                                y: dataBucket[1].values[0].value,
+                        let value;
+                        if (tc.isNumber(dataBucket[1].value)) {
+                            value = dataBucket[1].value;
+                        } else if (tc.isNumber(dataBucket[1].values[0].value)) {
+                            value = dataBucket[1].values[0].value;
+                        }
+                        finalResult[device][type].push([bucket.key, value]);
+                        if (tc.isNumber(value)) {
+                            finalResult[device][`${type}SimpleGraph`].push({
+                                x: finalResult[device][`${type}SimpleGraph`].length,
+                                y: value,
                             });
                         }
                     });
-                    // console.log('dataBuckets', dataBuckets);
                 }
             });
         } else {
@@ -57,7 +71,7 @@ function fixIotResults(iotResults) {
                 finalResult[device][type] = val[1].value;
             });
         }
-        // console.log('finalResult', JSON.stringify(finalResult, null, 4));
+        console.log('finalResult', JSON.stringify(finalResult, null, 4));
     }
 
     return finalResult;
