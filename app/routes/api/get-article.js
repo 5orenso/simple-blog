@@ -16,6 +16,7 @@ const fields = {
     updatedDate: 1,
     author: 1,
     category: 1,
+    categoryId: 1,
     title: 1,
     teaser: 1,
     ingress: 1,

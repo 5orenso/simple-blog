@@ -4,19 +4,17 @@
  * Copyright (c) 2019 Øistein Sørensen
  * Licensed under the MIT license.
  */
+
 'use strict';
 
-const { routeName, routePath, run, webUtil, utilHtml } = require('../../middleware/init')({ __filename, __dirname });
+const { run, webUtil, utilHtml } = require('../../middleware/init')({ __filename, __dirname });
 const Article = require('../../../lib/class/article');
 
 module.exports = async (req, res) => {
-    const { hrstart, runId }  = run(req);
+    run(req);
 
     const art = new Article();
-
-    let query = {
-        id: req.params.id,
-    };
+    const query = { id: req.params.id };
 
     let apiContent;
     if (query.id) {
@@ -37,7 +35,7 @@ module.exports = async (req, res) => {
         apiContent = await art.save(updateArticle);
         return utilHtml.renderApi(req, res, 202, apiContent);
     }
-    utilHtml.renderApi(req, res, 404, {
+    return utilHtml.renderApi(req, res, 404, {
         params: req.params,
         error: 'Article not found',
     });

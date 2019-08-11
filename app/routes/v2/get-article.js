@@ -4,6 +4,7 @@
  * Copyright (c) 2019 Øistein Sørensen
  * Licensed under the MIT license.
  */
+
 'use strict';
 
 const { routeName, routePath, run, webUtil, utilHtml } = require('../../middleware/init')({ __filename, __dirname });
@@ -12,7 +13,7 @@ const Article = require('../../../lib/class/article');
 const Category = require('../../../lib/class/category');
 
 module.exports = async (req, res) => {
-    const { hrstart, runId }  = run(req);
+    const { hrstart, runId } = run(req);
 
     const art = new Article();
     const cat = new Category();
@@ -21,30 +22,35 @@ module.exports = async (req, res) => {
     let isCategoryView = false;
     let previousArticle;
     let nextArticle;
-    const query = {
-        status: 2,
-    };
+    let category;
+
+    const query = { status: 2 };
+    const queryList = { status: 2 };
+    let queryCategory = {};
+
     if (req.session.email) {
         delete query.status;
     }
+
+    if (req.params.category) {
+        isCategoryView = true;
+        queryCategory = {
+            $or: [
+                { title: req.params.category },
+                { url: { $regex: new RegExp(req.params.category) } },
+            ],
+        };
+        category = await cat.findOne(queryCategory);
+        queryList.categoryId = category.id;
+        query.categoryId = category.id;
+    }
+
     if (req.params.id) {
         isDetailView = true;
         query.id = parseInt(req.params.id, 10);
     } else if (req.params.filename) {
         isDetailView = true;
         query.filename = req.params.filename;
-    } else if (req.params.category) {
-        query.category = req.params.category;
-    }
-
-    const queryList = {
-        status: 2,
-    };
-    const queryCategory = {};
-    if (req.params.category) {
-        isCategoryView = true;
-        queryList.category = req.params.category;
-        queryCategory.title = req.params.category;
     }
 
     const page = parseInt(req.query.page, 10);
@@ -61,16 +67,15 @@ module.exports = async (req, res) => {
     if (isDetailView) {
         const currentIdx = artlist.findIndex(x => x.id === article.id);
         if (typeof artlist[currentIdx - 1] === 'object') {
-            previousArticle = artlist[currentIdx - 1]
+            previousArticle = artlist[currentIdx - 1];
         }
         if (typeof artlist[currentIdx + 1] === 'object') {
-            nextArticle = artlist[currentIdx + 1]
+            nextArticle = artlist[currentIdx + 1];
         }
     }
 
     const artlistTotal = await art.count(queryList);
 
-    const category = await cat.findOne(queryCategory);
     const catlist = await cat.find();
 
     article.body = utilHtml.replaceDataTags(article.body || '', article);

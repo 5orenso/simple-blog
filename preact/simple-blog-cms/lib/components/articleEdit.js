@@ -363,6 +363,10 @@ export default class ArticleEdit extends Component {
                                             name: 'category',
                                             value: '',
                                         });
+                                        handleInput(e, {
+                                            name: 'categoryId',
+                                            value: 0,
+                                        });
                                     }}
                                 >
                                     Alle
@@ -376,6 +380,10 @@ export default class ArticleEdit extends Component {
                                             handleInput(e, {
                                                 name: 'category',
                                                 value: cat.title,
+                                            });
+                                            handleInput(e, {
+                                                name: 'categoryId',
+                                                value: cat.id,
                                             });
                                         }}
                                     >

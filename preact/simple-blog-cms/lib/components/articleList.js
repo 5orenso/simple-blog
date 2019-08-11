@@ -175,11 +175,12 @@ export default class ArticleList extends Component {
                                 <td>
                                     {art.img && Array.isArray(art.img) && art.img[0] && (
                                         <span class='text-muted'>
-                                            <img src={`${this.imageServer}/pho/${art.img[0].src}?w=150`} style='max-height: 50px;' class='img-fluid' /> ({art.img.length})
+                                            <img src={`${this.imageServer}/pho/${art.img[0].src}?w=150`} style='max-height: 50px;' class='img-fluid' /> 
+                                            <span class='text-muted'>({art.img.length})</span>
                                         </span>
                                     )}
                                 </td>
-                                <td>{art.category}</td>
+                                <td>{art.category} <span class='text-muted'>({art.categoryId})</span></td>
                                 <td>
                                     {art.title}<br />
                                     <small>
