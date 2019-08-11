@@ -28,7 +28,7 @@ function fixIotResults(iotResults) {
                 if (tc.isObject(bucket[3].buckets)) {
                     const dataBuckets = bucket[3].buckets;
                     // console.log('dataBuckets', dataBuckets);
-                    // dataBuckets { 
+                    // dataBuckets {
                     //     Kontor: { '1': { value: 49.56250031789144 }, doc_count: 72 },
                     //     Soverom: { '1': { value: 58.35000038146973 }, doc_count: 8 },
                     //     Stue: { '1': { value: 52.29999923706055 }, doc_count: 5 },

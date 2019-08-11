@@ -199,7 +199,7 @@
                         {% set art = previousArticle %}
     					<div class="col-4">
                             <div class="post-thumb">
-                                <a href="/v2/{{ art.category }}/{{ art.title|asLinkPart }}/{{ art.id }}">
+                                <a href="/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}">
                                     {% if art.img[0] %}
                                         <img src="/pho/{{ art.img[0].src }}?w=800" alt="{{ art.title|e }}" class="img-fluid rounded"><br clear="all">
                                     {% else %}
@@ -219,7 +219,7 @@
                                     {% endif %}
                                 </a>
                             </div>
-                            <a class="btn btn-outline-primary" href="/v2/{{ art.category }}/{{ art.title|asLinkPart }}/{{ art.id }}">{{ blog.newerHeader || '👈 Newer' }}</a>
+                            <a class="btn btn-outline-primary" href="/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}">{{ blog.newerHeader || '👈 Newer' }}</a>
     					</div>
                     {% else %}
                         <div class="col-4">
@@ -229,7 +229,7 @@
                         {% set art = nextArticle %}
     					<div class="col-4 text-right">
                             <div class="post-thumb align-items-center">
-                                <a href="/v2/{{ art.category }}/{{ art.title|asLinkPart }}/{{ art.id }}">
+                                <a href="/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}">
                                     {% if art.img[0] %}
                                         <img src="/pho/{{ art.img[0].src }}?w=800" alt="{{ art.title|e }}" class="img-fluid rounded"><br clear="all">
                                     {% else %}
@@ -249,7 +249,7 @@
                                     {% endif %}
                                 </a>
                             </div>
-                            <a class="btn btn-outline-primary" href="/v2/{{ art.category }}/{{ art.title|asLinkPart }}/{{ art.id }}">{{ blog.olderHeader || 'Older 👉' }}</a>
+                            <a class="btn btn-outline-primary" href="/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}">{{ blog.olderHeader || 'Older 👉' }}</a>
     					</div>
                     {% endif %}
 				</div>
@@ -283,13 +283,13 @@
                         {% for art in artlist %}
                             {% if loop.index < limit %}
                                 <div class="col-6 col-sm-12 col-md-12 thumb p-2">
-                                    <a href="/v2/{{ art.category }}/{{ art.title|asLinkPart }}/{{ art.id }}" title="{{ art.title|e }} - {{ art.teaser|e }}">
+                                    <a href="/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}" title="{{ art.title|e }} - {{ art.teaser|e }}">
                                         {% if art.img[0] %}
                                             <img src="/pho/{{ art.img[0].src }}?w=250" alt="{{ art.title|e }} - {{ art.teaser|e }}" class="img-fluid rounded"><br clear="all">
                                         {% endif %}
                                     </a>
                                     <h6>
-                                        <a href="/v2/{{ art.category }}/{{ art.title|asLinkPart }}/{{ art.id }}" title="{{ art.title|e }} - {{ art.teaser|e }}">
+                                        <a href="/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}" title="{{ art.title|e }} - {{ art.teaser|e }}">
                                             📎 {{ art.title }}
                                         </a>
                                     </h6>
