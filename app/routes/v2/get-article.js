@@ -7,6 +7,7 @@
 
 'use strict';
 
+const tc = require('fast-type-check');
 const { routeName, routePath, run, webUtil, utilHtml } = require('../../middleware/init')({ __filename, __dirname });
 
 const Article = require('../../../lib/class/article');
@@ -78,8 +79,10 @@ module.exports = async (req, res) => {
 
     const catlist = await cat.find();
 
-    article.body = utilHtml.replaceDataTags(article.body || '', article);
-    utilHtml.runPlugins(article);
+    if (tc.isObject(article)) {
+        article.body = utilHtml.replaceDataTags(article.body || '', article);
+        utilHtml.runPlugins(article);
+    }
 
     const template = (req.params.id || req.params.filename) ? '/bootstrap4/blog_v2.html' : '/bootstrap4/index_v2.html';
 

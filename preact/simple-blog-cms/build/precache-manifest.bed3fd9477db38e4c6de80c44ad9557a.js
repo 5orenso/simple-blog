@@ -4,7 +4,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/preact/simple-blog-cms/assets/icon.png"
   },
   {
-    "revision": "1d74fcba2f1cfc6abce5",
+    "revision": "22d0d804d4f0f415507d",
     "url": "/preact/simple-blog-cms/bundle.js"
   },
   {
@@ -12,7 +12,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/preact/simple-blog-cms/favicon.ico"
   },
   {
-    "revision": "cabd33e22171fb4f7d8d147f8ff5caaa",
+    "revision": "efa3b92d1015d7b2b949ebb30a06d801",
     "url": "/preact/simple-blog-cms/index.html"
   }
 ]);

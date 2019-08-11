@@ -4,9 +4,10 @@
  * Copyright (c) 2019 Øistein Sørensen
  * Licensed under the MIT license.
  */
+
 'use strict';
 
-const { routeName, routePath, run, webUtil, utilHtml, util } = require('../../middleware/init')({ __filename, __dirname });
+const { run, webUtil, utilHtml, util } = require('../../middleware/init')({ __filename, __dirname });
 const Article = require('../../../lib/class/article');
 
 const fields = {
@@ -15,6 +16,7 @@ const fields = {
     published: 1,
     updatedDate: 1,
     author: 1,
+    sort: 1,
     category: 1,
     categoryId: 1,
     title: 1,
@@ -35,7 +37,7 @@ const fields = {
 };
 
 module.exports = async (req, res) => {
-    const { hrstart, runId }  = run(req);
+    run(req);
 
     const art = new Article();
 
@@ -58,8 +60,7 @@ module.exports = async (req, res) => {
     }
 
     let apiContent;
-    let total;
-    let data = {};
+    const data = {};
     if (req.query.query) {
         const { list, total } = await art.search(req.query.query, {}, { limit, skip, query });
         data.artlist = list;
@@ -70,7 +71,7 @@ module.exports = async (req, res) => {
     } else {
         apiContent = await art.find(query, fields, { limit, skip });
         data.artlist = apiContent;
-        total = await art.count(query);
+        const total = await art.count(query);
         data.total = total;
     }
 

@@ -343,7 +343,7 @@ export default class ArticleEdit extends Component {
 
                     </div>
                 </div>
-                <div class='col-6'>
+                <div class='col-4'>
                     <div class='form-group'>
                         <label for='categoryInput' class='text-white-50'>Kategori</label>
                         <div class='dropdown'>
@@ -392,6 +392,17 @@ export default class ArticleEdit extends Component {
                                 )}
                             </div>
                         </div>
+                    </div>
+                </div>
+                <div class='col-2'>
+                    <div class='form-group'>
+                        <label for='sortInput' class='text-white-50'>
+                            Sortering <i class="fas fa-sort-numeric-up-alt"></i>
+                        </label>
+                        <input type='text' class='form-control' id='sortInput' placeholder=''
+                            name='sort'
+                            onInput={handleInput}
+                            value={article.sort} />
                     </div>
                 </div>
                 <div class='col-4'>

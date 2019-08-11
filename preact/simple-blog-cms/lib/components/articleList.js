@@ -159,6 +159,7 @@ export default class ArticleList extends Component {
                     <thead>
                         <tr>
                             <th scope='col'>#</th>
+                            <th scope='col'>Sort</th>
                             <th scope='col'>Bilde</th>
                             <th scope='col'>Kategori</th>
                             <th scope='col'>Tittel</th>
@@ -172,6 +173,7 @@ export default class ArticleList extends Component {
                         {artlist.map(art =>
                             <tr data-id={art.id} class={articleId == art.id ? 'bg-primary text-white' : ''} onClick={handleListClick}>
                                 <td scope='row'>{art.id}</td>
+                                <td scope='row'>{art.sort}</td>
                                 <td>
                                     {art.img && Array.isArray(art.img) && art.img[0] && (
                                         <span class='text-muted'>
