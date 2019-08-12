@@ -397,7 +397,7 @@ export default class ArticleEdit extends Component {
                 <div class='col-2'>
                     <div class='form-group'>
                         <label for='sortInput' class='text-white-50'>
-                            Sortering <i class="fas fa-sort-numeric-up-alt"></i>
+                            Sortering <i class='fas fa-sort-numeric-up-alt'></i>
                         </label>
                         <input type='text' class='form-control' id='sortInput' placeholder=''
                             name='sort'
@@ -422,6 +422,13 @@ export default class ArticleEdit extends Component {
                             name='title'
                             onInput={handleInput}
                             value={article.title} />
+                    </div>
+                    <div class='form-group'>
+                        <label for='urlInput' class='text-white-50'>URL</label>
+                        <input type='text' class='form-control' id='urlInput' placeholder='Link'
+                            name='url'
+                            onInput={handleInput}
+                            value={article.url} />
                     </div>
                     <div class='form-group'>
                         <label for='teaserInput' class='text-white-50'>Teaser</label>

@@ -17,6 +17,9 @@ module.exports = async (req, res) => {
     const { hrstart, runId } = run(req);
 
     const art = new Article();
+    const artAds = new Article();
+    const catMenu = new Category();
+    const catAds = new Category();
     const cat = new Category();
 
     let isDetailView = false;
@@ -45,6 +48,11 @@ module.exports = async (req, res) => {
         queryList.categoryId = category.id;
         query.categoryId = category.id;
     }
+
+    const contentCatlist = await cat.find({ type: { $nin: [2, 3] } });
+    queryList.categoryId = { $in: contentCatlist.map(c => c.id) };
+
+    const catlist = await catMenu.find({ menu: 1 });
 
     if (req.params.id) {
         isDetailView = true;
@@ -77,12 +85,13 @@ module.exports = async (req, res) => {
 
     const artlistTotal = await art.count(queryList);
 
-    const catlist = await cat.find();
-
     if (tc.isObject(article)) {
         article.body = utilHtml.replaceDataTags(article.body || '', article);
         utilHtml.runPlugins(article);
     }
+
+    const adcats = await catAds.find({ type: 2 });
+    const adlist = await artAds.find({ categoryId: { $in: adcats.map(c => c.id) } });
 
     const template = (req.params.id || req.params.filename) ? '/bootstrap4/blog_v2.html' : '/bootstrap4/index_v2.html';
 
@@ -94,6 +103,7 @@ module.exports = async (req, res) => {
         artlistTotal,
         category,
         catlist,
+        adlist,
         limit,
         page,
         skip,

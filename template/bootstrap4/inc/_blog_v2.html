@@ -272,6 +272,27 @@
                     {{ author.description }}
                 </p>
             </div>
+
+            <div class="sidebar-module">
+                <div class="container-fluid">
+                    <span class="text-muted"><small>Annonser:</small></span>
+                    <div class="row">
+                        {% set limit = 20 %}
+                        {% for art in adlist %}
+                            {% if loop.index < limit %}
+                                <div class="col-6 col-sm-12 col-md-12 thumb p-2">
+                                    <a target="_blank" href="{{ art.url }}" title="{{ art.title|e }} - {{ art.teaser|e }}">
+                                        {% if art.img[0] %}
+                                            <img src="/pho/{{ art.img[0].src }}?w=250" alt="{{ art.title|e }} - {{ art.teaser|e }}" class="img-fluid"><br clear="all">
+                                        {% endif %}
+                                    </a>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
             <div class="sidebar-module">
                 {% include '_elsewhere.html' %}
             </div>

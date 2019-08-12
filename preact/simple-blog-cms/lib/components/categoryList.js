@@ -5,6 +5,13 @@ import util from '../util';
 const initialState = {};
 const debug = false;
 
+const typeList = [
+    { value: 1, title: 'Generell' },
+    { value: 2, title: 'Annonse' },
+    { value: 3, title: 'Bildegalleri' },
+    { value: 4, title: 'Lenker' },
+];
+
 export default class CategoryList extends Component {
     constructor(props) {
         super(props);
@@ -32,6 +39,9 @@ export default class CategoryList extends Component {
                         <thead>
                             <tr>
                                 <th scope='col'>#</th>
+                                <th scope='col'>Type</th>
+                                <th scope='col'>Meny</th>
+                                <th scope='col'>Sort</th>
                                 <th scope='col'>Tittel</th>
                                 <th scope='col'>Opprettet</th>
                                 <th scope='col'>URL</th>
@@ -41,6 +51,11 @@ export default class CategoryList extends Component {
                     {catlist.map(cat =>
                         <tr data-id={cat.id} onClick={handleListClick}>
                             <td scope='row'>{cat.id}</td>
+                            <td>
+                                {cat.type ? typeList.find(x => x.value === cat.type).title : ''}
+                            </td>
+                            <td>{cat.menu && 'Ja'}</td>
+                            <td>{cat.sort}</td>
                             <td>{cat.title}</td>
                             <td>
                                 {util.isoDateNormalized(cat.createdDate)}<br />

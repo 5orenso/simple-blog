@@ -646,13 +646,17 @@ export default class SimpleBlogCms extends Component {
         this.handleImageSearchClick(event, 0, filterQuery);
     };
 
-    handleCategoryInput = (event) => {
+    handleCategoryInput = (event, opt = {}) => {
         event.preventDefault();
-        const el = event.target;
-        const name = el.name;
         const category = this.state.category;
+        const el = event.target;
+        let name = el.name;
         let value = el.value;
-        if (event.key) {
+
+        if (opt.name && opt.value) {
+            name = opt.name;
+            value = opt.value;
+        } else if (event.key) {
             value += event.key;
         }
         if (typeof category[name] === 'object' && Array.isArray(category[name])) {
