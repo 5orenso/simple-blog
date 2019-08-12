@@ -76,7 +76,8 @@ module.exports = async (req, res) => {
 
     if (!isDetailView && artlist.length === 1) {
         const myArt = artlist[0];
-        return res.redirect(302, `/v2/${utilHtml.asLinkPart(myArt.category)}/${utilHtml.asLinkPart(myArt.title)}/${myArt.id}`);
+        return res.redirect(302,
+            `/v2/${utilHtml.asLinkPart(myArt.category)}/${utilHtml.asLinkPart(myArt.title)}/${myArt.id}`);
     }
 
     if (isDetailView) {
@@ -104,7 +105,7 @@ module.exports = async (req, res) => {
 
     const template = (req.params.id || req.params.filename) ? '/bootstrap4/blog_v2.html' : '/bootstrap4/index_v2.html';
 
-    webUtil.sendResultResponse(req, res, {
+    return webUtil.sendResultResponse(req, res, {
         article,
         previousArticle,
         nextArticle,
