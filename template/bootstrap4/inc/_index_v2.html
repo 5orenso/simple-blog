@@ -148,6 +148,9 @@
                                 {% if s <= total %}
                                     <li class="page-item {% if p == page %}active{% endif %}"><a class="page-link" href="{{ file.path }}?page={{ p }}{% if queryString.tag %}&tag={{ queryString.tag }}{% endif %}" title="{{ s }}-{{ e }}">{{ p }}</a></li>
                                 {% endif %}
+                                <small class="text-muted font-weight-lighter">
+                                    if s <= total: {{ s }} <= {{ total }}
+                                </small>
                             {% endfor %}
 
                             {% set end = page * limit %}
@@ -157,7 +160,9 @@
                             {% endif %}
                         {% endif %}
                     </ul>
-                    <small class="text-muted font-weight-lighter">Totalt: {{ artlistTotal }}</small>
+                    <small class="text-muted font-weight-lighter">
+                        Totalt: {{ artlistTotal }}, limit: {{ limit }}, page: {{ page }}
+                    </small>
                 </nav>
 
             </main>
