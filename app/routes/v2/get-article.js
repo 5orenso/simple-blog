@@ -31,6 +31,7 @@ module.exports = async (req, res) => {
     const query = { status: 2 };
     const queryList = { status: 2 };
     let queryCategory = {};
+    let queryAds = {};
 
     if (req.session.email) {
         delete query.status;
@@ -81,6 +82,9 @@ module.exports = async (req, res) => {
         if (typeof artlist[currentIdx + 1] === 'object') {
             nextArticle = artlist[currentIdx + 1];
         }
+        queryAds = { type: 2 };
+    } else {
+        queryAds = { type: 3 };
     }
 
     const artlistTotal = await art.count(queryList);
@@ -90,8 +94,8 @@ module.exports = async (req, res) => {
         utilHtml.runPlugins(article);
     }
 
-    const adcats = await catAds.find({ type: 2 });
-    const adlist = await artAds.find({ categoryId: { $in: adcats.map(c => c.id) } });
+    const adcats = await catAds.find(queryAds);
+    const adlist = await artAds.find({ status: 2, categoryId: { $in: adcats.map(c => c.id) } });
 
     const template = (req.params.id || req.params.filename) ? '/bootstrap4/blog_v2.html' : '/bootstrap4/index_v2.html';
 

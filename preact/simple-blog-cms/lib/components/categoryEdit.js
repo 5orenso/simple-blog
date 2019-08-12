@@ -14,9 +14,10 @@ const editMode = 'textarea'; // div
 
 const typeList = [
     { value: 1, title: 'Generell' },
-    { value: 2, title: 'Annonse' },
-    { value: 3, title: 'Bildegalleri' },
-    { value: 4, title: 'Lenker' },
+    { value: 2, title: 'Annonse i artikler' },
+    { value: 3, title: 'Annonse på forsiden' },
+    { value: 4, title: 'Bildegalleri' },
+    { value: 5, title: 'Lenker' },
 ];
 
 export default class CategoryEdit extends Component {

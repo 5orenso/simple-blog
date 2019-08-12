@@ -260,38 +260,41 @@
         </div><!-- /.blog-main -->
 
         <div class="col-sm-3 offset-sm-1 blog-sidebar">
-            <div class="sidebar-module sidebar-module-inset">
-                <h4>{{ blog.whoHeader || 'Skrevet av' }}:</h4>
-                {% set author = blog.author.fallback %}
-                {% if blog.author[article.author] %}
-                    {% set author = blog.author[article.author] %}
-                {% endif %}
-                <p>
-                    <img src="{{ author.imageLarge }}" alt="{{ author.nameFull }}" class="img-fluid rounded">
-                    <h2>{{ author.nameFull }}</h2>
-                    {{ author.description }}
-                </p>
-            </div>
+            {% if article.author %}
+                <div class="sidebar-module sidebar-module-inset">
+                    <h4>{{ blog.whoHeader || 'Skrevet av' }}:</h4>
+                    {% set author = blog.author.fallback %}
+                    {% if blog.author[article.author] %}
+                        {% set author = blog.author[article.author] %}
+                    {% endif %}
+                    <p>
+                        <img src="{{ author.imageLarge }}" alt="{{ author.nameFull }}" class="img-fluid rounded">
+                        <h2>{{ author.nameFull }}</h2>
+                        {{ author.description }}
+                    </p>
+                </div>
+            {% endif %}
 
-            <div class="sidebar-module">
-                <div class="container-fluid">
-                    <span class="text-muted"><small>Annonser:</small></span>
-                    <div class="row">
-                        {% set limit = 20 %}
-                        {% for art in adlist %}
-                            {% if loop.index < limit %}
-                                <div class="col-6 col-sm-12 col-md-12 thumb p-2">
-                                    <a target="_blank" href="{{ art.url }}" title="{{ art.title|e }} - {{ art.teaser|e }}">
-                                        {% if art.img[0] %}
-                                            <img src="/pho/{{ art.img[0].src }}?w=250" alt="{{ art.title|e }} - {{ art.teaser|e }}" class="img-fluid"><br clear="all">
-                                        {% endif %}
-                                    </a>
-                                </div>
-                            {% endif %}
-                        {% endfor %}
+            {% if adlist[0] %}
+                <div class="sidebar-module">
+                    <div class="container-fluid p-0">
+                        <div class="row">
+                            {% set limit = 20 %}
+                            {% for art in adlist %}
+                                {% if loop.index < limit %}
+                                    <div class="col-12 mb-2">
+                                        <a target="_blank" href="{{ art.url }}" title="{{ art.title|e }} - {{ art.teaser|e }}">
+                                            {% if art.img[0] %}
+                                                <img src="/pho/{{ art.img[0].src }}?w=250" alt="{{ art.title|e }} - {{ art.teaser|e }}" class="img-fluid"><br clear="all">
+                                            {% endif %}
+                                        </a>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
                     </div>
                 </div>
-            </div>
+            {% endif %}
 
             <div class="sidebar-module">
                 {% include '_elsewhere.html' %}
