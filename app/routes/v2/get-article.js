@@ -75,8 +75,8 @@ module.exports = async (req, res) => {
     const artlist = await art.find(queryList, {}, { limit, skip });
 
     if (!isDetailView && artlist.length === 1) {
-        const art = artlist[0];
-        res.redirect(302, `/v2/${utilHtml.asLinkPart(art.category)}/${utilHtml.asLinkPart(art.title)}/${art.id}`);
+        const myArt = artlist[0];
+        return res.redirect(302, `/v2/${utilHtml.asLinkPart(myArt.category)}/${utilHtml.asLinkPart(myArt.title)}/${myArt.id}`);
     }
 
     if (isDetailView) {
