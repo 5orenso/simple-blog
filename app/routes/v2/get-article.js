@@ -47,10 +47,10 @@ module.exports = async (req, res) => {
         category = await cat.findOne(queryCategory);
         queryList.categoryId = category.id;
         query.categoryId = category.id;
+    } else {
+        const contentCatlist = await cat.find({ type: { $nin: [2, 3] } });
+        queryList.categoryId = { $in: contentCatlist.map(c => c.id) };
     }
-
-    const contentCatlist = await cat.find({ type: { $nin: [2, 3] } });
-    queryList.categoryId = { $in: contentCatlist.map(c => c.id) };
 
     const catlist = await catMenu.find({ menu: 1 });
 
