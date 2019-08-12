@@ -77,9 +77,9 @@
     <div class="container">
         {% if adlist[0] %}
             <div class="row">
-                {% set limit = 20 %}
+                {% set adLimit = 20 %}
                 {% for art in adlist %}
-                    {% if loop.index < limit %}
+                    {% if loop.index < adLimit %}
                         <div class="col-2 mb-2 d-flex align-items-center">
                             {% if art.url %}
                                 <a target="_blank" href="{{ art.url }}" title="{{ art.title|e }} - {{ art.teaser|e }}">
@@ -132,7 +132,7 @@
                 </div>
 
                 <nav aria-label="Page navigation">
-                    <ul class="pagination">
+                    <ul class="pagination d-flex justify-content-center">
                         {% set pages = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20] %}
                         {% set total = artlistTotal %}
                         {% if total > 1 %}
@@ -148,9 +148,6 @@
                                 {% if s <= total %}
                                     <li class="page-item {% if p == page %}active{% endif %}"><a class="page-link" href="{{ file.path }}?page={{ p }}{% if queryString.tag %}&tag={{ queryString.tag }}{% endif %}" title="{{ s }}-{{ e }}">{{ p }}</a></li>
                                 {% endif %}
-                                <small class="text-muted font-weight-lighter">
-                                    if s <= total: {{ s }} <= {{ total }}
-                                </small>
                             {% endfor %}
 
                             {% set end = page * limit %}
@@ -160,10 +157,13 @@
                             {% endif %}
                         {% endif %}
                     </ul>
-                    <small class="text-muted font-weight-lighter">
-                        Totalt: {{ artlistTotal }}, limit: {{ limit }}, page: {{ page }}
-                    </small>
                 </nav>
+
+                <div class=" text-center">
+                    <small class="text-muted font-weight-lighter">
+                        Totalt: {{ artlistTotal }}
+                    </small>
+                </div>
 
             </main>
         </div>
