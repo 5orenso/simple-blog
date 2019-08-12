@@ -54,7 +54,7 @@ export default class CategoryList extends Component {
                             <td>
                                 {cat.type ? typeList.find(x => x.value === cat.type).title : ''}
                             </td>
-                            <td>{cat.menu && 'Ja'}</td>
+                            <td>{cat.menu ? 'Ja' : 'Nei'}</td>
                             <td>{cat.sort}</td>
                             <td>{cat.title}</td>
                             <td>

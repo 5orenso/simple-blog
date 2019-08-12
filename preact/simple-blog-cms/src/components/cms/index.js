@@ -653,7 +653,7 @@ export default class SimpleBlogCms extends Component {
         let name = el.name;
         let value = el.value;
 
-        if (opt.name && opt.value) {
+        if (opt.name && opt.value >= 0) {
             name = opt.name;
             value = opt.value;
         } else if (event.key) {

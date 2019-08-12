@@ -143,10 +143,16 @@ export default class CategoryEdit extends Component {
                             <label for='menuInput'>Meny</label>
                             <input type='checkbox' class='form-control' id='menuInput'
                                 name='menu'
-                                onInput={handleInput}
-                                value={1} 
-                                checked={category.menu && 'checked'} />
+                                onInput={e => {
+                                    handleInput(e, {
+                                        name: 'menu',
+                                        value: category.menu ? 0 : 1,
+                                    });
+                                }}
+                                value={1}
+                                checked={category.menu === 1 ? 'checked' : ''} />
                         </div>
+                        
 
                         <div class='form-group'>
                             <label for='urlInput'>URL</label>
