@@ -74,6 +74,11 @@ module.exports = async (req, res) => {
     const article = await art.findOne(query);
     const artlist = await art.find(queryList, {}, { limit, skip });
 
+    if (!isDetailView && artlist.length === 1) {
+        const art = artlist[0];
+        res.redirect(302, `/v2/${utilHtml.asLinkPart(art.category)}/${utilHtml.asLinkPart(art.title)}/${art.id}`);
+    }
+
     if (isDetailView) {
         const currentIdx = artlist.findIndex(x => x.id === article.id);
         if (typeof artlist[currentIdx - 1] === 'object') {

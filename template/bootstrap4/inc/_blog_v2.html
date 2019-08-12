@@ -193,11 +193,11 @@
                 </div>
             </div><!-- /.blog-post -->
 
-            <nav class="blog-pagination">
+            <nav class="blog-pagination post-content">
                 <div class="row justify-content-between"><!--blog next previous-->
                     {% if previousArticle %}
                         {% set art = previousArticle %}
-    					<div class="col-4">
+    					<div class="col-4 artlist">
                             <div class="post-thumb">
                                 <a href="/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}">
                                     {% if art.img[0] %}
@@ -219,6 +219,23 @@
                                     {% endif %}
                                 </a>
                             </div>
+                            <div class='text-left'>
+                                <h6 class='mb-1'>
+                                    <a href="/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}" title="{{ art.title|e }} - {{ art.teaser|e }}">
+                                        {{ art.title }}
+                                    </a>
+                                </h6>
+                                {% if art.teaser %}
+                                    <p class='mb-1'>{{ art.teaser|raw }}</p>
+                                {% endif %}
+                                <div class="d-flex justify-content-left text-muted">
+                                    <small class='font-weight-lighter mr-2'>
+                                        <a href="/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}" class="post-cat text-muted">{{ art.category }}</a>
+                                    </small>
+                                    <small class='font-weight-lighter mr-2'>/</small>
+                                    <small class='font-weight-lighter mr-2'>{{ art.published|asHumanReadable }}</small>
+                                </div>
+                            </div>
                             <a class="btn btn-outline-primary" href="/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}">{{ blog.newerHeader || '👈 Newer' }}</a>
     					</div>
                     {% else %}
@@ -227,7 +244,7 @@
                     {% endif %}
                     {% if nextArticle %}
                         {% set art = nextArticle %}
-    					<div class="col-4 text-right">
+    					<div class="col-4 text-right artlist">
                             <div class="post-thumb align-items-center">
                                 <a href="/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}">
                                     {% if art.img[0] %}
@@ -248,6 +265,23 @@
                                         </div>
                                     {% endif %}
                                 </a>
+                            </div>
+                            <div class='text-left'>
+                                <h6 class='mb-1'>
+                                    <a href="/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}" title="{{ art.title|e }} - {{ art.teaser|e }}">
+                                        {{ art.title }}
+                                    </a>
+                                </h6>
+                                {% if art.teaser %}
+                                    <p class='mb-1'>{{ art.teaser|raw }}</p>
+                                {% endif %}
+                                <div class="d-flex justify-content-left text-muted">
+                                    <small class='font-weight-lighter mr-2'>
+                                        <a href="/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}" class="post-cat text-muted">{{ art.category }}</a>
+                                    </small>
+                                    <small class='font-weight-lighter mr-2'>/</small>
+                                    <small class='font-weight-lighter mr-2'>{{ art.published|asHumanReadable }}</small>
+                                </div>
                             </div>
                             <a class="btn btn-outline-primary" href="/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}">{{ blog.olderHeader || 'Older 👉' }}</a>
     					</div>
@@ -304,17 +338,27 @@
                     <div class="row artlist">
                         {% for art in artlist %}
                             {% if loop.index < limit %}
-                                <div class="col-6 col-sm-12 col-md-12 thumb p-2">
+                                <div class="col-6 col-sm-12 col-md-12 thumb p-2 post-content">
                                     <a href="/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}" title="{{ art.title|e }} - {{ art.teaser|e }}">
                                         {% if art.img[0] %}
                                             <img src="/pho/{{ art.img[0].src }}?w=250" alt="{{ art.title|e }} - {{ art.teaser|e }}" class="img-fluid rounded"><br clear="all">
                                         {% endif %}
                                     </a>
-                                    <h6>
+                                    <h6 class='mb-1'>
                                         <a href="/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}" title="{{ art.title|e }} - {{ art.teaser|e }}">
-                                            📎 {{ art.title }}
+                                            {{ art.title }}
                                         </a>
                                     </h6>
+                                    {% if art.teaser %}
+                                        <p class='mb-1'>{{ art.teaser|raw }}</p>
+                                    {% endif %}
+                                    <div class="d-flex justify-content-left text-muted">
+                                        <small class='font-weight-lighter mr-2'>
+                                            <a href="/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}" class="post-cat text-muted">{{ art.category }}</a>
+                                        </small>
+                                        <small class='font-weight-lighter mr-2'>/</small>
+                                        <small class='font-weight-lighter mr-2'>{{ art.published|asHumanReadable }}</small>
+                                    </div>
                                 </div>
                             {% endif %}
                         {% endfor %}
