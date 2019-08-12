@@ -17,7 +17,15 @@
                     <p>{{ blog.description }}</p>
                 </div>
                 <div class="col-sm-4">
-                    {% include '_elsewhere.html' %}
+                    <h4>{{ blog.otherHeader || 'Følg meg på:' }}</h4>
+                    <ol class="list-unstyled">
+                        {% if blog.social.youtube %}<li><a rel="noopener" target="_blank" href="{{ blog.social.youtube }}"><i class="fab fa-youtube"></i> Youtube</a></li>{% endif %}
+                        {% if blog.social.github %}<li><a rel="noopener" target="_blank" href="{{ blog.social.github }}"><i class="fab fa-github"></i> GitHub</a></li>{% endif %}
+                        {% if blog.social.twitter %}<li><a rel="noopener" target="_blank" href="{{ blog.social.twitter }}"><i class="fab fa-twitter"></i> Twitter</a></li>{% endif %}
+                        {% if blog.social.facebook %}<li><a rel="noopener" target="_blank" href="{{ blog.social.facebook }}"><i class="fab fa-facebook"></i> Facebook</a></li>{% endif %}
+                        {% if blog.social.instagram %}<li><a rel="noopener" target="_blank" href="{{ blog.social.instagram }}"><i class="fab fa-instagram"></i> Instagram</a></li>{% endif %}
+                        {% if blog.social.flickr %}<li><a rel="noopener" target="_blank" href="{{ blog.social.flickr }}"><i class="fab fa-flickr"></i> Flickr</a></li>{% endif %}
+                    </ol>
                 </div>
             </div>
         </div>
@@ -30,7 +38,9 @@
                         <a href="/push-send?title={{ article.title|asUrlSafe }}&body={{ article.teaser|asUrlSafe }}{% if article.img[0] %}&icon={{ ('/pho/' + article.img[0].src + '?w=80')|asUrlSafe }}{% endif %}&url={{ shareLink|asUrlSafe }}">Send notification</a><br>
                     {% endif %}
 
-                    <p>&copy; 2014-2019 <a href="https://litt.no/">Sorenso </a> - Published with <i class="fas fa-heart"></i> by <a href="https://github.com/5orenso/simple-blog">simple-blog</a></p>
+                    <p>
+                        &copy; 2014-2019 <a href="https://litt.no/">Sorenso </a> - 
+                        Published with <i class="fas fa-heart"></i> by <a href="https://github.com/5orenso/simple-blog">simple-blog</a></p>
                 </small>
             </div>
         </div>
