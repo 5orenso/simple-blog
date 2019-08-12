@@ -45,7 +45,7 @@
                 <h1>{{ article.title }}</h1>
                 <h5 class="blog-post-teaser">{{ article.teaser|safe }}</h5>
                 <p class="blog-post-meta mt-1">
-                    <small>
+                    <small class='font-weight-lighter'>
                         {% if article.published %}
                             {{ blog.textPublished || 'Publisert' }}: {{ article.published|asHumanReadable }}
                         {% endif %}

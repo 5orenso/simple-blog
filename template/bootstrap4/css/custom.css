@@ -34,13 +34,18 @@ html {
     padding-bottom: 1rem;
 }
 .post-content h3 {
-    font-size: 1.2em;
+    font-size: 1.3em;
 }
 .post-content h5 {
     font-size: 1.0em;
 }
 .post-content table {
     width: 100%;
+}
+.post-content p {
+}
+.post-content a:link, .post-content a:visited {
+    color: #303030;
 }
 .post-thumb {
     padding-top: 66%; /* 1:1 Aspect Ratio */
@@ -158,7 +163,7 @@ html {
 }
 .image_inline_text {
     font-size: 0.9em;
-    font-weight: 400;
+    font-weight: lighter !important;
     color: #a0a0a0;
 }
 
