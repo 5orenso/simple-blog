@@ -72,12 +72,16 @@
                 {% set limit = 20 %}
                 {% for art in adlist %}
                     {% if loop.index < limit %}
-                        <div class="col-2 mb-2">
-                            <a target="_blank" href="{{ art.url }}" title="{{ art.title|e }} - {{ art.teaser|e }}">
+                        <div class="col-2 mb-2 d-flex align-items-center">
+                            {% if art.url %}
+                                <a target="_blank" href="{{ art.url }}" title="{{ art.title|e }} - {{ art.teaser|e }}">
+                            {% endif %}
                                 {% if art.img[0] %}
                                     <img src="/pho/{{ art.img[0].src }}?w=250" alt="{{ art.title|e }} - {{ art.teaser|e }}" class="img-fluid"><br clear="all">
                                 {% endif %}
-                            </a>
+                            {% if art.url %}
+                                </a>
+                            {% endif %}
                         </div>
                     {% endif %}
                 {% endfor %}
