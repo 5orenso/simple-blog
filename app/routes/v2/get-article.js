@@ -22,6 +22,7 @@ module.exports = async (req, res) => {
     const catAds = new Category();
     const cat = new Category();
 
+    let isFrontpage = true;
     let isDetailView = false;
     let isCategoryView = false;
     let previousArticle;
@@ -39,6 +40,7 @@ module.exports = async (req, res) => {
 
     if (req.params.category) {
         isCategoryView = true;
+        isFrontpage = false;
         queryCategory = {
             $or: [
                 { title: req.params.category },
@@ -56,9 +58,11 @@ module.exports = async (req, res) => {
     const catlist = await catMenu.find({ menu: 1 });
 
     if (req.params.id) {
+        isFrontpage = false;
         isDetailView = true;
         query.id = parseInt(req.params.id, 10);
     } else if (req.params.filename) {
+        isFrontpage = false;
         isDetailView = true;
         query.filename = req.params.filename;
     }
@@ -73,6 +77,11 @@ module.exports = async (req, res) => {
 
     const article = await art.findOne(query);
     const artlist = await art.find(queryList, {}, { limit, skip });
+
+    article.catRef = catlist.find(c => c.id === article.categoryId);
+    artlist.forEach((a) => {
+        a.catRef = catlist.find(c => c.id === a.categoryId);
+    });
 
     if (!isDetailView && artlist.length === 1) {
         const myArt = artlist[0];
@@ -119,5 +128,6 @@ module.exports = async (req, res) => {
         skip,
         isDetailView,
         isCategoryView,
+        isFrontpage,
     }, { runId, routePath, routeName, hrstart, useTemplate: template });
 };

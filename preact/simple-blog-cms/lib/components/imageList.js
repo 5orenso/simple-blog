@@ -397,6 +397,28 @@ export default class ImageList extends Component {
                                                 </span>
                                             )}
                                         </div>
+
+                                        <div class='text-muted'>
+                                            <span class='mr-1 badge badge-primary'>
+                                                <a target='_blank' href={`${this.imageServer}/pho/${img.src}?w=1920`} style='color: #ffffff' onClick={e => e.stopPropagation()}>1920 px</a>
+                                            </span>
+                                            <span class='mr-1 badge badge-primary'>
+                                                <a target='_blank' href={`${this.imageServer}/pho/${img.src}?w=1600`} style='color: #ffffff' onClick={e => e.stopPropagation()}>1600 px</a>
+                                            </span>
+                                            <span class='mr-1 badge badge-primary'>
+                                                <a target='_blank' href={`${this.imageServer}/pho/${img.src}?w=1024`} style='color: #ffffff' onClick={e => e.stopPropagation()}>1024 px</a>
+                                            </span>
+                                            <span class='mr-1 badge badge-primary'>
+                                                <a target='_blank' href={`${this.imageServer}/pho/${img.src}?w=800`} style='color: #ffffff' onClick={e => e.stopPropagation()}>800 px</a>
+                                            </span>
+                                            <span class='mr-1 badge badge-primary'>
+                                                <a target='_blank' href={`${this.imageServer}/pho/${img.src}?w=300`} style='color: #ffffff' onClick={e => e.stopPropagation()}>300 px</a>
+                                            </span>
+                                            <span class='mr-1 badge badge-primary'>
+                                                <a target='_blank' href={`${this.imageServer}/pho/${img.src}?w=150`} style='color: #ffffff' onClick={e => e.stopPropagation()}>150 px</a>
+                                            </span>
+                                        </div>
+
                                     </td>
                                     <td>
                                         {util.isoDateNormalized(util.getString(img, 'exif', 'dateTimeOriginal') ||

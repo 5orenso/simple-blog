@@ -29,6 +29,9 @@ html {
     width: 100%;
     height: calc(100vw * 0.56);
 }
+.post-data {
+    padding-top: .8em;
+}
 .post-content {
     max-width: 60rem;
     padding-bottom: 1rem;
@@ -48,22 +51,24 @@ html {
     color: #303030;
 }
 .post-thumb {
-    padding-top: 66%; /* 1:1 Aspect Ratio */
-    position: relative;
-    background-color: #f0f0f0;
+    /* padding-top: 66%; 1:1 Aspect Ratio */
+    /* position: relative; */
+    /* background-color: #f0f0f0; */
     text-align: center;
-    border: 1px solid #dee2e6;
+    /* border: 1px solid #dee2e6; */
     border-radius: .25rem;
 }
 .post-thumb a {
-    position: absolute;
+    /* position: absolute;
     top: 0;
     left: 0;
     bottom: 0;
-    right: 0;
+    right: 0; */
     color: #a0a0a0;
 }
 .post-thumb a img {
+    /* position: absolute;
+    bottom: 0; */
     max-height: 100%;
     display: block;
     margin-left: auto;
@@ -210,11 +215,25 @@ html {
 }
 
 .jumbotron {
-    padding: 2rem 2rem;
+    padding: 1rem 1rem;
+    margin-bottom: 0rem;
+    background-color: inherit !important;
+    border-radius: 0;
 }
 
 .jumbotron .display-3 a {
     color: #303030;
+}
+
+.modal-content {
+    background-color: #808080;
+}
+.modal-header, .modal-footer {
+    border-bottom: 0px;
+    border-top: 0px;
+}
+.modal-body {
+    padding: 0px;
 }
 
 .photo-top {

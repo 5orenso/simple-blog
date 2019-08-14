@@ -1,4 +1,47 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="{% if blog.backgroundColor %}background-color: {{ blog.backgroundColor }} !important;{% endif %}">
+<style>
+        .menuTextColorInline, .menuTextColorInline a:link, .menuTextColorInline a:visited {
+            {%- if category.colorMenu -%}
+                color: {{ category.colorMenu }} !important;
+                font-weight: 300;
+            {%- elseif isFrontpage && catlist[0].colorMenu -%}
+                color: {{ catlist[0].colorMenu }} !important;
+                font-weight: 300;
+            {%- endif -%}
+        }
+        .menuTextColorInline .active a:link, .menuTextColorInline .active a:visited {
+            {%- if category.colorMenu -%}
+                font-weight: 500 !important;
+                text-decoration: underline;
+            {%- elseif isFrontpage && catlist[0].colorMenu -%}
+                font-weight: 500 !important;
+                text-decoration: underline;
+            {%- endif -%}
+        }
+        .menuBackgroundInline {
+            {%- if category.bgImageMenu -%}
+                background-image: url('{{ category.bgImageMenu }}') !important; 
+                no-repeat center center fixed; 
+                -webkit-background-size: cover;
+                -moz-background-size: cover;
+                -o-background-size: cover;
+                background-size: cover;
+            {%- elseif isFrontpage && catlist[0].bgImageMenu -%}
+                background-image: url('{{ catlist[0].bgImageMenu }}') !important;
+                no-repeat center center fixed; 
+                -webkit-background-size: cover;
+                -moz-background-size: cover;
+                -o-background-size: cover;
+                background-size: cover;
+            {%- elseif category.bgColorMenu -%}
+                background-color: {{ category.bgColorMenu }} !important;
+            {%- elseif isFrontpage && catlist[0].bgColorMenu -%}
+                background-color: {{ catlist[0].bgColorMenu }} !important;
+            {%- elseif blog.backgroundColor -%}
+                background-color: {{ blog.backgroundColor }} !important;
+            {%- endif -%}
+        }
+</style>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark menuBackgroundInline menuTextColorInline">
     <a class="navbar-brand" href="/">{{ blog.title|removeLineBreaks|raw }}</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -7,9 +50,16 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
             {% for cat in catlist %}
-                <li class="nav-item {% if originalUrlPath == cat.url %}active{% endif %}">
-                    <a class="nav-link" href="{{ cat.url }}">{{ cat.title }}</a>
-                </li>
+                {% if cat.dropdown %}
+                    <li class="nav-item dropdown {% if originalUrlPath|match(cat.url) %}active{% endif %}">
+                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="{{ cat.url }}" role="button" aria-haspopup="true" aria-expanded="false">{{ cat.title }}</a>
+                        {{ cat.dropdown|raw }}
+                    </li>
+                {% else %}
+                    <li class="nav-item {% if originalUrlPath|match(cat.url) %}active{% endif %}">
+                        <a class="nav-link" href="{{ cat.url }}">{{ cat.title }}</a>
+                    </li>
+                {% endif %}
             {% endfor %}
         </ul>
 

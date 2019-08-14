@@ -156,22 +156,218 @@ export default class CategoryEdit extends Component {
                         
 
                         <div class='form-group'>
-                            <label for='urlInput'>URL</label>
+                            <label for='urlInput'><i class='fas fa-link text-muted' /> URL</label>
                             <input type='text' class='form-control' id='urlInput' placeholder='url'
                                 name='url'
                                 onInput={handleInput}
                                 value={category.url} />
                         </div>
+
+                        <div class='form-group'>
+                            <label for='colorMenuInput'><i class='fas fa-fill-drip text-muted' /> Text Color Menu</label>
+                            <input type='text' class='form-control' id='colorMenuInput' placeholder='colorMenu'
+                                name='colorMenu'
+                                onInput={handleInput}
+                                value={category.colorMenu}
+                                style={category.colorMenu && `border: 2px ${category.colorMenu} solid;`}
+                            />
+                        </div>
+                        <div class='form-group'>
+                            <label for='colorMainInput'><i class='fas fa-fill-drip text-muted' /> Text Color Main</label>
+                            <input type='text' class='form-control' id='colorMainInput' placeholder='colorMain'
+                                name='colorMain'
+                                onInput={handleInput}
+                                value={category.colorMain}
+                                style={category.colorMain && `border: 2px ${category.colorMain} solid;`}
+                            />
+                        </div>
+                        <div class='form-group'>
+                            <label for='colorBottomInput'><i class='fas fa-fill-drip text-muted' /> Text Color Bottom</label>
+                            <input type='text' class='form-control' id='colorBottomInput' placeholder='colorBottom'
+                                name='colorBottom'
+                                onInput={handleInput}
+                                value={category.colorBottom}
+                                style={category.colorBottom && `border: 2px ${category.colorBottom} solid;`}
+                            />
+                        </div>
+
+                        <div class='form-group'>
+                            <label for='bgColorMenuInput'><i class='fas fa-paint-roller text-muted' /> Background Color Menu</label>
+                            <input type='text' class='form-control' id='bgColorMenuInput' placeholder='bgColorMenu'
+                                name='bgColorMenu'
+                                onInput={handleInput}
+                                value={category.bgColorMenu}
+                                style={category.bgColorMenu && `border: 2px ${category.bgColorMenu} solid;`}
+                            />
+                        </div>
+                        <div class='form-group'>
+                            <label for='bgColorMainInput'><i class='fas fa-paint-roller text-muted' /> Background Color Main</label>
+                            <input type='text' class='form-control' id='bgColorMainInput' placeholder='bgColorMain'
+                                name='bgColorMain'
+                                onInput={handleInput}
+                                value={category.bgColorMain}
+                                style={category.bgColorMain && `border: 2px ${category.bgColorMain} solid;`}
+                            />
+                        </div>
+                        <div class='form-group'>
+                            <label for='bgColorBottomInput'><i class='fas fa-paint-roller text-muted' /> Background Color Bottom</label>
+                            <input type='text' class='form-control' id='bgColorBottomInput' placeholder='bgColorBottom'
+                                name='bgColorBottom'
+                                onInput={handleInput}
+                                value={category.bgColorBottom}
+                                style={category.bgColorBottom && `border: 2px ${category.bgColorBottom} solid;`}
+                            />
+                        </div>
+
+                        <div class='form-group'>
+                            <label for='bgImageMenuInput'><i class='far fa-image text-muted' /> Background Image Menu</label>
+                            <input type='text' class='form-control' id='bgImageMenuInput' placeholder='bgImageMenu'
+                                name='bgImageMenu'
+                                onInput={handleInput}
+                                value={category.bgImageMenu}
+                            />
+                        </div>
+                        <div class='form-group'>
+                            <label for='bgImageMainInput'><i class='far fa-image text-muted' /> Background Image Main</label>
+                            <input type='text' class='form-control' id='bgImageMainInput' placeholder='bgImageMain'
+                                name='bgImageMain'
+                                onInput={handleInput}
+                                value={category.bgImageMain} />
+                        </div>
+                        <div class='form-group'>
+                            <label for='bgImageBottomInput'><i class='far fa-image text-muted' /> Background Image Bottom</label>
+                            <input type='text' class='form-control' id='bgImageBottomInput' placeholder='bgImageBottom'
+                                name='bgImageBottom'
+                                onInput={handleInput}
+                                value={category.bgImageBottom} />
+                        </div>
                     </div>
                     <div class='col-6'>
                         <h1>{category.title}</h1>
                         <h5>{category.url}</h5>
+
+                        <div class='p-2' style={`height: 65px; background-image: url(${category.bgImageMenu}); background-color: ${category.bgColorMenu || '#808080;'}; color: ${category.colorMenu};`}>
+                            <div class='container'>
+                                <div class='row'>
+                                    <div class='col-3'>
+                                        Name
+                                    </div>
+                                    <div class='col-3'>
+                                        Menu 1
+                                    </div>
+                                    <div class='col-3'>
+                                        Menu 2
+                                    </div>
+                                    <div class='col-3'>
+                                        Menu 3
+                                    </div>
+                                </div>
+                            </div> 
+                        </div>
+                        <div class='p-2' style={`height: 400px; background-image: url(${category.bgImageMain}); background-color: ${category.bgColorMain}; color: ${category.colorMain}; overflow: hidden;`}>
+                            <div class='container'>
+                                <div class='row'>
+                                    <div class='col-12'>
+                                        <h1>Main</h1>
+                                        <p>
+                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+                                            Ultricies mi eget mauris pharetra et ultrices. Eu sem integer vitae justo eget. 
+                                            Felis bibendum ut tristique et egestas quis ipsum suspendisse ultrices. 
+                                            Enim diam vulputate ut pharetra sit amet aliquam id diam. 
+                                            Cursus turpis massa tincidunt dui ut ornare lectus. 
+                                            Vestibulum rhoncus est pellentesque elit ullamcorper dignissim. 
+                                            Tristique risus nec feugiat in fermentum posuere urna nec. 
+                                            Et leo duis ut diam quam nulla porttitor massa id. 
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class='row'>
+                                    <div class='col-4'>
+                                        <h1>Art 1</h1>
+                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit,</p>
+                                    </div>
+                                    <div class='col-4'>
+                                        <h1>Art 2</h1>
+                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit,</p>
+                                    </div>
+                                    <div class='col-4'>
+                                        <h1>Art 3</h1>
+                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit,</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class='p-2' style={`height: 300px; background-image: url(${category.bgImageBottom}); background-color: ${category.bgColorBottom || '#808080;'}; color: ${category.colorBottom};`}>
+                            <div class='container'>
+                                <div class='row'>
+                                    <div class='col-4'>
+                                        <h1>Art 1</h1>
+                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit,</p>
+                                    </div>
+                                    <div class='col-4'>
+                                        <h1>Art 2</h1>
+                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit,</p>
+                                    </div>
+                                    <div class='col-4'>
+                                        <h1>Art 3</h1>
+                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit,</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
                 <div class='row'>
                     <div class='col-6'>
-                        <label for='headerInput'>Header</label>
+                        <label for='dropdownInput'><i class='fas fa-code text-muted' /> Dropdown</label>
+                    </div>
+                    <div class='col-6'>
+                        &nbsp;
+                    </div>
+                </div>
+                <div class='row'>
+                    <div class='col-6'>
+                        <div class='form-group h-100'>
+                            <textarea name='dropdown' class={`form-control h-100`} id='dropdownInput' rows='3'
+                                onInput={handleTextareaInput}
+                                value={category.dropdown} />
+                        </div>
+                    </div>
+                    <div class='col-2'>
+                        <ul class="nav nav-tabs">
+                            <li class="nav-item dropdown show">
+                                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">{category.title}</a>
+                                <div
+                                    id='dropdownDisplay'
+                                    dangerouslySetInnerHTML={{
+                                        __html: utilHtml.replaceMarked(
+                                            utilHtml.replaceDataTags(category.dropdown || '', category)
+                                        ).replace(/dropdown-menu/, 'dropdown-menu show'),
+                                    }}
+                                />
+                            </li>
+                        </ul>
+                    </div>
+                    <div class='col-4'>
+                        <small>
+                            <xmp>
+                                {`
+<div class="dropdown-menu">
+    <a class="dropdown-item" href="#">Action</a>
+    <a class="dropdown-item" href="#">Another action</a>
+    <a class="dropdown-item" href="#">Something else here</a>
+    <div class="dropdown-divider"></div>
+    <a class="dropdown-item" href="#">Separated link</a>
+</div>`}
+                            </xmp>
+                        </small>
+                    </div>
+                </div>
+
+                <div class='row'>
+                    <div class='col-6'>
+                        <label for='headerInput'><i class='fas fa-code text-muted' /> Header</label>
                     </div>
                     <div class='col-6'>
                         &nbsp;
@@ -193,9 +389,10 @@ export default class CategoryEdit extends Component {
                         }}></div>
                     </div>
                 </div>
+
                 <div class='row'>
                     <div class='col-6'>
-                        <label for='headerInput'>Header detail</label>
+                        <label for='headerInput'><i class='fas fa-code text-muted' /> Header detail</label>
                     </div>
                     <div class='col-6'>
                         &nbsp;
@@ -220,7 +417,7 @@ export default class CategoryEdit extends Component {
 
                 <div class='row'>
                     <div class='col-6'>
-                        <label for='footerInput'>Footer</label>
+                        <label for='footerInput'><i class='fas fa-code text-muted' /> Footer</label>
                     </div>
                     <div class='col-6'>
                         &nbsp;
@@ -242,9 +439,10 @@ export default class CategoryEdit extends Component {
                         }}></div>
                     </div>
                 </div>
+
                 <div class='row'>
                     <div class='col-6'>
-                        <label for='footerInput'>Footer detail</label>
+                        <label for='footerInput'><i class='fas fa-code text-muted' /> Footer detail</label>
                     </div>
                     <div class='col-6'>
                         &nbsp;

@@ -1,13 +1,43 @@
 
-    <footer class="blog-footer bd-footer text-muted bg-dark p-3">
-        <div class="container">
+    <style>
+        .bottomTextColorInline {
+            {%- if category.colorBottom -%}
+                color: {{ category.colorBottom }} !important;
+            {%- elseif isFrontpage && catlist[0].colorBottom -%}
+                color: {{ catlist[0].colorBottom }} !important;
+            {%- endif -%}
+        }
+        .bottomBackgroundInline {
+            {%- if category.bgImageBottom -%}
+                background-image: url('{{ category.bgImageBottom }}') !important; 
+                no-repeat center center fixed; 
+                -webkit-background-size: cover;
+                -moz-background-size: cover;
+                -o-background-size: cover;
+                background-size: cover;
+            {%- elseif isFrontpage && catlist[0].bgImageBottom -%}
+                background-image: url('{{ catlist[0].bgImageBottom }}') !important;
+                no-repeat center center fixed; 
+                -webkit-background-size: cover;
+                -moz-background-size: cover;
+                -o-background-size: cover;
+                background-size: cover;
+            {%- elseif category.bgColorBottom -%}
+                background-color: {{ category.bgColorBottom }} !important;
+            {%- elseif isFrontpage && catlist[0].bgColorBottom -%}
+                background-color: {{ catlist[0].bgColorBottom }} !important;
+            {%- endif -%}
+        }
+    </style>
+    <footer class="blog-footer bd-footer text-muted bg-dark p-3 bottomBackgroundInline">
+        <div class="container bottomTextColorInline">
             <div class="row">
                 <div class="col-sm-4">
                     <h4>{{ blog.categoryHeader || 'Kategorier' }}</h4>
                     <ul class="list-unstyled">
                         {% for cat in catlist %}
                             <li>
-                                <a class="nav-link" href="{{ cat.url }}">{{ cat.title }}</a>
+                                <a class="nav-link bottomTextColorInline" href="{{ cat.url }}">{{ cat.title }}</a>
                             </li>
                         {% endfor %}
                     </ul>
@@ -19,12 +49,12 @@
                 <div class="col-sm-4">
                     <h4>{{ blog.otherHeader || 'Følg meg på:' }}</h4>
                     <ol class="list-unstyled">
-                        {% if blog.social.youtube %}<li><a rel="noopener" target="_blank" href="{{ blog.social.youtube }}"><i class="fab fa-youtube"></i> Youtube</a></li>{% endif %}
-                        {% if blog.social.github %}<li><a rel="noopener" target="_blank" href="{{ blog.social.github }}"><i class="fab fa-github"></i> GitHub</a></li>{% endif %}
-                        {% if blog.social.twitter %}<li><a rel="noopener" target="_blank" href="{{ blog.social.twitter }}"><i class="fab fa-twitter"></i> Twitter</a></li>{% endif %}
-                        {% if blog.social.facebook %}<li><a rel="noopener" target="_blank" href="{{ blog.social.facebook }}"><i class="fab fa-facebook"></i> Facebook</a></li>{% endif %}
-                        {% if blog.social.instagram %}<li><a rel="noopener" target="_blank" href="{{ blog.social.instagram }}"><i class="fab fa-instagram"></i> Instagram</a></li>{% endif %}
-                        {% if blog.social.flickr %}<li><a rel="noopener" target="_blank" href="{{ blog.social.flickr }}"><i class="fab fa-flickr"></i> Flickr</a></li>{% endif %}
+                        {% if blog.social.youtube %}<li><a class="bottomTextColorInline" rel="noopener" target="_blank" href="{{ blog.social.youtube }}"><i class="fab fa-youtube"></i> Youtube</a></li>{% endif %}
+                        {% if blog.social.github %}<li><a class="bottomTextColorInline" rel="noopener" target="_blank" href="{{ blog.social.github }}"><i class="fab fa-github"></i> GitHub</a></li>{% endif %}
+                        {% if blog.social.twitter %}<li><a class="bottomTextColorInline" rel="noopener" target="_blank" href="{{ blog.social.twitter }}"><i class="fab fa-twitter"></i> Twitter</a></li>{% endif %}
+                        {% if blog.social.facebook %}<li><a class="bottomTextColorInline" rel="noopener" target="_blank" href="{{ blog.social.facebook }}"><i class="fab fa-facebook"></i> Facebook</a></li>{% endif %}
+                        {% if blog.social.instagram %}<li><a class="bottomTextColorInline" rel="noopener" target="_blank" href="{{ blog.social.instagram }}"><i class="fab fa-instagram"></i> Instagram</a></li>{% endif %}
+                        {% if blog.social.flickr %}<li><a class="bottomTextColorInline" rel="noopener" target="_blank" href="{{ blog.social.flickr }}"><i class="fab fa-flickr"></i> Flickr</a></li>{% endif %}
                     </ol>
                 </div>
             </div>

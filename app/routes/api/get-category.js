@@ -23,6 +23,16 @@ const fields = {
     headerDetail: 1,
     footer: 1,
     footerDetail: 1,
+    dropdown: 1,
+    colorMenu: 1,
+    colorMain: 1,
+    colorBottom: 1,
+    bgColorMenu: 1,
+    bgColorMain: 1,
+    bgColorBottom: 1,
+    bgImageMain: 1,
+    bgImageMenu: 1,
+    bgImageBottom: 1,
 };
 
 module.exports = async (req, res) => {

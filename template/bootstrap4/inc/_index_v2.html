@@ -19,6 +19,18 @@
     </nav>
 {% endif %}
 
+{% macro colorArticleBackground(category) %}
+    style="{%- if category.bgColorMain -%}
+        background-color: {{ category.bgColorMain }} !important;
+    {%- endif -%}"
+{% endmacro %}
+
+{% macro colorArticleText(category) %}
+    style="{%- if category.colorMain -%}
+        color: {{ category.colorMain }} !important;
+    {%- endif -%}"
+{% endmacro %}
+
 {% if baseHref && !cateogry.header %}
     <div class="blog-header">
         <div class="container">
@@ -51,20 +63,22 @@
         <div class="row">
             <main class="col-sm-12 col-md-12 pt-3">
 {% else %}
-    {% if !queryString.q && !queryString.tag %}
+    {% if !queryString.q && !queryString.tag && page === 1 %}
         {% set startArt = 1 %}
         {% set art = artlist[0] %}
-        <div class="jumbotron">
-            <div class="container">
+        <div class="jumbotron" {{ colorArticleBackground(art.catRef) }}>
+            <div class="container blog-main" {{ colorArticleText(art.catRef) }}>
                 {% if art.img[0] %}
-                    <a href="/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}"><img src="/pho/{{ art.img[0].src }}?w=1014" alt="{{ art.title|e }}" class="img-fluid rounded"></a>
+                    <a href="/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}" {{ colorArticleText(art.catRef) }}>
+                        <img src="/pho/{{ art.img[0].src }}?w=1014" alt="{{ art.title|e }}" class="img-fluid rounded">
+                    </a>
                 {% endif %}
-                <h1 class="display-3"><a href="/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}">{{ art.title }}</a></h1>
+                <h1 class="display-3"><a href="/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}" {{ colorArticleText(art.catRef) }}>{{ art.title }}</a></h1>
                 <p>{{ art.teaser|raw }}</p>
-                <div class="d-flex justify-content-left text-muted">
+                <div class="d-flex justify-content-left text-muted" {{ colorArticleText(art.catRef) }}>
                     {% if 1 == 1 %}
                         <small class='mr-2 font-weight-lighter'>
-                            <a href="/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}" class="post-cat">{{ art.category }}</a>
+                            <a href="/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}" class="post-cat" {{ colorArticleText(art.catRef) }}>{{ art.category }}</a>
                         </small>
                     {% endif %}
                     <small class='font-weight-lighter mr-2'>/</small>
@@ -104,7 +118,7 @@
                 <div class="row">
                     {% for art in artlist %}
                         {% if loop.index > startArt %}
-                            <div class="col-sm-6 col-lg-4">
+                            <div class="col-sm-6 col-lg-4 post-data" {{ colorArticleBackground(art.catRef) }}>
                                 {% if art.img[0] %}
                                     <div class="post-thumb">
                                         <a href="/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}">
@@ -112,15 +126,15 @@
                                         </a>
                                     </div>
                                 {% endif %}
-                                <div class="post-content">
-                                    <h3><a href="/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}">{{ art.title }}</a></h3>
+                                <div class="post-content" {{ colorArticleText(art.catRef) }}>
+                                    <h3><a href="/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}" {{ colorArticleText(art.catRef) }}>{{ art.title }}</a></h3>
                                     {% if art.teaser %}
                                         <p class='mb-1'>{{ art.teaser|raw }}</p>
                                     {% endif %}
                                     <!-- <p class="lead">{{ art.body|substring(0, 150)|markdown|cleanHtml }}...</p> -->
-                                    <div class="d-flex justify-content-left text-muted">
+                                    <div class="d-flex justify-content-left text-muted" {{ colorArticleText(art.catRef) }}>
                                         <small class='font-weight-lighter mr-2'>
-                                            <a href="/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}" class="post-cat text-muted">{{ art.category }}</a>
+                                            <a href="/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}" class="post-cat text-muted" {{ colorArticleText(art.catRef) }}>{{ art.category }}</a>
                                         </small>
                                         <small class='font-weight-lighter mr-2'>/</small>
                                         <small class='font-weight-lighter mr-2'>{{ art.published|asHumanReadable }}</small>
