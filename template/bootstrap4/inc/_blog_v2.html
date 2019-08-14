@@ -360,7 +360,7 @@
                     <div class="row artlist">
                         {% for art in artlist %}
                             {% if loop.index < limit %}
-                                <div class="col-6 col-sm-12 col-md-12 thumb p-0 pb-3 post-content">
+                                <div class="col-6 col-sm-12 col-md-12 thumb p-0 pb-3 pr-2 post-content">
                                     <a href="/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}" title="{{ art.title|e }} - {{ art.teaser|e }}">
                                         {% if art.img[0] %}
                                             <img src="/pho/{{ art.img[0].src }}?w=250" alt="{{ art.title|e }} - {{ art.teaser|e }}" class="img-fluid rounded"><br clear="all">
