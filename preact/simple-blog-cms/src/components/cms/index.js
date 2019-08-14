@@ -914,6 +914,7 @@ export default class SimpleBlogCms extends Component {
                             handleClickSave={this.handleCategoryClickSave}
                             handleClickNew={this.handleCategoryClickNew}
                             handleClickBack={this.handleCategoryEditBackClick}
+                            bgColorMenu={this.props.bgColorMenu}
                         />
                     </div>}
                 </div>

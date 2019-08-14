@@ -50,9 +50,9 @@
                             {{ blog.textPublished || 'Publisert' }}: {{ article.published|asHumanReadable }}
                         {% endif %}
                         {% if article.updatedDate %}
-                            <span class='text-muted'>| {{ blog.textLastUpdated || 'Oppdatert' }}: {{ article.updatedDate|asHumanReadable }}</span>
+                            <span class='text-muted mainTextColorInline'>| {{ blog.textLastUpdated || 'Oppdatert' }}: {{ article.updatedDate|asHumanReadable }}</span>
                         {% endif %}
-                        | <a href="/v2/{{ category.title }}/" class="post-cat">{{ category.title }}</a>
+                        | <a href="/v2/{{ category.title }}/" class="post-cat mainTextColorInline">{{ category.title }}</a>
                         {% if article.status %}
                             | <span class="badge badge-{{ article.status|getStatusClass }}">
                                 {{ article.status|getStatus }}
@@ -61,16 +61,16 @@
 
                         |
                         {% set shareLink = blog.protocol + '://' + blog.domain + '/' + article.category|asLinkPart + '/' + article.title|asLinkPart + '/' + article.id %}
-                        <a rel="noopener" target="_blank" href="https://www.facebook.com/sharer.php?u={{ shareLink|asUrlSafe }}">
+                        <a class="mainTextColorInline" rel="noopener" target="_blank" href="https://www.facebook.com/sharer.php?u={{ shareLink|asUrlSafe }}">
                             <i class="fab fa-facebook"></i>
                         </a>
-                        <a rel="noopener" target="_blank" href="https://twitter.com/intent/tweet?url={{ shareLink|asUrlSafe }}&text={{ article.title|asUrlSafe }}.%20{{ (article.teaser || article.ingress)|striptags|asUrlSafe }}{% if blog.socialUser.twitter %}&via={{ blog.socialUser.twitter|asUrlSafe }}{% endif %}&hashtags={{ article.tags|asUrlSafe }}">
+                        <a class="mainTextColorInline" rel="noopener" target="_blank" href="https://twitter.com/intent/tweet?url={{ shareLink|asUrlSafe }}&text={{ article.title|asUrlSafe }}.%20{{ (article.teaser || article.ingress)|striptags|asUrlSafe }}{% if blog.socialUser.twitter %}&via={{ blog.socialUser.twitter|asUrlSafe }}{% endif %}&hashtags={{ article.tags|asUrlSafe }}">
                             <i class="fab fa-twitter"></i>
                         </a>
-                        <a rel="noopener" target="_blank" href="https://www.linkedin.com/shareArticle?mini=true&url={{ shareLink|asUrlSafe }}&summary={{ article.title|asUrlSafe }}.%20{{ (article.teaser || article.ingress)|asUrlSafe }}&source={{ blog.domain }}">
+                        <a class="mainTextColorInline" rel="noopener" target="_blank" href="https://www.linkedin.com/shareArticle?mini=true&url={{ shareLink|asUrlSafe }}&summary={{ article.title|asUrlSafe }}.%20{{ (article.teaser || article.ingress)|asUrlSafe }}&source={{ blog.domain }}">
                             <i class="fab fa-linkedin-in"></i>
                         </a>
-                        <a rel="noopener" target="_blank" href="mailto:?subject=Tips: {{ article.title|asUrlSafe }}&body=Tips fra {{ blog.domain }}:%0D%0A%0D%0A{{ article.title|uc|asUrlSafe }}%0D%0A%0D%0A{{ (article.teaser || article.ingress)|asUrlSafe }}%0D%0A%0D%0ALes mer: {{ shareLink|asUrlSafe }}"><i class="far fa-envelope"></i></a>
+                        <a class="mainTextColorInline" rel="noopener" target="_blank" href="mailto:?subject=Tips: {{ article.title|asUrlSafe }}&body=Tips fra {{ blog.domain }}:%0D%0A%0D%0A{{ article.title|uc|asUrlSafe }}%0D%0A%0D%0A{{ (article.teaser || article.ingress)|asUrlSafe }}%0D%0A%0D%0ALes mer: {{ shareLink|asUrlSafe }}"><i class="far fa-envelope"></i></a>
 
                         {% if article.tags %}
                             <br />
@@ -82,6 +82,7 @@
                             <a target="_blank" href="http://translate.google.com/translate?u={{ shareLink|asUrlSafe }}&hl=en&ie=UTF8&sl=no&tl=en" title="Translate to english"><span class="flag-icon flag-icon-gb"></span></a>
                             <a target="_blank" href="http://translate.google.com/translate?u={{ shareLink|asUrlSafe }}&hl=de&ie=UTF8&sl=no&tl=de" title="Uberseztung ins Deutsch"><span class="flag-icon flag-icon-de"></span></a>
                             <a target="_blank" href="http://translate.google.com/translate?u={{ shareLink|asUrlSafe }}&hl=fr&ie=UTF8&sl=no&tl=fr" title="Traduire en Français"><span class="flag-icon flag-icon-fr"></span></a>
+                            <a target="_blank" href="http://translate.google.com/translate?u={{ shareLink|asUrlSafe }}&hl=es&ie=UTF8&sl=no&tl=es" title="Traducir al ingles"><span class="flag-icon flag-icon-es"></span></a>
                         </span>
 
                     </small>
@@ -291,6 +292,27 @@
 
             </nav>
 
+            {% if adlistLower[0] %}
+                <div class="row">
+                    {% set adLimit = 20 %}
+                    {% for art in adlistLower %}
+                        {% if loop.index < adLimit %}
+                            <div class="col-2 mb-2 d-flex align-items-center">
+                                {% if art.url %}
+                                    <a target="_blank" href="{{ art.url }}" title="{{ art.title|e }} - {{ art.teaser|e }}">
+                                {% endif %}
+                                    {% if art.img[0] %}
+                                        <img src="/pho/{{ art.img[0].src }}?w=250" alt="{{ art.title|e }} - {{ art.teaser|e }}" class="img-fluid"><br clear="all">
+                                    {% endif %}
+                                {% if art.url %}
+                                    </a>
+                                {% endif %}
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            {% endif %}
+
         </div><!-- /.blog-main -->
 
         <div class="col-sm-3 offset-sm-1 blog-sidebar">
@@ -338,14 +360,14 @@
                     <div class="row artlist">
                         {% for art in artlist %}
                             {% if loop.index < limit %}
-                                <div class="col-6 col-sm-12 col-md-12 thumb p-2 post-content">
+                                <div class="col-6 col-sm-12 col-md-12 thumb p-0 pb-3 post-content">
                                     <a href="/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}" title="{{ art.title|e }} - {{ art.teaser|e }}">
                                         {% if art.img[0] %}
                                             <img src="/pho/{{ art.img[0].src }}?w=250" alt="{{ art.title|e }} - {{ art.teaser|e }}" class="img-fluid rounded"><br clear="all">
                                         {% endif %}
                                     </a>
                                     <h6 class='mb-1'>
-                                        <a href="/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}" title="{{ art.title|e }} - {{ art.teaser|e }}">
+                                        <a href="/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}" title="{{ art.title|e }} - {{ art.teaser|e }}" class="mainTextColorInline">
                                             {{ art.title }}
                                         </a>
                                     </h6>

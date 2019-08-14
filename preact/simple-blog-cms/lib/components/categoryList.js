@@ -6,11 +6,12 @@ const initialState = {};
 const debug = false;
 
 const typeList = [
-    { value: 1, title: 'Generell' },
-    { value: 2, title: 'Annonse i artikler' },
-    { value: 3, title: 'Annonse på forsiden' },
-    { value: 4, title: 'Bildegalleri' },
-    { value: 5, title: 'Lenker' },
+    { value: 1, title: 'Forsiden (innstillinger)' },
+    { value: 2, title: 'Annonser i artikler' },
+    { value: 3, title: 'Annonser på forsiden øvre' },
+    { value: 4, title: 'Annonser på forsiden nedre' },
+    { value: 5, title: 'Bildegalleri' },
+    { value: 6, title: 'Lenker' },
 ];
 
 export default class CategoryList extends Component {

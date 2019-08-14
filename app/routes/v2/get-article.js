@@ -18,8 +18,11 @@ module.exports = async (req, res) => {
 
     const art = new Article();
     const artAds = new Article();
+    const artAdsLower = new Article();
+    const catFrontpage = new Category();
     const catMenu = new Category();
     const catAds = new Category();
+    const catAdsLower = new Category();
     const cat = new Category();
 
     let isFrontpage = true;
@@ -51,7 +54,7 @@ module.exports = async (req, res) => {
         queryList.categoryId = category.id;
         query.categoryId = category.id;
     } else {
-        const contentCatlist = await cat.find({ type: { $nin: [2, 3] } });
+        const contentCatlist = await cat.find({ type: { $nin: [1, 2, 3, 4, 6] } });
         queryList.categoryId = { $in: contentCatlist.map(c => c.id) };
     }
 
@@ -109,8 +112,14 @@ module.exports = async (req, res) => {
         utilHtml.runPlugins(article);
     }
 
+    if (isFrontpage) {
+        category = await catFrontpage.findOne({ type: 1 });
+    }
     const adcats = await catAds.find(queryAds);
     const adlist = await artAds.find({ status: 2, categoryId: { $in: adcats.map(c => c.id) } });
+
+    const adcatsLower = await catAdsLower.find({ type: 4 });
+    const adlistLower = await artAdsLower.find({ status: 2, categoryId: { $in: adcatsLower.map(c => c.id) }});
 
     const template = (req.params.id || req.params.filename) ? '/bootstrap4/blog_v2.html' : '/bootstrap4/index_v2.html';
 
@@ -123,6 +132,7 @@ module.exports = async (req, res) => {
         category,
         catlist,
         adlist,
+        adlistLower,
         limit,
         page,
         skip,

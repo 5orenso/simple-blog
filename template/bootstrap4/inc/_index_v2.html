@@ -90,7 +90,7 @@
 
     <div class="container">
         {% if adlist[0] %}
-            <div class="row">
+            <div class="row mt-3">
                 {% set adLimit = 20 %}
                 {% for art in adlist %}
                     {% if loop.index < adLimit %}
@@ -118,7 +118,7 @@
                 <div class="row">
                     {% for art in artlist %}
                         {% if loop.index > startArt %}
-                            <div class="col-sm-6 col-lg-4 post-data" {{ colorArticleBackground(art.catRef) }}>
+                            <div class="col-sm-6 col-lg-4 post-data my-2" {{ colorArticleBackground(art.catRef) }}>
                                 {% if art.img[0] %}
                                     <div class="post-thumb">
                                         <a href="/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}">
@@ -181,6 +181,28 @@
 
             </main>
         </div>
+    
+        {% if adlistLower[0] %}
+            <div class="row">
+                {% set adLimit = 20 %}
+                {% for art in adlistLower %}
+                    {% if loop.index < adLimit %}
+                        <div class="col-2 mb-2 d-flex align-items-center">
+                            {% if art.url %}
+                                <a target="_blank" href="{{ art.url }}" title="{{ art.title|e }} - {{ art.teaser|e }}">
+                            {% endif %}
+                                {% if art.img[0] %}
+                                    <img src="/pho/{{ art.img[0].src }}?w=250" alt="{{ art.title|e }} - {{ art.teaser|e }}" class="img-fluid"><br clear="all">
+                                {% endif %}
+                            {% if art.url %}
+                                </a>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        {% endif %}
+
     </div>
 
 {% if !queryString.tag && !queryString.q %}

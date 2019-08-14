@@ -35,8 +35,6 @@
     .mainTextColorInline {
         {%- if category.colorMain -%}
             color: {{ category.colorMain }} !important;
-        {%- elseif isFrontpage && catlist[0].colorMain -%}
-            color: {{ catlist[0].colorMain }} !important;
         {%- endif -%}
     }
     .mainBackgroundInline {
@@ -47,17 +45,8 @@
             -moz-background-size: cover;
             -o-background-size: cover;
             background-size: cover;
-        {%- elseif isFrontpage && catlist[0].bgImageMain -%}
-            background-image: url('{{ catlist[0].bgImageMain }}') !important;
-            no-repeat center center fixed; 
-            -webkit-background-size: cover;
-            -moz-background-size: cover;
-            -o-background-size: cover;
-            background-size: cover;
         {%- elseif category.bgColorMain -%}
             background-color: {{ category.bgColorMain }} !important;
-        {%- elseif isFrontpage && catlist[0].bgColorMain -%}
-            background-color: {{ catlist[0].bgColorMain }} !important;
         {%- endif -%}
     }
 </style>

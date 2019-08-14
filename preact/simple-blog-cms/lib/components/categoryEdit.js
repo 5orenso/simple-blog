@@ -13,11 +13,12 @@ const debug = false;
 const editMode = 'textarea'; // div
 
 const typeList = [
-    { value: 1, title: 'Generell' },
-    { value: 2, title: 'Annonse i artikler' },
-    { value: 3, title: 'Annonse på forsiden' },
-    { value: 4, title: 'Bildegalleri' },
-    { value: 5, title: 'Lenker' },
+    { value: 1, title: 'Forsiden (innstillinger)' },
+    { value: 2, title: 'Annonser i artikler' },
+    { value: 3, title: 'Annonser på forsiden øvre' },
+    { value: 4, title: 'Annonser på forsiden nedre' },
+    { value: 5, title: 'Bildegalleri' },
+    { value: 6, title: 'Lenker' },
 ];
 
 export default class CategoryEdit extends Component {
@@ -246,7 +247,7 @@ export default class CategoryEdit extends Component {
                         <h1>{category.title}</h1>
                         <h5>{category.url}</h5>
 
-                        <div class='p-2' style={`height: 65px; background-image: url(${category.bgImageMenu}); background-color: ${category.bgColorMenu || '#808080;'}; color: ${category.colorMenu};`}>
+                        <div class='p-2' style={`height: 65px; background-image: url(${category.bgImageMenu}); background-color: ${category.bgColorMenu || this.props.bgColorMenu}; color: ${category.colorMenu};`}>
                             <div class='container'>
                                 <div class='row'>
                                     <div class='col-3'>

@@ -3,16 +3,10 @@
             {%- if category.colorMenu -%}
                 color: {{ category.colorMenu }} !important;
                 font-weight: 300;
-            {%- elseif isFrontpage && catlist[0].colorMenu -%}
-                color: {{ catlist[0].colorMenu }} !important;
-                font-weight: 300;
             {%- endif -%}
         }
         .menuTextColorInline .active a:link, .menuTextColorInline .active a:visited {
             {%- if category.colorMenu -%}
-                font-weight: 500 !important;
-                text-decoration: underline;
-            {%- elseif isFrontpage && catlist[0].colorMenu -%}
                 font-weight: 500 !important;
                 text-decoration: underline;
             {%- endif -%}
@@ -25,17 +19,8 @@
                 -moz-background-size: cover;
                 -o-background-size: cover;
                 background-size: cover;
-            {%- elseif isFrontpage && catlist[0].bgImageMenu -%}
-                background-image: url('{{ catlist[0].bgImageMenu }}') !important;
-                no-repeat center center fixed; 
-                -webkit-background-size: cover;
-                -moz-background-size: cover;
-                -o-background-size: cover;
-                background-size: cover;
             {%- elseif category.bgColorMenu -%}
                 background-color: {{ category.bgColorMenu }} !important;
-            {%- elseif isFrontpage && catlist[0].bgColorMenu -%}
-                background-color: {{ catlist[0].bgColorMenu }} !important;
             {%- elseif blog.backgroundColor -%}
                 background-color: {{ blog.backgroundColor }} !important;
             {%- endif -%}
