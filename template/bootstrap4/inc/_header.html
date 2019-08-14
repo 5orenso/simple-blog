@@ -45,8 +45,17 @@
             -moz-background-size: cover;
             -o-background-size: cover;
             background-size: cover;
+        {%- elseif frontpage.bgImageMain -%}
+            background-image: url('{{ frontpage.bgImageMain }}') !important; 
+            no-repeat center center fixed; 
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-size: cover;
         {%- elseif category.bgColorMain -%}
             background-color: {{ category.bgColorMain }} !important;
+        {%- elseif frontpage.bgColorMain -%}
+            background-color: {{ frontpage.bgColorMain }} !important;
         {%- endif -%}
     }
 </style>

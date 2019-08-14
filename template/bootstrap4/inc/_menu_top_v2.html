@@ -3,10 +3,16 @@
             {%- if category.colorMenu -%}
                 color: {{ category.colorMenu }} !important;
                 font-weight: 300;
+            {%- elseif frontpage.colorMenu -%}
+                color: {{ frontpage.colorMenu }} !important;
+                font-weight: 300;
             {%- endif -%}
         }
         .menuTextColorInline .active a:link, .menuTextColorInline .active a:visited {
             {%- if category.colorMenu -%}
+                font-weight: 500 !important;
+                text-decoration: underline;
+            {%- elseif frontpage.colorMenu -%}
                 font-weight: 500 !important;
                 text-decoration: underline;
             {%- endif -%}
@@ -19,8 +25,17 @@
                 -moz-background-size: cover;
                 -o-background-size: cover;
                 background-size: cover;
+            {%- elseif frontpage.bgImageMenu -%}
+                background-image: url('{{ frontpage.bgImageMenu }}') !important; 
+                no-repeat center center fixed; 
+                -webkit-background-size: cover;
+                -moz-background-size: cover;
+                -o-background-size: cover;
+                background-size: cover;
             {%- elseif category.bgColorMenu -%}
                 background-color: {{ category.bgColorMenu }} !important;
+            {%- elseif frontpage.bgColorMenu -%}
+                background-color: {{ frontpage.bgColorMenu }} !important;
             {%- elseif blog.backgroundColor -%}
                 background-color: {{ blog.backgroundColor }} !important;
             {%- endif -%}

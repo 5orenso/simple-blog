@@ -22,12 +22,16 @@
 {% macro colorArticleBackground(category) %}
     style="{%- if category.bgColorMain -%}
         background-color: {{ category.bgColorMain }} !important;
+    {%- elseif frontpage.bgColorMain -%}
+        background-color: {{ frontpage.bgColorMain }} !important;
     {%- endif -%}"
 {% endmacro %}
 
 {% macro colorArticleText(category) %}
     style="{%- if category.colorMain -%}
         color: {{ category.colorMain }} !important;
+    {%- elseif frontpage.colorMain -%}
+        color: {{ frontpage.colorMain }} !important;
     {%- endif -%}"
 {% endmacro %}
 

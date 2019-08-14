@@ -31,6 +31,7 @@ module.exports = async (req, res) => {
     let previousArticle;
     let nextArticle;
     let category;
+    let frontpage;
 
     const query = { status: 2 };
     const queryList = { status: 2 };
@@ -78,6 +79,8 @@ module.exports = async (req, res) => {
         queryList.tags = req.query.tag;
     }
 
+    frontpage = await catFrontpage.findOne({ type: 1 });
+
     const article = await art.findOne(query);
     const artlist = await art.find(queryList, {}, { limit, skip });
 
@@ -111,10 +114,7 @@ module.exports = async (req, res) => {
         article.body = utilHtml.replaceDataTags(article.body || '', article);
         utilHtml.runPlugins(article);
     }
-
-    if (isFrontpage) {
-        category = await catFrontpage.findOne({ type: 1 });
-    }
+    
     const adcats = await catAds.find(queryAds);
     const adlist = await artAds.find({ status: 2, categoryId: { $in: adcats.map(c => c.id) } });
 

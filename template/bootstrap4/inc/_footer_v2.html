@@ -3,6 +3,8 @@
         .bottomTextColorInline {
             {%- if category.colorBottom -%}
                 color: {{ category.colorBottom }} !important;
+            {%- elseif frontpage.colorBottom -%}
+                color: {{ frontpage.colorBottom }} !important;
             {%- endif -%}
         }
         .bottomBackgroundInline {
@@ -13,8 +15,17 @@
                 -moz-background-size: cover;
                 -o-background-size: cover;
                 background-size: cover;
+            {%- elseif frontpage.bgImageBottom -%}
+                background-image: url('{{ frontpage.bgImageBottom }}') !important; 
+                no-repeat center center fixed; 
+                -webkit-background-size: cover;
+                -moz-background-size: cover;
+                -o-background-size: cover;
+                background-size: cover;
             {%- elseif category.bgColorBottom -%}
                 background-color: {{ category.bgColorBottom }} !important;
+            {%- elseif frontpage.bgColorBottom -%}
+                background-color: {{ frontpage.bgColorBottom }} !important;
             {%- endif -%}
         }
     </style>
