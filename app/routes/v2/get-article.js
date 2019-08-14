@@ -130,6 +130,7 @@ module.exports = async (req, res) => {
         artlist,
         artlistTotal,
         category,
+        frontpage,
         catlist,
         adlist,
         adlistLower,
