@@ -7,7 +7,7 @@
     {% if header.title %}
         <title>{{ header.title }}</title>
     {% elseif queryString.q %}
-        <title>{{ searchMeta.total || 0 }} {{ blog.searchResults || "blog posts related to" }} "{{ query.q|striptags|e('html') }}"</title>
+        <title>{{ artlistTotal || 0 }} {{ blog.searchResults || "blog posts related to" }} "{{ query.q|striptags|e('html') }}"</title>
     {% elseif !isDetailView %}
         {% if isCategoryView %}
             <title>{{ category.title|removeLineBreaks|striptags|e('html') }} - {{ blog.title|removeLineBreaks|striptags|e('html') }}</title>
