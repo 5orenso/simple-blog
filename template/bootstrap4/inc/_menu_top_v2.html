@@ -44,9 +44,11 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark menuBackgroundInline menuTextColorInline">
     <a class="navbar-brand" href="/">
         {%- if frontpage.image -%}
-            <img src="{{ frontpage.image }}" style='max-height: 70px;'/>
+            <img src="{{ frontpage.image }}" style='max-height: 100px;'/>
         {%- endif -%}
-        {{ frontpage.title || blog.title|removeLineBreaks|raw }}
+        {%- if !frontpage.hideTitle -%}
+            {{ frontpage.title || blog.title|removeLineBreaks|raw }}
+        {%- endif -%}
     </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -61,7 +63,9 @@
                             {%- if cat.image -%}
                                 <img src="{{ cat.image }}" style='max-height: 30px;'/>
                             {%- endif -%}
-                            {{ cat.title }}
+                            {%- if !cat.hideTitle -%}
+                                {{ cat.title }}
+                            {%- endif -%}
                         </a>
                         {{ cat.dropdown|raw }}
                     </li>
@@ -71,7 +75,9 @@
                             {%- if cat.image -%}
                                 <img src="{{ cat.image }}" style='max-height: 30px;'/>
                             {%- endif -%}
-                            {{ cat.title }}
+                            {%- if !cat.hideTitle -%}
+                                {{ cat.title }}
+                            {%- endif -%}
                         </a>
                     </li>
                 {% endif %}

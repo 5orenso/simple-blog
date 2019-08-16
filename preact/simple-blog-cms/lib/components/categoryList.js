@@ -41,31 +41,39 @@ export default class CategoryList extends Component {
                         <thead>
                             <tr>
                                 <th scope='col'>#</th>
-                                <th scope='col'>Type</th>
-                                <th scope='col'>Meny</th>
-                                <th scope='col'>Sort</th>
+                                <th scope='col'>Bilde</th>
                                 <th scope='col'>Tittel</th>
-                                <th scope='col'>Opprettet</th>
+                                <th scope='col'>Meny</th>
+                                <th scope='col'>Skjul tittel i menyen</th>
+                                <th scope='col'>Sort</th>
+                                <th scope='col'>Type</th>
                                 <th scope='col'>URL</th>
+                                <th scope='col'>Opprettet</th>
                             </tr>
                         </thead>
                     <tbody>
                     {catlist.map(cat =>
-                        <tr data-id={cat.id} onClick={handleListClick}>
+                        <tr data-id={cat.id} onClick={handleListClick} class={`${!cat.menu && cat.type !== 1 && 'text-muted'} 
+                            ${cat.type === 1 && 'bg-info text-white'} ${cat.menu && 'font-weight-bolder'} `}>
                             <td scope='row'>{cat.id}</td>
+                            <td>{cat.image && <img src={cat.image} style='max-height: 30px;' />}</td>
+                            <td>
+                                {cat.menu === 1 && <i class='fas fa-bars mr-2' />}
+                                {cat.title}
+                            </td>
+                            <td>{cat.menu ? 'Ja' : 'Nei'}</td>
+                            <td>{cat.hideTitle ? 'Ja' : 'Nei'}</td>
+                            <td>{cat.sort}</td>
                             <td>
                                 {cat.type ? typeList.find(x => x.value === cat.type).title : ''}
                             </td>
-                            <td>{cat.menu ? 'Ja' : 'Nei'}</td>
-                            <td>{cat.sort}</td>
-                            <td>{cat.title}</td>
+                            <td>{cat.url}</td>
                             <td>
                                 {util.isoDateNormalized(cat.createdDate)}<br />
                                 {cat.createdDate !== cat.updatedDate && <span class='text-muted'>
                                     <small><i class="fas fa-user-edit"></i> {util.isoDateNormalized(cat.updatedDate)}</small>
                                 </span>}
                             </td>
-                            <td>{cat.url}</td>
                         </tr>
                     )}
                     </tbody>
