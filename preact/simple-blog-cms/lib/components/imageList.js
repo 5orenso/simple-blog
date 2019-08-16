@@ -1,5 +1,9 @@
 import { h, Component } from 'preact';
 
+import linkstate from 'linkstate';
+
+import ImageUpload from './imageUpload';
+
 import util from '../util';
 
 const widgetName = 'ImageList';
@@ -202,6 +206,7 @@ export default class ImageList extends Component {
 
     render(props) {
         const styles = props.styles;
+        const that = props.that;
         const imglist = props.imglist;
         const handleImglistClick = props.handleImglistClick;
         const handleInput = props.handleInput;
@@ -209,6 +214,10 @@ export default class ImageList extends Component {
         const handleTagClick = props.handleTagClick;
         const imageId = props.imageId;
         const filterQuery = props.filterQuery;
+        const handleAddImage = props.handleAddImage;
+
+        const apiUrl = `/api/fileupload/?category=${this.state.imageCategory || 'no-category'}`;
+
         return (
             <div class='col-12'>
                 <div class='d-flex justify-content-center'>
@@ -239,6 +248,27 @@ export default class ImageList extends Component {
                         )}
                     </div>
                 </div>
+
+                <h5>Last opp nye bilder:</h5>
+                <div class='d-flex justify-content-left mb-2'>
+                    <div class='form-group mb-4'>
+                        <input type='text'
+                            class='form-control'
+                            id='imageCategoryInput'
+                            placeholder='Bildekategori for nye bilder...' 
+                            value={this.state.imageCategory}
+                            onInput={linkstate(this, `imageCategory`)}
+                            value={util.getString(this, 'state', 'imageCategory')}
+                        />
+                        <ImageUpload
+                            apiUrl={apiUrl}
+                            apiServer={that.props.apiServer}
+                            jwtToken={that.props.jwtToken}
+                            handleAddImage={handleAddImage}
+                        />
+                    </div>
+                </div>
+
                 <table class={`table table-sm ${styles.condensed}`}>
                     <thead>
                         <tr>

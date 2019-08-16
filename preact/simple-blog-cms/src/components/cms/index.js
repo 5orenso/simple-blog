@@ -275,6 +275,10 @@ export default class SimpleBlogCms extends Component {
         this.saveArticle();
     }
 
+    handleImgAddImage = (file) => {
+        this.loadImglist();
+    };
+
     // - - - [ Events ] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     handleMenuClick = (event) => {
         event.preventDefault();
@@ -935,6 +939,7 @@ export default class SimpleBlogCms extends Component {
                             handleTagClick={this.handleImageTagClick}
                             filterQuery={this.state.filterQuery}
                             handleImglistClick={this.handleImglistClick}
+                            handleAddImage={this.handleImgAddImage}
                         />
                     </div>
                     <div class='d-flex justify-content-center'>

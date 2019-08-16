@@ -135,6 +135,13 @@ export default class CategoryEdit extends Component {
                                 value={category.title} />
                         </div>
                         <div class='form-group'>
+                            <label for='imageInput'>Image/logo</label>
+                            <input type='text' class='form-control' id='imageInput' placeholder='Image'
+                                name='image'
+                                onInput={handleInput}
+                                value={category.image} />
+                        </div>
+                        <div class='form-group'>
                             <label for='sortInput'>Sort <i class='fas fa-sort-numeric-up-alt'></i></label>
                             <input type='text' class='form-control' id='sortInput' placeholder=''
                                 name='sort'

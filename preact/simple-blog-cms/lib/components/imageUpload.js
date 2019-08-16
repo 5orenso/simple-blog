@@ -41,7 +41,7 @@ export default class ImageUpload extends Component {
 
     handleUpload = (fileObject) => {
         if (debug) {
-            console.log(`${debugName}.handleUpload[${fileObject.name}]`);
+            console.log(`${debugName}.handleUpload: ${fileObject.filename}`);
         }
         const formData = new FormData();
         formData.append('files[]', fileObject);

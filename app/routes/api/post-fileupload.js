@@ -57,15 +57,17 @@ module.exports = async (req, res) => {
         for (let i = 0; i < files.length; i += 1) {
             const file = files[i];
             const filename = uuidv4();
+            const fileTitle = utilHtml.asHtmlIdSafe(req.query.title || file.name);
+            const fileCategory = utilHtml.asHtmlIdSafe(req.query.category || 'no-category');
             file.ext = path.extname(file.name);
             file.newFilename = filenamePrefix + filename + file.ext;
-
-            const tmpPath = path.normalize(`${photoPath}${req.query.category || 'no-category'}/${req.query.title || 'no-title'}`);
+            const tmpPath = path.normalize(`${photoPath}${fileCategory}/${fileTitle}`);
             const tmpFile = `${tmpPath}/${file.newFilename}`;
+
             await pathExists(tmpPath);
             await file.mv(tmpFile);
 
-            file.src = `${req.query.category}/${req.query.title}/${file.newFilename}`;
+            file.src = `${fileCategory}/${fileTitle}/${file.newFilename}`;
             delete file.data;
 
             const imageInfo = await imageUtil.read(tmpFile, true, { config: req.config });

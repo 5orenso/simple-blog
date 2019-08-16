@@ -15,6 +15,7 @@ const fields = {
     createdDate: 1,
     updatedDate: 1,
     title: 1,
+    image: 1,
     type: 1,
     menu: 1,
     sort: 1,

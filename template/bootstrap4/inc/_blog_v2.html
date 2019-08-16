@@ -16,7 +16,7 @@
         <main class="col-sm-12 col-md-12 pt-3 blog-main">
 {% endif %}
 
-            <div class="blog-post {% if isPhoto %}photo-top py-4{% endif %}">
+            <div class="blog-post {% if isPhoto %}photo-top pb-4{% endif %}">
 				<div class="blog-top-image {% if article.gallery || article.img[1] %}gallery-post-format{% endif %}">
                     {% if article.youtube %}
 					    {{ article.youtube|safe }}
@@ -179,16 +179,16 @@
                 <div class="social-share">
                     {{ blog.sharingHeader || 'Jeg blir veldig 😊 hvis du deler' }}:
                     {% set shareLink = blog.protocol + '://' + blog.domain + '/' + article.category|asLinkPart + '/' + article.title|asLinkPart + '/' + article.id %}
-                    <a rel="noopener" target="_blank" href="https://www.facebook.com/sharer.php?u={{ shareLink|asUrlSafe }}">
+                    <a class="mainTextColorInline" rel="noopener" target="_blank" href="https://www.facebook.com/sharer.php?u={{ shareLink|asUrlSafe }}">
                         <i class="fab fa-facebook-square"></i>
                     </a>
-                    <a rel="noopener" target="_blank" href="https://twitter.com/intent/tweet?url={{ shareLink|asUrlSafe }}&text={{ article.title|asUrlSafe }}.%20{{ (article.teaser || article.ingress)|asUrlSafe }}{% if blog.socialUser.twitter|asUrlSafe %}&via={{ blog.socialUser.twitter|asUrlSafe }}{% endif %}&hashtags={{ article.tags|asUrlSafe }}">
+                    <a class="mainTextColorInline" rel="noopener" target="_blank" href="https://twitter.com/intent/tweet?url={{ shareLink|asUrlSafe }}&text={{ article.title|asUrlSafe }}.%20{{ (article.teaser || article.ingress)|asUrlSafe }}{% if blog.socialUser.twitter|asUrlSafe %}&via={{ blog.socialUser.twitter|asUrlSafe }}{% endif %}&hashtags={{ article.tags|asUrlSafe }}">
                         <i class="fab fa-twitter"></i>
                     </a>
-                    <a rel="noopener" target="_blank" href="https://www.linkedin.com/shareArticle?mini=true&url={{ shareLink|asUrlSafe }}&summary={{ article.title|asUrlSafe }}.%20{{ (article.teaser || article.ingress)|asUrlSafe }}&source={{ blog.domain }}">
+                    <a class="mainTextColorInline" rel="noopener" target="_blank" href="https://www.linkedin.com/shareArticle?mini=true&url={{ shareLink|asUrlSafe }}&summary={{ article.title|asUrlSafe }}.%20{{ (article.teaser || article.ingress)|asUrlSafe }}&source={{ blog.domain }}">
                         <i class="fab fa-linkedin-in"></i>
                     </a>
-                    <a rel="noopener" target="_blank" href="mailto:?subject=Tips: {{ article.title|asUrlSafe }}&body=Tips fra {{ blog.domain }}:%0D%0A%0D%0A{{ article.title|uc|asUrlSafe }}%0D%0A%0D%0A{{ (article.teaser || article.ingress)|asUrlSafe }}%0D%0A%0D%0ALes mer: {{ shareLink|asUrlSafe }}">
+                    <a class="mainTextColorInline" rel="noopener" target="_blank" href="mailto:?subject=Tips: {{ article.title|asUrlSafe }}&body=Tips fra {{ blog.domain }}:%0D%0A%0D%0A{{ article.title|uc|asUrlSafe }}%0D%0A%0D%0A{{ (article.teaser || article.ingress)|asUrlSafe }}%0D%0A%0D%0ALes mer: {{ shareLink|asUrlSafe }}">
                         <i class="far fa-envelope"></i>
                     </a>
                 </div>
@@ -200,7 +200,7 @@
                         {% set art = previousArticle %}
     					<div class="col-4 artlist">
                             <div class="post-thumb">
-                                <a href="/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}">
+                                <a class="mainTextColorInline" href="/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}">
                                     {% if art.img[0] %}
                                         <img src="/pho/{{ art.img[0].src }}?w=800" alt="{{ art.title|e }}" class="img-fluid rounded"><br clear="all">
                                     {% else %}
@@ -222,22 +222,22 @@
                             </div>
                             <div class='text-left'>
                                 <h6 class='mb-1'>
-                                    <a href="/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}" title="{{ art.title|e }} - {{ art.teaser|e }}">
+                                    <a class="mainTextColorInline" href="/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}" title="{{ art.title|e }} - {{ art.teaser|e }}">
                                         {{ art.title }}
                                     </a>
                                 </h6>
                                 {% if art.teaser %}
                                     <p class='mb-1'>{{ art.teaser|raw }}</p>
                                 {% endif %}
-                                <div class="d-flex justify-content-left text-muted">
+                                <div class="d-flex justify-content-left text-muted mainTextColorInline">
                                     <small class='font-weight-lighter mr-2'>
-                                        <a href="/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}" class="post-cat text-muted">{{ art.category }}</a>
+                                        <a class="mainTextColorInline" href="/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}" class="post-cat text-muted">{{ art.category }}</a>
                                     </small>
                                     <small class='font-weight-lighter mr-2'>/</small>
                                     <small class='font-weight-lighter mr-2'>{{ art.published|asHumanReadable }}</small>
                                 </div>
                             </div>
-                            <a class="btn btn-outline-primary" href="/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}">{{ blog.newerHeader || '👈 Newer' }}</a>
+                            <a class="btn btn-outline-primary mainTextColorInline" href="/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}">{{ blog.newerHeader || '👈 Newer' }}</a>
     					</div>
                     {% else %}
                         <div class="col-4">
@@ -247,7 +247,7 @@
                         {% set art = nextArticle %}
     					<div class="col-4 text-right artlist">
                             <div class="post-thumb align-items-center">
-                                <a href="/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}">
+                                <a class="mainTextColorInline" href="/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}">
                                     {% if art.img[0] %}
                                         <img src="/pho/{{ art.img[0].src }}?w=800" alt="{{ art.title|e }}" class="img-fluid rounded"><br clear="all">
                                     {% else %}
@@ -269,22 +269,22 @@
                             </div>
                             <div class='text-left'>
                                 <h6 class='mb-1'>
-                                    <a href="/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}" title="{{ art.title|e }} - {{ art.teaser|e }}">
+                                    <a class="mainTextColorInline" href="/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}" title="{{ art.title|e }} - {{ art.teaser|e }}">
                                         {{ art.title }}
                                     </a>
                                 </h6>
                                 {% if art.teaser %}
                                     <p class='mb-1'>{{ art.teaser|raw }}</p>
                                 {% endif %}
-                                <div class="d-flex justify-content-left text-muted">
+                                <div class="d-flex justify-content-left text-muted mainTextColorInline">
                                     <small class='font-weight-lighter mr-2'>
-                                        <a href="/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}" class="post-cat text-muted">{{ art.category }}</a>
+                                        <a class="mainTextColorInline" href="/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}" class="post-cat text-muted">{{ art.category }}</a>
                                     </small>
                                     <small class='font-weight-lighter mr-2'>/</small>
                                     <small class='font-weight-lighter mr-2'>{{ art.published|asHumanReadable }}</small>
                                 </div>
                             </div>
-                            <a class="btn btn-outline-primary" href="/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}">{{ blog.olderHeader || 'Older 👉' }}</a>
+                            <a class="btn btn-outline-primary mainTextColorInline" href="/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}">{{ blog.olderHeader || 'Older 👉' }}</a>
     					</div>
                     {% endif %}
 				</div>
