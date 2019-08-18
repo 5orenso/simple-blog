@@ -276,7 +276,7 @@ export default class ArticleEdit extends Component {
                             <span class='d-sm-none'><i class='fas fa-save'></i></span>
                             <span class='d-none d-sm-block'><i class='fas fa-save'></i> Lagre</span>
                         </button>
-                        <a class='btn btn-primary' target='_blank' href={`${this.serverName}/v2/${utilHtml.asUrlSafe(article.category || 'no-category')}/${utilHtml.asUrlSafe(article.title || 'no-title')}/${article.id}`}>
+                        <a class='btn btn-primary' target='_blank' href={`${this.serverName}/v2/${util.htmlIdSafe(article.category || 'no-category')}/${util.htmlIdSafe(article.title || 'no-title')}/${article.id}`}>
                             <span class='d-sm-none'><i class='fas fa-external-link-alt'></i></span>
                             <span class='d-none d-sm-block'><i class='fas fa-external-link-alt'></i> Preview</span>
                         </a>
@@ -285,6 +285,7 @@ export default class ArticleEdit extends Component {
                         <button class='btn btn-info float-right ml-2' onClick={e => handleClickNew(e, {
                             author: authorDefault,
                             category: catlist[0].title,
+                            categoryId: catlist[0].id,
                         })}>
                             <span class='d-sm-none'><i class='fas fa-plus'></i></span>
                             <span class='d-none d-sm-block'><i class='fas fa-plus'></i> Ny artikkel</span>

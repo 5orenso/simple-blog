@@ -151,6 +151,7 @@ export default class ArticleList extends Component {
                         <button class='btn btn-info float-right ml-2' onClick={e => handleClickNew(e, {
                             author: authorDefault,
                             category: catlist[0].title,
+                            categoryId: catlist[0].id,
                         })}>+ Ny artikkel</button>
                     </div>
 
@@ -172,8 +173,8 @@ export default class ArticleList extends Component {
                     <tbody>
                         {artlist.map(art =>
                             <tr data-id={art.id} class={articleId == art.id ? 'bg-primary text-white' : ''} onClick={handleListClick}>
-                                <td scope='row'>{art.id}</td>
-                                <td scope='row'>{art.sort}</td>
+                                <td scope='row' class='text-right'>{art.id}</td>
+                                <td scope='row' class='text-right'>{art.sort}</td>
                                 <td>
                                     {art.img && Array.isArray(art.img) && art.img[0] && (
                                         <span class='text-muted'>
@@ -182,7 +183,7 @@ export default class ArticleList extends Component {
                                         </span>
                                     )}
                                 </td>
-                                <td>{art.category} <span class='text-muted'>({art.categoryId})</span></td>
+                                <td><small class='text-muted'>#{art.categoryId}</small> {art.category}</td>
                                 <td>
                                     {art.title}<br />
                                     <small>
@@ -197,11 +198,11 @@ export default class ArticleList extends Component {
                                         <small><i class="fas fa-user-edit"></i> {util.isoDateNormalized(art.updatedDate)}</small>
                                     </span>}
                                 </td>
-                                <td><span class={`badge badge-${util.getStatusClass(art.status)} p-2`}>{util.getStatus(art.status)}</span></td>
+                                <td class='text-center'><span class={`badge badge-${util.getStatusClass(art.status)} p-2`}>{util.getStatus(art.status)}</span></td>
                                 <td>{art.author}</td>
                                 <td>
                                     <a class='btn btn-sm btn-primary' target='_blank'
-                                        href={`${this.serverName}/v2/${encodeURIComponent(art.category || 'no-category')}/${encodeURIComponent(art.title || 'no-title')}/${art.id}`}
+                                        href={`${this.serverName}/v2/${util.htmlIdSafe(art.category || 'no-category')}/${util.htmlIdSafe(art.title || 'no-title')}/${art.id}`}
                                         onClick={e => e.stopPropagation()}
                                     >
                                         <i class="fas fa-external-link-alt"></i>

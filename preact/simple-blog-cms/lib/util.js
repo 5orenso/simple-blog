@@ -351,7 +351,11 @@ class Utilities {
 
     static htmlIdSafe($string) {
         if (typeof $string === 'string') {
-            const string = $string.toLowerCase().replace(/[^a-z0-9]/gi, '-');
+            const string = $string.toLowerCase()
+                .replace(/[^a-z0-9]/gi, '-')
+                .replace(/-+/g, '-')
+                .replace(/^-/g, '')
+                .replace(/-$/g, '');
             return string;
         }
         return $string;
