@@ -84,11 +84,14 @@ module.exports = async (req, res) => {
     const article = await art.findOne(query);
     const artlist = await art.find(queryList, {}, { limit, skip });
 
-    article.catRef = catlist.find(c => c.id === article.categoryId);
-    artlist.forEach((a) => {
-        a.catRef = catlist.find(c => c.id === a.categoryId);
-    });
-
+    if (tc.isObject(article)) {
+        article.catRef = catlist.find(c => c.id === article.categoryId);
+    }
+    if (tc.isArray(artlist)) {
+        artlist.forEach((a) => {
+            a.catRef = catlist.find(c => c.id === a.categoryId);
+        });
+    }
     if (!isDetailView && artlist.length === 1) {
         const myArt = artlist[0];
         return res.redirect(302,
