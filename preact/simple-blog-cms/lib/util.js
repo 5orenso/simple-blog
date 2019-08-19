@@ -353,6 +353,9 @@ class Utilities {
     static htmlIdSafe($string) {
         if (typeof $string === 'string') {
             const string = $string.toLowerCase()
+                .replace(/æ/i, 'e')
+                .replace(/ø/i, 'o')
+                .replace(/å/i, 'a')
                 .replace(/[^a-z0-9]/gi, '-')
                 .replace(/-+/g, '-')
                 .replace(/^-/g, '')
