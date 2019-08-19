@@ -8,6 +8,7 @@
 'use strict';
 
 const querystring = require('querystring');
+const removeMarkdown = require('remove-markdown');
 
 const GEO_ADDRESS_FIELDS = [
     'information', 'parking', 'water', 'nature_reserve', 'library', 'bus_stop', 'restaurant', 'sports', 'attraction',
@@ -434,6 +435,60 @@ class Utilities {
 
     static geoAddressGetExtraTags(key) {
         return GEO_ADDRESS_FIELDS_TAGS[key];
+    }
+
+    static wordCount(text) {
+        if (typeof text === 'string') {
+            // Remove all html
+            let textWork = text.replace(/<[^>]*>?/gm, '');
+            // Remove all markdown
+            textWork = removeMarkdown(textWork);
+            // Remove all special characters
+            textWork.replace(/[a-z0-9æøå]+/gi, ' ');
+            // Truncate all whitespaces
+            textWork.replace(/\s+/g, ' ');
+            return textWork.split(' ').length;
+        }
+        return 0;
+    }
+
+    static secReadable(sec = 0) { 
+        const days = parseInt(sec / (24 * 3600), 10);
+
+        let restSec = sec % (24 * 3600);
+        const hours = parseInt(restSec / 3600, 10);
+
+        restSec %= 3600;
+        const minutes = parseInt(restSec / 60, 10);
+
+        restSec %= 60;
+        const seconds = parseInt(restSec, 10);
+
+        return {
+            days,
+            hours,
+            minutes,
+            seconds,
+        };
+    } 
+
+    static readTime(text, language = 'en') {
+        const words = Utilities.wordCount(text);
+        // 100 words a minute is common reading speed.
+        const wordsPerSec = 100 / 60;
+        const sec = words / wordsPerSec;
+        const timeObj = Utilities.secReadable(sec);
+
+        if (language === 'no') {
+            return `${timeObj.days ? `${timeObj.days} dag${timeObj.days > 1 ? 'er' : ''} ` : ''}`
+                + `${timeObj.hours ? `${timeObj.hours} time${timeObj.hours > 1 ? 'r' : ''} ` : ''}`
+                + `${timeObj.minutes ? `${timeObj.minutes} min${timeObj.minutes > 1 ? '' : ''} ` : ''}`
+                + `${timeObj.seconds} sek${timeObj.seconds > 1 ? '' : ''}`;
+        }
+        return `${timeObj.days ? `${timeObj.days} day${timeObj.days > 1 ? 's' : ''} ` : ''}`
+            + `${timeObj.hours ? `${timeObj.hours} hour${timeObj.hours > 1 ? 's' : ''} ` : ''}`
+            + `${timeObj.minutes ? `${timeObj.minutes} min${timeObj.minutes > 1 ? '' : ''} ` : ''}`
+            + `${timeObj.seconds} sec${timeObj.seconds > 1 ? '' : ''}`;
     }
 }
 

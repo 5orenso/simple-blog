@@ -451,6 +451,12 @@ export default class ArticleEdit extends Component {
                             onInput={handleTextareaInput}
                             onFocus={this.handleTextareaFocus}
                             value={article.body} />
+                        <small class='float-right'>
+                            <small class='text-white'>
+                                Ord: {util.wordCount(article.body)}, 
+                                Lesetid: {util.readTime(article.body, 'no')}
+                            </small>
+                        </small>
                     </div>
 
                 </div>
@@ -465,12 +471,14 @@ export default class ArticleEdit extends Component {
                 <h5>{article.teaser}</h5>
                 <div>
                     <small>
-                        Publisert: {util.asHumanReadable(article.published)}
-                        {article.published !== article.updatedDate && <span class='text-muted'> | Sist oppdatert: {util.asHumanReadable(article.updatedDate)}</span>}
-                        &nbsp; | {article.category}
-                        &nbsp; | <span class={`badge badge-${util.getStatusClass(article.status)} p-2`}>
-                                    {util.getStatus(article.status)}
-                                </span>
+                        {util.asHumanReadable(article.published)}
+                        {util.asHumanReadable(article.published) !== util.asHumanReadable(article.updatedDate) && <span class='text-muted'> / <i class='fas fa-undo' /> {util.asHumanReadable(article.updatedDate)}</span>}
+                        &nbsp; /  <i class='far fa-folder-open' /> {article.category}
+                        &nbsp; / &nbsp;
+                        <span class={`badge badge-${util.getStatusClass(article.status)} p-2`}>
+                            {util.getStatus(article.status)}
+                        </span>
+                        &nbsp; / 
                         &nbsp;<a rel='noopener' target='_blank' href={`https://www.facebook.com/sharer.php?u=${shareLink}`}>
                             <i class='fab fa-facebook'></i>
                         </a>
@@ -496,6 +504,10 @@ export default class ArticleEdit extends Component {
                             + `Les mer: ${shareLink}`}>
                             <i class='far fa-envelope'></i>
                         </a>
+                        &nbsp; /                        
+                        Ord: {util.wordCount(article.body)}
+                        &nbsp; /                        
+                        Lesetid: {util.readTime(article.body, 'no')}
                     </small>
                 </div>
                 <div class='mb-3'>

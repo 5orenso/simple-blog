@@ -82,11 +82,14 @@
                 <div class="d-flex justify-content-left text-muted" {{ colorArticleText(art.catRef) }}>
                     {% if 1 == 1 %}
                         <small class='mr-2 font-weight-lighter'>
+                            <i class="far fa-folder-open"></i>
                             <a href="/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}" class="post-cat" {{ colorArticleText(art.catRef) }}>{{ art.category }}</a>
                         </small>
                     {% endif %}
                     <small class='font-weight-lighter mr-2'>/</small>
                     <small class='font-weight-lighter mr-2'>{{ art.published|asHumanReadable }}</small>
+                    <small class='font-weight-lighter mr-2'>/</small>
+                    <small class='font-weight-lighter mr-2'><a title="Lesetid for artikkel"><i class="far fa-clock"></i> {{ art.body|readTime('no') }}</a></small>
                 </div>
             </div>
         </div>
@@ -136,13 +139,18 @@
                                         <p class='mb-1'>{{ art.teaser|raw }}</p>
                                     {% endif %}
                                     <!-- <p class="lead">{{ art.body|substring(0, 150)|markdown|cleanHtml }}...</p> -->
-                                    <div class="d-flex justify-content-left text-muted" {{ colorArticleText(art.catRef) }}>
-                                        <small class='font-weight-lighter mr-2'>
-                                            <a href="/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}" class="post-cat text-muted" {{ colorArticleText(art.catRef) }}>{{ art.category }}</a>
-                                        </small>
-                                        <small class='font-weight-lighter mr-2'>/</small>
-                                        <small class='font-weight-lighter mr-2'>{{ art.published|asHumanReadable }}</small>
-                                    </div>
+                                    <small>
+                                        <div {{ colorArticleText(art.catRef) }}>
+                                            <small class='font-weight-lighter mr-1'>
+                                                <i class="far fa-folder-open"></i>
+                                                <a href="/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}" class="post-cat text-muted" {{ colorArticleText(art.catRef) }}>{{ art.category }}</a>
+                                            </small>
+                                            <small class='font-weight-lighter mr-1'>/</small>
+                                            <small class='font-weight-lighter mr-1'>{{ art.published|asHumanReadable }}</small>
+                                            <small class='font-weight-lighter mr-1'>/</small>
+                                            <small class='font-weight-lighter mr-1'><a title="Lesetid for artikkel"><i class="far fa-clock"></i> {{ art.body|readTime('no') }}</a></small>
+                                        </div>
+                                    </small>
                                 </div>
                             </div>
                         {% endif %}

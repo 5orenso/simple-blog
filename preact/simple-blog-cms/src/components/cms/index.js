@@ -809,11 +809,11 @@ export default class SimpleBlogCms extends Component {
             renderedMenu = (
                 <nav class='nav nav-pills nav-fill mb-3'>
                     <a class={`nav-item nav-link ${currentMenu === 'articles' ? 'active' : ''}`} href='#'
-                        onClick={this.handleMenuClick} data-menu='articles'><i class="fas fa-newspaper"></i> Articles</a>
+                        onClick={this.handleMenuClick} data-menu='articles'><i class="fas fa-newspaper"></i> Artikler</a>
                     <a class={`nav-item nav-link ${currentMenu === 'categories' ? 'active' : ''}`} href='#'
-                        onClick={this.handleMenuClick} data-menu='categories'><i class="fas fa-folder-open"></i> Categories</a>
+                        onClick={this.handleMenuClick} data-menu='categories'><i class="fas fa-folder-open"></i> Kategorier</a>
                     <a class={`nav-item nav-link ${currentMenu === 'images' ? 'active' : ''}`} href='#'
-                        onClick={this.handleMenuClick} data-menu='images'><i class="fas fa-images"></i> Images</a>
+                        onClick={this.handleMenuClick} data-menu='images'><i class="fas fa-images"></i> Bilder</a>
                     <a class={`nav-item nav-link ${currentMenu === 'iot' ? 'active' : ''}`} href='#'
                         onClick={this.handleMenuClick} data-menu='iot'><i class="fas fa-temperature-low"></i> Iot</a>
                 </nav>

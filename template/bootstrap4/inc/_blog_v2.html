@@ -47,30 +47,33 @@
                 <p class="blog-post-meta mt-1">
                     <small class='font-weight-lighter'>
                         {% if article.published %}
-                            {{ blog.textPublished || 'Publisert' }}: {{ article.published|asHumanReadable }}
+                            {{ blog.textPublished }} {{ article.published|asHumanReadable }}
                         {% endif %}
-                        {% if article.updatedDate %}
-                            <span class='text-muted mainTextColorInline'>| {{ blog.textLastUpdated || 'Oppdatert' }}: {{ article.updatedDate|asHumanReadable }}</span>
+                        {% if article.updatedDate &&  article.updatedDate != article.published %}
+                            <span class='text-muted mainTextColorInline'>&nbsp; / &nbsp; {{ blog.textLastUpdated || '<i class="fas fa-undo"></i>'|raw }} {{ article.updatedDate|asHumanReadable }}</span>
                         {% endif %}
-                        | <a href="/v2/{{ category.title }}/" class="post-cat mainTextColorInline">{{ category.title }}</a>
-                        {% if article.status %}
-                            | <span class="badge badge-{{ article.status|getStatusClass }}">
+                        &nbsp; / &nbsp; <a href="/v2/{{ category.title }}/" class="post-cat text-muted mainTextColorInline">
+                            <i class="far fa-folder-open"></i> {{ category.title }}
+                        </a>
+                        {% if article.status !== 2 %}
+                            &nbsp; / &nbsp; <span class="badge badge-{{ article.status|getStatusClass }}">
                                 {{ article.status|getStatus }}
                             </span>
                         {% endif %}
-
-                        |
+                        &nbsp; / &nbsp; 
                         {% set shareLink = blog.protocol + '://' + blog.domain + '/' + article.category|asLinkPart + '/' + article.title|asLinkPart + '/' + article.id %}
-                        <a class="mainTextColorInline" rel="noopener" target="_blank" href="https://www.facebook.com/sharer.php?u={{ shareLink|asUrlSafe }}">
+                        <a class="text-muted mainTextColorInline" rel="noopener" target="_blank" href="https://www.facebook.com/sharer.php?u={{ shareLink|asUrlSafe }}">
                             <i class="fab fa-facebook"></i>
                         </a>
-                        <a class="mainTextColorInline" rel="noopener" target="_blank" href="https://twitter.com/intent/tweet?url={{ shareLink|asUrlSafe }}&text={{ article.title|asUrlSafe }}.%20{{ (article.teaser || article.ingress)|striptags|asUrlSafe }}{% if blog.socialUser.twitter %}&via={{ blog.socialUser.twitter|asUrlSafe }}{% endif %}&hashtags={{ article.tags|asUrlSafe }}">
+                        <a class="text-muted mainTextColorInline" rel="noopener" target="_blank" href="https://twitter.com/intent/tweet?url={{ shareLink|asUrlSafe }}&text={{ article.title|asUrlSafe }}.%20{{ (article.teaser || article.ingress)|striptags|asUrlSafe }}{% if blog.socialUser.twitter %}&via={{ blog.socialUser.twitter|asUrlSafe }}{% endif %}&hashtags={{ article.tags|asUrlSafe }}">
                             <i class="fab fa-twitter"></i>
                         </a>
-                        <a class="mainTextColorInline" rel="noopener" target="_blank" href="https://www.linkedin.com/shareArticle?mini=true&url={{ shareLink|asUrlSafe }}&summary={{ article.title|asUrlSafe }}.%20{{ (article.teaser || article.ingress)|asUrlSafe }}&source={{ blog.domain }}">
+                        <a class="text-muted mainTextColorInline" rel="noopener" target="_blank" href="https://www.linkedin.com/shareArticle?mini=true&url={{ shareLink|asUrlSafe }}&summary={{ article.title|asUrlSafe }}.%20{{ (article.teaser || article.ingress)|asUrlSafe }}&source={{ blog.domain }}">
                             <i class="fab fa-linkedin-in"></i>
                         </a>
-                        <a class="mainTextColorInline" rel="noopener" target="_blank" href="mailto:?subject=Tips: {{ article.title|asUrlSafe }}&body=Tips fra {{ blog.domain }}:%0D%0A%0D%0A{{ article.title|uc|asUrlSafe }}%0D%0A%0D%0A{{ (article.teaser || article.ingress)|asUrlSafe }}%0D%0A%0D%0ALes mer: {{ shareLink|asUrlSafe }}"><i class="far fa-envelope"></i></a>
+                        <a class="text-muted mainTextColorInline" rel="noopener" target="_blank" href="mailto:?subject=Tips: {{ article.title|asUrlSafe }}&body=Tips fra {{ blog.domain }}:%0D%0A%0D%0A{{ article.title|uc|asUrlSafe }}%0D%0A%0D%0A{{ (article.teaser || article.ingress)|asUrlSafe }}%0D%0A%0D%0ALes mer: {{ shareLink|asUrlSafe }}"><i class="far fa-envelope"></i></a>
+                        &nbsp; / &nbsp; 
+                        <a class="text-muted mainTextColorInline" title="Lesetid for artikkel"><i class="far fa-clock"></i> {{ article.body|readTime('no') }}</a>
 
                         {% if article.tags %}
                             <br />
@@ -79,12 +82,11 @@
                             {% endfor %}
                         {% endif %}
                         <span class="float-right text-right">
-                            <a target="_blank" href="http://translate.google.com/translate?u={{ shareLink|asUrlSafe }}&hl=en&ie=UTF8&sl=no&tl=en" title="Translate to english"><span class="flag-icon flag-icon-gb"></span></a>
-                            <a target="_blank" href="http://translate.google.com/translate?u={{ shareLink|asUrlSafe }}&hl=de&ie=UTF8&sl=no&tl=de" title="Uberseztung ins Deutsch"><span class="flag-icon flag-icon-de"></span></a>
-                            <a target="_blank" href="http://translate.google.com/translate?u={{ shareLink|asUrlSafe }}&hl=fr&ie=UTF8&sl=no&tl=fr" title="Traduire en Français"><span class="flag-icon flag-icon-fr"></span></a>
-                            <a target="_blank" href="http://translate.google.com/translate?u={{ shareLink|asUrlSafe }}&hl=es&ie=UTF8&sl=no&tl=es" title="Traducir al ingles"><span class="flag-icon flag-icon-es"></span></a>
+                            <a class="text-muted mainTextColorInline" target="_blank" href="http://translate.google.com/translate?u={{ shareLink|asUrlSafe }}&hl=en&ie=UTF8&sl=no&tl=en" title="Translate to english"><span class="flag-icon flag-icon-gb"></span></a>
+                            <a class="text-muted mainTextColorInline" target="_blank" href="http://translate.google.com/translate?u={{ shareLink|asUrlSafe }}&hl=de&ie=UTF8&sl=no&tl=de" title="Uberseztung ins Deutsch"><span class="flag-icon flag-icon-de"></span></a>
+                            <a class="text-muted mainTextColorInline" target="_blank" href="http://translate.google.com/translate?u={{ shareLink|asUrlSafe }}&hl=fr&ie=UTF8&sl=no&tl=fr" title="Traduire en Français"><span class="flag-icon flag-icon-fr"></span></a>
+                            <a class="text-muted mainTextColorInline" target="_blank" href="http://translate.google.com/translate?u={{ shareLink|asUrlSafe }}&hl=es&ie=UTF8&sl=no&tl=es" title="Traducir al ingles"><span class="flag-icon flag-icon-es"></span></a>
                         </span>
-
                     </small>
                 </p>
 
