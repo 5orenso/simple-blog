@@ -72,10 +72,14 @@
         {% set art = artlist[0] %}
         <div class="jumbotron" {{ colorArticleBackground(art.catRef) }}>
             <div class="container blog-main" {{ colorArticleText(art.catRef) }}>
-                {% if art.img[0] && !art.isFrontpage %}
-                    <a href="/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}" {{ colorArticleText(art.catRef) }}>
+                {% if art.img[0] %}
+                    {% if art.isFrontpage %}
                         <img src="/pho/{{ art.img[0].src }}?w=1014" alt="{{ art.title|e }}" class="img-fluid rounded">
-                    </a>
+                    {% else %}
+                        <a href="/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}" {{ colorArticleText(art.catRef) }}>
+                            <img src="/pho/{{ art.img[0].src }}?w=1014" alt="{{ art.title|e }}" class="img-fluid rounded">
+                        </a>
+                    {% endif %}
                 {% endif %}
                 <h1 class="display-3">
                     {% if art.isFrontpage %}
