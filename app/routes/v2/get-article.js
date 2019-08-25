@@ -81,15 +81,20 @@ module.exports = async (req, res) => {
         queryList.tags = req.query.tag;
     }
 
+    let frontpagelist = [];
     frontpage = await catFrontpage.findOne({ type: 1 });
-    queryFrontpage.categoryId = frontpage.id;
+    if (tc.isObject(frontpage)) {
+        queryFrontpage.categoryId = frontpage.id;
+        frontpagelist = await artFrontpage.find(queryFrontpage, {}, { limit, skip });
+        if (tc.isArray(frontpagelist)) {
+            for (let i = 0, l = frontpagelist.length; i < l; i += 1) {
+                frontpagelist[i].isFrontpage = 1;
+            }
+        }
+    }
 
     const article = await art.findOne(query);
     let artlist = await art.find(queryList, {}, { limit, skip });
-    const frontpagelist = await artFrontpage.find(queryFrontpage, {}, { limit, skip });
-    for (let i = 0, l = frontpagelist.length; i < l; i += 1) {
-        frontpagelist[i].isFrontpage = 1;
-    }
 
     if (tc.isObject(article)) {
         article.catRef = catlist.find(c => c.id === article.categoryId);
