@@ -163,6 +163,20 @@ export default class CategoryEdit extends Component {
                         </div>
 
                         <div class='form-group'>
+                            <label for='menuInput'>Skjul tittel</label>
+                            <input type='checkbox' class='form-control' id='hideTitleInput'
+                                name='hideTitle'
+                                onInput={e => {
+                                    handleInput(e, {
+                                        name: 'hideTitle',
+                                        value: category.hideTitle ? 0 : 1,
+                                    });
+                                }}
+                                value={1}
+                                checked={category.hideTitle ? 'checked' : ''} />
+                        </div>
+
+                        <div class='form-group'>
                             <label for='hideTopImageInput'>Skjul toppbilde</label>
                             <input type='checkbox' class='form-control' id='hideTopImageInput'
                                 name='hideTopImage'
@@ -203,21 +217,6 @@ export default class CategoryEdit extends Component {
                                 value={1}
                                 checked={category.hideArticleList === 1 ? 'checked' : ''} />
                         </div>
-
-                        <div class='form-group'>
-                            <label for='menuInput'>Skjul tittel</label>
-                            <input type='checkbox' class='form-control' id='hideTitleInput'
-                                name='hideTitle'
-                                onInput={e => {
-                                    handleInput(e, {
-                                        name: 'hideTitle',
-                                        value: category.hideTitle ? 0 : 1,
-                                    });
-                                }}
-                                value={1}
-                                checked={category.hideTitle ? 'checked' : ''} />
-                        </div>
-                        
 
                         <div class='form-group'>
                             <label for='urlInput'><i class='fas fa-link text-muted' /> URL</label>

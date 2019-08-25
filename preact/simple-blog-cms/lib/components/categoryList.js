@@ -45,6 +45,9 @@ export default class CategoryList extends Component {
                                 <th scope='col'>Tittel</th>
                                 <th scope='col'>Meny</th>
                                 <th scope='col'>Skjul tittel i menyen</th>
+                                <th scope='col'>Skjul toppbilde</th>
+                                <th scope='col'>Skjul forrige-neste linker</th>
+                                <th scope='col'>Skjul artikkelliste</th>
                                 <th scope='col'>Sort</th>
                                 <th scope='col'>Type</th>
                                 <th scope='col'>URL</th>
@@ -63,6 +66,9 @@ export default class CategoryList extends Component {
                             </td>
                             <td>{cat.menu ? 'Ja' : 'Nei'}</td>
                             <td>{cat.hideTitle ? 'Ja' : 'Nei'}</td>
+                            <td>{cat.hideTopImage ? 'Ja' : 'Nei'}</td>
+                            <td>{cat.hidePrevNext ? 'Ja' : 'Nei'}</td>
+                            <td>{cat.hideArticleList ? 'Ja' : 'Nei'}</td>
                             <td>{cat.sort}</td>
                             <td>
                                 {cat.type ? typeList.find(x => x.value === cat.type).title : ''}
