@@ -87,6 +87,9 @@ module.exports = async (req, res) => {
     const article = await art.findOne(query);
     let artlist = await art.find(queryList, {}, { limit, skip });
     const frontpagelist = await artFrontpage.find(queryFrontpage, {}, { limit, skip });
+    for (let i = 0, l = frontpagelist.length; i < l; i += 1) {
+        frontpagelist[i].isFrontpage = 1;
+    }
 
     if (tc.isObject(article)) {
         article.catRef = catlist.find(c => c.id === article.categoryId);
