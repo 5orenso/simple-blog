@@ -88,6 +88,7 @@
                         <a href="/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}" {{ colorArticleText(art.catRef) }}>
                             {{ art.title }}
                         </a>
+                    {% endif %}
                     </h1>
                 <p>{{ art.teaser|raw }}</p>
                 {% if art.isFrontpage %}
