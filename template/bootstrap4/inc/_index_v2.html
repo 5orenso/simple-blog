@@ -101,7 +101,7 @@
                 {% set adLimit = 20 %}
                 {% for art in adlist %}
                     {% if loop.index < adLimit %}
-                        <div class="col-2 mb-2 d-flex align-items-center">
+                        <div class="col mb-2 d-flex align-items-center">
                             {% if art.url %}
                                 <a target="_blank" href="{{ art.url }}" title="{{ art.title|e }} - {{ art.teaser|e }}">
                             {% endif %}

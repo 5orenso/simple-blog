@@ -115,27 +115,29 @@ function subscribeUserToPush() {
     });
 }
 
-if ('serviceWorker' in navigator) {
-    registerServiceWorker()
-        .then(registration => subscribeUserToPush(registration))
-        .then(subscription => sendSubscriptionToBackEnd(subscription))
-        .then((result) => {
-            // All ok. Service worker is registered and sent to the server.
-            console.log('[push-notifications.js]  Response from server:', result);
-        })
-        .catch((error) => {
-            // Something went wrong. Trying to send error to the server.
-            console.log('[push-notifications.js]  Ok, so something went wrong:', error);
-            sendErrorToBackend(error)
-                .then((response) => {
-                    // Error sent to the server.
-                    console.log(`[push-notifications.js]  sendErrorToBackend.response: ${JSON.stringify(response)}`);
-                })
-                .catch((err) => {
-                    throw new Error(err);
-                });
-        });
-} else {
-    // Server worker is not supported.
-    console.log('[push-notifications.js]  Service workers are not supported.');
+if (1 === 2) {
+    if ('serviceWorker' in navigator) {
+        registerServiceWorker()
+            .then(registration => subscribeUserToPush(registration))
+            .then(subscription => sendSubscriptionToBackEnd(subscription))
+            .then((result) => {
+                // All ok. Service worker is registered and sent to the server.
+                console.log('[push-notifications.js]  Response from server:', result);
+            })
+            .catch((error) => {
+                // Something went wrong. Trying to send error to the server.
+                console.log('[push-notifications.js]  Ok, so something went wrong:', error);
+                sendErrorToBackend(error)
+                    .then((response) => {
+                        // Error sent to the server.
+                        console.log(`[push-notifications.js]  sendErrorToBackend.response: ${JSON.stringify(response)}`);
+                    })
+                    .catch((err) => {
+                        throw new Error(err);
+                    });
+            });
+    } else {
+        // Server worker is not supported.
+        console.log('[push-notifications.js]  Service workers are not supported.');
+    }
 }

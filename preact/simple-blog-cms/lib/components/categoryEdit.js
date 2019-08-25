@@ -161,6 +161,49 @@ export default class CategoryEdit extends Component {
                                 value={1}
                                 checked={category.menu === 1 ? 'checked' : ''} />
                         </div>
+
+                        <div class='form-group'>
+                            <label for='hideTopImageInput'>Skjul toppbilde</label>
+                            <input type='checkbox' class='form-control' id='hideTopImageInput'
+                                name='hideTopImage'
+                                onInput={e => {
+                                    handleInput(e, {
+                                        name: 'hideTopImage',
+                                        value: category.hideTopImage ? 0 : 1,
+                                    });
+                                }}
+                                value={1}
+                                checked={category.hideTopImage === 1 ? 'checked' : ''} />
+                        </div>
+
+                        <div class='form-group'>
+                            <label for='hidePrevNextInput'>Skjul forrige-neste linker</label>
+                            <input type='checkbox' class='form-control' id='hidePrevNextInput'
+                                name='hidePrevNext'
+                                onInput={e => {
+                                    handleInput(e, {
+                                        name: 'hidePrevNext',
+                                        value: category.hidePrevNext ? 0 : 1,
+                                    });
+                                }}
+                                value={1}
+                                checked={category.hidePrevNext === 1 ? 'checked' : ''} />
+                        </div>
+
+                        <div class='form-group'>
+                            <label for='hideArticleListInput'>Skjul artikkelliste</label>
+                            <input type='checkbox' class='form-control' id='hideArticleListInput'
+                                name='hideArticleList'
+                                onInput={e => {
+                                    handleInput(e, {
+                                        name: 'hideArticleList',
+                                        value: category.hideArticleList ? 0 : 1,
+                                    });
+                                }}
+                                value={1}
+                                checked={category.hideArticleList === 1 ? 'checked' : ''} />
+                        </div>
+
                         <div class='form-group'>
                             <label for='menuInput'>Skjul tittel</label>
                             <input type='checkbox' class='form-control' id='hideTitleInput'
