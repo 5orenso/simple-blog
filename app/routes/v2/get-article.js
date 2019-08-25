@@ -17,6 +17,7 @@ module.exports = async (req, res) => {
     const { hrstart, runId } = run(req);
 
     const art = new Article();
+    const artFrontpage = new Article();
     const artAds = new Article();
     const artAdsLower = new Article();
     const catFrontpage = new Category();
@@ -35,6 +36,7 @@ module.exports = async (req, res) => {
 
     const query = { status: 2 };
     const queryList = { status: 2 };
+    const queryFrontpage = { status: 2 };
     let queryCategory = {};
     let queryAds = {};
 
@@ -80,9 +82,11 @@ module.exports = async (req, res) => {
     }
 
     frontpage = await catFrontpage.findOne({ type: 1 });
+    queryFrontpage.categoryId = frontpage.id;
 
     const article = await art.findOne(query);
-    const artlist = await art.find(queryList, {}, { limit, skip });
+    let artlist = await art.find(queryList, {}, { limit, skip });
+    const frontpagelist = await artFrontpage.find(queryFrontpage, {}, { limit, skip });
 
     if (tc.isObject(article)) {
         article.catRef = catlist.find(c => c.id === article.categoryId);
@@ -108,6 +112,9 @@ module.exports = async (req, res) => {
         }
         queryAds = { type: 2 };
     } else {
+        if (frontpagelist.length > 0) {
+            artlist = frontpagelist.concat(artlist);
+        }
         queryAds = { type: 3 };
     }
 
@@ -130,6 +137,7 @@ module.exports = async (req, res) => {
         article,
         previousArticle,
         nextArticle,
+        frontpagelist,
         artlist,
         artlistTotal,
         category,
