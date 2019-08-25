@@ -115,10 +115,11 @@ module.exports = async (req, res) => {
         }
         queryAds = { type: 2 };
     } else {
-        if (frontpagelist.length > 0) {
-            artlist = frontpagelist.concat(artlist);
-        }
         queryAds = { type: 3 };
+    }
+
+    if (isFrontpage && frontpagelist.length > 0) {
+        artlist = frontpagelist.concat(artlist);
     }
 
     const artlistTotal = await art.count(queryList);
