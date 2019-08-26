@@ -90,7 +90,8 @@
                     {% endif %}
                 {% endif %}
                 <h1 class="display-3">
-                    {% if art.isFrontpage %}
+                    {% if art.catRef.hideFrontpageTitle %}
+                    {% elseif art.isFrontpage %}
                         {{ art.title }}
                     {% else %}
                         <a href="/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}" {{ colorArticleText(art.catRef) }}>
@@ -159,8 +160,16 @@
                                     </div>
                                 {% endif %}
                                 <div class="post-content" {{ colorArticleText(art.catRef) }}>
-                                    <h3><a href="/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}" {{ colorArticleText(art.catRef) }}>{{ art.title }}</a></h3>
-                                    {% if art.teaser %}
+                                    {% if art.catRef.hideFrontpageTitle %}
+                                    {% else %}
+                                        <h3>
+                                            <a href="/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}" {{ colorArticleText(art.catRef) }}>
+                                                {{ art.title }}
+                                            </a>
+                                        </h3>
+                                    {% endif %}
+                                    {% if art.catRef.hideFrontpageTeaser %}
+                                    {% elseif art.teaser %}
                                         <p class='mb-1'>{{ art.teaser|raw }}</p>
                                     {% endif %}
                                     <!-- <p class="lead">{{ art.body|substring(0, 150)|markdown|cleanHtml }}...</p> -->

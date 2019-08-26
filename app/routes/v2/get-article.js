@@ -88,6 +88,8 @@ module.exports = async (req, res) => {
         if (tc.isArray(frontpagelist)) {
             for (let i = 0, l = frontpagelist.length; i < l; i += 1) {
                 frontpagelist[i].isFrontpage = 1;
+                frontpagelist[i].catRef = frontpage;
+
             }
         }
         if (isFrontpage) {

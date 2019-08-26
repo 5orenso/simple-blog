@@ -155,9 +155,10 @@ export default class CategoryEdit extends Component {
                                 onInput={handleInput}
                                 value={category.limit} />
                         </div>
-                        <div class='form-group'>
-                            <label for='menuInput'>Meny</label>
-                            <input type='checkbox' class='form-control' id='menuInput'
+
+                        <h5 class='mt-3'>Avanserte innstillinger</h5>
+                        <div class='form-check'>
+                            <input type='checkbox' class='form-check-input' id='menuInput'
                                 name='menu'
                                 onInput={e => {
                                     handleInput(e, {
@@ -166,12 +167,13 @@ export default class CategoryEdit extends Component {
                                     });
                                 }}
                                 value={1}
-                                checked={category.menu === 1 ? 'checked' : ''} />
+                                checked={category.menu === 1 ? 'checked' : ''}
+                            />
+                            <label for='menuInput'>Meny</label>
                         </div>
 
-                        <div class='form-group'>
-                            <label for='menuInput'>Skjul tittel</label>
-                            <input type='checkbox' class='form-control' id='hideTitleInput'
+                        <div class='form-check'>
+                            <input type='checkbox' class='form-check-input' id='hideTitleInput'
                                 name='hideTitle'
                                 onInput={e => {
                                     handleInput(e, {
@@ -180,12 +182,13 @@ export default class CategoryEdit extends Component {
                                     });
                                 }}
                                 value={1}
-                                checked={category.hideTitle ? 'checked' : ''} />
+                                checked={category.hideTitle ? 'checked' : ''}
+                            />
+                            <label for='menuInput'>Skjul menytittel</label>
                         </div>
 
-                        <div class='form-group'>
-                            <label for='hideTopImageInput'>Skjul toppbilde</label>
-                            <input type='checkbox' class='form-control' id='hideTopImageInput'
+                        <div class='form-check'>
+                            <input type='checkbox' class='form-check-input' id='hideTopImageInput'
                                 name='hideTopImage'
                                 onInput={e => {
                                     handleInput(e, {
@@ -194,12 +197,13 @@ export default class CategoryEdit extends Component {
                                     });
                                 }}
                                 value={1}
-                                checked={category.hideTopImage === 1 ? 'checked' : ''} />
+                                checked={category.hideTopImage === 1 ? 'checked' : ''}
+                            />
+                            <label for='hideTopImageInput'>Skjul artikkel toppbilde</label>
                         </div>
 
-                        <div class='form-group'>
-                            <label for='hidePrevNextInput'>Skjul forrige-neste linker</label>
-                            <input type='checkbox' class='form-control' id='hidePrevNextInput'
+                        <div class='form-check'>
+                            <input type='checkbox' class='form-check-input' id='hidePrevNextInput'
                                 name='hidePrevNext'
                                 onInput={e => {
                                     handleInput(e, {
@@ -208,12 +212,13 @@ export default class CategoryEdit extends Component {
                                     });
                                 }}
                                 value={1}
-                                checked={category.hidePrevNext === 1 ? 'checked' : ''} />
+                                checked={category.hidePrevNext === 1 ? 'checked' : ''}
+                            />
+                            <label for='hidePrevNextInput'>Skjul artikkel forrige-neste linker</label>
                         </div>
 
-                        <div class='form-group'>
-                            <label for='hideArticleListInput'>Skjul artikkelliste</label>
-                            <input type='checkbox' class='form-control' id='hideArticleListInput'
+                        <div class='form-check'>
+                            <input type='checkbox' class='form-check-input' id='hideArticleListInput'
                                 name='hideArticleList'
                                 onInput={e => {
                                     handleInput(e, {
@@ -222,12 +227,13 @@ export default class CategoryEdit extends Component {
                                     });
                                 }}
                                 value={1}
-                                checked={category.hideArticleList === 1 ? 'checked' : ''} />
+                                checked={category.hideArticleList === 1 ? 'checked' : ''}
+                            />
+                            <label for='hideArticleListInput'>Skjul artikkel artikkelliste</label>
                         </div>
 
-                        <div class='form-group'>
-                            <label for='hideMetaInfoInput'>Skjul metainfo</label>
-                            <input type='checkbox' class='form-control' id='hideMetaInfoInput'
+                        <div class='form-check'>
+                            <input type='checkbox' class='form-check-input' id='hideMetaInfoInput'
                                 name='hideMetaInfo'
                                 onInput={e => {
                                     handleInput(e, {
@@ -236,12 +242,13 @@ export default class CategoryEdit extends Component {
                                     });
                                 }}
                                 value={1}
-                                checked={category.hideMetaInfo === 1 ? 'checked' : ''} />
+                                checked={category.hideMetaInfo === 1 ? 'checked' : ''}
+                            />
+                            <label for='hideMetaInfoInput'>Skjul artikkel metainfo</label>
                         </div>
 
-                        <div class='form-group'>
-                            <label for='hideAuthorInfoInput'>Skjul forfatterinfo</label>
-                            <input type='checkbox' class='form-control' id='hideAuthorInfoInput'
+                        <div class='form-check'>
+                            <input type='checkbox' class='form-check-input' id='hideAuthorInfoInput'
                                 name='hideAuthorInfo'
                                 onInput={e => {
                                     handleInput(e, {
@@ -250,10 +257,43 @@ export default class CategoryEdit extends Component {
                                     });
                                 }}
                                 value={1}
-                                checked={category.hideAuthorInfo === 1 ? 'checked' : ''} />
+                                checked={category.hideAuthorInfo === 1 ? 'checked' : ''}
+                            />
+                            <label for='hideAuthorInfoInput'>Skjul artikkel forfatterinfo</label>
                         </div>
 
-                        <div class='form-group'>
+                        <div class='form-check'>
+                            <input type='checkbox' class='form-check-input' id='hideFrontpageTitleInput'
+                                name='hideFrontpageTitle'
+                                onInput={e => {
+                                    handleInput(e, {
+                                        name: 'hideFrontpageTitle',
+                                        value: category.hideFrontpageTitle ? 0 : 1,
+                                    });
+                                }}
+                                value={1}
+                                checked={category.hideFrontpageTitle === 1 ? 'checked' : ''}
+                            />
+                            <label for='hideFrontpageTitleInput'>Skjul forside artikkeltittel</label>
+                        </div>
+
+                        <div class='form-check'>
+                            <input type='checkbox' class='form-check-input' id='hideFrontpageTeaserInput'
+                                name='hideFrontpageTeaser'
+                                onInput={e => {
+                                    handleInput(e, {
+                                        name: 'hideFrontpageTeaser',
+                                        value: category.hideFrontpageTeaser ? 0 : 1,
+                                    });
+                                }}
+                                value={1}
+                                checked={category.hideFrontpageTeaser === 1 ? 'checked' : ''}
+                            />
+                            <label for='hideFrontpageTeaserInput'>Skjul forside artikkelteaser</label>
+                        </div>
+
+
+                        <div class='form-group mt-3'>
                             <label for='urlInput'><i class='fas fa-link text-muted' /> URL</label>
                             <input type='text' class='form-control' id='urlInput' placeholder='url'
                                 name='url'

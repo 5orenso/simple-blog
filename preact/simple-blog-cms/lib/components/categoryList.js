@@ -44,10 +44,14 @@ export default class CategoryList extends Component {
                                 <th scope='col'>Bilde</th>
                                 <th scope='col'>Tittel</th>
                                 <th scope='col'>Meny</th>
-                                <th scope='col'>Skjul tittel i menyen</th>
-                                <th scope='col'>Skjul toppbilde</th>
-                                <th scope='col'>Skjul forrige-neste linker</th>
-                                <th scope='col'>Skjul artikkelliste</th>
+                                <th scope='col'>Skjul menytittel</th>
+                                <th scope='col'>Skjul artikkel toppbilde</th>
+                                <th scope='col'>Skjul artikkel forrige-neste linker</th>
+                                <th scope='col'>Skjul artikkel artikkelliste</th>
+                                <th scope='col'>Skjul artikkel metainfo</th>
+                                <th scope='col'>Skjul artikkel forfatterinfo</th>
+                                <th scope='col'>Skjul forside artikkeltittel</th>
+                                <th scope='col'>Skjul forside artikkelteaser</th>
                                 <th scope='col'>Sort</th>
                                 <th scope='col'>Type</th>
                                 <th scope='col'>URL</th>
@@ -75,6 +79,10 @@ export default class CategoryList extends Component {
                             <td>{cat.hideTopImage ? 'Ja' : 'Nei'}</td>
                             <td>{cat.hidePrevNext ? 'Ja' : 'Nei'}</td>
                             <td>{cat.hideArticleList ? 'Ja' : 'Nei'}</td>
+                            <td>{cat.hideMetaInfo ? 'Ja' : 'Nei'}</td>
+                            <td>{cat.hideAuthorInfo ? 'Ja' : 'Nei'}</td>
+                            <td>{cat.hideFrontpageTitle ? 'Ja' : 'Nei'}</td>
+                            <td>{cat.hideFrontpageTeaser ? 'Ja' : 'Nei'}</td>
                             <td>{cat.sort}</td>
                             <td>
                                 {cat.type ? typeList.find(x => x.value === cat.type).title : ''}

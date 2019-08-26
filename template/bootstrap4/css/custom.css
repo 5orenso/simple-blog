@@ -274,6 +274,8 @@ pre code {
 
 .adImage {
     max-height: 100px;
+    -webkit-filter: grayscale(100%); /* Safari 6.0 - 9.0 */
+    filter: grayscale(100%);
 }
 
 @media (min-width: 544px) {
