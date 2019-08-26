@@ -272,6 +272,10 @@ pre code {
     border-radius: .25em;
 }
 
+.adImage {
+    max-height: 100px;
+}
+
 @media (min-width: 544px) {
     html {
       font-size: 1rem;

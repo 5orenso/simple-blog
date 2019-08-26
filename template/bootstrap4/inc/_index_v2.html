@@ -120,12 +120,12 @@
                 {% set adLimit = 20 %}
                 {% for art in adlist %}
                     {% if loop.index < adLimit %}
-                        <div class="col{% if adlist|length <= 6 %}-2{% endif %} my-2 d-flex align-items-center">
+                        <div class="col{% if adlist|length <= 6 %}-2{% endif %} my-2 d-flex align-items-center justify-content-center">
                             {% if art.url %}
                                 <a target="_blank" href="{{ art.url }}" title="{{ art.title|e }} - {{ art.teaser|e }}">
                             {% endif %}
                                 {% if art.img[0] %}
-                                    <img src="/pho/{{ art.img[0].src }}?w=250" alt="{{ art.title|e }} - {{ art.teaser|e }}" class="img-fluid"><br clear="all">
+                                    <img src="/pho/{{ art.img[0].src }}?w=250" alt="{{ art.title|e }} - {{ art.teaser|e }}" class="img-fluid adImage"><br clear="all">
                                 {% endif %}
                             {% if art.url %}
                                 </a>
@@ -222,12 +222,12 @@
                 {% set adLimit = 20 %}
                 {% for art in adlistLower %}
                     {% if loop.index < adLimit %}
-                        <div class="col{% if adlistLower|length <= 6 %}-2{% endif %} my-2 d-flex align-items-center">
+                        <div class="col{% if adlistLower|length <= 6 %}-2{% endif %} my-2 d-flex align-items-center justify-content-center">
                             {% if art.url %}
                                 <a target="_blank" href="{{ art.url }}" title="{{ art.title|e }} - {{ art.teaser|e }}">
                             {% endif %}
                                 {% if art.img[0] %}
-                                    <img src="/pho/{{ art.img[0].src }}?w=250" alt="{{ art.title|e }} - {{ art.teaser|e }}" class="img-fluid"><br clear="all">
+                                    <img src="/pho/{{ art.img[0].src }}?w=250" alt="{{ art.title|e }} - {{ art.teaser|e }}" class="img-fluid adImage"><br clear="all">
                                 {% endif %}
                             {% if art.url %}
                                 </a>
