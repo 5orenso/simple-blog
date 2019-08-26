@@ -118,7 +118,7 @@ module.exports = async (req, res) => {
             a.catRef = catlist.find(c => c.id === a.categoryId);
         });
     }
-    if (!isDetailView && artlist.length === 1) {
+    if (!isFrontpage && !isDetailView && artlist.length === 1) {
         const myArt = artlist[0];
         return res.redirect(302,
             `/v2/${utilHtml.asLinkPart(myArt.category)}/${utilHtml.asLinkPart(myArt.title)}/${myArt.id}`);
