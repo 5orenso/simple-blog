@@ -36,9 +36,30 @@
                     <h4>{{ blog.categoryHeader || 'Kategorier' }}</h4>
                     <ul class="list-unstyled">
                         {% for cat in catlist %}
-                            <li>
-                                <a class="nav-link bottomTextColorInline" href="{{ cat.url }}">{{ cat.title }}</a>
-                            </li>
+                            {% if cat.dropdown %}
+                                <li class="nav-item dropdown {% if originalUrlPath|match(cat.url) %}active{% endif %}">
+                                    <a class="nav-link dropdown-toggle bottomTextColorInline" data-toggle="dropdown" href="{{ cat.url }}" role="button" aria-haspopup="true" aria-expanded="false">
+                                        {%- if cat.image -%}
+                                            <img src="{{ cat.image }}" style='max-height: 30px;'/>
+                                        {%- endif -%}
+                                        {%- if !cat.hideTitle -%}
+                                            {{ cat.title }}
+                                        {%- endif -%}
+                                    </a>
+                                    {{ cat.dropdown|replace('dropdown-menu', '', 'g')|replace('dropdown-item', 'dropdown-item bottomTextColorInline', 'g')|raw }}
+                                </li>
+                            {% else %}
+                                <li class="nav-item {% if originalUrlPath|match(cat.url) %}active{% endif %}">
+                                    <a class="nav-link bottomTextColorInline" href="{{ cat.url }}">
+                                        {%- if cat.image -%}
+                                            <img src="{{ cat.image }}" style='max-height: 30px;'/>
+                                        {%- endif -%}
+                                        {%- if !cat.hideTitle -%}
+                                            {{ cat.title }}
+                                        {%- endif -%}
+                                    </a>
+                                </li>
+                            {% endif %}
                         {% endfor %}
                     </ul>
                 </div>
