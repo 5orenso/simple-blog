@@ -107,7 +107,14 @@
                         </a>
                     {% endif %}
                     </h1>
-                <p>{{ art.teaser|raw }}</p>
+
+                    {% if art.catRef.hideFrontpageTeaser %}
+                    {% elseif art.teaser %}
+                        <p class='mb-1'>{{ art.teaser|raw }}</p>
+                    {% elseif art.ingress %}
+                        <p class='mb-1'>{{ art.ingress|raw }}</p>
+                    {% endif %}
+    
                 {% if art.isFrontpage || art.catRef.hideMetaInfo %}
                 {% else %}
                     <div class="d-flex justify-content-left text-muted" {{ colorArticleText(art.catRef) }}>
@@ -178,6 +185,8 @@
                                     {% if art.catRef.hideFrontpageTeaser %}
                                     {% elseif art.teaser %}
                                         <p class='mb-1'>{{ art.teaser|raw }}</p>
+                                    {% elseif art.ingress %}
+                                        <p class='mb-1'>{{ art.ingress|raw }}</p>
                                     {% endif %}
                                     <!-- <p class="lead">{{ art.body|substring(0, 150)|markdown|cleanHtml }}...</p> -->
                                     {% if art.catRef.hideMetaInfo %}
