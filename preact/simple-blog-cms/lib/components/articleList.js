@@ -157,8 +157,8 @@ export default class ArticleList extends Component {
                     <div class="col-12 col-sm-2 col-md-2 text-right">
                         <button class='btn btn-info float-right ml-2' onClick={e => handleClickNew(e, {
                             author: authorDefault,
-                            category: catlist[0].title,
-                            categoryId: catlist[0].id,
+                            category: filter.category || catlist[0].title,
+                            categoryId: (catlist.find(c => c.title === filter.category).id) || catlist[0].id,
                         })}>+ Ny artikkel</button>
                     </div>
 
@@ -193,6 +193,7 @@ export default class ArticleList extends Component {
                                 <td><small class='text-muted'>#{art.categoryId}</small> {art.category}</td>
                                 <td>
                                     {art.title}<br />
+                                    {art.url && <small><i class='fas fa-link'></i> {art.url}</small>}
                                     <small>
                                         {Array.isArray(art.tags) && art.tags.map(tag =>
                                             <span class='badge badge-info mr-1'>{tag}</span>

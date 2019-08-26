@@ -94,6 +94,9 @@ module.exports = async (req, res) => {
         }
         if (isFrontpage) {
             limit = frontpage.limit >= 0 ? frontpage.limit : limit;
+            if (frontpage.artlistCategory) {
+                queryList.categoryId = frontpage.artlistCategory;
+            }
         }
     }
 

@@ -155,6 +155,13 @@ export default class CategoryEdit extends Component {
                                 onInput={handleInput}
                                 value={category.limit} />
                         </div>
+                        <div class='form-group'>
+                            <label for='artlistCategoryInput'>Artikkelliste kategori</label>
+                            <input type='text' class='form-control' id='artlistCategoryInput' placeholder='Kategori ID'
+                                name='artlistCategory'
+                                onInput={handleInput}
+                                value={category.artlistCategory} />
+                        </div>
 
                         <h5 class='mt-3'>Avanserte innstillinger</h5>
                         <div class='form-check'>
