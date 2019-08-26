@@ -82,7 +82,11 @@
             <div class="container blog-main" {{ colorArticleText(art.catRef, frontpage) }}>
                 {% if art.img[0] %}
                     {% if art.isFrontpage %}
-                        <img src="/pho/{{ art.img[0].src }}?w=1014" alt="{{ art.title|e }}" class="img-fluid rounded">
+                        {% if art.url %}
+                            <a href="{{ art.url }}"><img src="/pho/{{ art.img[0].src }}?w=1014" alt="{{ art.title|e }}" class="img-fluid rounded"></a>
+                        {% else %}
+                            <img src="/pho/{{ art.img[0].src }}?w=1014" alt="{{ art.title|e }}" class="img-fluid rounded">
+                        {% endif %}
                     {% else %}
                         <a href="/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}" {{ colorArticleText(art.catRef) }}>
                             <img src="/pho/{{ art.img[0].src }}?w=1014" alt="{{ art.title|e }}" class="img-fluid rounded">
@@ -92,7 +96,11 @@
                 <h1 class="display-3">
                     {% if art.catRef.hideFrontpageTitle %}
                     {% elseif art.isFrontpage %}
-                        {{ art.title }}
+                        {% if art.url %}
+                            <a href="{{ art.url }}" {{ colorArticleText(art.catRef, frontpage) }}>{{ art.title }}</a>
+                        {% else %}
+                            {{ art.title }}
+                        {% endif %}
                     {% else %}
                         <a href="/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}" {{ colorArticleText(art.catRef) }}>
                             {{ art.title }}
@@ -144,7 +152,7 @@
     
     <div class="container">
         <div class="row">
-            <main class="col-sm-12 col-md-12 pt-3 blog-main">
+            <main class="col-sm-12 col-md-12 pt-0 blog-main">
 {% endif %}
 
 
@@ -154,7 +162,7 @@
                             <div class="col-sm-6 col-lg-4 post-data my-2" {{ colorArticleBackground(art.catRef) }}>
                                 {% if art.img[0] %}
                                     <div class="post-thumb">
-                                        <a href="/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}">
+                                        <a href="{% if art.url %}{{ art.url }}{% else %}/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}{% endif %}">
                                             <img src="/pho/{{ art.img[0].src }}?w=800" alt="{{ art.title|e }}" class="img-fluid rounded">
                                         </a>
                                     </div>
@@ -163,7 +171,7 @@
                                     {% if art.catRef.hideFrontpageTitle %}
                                     {% else %}
                                         <h3>
-                                            <a href="/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}" {{ colorArticleText(art.catRef) }}>
+                                            <a href="{% if art.url %}{{ art.url }}{% else %}/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}{% endif %}" {{ colorArticleText(art.catRef) }}>
                                                 {{ art.title }}
                                             </a>
                                         </h3>
@@ -179,7 +187,7 @@
                                             <div {{ colorArticleText(art.catRef) }}>
                                                 <small class='font-weight-lighter mr-1'>
                                                     <i class="far fa-folder-open"></i>
-                                                    <a href="/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}" class="post-cat text-muted" {{ colorArticleText(art.catRef) }}>{{ art.category }}</a>
+                                                    <a href="/v2/{{ art.category|asLinkPart }}/" class="post-cat text-muted" {{ colorArticleText(art.catRef) }}>{{ art.category }}</a>
                                                 </small>
                                                 <small class='font-weight-lighter mr-1'>/</small>
                                                 <small class='font-weight-lighter mr-1'>{{ art.published|asHumanReadable }}</small>
@@ -194,39 +202,40 @@
                     {% endfor %}
                 </div>
 
-                <nav aria-label="Page navigation">
-                    <ul class="pagination d-flex justify-content-center">
-                        {% set pages = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50] %}
-                        {% set total = artlistTotal %}
-                        {% if total > 1 %}
-                            {% if page > 1 %}
-                                <li class="page-item"><a class="page-link" href="{{ file.path }}?page={{ page - 1 }}{% if queryString.tag %}&tag={{ queryString.tag }}{% endif %}"><i class="fa fa-angle-double-left"></i></a></li>
-                            {% endif %}
-
-                            {% for p in pages %}
-                                {% set sp = p - 1 %}
-                                {% set s = sp * limit %}
-                                {% set s = s + 1 %}
-                                {% set e = p * limit %}
-                                {% if s <= total %}
-                                    <li class="page-item {% if p == page %}active{% endif %}"><a class="page-link" href="{{ file.path }}?page={{ p }}{% if queryString.tag %}&tag={{ queryString.tag }}{% endif %}" title="{{ s }}-{{ e }}">{{ p }}</a></li>
+                {% if limit > 0 %}
+                    <nav aria-label="Page navigation">
+                        <ul class="pagination d-flex justify-content-center">
+                            {% set pages = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50] %}
+                            {% set total = artlistTotal %}
+                            {% if total > 1 %}
+                                {% if page > 1 %}
+                                    <li class="page-item"><a class="page-link" href="{{ file.path }}?page={{ page - 1 }}{% if queryString.tag %}&tag={{ queryString.tag }}{% endif %}"><i class="fa fa-angle-double-left"></i></a></li>
                                 {% endif %}
-                            {% endfor %}
 
-                            {% set end = page * limit %}
-                            {% set nextPage = page + 1 %}
-                            {% if total >= end %}
-                                <li class="page-item"><a class="page-link" href="{{ file.path }}?page={{ nextPage }}{% if queryString.tag %}&tag={{ queryString.tag }}{% endif %}"><i class="fa fa-angle-double-right"></i></a></li>
+                                {% for p in pages %}
+                                    {% set sp = p - 1 %}
+                                    {% set s = sp * limit %}
+                                    {% set s = s + 1 %}
+                                    {% set e = p * limit %}
+                                    {% if s <= total %}
+                                        <li class="page-item {% if p == page %}active{% endif %}"><a class="page-link" href="{{ file.path }}?page={{ p }}{% if queryString.tag %}&tag={{ queryString.tag }}{% endif %}" title="{{ s }}-{{ e }}">{{ p }}</a></li>
+                                    {% endif %}
+                                {% endfor %}
+
+                                {% set end = page * limit %}
+                                {% set nextPage = page + 1 %}
+                                {% if total >= end %}
+                                    <li class="page-item"><a class="page-link" href="{{ file.path }}?page={{ nextPage }}{% if queryString.tag %}&tag={{ queryString.tag }}{% endif %}"><i class="fa fa-angle-double-right"></i></a></li>
+                                {% endif %}
                             {% endif %}
-                        {% endif %}
-                    </ul>
-                </nav>
-
-                <div class=" text-center">
-                    <small class="text-muted font-weight-lighter">
-                        Totalt: {{ artlistTotal }}
-                    </small>
-                </div>
+                        </ul>
+                    </nav>
+                    <div class=" text-center">
+                        <small class="text-muted font-weight-lighter">
+                            Totalt: {{ artlistTotal }}
+                        </small>
+                    </div>
+                {% endif %}
 
             </main>
         </div>

@@ -93,7 +93,7 @@ module.exports = async (req, res) => {
             }
         }
         if (isFrontpage) {
-            limit = frontpage.limit || limit;
+            limit = frontpage.limit >= 0 ? frontpage.limit : limit;
         }
     }
 
@@ -102,7 +102,10 @@ module.exports = async (req, res) => {
     limit = parseInt(limit, 10);
 
     const article = await art.findOne(query);
-    let artlist = await art.find(queryList, {}, { limit, skip });
+    let artlist = [];
+    if (limit > 0) {
+        artlist = await art.find(queryList, {}, { limit, skip });
+    }
 
     if (tc.isObject(article)) {
         article.catRef = catlist.find(c => c.id === article.categoryId);
