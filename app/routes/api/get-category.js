@@ -34,6 +34,7 @@ const fields = {
     colorMain: 1,
     colorBottom: 1,
     bgColorMenu: 1,
+    bgColorJumbotron: 1,
     bgColorMain: 1,
     bgColorBottom: 1,
     bgImageMain: 1,

@@ -142,10 +142,19 @@ module.exports = async (req, res) => {
     
     const adcats = await catAds.find(queryAds);
     const adlist = await artAds.find({ status: 2, categoryId: { $in: adcats.map(c => c.id) } });
+    if (tc.isArray(adlist)) {
+        adlist.forEach((a) => {
+            a.catRef = adcats.find(c => c.id === a.categoryId);
+        });
+    }
 
     const adcatsLower = await catAdsLower.find({ type: 4 });
     const adlistLower = await artAdsLower.find({ status: 2, categoryId: { $in: adcatsLower.map(c => c.id) }});
-
+    if (tc.isArray(adlistLower)) {
+        adlistLower.forEach((a) => {
+            a.catRef = adcatsLower.find(c => c.id === a.categoryId);
+        });
+    }
     const template = (req.params.id || req.params.filename) ? '/bootstrap4/blog_v2.html' : '/bootstrap4/index_v2.html';
 
     return webUtil.sendResultResponse(req, res, {

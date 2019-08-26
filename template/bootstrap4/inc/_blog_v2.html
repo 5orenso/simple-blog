@@ -4,6 +4,16 @@
     {% set isPhoto = true %}
 {% endif %}
 
+{% macro colorArticleBackground(category, frontpage) %}
+    style="{%- if frontpage.bgColorJumbotron -%}
+        background-color: {{ frontpage.bgColorJumbotron }} !important;
+    {%- elseif category.bgColorMain -%}
+        background-color: {{ category.bgColorMain }} !important;
+    {%- elseif frontpage.bgColorMain -%}
+        background-color: {{ frontpage.bgColorMain }} !important;
+    {%- endif -%}"
+{% endmacro %}
+
 {{ category.headerDetail|safe }}
 
 {% if isPhoto %}
@@ -300,27 +310,6 @@
 
             </nav>
 
-            {% if adlistLower[0] %}
-                <div class="row">
-                    {% set adLimit = 20 %}
-                    {% for art in adlistLower %}
-                        {% if loop.index < adLimit %}
-                            <div class="col mb-2 d-flex align-items-center">
-                                {% if art.url %}
-                                    <a target="_blank" href="{{ art.url }}" title="{{ art.title|e }} - {{ art.teaser|e }}">
-                                {% endif %}
-                                    {% if art.img[0] %}
-                                        <img src="/pho/{{ art.img[0].src }}?w=250" alt="{{ art.title|e }} - {{ art.teaser|e }}" class="img-fluid"><br clear="all">
-                                    {% endif %}
-                                {% if art.url %}
-                                    </a>
-                                {% endif %}
-                            </div>
-                        {% endif %}
-                    {% endfor %}
-                </div>
-            {% endif %}
-
         </div><!-- /.blog-main -->
 
         <div class="col-sm-3 offset-sm-1 blog-sidebar">
@@ -404,3 +393,28 @@
 
     </div>
 </div>
+
+{% if adlistLower[0] %}
+    <div class="container-fluid" {{ colorArticleBackground(adlistLower[0].catRef) }}>
+        <div class="row d-flex justify-content-center">
+            {% set adLimit = 20 %}
+            {% for art in adlistLower %}
+                {% if loop.index < adLimit %}
+                    <div class="col{% if adlistLower|length <= 4 %}-3{% endif %} my-2 d-flex align-items-center">
+                        {% if art.url %}
+                            <a target="_blank" href="{{ art.url }}" title="{{ art.title|e }} - {{ art.teaser|e }}">
+                        {% endif %}
+                            {% if art.img[0] %}
+                                <img src="/pho/{{ art.img[0].src }}?w=250" alt="{{ art.title|e }} - {{ art.teaser|e }}" class="img-fluid"><br clear="all">
+                            {% endif %}
+                        {% if art.url %}
+                            </a>
+                        {% endif %}
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+{% endif %}
+
+

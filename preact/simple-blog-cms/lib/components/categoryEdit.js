@@ -271,6 +271,15 @@ export default class CategoryEdit extends Component {
                             />
                         </div>
                         <div class='form-group'>
+                            <label for='bgColorJumbotronInput'><i class='fas fa-paint-roller text-muted' /> Background Color Frontpage jumbotron</label>
+                            <input type='text' class='form-control' id='bgColorJumbotronInput' placeholder='bgColorJumbotron'
+                                name='bgColorJumbotron'
+                                onInput={handleInput}
+                                value={category.bgColorJumbotron}
+                                style={category.bgColorJumbotron && `border: 2px ${category.bgColorJumbotron} solid;`}
+                            />
+                        </div>
+                        <div class='form-group'>
                             <label for='bgColorMainInput'><i class='fas fa-paint-roller text-muted' /> Background Color Main</label>
                             <input type='text' class='form-control' id='bgColorMainInput' placeholder='bgColorMain'
                                 name='bgColorMain'
@@ -312,7 +321,7 @@ export default class CategoryEdit extends Component {
                                 value={category.bgImageBottom} />
                         </div>
                     </div>
-                    <div class='col-6'>
+                    <div class='col-6' style='padding-top: 800px;'>
                         <h1>{category.title}</h1>
                         <h5>{category.url}</h5>
 
@@ -334,8 +343,8 @@ export default class CategoryEdit extends Component {
                                 </div>
                             </div> 
                         </div>
-                        <div class='p-2' style={`height: 400px; background-image: url(${category.bgImageMain}); background-color: ${category.bgColorMain}; color: ${category.colorMain}; overflow: hidden;`}>
-                            <div class='container'>
+                        <div class='p-0' style={`height: 400px; background-image: url(${category.bgImageMain}); background-color: ${category.bgColorMain}; color: ${category.colorMain}; overflow: hidden;`}>
+                            <div class='container-fluid pt-0' style={`background-color: ${category.bgColorJumbotron}`}>
                                 <div class='row'>
                                     <div class='col-12'>
                                         <h1>Main</h1>
@@ -351,6 +360,8 @@ export default class CategoryEdit extends Component {
                                         </p>
                                     </div>
                                 </div>
+                            </div>
+                            <div class='container'>
                                 <div class='row'>
                                     <div class='col-4'>
                                         <h1>Art 1</h1>

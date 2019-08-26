@@ -19,8 +19,10 @@
     </nav>
 {% endif %}
 
-{% macro colorArticleBackground(category) %}
-    style="{%- if category.bgColorMain -%}
+{% macro colorArticleBackground(category, frontpage) %}
+    style="{%- if frontpage.bgColorJumbotron -%}
+        background-color: {{ frontpage.bgColorJumbotron }} !important;
+    {%- elseif category.bgColorMain -%}
         background-color: {{ category.bgColorMain }} !important;
     {%- elseif frontpage.bgColorMain -%}
         background-color: {{ frontpage.bgColorMain }} !important;
@@ -70,7 +72,7 @@
     {% if !queryString.q && !queryString.tag && page === 1 %}
         {% set startArt = 1 %}
         {% set art = artlist[0] %}
-        <div class="jumbotron" {{ colorArticleBackground(art.catRef) }}>
+        <div class="jumbotron" {{ colorArticleBackground(art.catRef, frontpage) }}>
             <div class="container blog-main" {{ colorArticleText(art.catRef) }}>
                 {% if art.img[0] %}
                     {% if art.isFrontpage %}
@@ -110,13 +112,13 @@
         </div>
     {% endif %}
 
-    <div class="container">
-        {% if adlist[0] %}
-            <div class="row mt-3">
+    {% if adlist[0] %}
+        <div class="container-fluid"  {{ colorArticleBackground(adlist[0].catRef) }}>
+            <div class="row d-flex justify-content-center">
                 {% set adLimit = 20 %}
                 {% for art in adlist %}
                     {% if loop.index < adLimit %}
-                        <div class="col mb-2 d-flex align-items-center">
+                        <div class="col{% if adlist|length <= 6 %}-2{% endif %} my-2 d-flex align-items-center">
                             {% if art.url %}
                                 <a target="_blank" href="{{ art.url }}" title="{{ art.title|e }} - {{ art.teaser|e }}">
                             {% endif %}
@@ -130,8 +132,10 @@
                     {% endif %}
                 {% endfor %}
             </div>
-        {% endif %}
-
+        </div>
+    {% endif %}
+    
+    <div class="container">
         <div class="row">
             <main class="col-sm-12 col-md-12 pt-3 blog-main">
 {% endif %}
@@ -208,13 +212,15 @@
 
             </main>
         </div>
-    
-        {% if adlistLower[0] %}
-            <div class="row">
+    </div>
+
+    {% if adlistLower[0] %}
+        <div class="container-fluid" {{ colorArticleBackground(adlistLower[0].catRef) }}>
+            <div class="row d-flex justify-content-center">
                 {% set adLimit = 20 %}
                 {% for art in adlistLower %}
                     {% if loop.index < adLimit %}
-                        <div class="col-2 mb-2 d-flex align-items-center">
+                        <div class="col{% if adlistLower|length <= 6 %}-2{% endif %} my-2 d-flex align-items-center">
                             {% if art.url %}
                                 <a target="_blank" href="{{ art.url }}" title="{{ art.title|e }} - {{ art.teaser|e }}">
                             {% endif %}
@@ -228,9 +234,8 @@
                     {% endif %}
                 {% endfor %}
             </div>
-        {% endif %}
-
-    </div>
+        </div>
+    {% endif %}
 
 {% if !queryString.tag && !queryString.q %}
     {{ category.footer|safe }}
