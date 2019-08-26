@@ -19,8 +19,8 @@
     </nav>
 {% endif %}
 
-{% macro colorArticleBackground(category, frontpage) %}
-    style="{%- if category.bgColorJumbotron -%}
+{% macro colorArticleBackground(category, frontpage, isJumbotron) %}
+    style="{%- if isJumbotron && category.bgColorJumbotron -%}
         background-color: {{ category.bgColorJumbotron }} !important;
     {%- elseif isFrontpage && frontpage.bgColorJumbotron -%}
         background-color: {{ frontpage.bgColorJumbotron }} !important;
@@ -31,8 +31,8 @@
     {%- endif -%}"
 {% endmacro %}
 
-{% macro colorArticleText(category, frontpage) %}
-    style="{%- if category.colorJumbotron -%}
+{% macro colorArticleText(category, frontpage, isJumbotron) %}
+    style="{%- if isJumbotron && category.colorJumbotron -%}
         color: {{ category.colorJumbotron }} !important;
     {%- elseif isFrontpage && frontpage.colorJumbotron -%}
         color: {{ frontpage.colorJumbotron }} !important;
@@ -78,8 +78,8 @@
     {% if !queryString.q && !queryString.tag && page === 1 %}
         {% set startArt = 1 %}
         {% set art = artlist[0] %}
-        <div class="jumbotron" {{ colorArticleBackground(art.catRef, frontpage) }}>
-            <div class="container blog-main" {{ colorArticleText(art.catRef, frontpage) }}>
+        <div class="jumbotron" {{ colorArticleBackground(art.catRef, frontpage, true) }}>
+            <div class="container blog-main" {{ colorArticleText(art.catRef, frontpage, true) }}>
                 {% if art.img[0] %}
                     {% if art.isFrontpage %}
                         {% if art.url %}
@@ -88,7 +88,7 @@
                             <img src="/pho/{{ art.img[0].src }}?w=1014" alt="{{ art.title|e }}" class="img-fluid rounded">
                         {% endif %}
                     {% else %}
-                        <a href="/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}" {{ colorArticleText(art.catRef) }}>
+                        <a href="/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}" {{ colorArticleText(art.catRef, frontpage, true) }}>
                             <img src="/pho/{{ art.img[0].src }}?w=1014" alt="{{ art.title|e }}" class="img-fluid rounded">
                         </a>
                     {% endif %}
@@ -97,12 +97,12 @@
                     {% if art.catRef.hideFrontpageTitle %}
                     {% elseif art.isFrontpage %}
                         {% if art.url %}
-                            <a href="{{ art.url }}" {{ colorArticleText(art.catRef, frontpage) }}>{{ art.title }}</a>
+                            <a href="{{ art.url }}" {{ colorArticleText(art.catRef, frontpage, true) }}>{{ art.title }}</a>
                         {% else %}
                             {{ art.title }}
                         {% endif %}
                     {% else %}
-                        <a href="/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}" {{ colorArticleText(art.catRef) }}>
+                        <a href="/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}" {{ colorArticleText(art.catRef, frontpage, true) }}>
                             {{ art.title }}
                         </a>
                     {% endif %}
