@@ -19,6 +19,7 @@ const fields = {
     image: 1,
     type: 1,
     menu: 1,
+    limit: 1,
     hideTopImage: 1,
     hidePrevNext: 1,
     hideArticleList: 1,

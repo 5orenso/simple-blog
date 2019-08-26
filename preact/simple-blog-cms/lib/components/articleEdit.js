@@ -373,7 +373,8 @@ export default class ArticleEdit extends Component {
                                     Alle
                                 </a>
                                 {catlist.map(cat =>
-                                    <a class={`dropdown-item ${article.category === cat.title ? 'text-success' : ''}`} href='#'
+                                    <a class={`dropdown-item ${article.category === cat.title ? 'text-success' : ''} ${!cat.type && !cat.menu ? 'text-muted font-weight-lighter' : ''}`} 
+                                        href='#'
                                         data-key='category'
                                         data-val={cat.title}
                                         onClick={e => {
@@ -388,6 +389,12 @@ export default class ArticleEdit extends Component {
                                             });
                                         }}
                                     >
+                                        {cat.menu > 0 && <i class='fas fa-bars mr-2' />}
+                                        {[2, 3, 4].indexOf(cat.type) !== -1 && <i class='fas fa-ad mr-2' />}
+                                        {[1].indexOf(cat.type) !== -1 && <i class='fas fa-cogs mr-2' />}
+                                        {[5].indexOf(cat.type) !== -1 && <i class='fas fa-image mr-2' />}
+                                        {[6].indexOf(cat.type) !== -1 && <i class='fas fa-link mr-2' />}
+                                        {!cat.type && !cat.menu && <i class='fas fa-question mr-2' />}
                                         {cat.title}
                                     </a>
                                 )}

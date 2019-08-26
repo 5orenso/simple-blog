@@ -149,6 +149,13 @@ export default class CategoryEdit extends Component {
                                 value={category.sort} />
                         </div>
                         <div class='form-group'>
+                            <label for='limitInput'>Limit</label>
+                            <input type='text' class='form-control' id='limitInput' placeholder='Antall artikler i listen'
+                                name='limit'
+                                onInput={handleInput}
+                                value={category.limit} />
+                        </div>
+                        <div class='form-group'>
                             <label for='menuInput'>Meny</label>
                             <input type='checkbox' class='form-control' id='menuInput'
                                 name='menu'

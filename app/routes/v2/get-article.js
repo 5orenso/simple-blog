@@ -34,6 +34,8 @@ module.exports = async (req, res) => {
     let category;
     let frontpage;
 
+    let limit = parseInt(req.query.limit || 10, 10);
+
     const query = { status: 2 };
     const queryList = { status: 2 };
     const queryFrontpage = { status: 2 };
@@ -54,6 +56,7 @@ module.exports = async (req, res) => {
             ],
         };
         category = await cat.findOne(queryCategory);
+        limit = category.limit || limit;
         queryList.categoryId = category.id;
         query.categoryId = category.id;
     } else {
@@ -73,25 +76,28 @@ module.exports = async (req, res) => {
         query.filename = req.params.filename;
     }
 
-    const page = parseInt(req.query.page, 10);
-    const limit = parseInt(req.query.limit || 10, 10);
-    const skip = parseInt((page - 1) * limit || 0, 10);
-
     if (req.query.tag) {
         queryList.tags = req.query.tag;
     }
 
     let frontpagelist = [];
-    frontpage = await catFrontpage.findOne({ type: 1 });
-    if (tc.isObject(frontpage)) {
-        queryFrontpage.categoryId = frontpage.id;
-        frontpagelist = await artFrontpage.find(queryFrontpage, {}, { limit, skip });
-        if (tc.isArray(frontpagelist)) {
-            for (let i = 0, l = frontpagelist.length; i < l; i += 1) {
-                frontpagelist[i].isFrontpage = 1;
+    if (isFrontpage) {
+        frontpage = await catFrontpage.findOne({ type: 1 });
+        if (tc.isObject(frontpage)) {
+            queryFrontpage.categoryId = frontpage.id;
+            frontpagelist = await artFrontpage.find(queryFrontpage, {}, { limit });
+            if (tc.isArray(frontpagelist)) {
+                for (let i = 0, l = frontpagelist.length; i < l; i += 1) {
+                    frontpagelist[i].isFrontpage = 1;
+                }
             }
+            limit = frontpage.limit || limit;
         }
     }
+
+    const page = parseInt(req.query.page, 10);
+    const skip = parseInt((page - 1) * limit || 0, 10);
+    limit = parseInt(limit, 10);
 
     const article = await art.findOne(query);
     let artlist = await art.find(queryList, {}, { limit, skip });
