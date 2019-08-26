@@ -20,7 +20,9 @@
 {% endif %}
 
 {% macro colorArticleBackground(category, frontpage) %}
-    style="{%- if frontpage.bgColorJumbotron -%}
+    style="{%- if category.bgColorJumbotron -%}
+        background-color: {{ category.bgColorJumbotron }} !important;
+    {%- elseif isFrontpage && frontpage.bgColorJumbotron -%}
         background-color: {{ frontpage.bgColorJumbotron }} !important;
     {%- elseif category.bgColorMain -%}
         background-color: {{ category.bgColorMain }} !important;
@@ -30,7 +32,9 @@
 {% endmacro %}
 
 {% macro colorArticleText(category, frontpage) %}
-    style="{%- if frontpage.colorJumbotron -%}
+    style="{%- if category.colorJumbotron -%}
+        color: {{ category.colorJumbotron }} !important;
+    {%- elseif isFrontpage && frontpage.colorJumbotron -%}
         color: {{ frontpage.colorJumbotron }} !important;
     {%- elseif category.colorMain -%}
         color: {{ category.colorMain }} !important;

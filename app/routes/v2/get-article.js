@@ -81,16 +81,16 @@ module.exports = async (req, res) => {
     }
 
     let frontpagelist = [];
-    if (isFrontpage) {
-        frontpage = await catFrontpage.findOne({ type: 1 });
-        if (tc.isObject(frontpage)) {
-            queryFrontpage.categoryId = frontpage.id;
-            frontpagelist = await artFrontpage.find(queryFrontpage, {}, { limit });
-            if (tc.isArray(frontpagelist)) {
-                for (let i = 0, l = frontpagelist.length; i < l; i += 1) {
-                    frontpagelist[i].isFrontpage = 1;
-                }
+    frontpage = await catFrontpage.findOne({ type: 1 });
+    if (tc.isObject(frontpage)) {
+        queryFrontpage.categoryId = frontpage.id;
+        frontpagelist = await artFrontpage.find(queryFrontpage, {}, { limit });
+        if (tc.isArray(frontpagelist)) {
+            for (let i = 0, l = frontpagelist.length; i < l; i += 1) {
+                frontpagelist[i].isFrontpage = 1;
             }
+        }
+        if (isFrontpage) {
             limit = frontpage.limit || limit;
         }
     }
