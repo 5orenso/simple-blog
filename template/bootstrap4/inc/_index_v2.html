@@ -140,7 +140,7 @@
                 {% set adLimit = 20 %}
                 {% for art in adlist %}
                     {% if loop.index < adLimit %}
-                        <div class="col{% if adlist|length <= 6 %}-2{% endif %} my-2 d-flex align-items-center justify-content-center">
+                        <div class="col{% if adlist|length <= 6 %}-2{% endif %} my-1 d-flex align-items-center justify-content-center">
                             {% if art.url %}
                                 <a target="_blank" href="{{ art.url }}" title="{{ art.title|e }} - {{ art.teaser|e }}">
                             {% endif %}
@@ -165,7 +165,7 @@
                 <div class="row">
                     {% for art in artlist %}
                         {% if loop.index > startArt %}
-                            <div class="col-sm-6 col-lg-4 post-data my-2" {{ colorArticleBackground(art.catRef) }}>
+                            <div class="col-sm-6 col-lg-4 post-data my-1" {{ colorArticleBackground(art.catRef) }}>
                                 {% if art.img[0] %}
                                     <div class="post-thumb">
                                         <a href="{% if art.url %}{{ art.url }}{% else %}/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}{% endif %}">
@@ -255,7 +255,7 @@
                 {% set adLimit = 20 %}
                 {% for art in adlistLower %}
                     {% if loop.index < adLimit %}
-                        <div class="col{% if adlistLower|length <= 6 %}-2{% endif %} my-2 d-flex align-items-center justify-content-center">
+                        <div class="col{% if adlistLower|length <= 6 %}-2{% endif %} my-1 d-flex align-items-center justify-content-center">
                             {% if art.url %}
                                 <a target="_blank" href="{{ art.url }}" title="{{ art.title|e }} - {{ art.teaser|e }}">
                             {% endif %}
