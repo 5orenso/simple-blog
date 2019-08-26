@@ -226,6 +226,34 @@ export default class CategoryEdit extends Component {
                         </div>
 
                         <div class='form-group'>
+                            <label for='hideMetaInfoInput'>Skjul metainfo</label>
+                            <input type='checkbox' class='form-control' id='hideMetaInfoInput'
+                                name='hideMetaInfo'
+                                onInput={e => {
+                                    handleInput(e, {
+                                        name: 'hideMetaInfo',
+                                        value: category.hideMetaInfo ? 0 : 1,
+                                    });
+                                }}
+                                value={1}
+                                checked={category.hideMetaInfo === 1 ? 'checked' : ''} />
+                        </div>
+
+                        <div class='form-group'>
+                            <label for='hideAuthorInfoInput'>Skjul forfatterinfo</label>
+                            <input type='checkbox' class='form-control' id='hideAuthorInfoInput'
+                                name='hideAuthorInfo'
+                                onInput={e => {
+                                    handleInput(e, {
+                                        name: 'hideAuthorInfo',
+                                        value: category.hideAuthorInfo ? 0 : 1,
+                                    });
+                                }}
+                                value={1}
+                                checked={category.hideAuthorInfo === 1 ? 'checked' : ''} />
+                        </div>
+
+                        <div class='form-group'>
                             <label for='urlInput'><i class='fas fa-link text-muted' /> URL</label>
                             <input type='text' class='form-control' id='urlInput' placeholder='url'
                                 name='url'

@@ -23,6 +23,8 @@ const fields = {
     hideTopImage: 1,
     hidePrevNext: 1,
     hideArticleList: 1,
+    hideMetaInfo: 1,
+    hideAuthorInfo: 1,
     sort: 1,
     url: 1,
     header: 1,

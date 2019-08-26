@@ -247,13 +247,16 @@
                                     {% if art.teaser %}
                                         <p class='mb-1'>{{ art.teaser|raw }}</p>
                                     {% endif %}
-                                    <div class="d-flex justify-content-left text-muted mainTextColorInline">
-                                        <small class='font-weight-lighter mr-2'>
-                                            <a class="mainTextColorInline" href="/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}" class="post-cat text-muted">{{ art.category }}</a>
-                                        </small>
-                                        <small class='font-weight-lighter mr-2'>/</small>
-                                        <small class='font-weight-lighter mr-2'>{{ art.published|asHumanReadable }}</small>
-                                    </div>
+                                    {% if art.catRef.hideMetaInfo %}
+                                    {% else %}
+                                        <div class="d-flex justify-content-left text-muted mainTextColorInline">
+                                            <small class='font-weight-lighter mr-2'>
+                                                <a class="mainTextColorInline" href="/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}" class="post-cat text-muted">{{ art.category }}</a>
+                                            </small>
+                                            <small class='font-weight-lighter mr-2'>/</small>
+                                            <small class='font-weight-lighter mr-2'>{{ art.published|asHumanReadable }}</small>
+                                        </div>
+                                    {% endif %}
                                 </div>
                                 <a class="btn btn-outline-primary mainTextColorInline" href="/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}">{{ blog.newerHeader || '👈 Newer' }}</a>
                             </div>
@@ -294,13 +297,16 @@
                                     {% if art.teaser %}
                                         <p class='mb-1'>{{ art.teaser|raw }}</p>
                                     {% endif %}
-                                    <div class="d-flex justify-content-left text-muted mainTextColorInline">
-                                        <small class='font-weight-lighter mr-2'>
-                                            <a class="mainTextColorInline" href="/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}" class="post-cat text-muted">{{ art.category }}</a>
-                                        </small>
-                                        <small class='font-weight-lighter mr-2'>/</small>
-                                        <small class='font-weight-lighter mr-2'>{{ art.published|asHumanReadable }}</small>
-                                    </div>
+                                    {% if art.catRef.hideMetaInfo %}
+                                    {% else %}
+                                        <div class="d-flex justify-content-left text-muted mainTextColorInline">
+                                            <small class='font-weight-lighter mr-2'>
+                                                <a class="mainTextColorInline" href="/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}" class="post-cat text-muted">{{ art.category }}</a>
+                                            </small>
+                                            <small class='font-weight-lighter mr-2'>/</small>
+                                            <small class='font-weight-lighter mr-2'>{{ art.published|asHumanReadable }}</small>
+                                        </div>
+                                    {% endif %}
                                 </div>
                                 <a class="btn btn-outline-primary mainTextColorInline" href="/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}">{{ blog.olderHeader || 'Older 👉' }}</a>
                             </div>
@@ -313,7 +319,9 @@
         </div><!-- /.blog-main -->
 
         <div class="col-sm-3 offset-sm-1 blog-sidebar">
-            {% if article.author %}
+            {% if article.catRef.hideAuthorInfo %}
+
+            {% elseif article.author %}
                 <div class="sidebar-module sidebar-module-inset mb-4">
                     <h4>{{ blog.whoHeader || 'Skrevet av' }}:</h4>
                     {% set author = blog.author.fallback %}
@@ -374,13 +382,16 @@
                                         {% if art.teaser %}
                                             <p class='mb-1'>{{ art.teaser|raw }}</p>
                                         {% endif %}
-                                        <div class="d-flex justify-content-left text-muted">
-                                            <small class='font-weight-lighter mr-2'>
-                                                <a href="/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}" class="post-cat text-muted">{{ art.category }}</a>
-                                            </small>
-                                            <small class='font-weight-lighter mr-2'>/</small>
-                                            <small class='font-weight-lighter mr-2'>{{ art.published|asHumanReadable }}</small>
-                                        </div>
+                                        {% if art.catRef.hideMetaInfo %}
+                                        {% else %}
+                                            <div class="d-flex justify-content-left text-muted">
+                                                <small class='font-weight-lighter mr-2'>
+                                                    <a href="/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}" class="post-cat text-muted">{{ art.category }}</a>
+                                                </small>
+                                                <small class='font-weight-lighter mr-2'>/</small>
+                                                <small class='font-weight-lighter mr-2'>{{ art.published|asHumanReadable }}</small>
+                                            </div>
+                                        {% endif %}
                                     </div>
                                 {% endif %}
                             {% endfor %}
