@@ -31,6 +31,7 @@ const fields = {
     footerDetail: 1,
     dropdown: 1,
     colorMenu: 1,
+    colorJumbotron: 1,
     colorMain: 1,
     colorBottom: 1,
     bgColorMenu: 1,

@@ -243,6 +243,15 @@ export default class CategoryEdit extends Component {
                             />
                         </div>
                         <div class='form-group'>
+                            <label for='colorJumbotronInput'><i class='fas fa-fill-drip text-muted' /> Text Color jumbotron</label>
+                            <input type='text' class='form-control' id='colorJumbotronInput' placeholder='colorJumbotron'
+                                name='colorJumbotron'
+                                onInput={handleInput}
+                                value={category.colorJumbotron}
+                                style={category.colorJumbotron && `border: 2px ${category.colorJumbotron} solid;`}
+                            />
+                        </div>
+                        <div class='form-group'>
                             <label for='colorMainInput'><i class='fas fa-fill-drip text-muted' /> Text Color Main</label>
                             <input type='text' class='form-control' id='colorMainInput' placeholder='colorMain'
                                 name='colorMain'
@@ -344,7 +353,7 @@ export default class CategoryEdit extends Component {
                             </div> 
                         </div>
                         <div class='p-0' style={`height: 400px; background-image: url(${category.bgImageMain}); background-color: ${category.bgColorMain}; color: ${category.colorMain}; overflow: hidden;`}>
-                            <div class='container-fluid pt-0' style={`background-color: ${category.bgColorJumbotron}`}>
+                            <div class='container-fluid pt-0' style={`background-color: ${category.bgColorJumbotron}; color: ${category.colorJumbotron}`}>
                                 <div class='row'>
                                     <div class='col-12'>
                                         <h1>Main</h1>

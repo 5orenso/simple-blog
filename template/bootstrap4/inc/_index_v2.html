@@ -29,8 +29,10 @@
     {%- endif -%}"
 {% endmacro %}
 
-{% macro colorArticleText(category) %}
-    style="{%- if category.colorMain -%}
+{% macro colorArticleText(category, frontpage) %}
+    style="{%- if frontpage.colorJumbotron -%}
+        color: {{ frontpage.colorJumbotron }} !important;
+    {%- elseif category.colorMain -%}
         color: {{ category.colorMain }} !important;
     {%- elseif frontpage.colorMain -%}
         color: {{ frontpage.colorMain }} !important;
@@ -73,7 +75,7 @@
         {% set startArt = 1 %}
         {% set art = artlist[0] %}
         <div class="jumbotron" {{ colorArticleBackground(art.catRef, frontpage) }}>
-            <div class="container blog-main" {{ colorArticleText(art.catRef) }}>
+            <div class="container blog-main" {{ colorArticleText(art.catRef, frontpage) }}>
                 {% if art.img[0] %}
                     {% if art.isFrontpage %}
                         <img src="/pho/{{ art.img[0].src }}?w=1014" alt="{{ art.title|e }}" class="img-fluid rounded">
