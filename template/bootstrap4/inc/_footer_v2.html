@@ -37,11 +37,11 @@
                         <div class="col">
                             <h4>{{ art.title }}</h4>
                             {% if art.teaser %}
-                                {{ art.teaser|raw }}
+                                {{ art.teaser|dataTags(article)|md|safe }}
                             {% elseif art.ingress %}
-                                {{ art.ingress|raw }}
+                                {{ art.ingress|dataTags(article)|md|safe }}
                             {% elseif art.body %}
-                                {{ art.body|raw }}
+                                {{ art.body|dataTags(article)|md|safe }}
                             {% endif %}
                         </div>
                     {% endfor %}
