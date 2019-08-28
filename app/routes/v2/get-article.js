@@ -47,6 +47,7 @@ module.exports = async (req, res) => {
     const queryFrontpage = { status: 2 };
     let queryCategory = {};
     let queryAds = {};
+    let queryAdsLower = {};
 
     if (req.session.email) {
         delete query.status;
@@ -140,8 +141,10 @@ module.exports = async (req, res) => {
             nextArticle = artlist[currentIdx + 1];
         }
         queryAds = { type: 2 };
+        queryAdsLower = { type: 8 };
     } else {
         queryAds = { type: 3 };
+        queryAdsLower = { type: 4 };
     }
 
     if (isFrontpage && frontpagelist.length > 0) {
@@ -163,7 +166,7 @@ module.exports = async (req, res) => {
         });
     }
 
-    const adcatsLower = await catAdsLower.find({ type: 4 });
+    const adcatsLower = await catAdsLower.find(queryAdsLower);
     const adlistLower = await artAdsLower.find({ status: 2, categoryId: { $in: adcatsLower.map(c => c.id) }});
     if (tc.isArray(adlistLower)) {
         adlistLower.forEach((a) => {

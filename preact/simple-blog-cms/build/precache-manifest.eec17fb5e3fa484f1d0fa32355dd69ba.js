@@ -4,7 +4,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/preact/simple-blog-cms/assets/icon.png"
   },
   {
-    "revision": "9c4d4f4ede9867f1e93e",
+    "revision": "7ad7df86810319a1be5d",
     "url": "/preact/simple-blog-cms/bundle.js"
   },
   {

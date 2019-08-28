@@ -115,21 +115,18 @@
     {% if adlist[0] %}
         <div class="container-fluid"  {{ articleMacro.colorArticleBackground(adlist[0].catRef) }}>
             <div class="row d-flex justify-content-center">
-                {% set adLimit = 20 %}
                 {% for art in adlist %}
-                    {% if loop.index < adLimit %}
-                        <div class="col{% if adlist|length <= 6 %}-2{% endif %} my-1 d-flex align-items-center justify-content-center">
-                            {% if art.url %}
-                                <a target="_blank" href="{{ art.url }}" title="{{ art.title|e }} - {{ art.teaser|e }}">
+                    <div class="col{% if adlist|length <= 6 %}-2{% endif %} my-1 d-flex align-items-center justify-content-center">
+                        {% if art.url %}
+                            <a target="_blank" href="{{ art.url }}" title="{{ art.title|e }} - {{ art.teaser|e }}">
+                        {% endif %}
+                            {% if art.img[0] %}
+                                <img src="/pho/{{ art.img[0].src }}?w=250" alt="{{ art.title|e }} - {{ art.teaser|e }}" class="img-fluid adImage"><br clear="all">
                             {% endif %}
-                                {% if art.img[0] %}
-                                    <img src="/pho/{{ art.img[0].src }}?w=250" alt="{{ art.title|e }} - {{ art.teaser|e }}" class="img-fluid adImage"><br clear="all">
-                                {% endif %}
-                            {% if art.url %}
-                                </a>
-                            {% endif %}
-                        </div>
-                    {% endif %}
+                        {% if art.url %}
+                            </a>
+                        {% endif %}
+                    </div>
                 {% endfor %}
             </div>
         </div>
@@ -190,21 +187,18 @@
     {% if adlistLower[0] %}
         <div class="container-fluid" {{ articleMacro.colorArticleBackground(adlistLower[0].catRef) }}>
             <div class="row d-flex justify-content-center">
-                {% set adLimit = 20 %}
                 {% for art in adlistLower %}
-                    {% if loop.index < adLimit %}
-                        <div class="col{% if adlistLower|length <= 6 %}-2{% endif %} my-1 d-flex align-items-center justify-content-center">
-                            {% if art.url %}
-                                <a target="_blank" href="{{ art.url }}" title="{{ art.title|e }} - {{ art.teaser|e }}">
+                    <div class="col{% if adlistLower|length <= 6 %}-2{% endif %} my-1 d-flex align-items-center justify-content-center">
+                        {% if art.url %}
+                            <a target="_blank" href="{{ art.url }}" title="{{ art.title|e }} - {{ art.teaser|e }}">
+                        {% endif %}
+                            {% if art.img[0] %}
+                                <img src="/pho/{{ art.img[0].src }}?w=250" alt="{{ art.title|e }} - {{ art.teaser|e }}" class="img-fluid adImage"><br clear="all">
                             {% endif %}
-                                {% if art.img[0] %}
-                                    <img src="/pho/{{ art.img[0].src }}?w=250" alt="{{ art.title|e }} - {{ art.teaser|e }}" class="img-fluid adImage"><br clear="all">
-                                {% endif %}
-                            {% if art.url %}
-                                </a>
-                            {% endif %}
-                        </div>
-                    {% endif %}
+                        {% if art.url %}
+                            </a>
+                        {% endif %}
+                    </div>
                 {% endfor %}
             </div>
         </div>

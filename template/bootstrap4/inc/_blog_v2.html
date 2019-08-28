@@ -221,6 +221,17 @@
                 </nav>
             {% endif %}
 
+            {% if category.showBottomArticleList %}
+                <h4>Les også:</h4>
+                <div class="container-fluid p-0">
+                    <div class="row artlist">
+                        {% for art in artlist %}
+                            {{ articleMacro.articleTeaser(art, 3, '', 'h5') }}
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+
         </div><!-- /.blog-main -->
 
         <div class="col-sm-3 offset-sm-1 blog-sidebar">
@@ -245,17 +256,14 @@
                 <div class="sidebar-module mb-4">
                     <div class="container-fluid p-0">
                         <div class="row">
-                            {% set limit = 20 %}
                             {% for art in adlist %}
-                                {% if loop.index < limit %}
-                                    <div class="col-12 mb-2">
-                                        <a target="_blank" href="{{ art.url }}" title="{{ art.title|e }} - {{ art.teaser|e }}">
-                                            {% if art.img[0] %}
-                                                <img src="/pho/{{ art.img[0].src }}?w=250" alt="{{ art.title|e }} - {{ art.teaser|e }}" class="img-fluid"><br clear="all">
-                                            {% endif %}
-                                        </a>
-                                    </div>
-                                {% endif %}
+                                <div class="col-12 mb-2  d-flex align-items-center justify-content-center">
+                                    <a target="_blank" href="{{ art.url }}" title="{{ art.title|e }} - {{ art.teaser|e }}">
+                                        {% if art.img[0] %}
+                                            <img src="/pho/{{ art.img[0].src }}?w=250" alt="{{ art.title|e }} - {{ art.teaser|e }}" class="img-fluid adImage"><br clear="all">
+                                        {% endif %}
+                                    </a>
+                                </div>
                             {% endfor %}
                         </div>
                     </div>
@@ -264,16 +272,12 @@
 
             <div class="sidebar-module mb-4">
                 {% if category.hideArticleList %}
-
                 {% else %}
                     <h4>{{ blog.moreHeader || 'Flere i 📂' }} {{ baseHref }}</h4>
-                    {% set limit = 20 %}
                     <div class="container-fluid">
                         <div class="row artlist">
                             {% for art in artlist %}
-                                {% if loop.index < limit %}
-                                    {{ articleMacro.articleTeaser(art, 12, 'p-0') }}
-                                {% endif %}
+                                {{ articleMacro.articleTeaser(art, 12, 'p-0') }}
                             {% endfor %}
                         </div>
                     </div>
@@ -288,21 +292,18 @@
 {% if adlistLower[0] %}
     <div class="container-fluid" {{ articleMacro.colorArticleBackground(adlistLower[0].catRef) }}>
         <div class="row d-flex justify-content-center">
-            {% set adLimit = 20 %}
             {% for art in adlistLower %}
-                {% if loop.index < adLimit %}
-                    <div class="col{% if adlistLower|length <= 4 %}-3{% endif %} my-2 d-flex align-items-center justify-content-center">
-                        {% if art.url %}
-                            <a target="_blank" href="{{ art.url }}" title="{{ art.title|e }} - {{ art.teaser|e }}">
+                <div class="col{% if adlistLower|length <= 4 %}-3{% endif %} my-2 d-flex align-items-center justify-content-center">
+                    {% if art.url %}
+                        <a target="_blank" href="{{ art.url }}" title="{{ art.title|e }} - {{ art.teaser|e }}">
+                    {% endif %}
+                        {% if art.img[0] %}
+                            <img src="/pho/{{ art.img[0].src }}?w=250" alt="{{ art.title|e }} - {{ art.teaser|e }}" class="img-fluid adImage"><br clear="all">
                         {% endif %}
-                            {% if art.img[0] %}
-                                <img src="/pho/{{ art.img[0].src }}?w=250" alt="{{ art.title|e }} - {{ art.teaser|e }}" class="img-fluid adImage"><br clear="all">
-                            {% endif %}
-                        {% if art.url %}
-                            </a>
-                        {% endif %}
-                    </div>
-                {% endif %}
+                    {% if art.url %}
+                        </a>
+                    {% endif %}
+                </div>
             {% endfor %}
         </div>
     </div>

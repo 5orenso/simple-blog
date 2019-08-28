@@ -95,7 +95,7 @@ export default class ArticleList extends Component {
                                         }}
                                     >
                                         {cat.menu > 0 && <i class='fas fa-bars mr-2' />}
-                                        {[2, 3, 4].indexOf(cat.type) !== -1 && <i class='fas fa-ad mr-2' />}
+                                        {[2, 3, 4, 8].indexOf(cat.type) !== -1 && <i class='fas fa-ad mr-2' />}
                                         {[1].indexOf(cat.type) !== -1 && <i class='fas fa-cogs mr-2' />}
                                         {[5].indexOf(cat.type) !== -1 && <i class='fas fa-image mr-2' />}
                                         {[6].indexOf(cat.type) !== -1 && <i class='fas fa-link mr-2' />}

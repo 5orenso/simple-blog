@@ -13,6 +13,7 @@ const typeList = [
     { value: 5, title: 'Bildegalleri' },
     { value: 6, title: 'Lenker' },
     { value: 7, title: 'Bunnsaker' },
+    { value: 8, title: 'Annonser i artikler nedre' },
 ];
 
 export default class CategoryList extends Component {
@@ -68,7 +69,7 @@ export default class CategoryList extends Component {
                             <td>{cat.image && <img src={cat.image} style='max-height: 30px;' />}</td>
                             <td>
                                 {cat.menu > 0 && <i class='fas fa-bars mr-2' />}
-                                {[2, 3, 4].indexOf(cat.type) !== -1 && <i class='fas fa-ad mr-2' />}
+                                {[2, 3, 4, 8].indexOf(cat.type) !== -1 && <i class='fas fa-ad mr-2' />}
                                 {[1].indexOf(cat.type) !== -1 && <i class='fas fa-cogs mr-2' />}
                                 {[5].indexOf(cat.type) !== -1 && <i class='fas fa-image mr-2' />}
                                 {[6].indexOf(cat.type) !== -1 && <i class='fas fa-link mr-2' />}

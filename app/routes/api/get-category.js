@@ -27,6 +27,7 @@ const fields = {
     hideAuthorInfo: 1,
     hideFrontpageTitle: 1,
     hideFrontpageTeaser: 1,
+    showBottomArticleList: 1,
     artlistCategory: 1,
     sort: 1,
     url: 1,

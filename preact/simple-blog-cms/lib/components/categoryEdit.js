@@ -20,6 +20,7 @@ const typeList = [
     { value: 5, title: 'Bildegalleri' },
     { value: 6, title: 'Lenker' },
     { value: 7, title: 'Bunnsaker' },
+    { value: 8, title: 'Annonser i artikler nedre' },
 ];
 
 export default class CategoryEdit extends Component {
@@ -271,6 +272,21 @@ export default class CategoryEdit extends Component {
                         </div>
 
                         <div class='form-check'>
+                            <input type='checkbox' class='form-check-input' id='showBottomArticleListInput'
+                                name='showBottomArticleList'
+                                onInput={e => {
+                                    handleInput(e, {
+                                        name: 'showBottomArticleList',
+                                        value: category.showBottomArticleList ? 0 : 1,
+                                    });
+                                }}
+                                value={1}
+                                checked={category.showBottomArticleList === 1 ? 'checked' : ''}
+                            />
+                            <label for='showBottomArticleListInput'>Vis artikkel artikkeliste bunn</label>
+                        </div>
+
+                        <div class='form-check'>
                             <input type='checkbox' class='form-check-input' id='hideFrontpageTitleInput'
                                 name='hideFrontpageTitle'
                                 onInput={e => {
@@ -299,7 +315,6 @@ export default class CategoryEdit extends Component {
                             />
                             <label for='hideFrontpageTeaserInput'>Skjul forside artikkelteaser</label>
                         </div>
-
 
                         <div class='form-group mt-3'>
                             <label for='urlInput'><i class='fas fa-link text-muted' /> URL</label>
