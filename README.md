@@ -98,6 +98,21 @@ More to come :)
 - [Swig](https://github.com/paularmstrong/swig)
 
 
+### Howto setup service
+```bash
+$ sudo cp /etc/systemd/system/simple-blog-litt.no.service /etc/systemd/system/simple-blog-kaffeogkode.no.service
+$ sudo vim /etc/systemd/system/simple-blog-kaffeogkode.no.service
+$ sudo service simple-blog-kaffeogkode.no start
+$ ps aux | grep server
+```
+
+https://kaffeogkode.no/send-magic-link
+https://kaffeogkode.no/admin
+https://kaffeogkode.no/v2/
+
+
+
+
 ### Howto upgrade modules
 ```bash
 $ npm install -g npm-check-updates

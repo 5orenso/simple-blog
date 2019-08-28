@@ -50,7 +50,9 @@ export default class CategoryList extends Component {
                                 <th scope='col'>Skjul artikkel toppbilde</th>
                                 <th scope='col'>Skjul artikkel forrige-neste linker</th>
                                 <th scope='col'>Skjul artikkel artikkelliste</th>
+                                <th scope='col'>Skjul artikkelliste metainfo</th>
                                 <th scope='col'>Skjul artikkel metainfo</th>
+                                <th scope='col'>Skjul artikkel metainfo utvidet</th>
                                 <th scope='col'>Skjul artikkel forfatterinfo</th>
                                 <th scope='col'>Skjul forside artikkeltittel</th>
                                 <th scope='col'>Skjul forside artikkelteaser</th>
@@ -84,6 +86,8 @@ export default class CategoryList extends Component {
                             <td class='text-center'>{cat.hidePrevNext ? 'Ja' : 'Nei'}</td>
                             <td class='text-center'>{cat.hideArticleList ? 'Ja' : 'Nei'}</td>
                             <td class='text-center'>{cat.hideMetaInfo ? 'Ja' : 'Nei'}</td>
+                            <td class='text-center'>{cat.hideMetaInfoDetail ? 'Ja' : 'Nei'}</td>
+                            <td class='text-center'>{cat.hideMetaInfoDetailAdvanced ? 'Ja' : 'Nei'}</td>
                             <td class='text-center'>{cat.hideAuthorInfo ? 'Ja' : 'Nei'}</td>
                             <td class='text-center'>{cat.hideFrontpageTitle ? 'Ja' : 'Nei'}</td>
                             <td class='text-center'>{cat.hideFrontpageTeaser ? 'Ja' : 'Nei'}</td>

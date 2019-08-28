@@ -253,7 +253,37 @@ export default class CategoryEdit extends Component {
                                 value={1}
                                 checked={category.hideMetaInfo === 1 ? 'checked' : ''}
                             />
-                            <label for='hideMetaInfoInput'>Skjul artikkel metainfo</label>
+                            <label for='hideMetaInfoInput'>Skjul artikkelliste metainfo</label>
+                        </div>
+
+                        <div class='form-check'>
+                            <input type='checkbox' class='form-check-input' id='hideMetaInfoDetailInput'
+                                name='hideMetaInfoDetail'
+                                onInput={e => {
+                                    handleInput(e, {
+                                        name: 'hideMetaInfoDetail',
+                                        value: category.hideMetaInfoDetail ? 0 : 1,
+                                    });
+                                }}
+                                value={1}
+                                checked={category.hideMetaInfoDetail === 1 ? 'checked' : ''}
+                            />
+                            <label for='hideMetaInfoDetailInput'>Skjul artikkel metainfo</label>
+                        </div>
+
+                        <div class='form-check'>
+                            <input type='checkbox' class='form-check-input' id='hideMetaInfoDetailAdvancedInput'
+                                name='hideMetaInfoDetailAdvanced'
+                                onInput={e => {
+                                    handleInput(e, {
+                                        name: 'hideMetaInfoDetailAdvanced',
+                                        value: category.hideMetaInfoDetailAdvanced ? 0 : 1,
+                                    });
+                                }}
+                                value={1}
+                                checked={category.hideMetaInfoDetailAdvanced === 1 ? 'checked' : ''}
+                            />
+                            <label for='hideMetaInfoDetailAdvancedInput'>Skjul artikkel metainfo utvidet</label>
                         </div>
 
                         <div class='form-check'>
