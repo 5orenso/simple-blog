@@ -32,8 +32,8 @@
 				</div>
                 {% if article.img[0] && article.img[0].title %}
                     <div class="image_inline_text">
-                        <strong>{{ article.img[0].title }}</strong>
-                        {{ article.img[0].text }}
+                        <strong>{{ article.img[0].title || '' }}</strong>
+                        {{ article.img[0].text || '' }}
                     </div>
                 {% endif %}
             </div>

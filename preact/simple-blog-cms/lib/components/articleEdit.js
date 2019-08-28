@@ -752,16 +752,16 @@ export default class ArticleEdit extends Component {
                             <div class='d-flex w-100 justify-content-between'>
                                 <p><img src={`${this.imageServer}/pho/${img.src}?w=150`} style='max-height: 150px;'  class='img-fluid' /></p>
                                 <small>
-                                    <button class='btn btn-sm m-1' onClick={this.handleClickCode} data-content={`![${img.title || 'Image title'}](/pho/${img.src}?w=750 '${img.text || 'Image description'}')\n`}>
+                                    <button class='btn btn-sm m-1' onClick={this.handleClickCode} data-content={`![${img.title || 'Tittel'}](/pho/${img.src}?w=750 '${img.text || ''}')\n`}>
                                         <i class='fas fa-image'></i> Image
                                     </button>
-                                    <button class='btn btn-sm m-1' onClick={this.handleClickCode} data-content={`[![${img.title || 'Image title'}](/pho/${img.src}?w=750#card '${img.text || 'Image description'}')](${img.url})\n`}>
+                                    <button class='btn btn-sm m-1' onClick={this.handleClickCode} data-content={`[![${img.title || 'Tittel'}](/pho/${img.src}?w=750#card '${img.text || ''}')](${img.url})\n`}>
                                         <i class='fas fa-link'></i> Link
                                     </button>
-                                    <button class='btn btn-sm m-1' onClick={this.handleClickCode} data-content={`![${img.title || 'Image title'}](/pho/${img.src}?w=750#card '${img.text || 'Image description'}')\n`}>
+                                    <button class='btn btn-sm m-1' onClick={this.handleClickCode} data-content={`![${img.title || 'Tittel'}](/pho/${img.src}?w=750#card '${img.text || ''}')\n`}>
                                         <i class='fas fa-file-image'></i> Card
                                     </button>
-                                    <button class='btn btn-sm m-1' onClick={this.handleClickCode} data-content={`![${img.title || 'Image title'}](/pho/${img.src}?w=750#card2 '${img.text || 'Image description'}')\n`}>
+                                    <button class='btn btn-sm m-1' onClick={this.handleClickCode} data-content={`![${img.title || 'Tittel'}](/pho/${img.src}?w=750#card2 '${img.text || ''}')\n`}>
                                         <i class='far fa-image'></i> Card 2
                                     </button>
                                     <button class='btn btn-sm m-1' onClick={this.handleClickCode} data-content={`<h5>Detaljer om bildet</h5>
