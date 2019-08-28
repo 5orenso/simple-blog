@@ -145,41 +145,43 @@
                     {% endfor %}
                 </div>
 
-                {% if limit > 0 %}
-                    <nav aria-label="Page navigation">
-                        <ul class="pagination d-flex justify-content-center">
-                            {% set pages = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50] %}
-                            {% set total = artlistTotal %}
-                            {% if total > 1 %}
-                                {% if page > 1 %}
-                                    <li class="page-item"><a class="page-link" href="{{ file.path }}?page={{ page - 1 }}{% if queryString.tag %}&tag={{ queryString.tag }}{% endif %}"><i class="fa fa-angle-double-left"></i></a></li>
-                                {% endif %}
-
-                                {% for p in pages %}
-                                    {% set sp = p - 1 %}
-                                    {% set s = sp * limit %}
-                                    {% set s = s + 1 %}
-                                    {% set e = p * limit %}
-                                    {% if s <= total %}
-                                        <li class="page-item {% if p == page %}active{% endif %}"><a class="page-link" href="{{ file.path }}?page={{ p }}{% if queryString.tag %}&tag={{ queryString.tag }}{% endif %}" title="{{ s }}-{{ e }}">{{ p }}</a></li>
+                {% if isFrontpage && frontpage.hideFrontpagePagination %}
+                {% else %}
+                    {% if limit > 0 %}
+                        <nav aria-label="Page navigation">
+                            <ul class="pagination d-flex justify-content-center">
+                                {% set pages = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50] %}
+                                {% set total = artlistTotal %}
+                                {% if total > 1 %}
+                                    {% if page > 1 %}
+                                        <li class="page-item"><a class="page-link" href="{{ file.path }}?page={{ page - 1 }}{% if queryString.tag %}&tag={{ queryString.tag }}{% endif %}"><i class="fa fa-angle-double-left"></i></a></li>
                                     {% endif %}
-                                {% endfor %}
 
-                                {% set end = page * limit %}
-                                {% set nextPage = page + 1 %}
-                                {% if total >= end %}
-                                    <li class="page-item"><a class="page-link" href="{{ file.path }}?page={{ nextPage }}{% if queryString.tag %}&tag={{ queryString.tag }}{% endif %}"><i class="fa fa-angle-double-right"></i></a></li>
+                                    {% for p in pages %}
+                                        {% set sp = p - 1 %}
+                                        {% set s = sp * limit %}
+                                        {% set s = s + 1 %}
+                                        {% set e = p * limit %}
+                                        {% if s <= total %}
+                                            <li class="page-item {% if p == page %}active{% endif %}"><a class="page-link" href="{{ file.path }}?page={{ p }}{% if queryString.tag %}&tag={{ queryString.tag }}{% endif %}" title="{{ s }}-{{ e }}">{{ p }}</a></li>
+                                        {% endif %}
+                                    {% endfor %}
+
+                                    {% set end = page * limit %}
+                                    {% set nextPage = page + 1 %}
+                                    {% if total >= end %}
+                                        <li class="page-item"><a class="page-link" href="{{ file.path }}?page={{ nextPage }}{% if queryString.tag %}&tag={{ queryString.tag }}{% endif %}"><i class="fa fa-angle-double-right"></i></a></li>
+                                    {% endif %}
                                 {% endif %}
-                            {% endif %}
-                        </ul>
-                    </nav>
-                    <div class=" text-center">
-                        <small class="text-muted font-weight-lighter">
-                            Totalt: {{ artlistTotal }}
-                        </small>
-                    </div>
+                            </ul>
+                        </nav>
+                        <div class=" text-center">
+                            <small class="text-muted font-weight-lighter">
+                                Totalt: {{ artlistTotal }}
+                            </small>
+                        </div>
+                    {% endif %}
                 {% endif %}
-
             </main>
         </div>
     </div>

@@ -56,6 +56,7 @@ export default class CategoryList extends Component {
                                 <th scope='col'>Skjul artikkel forfatterinfo</th>
                                 <th scope='col'>Skjul forside artikkeltittel</th>
                                 <th scope='col'>Skjul forside artikkelteaser</th>
+                                <th scope='col'>Skjul forside paginering</th>
                                 <th scope='col'>Kategori ID</th>
                                 <th scope='col'>Sort</th>
                                 <th scope='col'>Type</th>
@@ -91,6 +92,7 @@ export default class CategoryList extends Component {
                             <td class='text-center'>{cat.hideAuthorInfo ? 'Ja' : 'Nei'}</td>
                             <td class='text-center'>{cat.hideFrontpageTitle ? 'Ja' : 'Nei'}</td>
                             <td class='text-center'>{cat.hideFrontpageTeaser ? 'Ja' : 'Nei'}</td>
+                            <td class='text-center'>{cat.hideFrontpagePagination ? 'Ja' : 'Nei'}</td>
                             <td class='text-right'>{cat.artlistCategory}</td>
                             <td class='text-right'>{cat.sort}</td>
                             <td>
