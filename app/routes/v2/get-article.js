@@ -36,6 +36,7 @@ module.exports = async (req, res) => {
     let nextArticle;
     let category;
     let frontpage;
+    let contentCatlist;
 
     let limit = parseInt(req.query.limit || 10, 10);
     const page = parseInt(req.query.page, 10) || 1;
@@ -65,7 +66,7 @@ module.exports = async (req, res) => {
         queryList.categoryId = category.id;
         query.categoryId = category.id;
     } else {
-        const contentCatlist = await cat.find({ type: { $nin: [1, 2, 3, 4, 6, 7] } });
+        contentCatlist = await cat.find({ type: { $nin: [1, 2, 3, 4, 6, 7] } });
         queryList.categoryId = { $in: contentCatlist.map(c => c.id) };
     }
 
@@ -116,11 +117,11 @@ module.exports = async (req, res) => {
     }
 
     if (tc.isObject(article)) {
-        article.catRef = catlist.find(c => c.id === article.categoryId);
+        article.catRef = contentCatlist.find(c => c.id === article.categoryId);
     }
     if (tc.isArray(artlist)) {
         artlist.forEach((a) => {
-            a.catRef = catlist.find(c => c.id === a.categoryId);
+            a.catRef = contentCatlist.find(c => c.id === a.categoryId);
         });
     }
     if (!isFrontpage && !isDetailView && artlist.length === 1) {
