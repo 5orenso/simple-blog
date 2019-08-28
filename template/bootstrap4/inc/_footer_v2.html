@@ -34,9 +34,15 @@
             <div class="row">
                 {% if artlistBottom|length > 0 %}
                     {% for art in artlistBottom %}
-                        <div class="col-sm-4">
+                        <div class="col">
                             <h4>{{ art.title }}</h4>
-
+                            {% if art.teaser %}
+                                {{ art.teaser|raw }}
+                            {% elseif art.ingress %}
+                                {{ art.ingress|raw }}
+                            {% elseif art.body %}
+                                {{ art.body|raw }}
+                            {% endif %}
                         </div>
                     {% endfor %}
                 {% else %}
