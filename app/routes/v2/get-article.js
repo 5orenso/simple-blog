@@ -65,6 +65,7 @@ module.exports = async (req, res) => {
         limit = category.limit || limit;
         queryList.categoryId = category.id;
         query.categoryId = category.id;
+        contentCatlist = await cat.find({ ...queryCategory, type: { $nin: [1, 2, 3, 4, 6, 7] } });
     } else {
         contentCatlist = await cat.find({ type: { $nin: [1, 2, 3, 4, 6, 7] } });
         queryList.categoryId = { $in: contentCatlist.map(c => c.id) };
