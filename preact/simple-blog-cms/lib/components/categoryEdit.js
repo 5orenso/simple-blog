@@ -19,6 +19,7 @@ const typeList = [
     { value: 4, title: 'Annonser på forsiden nedre' },
     { value: 5, title: 'Bildegalleri' },
     { value: 6, title: 'Lenker' },
+    { value: 7, title: 'Bunnsaker' },
 ];
 
 export default class CategoryEdit extends Component {

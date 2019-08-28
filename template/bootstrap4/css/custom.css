@@ -180,7 +180,7 @@ html {
 }
 
 .social-share {
-    border-top: 1px solid #c0c0c0;
+    margin-bottom: 1rem;
 }
 .social-share a {
     font-size: 1.5em;
@@ -273,8 +273,8 @@ pre code {
 
 .adImage {
     max-height: 100px;
-    -webkit-filter: grayscale(100%); /* Safari 6.0 - 9.0 */
-    filter: grayscale(100%);
+    /* -webkit-filter: grayscale(100%);
+    filter: grayscale(100%); */
 }
 
 @media (min-width: 544px) {

@@ -12,6 +12,7 @@ const typeList = [
     { value: 4, title: 'Annonser på forsiden nedre' },
     { value: 5, title: 'Bildegalleri' },
     { value: 6, title: 'Lenker' },
+    { value: 7, title: 'Bunnsaker' },
 ];
 
 export default class CategoryList extends Component {
@@ -71,6 +72,7 @@ export default class CategoryList extends Component {
                                 {[1].indexOf(cat.type) !== -1 && <i class='fas fa-cogs mr-2' />}
                                 {[5].indexOf(cat.type) !== -1 && <i class='fas fa-image mr-2' />}
                                 {[6].indexOf(cat.type) !== -1 && <i class='fas fa-link mr-2' />}
+                                {[7].indexOf(cat.type) !== -1 && <i class='fas fa-download mr-2' />}
                                 {!cat.type && !cat.menu && <i class='fas fa-question mr-2' />}
 
                                 {cat.title}

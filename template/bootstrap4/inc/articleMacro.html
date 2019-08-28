@@ -1,0 +1,69 @@
+
+{%- macro colorArticleBackground(category, frontpage, isJumbotron) -%}
+    style="{%- if isJumbotron && category.bgColorJumbotron -%}
+        background-color: {{ category.bgColorJumbotron }} !important;
+    {%- elseif isFrontpage && frontpage.bgColorJumbotron -%}
+        background-color: {{ frontpage.bgColorJumbotron }} !important;
+    {%- elseif category.bgColorMain -%}
+        background-color: {{ category.bgColorMain }} !important;
+    {%- elseif frontpage.bgColorMain -%}
+        background-color: {{ frontpage.bgColorMain }} !important;
+    {%- endif -%}"
+{%- endmacro -%}
+
+{%- macro colorArticleText(category, frontpage, isJumbotron) -%}
+    style="{%- if isJumbotron && category.colorJumbotron -%}
+        color: {{ category.colorJumbotron }} !important;
+    {%- elseif isFrontpage && frontpage.colorJumbotron -%}
+        color: {{ frontpage.colorJumbotron }} !important;
+    {%- elseif category.colorMain -%}
+        color: {{ category.colorMain }} !important;
+    {%- elseif frontpage.colorMain -%}
+        color: {{ frontpage.colorMain }} !important;
+    {%- endif -%}"
+{%- endmacro -%}
+
+{% macro articleTeaser(art, col, extraClasses, heading) %}
+    <div class="col-sm-6 col-lg-{{ col || 4 }} post-data my-1 {{ extraClasses }}" {{ colorArticleBackground(art.catRef) }}>
+        {% if art.img[0] %}
+            <div class="post-thumb">
+                <a href="{% if art.url %}{{ art.url }}{% else %}/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}{% endif %}">
+                    <img src="/pho/{{ art.img[0].src }}?w=800" alt="{{ art.title|e }}" class="img-fluid rounded">
+                </a>
+            </div>
+        {% endif %}
+        <div class="post-content" {{ colorArticleText(art.catRef) }}>
+            {% if art.catRef.hideFrontpageTitle %}
+            {% else %}
+                <{{ heading || 'h3' }}>
+                    <a href="{% if art.url %}{{ art.url }}{% else %}/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}{% endif %}" {{ colorArticleText(art.catRef) }}>
+                        {{ art.title }}
+                    </a>
+                </{{ heading || 'h3' }}>
+            {% endif %}
+            {% if art.catRef.hideFrontpageTeaser %}
+            {% elseif art.teaser %}
+                <p class='mb-1'>{{ art.teaser|raw }}</p>
+            {% elseif art.ingress %}
+                <p class='mb-1'>{{ art.ingress|raw }}</p>
+            {% endif %}
+            <!-- <p class="lead">{{ art.body|substring(0, 150)|markdown|cleanHtml }}...</p> -->
+            {% if art.catRef.hideMetaInfo %}
+            {% else %}
+                <small>
+                    <div {{ colorArticleText(art.catRef) }}>
+                        <small class='font-weight-lighter mr-1'>
+                            <i class="far fa-folder-open"></i>
+                            <a href="/v2/{{ art.category|asLinkPart }}/" class="post-cat text-muted" {{ colorArticleText(art.catRef) }}>{{ art.category }}</a>
+                        </small>
+                        <small class='font-weight-lighter mr-1'>/</small>
+                        <small class='font-weight-lighter mr-1'>{{ art.published|asHumanReadable }}</small>
+                        <small class='font-weight-lighter mr-1'>/</small>
+                        <small class='font-weight-lighter mr-1'><a title="Lesetid for artikkel"><i class="far fa-clock"></i> {{ art.body|readTime('no') }}</a></small>
+                    </div>
+                </small>
+            {% endif %}
+        </div>
+    </div>
+
+{% endmacro %}

@@ -99,6 +99,7 @@ export default class ArticleList extends Component {
                                         {[1].indexOf(cat.type) !== -1 && <i class='fas fa-cogs mr-2' />}
                                         {[5].indexOf(cat.type) !== -1 && <i class='fas fa-image mr-2' />}
                                         {[6].indexOf(cat.type) !== -1 && <i class='fas fa-link mr-2' />}
+                                        {[7].indexOf(cat.type) !== -1 && <i class='fas fa-download mr-2' />}
                                         {!cat.type && !cat.menu && <i class='fas fa-question mr-2' />}
 
                                         {cat.title}
@@ -158,7 +159,7 @@ export default class ArticleList extends Component {
                         <button class='btn btn-info float-right ml-2' onClick={e => handleClickNew(e, {
                             author: authorDefault,
                             category: filter.category || catlist[0].title,
-                            categoryId: (catlist.find(c => c.title === filter.category).id) || catlist[0].id,
+                            categoryId: (catlist.find(c => c.title === filter.category) ? catlist.find(c => c.title === filter.category).id : catlist[0].id),
                         })}>+ Ny artikkel</button>
                     </div>
 

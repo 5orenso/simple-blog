@@ -32,52 +32,61 @@
     <footer class="blog-footer bd-footer text-muted bg-dark p-3 bottomBackgroundInline">
         <div class="container bottomTextColorInline">
             <div class="row">
-                <div class="col-sm-4">
-                    <h4>{{ blog.categoryHeader || 'Kategorier' }}</h4>
-                    <ul class="list-unstyled">
-                        {% for cat in catlist %}
-                            {% if cat.dropdown %}
-                                <li class="nav-item dropdown {% if originalUrlPath|match(cat.url) %}active{% endif %}">
-                                    <a class="nav-link dropdown-toggle bottomTextColorInline" data-toggle="dropdown" href="{{ cat.url }}" role="button" aria-haspopup="true" aria-expanded="false">
-                                        {%- if cat.image -%}
-                                            <img src="{{ cat.image }}" style='max-height: 30px;'/>
-                                        {%- endif -%}
-                                        {%- if !cat.hideTitle -%}
-                                            {{ cat.title }}
-                                        {%- endif -%}
-                                    </a>
-                                    {{ cat.dropdown|replace('dropdown-menu', '', 'g')|replace('dropdown-item', 'dropdown-item bottomTextColorInline', 'g')|raw }}
-                                </li>
-                            {% else %}
-                                <li class="nav-item {% if originalUrlPath|match(cat.url) %}active{% endif %}">
-                                    <a class="nav-link bottomTextColorInline" href="{{ cat.url }}">
-                                        {%- if cat.image -%}
-                                            <img src="{{ cat.image }}" style='max-height: 30px;'/>
-                                        {%- endif -%}
-                                        {%- if !cat.hideTitle -%}
-                                            {{ cat.title }}
-                                        {%- endif -%}
-                                    </a>
-                                </li>
-                            {% endif %}
-                        {% endfor %}
-                    </ul>
-                </div>
-                <div class="col-sm-4">
-                    <h4>{{ blog.descriptionHeader || 'Om meg' }}</h4>
-                    <p>{{ blog.description|raw }}</p>
-                </div>
-                <div class="col-sm-4">
-                    <h4>{{ blog.otherHeader || 'Følg meg på:' }}</h4>
-                    <ol class="list-unstyled">
-                        {% if blog.social.youtube %}<li><a class="bottomTextColorInline" rel="noopener" target="_blank" href="{{ blog.social.youtube }}"><i class="fab fa-youtube"></i> Youtube</a></li>{% endif %}
-                        {% if blog.social.github %}<li><a class="bottomTextColorInline" rel="noopener" target="_blank" href="{{ blog.social.github }}"><i class="fab fa-github"></i> GitHub</a></li>{% endif %}
-                        {% if blog.social.twitter %}<li><a class="bottomTextColorInline" rel="noopener" target="_blank" href="{{ blog.social.twitter }}"><i class="fab fa-twitter"></i> Twitter</a></li>{% endif %}
-                        {% if blog.social.facebook %}<li><a class="bottomTextColorInline" rel="noopener" target="_blank" href="{{ blog.social.facebook }}"><i class="fab fa-facebook"></i> Facebook</a></li>{% endif %}
-                        {% if blog.social.instagram %}<li><a class="bottomTextColorInline" rel="noopener" target="_blank" href="{{ blog.social.instagram }}"><i class="fab fa-instagram"></i> Instagram</a></li>{% endif %}
-                        {% if blog.social.flickr %}<li><a class="bottomTextColorInline" rel="noopener" target="_blank" href="{{ blog.social.flickr }}"><i class="fab fa-flickr"></i> Flickr</a></li>{% endif %}
-                    </ol>
-                </div>
+                {% if artlistBottom|length > 0 %}
+                    {% for art in artlistBottom %}
+                        <div class="col-sm-4">
+                            <h4>{{ art.title }}</h4>
+
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="col-sm-4">
+                        <h4>{{ blog.categoryHeader || 'Kategorier' }}</h4>
+                        <ul class="list-unstyled">
+                            {% for cat in catlist %}
+                                {% if cat.dropdown %}
+                                    <li class="nav-item dropdown {% if originalUrlPath|match(cat.url) %}active{% endif %}">
+                                        <a class="nav-link dropdown-toggle bottomTextColorInline" data-toggle="dropdown" href="{{ cat.url }}" role="button" aria-haspopup="true" aria-expanded="false">
+                                            {%- if cat.image -%}
+                                                <img src="{{ cat.image }}" style='max-height: 30px;'/>
+                                            {%- endif -%}
+                                            {%- if !cat.hideTitle -%}
+                                                {{ cat.title }}
+                                            {%- endif -%}
+                                        </a>
+                                        {{ cat.dropdown|replace('dropdown-menu', '', 'g')|replace('dropdown-item', 'dropdown-item bottomTextColorInline', 'g')|raw }}
+                                    </li>
+                                {% else %}
+                                    <li class="nav-item {% if originalUrlPath|match(cat.url) %}active{% endif %}">
+                                        <a class="nav-link bottomTextColorInline" href="{{ cat.url }}">
+                                            {%- if cat.image -%}
+                                                <img src="{{ cat.image }}" style='max-height: 30px;'/>
+                                            {%- endif -%}
+                                            {%- if !cat.hideTitle -%}
+                                                {{ cat.title }}
+                                            {%- endif -%}
+                                        </a>
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <div class="col-sm-4">
+                        <h4>{{ blog.descriptionHeader || 'Om meg' }}</h4>
+                        <p>{{ blog.description|raw }}</p>
+                    </div>
+                    <div class="col-sm-4">
+                        <h4>{{ blog.otherHeader || 'Følg meg på:' }}</h4>
+                        <ol class="list-unstyled">
+                            {% if blog.social.youtube %}<li><a class="bottomTextColorInline" rel="noopener" target="_blank" href="{{ blog.social.youtube }}"><i class="fab fa-youtube"></i> Youtube</a></li>{% endif %}
+                            {% if blog.social.github %}<li><a class="bottomTextColorInline" rel="noopener" target="_blank" href="{{ blog.social.github }}"><i class="fab fa-github"></i> GitHub</a></li>{% endif %}
+                            {% if blog.social.twitter %}<li><a class="bottomTextColorInline" rel="noopener" target="_blank" href="{{ blog.social.twitter }}"><i class="fab fa-twitter"></i> Twitter</a></li>{% endif %}
+                            {% if blog.social.facebook %}<li><a class="bottomTextColorInline" rel="noopener" target="_blank" href="{{ blog.social.facebook }}"><i class="fab fa-facebook"></i> Facebook</a></li>{% endif %}
+                            {% if blog.social.instagram %}<li><a class="bottomTextColorInline" rel="noopener" target="_blank" href="{{ blog.social.instagram }}"><i class="fab fa-instagram"></i> Instagram</a></li>{% endif %}
+                            {% if blog.social.flickr %}<li><a class="bottomTextColorInline" rel="noopener" target="_blank" href="{{ blog.social.flickr }}"><i class="fab fa-flickr"></i> Flickr</a></li>{% endif %}
+                        </ol>
+                    </div>
+                {% endif %}
             </div>
         </div>
         <div class="row">

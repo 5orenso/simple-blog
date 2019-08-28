@@ -20,11 +20,14 @@ module.exports = async (req, res) => {
     const artFrontpage = new Article();
     const artAds = new Article();
     const artAdsLower = new Article();
+    const artBottom = new Article();
+
     const catFrontpage = new Category();
     const catMenu = new Category();
     const catAds = new Category();
     const catAdsLower = new Category();
     const cat = new Category();
+    const catBottom = new Category();
 
     let isFrontpage = true;
     let isDetailView = false;
@@ -35,6 +38,8 @@ module.exports = async (req, res) => {
     let frontpage;
 
     let limit = parseInt(req.query.limit || 10, 10);
+    const page = parseInt(req.query.page, 10) || 1;
+    const skip = parseInt((page - 1) * limit || 0, 10);
 
     const query = { status: 2 };
     const queryList = { status: 2 };
@@ -60,7 +65,7 @@ module.exports = async (req, res) => {
         queryList.categoryId = category.id;
         query.categoryId = category.id;
     } else {
-        const contentCatlist = await cat.find({ type: { $nin: [1, 2, 3, 4, 6] } });
+        const contentCatlist = await cat.find({ type: { $nin: [1, 2, 3, 4, 6, 7] } });
         queryList.categoryId = { $in: contentCatlist.map(c => c.id) };
     }
 
@@ -84,7 +89,9 @@ module.exports = async (req, res) => {
     frontpage = await catFrontpage.findOne({ type: 1 });
     if (tc.isObject(frontpage)) {
         queryFrontpage.categoryId = frontpage.id;
-        frontpagelist = await artFrontpage.find(queryFrontpage, {}, { limit });
+        if (page <= 1) {
+            frontpagelist = await artFrontpage.find(queryFrontpage, {}, { limit });
+        }
         if (tc.isArray(frontpagelist)) {
             for (let i = 0, l = frontpagelist.length; i < l; i += 1) {
                 frontpagelist[i].isFrontpage = 1;
@@ -92,7 +99,7 @@ module.exports = async (req, res) => {
 
             }
         }
-        if (isFrontpage) {
+        if (isFrontpage && page <= 1) {
             limit = frontpage.limit >= 0 ? frontpage.limit : limit;
             if (frontpage.artlistCategory) {
                 queryList.categoryId = frontpage.artlistCategory;
@@ -100,8 +107,6 @@ module.exports = async (req, res) => {
         }
     }
 
-    const page = parseInt(req.query.page, 10);
-    const skip = parseInt((page - 1) * limit || 0, 10);
     limit = parseInt(limit, 10);
 
     const article = await art.findOne(query);
@@ -163,6 +168,15 @@ module.exports = async (req, res) => {
             a.catRef = adcatsLower.find(c => c.id === a.categoryId);
         });
     }
+
+    const artcatsBottom = await catBottom.find({ type: 7 });
+    const artlistBottom = await artBottom.find({ status: 2, categoryId: { $in: artcatsBottom.map(c => c.id) }});
+    if (tc.isArray(artlistBottom)) {
+        artlistBottom.forEach((a) => {
+            a.catRef = artcatsBottom.find(c => c.id === a.categoryId);
+        });
+    }
+
     const template = (req.params.id || req.params.filename) ? '/bootstrap4/blog_v2.html' : '/bootstrap4/index_v2.html';
 
     return webUtil.sendResultResponse(req, res, {
@@ -172,6 +186,7 @@ module.exports = async (req, res) => {
         frontpagelist,
         artlist,
         artlistTotal,
+        artlistBottom,
         category,
         frontpage,
         catlist,
