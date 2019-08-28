@@ -113,7 +113,7 @@
     {% endif %}
 
     {% if adlist[0] %}
-        <div class="container-fluid"  {{ articleMacro.colorArticleBackground(adlist[0].catRef) }}>
+        <div class="container-fluid mb-2"  {{ articleMacro.colorArticleBackground(adlist[0].catRef) }}>
             <div class="row d-flex justify-content-center">
                 {% for art in adlist %}
                     <div class="col{% if adlist|length <= 6 %}-2{% endif %} my-1 d-flex align-items-center justify-content-center">
@@ -187,7 +187,7 @@
     </div>
 
     {% if adlistLower[0] %}
-        <div class="container-fluid" {{ articleMacro.colorArticleBackground(adlistLower[0].catRef) }}>
+        <div class="container-fluid mt-2" {{ articleMacro.colorArticleBackground(adlistLower[0].catRef) }}>
             <div class="row d-flex justify-content-center">
                 {% for art in adlistLower %}
                     <div class="col{% if adlistLower|length <= 6 %}-2{% endif %} my-1 d-flex align-items-center justify-content-center">
