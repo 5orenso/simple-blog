@@ -20,10 +20,10 @@ module.exports = async (req, res) => {
         const chipId = parseInt(req.params.chipId, 10);
         device = await iotDevice.findOne({ chipId });
         if (!tc.isObject(device)) {            
-            const version = req.query.version ? parseInt(req.query.version, 10) : 0;
+            const version = req.query.v ? parseInt(req.query.v, 10) : 0;
             const name = req.query.name;
             const packageName = req.query.package;
-            const deepSleep = req.query.deepSleep ? parseInt(req.query.deepSleep, 10) : 0;
+            const deepSleep = req.query.ds ? parseInt(req.query.ds, 10) : 0;
             const bme280 = req.query.bme280 ? parseInt(req.query.bme280, 10) : 0;
             const dallasTemp = req.query.dallasTemp ? parseInt(req.query.dallas, 10) : 0;
             const flame = req.query.flame ? parseInt(req.query.flame, 10) : 0;
@@ -33,13 +33,13 @@ module.exports = async (req, res) => {
             const motion = req.query.motion ? parseInt(req.query.motion, 10) : 0;
             const co2 = req.query.co2 ? parseInt(req.query.co2, 10) : 0;
             const dsm501a = req.query.dsm501a ? parseInt(req.query.dsm501a, 10) : 0;
-            const publishInterval = req.query.publishInterval ? parseInt(req.query.publishInterval, 10) : 0;
-            const sleepPeriode = req.query.sleepPeriode ? parseInt(req.query.sleepPeriode, 10) : 0;
-            const wifiSsid = req.query.wifiSsid;
-            const mqttServer = req.query.mqttServer;
-            const mqttPort = req.query.mqttPort ? parseInt(req.query.mqttPort, 10) : 0;
-            const mqttTopicOut = req.query.mqttTopicOut;
-            const mqttTopicIn = req.query.mqttTopicIn;
+            const publishInterval = req.query.pi ? parseInt(req.query.pi, 10) : 0;
+            const sleepPeriode = req.query.sp ? parseInt(req.query.sp, 10) : 0;
+            const wifiSsid = req.query.wifi;
+            const mqttServer = req.query.mqs;
+            const mqttPort = req.query.mqp ? parseInt(req.query.mqp, 10) : 0;
+            const mqttTopicOut = req.query.mqout;
+            const mqttTopicIn = req.query.mqin;
 
             device = await iotDevice.save({
                 chipId,
