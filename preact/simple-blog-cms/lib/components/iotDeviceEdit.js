@@ -1,5 +1,7 @@
 import { h, Component } from 'preact';
 
+import linkstate from 'linkstate';
+
 import ImageUpload from './imageUpload';
 import MessagesLite from './messagesLite';
 
@@ -18,6 +20,7 @@ export default class IotDeviceEdit extends Component {
 
     render(props) {
         const styles = props.styles;
+        const that = props.that;
         const messages = props.messages;
         const iotDevice = props.iotDevice;
         const handleInput = props.handleInput;
@@ -80,14 +83,9 @@ export default class IotDeviceEdit extends Component {
                             <div class='form-check'>
                                 <input type='checkbox' class='form-check-input' id={`${fieldName}Input`}
                                     name={fieldName}
-                                    onInput={e => {
-                                        handleInput(e, {
-                                            name: fieldName,
-                                            value: iotDevice[fieldName] ? 0 : 1,
-                                        });
-                                    }}
+                                    onInput={linkstate(that, `iotDevice.sensors.${fieldName}`)}
                                     value={1}
-                                    checked={iotDevice[fieldName] === 1 ? 'checked' : ''}
+                                    checked={util.getString(iotDevice, 'sensors', fieldName) == 1 ? 'checked' : ''}
                                 />
                                 <label for={`${fieldName}Input`}>{fieldName}</label>
                             </div>
@@ -114,7 +112,7 @@ export default class IotDeviceEdit extends Component {
                                             {fieldName}
                                         </td>
                                         <td>
-                                            {iotDevice[fieldName]}
+                                            {util.getString(iotDevice, 'sensors', fieldName) ? <i class='fas fa-check' /> : ''}
                                         </td>
                                     </tr>
                                 )}

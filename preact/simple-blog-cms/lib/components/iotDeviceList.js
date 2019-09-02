@@ -14,7 +14,6 @@ export default class IotDeviceList extends Component {
     render(props) {
         const styles = props.styles;
         const iotDeviceList = props.iotDeviceList;
-        console.log(iotDeviceList);
         const handleListClick = props.handleListClick;
         const handleClickNew = props.handleClickNew;
 
@@ -50,6 +49,7 @@ export default class IotDeviceList extends Component {
 
                                 <th scope='col'>Location</th>
                                 <th scope='col'>Description</th>
+
                                 <th class='text-center' scope='col'>BME280</th>
                                 <th class='text-center' scope='col'>Dallas Temp</th>
                                 <th class='text-center' scope='col'>Flame</th>
@@ -82,6 +82,7 @@ export default class IotDeviceList extends Component {
 
                             <td>{iotDevice.location}</td>
                             <td>{iotDevice.description}</td>
+
                             <td class='text-center'>{iotDevice.sensors && iotDevice.sensors.bme280 ? <i class='fas fa-check' /> : ''}</td>
                             <td class='text-center'>{iotDevice.sensors && iotDevice.sensors.dallasTemp ? <i class='fas fa-check' /> : ''}</td>
                             <td class='text-center'>{iotDevice.sensors && iotDevice.sensors.flame ? <i class='fas fa-check' /> : ''}</td>

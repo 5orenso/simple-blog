@@ -338,19 +338,19 @@ export default class SimpleBlogCms extends Component {
 
     handleCategoryEditBackClick = (event) => {
         event.preventDefault();
-        console.log('handleCategoryEditBackClick');
+        // console.log('handleCategoryEditBackClick');
         this.setState({ category: {} });
     };
 
     handleIotEditBackClick = (event) => {
         event.preventDefault();
-        console.log('handleIotEditBackClick');
+        // console.log('handleIotEditBackClick');
         this.setState({ iot: {} });
     };
 
     handleIotDeviceEditBackClick = (event) => {
         event.preventDefault();
-        console.log('handleIotDeviceEditBackClick');
+        // console.log('handleIotDeviceEditBackClick');
         this.setState({ iotDevice: {} });
     };
 
@@ -1146,6 +1146,7 @@ export default class SimpleBlogCms extends Component {
                     </div>}
                     {iotDevice.id && <div class='d-flex justify-content-center'>
                         <IotDeviceEdit styles={styles}
+                            that={this}
                             iotDevice={iotDevice}
                             messages={messages}
                             handleInput={this.handleIotDeviceInput}
