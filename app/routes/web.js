@@ -112,6 +112,9 @@ webRouter.post('/ajax/fileupload', util.restrict, require('./post-fileupload.js'
 
 webRouter.get('/admin', util.restrict, require('./get-admin.js'));
 
+webRouter.get('/iotdevice/version/:chipId', util.restrict, require('./iotdevice/get-version.js'));
+webRouter.get('/iotdevice/firmware/:chipId', util.restrict, require('./iotdevice/get-firmware.js'));
+
 // Main route for blog articles.
 webRouter.use('/*', localUtil.setNoCacheHeaders);
 webRouter.get('/*', require('./get-default.js'));

@@ -39,7 +39,7 @@ export default class CategoryList extends Component {
                             + Ny kategori
                         </button>
                     </div>
-                    <table class={`table table-sm ${styles.condensed}`}>
+                    <table class={`table table-sm table-striped ${styles.condensed}`}>
                         <thead>
                             <tr>
                                 <th scope='col'>#</th>

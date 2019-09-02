@@ -28,7 +28,7 @@ export default class IotList extends Component {
                             + Ny Iot query
                         </button>
                     </div>
-                    <table class={`table table-sm ${styles.condensed}`}>
+                    <table class={`table table-sm table-striped ${styles.condensed}`}>
                         <thead>
                             <tr>
                                 <th scope='col'>#</th>

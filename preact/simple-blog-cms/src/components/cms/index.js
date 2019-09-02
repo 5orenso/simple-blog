@@ -8,10 +8,12 @@ import Messages from '../../../lib/components/messages';
 import ArticleList from '../../../lib/components/articleList';
 import ImageList from '../../../lib/components/imageList';
 import IotList from '../../../lib/components/iotList';
+import IotDeviceList from '../../../lib/components/iotDeviceList';
 import CategoryList from '../../../lib/components/categoryList';
 import ArticleEdit from '../../../lib/components/articleEdit';
 import CategoryEdit from '../../../lib/components/categoryEdit';
 import IotEdit from '../../../lib/components/iotEdit';
+import IotDeviceEdit from '../../../lib/components/iotDeviceEdit';
 import Pagination from '../../../lib/components/pagination';
 
 const widgetName = 'simpleBlogCms';
@@ -34,6 +36,10 @@ const initialState = {
     iot: {},
     iotlist: [],
     iotlistTotal: 0,
+
+    iotDevice: {},
+    iotDeviceList: [],
+    iotDeviceListTotal: 0,
 
     category: {},
     catlist: [],
@@ -140,6 +146,27 @@ export default class SimpleBlogCms extends Component {
             .catch(error => this.addError(error.toString()));
     }
 
+    loadIotDeviceList(currentPage = 1, $limit) {
+        const limit = $limit || this.state.articlesPerPage;
+        const offset = (currentPage - 1) * limit;
+        const { queryImage, filterQuery } = this.state;
+        const query = {
+            ...filterQuery,
+        };
+        if (queryImage.length > 0) {
+            query.query = queryImage;
+        }
+        util.fetchApi(`/api/iotdevice/`, { ...query, limit, offset }, this)
+            .then((result) => {
+                // console.log('result', result);
+                this.setState({
+                    iotDeviceList: result.iotDeviceList,
+                    iotDeviceListTotal: result.total,
+                });
+            })
+            .catch(error => this.addError(error.toString()));
+    }
+
     loadCatlist(currentPage = 1) {
         const limit = this.state.categoriesPerPage;
         const offset = (currentPage - 1) * this.state.categoriesPerPage;
@@ -183,6 +210,8 @@ export default class SimpleBlogCms extends Component {
             this.loadImglist(currentPage);
         } else if (currentMenu === 'iot') {
             this.loadIotlist(currentPage);
+        } else if (currentMenu === 'iotDevice') {
+            this.loadIotDeviceList(currentPage);
         }
     }
 
@@ -297,6 +326,8 @@ export default class SimpleBlogCms extends Component {
             this.loadImglist();
         } else if (currentMenu === 'iot') {
             this.loadIotlist();
+        } else if (currentMenu === 'iotDevice') {
+            this.loadIotDeviceList();
         }
     };
 
@@ -315,6 +346,12 @@ export default class SimpleBlogCms extends Component {
         event.preventDefault();
         console.log('handleIotEditBackClick');
         this.setState({ iot: {} });
+    };
+
+    handleIotDeviceEditBackClick = (event) => {
+        event.preventDefault();
+        console.log('handleIotDeviceEditBackClick');
+        this.setState({ iotDevice: {} });
     };
 
     handleArtlistClick = (event) => {
@@ -364,6 +401,19 @@ export default class SimpleBlogCms extends Component {
             .then((result) => {
                 this.setState({
                     iot: result.iot,
+                });
+            })
+            .catch(error => this.addError(error.toString()));
+    };
+
+    handleIotDeviceListClick = (event) => {
+        event.preventDefault();
+        const trElement = event.target.closest('tr');
+        const artId = parseInt(trElement.dataset.id, 10);
+        util.fetchApi(`/api/iotdevice/${artId}`, {}, this)
+            .then((result) => {
+                this.setState({
+                    iotDevice: result.iotDevice,
                 });
             })
             .catch(error => this.addError(error.toString()));
@@ -477,6 +527,41 @@ export default class SimpleBlogCms extends Component {
             .catch(error => this.addError(error.toString()));
     };
 
+    handleIotDeviceClickNew = (event, iotDevice = {}) => {
+        event.preventDefault();
+        const data = {
+            method: 'POST',
+            ...iotDevice,
+        }
+        // console.log('trying to save', this.state.category);
+        util.fetchApi(`/api/iotdevice/`, data, this)
+            .then((result) => {
+                const iotDevice = result;
+                const messages = this.state.messages;
+                messages.push([parseInt(new Date().getTime() / 1000, 10), 'IotDevice opprettet']);
+                this.setState({ messages, iotDevice });
+                this.loadIotDeviceList();
+            })
+            .catch(error => this.addError(error.toString()));
+    };
+
+    handleIotDeviceClickSave = (event) => {
+        event.preventDefault();
+        const data = {
+            method: 'PATCH',
+            ...this.state.iotDevice,
+        }
+        // console.log('trying to save', this.state.article);
+        util.fetchApi(`/api/iotdevice/${this.state.iotDevice.id}`, data, this)
+            .then((result) => {
+                const messages = this.state.messages;
+                messages.push([parseInt(new Date().getTime() / 1000, 10), 'IotDevice oppdatert']);
+                this.setState({ messages });
+                this.loadIotDeviceList();
+            })
+            .catch(error => this.addError(error.toString()));
+    };
+
     handleArticleTextareaInput = (event) => {
         // event.preventDefault();
         const el = event.target;
@@ -515,6 +600,19 @@ export default class SimpleBlogCms extends Component {
         const iot = this.state.iot;
         iot[name] = el.value;
         this.setState({ iot });
+    };
+
+    handleIotDeviceTextareaInput = (event) => {
+        event.preventDefault();
+        const el = event.target;
+        const name = el.name;
+        // let value = el.value;
+        // if (event.key) {
+        //     value += event.key;
+        // }
+        const iotDevice = this.state.iotDevice;
+        iotDevice[name] = el.value;
+        this.setState({ iotDevice });
     };
 
     articleInputAdd(name, value, type) {
@@ -688,6 +786,23 @@ export default class SimpleBlogCms extends Component {
         this.setState({ iot });
     };
 
+    handleIotDeviceInput = (event) => {
+        event.preventDefault();
+        const el = event.target;
+        const name = el.name;
+        const iotDevice = this.state.iotDevice;
+        let value = el.value;
+        if (event.key) {
+            value += event.key;
+        }
+        if (typeof iotDevice[name] === 'object' && Array.isArray(iotDevice[name])) {
+            iotDevice[name] = value.split(/, ?/);
+        } else {
+            iotDevice[name] = value;
+        }
+        this.setState({ iotDevice });
+    };
+
     handlePaginationClick = (event) => {
         event.preventDefault();
         const currentPage = Number(event.target.id);
@@ -786,6 +901,10 @@ export default class SimpleBlogCms extends Component {
             iotlist,
             iotlistTotal,
 
+            iotDevice,
+            iotDeviceList,
+            iotDeviceListTotal,
+
             category,
             catlist,
             catlistTotal,
@@ -816,6 +935,8 @@ export default class SimpleBlogCms extends Component {
                         onClick={this.handleMenuClick} data-menu='images'><i class="fas fa-images"></i> Bilder</a>
                     <a class={`nav-item nav-link ${currentMenu === 'iot' ? 'active' : ''}`} href='#'
                         onClick={this.handleMenuClick} data-menu='iot'><i class="fas fa-temperature-low"></i> Iot</a>
+                    <a class={`nav-item nav-link ${currentMenu === 'iotDevice' ? 'active' : ''}`} href='#'
+                        onClick={this.handleMenuClick} data-menu='iotDevice'><i class="fas fa-robot"></i> Iot Device</a>
                 </nav>
             );
         }
@@ -991,6 +1112,47 @@ export default class SimpleBlogCms extends Component {
                             handleClickSave={this.handleIotClickSave}
                             handleClickNew={this.handleIotClickNew}
                             handleClickBack={this.handleIotEditBackClick}
+                        />
+                    </div>}
+                </div>
+            );
+        } else if (currentMenu === 'iotDevice') {
+            return (
+                <div class={`container-fluid p-0 ${styles.mainApp}`}>
+                    <ProgressBar styles={styles} loadingProgress={this.state.loadingProgress} />
+                    {renderedMenu}
+
+                    {!iotDevice.id && <div class='d-flex justify-content-center'>
+                        <IotDeviceList styles={styles}
+                            that={this}
+                            imageId={iotDevice.id}
+                            iotDeviceList={iotDeviceList}
+                            handleListClick={this.handleIotDeviceListClick}
+                            handleClickNew={this.handleIotDeviceClickNew}
+                        />
+                    </div>}
+                    {!iotDevice.id && <div class='d-flex justify-content-center'>
+                        <Pagination styles={styles}
+                            artlistTotal={iotDeviceListTotal}
+                            currentPage={currentPage}
+                            articlesPerPage={categoriesPerPage}
+                            handlePaginationClick={this.handlePaginationClick}
+                            handlePaginationDecClick={this.handlePaginationDecClick}
+                            handlePaginationIncClick={this.handlePaginationIncClick}
+                        />
+                    </div>}
+                    {!iotDevice.id && <div class='d-flex justify-content-center'>
+                        <Messages styles={styles} messages={messages} />
+                    </div>}
+                    {iotDevice.id && <div class='d-flex justify-content-center'>
+                        <IotDeviceEdit styles={styles}
+                            iotDevice={iotDevice}
+                            messages={messages}
+                            handleInput={this.handleIotDeviceInput}
+                            handleTextareaInput={this.handleIotDeviceTextareaInput}
+                            handleClickSave={this.handleIotDeviceClickSave}
+                            handleClickNew={this.handleIotDeviceClickNew}
+                            handleClickBack={this.handleIotDeviceEditBackClick}
                         />
                     </div>}
                 </div>

@@ -25,6 +25,11 @@ router.get('/category/:id', wrap(require('./get-category.js')));
 router.patch('/category/:id', util.restrict, wrap(require('./patch-category.js')));
 router.post('/category/', util.restrict, wrap(require('./post-category.js')));
 
+router.get('/iotdevice/', wrap(require('./get-iotDevice.js')));
+router.get('/iotdevice/:id', wrap(require('./get-iotDevice.js')));
+router.patch('/iotdevice/:id', util.restrict, wrap(require('./patch-iotDevice.js')));
+router.post('/iotdevice/', util.restrict, wrap(require('./post-iotDevice.js')));
+
 router.get('/iot/', wrap(require('./get-iot.js')));
 router.get('/iot/:id', wrap(require('./get-iot.js')));
 router.patch('/iot/:id', util.restrict, wrap(require('./patch-iot.js')));
