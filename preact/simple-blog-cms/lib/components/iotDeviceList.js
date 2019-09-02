@@ -56,6 +56,7 @@ export default class IotDeviceList extends Component {
                                 <th class='text-center' scope='col'>Light</th>
                                 <th class='text-center' scope='col'>Gas MQ2</th>
                                 <th class='text-center' scope='col'>Gas MQ3</th>
+                                <th class='text-center' scope='col'>Moisture</th>
                                 <th class='text-center' scope='col'>Motion</th>
                                 <th class='text-center' scope='col'>CO2</th>
                                 <th class='text-center' scope='col'>DSM501A</th>
@@ -89,6 +90,7 @@ export default class IotDeviceList extends Component {
                             <td class='text-center'>{iotDevice.sensors && iotDevice.sensors.light ? <i class='fas fa-check' /> : ''}</td>
                             <td class='text-center'>{iotDevice.sensors && iotDevice.sensors.gasMq2 ? <i class='fas fa-check' /> : ''}</td>
                             <td class='text-center'>{iotDevice.sensors && iotDevice.sensors.gasMq3 ? <i class='fas fa-check' /> : ''}</td>
+                            <td class='text-center'>{iotDevice.sensors && iotDevice.sensors.moisture ? <i class='fas fa-check' /> : ''}</td>
                             <td class='text-center'>{iotDevice.sensors && iotDevice.sensors.motion ? <i class='fas fa-check' /> : ''}</td>
                             <td class='text-center'>{iotDevice.sensors && iotDevice.sensors.co2 ? <i class='fas fa-check' /> : ''}</td>
                             <td class='text-center'>{iotDevice.sensors && iotDevice.sensors.dsm501a ? <i class='fas fa-check' /> : ''}</td>
