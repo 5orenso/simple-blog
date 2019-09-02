@@ -29,6 +29,8 @@ export default class IotDeviceEdit extends Component {
         const fields = ['title', 'chipId', 'version', 'name', 'packageName', 'deepSleep', 'sleepPeriode', 'publishInterval',
             'wifiSsid', 'mqttServer', 'mqttPort', 'mqttTopicOut', 'mqttTopicIn', 'location', 'description'];
 
+        const fieldsSensors = ['bme280', 'dallasTemp', 'flame', 'light', 'gasMq2', 'gasMq3', 'motion', 'co2', 'dsm501a'];
+
         return (
             <div class='container-fluid col-12'>
 
@@ -74,14 +76,50 @@ export default class IotDeviceEdit extends Component {
                             </div>                    
                         )}
 
+                        {fieldsSensors.map(fieldName =>
+                            <div class='form-check'>
+                                <input type='checkbox' class='form-check-input' id={`${fieldName}Input`}
+                                    name={fieldName}
+                                    onInput={e => {
+                                        handleInput(e, {
+                                            name: fieldName,
+                                            value: iotDevice[fieldName] ? 0 : 1,
+                                        });
+                                    }}
+                                    value={1}
+                                    checked={iotDevice[fieldName] === 1 ? 'checked' : ''}
+                                />
+                                <label for={`${fieldName}Input`}>{fieldName}</label>
+                            </div>
+                        )}
+
                     </div>
                     <div class='col-6'>
                         <h1>{iotDevice.title}</h1>
-                        {fields.map(fieldName =>
-                            <div>
-                                {fieldName}: {iotDevice[fieldName]}
-                            </div>
-                        )}
+                        <table class='table table-sm table-striped'>
+                            <tbody>
+                                {fields.map(fieldName =>
+                                    <tr>
+                                        <td>
+                                            {fieldName}
+                                        </td>
+                                        <td>
+                                            {iotDevice[fieldName]}
+                                        </td>
+                                    </tr>
+                                )}
+                                {fieldsSensors.map(fieldName =>
+                                    <tr>
+                                        <td>
+                                            {fieldName}
+                                        </td>
+                                        <td>
+                                            {iotDevice[fieldName]}
+                                        </td>
+                                    </tr>
+                                )}
+                            </tbody>
+                        </table>
                     </div>
                 </div>
 

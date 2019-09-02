@@ -34,14 +34,14 @@ export default class IotDeviceList extends Component {
                             <tr>
                                 <th scope='col'>#</th>
                                 <th scope='col'>Tittel</th>
-                                <th scope='col'>ChipId</th>
-                                <th scope='col'>Version</th>
+                                <th class='text-right' scope='col'>ChipId</th>
+                                <th class='text-right' scope='col'>Version</th>
                                 <th scope='col'>Name</th>
                                 <th scope='col'>Package Name</th>
 
-                                <th scope='col'>deepSleep</th>
-                                <th scope='col'>sleepPeriode</th>
-                                <th scope='col'>publishInterval</th>
+                                <th class='text-right' scope='col'>deepSleep</th>
+                                <th class='text-right' scope='col'>sleepPeriode</th>
+                                <th class='text-right' scope='col'>publishInterval</th>
                                 <th scope='col'>wifiSsid</th>
                                 <th scope='col'>mqttServer</th>
                                 <th scope='col'>mqttPort</th>
@@ -50,15 +50,15 @@ export default class IotDeviceList extends Component {
 
                                 <th scope='col'>Location</th>
                                 <th scope='col'>Description</th>
-                                <th scope='col'>BME280</th>
-                                <th scope='col'>Dallas Temp</th>
-                                <th scope='col'>Flame</th>
-                                <th scope='col'>Light</th>
-                                <th scope='col'>Gas MQ2</th>
-                                <th scope='col'>Gas MQ3</th>
-                                <th scope='col'>Motion</th>
-                                <th scope='col'>CO2</th>
-                                <th scope='col'>DSM501A</th>
+                                <th class='text-center' scope='col'>BME280</th>
+                                <th class='text-center' scope='col'>Dallas Temp</th>
+                                <th class='text-center' scope='col'>Flame</th>
+                                <th class='text-center' scope='col'>Light</th>
+                                <th class='text-center' scope='col'>Gas MQ2</th>
+                                <th class='text-center' scope='col'>Gas MQ3</th>
+                                <th class='text-center' scope='col'>Motion</th>
+                                <th class='text-center' scope='col'>CO2</th>
+                                <th class='text-center' scope='col'>DSM501A</th>
                             </tr>
                         </thead>
                     <tbody>
@@ -66,14 +66,14 @@ export default class IotDeviceList extends Component {
                         <tr data-id={iotDevice.id} onClick={handleListClick}>
                             <td scope='row'>{iotDevice.id}</td>
                             <td>{iotDevice.title}</td>
-                            <td>{iotDevice.chipId}</td>
-                            <td>{iotDevice.version}</td>
+                            <td class='text-right'>{iotDevice.chipId}</td>
+                            <td class='text-right'>{iotDevice.version}</td>
                             <td>{iotDevice.name}</td>
                             <td>{iotDevice.packageName}</td>
 
-                            <td>{iotDevice.deepSleep}</td>
-                            <td>{iotDevice.sleepPeriode}</td>
-                            <td>{iotDevice.publishInterval}</td>
+                            <td class='text-right'>{iotDevice.deepSleep}</td>
+                            <td class='text-right'>{iotDevice.sleepPeriode}</td>
+                            <td class='text-right'>{iotDevice.publishInterval}</td>
                             <td>{iotDevice.wifiSsid}</td>
                             <td>{iotDevice.mqttServer}</td>
                             <td>{iotDevice.mqttPort}</td>
@@ -82,15 +82,15 @@ export default class IotDeviceList extends Component {
 
                             <td>{iotDevice.location}</td>
                             <td>{iotDevice.description}</td>
-                            <td>{iotDevice.sensors && iotDevice.sensors.bme280 ? <i class='fas fa-check' /> : ''}</td>
-                            <td>{iotDevice.sensors && iotDevice.sensors.dallasTemp ? <i class='fas fa-check' /> : ''}</td>
-                            <td>{iotDevice.sensors && iotDevice.sensors.flame ? <i class='fas fa-check' /> : ''}</td>
-                            <td>{iotDevice.sensors && iotDevice.sensors.light ? <i class='fas fa-check' /> : ''}</td>
-                            <td>{iotDevice.sensors && iotDevice.sensors.gasMq2 ? <i class='fas fa-check' /> : ''}</td>
-                            <td>{iotDevice.sensors && iotDevice.sensors.gasMq3 ? <i class='fas fa-check' /> : ''}</td>
-                            <td>{iotDevice.sensors && iotDevice.sensors.motion ? <i class='fas fa-check' /> : ''}</td>
-                            <td>{iotDevice.sensors && iotDevice.sensors.co2 ? <i class='fas fa-check' /> : ''}</td>
-                            <td>{iotDevice.sensors && iotDevice.sensors.dsm501a ? <i class='fas fa-check' /> : ''}</td>
+                            <td class='text-center'>{iotDevice.sensors && iotDevice.sensors.bme280 ? <i class='fas fa-check' /> : ''}</td>
+                            <td class='text-center'>{iotDevice.sensors && iotDevice.sensors.dallasTemp ? <i class='fas fa-check' /> : ''}</td>
+                            <td class='text-center'>{iotDevice.sensors && iotDevice.sensors.flame ? <i class='fas fa-check' /> : ''}</td>
+                            <td class='text-center'>{iotDevice.sensors && iotDevice.sensors.light ? <i class='fas fa-check' /> : ''}</td>
+                            <td class='text-center'>{iotDevice.sensors && iotDevice.sensors.gasMq2 ? <i class='fas fa-check' /> : ''}</td>
+                            <td class='text-center'>{iotDevice.sensors && iotDevice.sensors.gasMq3 ? <i class='fas fa-check' /> : ''}</td>
+                            <td class='text-center'>{iotDevice.sensors && iotDevice.sensors.motion ? <i class='fas fa-check' /> : ''}</td>
+                            <td class='text-center'>{iotDevice.sensors && iotDevice.sensors.co2 ? <i class='fas fa-check' /> : ''}</td>
+                            <td class='text-center'>{iotDevice.sensors && iotDevice.sensors.dsm501a ? <i class='fas fa-check' /> : ''}</td>
                         </tr>
                     )}
                     </tbody>

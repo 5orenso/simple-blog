@@ -19,17 +19,17 @@ module.exports = async (req, res) => {
     if (req.params.chipId) {
         const chipId = parseInt(req.params.chipId, 10);
         device = await iotDevice.findOne({ chipId });
-        if (!tc.isObject(device)) {            
+        if (!tc.isObject(device)) {
             const version = req.query.v ? parseInt(req.query.v, 10) : 0;
             const name = req.query.name;
             const packageName = req.query.package;
             const deepSleep = req.query.ds ? parseInt(req.query.ds, 10) : 0;
             const bme280 = req.query.bme280 ? parseInt(req.query.bme280, 10) : 0;
-            const dallasTemp = req.query.dallasTemp ? parseInt(req.query.dallas, 10) : 0;
+            const dallasTemp = req.query.dallas ? parseInt(req.query.dallas, 10) : 0;
             const flame = req.query.flame ? parseInt(req.query.flame, 10) : 0;
             const light = req.query.light ? parseInt(req.query.light, 10) : 0;
-            const gasMq2 = req.query.gasMq2 ? parseInt(req.query.mq2, 10) : 0;
-            const gasMq3 = req.query.gasMq3 ? parseInt(req.query.mq3, 10) : 0;
+            const gasMq2 = req.query.mq2 ? parseInt(req.query.mq2, 10) : 0;
+            const gasMq3 = req.query.mq3 ? parseInt(req.query.mq3, 10) : 0;
             const motion = req.query.motion ? parseInt(req.query.motion, 10) : 0;
             const co2 = req.query.co2 ? parseInt(req.query.co2, 10) : 0;
             const dsm501a = req.query.dsm501a ? parseInt(req.query.dsm501a, 10) : 0;
