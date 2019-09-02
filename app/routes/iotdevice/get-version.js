@@ -30,6 +30,7 @@ module.exports = async (req, res) => {
             const light = req.query.light ? parseInt(req.query.light, 10) : 0;
             const gasMq2 = req.query.mq2 ? parseInt(req.query.mq2, 10) : 0;
             const gasMq3 = req.query.mq3 ? parseInt(req.query.mq3, 10) : 0;
+            const moisture = req.query.moisture ? parseInt(req.query.moisture, 10) : 0;
             const motion = req.query.motion ? parseInt(req.query.motion, 10) : 0;
             const co2 = req.query.co2 ? parseInt(req.query.co2, 10) : 0;
             const dsm501a = req.query.dsm501a ? parseInt(req.query.dsm501a, 10) : 0;
@@ -54,6 +55,7 @@ module.exports = async (req, res) => {
                     light,
                     gasMq2,
                     gasMq3,
+                    moisture,
                     motion,
                     co2,
                     dsm501a,
