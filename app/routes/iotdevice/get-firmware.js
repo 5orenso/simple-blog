@@ -18,7 +18,7 @@ module.exports = async (req, res) => {
 
     if (req.params.chipId) {
         const chipId = parseInt(req.params.chipId, 10);
-        device = await iotDevice.findOne({ chipId }, fields);
+        device = await iotDevice.findOne({ chipId });
         if (device.packageName && device.name && device.version) {
             return res.redirect(302, `/esp8266/fota/${device.packageName}/firmware-${device.name}-${device.version}.bin`);
         }
