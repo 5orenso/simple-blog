@@ -12,7 +12,7 @@
     <div class='container-full'>
         <div class='row'>
             {% for bucket, value in iotResultsFixed %}
-                <div class='col-sm-3 text-center mb-3'>
+                <div class='col-sm-4 text-center mb-4'>
                     <span class='text-muted'>
                         <i class='fas fa-temperature-low'></i> {% if iotDeviceChipIdRef[bucket] %}{{ iotDeviceChipIdRef[bucket].title }}{% else %}{{ bucket }}{% endif %}
                     </span>
