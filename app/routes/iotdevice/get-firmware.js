@@ -25,7 +25,8 @@ module.exports = async (req, res) => {
             const filename = `esp8266/fota/${device.packageName}/firmware-${device.name}-${device.version}.bin`;
             const toFile = `/tmp/firmware-${device.name}-${device.version}.bin`;
             await s3.download('litt.no-esp8266-fota', filename, toFile);
-            res.download(toFile);
+            res.sendFile(toFile);
+            // res.download(toFile);
             // return res.redirect(302, `/esp8266/fota/${device.packageName}/firmware-${device.name}-${device.version}.bin`);
         }
     }
