@@ -22,7 +22,7 @@ module.exports = async (req, res) => {
         const chipId = parseInt(req.params.chipId, 10);
         device = await iotDevice.findOne({ chipId });
         if (device.packageName && device.name && device.version) {
-            const filename = `/esp8266/fota/${device.packageName}/firmware-${device.name}-${device.version}.bin`;
+            const filename = `esp8266/fota/${device.packageName}/firmware-${device.name}-${device.version}.bin`;
             const toFile = `/tmp/firmware-${device.name}-${device.version}.bin`;
             await s3.download('litt.no-esp8266-fota', filename, toFile);
             res.download(toFile);
