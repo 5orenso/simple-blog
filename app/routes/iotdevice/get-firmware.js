@@ -12,6 +12,7 @@ const IotDevice = require('../../../lib/class/iotDevice');
 
 module.exports = async (req, res) => {
     run(req);
+    res.setHeader('Cache-Control', 'no-cache, no-store');
 
     const iotDevice = new IotDevice();
     let device;
