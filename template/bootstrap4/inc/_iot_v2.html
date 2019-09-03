@@ -12,35 +12,53 @@
     <div class='container-full'>
         <div class='row'>
             {% for bucket, value in iotResultsFixed %}
-                <div class='col-sm-3 text-center'>
+                <div class='col-sm-3 text-center mb-3'>
                     <span class='text-muted'>
                         <i class='fas fa-temperature-low'></i> {% if iotDeviceChipIdRef[bucket] %}{{ iotDeviceChipIdRef[bucket].title }}{% else %}{{ bucket }}{% endif %}
                     </span>
                     <h2>{{ value.tempGauge|format(1) }}°C</h2>
 
-                    <div data-widget-host="simpleGraph">
-                        <script type="text/props">
-                          {
-                            "jsonData": "{{ (value.tempGraphSimpleGraph || [{x:0, y:0}])|json|addslashes|raw }}",
-                            "jsonData2": "{{ (value.humidityGraphSimpleGraph || [{x:0, y:0}])|json|addslashes|raw }}",
-                            "jsonData3": "{{ (value.pressureGraphSimpleGraph || [{x:0, y:0}])|json|addslashes|raw }}",
-                            "width": 600,
-                            "height": 200,
-                            "yMax": 30,
-                            "yMax2": 100,
-                            "showYTicks": 1,
-                            "yTicks": "[\"30°C\",\"15°C\",\"0°C\"]",
-                            "showYTicks2": 1,
-                            "yTicks2": "[\"100%\",\"75%\",\"50%\",\"25%\",\"0%\"]",
-                            "showXTicks": 1,                            
-                            "xTicks": "[\"48h\",\"24h\",\"0h\"]"
-                          }
-                        </script>
-                    </div>
-
+                    {% if value.tempGraphSimpleGraph %}
+                        <div data-widget-host="simpleGraph">
+                            <script type="text/props">
+                            {
+                                "jsonData": "{{ (value.tempGraphSimpleGraph || [{x:0, y:0}])|json|addslashes|raw }}",
+                                "jsonDataB": "{{ (value.soiltempGraphSimpleGraph || [{x:0, y:0}])|json|addslashes|raw }}",
+                                "jsonData2": "{{ (value.humidityGraphSimpleGraph || [{x:0, y:0}])|json|addslashes|raw }}",
+                                "jsonData3": "{{ (value.pressureGraphSimpleGraph || [{x:0, y:0}])|json|addslashes|raw }}",
+                                "width": 600,
+                                "height": 200,
+                                "yMax": 30,
+                                "yMax2": 100,
+                                "showYTicks": 1,
+                                "yTicks": "[\"30°C\", \"25°C\", \"20°C\", \"15°C\", \"10°C\", \"5°C\", \"0°C\"]",
+                                "showYTicks2": 1,
+                                "yTicks2": "[\"100%\",\"75%\",\"50%\",\"25%\",\"0%\"]",
+                                "showXTicks": 1,                            
+                                "xTicks": "[\"48h\",\"24h\",\"0h\"]",
+                                "legend": "Temp",
+                                "legendB": "Soil temp",
+                                "legend2": "Humidity",
+                                "legend3": "Pressure"
+                            }
+                            </script>
+                        </div>
+                    {% endif %}
+                    <small>
+                        {% if iotDeviceChipIdRef[bucket] && iotDeviceChipIdRef[bucket].description %}
+                            <p>{{ iotDeviceChipIdRef[bucket].description }}</p>
+                        {% endif %}
+                        {% if iotDeviceChipIdRef[bucket] && iotDeviceChipIdRef[bucket].sensors %}
+                            {% for sensor in ['bme280', 'dallasTemp', 'flame', 'light', 'gasMq2', 'gasMq3', 'moisture', 'motion', 'co2', 'dsm501a'] %}
+                                {% if iotDeviceChipIdRef[bucket].sensors[sensor] %}
+                                    <span class="badge badge-secondary">{{ sensor }}</span>
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                    </small>
                 </div>
             {% endfor %}
         </div>
     </div>
 
-    <script type="text/javascript" src="/global/js/simple-graphs-0.1.0.js"></script>
+    <script type="text/javascript" src="/global/js/simple-graphs-0.2.0.js"></script>
