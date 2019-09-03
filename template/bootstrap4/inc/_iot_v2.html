@@ -14,16 +14,16 @@
             {% for bucket, value in iotResultsFixed %}
                 <div class='col-sm-3 text-center'>
                     <span class='text-muted'>
-                        <i class='fas fa-temperature-low'></i> {{ bucket }}
+                        <i class='fas fa-temperature-low'></i> {% if iotDeviceChipIdRef[bucket] %}{{ iotDeviceChipIdRef[bucket].title }}{% else %}{{ bucket }}{% endif %}
                     </span>
                     <h2>{{ value.tempGauge|format(1) }}°C</h2>
 
                     <div data-widget-host="simpleGraph">
                         <script type="text/props">
                           {
-                            "jsonData": "{{ value.tempGraphSimpleGraph|json|addslashes|raw }}",
-                            "jsonData2": "{{ value.humidityGraphSimpleGraph|json|addslashes|raw }}",
-                            "jsonData3": "{{ value.pressureGraphSimpleGraph|json|addslashes|raw }}",
+                            "jsonData": "{{ (value.tempGraphSimpleGraph || [{x:0, y:0}])|json|addslashes|raw }}",
+                            "jsonData2": "{{ (value.humidityGraphSimpleGraph || [{x:0, y:0}])|json|addslashes|raw }}",
+                            "jsonData3": "{{ (value.pressureGraphSimpleGraph || [{x:0, y:0}])|json|addslashes|raw }}",
                             "width": 600,
                             "height": 200,
                             "yMax": 30,
