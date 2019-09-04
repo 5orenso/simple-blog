@@ -205,6 +205,7 @@ export default class ArticleList extends Component {
                                         <small class='text-muted'>
                                             Ord: {util.wordCount(art.body)}, 
                                             Lesetid: {util.readTime(art.body, 'no')}
+                                            {util.wordCount(art.notes) && <span class='ml-2 badge badge-dark'>Notater: {util.wordCount(art.notes)} ord</span>}
                                         </small>
                                     </small>
                                 </td>
