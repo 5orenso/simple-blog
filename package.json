@@ -70,6 +70,7 @@
   },
   "keywords": [],
   "dependencies": {
+    "aws-sdk": "^2.522.0",
     "body-parser": "^1.18.3",
     "client-sessions": "^0.8.0",
     "commander": "^2.19.0",
@@ -95,6 +96,7 @@
     "morgan": "^1.9.1",
     "natural": "^0.6.3",
     "node-dogstatsd": "0.0.7",
+    "remove-markdown": "^0.3.0",
     "rest": "^2.0.0",
     "sendgrid": "^5.2.3",
     "stopword": "^0.2.4",

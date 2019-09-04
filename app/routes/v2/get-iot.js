@@ -22,8 +22,12 @@ function fixIotResults(iotResults) {
     // console.log(resultKeys);
     for (let i = 0, l = resultKeys.length; i < l; i += 1) {
         const type = resultKeys[i];
+        // console.log('==> type', type);
         iotResults[type].forEach((resultSet) => {
             const mainBucket = resultSet.aggregations[2].buckets;
+            // if (type === 'moistureGraph') {
+            //     console.log('----> mainBucket', JSON.stringify(mainBucket, null, 4));
+            // }
             if (tc.isArray(mainBucket)) {
                 // Graph
                 // eslint-disable-next-line no-loop-func
@@ -67,6 +71,7 @@ function fixIotResults(iotResults) {
                         });
                     } else if (util.isDefined(bucket, 3, 'buckets') && tc.isArray(bucket[3].buckets)) {
                         const dataBuckets = bucket[3].buckets;
+                        // console.log('====> bucket[3].buckets array', dataBuckets);
                         // console.log('dataBuckets', dataBuckets);
                         // dataBuckets {
                         //     Kontor: { '1': { value: 49.56250031789144 }, doc_count: 72 },
@@ -101,7 +106,7 @@ function fixIotResults(iotResults) {
                             }
                         });
                     } else if (util.isDefined(bucket) && tc.isObject(bucket)) {
-                        // console.log('====> bucket', bucket);
+                        // console.log('====> bucket object plain', bucket);
                         const val = bucket[1].value;
                         const device = bucket.key;
                         if (!tc.isObject(finalResult[device])) {
