@@ -55,7 +55,7 @@
                         {% endif %}
                         {% if iotDeviceChipIdRef|isDefined(bucket, 'sensors') %}
                             {% for sensor in ['bme280', 'dallasTemp', 'flame', 'light', 'gasMq2', 'gasMq3', 'moisture', 'motion', 'co2', 'dsm501a'] %}
-                                {% if iotDeviceChipIdRef|isDefined(bucket, 'sensors', sensor) %}
+                                {% if iotDeviceChipIdRef|asString(bucket, 'sensors', sensor) %}
                                     <span class="badge badge-secondary">{{ sensor }}</span>
                                 {% endif %}
                             {% endfor %}
