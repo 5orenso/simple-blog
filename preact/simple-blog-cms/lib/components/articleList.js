@@ -194,6 +194,7 @@ export default class ArticleList extends Component {
                                 <td><small class='text-muted'>#{art.categoryId}</small> {art.category}</td>
                                 <td>
                                     {art.title}<br />
+                                    {art.teaser && <div><small>{art.teaser}</small></div>}
                                     {art.url && <small><i class='fas fa-link'></i> {art.url}</small>}
                                     <small>
                                         {Array.isArray(art.tags) && art.tags.map(tag =>

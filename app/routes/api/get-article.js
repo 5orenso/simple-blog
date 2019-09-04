@@ -23,6 +23,7 @@ const fields = {
     teaser: 1,
     ingress: 1,
     body: 1,
+    notes: 1,
     url: 1,
     img: 1,
     youtubeVideos: 1,

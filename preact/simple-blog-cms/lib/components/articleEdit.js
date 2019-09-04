@@ -466,7 +466,13 @@ export default class ArticleEdit extends Component {
                             </small>
                         </small>
                     </div>
-
+                    <div class='form-group'>
+                        <label for='notesInput' class='text-white-50'>Notater (vises kun her i admin)</label>
+                        <textarea name='notes' class={`form-control`} id='notesInput' rows='5'
+                            onInput={handleTextareaInput}
+                            onFocus={this.handleTextareaFocus}
+                            value={article.notes} />
+                    </div>
                 </div>
             </div>
         );
@@ -533,6 +539,13 @@ export default class ArticleEdit extends Component {
                 <div id='bodyDisplay' dangerouslySetInnerHTML={{
                     __html: utilHtml.replaceMarked(
                         utilHtml.replaceDataTags(article.body, article)
+                    ),
+                }}></div>
+                <hr />
+                <h6>Notater til artikkelen (vises kun her i admin):</h6>
+                <div id='notesDisplay' class='p-3 bg-secondary text-white font-italic' dangerouslySetInnerHTML={{
+                    __html: utilHtml.replaceMarked(
+                        utilHtml.replaceDataTags(article.notes, article)
                     ),
                 }}></div>
             </div>
