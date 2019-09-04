@@ -26,7 +26,7 @@
 {% macro articleTeaser(art, col, extraClasses, heading) %}
     <div class="col-6 col-sm-4 col-lg-{{ col || 4 }} post-data my-1 {{ extraClasses }}" {{ colorArticleBackground(art.catRef) }}>
         {% if art.img[0] %}
-            <div class="post-thumb">
+            <div class="post-thumb d-flex align-items-center">
                 <a href="{% if art.url %}{{ art.url }}{% else %}/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}{% endif %}">
                     <img src="/pho/{{ art.img[0].src }}?w=800" alt="{{ art.title|e }}" class="img-fluid rounded">
                 </a>

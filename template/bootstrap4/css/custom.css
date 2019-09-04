@@ -56,6 +56,9 @@ html {
     text-align: center;
     /* border: 1px solid #dee2e6; */
     border-radius: .25rem;
+    min-height: 150px;
+    max-height: 200px;
+    overflow: hidden;
 }
 .post-thumb a {
     /* position: absolute;
