@@ -226,6 +226,11 @@ html {
     color: #303030;
 }
 
+.jumbotron-thumb {
+    max-height: 570px;
+    overflow: hidden;
+}
+
 .modal-content {
     background-color: #808080;
 }
