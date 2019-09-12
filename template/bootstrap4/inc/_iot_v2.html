@@ -14,9 +14,16 @@
             {% for bucket, value in iotResultsFixed %}
                 <div class='col-sm-4 text-center mb-4'>
                     <span class='text-muted'>
-                        <i class='fas fa-temperature-low'></i> {% if iotDeviceChipIdRef[bucket] %}{{ iotDeviceChipIdRef[bucket].title }}{% else %}{{ bucket }}{% endif %}
+                        <i class='fas fa-temperature-low'></i> 
+                        {% if iotDeviceChipIdRef[bucket] %}
+                            {{ iotDeviceChipIdRef[bucket].title }}
+                        {% else %}
+                            {{ bucket }}
+                        {% endif %}
                     </span>
-                    <h2>{{ value.tempGauge|format(1) }}°C</h2>
+                    {% if iotDeviceChipIdRef|asString(bucket, 'sensors', 'bme280') %}
+                        <h2>{{ value.tempGauge|format(1) }}°C</h2>
+                    {% endif %}
                     {% if iotDeviceChipIdRef|asString(bucket, 'sensors', 'bme280') %}
                         <div data-widget-host="simpleGraph">
                             <script type="text/props">
