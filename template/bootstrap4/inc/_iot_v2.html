@@ -9,66 +9,65 @@
 {% set pageStart = page - 1 %}
 {% set pageStart = pageStart * limit %}
 
+    <h1>Temp sensors</h1>
     <div class='container-full'>
         <div class='row'>
             {% for bucket, value in iotResultsFixed %}
-                <div class='col-sm-4 text-center mb-4'>
-                    <span class='text-muted'>
-                        <i class='fas fa-temperature-low'></i> 
-                        {% if iotDeviceChipIdRef[bucket] %}
-                            {{ iotDeviceChipIdRef[bucket].title }}
-                        {% else %}
-                            {{ bucket }}
-                        {% endif %}
-                    </span>
-                    {% if iotDeviceChipIdRef|asString(bucket, 'sensors', 'bme280') %}
+                {% if iotDeviceChipIdRef|asString(bucket, 'sensors', 'bme280') %}
+                    <div class='col-sm-4 text-center mb-4'>
+                        <span class='text-muted'>
+                            <i class='fas fa-temperature-low'></i> 
+                            {% if iotDeviceChipIdRef[bucket] %}
+                                {{ iotDeviceChipIdRef[bucket].title }}
+                            {% else %}
+                                {{ bucket }}
+                            {% endif %}
+                        </span>
                         <h2>{{ value.tempGauge|format(1) }}°C</h2>
-                    {% endif %}
-                    {% if iotDeviceChipIdRef|asString(bucket, 'sensors', 'bme280') %}
-                        <div data-widget-host="simpleGraph">
-                            <script type="text/props">
-                            {
-                                "legend": "Temp",
-                                "jsonData": "{{ (value.tempGraphSimpleGraph || [{x:0, y:0}])|json|addslashes|raw }}",
-                                {% if iotDeviceChipIdRef|asString(bucket, 'sensors', 'dallasTemp') %}
-                                    "legendB": "Soil temp",
-                                    "jsonDataB": "{{ (value.soiltempGraphSimpleGraph || [{x:0, y:0}])|json|addslashes|raw }}",
-                                {%- endif -%}
-                                "legend2": "Humidity",
-                                "jsonData2": "{{ (value.humidityGraphSimpleGraph || [{x:0, y:0}])|json|addslashes|raw }}",
-                                {% if iotDeviceChipIdRef|asString(bucket, 'sensors', 'moisture') %}
-                                    "legend2B": "Moisture",
-                                    "jsonData2B": "{{ (value.moistureGraphSimpleGraph || [{x:0, y:0}])|json|addslashes|raw }}",
-                                {%- endif -%}
-                                "legend3": "Pressure",
-                                "jsonData3": "{{ (value.pressureGraphSimpleGraph || [{x:0, y:0}])|json|addslashes|raw }}",
-                                "width": 600,
-                                "height": 200,
-                                "yMax": 30,
-                                "yMax2": 100,
-                                "showYTicks": 1,
-                                "yTicks": "[\"30°C\", \"25°C\", \"20°C\", \"15°C\", \"10°C\", \"5°C\", \"0°C\"]",
-                                "showYTicks2": 1,
-                                "yTicks2": "[\"100%\",\"75%\",\"50%\",\"25%\",\"0%\"]",
-                                "showXTicks": 1,                            
-                                "xTicks": "[\"48h\",\"24h\",\"0h\"]"
-                            }
-                            </script>
-                        </div>
-                    {% endif %}
-                    <small>
-                        {% if iotDeviceChipIdRef|asString(bucket, 'description') %}
-                            <p>{{ iotDeviceChipIdRef[bucket].description }}</p>
-                        {% endif %}
-                        {% if iotDeviceChipIdRef|isDefined(bucket, 'sensors') %}
-                            {% for sensor in ['bme280', 'dallasTemp', 'flame', 'light', 'gasMq2', 'gasMq3', 'moisture', 'motion', 'co2', 'dsm501a'] %}
-                                {% if iotDeviceChipIdRef|asString(bucket, 'sensors', sensor) %}
-                                    <span class="badge badge-secondary">{{ sensor }}</span>
-                                {% endif %}
-                            {% endfor %}
-                        {% endif %}
-                    </small>
-                </div>
+                            <div data-widget-host="simpleGraph">
+                                <script type="text/props">
+                                {
+                                    "legend": "Temp",
+                                    "jsonData": "{{ (value.tempGraphSimpleGraph || [{x:0, y:0}])|json|addslashes|raw }}",
+                                    {% if iotDeviceChipIdRef|asString(bucket, 'sensors', 'dallasTemp') %}
+                                        "legendB": "Soil temp",
+                                        "jsonDataB": "{{ (value.soiltempGraphSimpleGraph || [{x:0, y:0}])|json|addslashes|raw }}",
+                                    {%- endif -%}
+                                    "legend2": "Humidity",
+                                    "jsonData2": "{{ (value.humidityGraphSimpleGraph || [{x:0, y:0}])|json|addslashes|raw }}",
+                                    {% if iotDeviceChipIdRef|asString(bucket, 'sensors', 'moisture') %}
+                                        "legend2B": "Moisture",
+                                        "jsonData2B": "{{ (value.moistureGraphSimpleGraph || [{x:0, y:0}])|json|addslashes|raw }}",
+                                    {%- endif -%}
+                                    "legend3": "Pressure",
+                                    "jsonData3": "{{ (value.pressureGraphSimpleGraph || [{x:0, y:0}])|json|addslashes|raw }}",
+                                    "width": 600,
+                                    "height": 200,
+                                    "yMax": 30,
+                                    "yMax2": 100,
+                                    "showYTicks": 1,
+                                    "yTicks": "[\"30°C\", \"25°C\", \"20°C\", \"15°C\", \"10°C\", \"5°C\", \"0°C\"]",
+                                    "showYTicks2": 1,
+                                    "yTicks2": "[\"100%\",\"75%\",\"50%\",\"25%\",\"0%\"]",
+                                    "showXTicks": 1,                            
+                                    "xTicks": "[\"48h\",\"24h\",\"0h\"]"
+                                }
+                                </script>
+                            </div>
+                        <small>
+                            {% if iotDeviceChipIdRef|asString(bucket, 'description') %}
+                                <p>{{ iotDeviceChipIdRef[bucket].description }}</p>
+                            {% endif %}
+                            {% if iotDeviceChipIdRef|isDefined(bucket, 'sensors') %}
+                                {% for sensor in ['bme280', 'dallasTemp', 'flame', 'light', 'gasMq2', 'gasMq3', 'moisture', 'motion', 'co2', 'dsm501a'] %}
+                                    {% if iotDeviceChipIdRef|asString(bucket, 'sensors', sensor) %}
+                                        <span class="badge badge-secondary">{{ sensor }}</span>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                        </small>
+                    </div>
+                {% endif %}
             {% endfor %}
         </div>
     </div>
