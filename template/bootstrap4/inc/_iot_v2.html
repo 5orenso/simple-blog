@@ -8,8 +8,6 @@
 {% endif %}
 {% set pageStart = page - 1 %}
 {% set pageStart = pageStart * limit %}
-
-    <h1>Temp sensors</h1>
     <div class='container-full'>
         <div class='row'>
             {% for bucket, value in iotResultsFixed %}
@@ -38,6 +36,10 @@
                                     {% if iotDeviceChipIdRef|asString(bucket, 'sensors', 'moisture') %}
                                         "legend2B": "Moisture",
                                         "jsonData2B": "{{ (value.moistureGraphSimpleGraph || [{x:0, y:0}])|json|addslashes|raw }}",
+                                    {%- endif -%}
+                                    {% if iotDeviceChipIdRef|asString(bucket, 'sensors', 'light') %}
+                                        "legend2B": "Light",
+                                        "jsonData2B": "{{ (value.lightGraphSimpleGraph || [{x:0, y:0}])|json|addslashes|raw }}",
                                     {%- endif -%}
                                     "legend3": "Pressure",
                                     "jsonData3": "{{ (value.pressureGraphSimpleGraph || [{x:0, y:0}])|json|addslashes|raw }}",
