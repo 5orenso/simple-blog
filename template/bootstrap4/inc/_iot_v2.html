@@ -36,10 +36,14 @@
                                     {% if iotDeviceChipIdRef|asString(bucket, 'sensors', 'moisture') %}
                                         "legend2B": "Moisture",
                                         "jsonData2B": "{{ (value.moistureGraphSimpleGraph || [{x:0, y:0}])|json|addslashes|raw }}",
+                                        "yMin2B": 8,
+                                        "yMax2B": 18,                                
                                     {%- endif -%}
                                     {% if iotDeviceChipIdRef|asString(bucket, 'sensors', 'light') %}
-                                        "legend2B": "Light",
-                                        "jsonData2B": "{{ (value.lightGraphSimpleGraph || [{x:0, y:0}])|json|addslashes|raw }}",
+                                        "legend2C": "Light",
+                                        "jsonData2C": "{{ (value.lightGraphSimpleGraph || [{x:0, y:0}])|json|addslashes|raw }}",
+                                        "yMin2C": 45,
+                                        "yMax2C": 160,                                
                                     {%- endif -%}
                                     "legend3": "Pressure",
                                     "jsonData3": "{{ (value.pressureGraphSimpleGraph || [{x:0, y:0}])|json|addslashes|raw }}",
