@@ -32,7 +32,35 @@
     <footer class="blog-footer bd-footer text-muted bg-dark p-3 bottomBackgroundInline">
         <div class="container bottomTextColorInline">
             <div class="row">
-                {% if artlistBottom|length > 0 %}
+                {% if category.footerCol1 %}
+                    <div class="col">
+                        {{ category.footerCol1|md|safe }}
+                    </div>
+                    {% if category.footerCol2 %}
+                        <div class="col">
+                            {{ category.footerCol2|md|safe }}
+                        </div>
+                    {% endif %}
+                    {% if category.footerCol3 %}
+                        <div class="col">
+                            {{ category.footerCol3|md|safe }}
+                        </div>
+                    {% endif %}
+                {% elseif frontpage.footerCol1 %}
+                    <div class="col">
+                        {{ frontpage.footerCol1|md|safe }}
+                    </div>
+                    {% if frontpage.footerCol2 %}
+                        <div class="col">
+                            {{ frontpage.footerCol2|md|safe }}
+                        </div>
+                    {% endif %}
+                    {% if frontpage.footerCol3 %}
+                        <div class="col">
+                            {{ frontpage.footerCol3|md|safe }}
+                        </div>
+                    {% endif %}
+                {% elseif artlistBottom|length > 0 %}
                     {% for art in artlistBottom %}
                         <div class="col">
                             <h4>{{ art.title }}</h4>

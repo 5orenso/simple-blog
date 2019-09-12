@@ -50,6 +50,9 @@ const fields = {
     bgImageMain: 1,
     bgImageMenu: 1,
     bgImageBottom: 1,
+    footerCol1: 1,
+    footerCol2: 1,
+    footerCol3: 1,
 };
 
 module.exports = async (req, res) => {

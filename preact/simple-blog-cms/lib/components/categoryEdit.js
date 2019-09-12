@@ -692,6 +692,81 @@ export default class CategoryEdit extends Component {
                 </div>
 
                 <div class='row'>
+                    <div class='col-6'>
+                        <label for='footerCol1Input'><i class='fas fa-code text-muted' /> Footer col 1</label>
+                    </div>
+                    <div class='col-6'>
+                        &nbsp;
+                    </div>
+                </div>
+                <div class='row'>
+                    <div class='col-6'>
+                        <div class='form-group h-100'>
+                            <textarea name='footerCol1' class={`form-control h-100`} id='footerCol1Input' rows='3'
+                                onInput={handleTextareaInput}
+                                value={category.footerCol1} />
+                        </div>
+                    </div>
+                    <div class='col-6'>
+                        <div id='footerCol1Display' dangerouslySetInnerHTML={{
+                            __html: utilHtml.replaceMarked(
+                                utilHtml.replaceDataTags(category.footerCol1, category)
+                            ),
+                        }}></div>
+                    </div>
+                </div>
+
+                <div class='row'>
+                    <div class='col-6'>
+                        <label for='footerCol2Input'><i class='fas fa-code text-muted' /> Footer col 2</label>
+                    </div>
+                    <div class='col-6'>
+                        &nbsp;
+                    </div>
+                </div>
+                <div class='row'>
+                    <div class='col-6'>
+                        <div class='form-group h-100'>
+                            <textarea name='footerCol2' class={`form-control h-100`} id='footerCol2Input' rows='3'
+                                onInput={handleTextareaInput}
+                                value={category.footerCol2} />
+                        </div>
+                    </div>
+                    <div class='col-6'>
+                        <div id='footerCol2Display' dangerouslySetInnerHTML={{
+                            __html: utilHtml.replaceMarked(
+                                utilHtml.replaceDataTags(category.footerCol2, category)
+                            ),
+                        }}></div>
+                    </div>
+                </div>
+
+                <div class='row'>
+                    <div class='col-6'>
+                        <label for='footerCol3Input'><i class='fas fa-code text-muted' /> Footer col 3</label>
+                    </div>
+                    <div class='col-6'>
+                        &nbsp;
+                    </div>
+                </div>
+                <div class='row'>
+                    <div class='col-6'>
+                        <div class='form-group h-100'>
+                            <textarea name='footerCol3' class={`form-control h-100`} id='footerCol3Input' rows='3'
+                                onInput={handleTextareaInput}
+                                value={category.footerCol3} />
+                        </div>
+                    </div>
+                    <div class='col-6'>
+                        <div id='footerCol3Display' dangerouslySetInnerHTML={{
+                            __html: utilHtml.replaceMarked(
+                                utilHtml.replaceDataTags(category.footerCol3, category)
+                            ),
+                        }}></div>
+                    </div>
+                </div>
+
+                <div class='row'>
                     <div class='col-12'>
                         <button type='submit' class='btn btn-success' onClick={handleClickSave}>Lagre</button>
                     </div>
