@@ -17,7 +17,7 @@
                         <i class='fas fa-temperature-low'></i> {% if iotDeviceChipIdRef[bucket] %}{{ iotDeviceChipIdRef[bucket].title }}{% else %}{{ bucket }}{% endif %}
                     </span>
                     <h2>{{ value.tempGauge|format(1) }}°C</h2>
-                    {% if value.tempGraphSimpleGraph %}
+                    {% if value.tempGraphSimpleGraph && value.tempGraphSimpleGraph[0] %}
                         <div data-widget-host="simpleGraph">
                             <script type="text/props">
                             {
