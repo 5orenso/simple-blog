@@ -42,8 +42,8 @@
                                     {% if iotDeviceChipIdRef|asString(bucket, 'sensors', 'light') %}
                                         "legend2C": "Light",
                                         "jsonData2C": "{{ (value.lightGraphSimpleGraph || [{x:0, y:0}])|json|addslashes|raw }}",
-                                        "yMin2C": 30,
-                                        "yMax2C": 160,                                
+                                        "yMin2C": 25,
+                                        "yMax2C": 110,
                                     {%- endif -%}
                                     "legend3": "Pressure",
                                     "jsonData3": "{{ (value.pressureGraphSimpleGraph || [{x:0, y:0}])|json|addslashes|raw }}",
