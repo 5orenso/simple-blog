@@ -213,7 +213,7 @@ export default class ArticleEdit extends Component {
     render(props) {
         const { currentMenu, currentTagIdx, currentTag, toggleDropdown } = this.state;
         const that = props.that;
-        const jwtToken = props.jwtToken;
+        const previewJwtToken = props.previewJwtToken;
         const styles = props.styles;
         const messages = props.messages;
         const article = props.article;
@@ -277,7 +277,7 @@ export default class ArticleEdit extends Component {
                             <span class='d-sm-none'><i class='fas fa-save'></i></span>
                             <span class='d-none d-sm-block'><i class='fas fa-save'></i> Lagre</span>
                         </button>
-                        <a class='btn btn-primary' target='_blank' href={`${this.serverName}/v2/${util.htmlIdSafe(article.category || 'no-category')}/${util.htmlIdSafe(article.title || 'no-title')}/${article.id}?jwtToken=${jwtToken}`}>
+                        <a class='btn btn-primary' target='_blank' href={`${this.serverName}/v2/${util.htmlIdSafe(article.category || 'no-category')}/${util.htmlIdSafe(article.title || 'no-title')}/${article.id}?previewJwtToken=${previewJwtToken}`}>
                             <span class='d-sm-none'><i class='fas fa-external-link-alt'></i></span>
                             <span class='d-none d-sm-block'><i class='fas fa-external-link-alt'></i> Preview</span>
                         </a>

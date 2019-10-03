@@ -49,10 +49,10 @@ module.exports = async (req, res) => {
     let queryAds = {};
     let queryAdsLower = {};
 
-    if (req.query.jwtToken) {
-        const jwtData = util.decodeJwtToken(req.query.jwtToken, req.config);
+    if (req.query.previewJwtToken) {
+        const jwtData = util.decodeJwtToken(req.query.previewJwtToken, req.config);
         if (jwtData.readAccess) {
-            console.log('= = = = = > ', util.decodeJwtToken(req.query.jwtToken, req.config));
+            // console.log('= = = = = > ', util.decodeJwtToken(req.query.previewJwtToken, req.config));
             delete query.status;
         }
     }
