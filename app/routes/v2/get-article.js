@@ -8,7 +8,7 @@
 'use strict';
 
 const tc = require('fast-type-check');
-const { routeName, routePath, run, webUtil, utilHtml } = require('../../middleware/init')({ __filename, __dirname });
+const { routeName, routePath, run, webUtil, utilHtml, util } = require('../../middleware/init')({ __filename, __dirname });
 
 const Article = require('../../../lib/class/article');
 const Category = require('../../../lib/class/category');
@@ -49,6 +49,14 @@ module.exports = async (req, res) => {
     let queryAds = {};
     let queryAdsLower = {};
 
+    if (req.query.jwtToken) {
+        const jwtData = util.decodeJwtToken(req.query.jwtToken, req.config);
+        if (jwtData.readAccess) {
+            console.log('= = = = = > ', util.decodeJwtToken(req.query.jwtToken, req.config));
+            delete query.status;
+        }
+    }
+    // = = = = = >  { readAccess: 1, iat: 1570090308 }
     if (req.session.email) {
         delete query.status;
     }

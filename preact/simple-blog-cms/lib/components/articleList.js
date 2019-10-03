@@ -42,6 +42,7 @@ export default class ArticleList extends Component {
 
     render(props) {
         const styles = props.styles;
+        const jwtToken = props.jwtToken;
         const artlist = props.artlist;
         const catlist = props.catlist;
         const sessionEmail = props.sessionEmail;
@@ -219,7 +220,7 @@ export default class ArticleList extends Component {
                                 <td>{art.author}</td>
                                 <td>
                                     <a class='btn btn-sm btn-primary' target='_blank'
-                                        href={`${this.serverName}/v2/${util.htmlIdSafe(art.category || 'no-category')}/${util.htmlIdSafe(art.title || 'no-title')}/${art.id}`}
+                                        href={`${this.serverName}/v2/${util.htmlIdSafe(art.category || 'no-category')}/${util.htmlIdSafe(art.title || 'no-title')}/${art.id}?jwtToken=${jwtToken}`}
                                         onClick={e => e.stopPropagation()}
                                     >
                                         <i class="fas fa-external-link-alt"></i>

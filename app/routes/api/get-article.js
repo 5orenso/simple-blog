@@ -98,5 +98,6 @@ module.exports = async (req, res) => {
         // }
     }
 
+    data.jwtToken = util.makeJwtToken({ readAccess: 1 }, req.config);
     utilHtml.renderApi(req, res, 200, data);
 };

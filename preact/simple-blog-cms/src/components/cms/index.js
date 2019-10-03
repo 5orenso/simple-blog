@@ -97,9 +97,10 @@ export default class SimpleBlogCms extends Component {
         util.fetchApi(`/api/article/`, { query, limit, offset, ...filter }, this)
             .then((result) => {
                 this.setState({
+                    jwtToken: result.jwtToken,
                     artlist: result.artlist,
                     artlistTotal: result.total,
-                })
+                });
             })
             .catch(error => this.addError(error.toString()));
     }
@@ -888,6 +889,7 @@ export default class SimpleBlogCms extends Component {
         const {
             currentMenu,
             messages,
+            jwtToken,
 
             article,
             artlist,
@@ -949,6 +951,7 @@ export default class SimpleBlogCms extends Component {
                     {!article.id && <div class='d-flex justify-content-center'>
                         <ArticleList styles={styles}
                             sessionEmail={sessionEmail}
+                            jwtToken={jwtToken}
 
                             that={this}
                             artlist={artlist}
@@ -978,6 +981,7 @@ export default class SimpleBlogCms extends Component {
                     {article.id && <div class='d-flex justify-content-center'>
                         <ArticleEdit styles={styles}
                             sessionEmail={sessionEmail}
+                            jwtToken={jwtToken}
 
                             article={article}
                             catlist={catlist}

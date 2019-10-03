@@ -12,8 +12,8 @@ router.use(cors({
     preflightContinue: true, // All domains should be allowed by default to contact our API.
 }));
 
-router.get('/article/', wrap(require('./get-article.js')));
-router.get('/article/:id', wrap(require('./get-article.js')));
+router.get('/article/', util.restrict, wrap(require('./get-article.js')));
+router.get('/article/:id', util.restrict, wrap(require('./get-article.js')));
 router.patch('/article/:id', util.restrict, wrap(require('./patch-article.js')));
 router.post('/article/', util.restrict, wrap(require('./post-article.js')));
 
@@ -32,8 +32,10 @@ router.post('/iotdevice/', util.restrict, wrap(require('./post-iotDevice.js')));
 
 router.get('/iot/', wrap(require('./get-iot.js')));
 router.get('/iot/:id', wrap(require('./get-iot.js')));
+router.get('/iot/:id/data', wrap(require('./get-iot-data.js')));
 router.patch('/iot/:id', util.restrict, wrap(require('./patch-iot.js')));
 router.post('/iot/', util.restrict, wrap(require('./post-iot.js')));
+
 
 router.get('/tag/', wrap(require('./get-tag.js')));
 router.get('/tag/:id', wrap(require('./get-tag.js')));
