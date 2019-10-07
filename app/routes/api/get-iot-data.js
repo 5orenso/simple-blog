@@ -145,7 +145,6 @@ module.exports = async (req, res) => {
     if (query.id) {
         const chipId = parseInt(req.query.chipId, 10);
         const myIot = await iot.findOne(query);
-
         const es = new Es(req.config.elasticsearch);
         es.connect();
         const iotResults = {};
@@ -153,7 +152,7 @@ module.exports = async (req, res) => {
         if (!tc.isArray(iotResults[myIot.alias])) {
             iotResults[myIot.alias] = [];
         }
-        let esQuery = myIot.esQuery;
+        const esQuery = myIot.esQuery;
         const esQueryObj = JSON.parse(esQuery);
 
         delete esQueryObj.query.bool.must[0].match_all;
@@ -164,7 +163,7 @@ module.exports = async (req, res) => {
         // console.log(JSON.stringify(esQueryObj, null, 4));
         iotResults[myIot.alias].push(await es.search(esQueryObj));
         const iotResultsFixed = fixIotResults(iotResults);
-        const finalResults = iotResultsFixed[chipId][`${myIot.alias}SimpleGraph`];
+        const finalResults = util.asObject(iotResultsFixed, chipId, `${myIot.alias}SimpleGraph`) || [];
 
         // console.log(iotResultsFixed, chipId, myIot.alias);
         // console.log(iotResultsFixed[chipId][`${myIot.alias}SimpleGraph`]);

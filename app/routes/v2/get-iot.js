@@ -158,6 +158,25 @@ module.exports = async (req, res) => {
     await Promise.all(promises);
     const iotResultsFixed = fixIotResults(iotResults);
 
+    let yMin = 0;
+    let yMax = 25;
+    const chipIds = Object.keys(iotResultsFixed);
+    chipIds.forEach((chipId) => {
+        const result = iotResultsFixed[chipId];
+        if (tc.isArray(result.tempGraph)) {
+            console.log(chipId, result.tempGraph);
+            result.tempGraph.forEach((data) => {
+                if (data[0] < yMin) {
+                    yMin = data[0];
+                }
+                if (data[0] > yMax) {
+                    yMax = data[0];
+                }
+            });
+        }
+    });
+    const yTicks = ['30°C', '25°C', '20°C', '15°C', '10°C', '5°C', '0°C'];
+    
     const category = await cat.findOne({ title: req.params.category });
     const catlist = await cat.find();
 
@@ -169,5 +188,8 @@ module.exports = async (req, res) => {
         iotlist,
         iotResultsFixed,
         iotDeviceChipIdRef,
+        yMin,
+        yMax,
+        yTicks,
     }, { runId, routePath, routeName, hrstart, useTemplate: template });
 };
