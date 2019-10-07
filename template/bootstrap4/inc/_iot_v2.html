@@ -31,6 +31,7 @@
                                         "legendB": "Soil temp",
                                         "jsonDataB": "{{ (value.soiltempGraphSimpleGraph || [{x:0, y:0}])|json|addslashes|raw }}",
                                     {%- endif -%}
+
                                     "legend2": "Humidity",
                                     "jsonData2": "{{ (value.humidityGraphSimpleGraph || [{x:0, y:0}])|json|addslashes|raw }}",
                                     {% if iotDeviceChipIdRef|asString(bucket, 'sensors', 'moisture') %}
@@ -39,21 +40,22 @@
                                         "yMin2B": 8,
                                         "yMax2B": 18,                                
                                     {%- endif -%}
+
                                     {% if iotDeviceChipIdRef|asString(bucket, 'sensors', 'light') %}
                                         "legend2C": "Light",
                                         "jsonData2C": "{{ (value.lightGraphSimpleGraph || [{x:0, y:0}])|json|addslashes|raw }}",
                                         "yMin2C": 18,
                                         "yMax2C": 110,
                                     {%- endif -%}
+
                                     "legend3": "Pressure",
                                     "jsonData3": "{{ (value.pressureGraphSimpleGraph || [{x:0, y:0}])|json|addslashes|raw }}",
+
                                     "width": 600,
                                     "height": 200,
-                                    "yMax": {{ yMax }},
-                                    "yMin": {{ yMin }},
+                                    "yMax": 15,
                                     "yMax2": 100,
                                     "showYTicks": 1,
-                                    "yTicks": "{{ yTicks|json|addslashes|raw }}",
                                     "showYTicks2": 1,
                                     "yTicks2": "[\"100%\",\"75%\",\"50%\",\"25%\",\"0%\"]",
                                     "showXTicks": 1,                            
