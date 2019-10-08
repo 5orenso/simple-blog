@@ -10,15 +10,15 @@
 {% set pageStart = pageStart * limit %}
     <div class='container-full'>
         <div class='row'>
-            {% for bucket, value in iotResultsFixed %}
-                {% if iotDeviceChipIdRef|asString(bucket, 'sensors', 'bme280') %}
+            {% for chipId, value in iotResultsFixed %}
+                {% if iotDeviceChipIdRef|asString(chipId, 'sensors', 'bme280') %}
                     <div class='col-sm-4 text-center mb-4'>
                         <span class='text-muted'>
                             <i class='fas fa-temperature-low'></i> 
-                            {% if iotDeviceChipIdRef[bucket] %}
-                                {{ iotDeviceChipIdRef[bucket].title }}
+                            {% if iotDeviceChipIdRef[chipId] %}
+                                {{ iotDeviceChipIdRef[chipId].title }}
                             {% else %}
-                                {{ bucket }}
+                                {{ chipId }}
                             {% endif %}
                         </span>
                         <h2>{{ value.tempGauge|format(1) }}°C</h2>
@@ -27,21 +27,26 @@
                                 {
                                     "legend": "Temp",
                                     "jsonData": "{{ (value.tempGraphSimpleGraph || [{x:0, y:0}])|json|addslashes|raw }}",
-                                    {% if iotDeviceChipIdRef|asString(bucket, 'sensors', 'dallasTemp') %}
+                                    "apiUrl": "/api/iot/{{ iotlistAliasRef.tempGraph.id }}/data?chipId={{ chipId }}",
+
+                                    {% if iotDeviceChipIdRef|asString(chipId, 'sensors', 'dallasTemp') %}
                                         "legendB": "Soil temp",
                                         "jsonDataB": "{{ (value.soiltempGraphSimpleGraph || [{x:0, y:0}])|json|addslashes|raw }}",
+                                        "apiUrlB": "/api/iot/{{ iotlistAliasRef.soiltempGraph.id }}/data?chipId={{ chipId }}",
                                     {%- endif -%}
 
                                     "legend2": "Humidity",
                                     "jsonData2": "{{ (value.humidityGraphSimpleGraph || [{x:0, y:0}])|json|addslashes|raw }}",
-                                    {% if iotDeviceChipIdRef|asString(bucket, 'sensors', 'moisture') %}
+                                    "apiUrl2": "/api/iot/{{ iotlistAliasRef.humidityGraph.id }}/data?chipId={{ chipId }}",
+
+                                    {% if iotDeviceChipIdRef|asString(chipId, 'sensors', 'moisture') %}
                                         "legend2B": "Moisture",
                                         "jsonData2B": "{{ (value.moistureGraphSimpleGraph || [{x:0, y:0}])|json|addslashes|raw }}",
                                         "yMin2B": 8,
                                         "yMax2B": 18,                                
                                     {%- endif -%}
 
-                                    {% if iotDeviceChipIdRef|asString(bucket, 'sensors', 'light') %}
+                                    {% if iotDeviceChipIdRef|asString(chipId, 'sensors', 'light') %}
                                         "legend2C": "Light",
                                         "jsonData2C": "{{ (value.lightGraphSimpleGraph || [{x:0, y:0}])|json|addslashes|raw }}",
                                         "yMin2C": 18,
@@ -50,6 +55,7 @@
 
                                     "legend3": "Pressure",
                                     "jsonData3": "{{ (value.pressureGraphSimpleGraph || [{x:0, y:0}])|json|addslashes|raw }}",
+                                    "apiUrl3": "/api/iot/{{ iotlistAliasRef.pressureGraph.id }}/data?chipId={{ chipId }}",
 
                                     "width": 600,
                                     "height": 200,
@@ -66,12 +72,12 @@
                                 </script>
                             </div>
                         <small>
-                            {% if iotDeviceChipIdRef|asString(bucket, 'description') %}
-                                <p>{{ iotDeviceChipIdRef[bucket].description }}</p>
+                            {% if iotDeviceChipIdRef|asString(chipId, 'description') %}
+                                <p>{{ iotDeviceChipIdRef[chipId].description }}</p>
                             {% endif %}
-                            {% if iotDeviceChipIdRef|isDefined(bucket, 'sensors') %}
+                            {% if iotDeviceChipIdRef|isDefined(chipId, 'sensors') %}
                                 {% for sensor in ['bme280', 'dallasTemp', 'flame', 'light', 'gasMq2', 'gasMq3', 'moisture', 'motion', 'co2', 'dsm501a'] %}
-                                    {% if iotDeviceChipIdRef|asString(bucket, 'sensors', sensor) %}
+                                    {% if iotDeviceChipIdRef|asString(chipId, 'sensors', sensor) %}
                                         <span class="badge badge-secondary">{{ sensor }}</span>
                                     {% endif %}
                                 {% endfor %}
@@ -83,4 +89,4 @@
         </div>
     </div>
 
-    <script type="text/javascript" src="/global/js/simple-graphs-0.5.1.js"></script>
+    <script type="text/javascript" src="/global/js/simple-graphs-0.5.5.js"></script>
