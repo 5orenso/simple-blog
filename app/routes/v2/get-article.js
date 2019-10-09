@@ -68,6 +68,7 @@ module.exports = async (req, res) => {
             $or: [
                 { title: req.params.category },
                 { url: { $regex: new RegExp(req.params.category) } },
+                { url2: { $regex: new RegExp(req.params.category) } },
             ],
         };
         category = await cat.findOne(queryCategory);

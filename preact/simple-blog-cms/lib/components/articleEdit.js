@@ -285,7 +285,7 @@ export default class ArticleEdit extends Component {
                     <div class='col-3'>
                         <button class='btn btn-info float-right ml-2' onClick={e => handleClickNew(e, {
                             author: authorDefault,
-                            category: catlist[0].title,
+                            category: catlist[0].url,
                             categoryId: catlist[0].id,
                         })}>
                             <span class='d-sm-none'><i class='fas fa-plus'></i></span>

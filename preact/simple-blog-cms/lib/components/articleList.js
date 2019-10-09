@@ -159,7 +159,7 @@ export default class ArticleList extends Component {
                     <div class="col-12 col-sm-2 col-md-2 text-right">
                         <button class='btn btn-info float-right ml-2' onClick={e => handleClickNew(e, {
                             author: authorDefault,
-                            category: filter.category || catlist[0].title,
+                            category: filter.category || catlist[0].url,
                             categoryId: (catlist.find(c => c.title === filter.category) ? catlist.find(c => c.title === filter.category).id : catlist[0].id),
                         })}>+ Ny artikkel</button>
                     </div>

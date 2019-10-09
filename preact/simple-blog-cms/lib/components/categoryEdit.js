@@ -369,6 +369,14 @@ export default class CategoryEdit extends Component {
                                 value={category.url} />
                         </div>
 
+                        <div class='form-group mt-3'>
+                            <label for='url2Input'><i class='fas fa-link text-muted' /> URL2</label>
+                            <input type='text' class='form-control' id='url2Input' placeholder='url2'
+                                name='url2'
+                                onInput={handleInput}
+                                value={category.url2} />
+                        </div>
+
                         <div class='form-group'>
                             <label for='colorMenuInput'><i class='fas fa-fill-drip text-muted' /> Text Color Menu</label>
                             <input type='text' class='form-control' id='colorMenuInput' placeholder='colorMenu'
