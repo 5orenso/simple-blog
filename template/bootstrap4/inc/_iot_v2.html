@@ -21,8 +21,16 @@
                                 {{ chipId }}
                             {% endif %}
                         </span>
-                        <h2>{{ value.tempGauge|format(1) }}°C</h2>
-                            <div data-widget-host="simpleGraph">
+                        {% if iotDeviceChipIdRef|asString(chipId, 'sensors', 'voltage') %}
+                            <div class='float-right pr-3'><small class='text-muted'>{{ value.voltageGauge|format(1) }}v</small></div>
+                        {% endif %}
+                         <h2>
+                            {{ value.tempGauge|format(1) }}°C
+                            {% if iotDeviceChipIdRef|asString(chipId, 'sensors', 'dallasTemp') %}
+                                <sub class='text-muted'><small>{{ value.soiltempGauge|format(1) }}°C</small></sub>
+                            {% endif %}
+                        </h2>
+                           <div data-widget-host="simpleGraph">
                                 <script type="text/props">
                                 {
                                     "legend": "Temp",
@@ -42,6 +50,7 @@
                                     {% if iotDeviceChipIdRef|asString(chipId, 'sensors', 'moisture') %}
                                         "legend2B": "Moisture",
                                         "jsonData2B": "{{ (value.moistureGraphSimpleGraph || [{x:0, y:0}])|json|addslashes|raw }}",
+                                        "apiUrl2B": "/api/iot/{{ iotlistAliasRef.moistureGraph.id }}/data?chipId={{ chipId }}",
                                         "yMin2B": 8,
                                         "yMax2B": 18,                                
                                     {%- endif -%}
@@ -49,8 +58,17 @@
                                     {% if iotDeviceChipIdRef|asString(chipId, 'sensors', 'light') %}
                                         "legend2C": "Light",
                                         "jsonData2C": "{{ (value.lightGraphSimpleGraph || [{x:0, y:0}])|json|addslashes|raw }}",
+                                        "apiUrl2C": "/api/iot/{{ iotlistAliasRef.lightGraph.id }}/data?chipId={{ chipId }}",
                                         "yMin2C": 18,
                                         "yMax2C": 110,
+                                    {%- endif -%}
+
+                                    {% if iotDeviceChipIdRef|asString(chipId, 'sensors', 'voltage') %}
+                                        "legend2C": "Voltage",
+                                        "jsonData2C": "{{ (value.voltageGraphSimpleGraph || [{x:0, y:0}])|json|addslashes|raw }}",
+                                        "apiUrl2C": "/api/iot/{{ iotlistAliasRef.voltageGraph.id }}/data?chipId={{ chipId }}",
+                                        "yMin2C": 0,
+                                        "yMax2C": 3.8,
                                     {%- endif -%}
 
                                     "legend3": "Pressure",
@@ -67,7 +85,7 @@
                                     "showYTicks2": 1,
                                     "yTicks2": "[\"100%\",\"75%\",\"50%\",\"25%\",\"0%\"]",
                                     "showXTicks": 1,                            
-                                    "xTicks": "[\"48h\",\"24h\",\"0h\"]"
+                                    "xTicks": "[\"48h\",\"36h\",\"24h\",\"12h\",\"0h\"]"
                                 }
                                 </script>
                             </div>
@@ -76,7 +94,7 @@
                                 <p>{{ iotDeviceChipIdRef[chipId].description }}</p>
                             {% endif %}
                             {% if iotDeviceChipIdRef|isDefined(chipId, 'sensors') %}
-                                {% for sensor in ['bme280', 'dallasTemp', 'flame', 'light', 'gasMq2', 'gasMq3', 'moisture', 'motion', 'co2', 'dsm501a'] %}
+                                {% for sensor in ['bme280', 'dallasTemp', 'flame', 'light', 'gasMq2', 'gasMq3', 'moisture', 'motion', 'co2', 'dsm501a', 'voltage'] %}
                                     {% if iotDeviceChipIdRef|asString(chipId, 'sensors', sensor) %}
                                         <span class="badge badge-secondary">{{ sensor }}</span>
                                     {% endif %}
@@ -89,4 +107,4 @@
         </div>
     </div>
 
-    <script type="text/javascript" src="/global/js/simple-graphs-0.5.6.js"></script>
+    <script type="text/javascript" src="/global/js/simple-graphs-0.5.7.js"></script>

@@ -13,6 +13,13 @@ const { run, webUtil, utilHtml, util } = require('../../middleware/init')({ __fi
 const Iot = require('../../../lib/class/iot');
 const Es = require('../../../lib/class/elasticsearch');
 
+function isInBounds(value) {
+    if (value === -127) {
+        return false;
+    }
+    return true;
+}
+
 function fixIotResults(iotResults) {
     const finalResult = {};
     const resultKeys = Object.keys(iotResults);
@@ -59,7 +66,7 @@ function fixIotResults(iotResults) {
                                 value = dataBucket[1].values[0].value;
                             }
                             finalResult[device][type].push([bucket.key, value]);
-                            if (tc.isNumber(value)) {
+                            if (tc.isNumber(value) && isInBounds(value)) {
                                 finalResult[device][`${type}SimpleGraph`].push({
                                     x: finalResult[device][`${type}SimpleGraph`].length,
                                     y: value,
@@ -95,7 +102,7 @@ function fixIotResults(iotResults) {
                                 value = dataBucket[1].values[0].value;
                             }
                             finalResult[device][type].push([bucket.key, value]);
-                            if (tc.isNumber(value)) {
+                            if (tc.isNumber(value) && isInBounds(value)) {
                                 finalResult[device][`${type}SimpleGraph`].push({
                                     x: finalResult[device][`${type}SimpleGraph`].length,
                                     y: value,

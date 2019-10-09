@@ -32,7 +32,7 @@ export default class IotDeviceEdit extends Component {
         const fields = ['title', 'chipId', 'version', 'name', 'packageName', 'deepSleep', 'sleepPeriode', 'publishInterval',
             'wifiSsid', 'mqttServer', 'mqttPort', 'mqttTopicOut', 'mqttTopicIn', 'location', 'description'];
 
-        const fieldsSensors = ['bme280', 'dallasTemp', 'flame', 'light', 'gasMq2', 'gasMq3', 'moisture', 'motion', 'co2', 'dsm501a'];
+        const fieldsSensors = ['bme280', 'dallasTemp', 'flame', 'light', 'gasMq2', 'gasMq3', 'moisture', 'motion', 'co2', 'dsm501a', 'voltage'];
 
         return (
             <div class='container-fluid col-12'>

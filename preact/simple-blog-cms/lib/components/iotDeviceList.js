@@ -60,6 +60,7 @@ export default class IotDeviceList extends Component {
                                 <th class='text-center' scope='col'>Motion</th>
                                 <th class='text-center' scope='col'>CO2</th>
                                 <th class='text-center' scope='col'>DSM501A</th>
+                                <th class='text-center' scope='col'>Voltage</th>
                             </tr>
                         </thead>
                     <tbody>
@@ -94,6 +95,7 @@ export default class IotDeviceList extends Component {
                             <td class='text-center'>{iotDevice.sensors && iotDevice.sensors.motion ? <i class='fas fa-check' /> : ''}</td>
                             <td class='text-center'>{iotDevice.sensors && iotDevice.sensors.co2 ? <i class='fas fa-check' /> : ''}</td>
                             <td class='text-center'>{iotDevice.sensors && iotDevice.sensors.dsm501a ? <i class='fas fa-check' /> : ''}</td>
+                            <td class='text-center'>{iotDevice.sensors && iotDevice.sensors.voltage ? <i class='fas fa-check' /> : ''}</td>
                         </tr>
                     )}
                     </tbody>
