@@ -22,7 +22,7 @@
                             {% endif %}
                         </span>
                         {% if iotDeviceChipIdRef|asString(chipId, 'sensors', 'voltage') %}
-                            <div class='float-right pr-3'><small class='text-muted'>{{ value.voltageGauge|format(1) }}v</small></div>
+                            <div class='float-right pr-3'><small class='text-muted'>{{ value.voltageGauge|format(1) }}V</small></div>
                         {% endif %}
                          <h2>
                             {{ value.tempGauge|format(1) }}°C
@@ -107,4 +107,4 @@
         </div>
     </div>
 
-    <script type="text/javascript" src="/global/js/simple-graphs-0.5.7.js"></script>
+    <script type="text/javascript" src="/global/js/simple-graphs-0.5.8.js"></script>
