@@ -22,7 +22,22 @@
                             {% endif %}
                         </span>
                         {% if iotDeviceChipIdRef|asString(chipId, 'sensors', 'voltage') %}
-                            <div class='float-right pr-3'><small class='text-muted'>{{ value.voltageGauge|format(1) }}V</small></div>
+                            <div class='float-right pr-3'>
+                                <small class='text-muted'>
+                                    {{ value.voltageGauge|format(1) }}V
+                                    {% if value.voltageGauge > 3.3 %}
+                                        <i class='fas fa-battery-full'></i>
+                                    {% elseif value.voltageGauge > 3.1 %}
+                                        <i class='fas fa-battery-three-quarters'></i>
+                                    {% elseif value.voltageGauge > 2.9 %}
+                                        <i class='fas fa-battery-half'></i>
+                                    {% elseif value.voltageGauge > 2.7 %}
+                                        <i class='fas fa-battery-quarter'></i>
+                                    {% else %}
+                                        <i class='fas fa-battery-empty'></i>
+                                    {% endif %}
+                                </small>
+                            </div>
                         {% endif %}
                          <h2>
                             {{ value.tempGauge|format(1) }}°C
