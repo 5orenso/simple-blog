@@ -180,7 +180,7 @@ export default class ArticleList extends Component {
                         </tr>
                     </thead>
                     <tbody>
-                        {artlist.map(art =>
+                        {artlist && artlist.map(art =>
                             <tr data-id={art.id} class={articleId == art.id ? 'bg-primary text-white' : ''} onClick={handleListClick}>
                                 <td scope='row' class='text-right'>{art.id}</td>
                                 <td scope='row' class='text-right'>{art.sort}</td>
