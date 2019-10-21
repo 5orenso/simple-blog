@@ -42,10 +42,6 @@ export default class IotDeviceList extends Component {
                                 <th class='text-right' scope='col'>sleepPeriode</th>
                                 <th class='text-right' scope='col'>publishInterval</th>
                                 <th scope='col'>wifiSsid</th>
-                                <th scope='col'>mqttServer</th>
-                                <th scope='col'>mqttPort</th>
-                                <th scope='col'>mqttTopicOut</th>
-                                <th scope='col'>mqttTopicIn</th>
 
                                 <th scope='col'>Location</th>
                                 <th scope='col'>Description</th>
@@ -77,10 +73,6 @@ export default class IotDeviceList extends Component {
                             <td class='text-right'>{iotDevice.sleepPeriode}</td>
                             <td class='text-right'>{iotDevice.publishInterval}</td>
                             <td>{iotDevice.wifiSsid}</td>
-                            <td>{iotDevice.mqttServer}</td>
-                            <td>{iotDevice.mqttPort}</td>
-                            <td>{iotDevice.mqttTopicOut}</td>
-                            <td>{iotDevice.mqttTopicIn}</td>
 
                             <td>{iotDevice.location}</td>
                             <td>{iotDevice.description}</td>
