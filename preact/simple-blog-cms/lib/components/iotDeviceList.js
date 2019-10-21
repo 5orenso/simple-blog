@@ -67,7 +67,7 @@ export default class IotDeviceList extends Component {
                     {iotDeviceList.map(iotDevice =>
                         <tr data-id={iotDevice.id} onClick={handleListClick}>
                             <td scope='row'>{iotDevice.id}</td>
-                            <td>{iotDevice.title}</td>
+                            <td><nobr>{iotDevice.title}</nobr></td>
                             <td class='text-right'>{iotDevice.chipId}</td>
                             <td class='text-right'>{iotDevice.version}</td>
                             <td>{iotDevice.name}</td>
