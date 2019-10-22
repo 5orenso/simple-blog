@@ -49,9 +49,9 @@ const initialState = {
     taglistTotal: 0,
 
     currentPage: 1,
-    articlesPerPage: 20,
-    categoriesPerPage: 20,
-    tagsPerPage: 20,
+    articlesPerPage: 50,
+    categoriesPerPage: 50,
+    tagsPerPage: 50,
 
     query: '',
     queryImage: '',
