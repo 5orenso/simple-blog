@@ -137,7 +137,7 @@ function fixIotResults(iotResults) {
 module.exports = async (req, res) => {
     const { hrstart, runId } = run(req);
 
-    const title = util.mongoSanitize(req.query.title);
+    const title = new RegExp(util.mongoSanitize(req.query.title));
 
     const deviceQuery = util.cleanObject({ title });
 
