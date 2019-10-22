@@ -10,7 +10,9 @@
 {% set pageStart = pageStart * limit %}
     <div class='container-full'>
         <div class='row'>
-            {% for chipId, value in iotResultsFixed %}
+            {% for device in iotDevicelist %}
+                {% set chipId = device.chipId %}
+                {% set value = iotResultsFixed[chipId] %}
                 {% if iotDeviceChipIdRef|asString(chipId, 'sensors', 'bme280') %}
                     <div class='col-sm-4 text-center mb-4'>
                         <span class='text-muted'>

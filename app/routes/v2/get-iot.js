@@ -137,13 +137,17 @@ function fixIotResults(iotResults) {
 module.exports = async (req, res) => {
     const { hrstart, runId } = run(req);
 
+    const title = util.mongoSanitize(req.query.title);
+
+    const deviceQuery = util.cleanObject({ title });
+
     const cat = new Category();
     const iot = new Iot();
     const iotDevice = new IotDevice();
 
     const iotlist = await iot.find();
     const iotlistAliasRef = iot.getRef('alias');
-    const iotDevicelist = await iotDevice.find();
+    const iotDevicelist = await iotDevice.find(deviceQuery);
     const iotDeviceChipIdRef = iotDevice.getRef('chipId');
 
     const es = new Es(req.config.elasticsearch);
@@ -171,5 +175,6 @@ module.exports = async (req, res) => {
         iotlistAliasRef,
         iotResultsFixed,
         iotDeviceChipIdRef,
+        iotDevicelist,
     }, { runId, routePath, routeName, hrstart, useTemplate: template });
 };
