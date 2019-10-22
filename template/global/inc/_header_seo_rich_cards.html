@@ -266,6 +266,23 @@
         </script>
     {% endif %}
 {%- endmacro -%}
+{%- macro videoCard -%}
+    {% if article.youtubeRaw %}
+        <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "VideoObject",
+            "name":  "{{ article.title|striptags|e('js') }}",
+            "description": "{{ article.body|striptags|removeLineBreaks|e('js') }} {% for col in article.col %}{{ col }} {% endfor %}",
+            "thumbnailUrl": [
+                "{{ article.youtubeRaw|youtubeThumb }}"
+            ],
+            "uploadDate": "{{ article.createdDate|date('Y-m-d H:i:s') }}",
+            "contentUrl": "{{ article.youtubeRaw }}"
+        }
+        </script>
+    {% endif %}
+{%- endmacro -%}
 
 {{ itemListCard()|oneline }}
 {{ breadCrumpListCard()|oneline }}
@@ -275,3 +292,4 @@
 {{ blogPostingCard()|oneline }}
 {{ recipeCard()|oneline }}
 {{ imageObjectCard()|oneline }}
+{{ videoCard()|oneline }}
