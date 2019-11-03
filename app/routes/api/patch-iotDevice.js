@@ -14,13 +14,19 @@ module.exports = async (req, res) => {
 
     const iotDevice = new IotDevice();
 
-    let query = {
-        id: req.params.id,
-    };
+    const query = { id: req.params.id };
 
     let apiContent;
     if (query.id) {
         const data = webUtil.cleanObject(req.body, { nullIsUndefined: true });
+
+        if (data.addEvent) {
+            await iotDevice.update({
+                id: data.id,
+                addEvent: data.addEvent,
+            });
+            delete data.addEvent;
+        }
 
         apiContent = await iotDevice.save(data);
         return utilHtml.renderApi(req, res, 202, apiContent);

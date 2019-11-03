@@ -15,6 +15,16 @@
                 {% set value = iotResultsFixed[chipId] %}
                 {% if iotDeviceChipIdRef|asString(chipId, 'sensors', 'bme280') %}
                     <div class='col-sm-4 text-center mb-4'>
+                        {% if iotDeviceChipIdRef[chipId] %}
+                            {% if iotDeviceChipIdRef[chipId].image %}
+                                <div class='ratio-wrap-16-9'>
+                                    <div class='bg-cover' style='width: 100%; height:100%; background: url({{ iotDeviceChipIdRef[chipId].image }}) no-repeat center center fixed;'>
+                                        &nbsp;
+                                    </div>
+                                </div>
+                            {% endif %}                       
+                        {% endif %}
+
                         <span class='text-muted'>
                             <i class='fas fa-temperature-low'></i> 
                             {% if iotDeviceChipIdRef[chipId] %}

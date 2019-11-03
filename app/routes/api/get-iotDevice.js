@@ -14,6 +14,7 @@ const fields = {
     id: 1,
     createdDate: 1,
     updatedDate: 1,
+    image: 1,
     title: 1,
     chipId: 1,
     version: 1,
@@ -30,6 +31,7 @@ const fields = {
     mqttPort: 1,
     mqttTopicOut: 1,
     mqttTopicIn: 1,
+    events: 1,
 };
 
 module.exports = async (req, res) => {

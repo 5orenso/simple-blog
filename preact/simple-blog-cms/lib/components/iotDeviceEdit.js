@@ -18,7 +18,7 @@ export default class IotDeviceEdit extends Component {
         this.state = Object.assign({}, initialState);
     }
 
-    render(props) {
+    render(props = this.props) {
         const styles = props.styles;
         const that = props.that;
         const messages = props.messages;
@@ -29,8 +29,10 @@ export default class IotDeviceEdit extends Component {
         const handleClickNew = props.handleClickNew;
         const handleClickBack = props.handleClickBack;
 
-        const fields = ['title', 'chipId', 'version', 'name', 'packageName', 'deepSleep', 'sleepPeriode', 'publishInterval',
+        const fields = ['image', 'title', 'chipId', 'version', 'name', 'packageName', 'deepSleep', 'sleepPeriode', 'publishInterval',
             'wifiSsid', 'mqttServer', 'mqttPort', 'mqttTopicOut', 'mqttTopicIn', 'location', 'description'];
+
+        const fieldsExtra = ['addEvent'];
 
         const fieldsSensors = ['bme280', 'dallasTemp', 'flame', 'light', 'gasMq2', 'gasMq3', 'moisture', 'motion', 'co2', 'dsm501a', 'voltage'];
 
@@ -68,56 +70,67 @@ export default class IotDeviceEdit extends Component {
                 <div class='row'>
                     <div class='col-6'>
 
-                        {fields.map(fieldName =>
-                            <div class='form-group'>
-                                <label for={`${fieldName}Input`}>{fieldName}</label>
-                                <input type='text' class='form-control' id={`${fieldName}Input`} placeholder={fieldName}
-                                    name={fieldName}
-                                    onInput={handleInput}
-                                    value={iotDevice[fieldName]}
-                                />
-                            </div>                    
-                        )}
+                        {fields.map(fieldName => <div class='form-group'>
+                            <label for={`${fieldName}Input`}>{fieldName}</label>
+                            <input type='text' class='form-control' id={`${fieldName}Input`} placeholder={fieldName}
+                                name={fieldName}
+                                onInput={handleInput}
+                                value={iotDevice[fieldName]}
+                            />
+                        </div>)}
 
-                        {fieldsSensors.map(fieldName =>
-                            <div class='form-check'>
-                                <input type='checkbox' class='form-check-input' id={`${fieldName}Input`}
-                                    name={fieldName}
-                                    onInput={linkstate(that, `iotDevice.sensors.${fieldName}`)}
-                                    value={1}
-                                    checked={util.getString(iotDevice, 'sensors', fieldName) == 1 ? 'checked' : ''}
-                                />
-                                <label for={`${fieldName}Input`}>{fieldName}</label>
-                            </div>
-                        )}
+                        {fieldsSensors.map(fieldName => <div class='form-check'>
+                            <input type='checkbox' class='form-check-input' id={`${fieldName}Input`}
+                                name={fieldName}
+                                onInput={linkstate(that, `iotDevice.sensors.${fieldName}`)}
+                                value={1}
+                                checked={util.getString(iotDevice, 'sensors', fieldName) == 1 ? 'checked' : ''}
+                            />
+                            <label for={`${fieldName}Input`}>{fieldName}</label>
+                        </div>)}
 
                     </div>
                     <div class='col-6'>
+                        {iotDevice.image && <img src={iotDevice.image} style='max-height: 400px;' />}
                         <h1>{iotDevice.title}</h1>
                         <table class='table table-sm table-striped'>
                             <tbody>
-                                {fields.map(fieldName =>
-                                    <tr>
-                                        <td>
-                                            {fieldName}
-                                        </td>
-                                        <td>
-                                            {iotDevice[fieldName]}
-                                        </td>
-                                    </tr>
-                                )}
-                                {fieldsSensors.map(fieldName =>
-                                    <tr>
-                                        <td>
-                                            {fieldName}
-                                        </td>
-                                        <td>
-                                            {util.getString(iotDevice, 'sensors', fieldName) ? <i class='fas fa-check' /> : ''}
-                                        </td>
-                                    </tr>
-                                )}
+                                {fields.map(fieldName => <tr>
+                                    <td>
+                                        {fieldName}
+                                    </td>
+                                    <td>
+                                        {iotDevice[fieldName]}
+                                    </td>
+                                </tr>)}
+                                {fieldsSensors.map(fieldName => <tr>
+                                    <td>
+                                        {fieldName}
+                                    </td>
+                                    <td>
+                                        {util.getString(iotDevice, 'sensors', fieldName) ? 
+                                            <i class='fas fa-check' /> : ''}
+                                    </td>
+                                </tr>)}
                             </tbody>
                         </table>
+
+                        {util.isArray(iotDevice.events) && <div>
+                            <h5>Events</h5>
+                            <ul>
+                                {iotDevice.events.reverse().map(event => <li>
+                                    <span class='text-muted'>{util.isoDateNormalized(event.date)}</span> {event.message}
+                                </li>)}
+                            </ul>
+                        </div>}
+                        {fieldsExtra.map(fieldName => <div class='form-group'>
+                            <label for={`${fieldName}Input`}>{fieldName}</label>
+                            <input type='text' class='form-control' id={`${fieldName}Input`} placeholder={fieldName}
+                                name={fieldName}
+                                onInput={handleInput}
+                                value={iotDevice[fieldName]}
+                            />
+                        </div>)}
                     </div>
                 </div>
 

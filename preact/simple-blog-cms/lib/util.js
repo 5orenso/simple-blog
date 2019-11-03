@@ -407,6 +407,10 @@ class Utilities {
         return isInteger(num) && num > 0;
     }
 
+    static isArray(element) {
+        return Array.isArray(element);
+    }
+
     static pad(number) {
         let r = String(number);
         if (r.length === 1) {

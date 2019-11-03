@@ -7,6 +7,38 @@ html {
     max-width: 55rem;
 }
 
+.bg-cover {
+    background: url(images/bg.jpg) no-repeat center center fixed; 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+.ratio-wrap-4-3 {
+    position: relative;
+    width: 100%;
+    padding-bottom: 75%;
+}
+
+.ratio-wrap-16-9 {
+    position: relative;
+    width: 100%;
+    padding-bottom: 56.25%;
+}
+
+.ratio-wrap-4-3 > div, .ratio-wrap-16-9 > div {
+	position: absolute;
+	top: 0; bottom: 0; left: 0; right: 0;
+}
+
+/* Other aspect ratios to try:
+ * 56.25% = 16:9
+ * 75% = 4:3
+ * 66.66% = 3:2
+ * 62.5% = 8:5
+ */
+
 .videoWrapper {
     /* left: -40px; */
     /* position: relative; */
