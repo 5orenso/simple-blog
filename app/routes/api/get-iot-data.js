@@ -123,7 +123,6 @@ function fixIotResults(iotResults) {
                 });
             } else {
                 // Gauge
-                // console.log('====> mainBucket', mainBucket);
                 Object.keys(mainBucket).forEach((device) => {
                     const val = mainBucket[device];
                     if (!tc.isObject(finalResult[device])) {
@@ -173,6 +172,7 @@ module.exports = async (req, res) => {
         const finalResults = util.asObject(iotResultsFixed, chipId, `${myIot.alias}SimpleGraph`) || [];
 
         // console.log(iotResultsFixed, chipId, myIot.alias);
+        // console.log(iotResultsFixed[chipId]);
         // console.log(iotResultsFixed[chipId][`${myIot.alias}SimpleGraph`]);
 
         data = finalResults;
