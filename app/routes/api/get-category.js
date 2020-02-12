@@ -68,6 +68,21 @@ module.exports = async (req, res) => {
     const limit = parseInt(req.query.limit || 10, 10);
     const skip = parseInt(req.query.offset || 0, 10);
 
+    const inputFieldInts = ['menu'];
+    const inputFields = ['category'];
+    for (let i = 0, l = inputFieldInts.length; i < l; i += 1) {
+        const field = inputFieldInts[i];
+        if (req.query[field]) {
+            query[field] = parseInt(req.query[field], 10);
+        }
+    }
+    for (let i = 0, l = inputFields.length; i < l; i += 1) {
+        const field = inputFields[i];
+        if (req.query[field]) {
+            query[field] = req.query[field];
+        }
+    }
+
     let apiContent;
     let total;
     const data = {};

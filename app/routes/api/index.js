@@ -12,8 +12,8 @@ router.use(cors({
     preflightContinue: true, // All domains should be allowed by default to contact our API.
 }));
 
-router.get('/article/', util.restrict, wrap(require('./get-article.js')));
-router.get('/article/:id', util.restrict, wrap(require('./get-article.js')));
+router.get('/article/', wrap(require('./get-article.js')));
+router.get('/article/:id', wrap(require('./get-article.js')));
 router.patch('/article/:id', util.restrict, wrap(require('./patch-article.js')));
 router.post('/article/', util.restrict, wrap(require('./post-article.js')));
 
