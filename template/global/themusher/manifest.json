@@ -1,5 +1,5 @@
 {
-  "name": "the-musher",
+  "name": "The Musher",
   "short_name": "the-musher",
   "start_url": "/global/themusher/index.html",
   "display": "standalone",
@@ -8,12 +8,12 @@
   "theme_color": "#673ab8",
   "icons": [
     {
-      "src": "/global/themusher/assets/icons/android-chrome-192x192.png",
+      "src": "/global/themusher/assets/icons/the-musher-logo.png",
       "type": "image/png",
       "sizes": "192x192"
     },
     {
-      "src": "/global/themusher/assets/icons/android-chrome-512x512.png",
+      "src": "/global/themusher/assets/icons/the-musher-logo.png",
       "type": "image/png",
       "sizes": "512x512"
     }
