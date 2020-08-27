@@ -1,14 +1,20 @@
 {
   "name": "The Musher",
   "short_name": "the-musher",
+  "description": "Progressive Web App for logging all details related to your mushing, dogs and training.",
   "start_url": "/global/themusher/index.html",
   "display": "standalone",
   "orientation": "portrait",
   "background_color": "#fff",
-  "theme_color": "#673ab8",
+  "theme_color": "#808080",
   "icons": [
+    {
+      "src": "./assets/icons/android-icon-36x36.png",
+      "sizes": "36x36",
+      "type": "image/png"
+    },
      {
-      "src": "/global/themusher/assets/icons/android-icon-192x192.png",
+      "src": "./assets/icons/android-icon-192x192.png",
       "sizes": "192x192",
       "type": "image/png",
       "density": "4.0"
