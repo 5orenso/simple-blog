@@ -3,6 +3,7 @@
   "short_name": "the-musher",
   "description": "Progressive Web App for logging all details related to your mushing, dogs and training.",
   "start_url": "/global/themusher/index.html",
+  "scope": "/global/themusher/",
   "display": "standalone",
   "orientation": "portrait",
   "background_color": "#fff",
