@@ -25,5 +25,21 @@
       "sizes": "512x512",
       "type": "image/png"
     }
+  ],
+  "shortcuts": [
+    {
+      "name": "Activity Feed",
+      "short_name": "Feed",
+      "description": "View your activity feed",
+      "url": "/global/themusher/#/feed",
+      "icons": [{ "src": "./assets/icons/android-icon-192x192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Dogs frontpage",
+      "short_name": "Dogs",
+      "description": "View your dogs",
+      "url": "/global/themusher/#/dogs",
+      "icons": [{ "src": "./assets/icons/android-icon-192x192.png", "sizes": "192x192" }]
+    }
   ]
 }
