@@ -60,6 +60,8 @@ webRouter.use('/v2/', require('./v2/'));
 webRouter.use('/api/', localUtil.setNoCacheHeaders);
 webRouter.use('/api/', require('./api/'));
 
+webRouter.get('/themusher/:raceId', require('./themusher/get-race.js'));
+
 // Setup static routes
 webRouter.use('/global/', localUtil.setCacheHeaders);
 webRouter.use('/global/', express.static(`${appPath}template/global/`));
@@ -114,6 +116,7 @@ webRouter.get('/admin', util.restrict, require('./get-admin.js'));
 
 webRouter.get('/iotdevice/version/:chipId', require('./iotdevice/get-version.js'));
 webRouter.get('/iotdevice/firmware/:chipId', require('./iotdevice/get-firmware.js'));
+
 
 // Main route for blog articles.
 webRouter.use('/*', localUtil.setNoCacheHeaders);
