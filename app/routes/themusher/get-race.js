@@ -193,5 +193,12 @@ module.exports = async (req, res) => {
         isDetailView: true,
         isCategoryView: false,
         isFrontpage: false,
-    }, { runId, routePath, routeName, hrstart, useTemplate: template });
+    }, {
+        runId,
+        routePath,
+        routeName,
+        hrstart,
+        useTemplate: template,
+        cacheTime: 60,
+    });
 };
