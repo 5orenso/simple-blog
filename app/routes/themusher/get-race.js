@@ -119,6 +119,8 @@ module.exports = async (req, res) => {
                     <th>#</th>
                     <th>Navn</th>
                     <th>Team</th>
+                    <th>Klubb</th>
+                    <th style='text-align: right'>Antall hunder</th>
                 </tr>
             </thead>
             <tbody>
@@ -127,6 +129,8 @@ module.exports = async (req, res) => {
                         <td>${idx + 1}</td>
                         <td>${row.Name}</td>
                         <td>${row['Team name']}</td>
+                        <td>${row['Sports club']}</td>
+                        <td style='text-align: right'>${row['Number of dogs in this race']}</td>
                     </tr>`;
                 }).join('')}
             </tbody>
@@ -139,6 +143,8 @@ module.exports = async (req, res) => {
                     <th>#</th>
                     <th>Navn</th>
                     <th>Team</th>
+                    <th>Klubb</th>
+                    <th style='text-align: right'>Antall hunder</th>
                 </tr>
             </thead>
             <tbody>
@@ -147,6 +153,8 @@ module.exports = async (req, res) => {
                         <td>${idx + 1}</td>
                         <td>${row.Name}</td>
                         <td>${row['Team name']}</td>
+                        <td>${row['Sports club']}</td>
+                        <td style='text-align: right'>${row['Number of dogs in this race']}</td>
                     </tr>`;
                 }).join('')}
             </tbody>
@@ -159,6 +167,8 @@ module.exports = async (req, res) => {
                     <th>#</th>
                     <th>Navn</th>
                     <th>Team</th>
+                    <th>Klubb</th>
+                    <th style='text-align: right'>Antall hunder</th>
                 </tr>
             </thead>
             <tbody>
@@ -167,6 +177,8 @@ module.exports = async (req, res) => {
                         <td>${idx + 1}</td>
                         <td>${row.Name}</td>
                         <td>${row['Team name']}</td>
+                        <td>${row['Sports club']}</td>
+                        <td style='text-align: right'>${row['Number of dogs in this race']}</td>
                     </tr>`;
                 }).join('')}
             </tbody>
