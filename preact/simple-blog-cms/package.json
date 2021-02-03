@@ -35,7 +35,7 @@
   "dependencies": {
     "highlight.js": "^10.5.0",
     "linkstate": "^1.1.1",
-    "marked": "^0.6.0",
+    "marked": "^0.7.0",
     "preact": "^8.2.5",
     "preact-compat": "^3.17.0",
     "preact-habitat": "^3.1.0",
