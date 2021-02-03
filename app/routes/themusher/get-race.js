@@ -137,6 +137,9 @@ module.exports = async (req, res) => {
             </thead>
             <tbody>
                 ${rows100km.map((row, idx) => {
+                    const distance = 100;
+                    const runDistance = row.Distance || 0;
+                    const completed = Math.ceil(runDistance / distance * 100);
                     return `<tr>
                         <td>${idx + 1}</td>
                         <td>
@@ -150,10 +153,13 @@ module.exports = async (req, res) => {
                         <td>${row.Starttime || 'n/a'}</td>
                         <td style='line-height: 0.8em;'>
                             <small>
-                                <span class='text-muted font-weight-lighter'><i class="fas fa-road"></i> Distanse:</span> ${row.Distance || 'n/a'}<br />
-                                <span class='text-muted font-weight-lighter'><i class="fas fa-mountain"></i> Høydemeter:</span> ${row.Ascend || 'n/a'}<br />
-                                <span class='text-muted font-weight-lighter'><i class="fas fa-tachometer-alt"></i> Snittfart:</span> ${row.AvgSpeed || 'n/a'}<br />
-                                <span class='text-muted font-weight-lighter'><i class="fas fa-running"></i> Load index:</span> ${row.LoadIndex || 'n/a'}<br />
+                                <span class='text-muted font-weight-lighter float-left d-inline-block text-truncate w-50'><i style='width: 20px;' class="fas fa-road"></i> Distanse:</span><span class='float-right d-block w-50 text-right'> ${row.Distance || 'n/a'} <span class='text-muted font-weight-lighter'>km</span></span><br />
+                                <div class="progress" style="height: 2px;">
+                                    <div class="progress-bar" role="progressbar" style="width: ${completed}%" aria-valuenow="${completed}" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                                <span class='text-muted font-weight-lighter float-left d-inline-block text-truncate w-50'><i style='width: 20px;' class="fas fa-mountain"></i> Høydemeter:</span><span class='float-right d-block w-50 text-right'> ${row.Ascend || 'n/a'} <span class='text-muted font-weight-lighter'>m</span></span><br />
+                                <span class='text-muted font-weight-lighter float-left d-inline-block text-truncate w-50'><i style='width: 20px;' class="fas fa-tachometer-alt"></i> Snittfart:</span> <span class='float-right d-block w-50 text-right'>${row.AvgSpeed || 'n/a'}  <span class='text-muted font-weight-lighter'>km/t</span></span><br />
+                                <span class='text-muted font-weight-lighter float-left d-inline-block text-truncate w-50'><i style='width: 20px;' class="fas fa-running"></i> Load index:</span><span class='float-right d-block w-50 text-right'> ${row.LoadIndex || 'n/a'}</span><br />
                             </small>
                         </td>
                     </tr>`;
@@ -174,6 +180,9 @@ module.exports = async (req, res) => {
             </thead>
             <tbody>
                 ${rows150km.map((row, idx) => {
+                    const distance = 150;
+                    const runDistance = row.Distance || 0;
+                    const completed = Math.ceil(runDistance / distance * 100);
                     return `<tr>
                         <td>${idx + 1}</td>
                         <td>
@@ -187,10 +196,13 @@ module.exports = async (req, res) => {
                         <td>${row.Starttime || 'n/a'}</td>
                         <td style='line-height: 0.8em;'>
                             <small>
-                                <span class='text-muted font-weight-lighter'><i class="fas fa-road"></i> Distanse:</span> ${row.Distance || 'n/a'}<br />
-                                <span class='text-muted font-weight-lighter'><i class="fas fa-mountain"></i> Høydemeter:</span> ${row.Ascend || 'n/a'}<br />
-                                <span class='text-muted font-weight-lighter'><i class="fas fa-tachometer-alt"></i> Snittfart:</span> ${row.AvgSpeed || 'n/a'}<br />
-                                <span class='text-muted font-weight-lighter'><i class="fas fa-running"></i> Load index:</span> ${row.LoadIndex || 'n/a'}<br />
+                                <span class='text-muted font-weight-lighter float-left d-inline-block text-truncate w-50'><i style='width: 20px;' class="fas fa-road"></i> Distanse:</span><span class='float-right d-block w-50 text-right'> ${row.Distance || 'n/a'} <span class='text-muted font-weight-lighter'>km</span></span><br />
+                                <div class="progress" style="height: 2px;">
+                                    <div class="progress-bar" role="progressbar" style="width: ${completed}%" aria-valuenow="${completed}" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                                <span class='text-muted font-weight-lighter float-left d-inline-block text-truncate w-50'><i style='width: 20px;' class="fas fa-mountain"></i> Høydemeter:</span><span class='float-right d-block w-50 text-right'> ${row.Ascend || 'n/a'} <span class='text-muted font-weight-lighter'>m</span></span><br />
+                                <span class='text-muted font-weight-lighter float-left d-inline-block text-truncate w-50'><i style='width: 20px;' class="fas fa-tachometer-alt"></i> Snittfart:</span> <span class='float-right d-block w-50 text-right'>${row.AvgSpeed || 'n/a'}  <span class='text-muted font-weight-lighter'>km/t</span></span><br />
+                                <span class='text-muted font-weight-lighter float-left d-inline-block text-truncate w-50'><i style='width: 20px;' class="fas fa-running"></i> Load index:</span><span class='float-right d-block w-50 text-right'> ${row.LoadIndex || 'n/a'}</span><br />
                             </small>
                         </td>
                     </tr>`;
@@ -211,6 +223,9 @@ module.exports = async (req, res) => {
             </thead>
             <tbody>
                 ${rows300km.map((row, idx) => {
+                    const distance = 300;
+                    const runDistance = row.Distance || 0;
+                    const completed = Math.ceil(runDistance / distance * 100);
                     return `<tr>
                         <td>${idx + 1}</td>
                         <td>
@@ -224,10 +239,13 @@ module.exports = async (req, res) => {
                         <td>${row.Starttime || 'n/a'}</td>
                         <td style='line-height: 0.8em;'>
                             <small>
-                                <span class='text-muted font-weight-lighter'><i class="fas fa-road"></i> Distanse:</span> ${row.Distance || 'n/a'}<br />
-                                <span class='text-muted font-weight-lighter'><i class="fas fa-mountain"></i> Høydemeter:</span> ${row.Ascend || 'n/a'}<br />
-                                <span class='text-muted font-weight-lighter'><i class="fas fa-tachometer-alt"></i> Snittfart:</span> ${row.AvgSpeed || 'n/a'}<br />
-                                <span class='text-muted font-weight-lighter'><i class="fas fa-running"></i> Load index:</span> ${row.LoadIndex || 'n/a'}<br />
+                                <span class='text-muted font-weight-lighter float-left d-inline-block text-truncate w-50'><i style='width: 20px;' class="fas fa-road"></i> Distanse:</span><span class='float-right d-block w-50 text-right'> ${row.Distance || 'n/a'} <span class='text-muted font-weight-lighter'>km</span></span><br />
+                                <div class="progress" style="height: 2px;">
+                                    <div class="progress-bar" role="progressbar" style="width: ${completed}%" aria-valuenow="${completed}" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                                <span class='text-muted font-weight-lighter float-left d-inline-block text-truncate w-50'><i style='width: 20px;' class="fas fa-mountain"></i> Høydemeter:</span><span class='float-right d-block w-50 text-right'> ${row.Ascend || 'n/a'} <span class='text-muted font-weight-lighter'>m</span></span><br />
+                                <span class='text-muted font-weight-lighter float-left d-inline-block text-truncate w-50'><i style='width: 20px;' class="fas fa-tachometer-alt"></i> Snittfart:</span> <span class='float-right d-block w-50 text-right'>${row.AvgSpeed || 'n/a'}  <span class='text-muted font-weight-lighter'>km/t</span></span><br />
+                                <span class='text-muted font-weight-lighter float-left d-inline-block text-truncate w-50'><i style='width: 20px;' class="fas fa-running"></i> Load index:</span><span class='float-right d-block w-50 text-right'> ${row.LoadIndex || 'n/a'}</span><br />
                             </small>
                         </td>
                     </tr>`;
