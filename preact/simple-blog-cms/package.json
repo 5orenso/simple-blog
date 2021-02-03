@@ -33,7 +33,7 @@
     "workbox-webpack-plugin": "^4.2.0"
   },
   "dependencies": {
-    "highlight.js": "^9.14.2",
+    "highlight.js": "^10.5.0",
     "linkstate": "^1.1.1",
     "marked": "^0.6.0",
     "preact": "^8.2.5",

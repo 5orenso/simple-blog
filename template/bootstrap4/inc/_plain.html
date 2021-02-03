@@ -4,12 +4,32 @@
     {% set isPhoto = true %}
 {% endif %}
 
-<div class="container">
-    <div class="row">
-        <main class="col-sm-12 col-md-12 pt-3 blog-main">
+{% if adlist[0] %}
+    <div class="container-fluid" {{ articleMacro.colorArticleBackground(adlist[0].catRef) }}>
+        <div class="row d-flex justify-content-center">
+            {% for art in adlist %}
+                <div class="col{% if adlist|length <= 4 %}-4{% endif %} my-2 d-flex align-items-center justify-content-center">
+                    {% if art.url %}
+                        <a target="_blank" href="{{ art.url }}" title="{{ art.title|e }} - {{ art.teaser|e }}">
+                    {% endif %}
+                        {% if art.img[0] %}
+                            <img src="/pho/{{ art.img[0].src }}?w=300" alt="{{ art.title|e }} - {{ art.teaser|e }}" class="img-fluid adImage"><br clear="all">
+                        {% endif %}
+                    {% if art.url %}
+                        </a>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endif %}
 
-            <div class="blog-post">
-                {% if article.youtube || article.img[0] %}
+{% if article.youtube || article.img[0] %}
+    <div class="container">
+        <div class="row">
+            <main class="col-sm-12 col-md-12 pt-3 blog-main">
+
+                <div class="blog-post">
                     <div class="post-thumb {% if article.gallery || article.img[1] %}gallery-post-format{% endif %}">
                         {% if article.youtube %}
                             {{ article.youtube|raw }}
@@ -21,24 +41,74 @@
                             </div>
                         {% endif %}
                     </div>
-                {% endif %}
-            </div>
-
-        </main>
+                </div>
+                
+            </main>
+        </div>
     </div>
-</div>
+{% endif %}
 
 <div class="container">
     <div class="row">
         <div class="col-sm-12 blog-main">
 
+            <span class="float-right text-right">
+                <a class="text-muted mainTextColorInline" target="_blank" href="http://translate.google.com/translate?u={{ shareLink|asUrlSafe }}&hl=en&ie=UTF8&sl=no&tl=en" title="Translate to english"><span class="flag-icon flag-icon-gb"></span></a>
+                <a class="text-muted mainTextColorInline" target="_blank" href="http://translate.google.com/translate?u={{ shareLink|asUrlSafe }}&hl=de&ie=UTF8&sl=no&tl=de" title="Uberseztung ins Deutsch"><span class="flag-icon flag-icon-de"></span></a>
+                <a class="text-muted mainTextColorInline" target="_blank" href="http://translate.google.com/translate?u={{ shareLink|asUrlSafe }}&hl=fr&ie=UTF8&sl=no&tl=fr" title="Traduire en Français"><span class="flag-icon flag-icon-fr"></span></a>
+                <a class="text-muted mainTextColorInline" target="_blank" href="http://translate.google.com/translate?u={{ shareLink|asUrlSafe }}&hl=es&ie=UTF8&sl=no&tl=es" title="Traducir al ingles"><span class="flag-icon flag-icon-es"></span></a>
+            </span>
+
             <div class="blog-post">
                 <h2 class="blog-post-title">{{ article.title }}</h2>
                 <h5 class="blog-post-teaser">{{ article.teaser|raw }}</h5>
 
-                {{ article.body|inlineImageSize(750)|safe }}
+                <div class='clearfix'>
+                    {% for art in artlist %}
+                        <div>
+                            <h5>{{ art.title }}</h5>
+                            <div class="lead mb-3">
+                                {{ art.ingress|imgSize(750)|safe }}
+                            </div>
+                            {{ art.body|imgSize(750)|dataTags(art)|md|safe }}
+                        </div>
+                    {% endfor %}
+                </div>
 
-                <div class="social-share">
+                <div class='mt-5 mb-5 clearfix'>
+                    <h2>Startliste - resultater / Startlist - results:</h2>
+                    {{ article.body|inlineImageSize(750)|safe }}
+                </div>
+
+                <div class='clearfix'>
+                    <h2>Løpsoppdateringer / Race updates:</h2>
+                    {% for art in artlistLower %}
+                        <div class='row border-top border-bottom py-2 my-2'>
+                            <div class='col-12'>
+                                <strong>{{ art.title }}</strong><br />
+                                {% if art.published %}
+                                    <small>
+                                        {{ art.published|asHumanReadable }}
+                                    </small>
+                                {% endif %}
+                                {% if art.img[0] %}
+                                    <div class="d-flex flex-wrap">
+                                        {% for img in art.img %}
+                                            <div class='mr-2 mb-2 image_inline'>
+                                                <a href="/pho/{{ img.src }}?w=2000" title="{{ img.title|e }}" target="_blank">
+                                                    <img src="/pho/{{ img.src }}?w=240" alt="{{ img.title|e }} - {{ img.text|e }}" class="img-fluid border rounded-lg"><br clear="all">
+                                                </a>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                                {{ art.body|imgSize(750)|dataTags(art)|md|safe }}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <div class="social-share border-top mt-5">
                     Jeg blir veldig 😊 hvis du deler:
                     {% set shareLink = blog.protocol + '://' + blog.domain + article.baseHref + article.file %}
                     <a rel="noopener" target="_blank" class="s-facebook" href="https://www.facebook.com/sharer.php?u={{ shareLink|url_encode }}"><i class="fab fa-facebook-square"></i></a>
@@ -53,3 +123,23 @@
     </div>
 
 </div>
+
+{% if adlistLower[0] %}
+    <div class="container-fluid" {{ articleMacro.colorArticleBackground(adlistLower[0].catRef) }}>
+        <div class="row d-flex justify-content-center">
+            {% for art in adlistLower %}
+                <div class="col{% if adlistLower|length <= 4 %}-4{% endif %} my-2 d-flex align-items-center justify-content-center">
+                    {% if art.url %}
+                        <a target="_blank" href="{{ art.url }}" title="{{ art.title|e }} - {{ art.teaser|e }}">
+                    {% endif %}
+                        {% if art.img[0] %}
+                            <img src="/pho/{{ art.img[0].src }}?w=300" alt="{{ art.title|e }} - {{ art.teaser|e }}" class="img-fluid adImage"><br clear="all">
+                        {% endif %}
+                    {% if art.url %}
+                        </a>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endif %}

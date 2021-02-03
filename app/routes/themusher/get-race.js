@@ -19,6 +19,7 @@ module.exports = async (req, res) => {
     const { hrstart, runId } = run(req);
 
     const art = new Article();
+    const artLower = new Article();
     const artAds = new Article();
     const artAdsLower = new Article();
     const artBottom = new Article();
@@ -27,6 +28,7 @@ module.exports = async (req, res) => {
     const catAds = new Category();
     const catAdsLower = new Category();
     const cat = new Category();
+    const catLower = new Category();
     const catBottom = new Category();
 
     let category;
@@ -37,18 +39,23 @@ module.exports = async (req, res) => {
 
     const query = { status: 2 };
     const queryList = { status: 2 };
+    const queryListLower = { status: 2 };
     let queryAds = {};
     let queryAdsLower = {};
 
-    const contentCatlist = await cat.find({ type: { $nin: [1, 2, 3, 4, 6, 7] } });
+    const contentCatlist = await cat.find({ type: 19 });
     queryList.categoryId = { $in: contentCatlist.map(c => c.id) };
+    const contentCatlistLower = await catLower.find({ type: 18 });
+    queryListLower.categoryId = { $in: contentCatlistLower.map(c => c.id) };
 
     const catlist = await catMenu.find({ menu: 1 });
 
     limit = parseInt(limit, 10);
     let artlist = [];
+    let artlistLower = [];
     if (limit > 0) {
         artlist = await art.find(queryList, {}, { limit, skip });
+        artlistLower = await artLower.find(queryListLower, {}, { limit, skip });
     }
 
     if (tc.isArray(artlist)) {
@@ -56,9 +63,14 @@ module.exports = async (req, res) => {
             a.catRef = contentCatlist.find(c => c.id === a.categoryId);
         });
     }
+    if (tc.isArray(artlistLower)) {
+        artlistLower.forEach((a) => {
+            a.catRef = contentCatlistLower.find(c => c.id === a.categoryId);
+        });
+    }
 
-    queryAds = { type: 2 };
-    queryAdsLower = { type: 8 };
+    queryAds = { type: 20 };
+    queryAdsLower = { type: 21 };
 
     const artlistTotal = await art.count(queryList);
 
@@ -118,19 +130,32 @@ module.exports = async (req, res) => {
                 <tr>
                     <th>#</th>
                     <th>Navn</th>
-                    <th>Team</th>
                     <th>Klubb</th>
-                    <th style='text-align: right'>Antall hunder</th>
+                    <th>Starttid</th>
+                    <th class='w-25'>Resultat</th>
                 </tr>
             </thead>
             <tbody>
                 ${rows100km.map((row, idx) => {
                     return `<tr>
                         <td>${idx + 1}</td>
-                        <td>${row.Name}</td>
-                        <td>${row['Team name']}</td>
+                        <td>
+                            ${row.Name}<br />
+                            <small class='text-muted'>
+                                ${row['Team name']}
+                                (${row['Number of dogs in this race'] || 'n/a'} <i class="fas fa-dog"></i>)
+                            </small>
+                        </td>
                         <td>${row['Sports club']}</td>
-                        <td style='text-align: right'>${row['Number of dogs in this race']}</td>
+                        <td>${row.Starttime || 'n/a'}</td>
+                        <td style='line-height: 0.8em;'>
+                            <small>
+                                <span class='text-muted font-weight-lighter'><i class="fas fa-road"></i> Distanse:</span> ${row.Distance || 'n/a'}<br />
+                                <span class='text-muted font-weight-lighter'><i class="fas fa-mountain"></i> Høydemeter:</span> ${row.Ascend || 'n/a'}<br />
+                                <span class='text-muted font-weight-lighter'><i class="fas fa-tachometer-alt"></i> Snittfart:</span> ${row.AvgSpeed || 'n/a'}<br />
+                                <span class='text-muted font-weight-lighter'><i class="fas fa-running"></i> Load index:</span> ${row.LoadIndex || 'n/a'}<br />
+                            </small>
+                        </td>
                     </tr>`;
                 }).join('')}
             </tbody>
@@ -142,19 +167,32 @@ module.exports = async (req, res) => {
                 <tr>
                     <th>#</th>
                     <th>Navn</th>
-                    <th>Team</th>
                     <th>Klubb</th>
-                    <th style='text-align: right'>Antall hunder</th>
+                    <th>Starttid</th>
+                    <th class='w-25'>Resultat</th>
                 </tr>
             </thead>
             <tbody>
                 ${rows150km.map((row, idx) => {
                     return `<tr>
                         <td>${idx + 1}</td>
-                        <td>${row.Name}</td>
-                        <td>${row['Team name']}</td>
+                        <td>
+                            ${row.Name}<br />
+                            <small class='text-muted'>
+                                ${row['Team name']}
+                                (${row['Number of dogs in this race'] || 'n/a'} <i class="fas fa-dog"></i>)
+                            </small>
+                        </td>
                         <td>${row['Sports club']}</td>
-                        <td style='text-align: right'>${row['Number of dogs in this race']}</td>
+                        <td>${row.Starttime || 'n/a'}</td>
+                        <td style='line-height: 0.8em;'>
+                            <small>
+                                <span class='text-muted font-weight-lighter'><i class="fas fa-road"></i> Distanse:</span> ${row.Distance || 'n/a'}<br />
+                                <span class='text-muted font-weight-lighter'><i class="fas fa-mountain"></i> Høydemeter:</span> ${row.Ascend || 'n/a'}<br />
+                                <span class='text-muted font-weight-lighter'><i class="fas fa-tachometer-alt"></i> Snittfart:</span> ${row.AvgSpeed || 'n/a'}<br />
+                                <span class='text-muted font-weight-lighter'><i class="fas fa-running"></i> Load index:</span> ${row.LoadIndex || 'n/a'}<br />
+                            </small>
+                        </td>
                     </tr>`;
                 }).join('')}
             </tbody>
@@ -166,19 +204,32 @@ module.exports = async (req, res) => {
                 <tr>
                     <th>#</th>
                     <th>Navn</th>
-                    <th>Team</th>
                     <th>Klubb</th>
-                    <th style='text-align: right'>Antall hunder</th>
+                    <th>Starttid</th>
+                    <th class='w-25'>Resultat</th>
                 </tr>
             </thead>
             <tbody>
                 ${rows300km.map((row, idx) => {
                     return `<tr>
                         <td>${idx + 1}</td>
-                        <td>${row.Name}</td>
-                        <td>${row['Team name']}</td>
+                        <td>
+                            ${row.Name}<br />
+                            <small class='text-muted'>
+                                ${row['Team name']}
+                                (${row['Number of dogs in this race'] || 'n/a'} <i class="fas fa-dog"></i>)
+                            </small>
+                        </td>
                         <td>${row['Sports club']}</td>
-                        <td style='text-align: right'>${row['Number of dogs in this race']}</td>
+                        <td>${row.Starttime || 'n/a'}</td>
+                        <td style='line-height: 0.8em;'>
+                            <small>
+                                <span class='text-muted font-weight-lighter'><i class="fas fa-road"></i> Distanse:</span> ${row.Distance || 'n/a'}<br />
+                                <span class='text-muted font-weight-lighter'><i class="fas fa-mountain"></i> Høydemeter:</span> ${row.Ascend || 'n/a'}<br />
+                                <span class='text-muted font-weight-lighter'><i class="fas fa-tachometer-alt"></i> Snittfart:</span> ${row.AvgSpeed || 'n/a'}<br />
+                                <span class='text-muted font-weight-lighter'><i class="fas fa-running"></i> Load index:</span> ${row.LoadIndex || 'n/a'}<br />
+                            </small>
+                        </td>
                     </tr>`;
                 }).join('')}
             </tbody>
@@ -193,6 +244,7 @@ module.exports = async (req, res) => {
             body: bodyHtml,
         },
         artlist,
+        artlistLower,
         artlistTotal,
         artlistBottom,
         category,
