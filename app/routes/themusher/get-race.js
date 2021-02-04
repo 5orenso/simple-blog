@@ -132,6 +132,7 @@ module.exports = async (req, res) => {
                     <th>Navn</th>
                     <th>Klubb</th>
                     <th>Starttid</th>
+                    <th>Kjøretid</th>
                     <th class='w-25'>Resultat</th>
                 </tr>
             </thead>
@@ -151,6 +152,7 @@ module.exports = async (req, res) => {
                         </td>
                         <td>${row['Sports club']}</td>
                         <td>${row.Starttime || 'n/a'}</td>
+                        <td>${row.RaceTime || 'n/a'}</td>
                         <td style='line-height: 0.8em;'>
                             <small>
                                 <span class='text-muted font-weight-lighter float-left d-inline-block text-truncate w-50'><i style='width: 20px;' class="fas fa-road"></i> Distanse:</span><span class='float-right d-block w-50 text-right'> ${row.Distance || 'n/a'} <span class='text-muted font-weight-lighter'>km</span></span><br />
@@ -175,6 +177,7 @@ module.exports = async (req, res) => {
                     <th>Navn</th>
                     <th>Klubb</th>
                     <th>Starttid</th>
+                    <th>Kjøretid</th>
                     <th class='w-25'>Resultat</th>
                 </tr>
             </thead>
@@ -194,6 +197,7 @@ module.exports = async (req, res) => {
                         </td>
                         <td>${row['Sports club']}</td>
                         <td>${row.Starttime || 'n/a'}</td>
+                        <td>${row.RaceTime || 'n/a'}</td>
                         <td style='line-height: 0.8em;'>
                             <small>
                                 <span class='text-muted font-weight-lighter float-left d-inline-block text-truncate w-50'><i style='width: 20px;' class="fas fa-road"></i> Distanse:</span><span class='float-right d-block w-50 text-right'> ${row.Distance || 'n/a'} <span class='text-muted font-weight-lighter'>km</span></span><br />
@@ -218,6 +222,7 @@ module.exports = async (req, res) => {
                     <th>Navn</th>
                     <th>Klubb</th>
                     <th>Starttid</th>
+                    <th>Kjøretid</th>
                     <th class='w-25'>Resultat</th>
                 </tr>
             </thead>
@@ -237,6 +242,7 @@ module.exports = async (req, res) => {
                         </td>
                         <td>${row['Sports club']}</td>
                         <td>${row.Starttime || 'n/a'}</td>
+                        <td>${row.RaceTime || 'n/a'}</td>
                         <td style='line-height: 0.8em;'>
                             <small>
                                 <span class='text-muted font-weight-lighter float-left d-inline-block text-truncate w-50'><i style='width: 20px;' class="fas fa-road"></i> Distanse:</span><span class='float-right d-block w-50 text-right'> ${row.Distance || 'n/a'} <span class='text-muted font-weight-lighter'>km</span></span><br />
@@ -281,6 +287,6 @@ module.exports = async (req, res) => {
         routeName,
         hrstart,
         useTemplate: template,
-        cacheTime: 60,
+        cacheTime: 300,
     });
 };
