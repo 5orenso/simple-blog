@@ -63,7 +63,7 @@
                 <h2 class="blog-post-title">{{ article.title }}</h2>
                 <h5 class="blog-post-teaser">{{ article.teaser|raw }}</h5>
 
-                <div class='clearfix'>
+                <div class='clearfix mb-5'>
                     {% for art in artlist %}
                         <div>
                             <h5>{{ art.title }}</h5>
@@ -75,6 +75,27 @@
                     {% endfor %}
                 </div>
 
+                {% if artlistLower[0] %}
+                    <h5>Bilder fra løpet</h5>
+                    <div class='row clearfix'>
+                        {% for art in artlistLower %}
+                            <div class="col-6 col-md-4 col-lg-3">
+                                {% if art.img[0] %}
+                                    <div class='image_inline'>
+                                        <a href="/pho/{{ art.img[0].src }}?w=2000" title="{{ art.img[0].title|e }}" target="_blank">
+                                            <img src="/pho/{{ art.img[0].src }}?w=240" alt="{{ art.img[0].title|e }} - {{ art.img[0].text|e }}" class="img-fluid border rounded-lg"><br clear="all">
+                                        </a>
+                                    </div>
+                                {% endif %}
+                                <small>
+                                    {{ art.body|imgSize(750)|dataTags(art)|md|safe }}
+                                </small>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+
                 <div class='mt-5 mb-5 clearfix'>
                     <h2>Startliste - resultater / Startlist - results:</h2>
                     {{ article.body|inlineImageSize(750)|safe }}
@@ -83,7 +104,7 @@
                 <div class='clearfix'>
                     <h2>Løpsoppdateringer / Race updates:</h2>
                     {% for art in artlistLower %}
-                        <div class='row border-top border-bottom py-2 my-2'>
+                        <div class='row border-bottom py-2 my-2'>
                             <div class='col-12'>
                                 <strong>{{ art.title }}</strong><br />
                                 {% if art.published %}

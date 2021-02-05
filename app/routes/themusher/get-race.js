@@ -33,7 +33,7 @@ module.exports = async (req, res) => {
 
     let category;
 
-    let limit = parseInt(req.query.limit || 10, 10);
+    let limit = parseInt(req.query.limit || 50, 10);
     const page = parseInt(req.query.page, 10) || 1;
     const skip = parseInt((page - 1) * limit || 0, 10);
 
