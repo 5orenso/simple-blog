@@ -88,7 +88,9 @@
                                     </div>
                                 {% endif %}
                                 <small>
-                                    <strong>{{ art.title }}:</strong> {{ art.body|imgSize(750)|dataTags(art)|md|safe }}
+                                    <strong>{{ art.title }}:</strong><br />
+                                    <span class='font-weight-light'>{{ art.published|asHumanReadable }}</span><br />
+                                    {{ art.body|imgSize(750)|dataTags(art)|md|safe }}
                                 </small>
                             </div>
                         {% endfor %}
