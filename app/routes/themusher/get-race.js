@@ -220,7 +220,11 @@ module.exports = async (req, res) => {
 
     const infoText = `<div class="alert alert-warning" role="alert">
         Resultatlisten er foreløpig sortert etter total distanse. Dette blir justert når konkurransen er avsluttet.
-    </div>`;
+    </div>
+    <div class="alert alert-warning" role="alert">
+        Resultatlisten blir oppdatert manuelt av Øistein, så det kan ta noen minutter før resultatene dine er synlig. Si fra hvis du savner noe :)
+    </div>
+    `;
 
     const bodyHtml = `
         <h5>${sheet100km.title}</h5>
