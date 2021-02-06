@@ -40,7 +40,7 @@ function resultRow(row, idx, distance, rowsDbResults) {
         </td>
         <td style='line-height: 0.8em;' class='position-relative'>
             <div class='container-fluid'>
-                <div class='row' style='width: ${completed > 100 ? 100 : (completed < 25 ? 25 : completed)}%;'>
+                <div class='row row-cols-4 border rounded-lg p-1' style='width: ${completed > 100 ? 100 : (completed < 25 ? 25 : completed)}%;'>
                     ${stages.map((stage, stageNum) => {
                         // email - team
                         // email
@@ -67,7 +67,7 @@ function resultRow(row, idx, distance, rowsDbResults) {
                             restTimeText = `Hvile: ${util.pad(restTimeHuman.hours)}:${util.pad(restTimeHuman.minutes)}:${util.pad(restTimeHuman.seconds)}<br />`;
                         }
                         outEpoch = currentEpoch;
-                        return `<div class='col px-1 mx-1 mb-1 py-2 bg-success text-white text-right'>
+                        return `<div class='col pr-1 mx-1 mb-1 py-2 bg-success text-white text-right rounded-lg'>
                             <span class='position-absolute' style='top: 3px; left: 3px;'>${stageNum + 1}</span>
                             <small>
                                 <small>
@@ -218,8 +218,13 @@ module.exports = async (req, res) => {
     const rows300km = await sheet300km.getRows();
     const rowsDbResults = await dbResults.getRows();
 
+    const infoText = `<div class="alert alert-warning" role="alert">
+        Resultatlisten er foreløpig sortert etter total distanse. Dette blir justert når konkurransen er avsluttet.
+    </div>`;
+
     const bodyHtml = `
         <h5>${sheet100km.title}</h5>
+        ${infoText}
         <table class='table table-striped table-sm'>
             <thead>
                 <tr>
@@ -235,6 +240,7 @@ module.exports = async (req, res) => {
         </table>
 
         <h5>${sheet150km.title}</h5>
+        ${infoText}
         <table class='table table-striped table-sm'>
             <thead>
                 <tr>
@@ -250,6 +256,7 @@ module.exports = async (req, res) => {
         </table>
 
         <h5>${sheet300km.title}</h5>
+        ${infoText}
         <table class='table table-striped table-sm'>
             <thead>
                 <tr>
