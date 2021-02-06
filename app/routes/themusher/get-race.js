@@ -8,12 +8,105 @@
 'use strict';
 
 const tc = require('fast-type-check');
+const strftime = require('strftime');
+
 const { GoogleSpreadsheet } = require('google-spreadsheet');
 
 const { routeName, routePath, run, webUtil, utilHtml, util } = require('../../middleware/init')({ __filename, __dirname });
 
 const Article = require('../../../lib/class/article');
 const Category = require('../../../lib/class/category');
+
+function resultRow(row, idx, distance, rowsDbResults) {
+    const runDistance = row.Distance || 0;
+    const completed = Math.ceil(runDistance / distance * 100);
+    let stages = [];
+    if (row.Team) {
+        stages = rowsDbResults.filter(e => e.email === row['Email Address'] && e.team === row.Team && e['duration sec'] > 0);
+
+    } else {
+        stages = rowsDbResults.filter(e => e.email === row['Email Address'] && e['duration sec'] > 0);
+    }
+    let outEpoch;
+    return `<tr>
+        <td>${idx + 1}</td>
+        <td style='line-height: 1em;'>
+            ${row.Name}<br />
+            <small class='text-muted'>
+                ${row['Team name']}
+                (${row['Number of dogs in this race'] || 'n/a'} <i class="fas fa-dog"></i>)<br />
+                <span class='font-weight-lighter'>${row['Sports club']}</span>
+            </small>
+        </td>
+        <td style='line-height: 0.8em;' class='position-relative'>
+            <div class='container-fluid'>
+                <div class='row' style='width: ${completed > 100 ? 100 : (completed < 25 ? 25 : completed)}%;'>
+                    ${stages.map((stage, stageNum) => {
+                        // email - team
+                        // email
+                        // team
+                        // timestamp
+                        // distanceKm
+                        // elevation
+                        // duration sec
+                        // speed avg
+                        // loadindex
+                        // Duration HH:MI:SS
+                        // Calc avg speed
+                        const stageDistance = Math.ceil(stage.distanceKm / distance * 100);
+                        const outTime = strftime('%b %e kl.%H:%M', new Date(stage.timestamp));
+                        const currentEpoch = Math.floor(new Date(stage.timestamp).getTime() / 1000);
+                        const restTime = currentEpoch - outEpoch - stage['duration sec'];
+
+                        var inDate = new Date(0); // The 0 there is the key, which sets the date to the epoch
+                        inDate.setUTCSeconds(currentEpoch + parseInt(stage['duration sec'], 10));
+                        const inTime = strftime('%b %e kl.%H:%M', inDate);
+                        const restTimeHuman = util.secReadable(restTime);
+                        let restTimeText = '';
+                        if (restTime) {
+                            restTimeText = `Hvile: ${util.pad(restTimeHuman.hours)}:${util.pad(restTimeHuman.minutes)}:${util.pad(restTimeHuman.seconds)}<br />`;
+                        }
+                        outEpoch = currentEpoch;
+                        return `<div class='col px-1 mx-1 py-2 bg-success text-white text-right'>
+                            <span class='position-absolute' style='top: 3px; left: 3px;'>${stageNum + 1}</span>
+                            <small>
+                                <small>
+                                    <nobr><span class='font-weight-lighter'>Ut:</span> ${outTime}</nobr><br />
+                                    <nobr><span class='font-weight-lighter'>Inn:</span> ${inTime}</nobr><br />
+                                    ${restTimeText}
+                                    <i style='width: 20px;' class="fas fa-road"></i> ${util.format(stage.distanceKm, 1) || 'n/a'} <span class='font-weight-lighter'>km</span><br />
+                                    <i style='width: 20px;' class="fas fa-mountain"></i> ${util.format(stage.elevation, 0) || 'n/a'} <span class='font-weight-lighter'>m</span><br />
+                                    <i style='width: 20px;' class="fas fa-tachometer-alt"></i> ${util.format(stage['speed avg'], 1) || 'n/a'} <span class='font-weight-lighter'>km/t</span><br />
+                                    <i style='width: 20px;' class="fas fa-clock"></i> ${stage['Duration HH:MI:SS'] || 'n/a'}</span><br />
+                                </small>
+                            </small>
+                        </div>`;
+                    }).join('')}
+                </div>
+            </div>
+            ${completed > 100 ? `<span class='position-absolute' style='top: 10px; right: 0px;'><i class="fas fa-flag-checkered"></i></span>` : ''}
+        </td>
+        <td style='line-height: 0.8em;'>
+            <small>
+                <span class='text-muted font-weight-lighter float-left d-inline-block text-truncate w-50'>
+                    <i style='width: 20px;' class="fas fa-road"></i> Distanse:</span><span class='float-right d-block w-50 text-right'> ${row.Distance || 'n/a'} <span class='text-muted font-weight-lighter'>km</span>
+                </span><br />
+                <div class="progress mb-1" style="height: 3px;">
+                    <div class="progress-bar ${completed >= 100 ? 'bg-success' : ''}" role="progressbar" style="width: ${completed}%" aria-valuenow="${completed}" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+                <span class='text-muted font-weight-lighter float-left d-inline-block text-truncate w-50'>
+                    <i style='width: 20px;' class="fas fa-mountain"></i> Høydemeter:</span><span class='float-right d-block w-50 text-right'> ${row.Ascend || 'n/a'} <span class='text-muted font-weight-lighter'>m</span>
+                </span><br />
+                <span class='text-muted font-weight-lighter float-left d-inline-block text-truncate w-50'>
+                    <i style='width: 20px;' class="fas fa-tachometer-alt"></i> Snittfart:</span> <span class='float-right d-block w-50 text-right'>${row.AvgSpeed || 'n/a'}  <span class='text-muted font-weight-lighter'>km/t</span>
+                </span><br />
+                <span class='text-muted font-weight-lighter float-left d-inline-block text-truncate w-50'>
+                    <i style='width: 20px;' class="fas fa-clock"></i> Kjøretid:</span> <span class='float-right d-block w-50 text-right'>${row.RaceTime || 'n/a'}</span>
+                </span><br />
+            </small>
+        </td>
+    </tr>`;
+}
 
 module.exports = async (req, res) => {
     const { hrstart, runId } = run(req);
@@ -117,11 +210,13 @@ module.exports = async (req, res) => {
     const sheet100km = doc.sheetsByIndex[1]; // or use doc.sheetsById[id] or doc.sheetsByTitle[title]
     const sheet150km = doc.sheetsByIndex[2]; // or use doc.sheetsById[id] or doc.sheetsByTitle[title]
     const sheet300km = doc.sheetsByIndex[3]; // or use doc.sheetsById[id] or doc.sheetsByTitle[title]
+    const dbResults = doc.sheetsByIndex[4]; // or use doc.sheetsById[id] or doc.sheetsByTitle[title]
     // console.log(sheet100km.title);
 
     const rows100km = await sheet100km.getRows();
     const rows150km = await sheet150km.getRows();
     const rows300km = await sheet300km.getRows();
+    const rowsDbResults = await dbResults.getRows();
 
     const bodyHtml = `
         <h5>${sheet100km.title}</h5>
@@ -130,42 +225,12 @@ module.exports = async (req, res) => {
                 <tr>
                     <th>#</th>
                     <th>Navn</th>
-                    <th>Klubb</th>
-                    <th>Starttid</th>
-                    <th>Kjøretid</th>
+                    <th class='w-50'>Etapper</th>
                     <th class='w-25'>Resultat</th>
                 </tr>
             </thead>
             <tbody>
-                ${rows100km.map((row, idx) => {
-                    const distance = 100;
-                    const runDistance = row.Distance || 0;
-                    const completed = Math.ceil(runDistance / distance * 100);
-                    return `<tr>
-                        <td>${idx + 1}</td>
-                        <td>
-                            ${row.Name}<br />
-                            <small class='text-muted'>
-                                ${row['Team name']}
-                                (${row['Number of dogs in this race'] || 'n/a'} <i class="fas fa-dog"></i>)
-                            </small>
-                        </td>
-                        <td>${row['Sports club']}</td>
-                        <td>${row.Starttime || 'n/a'}</td>
-                        <td>${row.RaceTime || 'n/a'}</td>
-                        <td style='line-height: 0.8em;'>
-                            <small>
-                                <span class='text-muted font-weight-lighter float-left d-inline-block text-truncate w-50'><i style='width: 20px;' class="fas fa-road"></i> Distanse:</span><span class='float-right d-block w-50 text-right'> ${row.Distance || 'n/a'} <span class='text-muted font-weight-lighter'>km</span></span><br />
-                                <div class="progress" style="height: 2px;">
-                                    <div class="progress-bar" role="progressbar" style="width: ${completed}%" aria-valuenow="${completed}" aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                                <span class='text-muted font-weight-lighter float-left d-inline-block text-truncate w-50'><i style='width: 20px;' class="fas fa-mountain"></i> Høydemeter:</span><span class='float-right d-block w-50 text-right'> ${row.Ascend || 'n/a'} <span class='text-muted font-weight-lighter'>m</span></span><br />
-                                <span class='text-muted font-weight-lighter float-left d-inline-block text-truncate w-50'><i style='width: 20px;' class="fas fa-tachometer-alt"></i> Snittfart:</span> <span class='float-right d-block w-50 text-right'>${row.AvgSpeed || 'n/a'}  <span class='text-muted font-weight-lighter'>km/t</span></span><br />
-                                <span class='text-muted font-weight-lighter float-left d-inline-block text-truncate w-50'><i style='width: 20px;' class="fas fa-running"></i> Load index:</span><span class='float-right d-block w-50 text-right'> ${row.LoadIndex || 'n/a'}</span><br />
-                            </small>
-                        </td>
-                    </tr>`;
-                }).join('')}
+                ${rows100km.map((row, idx) => resultRow(row, idx, 100, rowsDbResults)).join('')}
             </tbody>
         </table>
 
@@ -175,42 +240,12 @@ module.exports = async (req, res) => {
                 <tr>
                     <th>#</th>
                     <th>Navn</th>
-                    <th>Klubb</th>
-                    <th>Starttid</th>
-                    <th>Kjøretid</th>
+                    <th class='w-50'>Etapper</th>
                     <th class='w-25'>Resultat</th>
                 </tr>
             </thead>
             <tbody>
-                ${rows150km.map((row, idx) => {
-                    const distance = 150;
-                    const runDistance = row.Distance || 0;
-                    const completed = Math.ceil(runDistance / distance * 100);
-                    return `<tr>
-                        <td>${idx + 1}</td>
-                        <td>
-                            ${row.Name}<br />
-                            <small class='text-muted'>
-                                ${row['Team name']}
-                                (${row['Number of dogs in this race'] || 'n/a'} <i class="fas fa-dog"></i>)
-                            </small>
-                        </td>
-                        <td>${row['Sports club']}</td>
-                        <td>${row.Starttime || 'n/a'}</td>
-                        <td>${row.RaceTime || 'n/a'}</td>
-                        <td style='line-height: 0.8em;'>
-                            <small>
-                                <span class='text-muted font-weight-lighter float-left d-inline-block text-truncate w-50'><i style='width: 20px;' class="fas fa-road"></i> Distanse:</span><span class='float-right d-block w-50 text-right'> ${row.Distance || 'n/a'} <span class='text-muted font-weight-lighter'>km</span></span><br />
-                                <div class="progress" style="height: 2px;">
-                                    <div class="progress-bar" role="progressbar" style="width: ${completed}%" aria-valuenow="${completed}" aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                                <span class='text-muted font-weight-lighter float-left d-inline-block text-truncate w-50'><i style='width: 20px;' class="fas fa-mountain"></i> Høydemeter:</span><span class='float-right d-block w-50 text-right'> ${row.Ascend || 'n/a'} <span class='text-muted font-weight-lighter'>m</span></span><br />
-                                <span class='text-muted font-weight-lighter float-left d-inline-block text-truncate w-50'><i style='width: 20px;' class="fas fa-tachometer-alt"></i> Snittfart:</span> <span class='float-right d-block w-50 text-right'>${row.AvgSpeed || 'n/a'}  <span class='text-muted font-weight-lighter'>km/t</span></span><br />
-                                <span class='text-muted font-weight-lighter float-left d-inline-block text-truncate w-50'><i style='width: 20px;' class="fas fa-running"></i> Load index:</span><span class='float-right d-block w-50 text-right'> ${row.LoadIndex || 'n/a'}</span><br />
-                            </small>
-                        </td>
-                    </tr>`;
-                }).join('')}
+                ${rows150km.map((row, idx) => resultRow(row, idx, 150, rowsDbResults)).join('')}
             </tbody>
         </table>
 
@@ -220,42 +255,12 @@ module.exports = async (req, res) => {
                 <tr>
                     <th>#</th>
                     <th>Navn</th>
-                    <th>Klubb</th>
-                    <th>Starttid</th>
-                    <th>Kjøretid</th>
+                    <th class='w-50'>Etapper</th>
                     <th class='w-25'>Resultat</th>
                 </tr>
             </thead>
             <tbody>
-                ${rows300km.map((row, idx) => {
-                    const distance = 300;
-                    const runDistance = row.Distance || 0;
-                    const completed = Math.ceil(runDistance / distance * 100);
-                    return `<tr>
-                        <td>${idx + 1}</td>
-                        <td>
-                            ${row.Name}<br />
-                            <small class='text-muted'>
-                                ${row['Team name']}
-                                (${row['Number of dogs in this race'] || 'n/a'} <i class="fas fa-dog"></i>)
-                            </small>
-                        </td>
-                        <td>${row['Sports club']}</td>
-                        <td>${row.Starttime || 'n/a'}</td>
-                        <td>${row.RaceTime || 'n/a'}</td>
-                        <td style='line-height: 0.8em;'>
-                            <small>
-                                <span class='text-muted font-weight-lighter float-left d-inline-block text-truncate w-50'><i style='width: 20px;' class="fas fa-road"></i> Distanse:</span><span class='float-right d-block w-50 text-right'> ${row.Distance || 'n/a'} <span class='text-muted font-weight-lighter'>km</span></span><br />
-                                <div class="progress" style="height: 2px;">
-                                    <div class="progress-bar" role="progressbar" style="width: ${completed}%" aria-valuenow="${completed}" aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                                <span class='text-muted font-weight-lighter float-left d-inline-block text-truncate w-50'><i style='width: 20px;' class="fas fa-mountain"></i> Høydemeter:</span><span class='float-right d-block w-50 text-right'> ${row.Ascend || 'n/a'} <span class='text-muted font-weight-lighter'>m</span></span><br />
-                                <span class='text-muted font-weight-lighter float-left d-inline-block text-truncate w-50'><i style='width: 20px;' class="fas fa-tachometer-alt"></i> Snittfart:</span> <span class='float-right d-block w-50 text-right'>${row.AvgSpeed || 'n/a'}  <span class='text-muted font-weight-lighter'>km/t</span></span><br />
-                                <span class='text-muted font-weight-lighter float-left d-inline-block text-truncate w-50'><i style='width: 20px;' class="fas fa-running"></i> Load index:</span><span class='float-right d-block w-50 text-right'> ${row.LoadIndex || 'n/a'}</span><br />
-                            </small>
-                        </td>
-                    </tr>`;
-                }).join('')}
+                ${rows300km.map((row, idx) => resultRow(row, idx, 300, rowsDbResults)).join('')}
             </tbody>
         </table>
     `;
