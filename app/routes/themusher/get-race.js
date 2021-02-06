@@ -67,7 +67,7 @@ function resultRow(row, idx, distance, rowsDbResults) {
                             restTimeText = `Hvile: ${util.pad(restTimeHuman.hours)}:${util.pad(restTimeHuman.minutes)}:${util.pad(restTimeHuman.seconds)}<br />`;
                         }
                         outEpoch = currentEpoch;
-                        return `<div class='col px-1 mx-1 py-2 bg-success text-white text-right'>
+                        return `<div class='col px-1 mx-1 mb-1 py-2 bg-success text-white text-right'>
                             <span class='position-absolute' style='top: 3px; left: 3px;'>${stageNum + 1}</span>
                             <small>
                                 <small>
