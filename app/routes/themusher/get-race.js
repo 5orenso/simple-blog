@@ -235,8 +235,8 @@ module.exports = async (req, res) => {
     const infoText = `<div class="alert alert-warning" role="alert">
         Resultatlisten er nå sortert etter rangering. Men vi venter inn flere spann, så den er ikke endelig ennå.
     </div>
-    <div class="alert alert-warning" role="alert">
-        Resultatlisten blir oppdatert manuelt av Øistein, så det kan ta noen minutter før resultatene dine er synlig. Si fra hvis du savner noe :)
+    <div class="alert alert-danger" role="alert">
+        Vi utvider fristen for innsending av filer til utpå kvelden. Det er noen som har dårlig dekning og har et stykke å kjøre før de kan laste opp dataene.
     </div>
     `;
 
