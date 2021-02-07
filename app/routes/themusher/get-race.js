@@ -51,8 +51,10 @@ function resultRow(row, idx, distance, rowsDbResults) {
                         // duration sec
                         // speed avg
                         // loadindex
+                        // rest
                         // Duration HH:MI:SS
                         // Calc avg speed
+                        // Rest HH:MI:SS
                         const stageDistance = Math.ceil(stage.distanceKm / distance * 100);
                         const outTime = strftime('%b %e kl.%H:%M', new Date(stage.timestamp));
                         const currentEpoch = Math.floor(new Date(stage.timestamp).getTime() / 1000);
@@ -63,20 +65,26 @@ function resultRow(row, idx, distance, rowsDbResults) {
                         const inTime = strftime('%b %e kl.%H:%M', inDate);
                         const restTimeHuman = util.secReadable(restTime);
                         let restTimeText = '';
-                        if (restTime) {
-                            restTimeText = `Hvile: ${util.pad(restTimeHuman.hours)}:${util.pad(restTimeHuman.minutes)}:${util.pad(restTimeHuman.seconds)}<br />`;
+                        if (restTime > 0) {
+                            restTimeText = `<i style='width: 20px;' class="fas fa-moon"></i> sjekkpunkt: ${util.pad(restTimeHuman.hours)}:${util.pad(restTimeHuman.minutes)}:${util.pad(restTimeHuman.seconds)}<br />`;
+                        }
+                        let restTimeTrackText = '';
+                        if (stage.rest > 0) {
+                            const restTimeTrackHuman = util.secReadable(stage.rest);
+                            restTimeTrackText = `<i style='width: 20px;' class="fas fa-moon"></i> sporet: ${util.pad(restTimeTrackHuman.hours)}:${util.pad(restTimeTrackHuman.minutes)}:${util.pad(restTimeTrackHuman.seconds)}<br />`;
                         }
                         outEpoch = currentEpoch;
                         return `<div class='col pr-1 mx-1 mb-1 py-2 bg-success text-white text-right rounded-lg'>
                             <span class='position-absolute' style='top: 3px; left: 3px;'>${stageNum + 1}</span>
                             <small>
                                 <small>
-                                    <nobr><span class='font-weight-lighter'>Ut:</span> ${outTime}</nobr><br />
-                                    <nobr><span class='font-weight-lighter'>Inn:</span> ${inTime}</nobr><br />
+                                    <nobr><i style='width: 20px;' class="fas fa-sign-out-alt"></i> ${outTime}</nobr><br />
+                                    <nobr><i style='width: 20px;' class="fas fa-sign-in-alt"></i> ${inTime}</nobr><br />
                                     ${restTimeText}
+                                    ${restTimeTrackText}
                                     <i style='width: 20px;' class="fas fa-road"></i> ${util.format(stage.distanceKm, 1) || 'n/a'} <span class='font-weight-lighter'>km</span><br />
                                     <i style='width: 20px;' class="fas fa-mountain"></i> ${util.format(stage.elevation, 0) || 'n/a'} <span class='font-weight-lighter'>m</span><br />
-                                    <i style='width: 20px;' class="fas fa-tachometer-alt"></i> ${util.format(stage['speed avg'], 1) || 'n/a'} <span class='font-weight-lighter'>km/t</span><br />
+                                    <i style='width: 20px;' class="fas fa-tachometer-alt"></i> ${util.format(stage['Calc avg speed'], 1) || 'n/a'} <span class='font-weight-lighter'>km/t</span><br />
                                     <i style='width: 20px;' class="fas fa-clock"></i> ${stage['Duration HH:MI:SS'] || 'n/a'}</span><br />
                                 </small>
                             </small>
@@ -102,6 +110,9 @@ function resultRow(row, idx, distance, rowsDbResults) {
                 </span><br />
                 <span class='text-muted font-weight-lighter float-left d-inline-block text-truncate w-50'>
                     <i style='width: 20px;' class="fas fa-clock"></i> Kjøretid:</span> <span class='float-right d-block w-50 text-right'>${row.RaceTime || 'n/a'}</span>
+                </span><br />
+                <span class='text-muted font-weight-lighter float-left d-inline-block text-truncate w-50'>
+                    <i style='width: 20px;' class="fas fa-moon"></i> sporet:</span> <span class='float-right d-block w-50 text-right'>${row.RestTrack || 'n/a'}</span>
                 </span><br />
             </small>
         </td>
@@ -216,7 +227,10 @@ module.exports = async (req, res) => {
     const rows100km = await sheet100km.getRows();
     const rows150km = await sheet150km.getRows();
     const rows300km = await sheet300km.getRows();
-    const rowsDbResults = await dbResults.getRows();
+    const rowsDbResultsRaw = await dbResults.getRows();
+    const rowsDbResults = rowsDbResultsRaw.sort((a, b) => {
+        return (a.timestamp > b.timestamp) ? 1 : -1;
+    });
 
     const infoText = `<div class="alert alert-warning" role="alert">
         Resultatlisten er foreløpig sortert etter total distanse. Dette blir justert når konkurransen er avsluttet.
