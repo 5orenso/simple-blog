@@ -233,7 +233,13 @@ module.exports = async (req, res) => {
         return (a.timestamp > b.timestamp) ? 1 : -1;
     });
 
-    const infoText = `<div class="alert alert-warning" role="alert">
+    const infoText100km = `<div class="alert alert-success" role="alert">
+        Resultatlisten er endelig. 
+    </div>`;
+    const infoText150km = `<div class="alert alert-success" role="alert">
+        Resultatlisten er endelig. 
+    </div>`;
+    const infoText300km = `<div class="alert alert-warning" role="alert">
         Resultatlisten er nå sortert etter rangering. Men vi venter inn flere spann, så den er ikke endelig ennå.
     </div>
     <div class="alert alert-danger" role="alert">
@@ -243,7 +249,7 @@ module.exports = async (req, res) => {
 
     const bodyHtml = `
         <h5>${sheet100km.title}</h5>
-        ${infoText}
+        ${infoText100km}
         <table class='table table-striped table-sm'>
             <thead>
                 <tr>
@@ -259,7 +265,7 @@ module.exports = async (req, res) => {
         </table>
 
         <h5>${sheet150km.title}</h5>
-        ${infoText}
+        ${infoText150km}
         <table class='table table-striped table-sm'>
             <thead>
                 <tr>
@@ -275,7 +281,7 @@ module.exports = async (req, res) => {
         </table>
 
         <h5>${sheet300km.title}</h5>
-        ${infoText}
+        ${infoText300km}
         <table class='table table-striped table-sm'>
             <thead>
                 <tr>
