@@ -233,7 +233,7 @@ module.exports = async (req, res) => {
     });
 
     const infoText = `<div class="alert alert-warning" role="alert">
-        Resultatlisten er foreløpig sortert etter total distanse. Dette blir justert når konkurransen er avsluttet.
+        Resultatlisten er nå sortert etter rangering. Men vi venter inn flere spann, så den er ikke endelig ennå.
     </div>
     <div class="alert alert-warning" role="alert">
         Resultatlisten blir oppdatert manuelt av Øistein, så det kan ta noen minutter før resultatene dine er synlig. Si fra hvis du savner noe :)
