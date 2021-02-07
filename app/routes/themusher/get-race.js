@@ -92,7 +92,7 @@ function resultRow(row, idx, distance, rowsDbResults) {
                     }).join('')}
                 </div>
             </div>
-            ${completed > 100 ? `<span class='position-absolute' style='top: 10px; right: 0px;'><i class="fas fa-flag-checkered"></i></span>` : ''}
+            ${completed >= 99 ? `<span class='position-absolute' style='top: 10px; right: 0px;'><i class="fas fa-flag-checkered"></i></span>` : ''}
         </td>
         <td style='line-height: 0.8em;'>
             <small>
