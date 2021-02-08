@@ -91,9 +91,12 @@ function resultRow(row, idx, distance, rowsDbResults) {
                         </div>`;
                     }).join('')}
                 </div>
+                <div class='row p-1'>
+                    ${row.RaceComment ? `<div class="alert alert-warning" role="alert">${row.RaceComment}</div>` : ''}
+                </div>
             </div>
             ${completed >= 99 ? `<span class='position-absolute' style='top: 10px; right: 0px;'><i class="fas fa-flag-checkered text-success"></i></span>` : ''}
-            ${row.RaceStatus === 'DNF' || row.RaceStatus === 'DNS' ? `<span class='position-absolute' style='top: 10px; right: 0px;'>${row.RaceStatus} <i class="fas fa-times text-danger"></i></span>` : ''}
+            ${row.RaceStatus === 'DNF' || row.RaceStatus === 'DNS' ? `<span class='position-absolute' style='top: 10px; right: 0px;'>${row.RaceStatus} <i class="fas fa-times text-danger"></i></span>` : ''}            
         </td>
         <td style='line-height: 0.8em;'>
             <small>
