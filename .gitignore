@@ -34,6 +34,7 @@ sessions/*
 
 dev/
 config/config.js
+config/API*
 config/config-sitemap.js
 content/articles
 content/notifications
