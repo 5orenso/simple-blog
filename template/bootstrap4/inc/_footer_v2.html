@@ -75,7 +75,7 @@
                     {% endfor %}
                 {% else %}
                     <div class="col-sm-4">
-                        <h4>{{ blog.categoryHeader || 'Kategorier' }}</h4>
+                        <h4 class='font-weight-lighter'>{{ blog.categoryHeader || 'Kategorier' }}</h4>
                         <ul class="list-unstyled">
                             {% for cat in catlist %}
                                 {% if cat.dropdown %}
@@ -106,11 +106,11 @@
                         </ul>
                     </div>
                     <div class="col-sm-4">
-                        <h4>{{ blog.descriptionHeader || 'Om meg' }}</h4>
+                        <h4 class='font-weight-lighter'>{{ blog.descriptionHeader || 'Om meg' }}</h4>
                         <p>{{ blog.description|raw }}</p>
                     </div>
                     <div class="col-sm-4">
-                        <h4>{{ blog.otherHeader || 'Følg meg på:' }}</h4>
+                        <h4 class='font-weight-lighter'>{{ blog.otherHeader || 'Følg meg på:' }}</h4>
                         <ol class="list-unstyled">
                             {% if blog.social.youtube %}<li><a class="bottomTextColorInline" rel="noopener" target="_blank" href="{{ blog.social.youtube }}"><i class="fab fa-youtube"></i> Youtube</a></li>{% endif %}
                             {% if blog.social.github %}<li><a class="bottomTextColorInline" rel="noopener" target="_blank" href="{{ blog.social.github }}"><i class="fab fa-github"></i> GitHub</a></li>{% endif %}
