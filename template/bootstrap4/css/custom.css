@@ -261,7 +261,7 @@ html {
 }
 
 .jumbotron-thumb {
-    max-height: 450px;
+    max-height: 50vh;
     overflow: hidden;
 }
 
