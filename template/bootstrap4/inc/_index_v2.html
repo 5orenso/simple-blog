@@ -55,6 +55,9 @@
 
 {% elseif !isFrontpage && blog.hideCategoryTopArticle %}
     {% set startArt = 0 %}
+    <div class="container">
+        <div class="row">
+            <main class="col-sm-12 col-md-12 pt-0 blog-main">
 
 {% else %}
     {% if !queryString.q && !queryString.tag && page === 1 %}
