@@ -52,6 +52,10 @@
     <div class="container-fluid">
         <div class="row">
             <main class="col-sm-12 col-md-12 pt-3">
+
+{% elseif blog.hideCategoryTopArticle %}
+    {% set startArt = 0 %}
+
 {% else %}
     {% if !queryString.q && !queryString.tag && page === 1 %}
         {% set startArt = 1 %}
