@@ -85,8 +85,8 @@
         </ul>
 
         <form class="form-inline my-2 my-lg-0" action="/v2/search/">
-            <input class="form-control mr-sm-2" type="search" placeholder="Søk etter det du leter etter..." aria-label="Search" name="q" value="{{ queryString.q }}">
-            <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Søk</button>
+            <input class="form-control mr-sm-2" type="search" placeholder="{{ blog.searchPlaceholder }}" aria-label="Search" name="q" value="{{ queryString.q }}">
+            <button class="btn btn-outline-info my-2 my-sm-0" type="submit">{{ blog.searchButton }}</button>
         </form>
     </div>
 </nav>

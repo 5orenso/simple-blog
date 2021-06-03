@@ -100,15 +100,15 @@ More to come :)
 
 ### Howto setup service
 ```bash
-$ sudo cp /etc/systemd/system/simple-blog-litt.no.service /etc/systemd/system/simple-blog-kaffeogkode.no.service
-$ sudo vim /etc/systemd/system/simple-blog-kaffeogkode.no.service
-$ sudo service simple-blog-kaffeogkode.no start
+$ sudo cp /etc/systemd/system/simple-blog-litt.no.service /etc/systemd/system/simple-blog-themusher.no.service
+$ sudo vim /etc/systemd/system/simple-blog-themusher.no.service
+$ sudo service simple-blog-themusher.no start
 $ ps aux | grep server
 ```
 
-https://kaffeogkode.no/send-magic-link
-https://kaffeogkode.no/admin
-https://kaffeogkode.no/v2/
+https://themusher.no/send-magic-link
+https://themusher.no/admin
+https://themusher.no/v2/
 
 
 
