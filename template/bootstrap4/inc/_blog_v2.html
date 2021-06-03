@@ -234,7 +234,7 @@
             {% endif %}
 
             {% if category.showBottomArticleList %}
-                <h4>Les også:</h4>
+                <h4>{{ blog.readRelated || 'Les også' }}:</h4>
                 <div class="container-fluid p-0">
                     <div class="row artlist">
                         {% for art in artlist %}
