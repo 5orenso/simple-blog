@@ -56,8 +56,8 @@
     {% if !queryString.q && !queryString.tag && page === 1 %}
         {% set startArt = 1 %}
         {% set art = artlist[0] %}
-        <div class="jumbotron" {{ articleMacro.colorArticleBackground(art.catRef, frontpage, true) }}>
-            <div class="container blog-main" {{ articleMacro.colorArticleText(art.catRef, frontpage, true) }}>
+        <div class="jumbotron px-0" {{ articleMacro.colorArticleBackground(art.catRef, frontpage, true) }}>
+            <div class="container-fluid px-0 blog-main" {{ articleMacro.colorArticleText(art.catRef, frontpage, true) }}>
                 {% if art.img[0] %}
                     <div class="jumbotron-thumb d-flex align-items-center">
                         {% if art.isFrontpage %}
@@ -70,32 +70,34 @@
                             {% endif %}
                         {% else %}
                             <a href="/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}" {{ articleMacro.colorArticleText(art.catRef, frontpage, true) }}>
-                                <img src="/pho/{{ art.img[0].src }}?w=1014" alt="{{ art.title|e }}" class="img-fluid rounded">
+                                <img src="/pho/{{ art.img[0].src }}?w=2000" alt="{{ art.title|e }}" class="img-fluid rounded">
                             </a>
                         {% endif %}
                     </div>
                 {% endif %}
-                <h1 class="display-3">
-                    {% if art.catRef.hideFrontpageTitle %}
-                    {% elseif art.isFrontpage %}
-                        {% if art.url %}
-                            <a href="{{ art.url }}" {{ articleMacro.colorArticleText(art.catRef, frontpage, true) }}>{{ art.title }}</a>
+                <div class='px-5'>
+                    <h1 class="display-3">
+                        {% if art.catRef.hideFrontpageTitle %}
+                        {% elseif art.isFrontpage %}
+                            {% if art.url %}
+                                <a href="{{ art.url }}" {{ articleMacro.colorArticleText(art.catRef, frontpage, true) }}>{{ art.title }}</a>
+                            {% else %}
+                                {{ art.title }}
+                            {% endif %}
                         {% else %}
-                            {{ art.title }}
+                            <a href="/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}" {{ articleMacro.colorArticleText(art.catRef, frontpage, true) }}>
+                                {{ art.title }}
+                            </a>
                         {% endif %}
-                    {% else %}
-                        <a href="/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}" {{ articleMacro.colorArticleText(art.catRef, frontpage, true) }}>
-                            {{ art.title }}
-                        </a>
-                    {% endif %}
                     </h1>
-
+    
                     {% if art.catRef.hideFrontpageTeaser %}
                     {% elseif art.teaser %}
                         <p class='mb-1'>{{ art.teaser|raw }}</p>
                     {% elseif art.ingress %}
                         <p class='mb-1'>{{ art.ingress|raw }}</p>
                     {% endif %}
+                </div>
     
                 {% if art.isFrontpage || art.catRef.hideMetaInfo %}
                 {% else %}
