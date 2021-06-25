@@ -44,7 +44,7 @@ module.exports = async (req, res) => {
 
     const query = { status: 2 };
     const queryList = { status: 2 };
-    const queryFrontpage = { status: 2, hideOnFrontpage: { $lt: 1 } };
+    const queryFrontpage = { status: 2 };
     let queryCategory = {};
     let queryAds = {};
     let queryAdsLower = {};
@@ -77,7 +77,10 @@ module.exports = async (req, res) => {
         query.categoryId = category.id;
         contentCatlist = await cat.find({ ...queryCategory, type: { $nin: [1, 2, 3, 4, 6, 7] } });
     } else {
-        contentCatlist = await cat.find({ type: { $nin: [1, 2, 3, 4, 6, 7] } });
+        contentCatlist = await cat.find({
+            type: { $nin: [1, 2, 3, 4, 6, 7] },
+            hideOnFrontpage: { $lt: 1 },
+        });
         queryList.categoryId = { $in: contentCatlist.map(c => c.id) };
     }
 
