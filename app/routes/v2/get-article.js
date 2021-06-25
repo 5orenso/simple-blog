@@ -44,7 +44,7 @@ module.exports = async (req, res) => {
 
     const query = { status: 2 };
     const queryList = { status: 2 };
-    const queryFrontpage = { status: 2 };
+    const queryFrontpage = { status: 2, hideOnFrontpage: { $lt: 1 } };
     let queryCategory = {};
     let queryAds = {};
     let queryAdsLower = {};

@@ -199,6 +199,23 @@ export default class CategoryEdit extends Component {
                             />
                             <label for='menuInput'>Skjul menytittel</label>
                         </div>
+    
+                        
+                        <div class='form-check'>
+                            <input type='checkbox' class='form-check-input' id='hideOnFrontpageInput'
+                                name='hideOnFrontpage'
+                                onInput={e => {
+                                    handleInput(e, {
+                                        name: 'hideOnFrontpage',
+                                        value: category.hideOnFrontpage ? 0 : 1,
+                                    });
+                                }}
+                                value={1}
+                                checked={category.hideOnFrontpage === 1 ? 'checked' : ''}
+                            />
+                            <label for='hideOnFrontpageInput'>Skjul artikkel på forsiden</label>
+                        </div>
+
 
                         <div class='form-check'>
                             <input type='checkbox' class='form-check-input' id='hideTopImageInput'
