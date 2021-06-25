@@ -79,7 +79,7 @@ module.exports = async (req, res) => {
     } else {
         contentCatlist = await cat.find({
             type: { $nin: [1, 2, 3, 4, 6, 7] },
-            hideOnFrontpage: { $lt: 1 },
+            hideOnFrontpage: { $ne: 1 },
         });
         queryList.categoryId = { $in: contentCatlist.map(c => c.id) };
     }
