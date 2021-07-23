@@ -28,7 +28,7 @@
         {% if art.img[0] %}
             <div class="post-thumb d-flex align-items-center">
                 <a href="{% if art.url %}{{ art.url }}{% else %}/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}{% endif %}">
-                    <img src="/pho/{{ art.img[0].src }}?w=800" alt="{{ art.title|e }}" class="img-fluid rounded">
+                    <img src="https://{{ imageServer }}/800x/{{ imagePath }}/{{ art.img[0].src }}" alt="{{ art.title|e }}" class="img-fluid rounded">
                 </a>
             </div>
         {% endif %}
@@ -47,6 +47,53 @@
             {% elseif art.ingress %}
                 <p class='mb-1'>{{ art.ingress|raw }}</p>
             {% endif %}
+
+
+
+        {% if art.widgetList === 'helloworld' %}
+            <div data-widget-host="simple-blog-helloworld">
+                <script type="text/props">
+                    {
+                        "apiServer": "{{ blog.protocol }}://{{ blog.domain }}",
+                        "jwtToken": "{{ jwtToken }}",
+                        "sessionEmail": "{{ session.email }}",
+                        "sessionAge": "{{ session.age }}",
+                        "articleId": {{ art.id }}
+                    }
+                </script>
+            </div>
+            <script async src="/preact/simple-blog-helloworld/bundle.js?time={{ env.epoch }}"></script>
+        {% endif %}
+        {% if art.widgetList === 'clock' %}
+            <div data-widget-host="simple-blog-clock">
+                <script type="text/props">
+                    {
+                        "apiServer": "{{ blog.protocol }}://{{ blog.domain }}",
+                        "jwtToken": "{{ jwtToken }}",
+                        "sessionEmail": "{{ session.email }}",
+                        "sessionAge": "{{ session.age }}",
+                        "articleId": {{ art.id }}
+                    }
+                </script>
+            </div>
+            <script async src="/preact/simple-blog-clock/bundle.js?time={{ env.epoch }}"></script>
+        {% endif %}
+        {% if art.widgetList === 'booking' %}
+            <div data-widget-host="simple-blog-booking">
+                <script type="text/props">
+                    {
+                        "apiServer": "{{ blog.protocol }}://{{ blog.domain }}",
+                        "jwtToken": "{{ jwtToken }}",
+                        "sessionEmail": "{{ session.email }}",
+                        "sessionAge": "{{ session.age }}",
+                        "articleId": {{ art.id }}
+                    }
+                </script>
+            </div>
+            <script async src="/preact/simple-blog-booking/bundle.js?time={{ env.epoch }}"></script>
+        {% endif %}
+
+
             <!-- <p class="lead">{{ art.body|substring(0, 150)|markdown|cleanHtml }}...</p> -->
             {% if art.catRef.hideMetaInfo %}
             {% else %}

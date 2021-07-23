@@ -215,5 +215,7 @@ module.exports = async (req, res) => {
         isDetailView,
         isCategoryView,
         isFrontpage,
+        imageServer: req.config.blog.imageServer,
+        imagePath: req.config.blog.imagePath,
     }, { runId, routePath, routeName, hrstart, useTemplate: template });
 };

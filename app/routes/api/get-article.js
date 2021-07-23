@@ -36,6 +36,8 @@ const fields = {
     nutrition: 1,
     relevantWords: 1,
     classifiedWords: 1,
+    widget: 1,
+    widgetList: 1,
 };
 
 module.exports = async (req, res) => {

@@ -70,14 +70,14 @@
                         {% if art.isFrontpage %}
                             {% if art.url %}
                                 <a href="{{ art.url }}">
-                                    <img src="/pho/{{ art.img[0].src }}?w=2500" alt="{{ art.title|e }}" class="img-fluid rounded">
+                                    <img src="https://{{ imageServer }}/1920x/{{ imagePath }}/{{ art.img[0].src }}" alt="{{ art.title|e }}" class="img-fluid rounded">
                                 </a>
                             {% else %}
-                                <img src="/pho/{{ art.img[0].src }}?w=2500" alt="{{ art.title|e }}" class="img-fluid rounded">
+                                <img src="https://{{ imageServer }}/1920x/{{ imagePath }}/{{ art.img[0].src }}" alt="{{ art.title|e }}" class="img-fluid rounded">
                             {% endif %}
                         {% else %}
                             <a href="/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}" {{ articleMacro.colorArticleText(art.catRef, frontpage, true) }}>
-                                <img src="/pho/{{ art.img[0].src }}?w=2500" alt="{{ art.title|e }}" class="img-fluid rounded">
+                                <img src="https://{{ imageServer }}/1920x/{{ imagePath }}/{{ art.img[0].src }}" alt="{{ art.title|e }}" class="img-fluid rounded">
                             </a>
                         {% endif %}
                     </div>
@@ -120,6 +120,51 @@
                             <small class='font-weight-lighter mr-2'><a title="Lesetid for artikkel"><i class="far fa-clock"></i> {{ art.body|readTime('no') }}</a></small>
                         </div>
                     {% endif %}
+
+art.widgetList: {{ art.widgetList }}
+        {% if art.widgetList === 'helloworld' %}
+            <div data-widget-host="simple-blog-helloworld">
+                <script type="text/props">
+                    {
+                        "apiServer": "{{ blog.protocol }}://{{ blog.domain }}",
+                        "jwtToken": "{{ jwtToken }}",
+                        "sessionEmail": "{{ session.email }}",
+                        "sessionAge": "{{ session.age }}",
+                        "articleId": {{ art.id }}
+                    }
+                </script>
+            </div>
+            <script async src="/preact/simple-blog-helloworld/bundle.js?time={{ env.epoch }}"></script>
+        {% endif %}
+        {% if art.widgetList === 'clock' %}
+            <div data-widget-host="simple-blog-clock">
+                <script type="text/props">
+                    {
+                        "apiServer": "{{ blog.protocol }}://{{ blog.domain }}",
+                        "jwtToken": "{{ jwtToken }}",
+                        "sessionEmail": "{{ session.email }}",
+                        "sessionAge": "{{ session.age }}",
+                        "articleId": {{ art.id }}
+                    }
+                </script>
+            </div>
+            <script async src="/preact/simple-blog-clock/bundle.js?time={{ env.epoch }}"></script>
+        {% endif %}
+        {% if art.widgetList === 'booking' %}
+            <div data-widget-host="simple-blog-booking">
+                <script type="text/props">
+                    {
+                        "apiServer": "{{ blog.protocol }}://{{ blog.domain }}",
+                        "jwtToken": "{{ jwtToken }}",
+                        "sessionEmail": "{{ session.email }}",
+                        "sessionAge": "{{ session.age }}",
+                        "articleId": {{ art.id }}
+                    }
+                </script>
+            </div>
+            <script async src="/preact/simple-blog-booking/bundle.js?time={{ env.epoch }}"></script>
+        {% endif %}
+
                 </div>
     
             </div>
@@ -135,7 +180,7 @@
                             <a target="_blank" href="{{ art.url }}" title="{{ art.title|e }} - {{ art.teaser|e }}">
                         {% endif %}
                             {% if art.img[0] %}
-                                <img src="/pho/{{ art.img[0].src }}?w=250" alt="{{ art.title|e }} - {{ art.teaser|e }}" class="img-fluid adImage"><br clear="all">
+                                <img src="https://{{ imageServer }}/220x/{{ imagePath }}/{{ art.img[0].src }}" alt="{{ art.title|e }} - {{ art.teaser|e }}" class="img-fluid adImage"><br clear="all">
                             {% endif %}
                         {% if art.url %}
                             </a>
@@ -209,7 +254,7 @@
                             <a target="_blank" href="{{ art.url }}" title="{{ art.title|e }} - {{ art.teaser|e }}">
                         {% endif %}
                             {% if art.img[0] %}
-                                <img src="/pho/{{ art.img[0].src }}?w=250" alt="{{ art.title|e }} - {{ art.teaser|e }}" class="img-fluid adImage"><br clear="all">
+                                <img src="https://{{ imageServer }}/220x/{{ imagePath }}/{{ art.img[0].src }}" alt="{{ art.title|e }} - {{ art.teaser|e }}" class="img-fluid adImage"><br clear="all">
                             {% endif %}
                         {% if art.url %}
                             </a>

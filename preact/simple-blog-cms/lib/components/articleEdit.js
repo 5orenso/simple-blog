@@ -474,6 +474,38 @@ export default class ArticleEdit extends Component {
                             onFocus={this.handleTextareaFocus}
                             value={article.ingress} />
                     </div>
+
+                </div>
+
+                <div class='col-6 d-flex flex-column'>
+                    <div class='form-group'>
+                        <label class='text-white-50'>Widget</label>
+                        {['helloworld', 'clock', 'booking'].map(e => (
+                            <div class='form-check'>
+                                <input class='form-check-input' type='radio' name='widget' id={`widget${e}`} value={e} onInput={handleInput} checked={article.widget === e} />
+                                <label class='form-check-label text-white-50' for={`widget${e}`}>
+                                    {e}
+                                </label>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+                <div class='col-6 d-flex flex-column'>
+                    <div class='form-group'>
+                        <label class='text-white-50'>Widget List</label>
+                        {['helloworld', 'clock', 'booking'].map(e => (
+                            <div class='form-check'>
+                                <input class='form-check-input' type='radio' name='widgetList' id={`widgetList${e}`} value={e} onInput={handleInput} checked={article.widgetList === e} />
+                                <label class='form-check-label text-white-50' for={`widgetList${e}`}>
+                                    {e}
+                                </label>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
+
+                <div class='col-12 d-flex flex-column'>
                     <div class='form-group flex-grow-1'>
                         <label for='bodyInput' class='text-white-50'>Brødtekst</label>
                         <textarea name='body' class={`${styles.textareaAutoHeight} form-control`} id='bodyInput' rows='10'

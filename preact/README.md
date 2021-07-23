@@ -27,3 +27,42 @@ $ npm run build
 $ npm run serve
 
 ```
+
+
+1. Add to package.json:
+
+    "build": "preact build --no-prerender --no-sw --template src/template.html",
+
+
+2. Add preact.config.js:
+
+export default {
+    webpack(config, env, helpers, options) {
+        // config.entry = 'index.js';
+        config.output = {
+            path: __dirname + '/bundle',
+            filename: '[name].js'
+        };
+	},
+};
+
+
+3. Clean up src/components.js
+
+import { h } from 'preact';
+
+export default function App(props) {
+  return (
+    <div>
+      <h1>Hello, World!</h1>
+    </div>
+  );
+}
+
+
+4. Fix src/index.js and add correct habitat name:
+
+_habitat.render({
+  selector: '[data-widget-host="simple-blog-helloworld"]',
+  clean: true
+});
