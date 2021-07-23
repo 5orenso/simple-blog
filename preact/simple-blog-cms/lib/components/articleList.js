@@ -41,6 +41,7 @@ export default class ArticleList extends Component {
     };
 
     render(props) {
+        const { imageServer, imagePath } = props;
         const styles = props.styles;
         const previewJwtToken = props.previewJwtToken;
         const artlist = props.artlist;
@@ -187,7 +188,7 @@ export default class ArticleList extends Component {
                                 <td>
                                     {art.img && Array.isArray(art.img) && art.img[0] && (
                                         <span class='text-muted'>
-                                            <img src={`${this.imageServer}/pho/${art.img[0].src}?w=150`} style='max-height: 50px;' class='img-fluid' /> 
+                                            <img src={`https://${imageServer}/150x/${imagePath}/${art.img[0].src}`} style='max-height: 50px;' class='img-fluid' /> 
                                             <span class='text-muted'>({art.img.length})</span>
                                         </span>
                                     )}

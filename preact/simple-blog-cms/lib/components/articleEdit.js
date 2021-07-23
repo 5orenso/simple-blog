@@ -210,9 +210,27 @@ export default class ArticleEdit extends Component {
         });
     };
 
+    handleImageErrored = (e) => {
+        const image = e.target;
+
+        if (!image.dataset.retry) {
+            image.dataset.retry = 0;
+        }
+        image.dataset.retry = parseInt(image.dataset.retry, 10) + 1;
+        if (image.dataset.retry > 5) {
+            return false;
+        }
+
+        image.onerror = null;
+        setTimeout(() => {
+            image.src += `?${new Date()}`;
+        }, 1000);
+    }
+
     render(props) {
         const { currentMenu, currentTagIdx, currentTag, toggleDropdown } = this.state;
         const that = props.that;
+        const { imageServer, imagePath } = props;
         const previewJwtToken = props.previewJwtToken;
         const styles = props.styles;
         const messages = props.messages;
@@ -241,9 +259,11 @@ export default class ArticleEdit extends Component {
         const images = article.img || [];
         const imagesTotal = images.length;
         const renderImages = images.slice(0, 1).map(img => {
-            return (
-                <img src={`${this.imageServer}/pho/${img.src}?w=750`} alt='' title='' class='img-fluid' />
-            );
+            if (img.src) {
+                return (
+                    <img src={`https://${imageServer}/800x/${imagePath}/${img.src}`} alt='' title='' class='img-fluid' onError={this.handleImageErrored} />
+                );
+            }
         });
 
         const renderedMenu = (
@@ -764,7 +784,7 @@ export default class ArticleEdit extends Component {
                                 <button class='btn btn-danger btn-sm' data-image={idx} onClick={handleRemoveImageClick}>X</button>
                             </div>
                             <div class='d-flex w-100 justify-content-between'>
-                                <p><img src={`${this.imageServer}/pho/${img.src}?w=150`} style='max-height: 150px;'  class='img-fluid' /></p>
+                                <p>{img.src && <img src={`https://${imageServer}/150x/${imagePath}/${img.src}`} style='max-height: 150px;'  class='img-fluid' onError={this.handleImageErrored} />}</p>
                                 <small>
                                     <button class='btn btn-sm m-1' onClick={this.handleClickCode} data-content={`![${img.title || 'Tittel'}](/pho/${img.src}?w=750 '${img.text || ''}')\n`}>
                                         <i class='fas fa-image'></i> Image
@@ -892,7 +912,7 @@ export default class ArticleEdit extends Component {
                     {imglist.map((img, idx) => {
                         return (
                             <div class='col-2 p-1'>
-                                <img src={`${this.imageServer}/pho/${img.src}?w=${imageWidth}`} class='img-fluid' data-idx={idx} onclick={handleImglistClick} />
+                                {img.src && <img src={`https://${imageServer}/150x/${imagePath}/${img.src}`} class='img-fluid' data-idx={idx} onclick={handleImglistClick} onError={this.handleImageErrored}/>}
                             </div>
                         );
                     })}
@@ -988,7 +1008,7 @@ export default class ArticleEdit extends Component {
                                         return (
                                             <div class='row mb-3'>
                                                 <div class='col-4'>
-                                                    <img src={`${this.imageServer}/pho/${img.src}?w=500`} class='img-fluid' />
+                                                    {img.src && <img src={`${this.imageServer}/pho/${img.src}?w=500`} class='img-fluid' onError={this.handleImageErrored} />}
                                                 </div>
                                                 <div class='col-8'>
                                                     {geoInfo.map(info =>

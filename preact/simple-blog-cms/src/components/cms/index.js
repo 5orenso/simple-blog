@@ -21,6 +21,10 @@ const debug = false;
 const initialState = {
     infoStatus: '',
     loadingProgress: 0,
+    
+    previewJwtToken: '',
+    imageServer: '',
+    imagePath: '',
 
     currentMenu: 'articles',
     messages: [],
@@ -98,6 +102,8 @@ export default class SimpleBlogCms extends Component {
             .then((result) => {
                 this.setState({
                     previewJwtToken: result.jwtToken,
+                    imageServer: result.imageServer,
+                    imagePath: result.imagePath,
                     artlist: result.artlist,
                     artlistTotal: result.total,
                 });
@@ -121,6 +127,8 @@ export default class SimpleBlogCms extends Component {
                 this.setState({
                     imglist: result.imglist,
                     imglistTotal: result.total,
+                    imageServer: result.imageServer,
+                    imagePath: result.imagePath,
                 });
             })
             .catch(error => this.addError(error.toString()));
@@ -177,6 +185,8 @@ export default class SimpleBlogCms extends Component {
                 this.setState({
                     catlist: result.catlist,
                     catlistTotal: result.total,
+                    imageServer: result.imageServer,
+                    imagePath: result.imagePath,
                 });
             })
             .catch(error => this.addError(error.toString()));
@@ -890,6 +900,8 @@ export default class SimpleBlogCms extends Component {
             currentMenu,
             messages,
             previewJwtToken,
+            imageServer,
+            imagePath,
 
             article,
             artlist,
@@ -952,6 +964,8 @@ export default class SimpleBlogCms extends Component {
                         <ArticleList styles={styles}
                             sessionEmail={sessionEmail}
                             previewJwtToken={previewJwtToken}
+                            imageServer={imageServer}
+                            imagePath={imagePath}
 
                             that={this}
                             artlist={artlist}
@@ -982,6 +996,8 @@ export default class SimpleBlogCms extends Component {
                         <ArticleEdit styles={styles}
                             sessionEmail={sessionEmail}
                             previewJwtToken={previewJwtToken}
+                            imageServer={imageServer}
+                            imagePath={imagePath}
 
                             article={article}
                             catlist={catlist}
@@ -1017,6 +1033,8 @@ export default class SimpleBlogCms extends Component {
                     {!category.id && <div class='d-flex justify-content-center'>
                         <CategoryList styles={styles}
                             catlist={catlist}
+                            imageServer={imageServer}
+                            imagePath={imagePath}
                             handleListClick={this.handleCatlistClick}
                             handleClickNew={this.handleCategoryClickNew}
                         />
@@ -1036,6 +1054,8 @@ export default class SimpleBlogCms extends Component {
                     </div>}
                     {category.id && <div class='d-flex justify-content-center'>
                         <CategoryEdit styles={styles}
+                            imageServer={imageServer}
+                            imagePath={imagePath}
                             category={category}
                             messages={messages}
                             handleInput={this.handleCategoryInput}
@@ -1057,6 +1077,8 @@ export default class SimpleBlogCms extends Component {
                     <div class='d-flex justify-content-center'>
                         <ImageList styles={styles}
                             that={this}
+                            imageServer={imageServer}
+                            imagePath={imagePath}
                             imageId={image.id}
                             imglist={imglist}
                             handleInput={this.handleImageSearchInput}

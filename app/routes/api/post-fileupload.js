@@ -1,125 +1,164 @@
 /*
  * https://github.com/5orenso
  *
- * Copyright (c) 2019 Øistein Sørensen
+ * Copyright (c) 2020 Øistein Sørensen
  * Licensed under the MIT license.
  */
+
 'use strict';
 
 const uuidv4 = require('uuid/v4');
 const path = require('path');
 const fs = require('fs');
-const mkdirp = require('mkdirp');
-const im = require('imagemagick');
-const { spawn } = require('child_process');
+const ColorThief = require('colorthief');
 
-const { routeName, routePath, run, util, webUtil, utilHtml } = require('../../middleware/init')({ __filename, __dirname });
+const ExifImage = require('exif').ExifImage;
+const sizeOf = require('image-size');
+
 const Image = require('../../../lib/class/image');
 const ImageUtil = require('../../../lib/class/image-util');
 
-const filenamePrefix = 'simpleBlog-';
+const {
+    initOpt, run, util, webUtil, utilHtml, tc,
+} = require('../../middleware/init')({ __filename, __dirname });
 
-function pathExists(absolutePath) {
-    return new Promise((resolve, reject) => {
-        // console.log('absolutePath', absolutePath);
-        fs.exists(absolutePath, (exists) => {
-            if (!exists) {
-                mkdirp(absolutePath, (err) => {
-                    if (err) {
-                        console.error(err);
-                        reject(err);
-                    }
-                    resolve(absolutePath);
-                });
-            } else {
-                resolve(absolutePath);
+const S3 = require('../../../lib/aws/s3');
+
+const filenamePrefix = 'simpleblog-';
+
+function isImage(file) {
+    // image/jpeg, image/png, image/gif
+    if (file.mimetype.match(/^image\/(jpeg|png|gif)/i)) {
+        return true;
+    }
+    return false;
+}
+
+function readExif(image) {
+    return new Promise((resolve) => {
+        try {
+            ExifImage({ image }, (error, exifData) => {
+                if (error) {
+                    return resolve(error);
+                }
+                return resolve(exifData);
+            });
+        } catch (error) {
+            return resolve(error);
+        }
+    });
+}
+
+function imageDimensions(image) {
+    return new Promise((resolve) => {
+        sizeOf(image, (error, dimensions) => {
+            if (error) {
+                return resolve(error);
             }
+            return resolve(dimensions);
         });
     });
 }
 
 module.exports = async (req, res) => {
-    const { hrstart, runId }  = run(req);
-    const filesUploaded = [];
+    const { runOpt } = run(req);
+
+    if (!req.files) {
+        const response = {
+            status: 428,
+            message: 'No files found',
+        };
+        return webUtil.renderApi(req, res, { response, ...initOpt, ...runOpt });
+    }
 
     const imageUtil = new ImageUtil();
-    // await imageUtil.loadModels();
+    const imageBucket = webUtil.isDevelopment()
+        ? tc.getNestedValue(req, 'config.urls.dev.imageS3Bucket')
+        : tc.getNestedValue(req, 'config.urls.prod.imageS3Bucket');
+    const s3imageThumbBaseHref = webUtil.isDevelopment()
+        ? tc.getNestedValue(req, 'config.urls.dev.imageServer')
+        : tc.getNestedValue(req, 'config.urls.prod.imageServer');
+    const s3BaseHref = webUtil.isDevelopment()
+        ? tc.getNestedValue(req, 'config.urls.dev.fileServer')
+        : tc.getNestedValue(req, 'config.urls.prod.fileServer');
 
-    const photoPath = util.returnString(req, 'config', 'adapter', 'markdown', 'photoPath');
+    const messages = [];
+    const filesUploaded = [];
+    const allPromises = [];
 
     if (typeof req.files['files[]'] === 'object') {
         let files = [];
-        if (Array.isArray(req.files['files[]'])) {
+        if (Array.isArray(req.files['files[]'])) { // Multiple files uploaded
             files = req.files['files[]'];
-        } else {  // One file uploaded
+        } else { // One file uploaded
             files.push(req.files['files[]']);
         }
         for (let i = 0; i < files.length; i += 1) {
             const file = files[i];
             const filename = uuidv4();
-            const fileTitle = utilHtml.asHtmlIdSafe(req.query.title || file.name);
-            const fileCategory = utilHtml.asHtmlIdSafe(req.query.category || 'no-category');
+            const fileCategory = util.asHtmlIdSafe(req.query.category || 'no-category');
+            let targetFolder = `${req.config.blog.imagePath}`;
+            if (fileCategory) {
+                targetFolder += `/${fileCategory}`;
+            }
+
+            file.createdDate = new Date();
             file.ext = path.extname(file.name);
             file.newFilename = filenamePrefix + filename + file.ext;
-            const tmpPath = path.normalize(`${photoPath}${fileCategory}/${fileTitle}`);
-            const tmpFile = `${tmpPath}/${file.newFilename}`;
+            file.s3Link = `${s3BaseHref}/${file.newFilename}`;
+            const tmpFile = `/tmp/${file.newFilename}`;
+            allPromises.push(file.mv(tmpFile)
+                .then(async () => {
+                    if (isImage(file)) {
+                        file.s3ThumbLink = `${s3imageThumbBaseHref}/80x80/${file.newFilename}`;
+                        file.s3XSmallLink = `${s3imageThumbBaseHref}/150x/${file.newFilename}`;
+                        file.s3SmallLink = `${s3imageThumbBaseHref}/220x/${file.newFilename}`;
+                        file.s3MediumLink = `${s3imageThumbBaseHref}/400x/${file.newFilename}`;
+                        file.s3LargeLink = `${s3imageThumbBaseHref}/800x/${file.newFilename}`;
+                        file.s3XLargeLink = `${s3imageThumbBaseHref}/1024x/${file.newFilename}`;
+                        file.s3XXLargeLink = `${s3imageThumbBaseHref}/1280x/${file.newFilename}`;
+                        file.s33XLargeLink = `${s3imageThumbBaseHref}/1600x/${file.newFilename}`;
+                        file.s34XLargeLink = `${s3imageThumbBaseHref}/1920x/${file.newFilename}`;
+                    }
+                    delete file.data;
 
-            await pathExists(tmpPath);
-            await file.mv(tmpFile);
+                    const stats = fs.statSync(tmpFile);
+                    const fileSizeInBytes = stats.size;
+                    file.bytes = fileSizeInBytes;
 
-            file.src = `${fileCategory}/${fileTitle}/${file.newFilename}`;
-            delete file.data;
+                    if (isImage(file)) {
+                        file.dimensions = await imageDimensions(tmpFile);
+                        file.exif = await readExif(tmpFile);
+                        file.color = await ColorThief.getColor(tmpFile);
+                        file.palette = await ColorThief.getPalette(tmpFile, 10);
 
-            const imageInfo = await imageUtil.read(tmpFile, true, { config: req.config });
-            const fileData = { ...file, ...imageInfo };
+                        file.hsv = util.rgb2hsv(file.color[0], file.color[1], file.color[2]);
+                        file.hsvPalette = [];
+                        if (file.palette) {
+                            for (let j = 0, m = file.palette.length; j < m; j += 1) {
+                                const color = file.palette[j];
+                                file.hsvPalette.push(util.rgb2hsv(color[0], color[1], color[2]));
+                            }
+                        }
+                        file.src = `${fileCategory}/${file.newFilename}`;
+                    }
 
-            const image = new Image();
-            const imageObject = await image.save(fileData);
-            filesUploaded.push(fileData);
+                    filesUploaded.push(file);
 
-            // console.log('__filename, __dirname', __filename, __dirname);
-            // console.log('spawning:', 'node', [`${__dirname}/fileupload/process-image.js`, '--imageid', imageObject.id]);
-            // console.log(process.env);
-            // console.log(process.argv);
-            let configFile = process.argv[3];
-            if (configFile.match(/^\./)) {
-                configFile = path.normalize(`${__dirname}/../../${process.argv[3]}`);
-            }
-            console.log('====> spawn: node', [
-                './fileupload/process-image.js',
-                '--imageid', imageObject.id,
-                '--config', configFile,
-            ], {
-                detached: true,
-                stdio: 'inherit',
-                cwd: __dirname,
-            });
-            const child = spawn('node', [
-                './fileupload/process-image.js',
-                '--imageid', imageObject.id,
-                '--config', configFile,
-            ], {
-                detached: true,
-                stdio: 'inherit',
-                cwd: __dirname,
-            });
-            console.log('----> spawn.child: ', child);
-            // child.stdout.on('data', (data) => {
-            //     console.log(`child stdout:\n${data}`);
-            // });
-            // child.stderr.on('data', (data) => {
-            //     console.log(`stderr: ${data}`);
-            // });
-            // child.on('close', (code) => {
-            //     console.log(`child process exited with code ${code}`);
-            // });
-            child.unref();
+                    const imageInfo = await imageUtil.read(tmpFile, true, { config: req.config });
+                    const fileData = { ...file, ...imageInfo };
+
+                    const image = new Image();
+                    const imageObject = await image.save(fileData);
+
+                    return S3.upload(imageBucket, `/tmp/${file.newFilename}`, file.mimetype, targetFolder);
+                }));
         }
     }
 
-    const data = {
+    const results = await Promise.all(allPromises);
+    const response = {
         filesUploaded,
     };
-
-    utilHtml.renderApi(req, res, 201, data);
+    return utilHtml.renderApi(req, res, 201, response);
 };

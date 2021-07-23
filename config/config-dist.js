@@ -14,6 +14,20 @@ module.exports = {
     sendgrid: {
         apiKey: 'Your Sendgrid API key which should be kept secret.',
     },
+    urls: {
+        prod: {
+            imageS3Bucket: 'simpleblog-images-original',
+            imageS3BucketResized: 'simpleblog-images-resized',
+            imageServer: 'https://litt.no',
+            fileServer: 'https://litt.no/original',
+        },
+        dev: {
+            imageS3Bucket: 'simpleblog-images-original',
+            imageS3BucketResized: 'simpleblog-images-resized',
+            imageServer: 'https://litt.no',
+            fileServer: 'https://litt.no/original',
+        },
+    },
     blog: {
         version: 2,
         title: 'Simple Blog Server',
@@ -95,7 +109,9 @@ module.exports = {
             { url: '/wip4/.*', target: '/search/?q=', code: 302, useUrl: true, regex: /^\/wip4\/(.+?)\/.+?$/, regexResult: "$1" },
             { url: '/photoalbum/view.*', target: '/images/pix.gif', code: 302 },
             { url: '/tools/.*', target: '/', code: 302 }
-        ]
+        ],
+        imageServer: 'litt.no',
+        imagePath: 'litt.no'
     },
     app: {
         port: 8080

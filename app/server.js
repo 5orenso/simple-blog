@@ -80,6 +80,25 @@ const searchRouter = require('./routes/search');
 
 searchRouter.setConfig(config);
 
+// /pho/team-raske-poter/i-dag-mistet-jeg-spannet/simpleBlog-07ca5a2f-206c-417c-b0a7-3a557552a640.jpg?w=800
+// /220x/litt.no/aeropress/2012-05-25 11.26.27.jpg
+
+// Rewrite the URL before it gets to Express' static middleware.
+app.use('/pho/', (req, res, next) => {
+    // req.url = req.url.replace(/\/([^\/]+)\.[0-9a-f]+\.(css|js|jpg|png|gif|svg)$/, "/$1.$2");
+    const regexp = new RegExp(/^\/(.+?)\?w=([0-9]+)/);
+    const found = req.url.match(regexp);
+    if (!Array.isArray(found)) {
+        next();
+    }
+    const path = found[1];
+    const size = found[2];
+    const allowedSizes = [150, 220, 400, 800, 1024, 1280, 1600, 1920];
+    const closest = allowedSizes.sort((a, b) => Math.abs(size - a) - Math.abs(size - b))[0];
+    const target = `https://${config.blog.imageServer}/${closest}x/${config.blog.imagePath}/${path}`;
+    res.redirect(301, target);
+});
+
 // Register routes -------------------------------
 app.use('/api', apiRouter);
 app.use('/rss', rssRouter);

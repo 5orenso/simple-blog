@@ -12,39 +12,41 @@ router.use(cors({
     preflightContinue: true, // All domains should be allowed by default to contact our API.
 }));
 
-router.get('/article/', wrap(require('./get-article.js')));
-router.get('/article/:id', wrap(require('./get-article.js')));
-router.patch('/article/:id', util.restrict, wrap(require('./patch-article.js')));
-router.post('/article/', util.restrict, wrap(require('./post-article.js')));
+// router.use('/sheets/', wrap(require('./sheets/')));
 
-router.get('/image/', wrap(require('./get-image.js')));
-router.get('/image/:id', wrap(require('./get-image.js')));
+router.get('/article/', wrap(require('./get-article')));
+router.get('/article/:id', wrap(require('./get-article')));
+router.patch('/article/:id', util.restrict, wrap(require('./patch-article')));
+router.post('/article/', util.restrict, wrap(require('./post-article')));
 
-router.get('/category/', wrap(require('./get-category.js')));
-router.get('/category/:id', wrap(require('./get-category.js')));
-router.patch('/category/:id', util.restrict, wrap(require('./patch-category.js')));
-router.post('/category/', util.restrict, wrap(require('./post-category.js')));
+router.get('/image/', wrap(require('./get-image')));
+router.get('/image/:id', wrap(require('./get-image')));
 
-router.get('/iotdevice/', wrap(require('./get-iotDevice.js')));
-router.get('/iotdevice/:id', wrap(require('./get-iotDevice.js')));
-router.patch('/iotdevice/:id', util.restrict, wrap(require('./patch-iotDevice.js')));
-router.post('/iotdevice/', util.restrict, wrap(require('./post-iotDevice.js')));
+router.get('/category/', wrap(require('./get-category')));
+router.get('/category/:id', wrap(require('./get-category')));
+router.patch('/category/:id', util.restrict, wrap(require('./patch-category')));
+router.post('/category/', util.restrict, wrap(require('./post-category')));
 
-router.get('/iot/', wrap(require('./get-iot.js')));
-router.get('/iot/:id', wrap(require('./get-iot.js')));
-router.get('/iot/:id/data', wrap(require('./get-iot-data.js')));
-router.patch('/iot/:id', util.restrict, wrap(require('./patch-iot.js')));
-router.post('/iot/', util.restrict, wrap(require('./post-iot.js')));
+router.get('/iotdevice/', wrap(require('./get-iotDevice')));
+router.get('/iotdevice/:id', wrap(require('./get-iotDevice')));
+router.patch('/iotdevice/:id', util.restrict, wrap(require('./patch-iotDevice')));
+router.post('/iotdevice/', util.restrict, wrap(require('./post-iotDevice')));
+
+router.get('/iot/', wrap(require('./get-iot')));
+router.get('/iot/:id', wrap(require('./get-iot')));
+router.get('/iot/:id/data', wrap(require('./get-iot-data')));
+router.patch('/iot/:id', util.restrict, wrap(require('./patch-iot')));
+router.post('/iot/', util.restrict, wrap(require('./post-iot')));
 
 
-router.get('/tag/', wrap(require('./get-tag.js')));
-router.get('/tag/:id', wrap(require('./get-tag.js')));
-router.post('/tag/', util.restrict, wrap(require('./post-tag.js')));
+router.get('/tag/', wrap(require('./get-tag')));
+router.get('/tag/:id', wrap(require('./get-tag')));
+router.post('/tag/', util.restrict, wrap(require('./post-tag')));
 
-router.get('/author/', wrap(require('./get-author.js')));
-router.get('/author/:id', wrap(require('./get-author.js')));
-router.post('/author/', util.restrict, wrap(require('./post-author.js')));
+router.get('/author/', wrap(require('./get-author')));
+router.get('/author/:id', wrap(require('./get-author')));
+router.post('/author/', util.restrict, wrap(require('./post-author')));
 
-router.post('/fileupload/', util.restrict, wrap(require('./post-fileupload.js')));
+router.post('/fileupload/', util.restrict, wrap(require('./post-fileupload')));
 
 module.exports = router;

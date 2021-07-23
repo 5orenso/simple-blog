@@ -60,7 +60,7 @@ webRouter.use('/v2/', require('./v2/'));
 webRouter.use('/api/', localUtil.setNoCacheHeaders);
 webRouter.use('/api/', require('./api/'));
 
-webRouter.get('/themusher/:raceId', require('./themusher/get-race.js'));
+webRouter.get('/themusher/:raceId', require('./themusher/get-race'));
 
 // Setup static routes
 webRouter.use('/global/', localUtil.setCacheHeaders);
@@ -92,9 +92,9 @@ webRouter.use('/photos/', localUtil.setCacheHeaders);
 webRouter.use('/service-worker.js', express.static(`${appPath}preact/simple-blog-cms/build/service-worker.js`));
 webRouter.use('/preact/simple-blog-cms/', express.static(`${appPath}preact/simple-blog-cms/build/`));
 
-webRouter.post('/push-register', require('./post-push-register.js'));
-webRouter.post('/push-error', require('./post-push-error.js'));
-webRouter.get('/push-send', require('./get-push-send.js'));
+webRouter.post('/push-register', require('./post-push-register'));
+webRouter.post('/push-error', require('./post-push-error'));
+webRouter.get('/push-send', require('./get-push-send'));
 
 webRouter.get('/photos/*', (req, res) => {
     // Resolve filename
@@ -103,23 +103,23 @@ webRouter.get('/photos/*', (req, res) => {
     res.sendFile(requestUrl, { root: path.normalize(req.config.adapter.markdown.photoPath) });
 });
 
-webRouter.get('/send-magic-link', require('./send-magic-link.js'));
-webRouter.get('/verify-magic-link', require('./verify-magic-link.js'));
+webRouter.get('/send-magic-link', require('./send-magic-link'));
+webRouter.get('/verify-magic-link', require('./verify-magic-link'));
 
-webRouter.get('/ajax/savefile', util.restrict, require('./post-savefile.js'));
-webRouter.post('/ajax/savefile', util.restrict, require('./post-savefile.js'));
+webRouter.get('/ajax/savefile', util.restrict, require('./post-savefile'));
+webRouter.post('/ajax/savefile', util.restrict, require('./post-savefile'));
 
-webRouter.get('/ajax/fileupload', util.restrict, require('./post-fileupload.js'));
-webRouter.post('/ajax/fileupload', util.restrict, require('./post-fileupload.js'));
+webRouter.get('/ajax/fileupload', util.restrict, require('./post-fileupload'));
+webRouter.post('/ajax/fileupload', util.restrict, require('./post-fileupload'));
 
-webRouter.get('/admin', util.restrict, require('./get-admin.js'));
+webRouter.get('/admin', util.restrict, require('./get-admin'));
 
-webRouter.get('/iotdevice/version/:chipId', require('./iotdevice/get-version.js'));
-webRouter.get('/iotdevice/firmware/:chipId', require('./iotdevice/get-firmware.js'));
+webRouter.get('/iotdevice/version/:chipId', require('./iotdevice/get-version'));
+webRouter.get('/iotdevice/firmware/:chipId', require('./iotdevice/get-firmware'));
 
 
 // Main route for blog articles.
 webRouter.use('/*', localUtil.setNoCacheHeaders);
-webRouter.get('/*', require('./get-default.js'));
+webRouter.get('/*', require('./get-default'));
 
 module.exports = webRouter;

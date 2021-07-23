@@ -8,6 +8,7 @@ import util from '../util';
 
 const widgetName = 'ImageList';
 const initialState = {
+    imageRetry: {},
 };
 const debug = false;
 const imageWidth = 300;
@@ -192,6 +193,23 @@ export default class ImageList extends Component {
         });
     }
 
+    handleImageErrored = (e) => {
+        const image = e.target;
+
+        if (!image.dataset.retry) {
+            image.dataset.retry = 0;
+        }
+        image.dataset.retry = parseInt(image.dataset.retry, 10) + 1;
+        if (image.dataset.retry > 5) {
+            return false;
+        }
+
+        image.onerror = null;
+        setTimeout(() => {
+            image.src += `?${new Date()}`;
+        }, 1000);
+    }
+
     shouldComponentUpdate(nextProps, nextState) {
         this.props = nextProps;
         return true;
@@ -205,6 +223,7 @@ export default class ImageList extends Component {
     }
 
     render(props) {
+        const { imageServer, imagePath } = props;
         const styles = props.styles;
         const that = props.that;
         const imglist = props.imglist;
@@ -309,7 +328,7 @@ export default class ImageList extends Component {
                                     <td scope='row'>{img.id}</td>
                                     <td scope='row' style={`width: ${imageWidth}px !important;`}>
                                         <div style={`position: relative; width: ${imageWidth}px;`}>
-                                            <img src={`${this.imageServer}/pho/${img.src}?w=${imageWidth}`} />
+                                            {img.src && <img src={`https://${imageServer}/220x/${imagePath}/${img.src}`} onError={this.handleImageErrored} />}
                                             <canvas id={`layer-${img.id}`} width='100'
                                                 style='position: absolute; left: 0; top: 0; z-index: 1000; width: 100%; height: 100%;'></canvas>
                                         </div>

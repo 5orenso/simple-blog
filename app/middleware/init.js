@@ -6,6 +6,7 @@ const tc = require('fast-type-check');
 const webUtil = require('../../lib/web-util');
 const utilHtml = require('../../lib/util-html');
 const util = require('../../lib/utilities');
+
 const appPath = path.normalize(`${__dirname}/../../`);
 
 module.exports = (opt) => {
