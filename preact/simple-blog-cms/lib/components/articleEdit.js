@@ -1189,7 +1189,7 @@ export default class ArticleEdit extends Component {
                     </div>
                     <div class='col-3 offset-1 pt-3' style={`background-color: ${backgroundHex}; color: ${forgroundHex};`}>
                         {renderImages}
-                        <h3 style={`color: ${forgroundHex}; font-size: ${article.fontsizeH3}rem; font-weight: ${article.fontweightH5};`}>{article.title}</h3>
+                        <h3 style={`color: ${forgroundHex}; font-size: ${article.fontsizeH3}rem; font-weight: ${article.fontweightH3};`}>{article.title}</h3>
                         <h6>{article.teaser}</h6>
                         <div>
                             <small>
