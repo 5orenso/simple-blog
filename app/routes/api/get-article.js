@@ -45,6 +45,8 @@ const fields = {
     fontweightH1: 1,
     fontsizeH3: 1,
     fontweightH3: 1,
+    fontsizeH5: 1,
+    fontweightH5: 1,
 };
 
 module.exports = async (req, res) => {

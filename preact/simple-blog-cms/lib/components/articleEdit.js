@@ -33,6 +33,8 @@ const initialState = {
     fontweightH1: 600,
     fontsizeH3: 1.3,
     fontweightH3: 600,
+    fontsizeH5: 1.2,
+    fontweightH5: 600,
 };
 const debug = false;
 const editMode = 'textarea'; // div
@@ -317,7 +319,7 @@ export default class ArticleEdit extends Component {
             currentMenu, currentTagIdx, currentTag, toggleDropdown,
             backgroundHex, backgroundHexR, backgroundHexG, backgroundHexB,
             forgroundHex, forgroundHexR, forgroundHexG, forgroundHexB,
-            fontsizeH1, fontweightH1, fontsizeH3, fontweightH3,
+            fontsizeH1, fontweightH1, fontsizeH3, fontweightH3, fontsizeH5, fontweightH5,
         } = this.state;
         const that = props.that;
         const { imageServer, imagePath } = props;
@@ -925,6 +927,7 @@ export default class ArticleEdit extends Component {
                                     </div>
                                 </div>
                             </div>
+
                             <div class='col-6 d-flex flex-column'>
                                 <div class='form-group'>
                                     <label class='text-white-50'>Title font-size H3</label>
@@ -968,14 +971,62 @@ export default class ArticleEdit extends Component {
                                 </div>
                             </div>
 
+                            <div class='col-6 d-flex flex-column'>
+                                <div class='form-group'>
+                                    <label class='text-white-50'>Title font-size H5</label>
+
+                                    <div class='form-group d-flex align-items-center my-0'>
+                                        <label for='fontsizeH5' class='mr-2 my-0'>Fontsize</label>
+                                        <input
+                                            class={`form-control mr-2`}
+                                            name='fontsizeH5'
+                                            type='range'
+                                            min='0.5'
+                                            max='10'
+                                            id='fontsizeH5'
+                                            step='0.1'
+                                            value={article.fontsizeH5 || fontsizeH5}
+                                            onInput={handleInput}
+                                        />
+                                        <output for='fontsizeH5'>{article.fontsizeH5 || 'default'}</output>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class='col-6 d-flex flex-column'>
+                                <div class='form-group'>
+                                    <label class='text-white-50'>Title font-weight H5</label>
+
+                                    <div class='form-group d-flex align-items-center my-0'>
+                                        <label for='fontweightH5' class='mr-2 my-0'>Fontweight</label>
+                                        <input
+                                            class={`form-control mr-2`}
+                                            name='fontweightH5'
+                                            type='range'
+                                            min='50'
+                                            max='1000'
+                                            id='fontweightH5'
+                                            step='10'
+                                            value={article.fontweightH5 || fontweightH5}
+                                            onInput={handleInput}
+                                        />
+                                        <output for='fontweightH5'>{article.fontweightH5 || 'default'}</output>
+                                    </div>
+                                </div>
+                            </div>
+
                             <div class='col-12 text-center'>
                                 <div class='rounded-lg' style={`background-color: ${backgroundHex};`}>
                                     <h1 style={`color: ${forgroundHex}; font-size: ${article.fontsizeH1}rem; font-weight: ${article.fontweightH1};`}>H1: {article.title}</h1>
                                 </div>
                             </div>
-                            <div class='col-12 text-center'>
+                            <div class='col-4 text-center'>
                                 <div class='rounded-lg' style={`background-color: ${backgroundHex};`}>
                                     <h3 style={`color: ${forgroundHex}; font-size: ${article.fontsizeH3}rem; font-weight: ${article.fontweightH3};`}>H3: {article.title}</h3>
+                                </div>
+                            </div>
+                            <div class='col-2 text-center'>
+                                <div class='rounded-lg' style={`background-color: ${backgroundHex};`}>
+                                    <h5 style={`color: ${forgroundHex}; font-size: ${article.fontsizeH5}rem; font-weight: ${article.fontweightH5};`}>H5: {article.title}</h5>
                                 </div>
                             </div>
 
@@ -1078,7 +1129,7 @@ export default class ArticleEdit extends Component {
                     </div>
                 </div>
                 <div class='row mt-4'>
-                    <div class='col-4 offset-2 pt-3' style={`background-color: ${backgroundHex}; color: ${forgroundHex};`}>
+                    <div class='col-4 pt-3' style={`background-color: ${backgroundHex}; color: ${forgroundHex};`}>
                         {renderImages}
                         <h3 style={`color: ${forgroundHex}; font-size: ${article.fontsizeH3}rem; font-weight: ${article.fontweightH3};`}>{article.title}</h3>
                         <h5>{article.teaser}</h5>
@@ -1138,8 +1189,66 @@ export default class ArticleEdit extends Component {
                     </div>
                     <div class='col-3 offset-1 pt-3' style={`background-color: ${backgroundHex}; color: ${forgroundHex};`}>
                         {renderImages}
-                        <h3 style={`color: ${forgroundHex}; font-size: ${article.fontsizeH3}rem; font-weight: ${article.fontweightH3};`}>{article.title}</h3>
-                        <h5>{article.teaser}</h5>
+                        <h3 style={`color: ${forgroundHex}; font-size: ${article.fontsizeH3}rem; font-weight: ${article.fontweightH5};`}>{article.title}</h3>
+                        <h6>{article.teaser}</h6>
+                        <div>
+                            <small>
+                                {util.asHumanReadable(article.published)}
+                                {util.asHumanReadable(article.published) !== util.asHumanReadable(article.updatedDate) && <span class='text-muted'> / <i class='fas fa-undo' /> {util.asHumanReadable(article.updatedDate)}</span>}
+                                &nbsp; /  <i class='far fa-folder-open' /> {article.category}
+                                &nbsp; / &nbsp;
+                                <span class={`badge badge-${util.getStatusClass(article.status)} p-2`}>
+                                    {util.getStatus(article.status)}
+                                </span>
+                                &nbsp; / 
+                                &nbsp;<a rel='noopener' target='_blank' href={`https://www.facebook.com/sharer.php?u=${shareLink}`}>
+                                    <i class='fab fa-facebook'></i>
+                                </a>
+                                &nbsp;<a rel='noopener' target='_blank' href={`https://twitter.com/intent/tweet?url=${shareLink}`
+                                    + `&text=${utilHtml.asUrlSafe(article.title)}.%20`
+                                    + `${utilHtml.asUrlSafe(article.teaser || article.ingress)}`
+                                    + `&via=${utilHtml.asUrlSafe(this.imageServer)}`
+                                    + `&hashtags=${utilHtml.asUrlSafe(article.tags)}`}>
+                                    <i class='fab fa-twitter'></i>
+                                </a>
+                                &nbsp;<a rel='noopener' target='_blank' href={`https://www.linkedin.com/shareArticle?mini=true`
+                                    + `&url=${shareLink}`
+                                    + `&summary=${utilHtml.asUrlSafe(article.title)}.%20`
+                                    + `${utilHtml.asUrlSafe(article.teaser || article.ingress)}`
+                                    + `&source=${utilHtml.asUrlSafe(this.imageServer)}`}>
+                                    <i class='fab fa-linkedin-in'></i>
+                                </a>
+                                &nbsp;<a rel='noopener' target='_blank' href={`mailto:?subject=Tips: `
+                                    + `${utilHtml.asUrlSafe(article.title)}`
+                                    + `&body=Tips fra ${utilHtml.asUrlSafe(this.imageServer)}:%0D%0A%0D%0A`
+                                    + `${utilHtml.asUrlSafe(utilHtml.uc(article.title))}%0D%0A%0D%0A`
+                                    + `${utilHtml.asUrlSafe(article.teaser || article.ingress)}%0D%0A%0D%0A`
+                                    + `Les mer: ${shareLink}`}>
+                                    <i class='far fa-envelope'></i>
+                                </a>
+                                &nbsp; /                        
+                                Ord: {util.wordCount(article.body)}
+                                &nbsp; /                        
+                                Lesetid: {util.readTime(article.body, 'no')}
+                            </small>
+                        </div>
+                        <div class='mb-3'>
+                            <small>
+                                {Array.isArray(article.tags) && article.tags.map(tag =>
+                                    <span class='badge badge-info mr-1'>{tag}</span>
+                                )}
+                            </small>
+                        </div>
+                        <div class='lead' id='ingressDisplay' dangerouslySetInnerHTML={{
+                            __html: utilHtml.replaceMarked(
+                                utilHtml.replaceDataTags(article.ingress, article)
+                            ),
+                        }}></div>
+                    </div>
+                    <div class='col-2 offset-1 pt-3' style={`background-color: ${backgroundHex}; color: ${forgroundHex};`}>
+                        {renderImages}
+                        <h5 style={`color: ${forgroundHex}; font-size: ${article.fontsizeH5}rem; font-weight: ${article.fontweightH5};`}>{article.title}</h5>
+                        <h6>{article.teaser}</h6>
                         <div>
                             <small>
                                 {util.asHumanReadable(article.published)}
