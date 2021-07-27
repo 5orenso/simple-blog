@@ -580,6 +580,12 @@ export default class ArticleEdit extends Component {
                             <div class='col-6 d-flex flex-column'>
                                 <div class='form-group'>
                                     <label class='text-white-50'>Widget in article</label>
+                                    <div class='form-check'>
+                                        <input class='form-check-input' type='radio' name='widget' id={`widgetNone`} value='null' onInput={handleInput} checked={!article.widget || article.widget === 'null'} />
+                                        <label class='form-check-label text-white-50' for={`widgetNone`}>
+                                            None
+                                        </label>
+                                    </div>
                                     {['clock', 'booking', 'poll', 'gallery', 'weather', 'rating'].map(e => (
                                         <div class='form-check'>
                                             <input class='form-check-input' type='radio' name='widget' id={`widget${e}`} value={e} onInput={handleInput} checked={article.widget === e} />
@@ -593,6 +599,12 @@ export default class ArticleEdit extends Component {
                             <div class='col-6 d-flex flex-column'>
                                 <div class='form-group'>
                                     <label class='text-white-50'>Widget in lists</label>
+                                    <div class='form-check'>
+                                        <input class='form-check-input' type='radio' name='widgetList' id={`widgetListNone`} value='null' onInput={handleInput} checked={!article.widgetList || article.widgetList === 'null'} />
+                                        <label class='form-check-label text-white-50' for={`widgetListNone`}>
+                                            None
+                                        </label>
+                                    </div>                                    
                                     {['clock', 'booking', 'poll', 'gallery', 'weather', 'rating'].map(e => (
                                         <div class='form-check'>
                                             <input class='form-check-input' type='radio' name='widgetList' id={`widgetList${e}`} value={e} onInput={handleInput} checked={article.widgetList === e} />
