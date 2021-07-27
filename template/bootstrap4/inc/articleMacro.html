@@ -1,6 +1,8 @@
 
-{%- macro colorArticleBackground(category, frontpage, isJumbotron) -%}
-    style="{%- if isJumbotron && category.bgColorJumbotron -%}
+{%- macro colorArticleBackground(category, frontpage, isJumbotron, article) -%}
+    style="{%- if article && article.background -%}
+        background-color: {{ article.background }} !important;
+    {%- elseif isJumbotron && category.bgColorJumbotron -%}
         background-color: {{ category.bgColorJumbotron }} !important;
     {%- elseif isFrontpage && frontpage.bgColorJumbotron -%}
         background-color: {{ frontpage.bgColorJumbotron }} !important;
@@ -11,8 +13,10 @@
     {%- endif -%}"
 {%- endmacro -%}
 
-{%- macro colorArticleText(category, frontpage, isJumbotron) -%}
-    style="{%- if isJumbotron && category.colorJumbotron -%}
+{%- macro colorArticleText(category, frontpage, isJumbotron, article, heading) -%}
+    style="{%- if article && article.forground -%}
+        color: {{ article.forground }} !important;
+    {%- elseif isJumbotron && category.colorJumbotron -%}
         color: {{ category.colorJumbotron }} !important;
     {%- elseif isFrontpage && frontpage.colorJumbotron -%}
         color: {{ frontpage.colorJumbotron }} !important;
@@ -20,11 +24,23 @@
         color: {{ category.colorMain }} !important;
     {%- elseif frontpage.colorMain -%}
         color: {{ frontpage.colorMain }} !important;
+    {%- endif -%}
+    {%- if heading === 'h1' && article && article.fontsizeH1 -%}
+        font-size: {{ article.fontsizeH1 }}rem;
+    {%- endif -%}
+    {%- if heading === 'h1' && article && article.fontweightH1 -%}
+        font-weight: {{ article.fontweightH1 }};
+    {%- endif -%}
+    {%- if heading === 'h3' && article && article.fontsizeH3 -%}
+        font-size: {{ article.fontsizeH3 }}rem;
+    {%- endif -%}
+    {%- if heading === 'h3' && article && article.fontweightH3 -%}
+        font-weight: {{ article.fontweightH3 }};
     {%- endif -%}"
 {%- endmacro -%}
 
 {% macro articleTeaser(art, col, extraClasses, heading) %}
-    <div class="col-6 col-sm-4 col-lg-{{ col || 4 }} post-data my-1 {{ extraClasses }}" {{ colorArticleBackground(art.catRef) }}>
+    <div class="col-6 col-sm-4 col-lg-{{ col || 4 }} post-data my-1 {{ extraClasses }}" {{ colorArticleBackground(art.catRef, null, null, art) }}>
         {% if art.img[0] %}
             <div class="post-thumb d-flex align-items-center">
                 <a href="{% if art.url %}{{ art.url }}{% else %}/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}{% endif %}">
@@ -32,15 +48,16 @@
                 </a>
             </div>
         {% endif %}
-        <div class="post-content" {{ colorArticleText(art.catRef) }}>
+        <div class="post-content" {{ colorArticleText(art.catRef, null, null, art) }}>
             {% if art.catRef.hideFrontpageTitle %}
             {% else %}
                 <{{ heading || 'h3' }}>
-                    <a href="{% if art.url %}{{ art.url }}{% else %}/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}{% endif %}" {{ colorArticleText(art.catRef) }}>
+                    <a href="{% if art.url %}{{ art.url }}{% else %}/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}{% endif %}" {{ colorArticleText(art.catRef, null, null, art, heading) }}>
                         {{ art.title }}
                     </a>
                 </{{ heading || 'h3' }}>
             {% endif %}
+
             {% if art.catRef.hideFrontpageTeaser %}
             {% elseif art.teaser %}
                 <p class='mb-1'>{{ art.teaser|raw }}</p>
@@ -49,59 +66,32 @@
             {% endif %}
 
 
-
-        {% if art.widgetList === 'helloworld' %}
-            <div data-widget-host="simple-blog-helloworld">
-                <script type="text/props">
-                    {
-                        "apiServer": "{{ blog.protocol }}://{{ blog.domain }}",
-                        "jwtToken": "{{ jwtToken }}",
-                        "sessionEmail": "{{ session.email }}",
-                        "sessionAge": "{{ session.age }}",
-                        "articleId": {{ art.id }}
-                    }
-                </script>
-            </div>
-            <script async src="/preact/simple-blog-helloworld/bundle.js?time={{ env.epoch }}"></script>
-        {% endif %}
-        {% if art.widgetList === 'clock' %}
-            <div data-widget-host="simple-blog-clock">
-                <script type="text/props">
-                    {
-                        "apiServer": "{{ blog.protocol }}://{{ blog.domain }}",
-                        "jwtToken": "{{ jwtToken }}",
-                        "sessionEmail": "{{ session.email }}",
-                        "sessionAge": "{{ session.age }}",
-                        "articleId": {{ art.id }}
-                    }
-                </script>
-            </div>
-            <script async src="/preact/simple-blog-clock/bundle.js?time={{ env.epoch }}"></script>
-        {% endif %}
-        {% if art.widgetList === 'booking' %}
-            <div data-widget-host="simple-blog-booking">
-                <script type="text/props">
-                    {
-                        "apiServer": "{{ blog.protocol }}://{{ blog.domain }}",
-                        "jwtToken": "{{ jwtToken }}",
-                        "sessionEmail": "{{ session.email }}",
-                        "sessionAge": "{{ session.age }}",
-                        "articleId": {{ art.id }}
-                    }
-                </script>
-            </div>
-            <script async src="/preact/simple-blog-booking/bundle.js?time={{ env.epoch }}"></script>
-        {% endif %}
+            {% for widget in ['helloworld', 'clock', 'booking', 'poll', 'gallery', 'weather', 'rating'] %}
+                {% if article.widgetList === widget %}
+                    <div data-widget-host="simple-blog-helloworld">
+                        <script type="text/props">
+                            {
+                                "apiServer": "{{ blog.protocol }}://{{ blog.domain }}",
+                                "jwtToken": "{{ jwtToken }}",
+                                "sessionEmail": "{{ session.email }}",
+                                "sessionAge": "{{ session.age }}",
+                                "articleId": {{ article.id }}
+                            }
+                        </script>
+                    </div>
+                    <script async src="/preact/simple-blog-{{ widget }}/bundle.js?time={{ env.epoch }}"></script>
+                {% endif %}
+            {% endfor %}
 
 
             <!-- <p class="lead">{{ art.body|substring(0, 150)|markdown|cleanHtml }}...</p> -->
             {% if art.catRef.hideMetaInfo %}
             {% else %}
                 <small>
-                    <div {{ colorArticleText(art.catRef) }}>
+                    <div {{ colorArticleText(art.catRef, null, null, art) }}>
                         <small class='font-weight-lighter mr-1'>
                             <i class="far fa-folder-open"></i>
-                            <a href="/v2/{{ art.category|asLinkPart }}/" class="post-cat text-muted" {{ colorArticleText(art.catRef) }}>{{ art.category }}</a>
+                            <a href="/v2/{{ art.category|asLinkPart }}/" class="post-cat text-muted" {{ colorArticleText(art.catRef, null, null, art) }}>{{ art.category }}</a>
                         </small>
                         <small class='font-weight-lighter mr-1'>/</small>
                         <small class='font-weight-lighter mr-1'>{{ art.published|asHumanReadable }}</small>

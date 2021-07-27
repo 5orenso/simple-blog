@@ -38,6 +38,13 @@ const fields = {
     classifiedWords: 1,
     widget: 1,
     widgetList: 1,
+
+    background: 1,
+    forground: 1,
+    fontsizeH1: 1,
+    fontweightH1: 1,
+    fontsizeH3: 1,
+    fontweightH3: 1,
 };
 
 module.exports = async (req, res) => {

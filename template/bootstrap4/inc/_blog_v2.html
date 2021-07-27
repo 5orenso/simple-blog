@@ -118,49 +118,22 @@
                 {% endif %}
 
 
-
-                {% if article.widget === 'helloworld' %}
-                    <div data-widget-host="simple-blog-helloworld">
-                        <script type="text/props">
-                            {
-                                "apiServer": "{{ blog.protocol }}://{{ blog.domain }}",
-                                "jwtToken": "{{ jwtToken }}",
-                                "sessionEmail": "{{ session.email }}",
-                                "sessionAge": "{{ session.age }}",
-                                "articleId": {{ article.id }}
-                            }
-                        </script>
-                    </div>
-                    <script async src="/preact/simple-blog-helloworld/bundle.js?time={{ env.epoch }}"></script>
-                {% endif %}
-                {% if article.widget === 'clock' %}
-                    <div data-widget-host="simple-blog-clock">
-                        <script type="text/props">
-                            {
-                                "apiServer": "{{ blog.protocol }}://{{ blog.domain }}",
-                                "jwtToken": "{{ jwtToken }}",
-                                "sessionEmail": "{{ session.email }}",
-                                "sessionAge": "{{ session.age }}",
-                                "articleId": {{ article.id }}
-                            }
-                        </script>
-                    </div>
-                    <script async src="/preact/simple-blog-clock/bundle.js?time={{ env.epoch }}"></script>
-                {% endif %}
-                {% if article.widget === 'booking' %}
-                    <div data-widget-host="simple-blog-booking">
-                        <script type="text/props">
-                            {
-                                "apiServer": "{{ blog.protocol }}://{{ blog.domain }}",
-                                "jwtToken": "{{ jwtToken }}",
-                                "sessionEmail": "{{ session.email }}",
-                                "sessionAge": "{{ session.age }}",
-                                "articleId": {{ article.id }}
-                            }
-                        </script>
-                    </div>
-                    <script async src="/preact/simple-blog-booking/bundle.js?time={{ env.epoch }}"></script>
-                {% endif %}
+                {% for widget in ['helloworld', 'clock', 'booking', 'poll', 'gallery', 'weather', 'rating'] %}
+                    {% if article.widgetList === widget %}
+                        <div data-widget-host="simple-blog-helloworld">
+                            <script type="text/props">
+                                {
+                                    "apiServer": "{{ blog.protocol }}://{{ blog.domain }}",
+                                    "jwtToken": "{{ jwtToken }}",
+                                    "sessionEmail": "{{ session.email }}",
+                                    "sessionAge": "{{ session.age }}",
+                                    "articleId": {{ article.id }}
+                                }
+                            </script>
+                        </div>
+                        <script async src="/preact/simple-blog-{{ widget }}/bundle.js?time={{ env.epoch }}"></script>
+                    {% endif %}
+                {% endfor %}
 
 
                 {% if isPhoto %}
@@ -341,7 +314,7 @@
                     <div class="container-fluid">
                         <div class="row artlist">
                             {% for art in artlist %}
-                                {{ articleMacro.articleTeaser(art, 12, 'p-0') }}
+                                {{ articleMacro.articleTeaser(art, 12, '', 'h3') }}
                             {% endfor %}
                         </div>
                     </div>

@@ -21,6 +21,18 @@ const initialState = {
         tableY: 5,
         codeLanguage: util.get('markdownCodeLanguage'),
     },
+    backgroundHexR: 255,
+    backgroundHexG: 255,
+    backgroundHexB: 255,
+    backgroundHex: '#ffffff',
+    forgroundHexR: 0,
+    forgroundHexG: 0,
+    forgroundHexB: 0,
+    forgroundHex: '#000000',
+    fontsizeH1: 4,
+    fontweightH1: 600,
+    fontsizeH3: 1.3,
+    fontweightH3: 600,
 };
 const debug = false;
 const editMode = 'textarea'; // div
@@ -30,6 +42,10 @@ const statusList = [
     { value: 1, title: 'I arbeid' },
     { value: 2, title: 'Live' },
 ];
+
+function pad(n){
+    return (n.length<2) ? '0'+n : n;
+}
 
 export default class ArticleEdit extends Component {
     constructor(props) {
@@ -227,8 +243,82 @@ export default class ArticleEdit extends Component {
         }, 1000);
     }
 
+    setColor = (e) => {
+        const handleInputRaw = this.props.handleInputRaw;
+        const { finalname } = e.target.dataset;
+        const { name, value } = e.target;
+        this.setState({
+            [`${name}`]: value,
+        }, () => {
+            const {
+                [`${finalname}HexR`]: r,
+                [`${finalname}HexG`]: g,
+                [`${finalname}HexB`]: b,
+            } = this.state;
+
+            const r_hex = parseInt(r, 10).toString(16);
+            const g_hex = parseInt(g, 10).toString(16);
+            const b_hex = parseInt(b, 10).toString(16);
+            const hex = '#' + pad(r_hex) + pad(g_hex) + pad(b_hex);
+
+            this.setState({
+                [`${finalname}Hex`]: hex,
+            });
+
+            handleInputRaw(finalname, hex);
+        })
+    }
+
+    setColorToValue = (e) => {
+        const handleInputRaw = this.props.handleInputRaw;
+        const { finalname, hexfixed, rfixed, gfixed, bfixed } = e.target.dataset;
+        this.setState({
+            [`${finalname}Hex`]: hexfixed,
+            [`${finalname}HexR`]: rfixed,
+            [`${finalname}HexG`]: gfixed,
+            [`${finalname}HexB`]: bfixed,
+        }, () => {
+            handleInputRaw(finalname, hexfixed);
+        });
+    }
+
+    componentDidMount() {
+        console.log('componentDidMount');
+        const article = this.props.article;
+
+        var backgroundRgbHex = article.background.replace(/#/, '').match(/.{1,2}/g);
+        var backgroundRgb = [
+            parseInt(backgroundRgbHex[0], 16),
+            parseInt(backgroundRgbHex[1], 16),
+            parseInt(backgroundRgbHex[2], 16)
+        ];
+        var forgroundRgbHex = article.background.replace(/#/, '').match(/.{1,2}/g);
+        var forgroundRgb = [
+            parseInt(forgroundRgbHex[0], 16),
+            parseInt(forgroundRgbHex[1], 16),
+            parseInt(forgroundRgbHex[2], 16)
+        ];
+
+        this.setState({
+            backgroundHex: article.background,
+            backgroundHexR: backgroundRgb[0],
+            backgroundHexG: backgroundRgb[1],
+            backgroundHexB: backgroundRgb[2],
+            forgroundHex: article.forground,
+            forgroundHexR: forgroundRgb[0],
+            forgroundHexG: forgroundRgb[1],
+            forgroundHexB: forgroundRgb[2],
+        });
+
+    }
+
     render(props) {
-        const { currentMenu, currentTagIdx, currentTag, toggleDropdown } = this.state;
+        const {
+            currentMenu, currentTagIdx, currentTag, toggleDropdown,
+            backgroundHex, backgroundHexR, backgroundHexG, backgroundHexB,
+            forgroundHex, forgroundHexR, forgroundHexG, forgroundHexB,
+            fontsizeH1, fontweightH1, fontsizeH3, fontweightH3,
+        } = this.state;
         const that = props.that;
         const { imageServer, imagePath } = props;
         const previewJwtToken = props.previewJwtToken;
@@ -237,6 +327,7 @@ export default class ArticleEdit extends Component {
         const article = props.article;
         const sessionEmail = props.sessionEmail;
         const handleInput = props.handleInput;
+        const handleInputRaw = props.handleInputRaw;
         const handleAddImage = props.handleAddImage;
         const handleRemoveImageClick = props.handleRemoveImageClick;
         const handleTextareaInput = props.handleTextareaInput;
@@ -270,6 +361,8 @@ export default class ArticleEdit extends Component {
             <nav class='nav nav-pills nav-fill mb-3 sticky-top bg-light'>
                 <a class={`nav-item nav-link ${currentMenu === 'preview' ? 'active' : ''}`} href='#'
                     onClick={this.handleMenuClick} data-menu='preview'><i class='fas fa-eye'></i> Forhåndsvisning</a>
+                <a class={`nav-item nav-link ${currentMenu === 'frontpagepreview' ? 'active' : ''}`} href='#'
+                    onClick={this.handleMenuClick} data-menu='frontpagepreview'><i class='fas fa-eye'></i> I lister</a>
                 <a class={`nav-item nav-link ${currentMenu === 'images' ? 'active' : ''}`} href='#'
                     onClick={this.handleMenuClick} data-menu='images'><i class='fas fa-images'></i> Bilder ({imagesTotal})</a>
                 <a class={`nav-item nav-link ${currentMenu === 'youtube' ? 'active' : ''}`} href='#'
@@ -477,31 +570,406 @@ export default class ArticleEdit extends Component {
 
                 </div>
 
-                <div class='col-6 d-flex flex-column'>
-                    <div class='form-group'>
-                        <label class='text-white-50'>Widget</label>
-                        {['helloworld', 'clock', 'booking'].map(e => (
-                            <div class='form-check'>
-                                <input class='form-check-input' type='radio' name='widget' id={`widget${e}`} value={e} onInput={handleInput} checked={article.widget === e} />
-                                <label class='form-check-label text-white-50' for={`widget${e}`}>
-                                    {e}
-                                </label>
+
+                <div class='col-12 d-flex flex-column mb-2 text-white-50'>
+                    <details>
+                        <summary>
+                            Advanced
+                        </summary>
+                        <div class='row text-dark'>
+                            <div class='col-6 d-flex flex-column'>
+                                <div class='form-group'>
+                                    <label class='text-white-50'>Widget in article</label>
+                                    {['clock', 'booking', 'poll', 'gallery', 'weather', 'rating'].map(e => (
+                                        <div class='form-check'>
+                                            <input class='form-check-input' type='radio' name='widget' id={`widget${e}`} value={e} onInput={handleInput} checked={article.widget === e} />
+                                            <label class='form-check-label text-white-50' for={`widget${e}`}>
+                                                {e}
+                                            </label>
+                                        </div>
+                                    ))}
+                                </div>
                             </div>
-                        ))}
-                    </div>
-                </div>
-                <div class='col-6 d-flex flex-column'>
-                    <div class='form-group'>
-                        <label class='text-white-50'>Widget List</label>
-                        {['helloworld', 'clock', 'booking'].map(e => (
-                            <div class='form-check'>
-                                <input class='form-check-input' type='radio' name='widgetList' id={`widgetList${e}`} value={e} onInput={handleInput} checked={article.widgetList === e} />
-                                <label class='form-check-label text-white-50' for={`widgetList${e}`}>
-                                    {e}
-                                </label>
+                            <div class='col-6 d-flex flex-column'>
+                                <div class='form-group'>
+                                    <label class='text-white-50'>Widget in lists</label>
+                                    {['clock', 'booking', 'poll', 'gallery', 'weather', 'rating'].map(e => (
+                                        <div class='form-check'>
+                                            <input class='form-check-input' type='radio' name='widgetList' id={`widgetList${e}`} value={e} onInput={handleInput} checked={article.widgetList === e} />
+                                            <label class='form-check-label text-white-50' for={`widgetList${e}`}>
+                                                {e}
+                                            </label>
+                                        </div>
+                                    ))}
+                                </div>
                             </div>
-                        ))}
-                    </div>
+
+                            <div class='col-6 d-flex flex-column'>
+                                <div class='form-group'>
+                                    <label class='text-white-50'>Background color</label>
+
+                                    <div class='form-group my-0'>
+                                        <button
+                                            class='btn btn-sm btn-outline-primary mr-1 mb-1'
+                                            type='button'
+                                            onClick={this.setColorToValue}
+                                            data-finalname='background'
+                                            data-hexfixed='#0275d8'
+                                            data-rfixed='2'
+                                            data-gfixed='117'
+                                            data-bfixed='216'
+                                        >primary</button>
+                                        <button
+                                            class='btn btn-sm btn-outline-success mr-1 mb-1'
+                                            type='button'
+                                            onClick={this.setColorToValue}
+                                            data-finalname='background'
+                                            data-hexfixed='#5cb85c'
+                                            data-rfixed='92'
+                                            data-gfixed='184'
+                                            data-bfixed='92'
+                                        >success</button>
+                                        <button
+                                            class='btn btn-sm btn-outline-info mr-1 mb-1'
+                                            type='button'
+                                            onClick={this.setColorToValue}
+                                            data-finalname='background'
+                                            data-hexfixed='#5bc0de'
+                                            data-rfixed='91'
+                                            data-gfixed='192'
+                                            data-bfixed='222'
+                                        >info</button>
+                                        <button
+                                            class='btn btn-sm btn-outline-warning mr-1 mb-1'
+                                            type='button'
+                                            onClick={this.setColorToValue}
+                                            data-finalname='background'
+                                            data-hexfixed='#f0ad4e'
+                                            data-rfixed='240'
+                                            data-gfixed='173'
+                                            data-bfixed='78'
+                                        >warning</button>
+                                        <button
+                                            class='btn btn-sm btn-outline-danger mr-1 mb-1'
+                                            type='button'
+                                            onClick={this.setColorToValue}
+                                            data-finalname='background'
+                                            data-hexfixed='#d9534f'
+                                            data-rfixed='217'
+                                            data-gfixed='83'
+                                            data-bfixed='79'
+                                        >danger</button>
+                                        <button
+                                            class='btn btn-sm btn-outline-dark mr-1 mb-1'
+                                            type='button'
+                                            onClick={this.setColorToValue}
+                                            data-finalname='background'
+                                            data-hexfixed='#292b2c'
+                                            data-rfixed='41'
+                                            data-gfixed='43'
+                                            data-bfixed='44'
+                                        >dark</button>
+                                        <button
+                                            class='btn btn-sm btn-outline-light mr-1 mb-1'
+                                            type='button'
+                                            onClick={this.setColorToValue}
+                                            data-finalname='background'
+                                            data-hexfixed='#f7f7f7'
+                                            data-rfixed='247'
+                                            data-gfixed='247'
+                                            data-bfixed='247'
+                                        >light</button>
+                                    </div>
+
+                                    <div class='form-group d-flex align-items-center my-0'>
+                                        <label for='r' class='mr-2 my-0 rounded-circle text-center' style='background-color: #ff0000; width: 25px;'>R</label>
+                                        <input
+                                            class={`form-control mr-2`}
+                                            data-finalname='background'
+                                            name='backgroundHexR'
+                                            type='range'
+                                            min='0'
+                                            max='255'
+                                            id='r'
+                                            step='1'
+                                            value={backgroundHexR}
+                                            onInput={this.setColor}
+                                        />
+                                        <output for='r'>{backgroundHexR}</output>
+                                    </div>  
+
+                                    <div class='form-group d-flex align-items-center my-0'>
+                                        <label for='g' class='mr-2 my-0 rounded-circle text-center' style='background-color: #00ff00; width: 25px;'>G</label>
+                                        <input
+                                            class={`form-control mr-2`}
+                                            data-finalname='background'
+                                            name='backgroundHexG'
+                                            type='range'
+                                            min='0'
+                                            max='255'
+                                            id='g'
+                                            step='1'
+                                            value={backgroundHexG}
+                                            onInput={this.setColor}
+                                        />
+                                        <output for='g'>{backgroundHexG}</output>
+                                    </div>  
+
+                                    <div class='form-group d-flex align-items-center my-0'>
+                                        <label for='g' class='mr-2 my-0 rounded-circle text-center' style='background-color: #0000ff; width: 25px;'>B</label>
+                                        <input
+                                            class={`form-control mr-2`}
+                                            data-finalname='background'
+                                            name='backgroundHexB'
+                                            type='range'
+                                            min='0'
+                                            max='255'
+                                            id='b'
+                                            step='1'
+                                            value={backgroundHexB}
+                                            onInput={this.setColor}
+                                        />
+                                        <output for='b'>{backgroundHexB}</output>
+                                    </div>  
+
+                                    <div class='text-center rounded-lg' style={`background-color: ${backgroundHex};`}>
+                                        <h3 style={`color: ${forgroundHex};`}>{article.background || backgroundHex}</h3>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class='col-6 d-flex flex-column'>
+                                <div class='form-group'>
+                                    <label class='text-white-50'>Forground color</label>
+
+                                    <div class='form-group my-0'>
+                                        <button
+                                            class='btn btn-sm btn-outline-primary mr-1 mb-1'
+                                            type='button'
+                                            onClick={this.setColorToValue}
+                                            data-finalname='forground'
+                                            data-hexfixed='#0275d8'
+                                            data-rfixed='2'
+                                            data-gfixed='117'
+                                            data-bfixed='216'
+                                        >primary</button>
+                                        <button
+                                            class='btn btn-sm btn-outline-success mr-1 mb-1'
+                                            type='button'
+                                            onClick={this.setColorToValue}
+                                            data-finalname='forground'
+                                            data-hexfixed='#5cb85c'
+                                            data-rfixed='92'
+                                            data-gfixed='184'
+                                            data-bfixed='92'
+                                        >success</button>
+                                        <button
+                                            class='btn btn-sm btn-outline-info mr-1 mb-1'
+                                            type='button'
+                                            onClick={this.setColorToValue}
+                                            data-finalname='forground'
+                                            data-hexfixed='#5bc0de'
+                                            data-rfixed='91'
+                                            data-gfixed='192'
+                                            data-bfixed='222'
+                                        >info</button>
+                                        <button
+                                            class='btn btn-sm btn-outline-warning mr-1 mb-1'
+                                            type='button'
+                                            onClick={this.setColorToValue}
+                                            data-finalname='forground'
+                                            data-hexfixed='#f0ad4e'
+                                            data-rfixed='240'
+                                            data-gfixed='173'
+                                            data-bfixed='78'
+                                        >warning</button>
+                                        <button
+                                            class='btn btn-sm btn-outline-danger mr-1 mb-1'
+                                            type='button'
+                                            onClick={this.setColorToValue}
+                                            data-finalname='forground'
+                                            data-hexfixed='#d9534f'
+                                            data-rfixed='217'
+                                            data-gfixed='83'
+                                            data-bfixed='79'
+                                        >danger</button>
+                                        <button
+                                            class='btn btn-sm btn-outline-dark mr-1 mb-1'
+                                            type='button'
+                                            onClick={this.setColorToValue}
+                                            data-finalname='forground'
+                                            data-hexfixed='#292b2c'
+                                            data-rfixed='41'
+                                            data-gfixed='43'
+                                            data-bfixed='44'
+                                        >dark</button>
+                                        <button
+                                            class='btn btn-sm btn-outline-light mr-1 mb-1'
+                                            type='button'
+                                            onClick={this.setColorToValue}
+                                            data-finalname='forground'
+                                            data-hexfixed='#f7f7f7'
+                                            data-rfixed='247'
+                                            data-gfixed='247'
+                                            data-bfixed='247'
+                                        >light</button>
+                                    </div>
+
+                                    <div class='form-group d-flex align-items-center my-0'>
+                                        <label for='r' class='mr-2 my-0 rounded-circle text-center' style='background-color: #ff0000; width: 25px;'>R</label>
+                                        <input
+                                            class={`form-control mr-2`}
+                                            data-finalname='forground'
+                                            name='forgroundHexR'
+                                            type='range'
+                                            min='0'
+                                            max='255'
+                                            id='r'
+                                            step='1'
+                                            value={forgroundHexR}
+                                            onInput={this.setColor}
+                                        />
+                                        <output for='r'>{forgroundHexR}</output>
+                                    </div>  
+
+                                    <div class='form-group d-flex align-items-center my-0'>
+                                        <label for='g' class='mr-2 my-0 rounded-circle text-center' style='background-color: #00ff00; width: 25px;'>G</label>
+                                        <input
+                                            class={`form-control mr-2`}
+                                            data-finalname='forground'
+                                            name='forgroundHexG'
+                                            type='range'
+                                            min='0'
+                                            max='255'
+                                            id='g'
+                                            step='1'
+                                            value={forgroundHexG}
+                                            onInput={this.setColor}
+                                        />
+                                        <output for='g'>{forgroundHexG}</output>
+                                    </div>  
+
+                                    <div class='form-group d-flex align-items-center my-0'>
+                                        <label for='g' class='mr-2 my-0 rounded-circle text-center' style='background-color: #0000ff; width: 25px;'>B</label>
+                                        <input
+                                            class={`form-control mr-2`}
+                                            data-finalname='forground'
+                                            name='forgroundHexB'
+                                            type='range'
+                                            min='0'
+                                            max='255'
+                                            id='b'
+                                            step='1'
+                                            value={forgroundHexB}
+                                            onInput={this.setColor}
+                                        />
+                                        <output for='b'>{forgroundHexB}</output>
+                                    </div>  
+
+                                    <div class='text-center rounded-lg' style={`background-color: ${backgroundHex};`}>
+                                        <h3 style={`color: ${forgroundHex};`}>{article.forground || forgroundHex}</h3>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class='col-6 d-flex flex-column'>
+                                <div class='form-group'>
+                                    <label class='text-white-50'>Title font-size H1</label>
+
+                                    <div class='form-group d-flex align-items-center my-0'>
+                                        <label for='fontsizeH1' class='mr-2 my-0'>Fontsize</label>
+                                        <input
+                                            class={`form-control mr-2`}
+                                            name='fontsizeH1'
+                                            type='range'
+                                            min='0.5'
+                                            max='10'
+                                            id='fontsizeH1'
+                                            step='0.1'
+                                            value={article.fontsizeH1 || fontsizeH1}
+                                            onInput={handleInput}
+                                        />
+                                        <output for='fontsizeH1'>{article.fontsizeH1 || 'default'}</output>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class='col-6 d-flex flex-column'>
+                                <div class='form-group'>
+                                    <label class='text-white-50'>Title font-weight H1</label>
+
+                                    <div class='form-group d-flex align-items-center my-0'>
+                                        <label for='fontweightH1' class='mr-2 my-0'>Fontweight</label>
+                                        <input
+                                            class={`form-control mr-2`}
+                                            name='fontweightH1'
+                                            type='range'
+                                            min='50'
+                                            max='1000'
+                                            id='fontweightH1'
+                                            step='10'
+                                            value={article.fontweightH1 || fontweightH1}
+                                            onInput={handleInput}
+                                        />
+                                        <output for='fontweightH1'>{article.fontweightH1 || 'default'}</output>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class='col-6 d-flex flex-column'>
+                                <div class='form-group'>
+                                    <label class='text-white-50'>Title font-size H3</label>
+
+                                    <div class='form-group d-flex align-items-center my-0'>
+                                        <label for='fontsizeH3' class='mr-2 my-0'>Fontsize</label>
+                                        <input
+                                            class={`form-control mr-2`}
+                                            name='fontsizeH3'
+                                            type='range'
+                                            min='0.5'
+                                            max='10'
+                                            id='fontsizeH3'
+                                            step='0.1'
+                                            value={article.fontsizeH3 || fontsizeH3}
+                                            onInput={handleInput}
+                                        />
+                                        <output for='fontsizeH3'>{article.fontsizeH3 || 'default'}</output>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class='col-6 d-flex flex-column'>
+                                <div class='form-group'>
+                                    <label class='text-white-50'>Title font-weight H3</label>
+
+                                    <div class='form-group d-flex align-items-center my-0'>
+                                        <label for='fontweightH3' class='mr-2 my-0'>Fontweight</label>
+                                        <input
+                                            class={`form-control mr-2`}
+                                            name='fontweightH3'
+                                            type='range'
+                                            min='50'
+                                            max='1000'
+                                            id='fontweightH3'
+                                            step='10'
+                                            value={article.fontweightH3 || fontweightH3}
+                                            onInput={handleInput}
+                                        />
+                                        <output for='fontweightH3'>{article.fontweightH3 || 'default'}</output>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class='col-12 text-center'>
+                                <div class='rounded-lg' style={`background-color: ${backgroundHex};`}>
+                                    <h1 style={`color: ${forgroundHex}; font-size: ${article.fontsizeH1}rem; font-weight: ${article.fontweightH1};`}>H1: {article.title}</h1>
+                                </div>
+                            </div>
+                            <div class='col-12 text-center'>
+                                <div class='rounded-lg' style={`background-color: ${backgroundHex};`}>
+                                    <h3 style={`color: ${forgroundHex}; font-size: ${article.fontsizeH3}rem; font-weight: ${article.fontweightH3};`}>H3: {article.title}</h3>
+                                </div>
+                            </div>
+
+                        </div>
+                    </details>
+
                 </div>
 
 
@@ -531,6 +999,194 @@ export default class ArticleEdit extends Component {
         );
 
         const shareLink = `${this.imageServer}/${utilHtml.asLinkPart(article.category)}/${utilHtml.asLinkPart(article.title)}/${article.id}`;
+// {/* <div class='rounded-lg' style={`background-color: ${backgroundHex};`}>
+//                                     <h1 style={`color: ${forgroundHex}; font-size: ${article.fontsize}em; font-weight: ${article.fontweight};`}>{article.title}</h1>
+//                                 </div> */}
+
+        const renderedFrontpagePreview = (
+            <div class='col-12 pt-3'>
+                <div class='row'>
+                    <div class='col-12 pt-3' style={`background-color: ${backgroundHex}; color: ${forgroundHex};`}>
+                        {renderImages}
+                        <h1 style={`color: ${forgroundHex}; font-size: ${article.fontsizeH1}rem; font-weight: ${article.fontweightH1};`}>{article.title}</h1>
+                        <h5>{article.teaser}</h5>
+                        <div>
+                            <small>
+                                {util.asHumanReadable(article.published)}
+                                {util.asHumanReadable(article.published) !== util.asHumanReadable(article.updatedDate) && <span class='text-muted'> / <i class='fas fa-undo' /> {util.asHumanReadable(article.updatedDate)}</span>}
+                                &nbsp; /  <i class='far fa-folder-open' /> {article.category}
+                                &nbsp; / &nbsp;
+                                <span class={`badge badge-${util.getStatusClass(article.status)} p-2`}>
+                                    {util.getStatus(article.status)}
+                                </span>
+                                &nbsp; / 
+                                &nbsp;<a rel='noopener' target='_blank' href={`https://www.facebook.com/sharer.php?u=${shareLink}`}>
+                                    <i class='fab fa-facebook'></i>
+                                </a>
+                                &nbsp;<a rel='noopener' target='_blank' href={`https://twitter.com/intent/tweet?url=${shareLink}`
+                                    + `&text=${utilHtml.asUrlSafe(article.title)}.%20`
+                                    + `${utilHtml.asUrlSafe(article.teaser || article.ingress)}`
+                                    + `&via=${utilHtml.asUrlSafe(this.imageServer)}`
+                                    + `&hashtags=${utilHtml.asUrlSafe(article.tags)}`}>
+                                    <i class='fab fa-twitter'></i>
+                                </a>
+                                &nbsp;<a rel='noopener' target='_blank' href={`https://www.linkedin.com/shareArticle?mini=true`
+                                    + `&url=${shareLink}`
+                                    + `&summary=${utilHtml.asUrlSafe(article.title)}.%20`
+                                    + `${utilHtml.asUrlSafe(article.teaser || article.ingress)}`
+                                    + `&source=${utilHtml.asUrlSafe(this.imageServer)}`}>
+                                    <i class='fab fa-linkedin-in'></i>
+                                </a>
+                                &nbsp;<a rel='noopener' target='_blank' href={`mailto:?subject=Tips: `
+                                    + `${utilHtml.asUrlSafe(article.title)}`
+                                    + `&body=Tips fra ${utilHtml.asUrlSafe(this.imageServer)}:%0D%0A%0D%0A`
+                                    + `${utilHtml.asUrlSafe(utilHtml.uc(article.title))}%0D%0A%0D%0A`
+                                    + `${utilHtml.asUrlSafe(article.teaser || article.ingress)}%0D%0A%0D%0A`
+                                    + `Les mer: ${shareLink}`}>
+                                    <i class='far fa-envelope'></i>
+                                </a>
+                                &nbsp; /                        
+                                Ord: {util.wordCount(article.body)}
+                                &nbsp; /                        
+                                Lesetid: {util.readTime(article.body, 'no')}
+                            </small>
+                        </div>
+                        <div class='mb-3'>
+                            <small>
+                                {Array.isArray(article.tags) && article.tags.map(tag =>
+                                    <span class='badge badge-info mr-1'>{tag}</span>
+                                )}
+                            </small>
+                        </div>
+                        <div class='lead' id='ingressDisplay' dangerouslySetInnerHTML={{
+                            __html: utilHtml.replaceMarked(
+                                utilHtml.replaceDataTags(article.ingress, article)
+                            ),
+                        }}></div>
+                    </div>
+                </div>
+                <div class='row mt-4'>
+                    <div class='col-4 offset-2 pt-3' style={`background-color: ${backgroundHex}; color: ${forgroundHex};`}>
+                        {renderImages}
+                        <h3 style={`color: ${forgroundHex}; font-size: ${article.fontsizeH3}rem; font-weight: ${article.fontweightH3};`}>{article.title}</h3>
+                        <h5>{article.teaser}</h5>
+                        <div>
+                            <small>
+                                {util.asHumanReadable(article.published)}
+                                {util.asHumanReadable(article.published) !== util.asHumanReadable(article.updatedDate) && <span class='text-muted'> / <i class='fas fa-undo' /> {util.asHumanReadable(article.updatedDate)}</span>}
+                                &nbsp; /  <i class='far fa-folder-open' /> {article.category}
+                                &nbsp; / &nbsp;
+                                <span class={`badge badge-${util.getStatusClass(article.status)} p-2`}>
+                                    {util.getStatus(article.status)}
+                                </span>
+                                &nbsp; / 
+                                &nbsp;<a rel='noopener' target='_blank' href={`https://www.facebook.com/sharer.php?u=${shareLink}`}>
+                                    <i class='fab fa-facebook'></i>
+                                </a>
+                                &nbsp;<a rel='noopener' target='_blank' href={`https://twitter.com/intent/tweet?url=${shareLink}`
+                                    + `&text=${utilHtml.asUrlSafe(article.title)}.%20`
+                                    + `${utilHtml.asUrlSafe(article.teaser || article.ingress)}`
+                                    + `&via=${utilHtml.asUrlSafe(this.imageServer)}`
+                                    + `&hashtags=${utilHtml.asUrlSafe(article.tags)}`}>
+                                    <i class='fab fa-twitter'></i>
+                                </a>
+                                &nbsp;<a rel='noopener' target='_blank' href={`https://www.linkedin.com/shareArticle?mini=true`
+                                    + `&url=${shareLink}`
+                                    + `&summary=${utilHtml.asUrlSafe(article.title)}.%20`
+                                    + `${utilHtml.asUrlSafe(article.teaser || article.ingress)}`
+                                    + `&source=${utilHtml.asUrlSafe(this.imageServer)}`}>
+                                    <i class='fab fa-linkedin-in'></i>
+                                </a>
+                                &nbsp;<a rel='noopener' target='_blank' href={`mailto:?subject=Tips: `
+                                    + `${utilHtml.asUrlSafe(article.title)}`
+                                    + `&body=Tips fra ${utilHtml.asUrlSafe(this.imageServer)}:%0D%0A%0D%0A`
+                                    + `${utilHtml.asUrlSafe(utilHtml.uc(article.title))}%0D%0A%0D%0A`
+                                    + `${utilHtml.asUrlSafe(article.teaser || article.ingress)}%0D%0A%0D%0A`
+                                    + `Les mer: ${shareLink}`}>
+                                    <i class='far fa-envelope'></i>
+                                </a>
+                                &nbsp; /                        
+                                Ord: {util.wordCount(article.body)}
+                                &nbsp; /                        
+                                Lesetid: {util.readTime(article.body, 'no')}
+                            </small>
+                        </div>
+                        <div class='mb-3'>
+                            <small>
+                                {Array.isArray(article.tags) && article.tags.map(tag =>
+                                    <span class='badge badge-info mr-1'>{tag}</span>
+                                )}
+                            </small>
+                        </div>
+                        <div class='lead' id='ingressDisplay' dangerouslySetInnerHTML={{
+                            __html: utilHtml.replaceMarked(
+                                utilHtml.replaceDataTags(article.ingress, article)
+                            ),
+                        }}></div>
+                    </div>
+                    <div class='col-3 offset-1 pt-3' style={`background-color: ${backgroundHex}; color: ${forgroundHex};`}>
+                        {renderImages}
+                        <h3 style={`color: ${forgroundHex}; font-size: ${article.fontsizeH3}rem; font-weight: ${article.fontweightH3};`}>{article.title}</h3>
+                        <h5>{article.teaser}</h5>
+                        <div>
+                            <small>
+                                {util.asHumanReadable(article.published)}
+                                {util.asHumanReadable(article.published) !== util.asHumanReadable(article.updatedDate) && <span class='text-muted'> / <i class='fas fa-undo' /> {util.asHumanReadable(article.updatedDate)}</span>}
+                                &nbsp; /  <i class='far fa-folder-open' /> {article.category}
+                                &nbsp; / &nbsp;
+                                <span class={`badge badge-${util.getStatusClass(article.status)} p-2`}>
+                                    {util.getStatus(article.status)}
+                                </span>
+                                &nbsp; / 
+                                &nbsp;<a rel='noopener' target='_blank' href={`https://www.facebook.com/sharer.php?u=${shareLink}`}>
+                                    <i class='fab fa-facebook'></i>
+                                </a>
+                                &nbsp;<a rel='noopener' target='_blank' href={`https://twitter.com/intent/tweet?url=${shareLink}`
+                                    + `&text=${utilHtml.asUrlSafe(article.title)}.%20`
+                                    + `${utilHtml.asUrlSafe(article.teaser || article.ingress)}`
+                                    + `&via=${utilHtml.asUrlSafe(this.imageServer)}`
+                                    + `&hashtags=${utilHtml.asUrlSafe(article.tags)}`}>
+                                    <i class='fab fa-twitter'></i>
+                                </a>
+                                &nbsp;<a rel='noopener' target='_blank' href={`https://www.linkedin.com/shareArticle?mini=true`
+                                    + `&url=${shareLink}`
+                                    + `&summary=${utilHtml.asUrlSafe(article.title)}.%20`
+                                    + `${utilHtml.asUrlSafe(article.teaser || article.ingress)}`
+                                    + `&source=${utilHtml.asUrlSafe(this.imageServer)}`}>
+                                    <i class='fab fa-linkedin-in'></i>
+                                </a>
+                                &nbsp;<a rel='noopener' target='_blank' href={`mailto:?subject=Tips: `
+                                    + `${utilHtml.asUrlSafe(article.title)}`
+                                    + `&body=Tips fra ${utilHtml.asUrlSafe(this.imageServer)}:%0D%0A%0D%0A`
+                                    + `${utilHtml.asUrlSafe(utilHtml.uc(article.title))}%0D%0A%0D%0A`
+                                    + `${utilHtml.asUrlSafe(article.teaser || article.ingress)}%0D%0A%0D%0A`
+                                    + `Les mer: ${shareLink}`}>
+                                    <i class='far fa-envelope'></i>
+                                </a>
+                                &nbsp; /                        
+                                Ord: {util.wordCount(article.body)}
+                                &nbsp; /                        
+                                Lesetid: {util.readTime(article.body, 'no')}
+                            </small>
+                        </div>
+                        <div class='mb-3'>
+                            <small>
+                                {Array.isArray(article.tags) && article.tags.map(tag =>
+                                    <span class='badge badge-info mr-1'>{tag}</span>
+                                )}
+                            </small>
+                        </div>
+                        <div class='lead' id='ingressDisplay' dangerouslySetInnerHTML={{
+                            __html: utilHtml.replaceMarked(
+                                utilHtml.replaceDataTags(article.ingress, article)
+                            ),
+                        }}></div>
+                    </div>
+                </div>
+            </div>
+        );
+
+
         const renderedPreview = (
             <div class='col-12'>
                 {renderImages}
@@ -1091,6 +1747,7 @@ export default class ArticleEdit extends Component {
                         <div class='row'>
                             {renderedMenu}
                             {currentMenu === 'preview' && renderedPreview}
+                            {currentMenu === 'frontpagepreview' && renderedFrontpagePreview}
                             {currentMenu === 'images' && renderedImages}
                             {currentMenu === 'youtube' && renderedYoutube}
                             {currentMenu === 'links' && renderedLinks}

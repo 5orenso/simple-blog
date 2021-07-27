@@ -93,8 +93,13 @@ webRouter.use('/service-worker.js', express.static(`${appPath}preact/simple-blog
 webRouter.use('/preact/simple-blog-cms/', express.static(`${appPath}preact/simple-blog-cms/build/`));
 
 webRouter.use('/preact/simple-blog-helloworld/', express.static(`${appPath}preact/simple-blog-helloworld/bundle/`));
-webRouter.use('/preact/simple-blog-booking/', express.static(`${appPath}preact/simple-blog-booking/bundle/`));
 webRouter.use('/preact/simple-blog-clock/', express.static(`${appPath}preact/simple-blog-clock/bundle/`));
+webRouter.use('/preact/simple-blog-booking/', express.static(`${appPath}preact/simple-blog-booking/bundle/`));
+webRouter.use('/preact/simple-blog-poll/', express.static(`${appPath}preact/simple-blog-clock/bundle/`));
+webRouter.use('/preact/simple-blog-gallery/', express.static(`${appPath}preact/simple-blog-clock/bundle/`));
+webRouter.use('/preact/simple-blog-weather/', express.static(`${appPath}preact/simple-blog-clock/bundle/`));
+webRouter.use('/preact/simple-blog-rating/', express.static(`${appPath}preact/simple-blog-clock/bundle/`));
+
 
 webRouter.post('/push-register', require('./post-push-register'));
 webRouter.post('/push-error', require('./post-push-error'));

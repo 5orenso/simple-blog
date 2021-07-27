@@ -63,8 +63,8 @@
     {% if !queryString.q && !queryString.tag && page === 1 %}
         {% set startArt = 1 %}
         {% set art = artlist[0] %}
-        <div class="jumbotron px-0 pt-0" {{ articleMacro.colorArticleBackground(art.catRef, frontpage, true) }}>
-            <div class="container-fluid px-0 blog-main" {{ articleMacro.colorArticleText(art.catRef, frontpage, true) }}>
+        <div class="jumbotron px-0 pt-0" {{ articleMacro.colorArticleBackground(art.catRef, frontpage, true, art) }}>
+            <div class="container-fluid px-0 blog-main" {{ articleMacro.colorArticleText(art.catRef, frontpage, true, art) }}>
                 {% if art.img[0] %}
                     <div class="jumbotron-thumb d-flex align-items-center">
                         {% if art.isFrontpage %}
@@ -76,7 +76,7 @@
                                 <img src="https://{{ imageServer }}/1920x/{{ imagePath }}/{{ art.img[0].src }}" alt="{{ art.title|e }}" class="img-fluid rounded">
                             {% endif %}
                         {% else %}
-                            <a href="/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}" {{ articleMacro.colorArticleText(art.catRef, frontpage, true) }}>
+                            <a href="/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}" {{ articleMacro.colorArticleText(art.catRef, frontpage, true, art, 'h1') }}>
                                 <img src="https://{{ imageServer }}/1920x/{{ imagePath }}/{{ art.img[0].src }}" alt="{{ art.title|e }}" class="img-fluid rounded">
                             </a>
                         {% endif %}
@@ -87,12 +87,12 @@
                         {% if art.catRef.hideFrontpageTitle %}
                         {% elseif art.isFrontpage %}
                             {% if art.url %}
-                                <a href="{{ art.url }}" {{ articleMacro.colorArticleText(art.catRef, frontpage, true) }}>{{ art.title }}</a>
+                                <a href="{{ art.url }}" {{ articleMacro.colorArticleText(art.catRef, frontpage, true, art, true) }}>{{ art.title }}</a>
                             {% else %}
                                 {{ art.title }}
                             {% endif %}
                         {% else %}
-                            <a href="/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}" {{ articleMacro.colorArticleText(art.catRef, frontpage, true) }}>
+                            <a href="/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}" {{ articleMacro.colorArticleText(art.catRef, frontpage, true, art, 'h1') }}>
                                 {{ art.title }}
                             </a>
                         {% endif %}
@@ -107,11 +107,11 @@
 
                     {% if art.isFrontpage || art.catRef.hideMetaInfo %}
                     {% else %}
-                        <div class="d-flex justify-content-left text-muted" {{ articleMacro.colorArticleText(art.catRef) }}>
+                        <div class="d-flex justify-content-left text-muted" {{ articleMacro.colorArticleText(art.catRef, null, null, art) }}>
                             {% if 1 == 1 %}
                                 <small class='mr-2 font-weight-lighter'>
                                     <i class="far fa-folder-open"></i>
-                                    <a href="/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}" class="post-cat" {{ articleMacro.colorArticleText(art.catRef) }}>{{ art.category }}</a>
+                                    <a href="/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}" class="post-cat" {{ articleMacro.colorArticleText(art.catRef, null, null, art) }}>{{ art.category }}</a>
                                 </small>
                             {% endif %}
                             <small class='font-weight-lighter mr-2'>/</small>
@@ -121,48 +121,24 @@
                         </div>
                     {% endif %}
 
-        {% if art.widgetList === 'helloworld' %}
-            <div data-widget-host="simple-blog-helloworld">
-                <script type="text/props">
-                    {
-                        "apiServer": "{{ blog.protocol }}://{{ blog.domain }}",
-                        "jwtToken": "{{ jwtToken }}",
-                        "sessionEmail": "{{ session.email }}",
-                        "sessionAge": "{{ session.age }}",
-                        "articleId": {{ art.id }}
-                    }
-                </script>
-            </div>
-            <script async src="/preact/simple-blog-helloworld/bundle.js?time={{ env.epoch }}"></script>
-        {% endif %}
-        {% if art.widgetList === 'clock' %}
-            <div data-widget-host="simple-blog-clock">
-                <script type="text/props">
-                    {
-                        "apiServer": "{{ blog.protocol }}://{{ blog.domain }}",
-                        "jwtToken": "{{ jwtToken }}",
-                        "sessionEmail": "{{ session.email }}",
-                        "sessionAge": "{{ session.age }}",
-                        "articleId": {{ art.id }}
-                    }
-                </script>
-            </div>
-            <script async src="/preact/simple-blog-clock/bundle.js?time={{ env.epoch }}"></script>
-        {% endif %}
-        {% if art.widgetList === 'booking' %}
-            <div data-widget-host="simple-blog-booking">
-                <script type="text/props">
-                    {
-                        "apiServer": "{{ blog.protocol }}://{{ blog.domain }}",
-                        "jwtToken": "{{ jwtToken }}",
-                        "sessionEmail": "{{ session.email }}",
-                        "sessionAge": "{{ session.age }}",
-                        "articleId": {{ art.id }}
-                    }
-                </script>
-            </div>
-            <script async src="/preact/simple-blog-booking/bundle.js?time={{ env.epoch }}"></script>
-        {% endif %}
+
+                    {% for widget in ['helloworld', 'clock', 'booking', 'poll', 'gallery', 'weather', 'rating'] %}
+                        {% if art.widgetList === widget %}
+                            <div data-widget-host="simple-blog-helloworld">
+                                <script type="text/props">
+                                    {
+                                        "apiServer": "{{ blog.protocol }}://{{ blog.domain }}",
+                                        "jwtToken": "{{ jwtToken }}",
+                                        "sessionEmail": "{{ session.email }}",
+                                        "sessionAge": "{{ session.age }}",
+                                        "articleId": {{ art.id }}
+                                    }
+                                </script>
+                            </div>
+                            <script async src="/preact/simple-blog-{{ widget }}/bundle.js?time={{ env.epoch }}"></script>
+                        {% endif %}
+                    {% endfor %}
+
 
                 </div>
     

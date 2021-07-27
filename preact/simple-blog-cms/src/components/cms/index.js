@@ -626,7 +626,7 @@ export default class SimpleBlogCms extends Component {
         this.setState({ iotDevice });
     };
 
-    articleInputAdd(name, value, type) {
+    articleInputAdd = (name, value, type) => {
         const article = this.state.article;
         const taglist = this.state.taglist;
         if (type === 'array') {
@@ -1007,6 +1007,7 @@ export default class SimpleBlogCms extends Component {
                             taglist={taglist}
 
                             handleInput={this.handleArticleInput}
+                            handleInputRaw={this.articleInputAdd}
                             handleAddImage={this.handleAddImage}
                             handleRemoveImageClick={this.handleRemoveImageClick}
                             handleTextareaInput={this.handleArticleTextareaInput}
