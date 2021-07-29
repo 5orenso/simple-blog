@@ -26,9 +26,9 @@ export default class ImageUpload extends Component {
         }
         for (let i = 0, l = el.files.length; i < l; i += 1) {
             const photo = el.files[i];
-            if (photo.type.match('image.*')) {
-                this.readLocalFile(photo);
-            }
+            // if (photo.type.match('image.*')) {
+            this.readLocalFile(photo);
+            // }
         }
     };
 

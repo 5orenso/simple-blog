@@ -45,8 +45,23 @@ const statusList = [
     { value: 2, title: 'Live' },
 ];
 
+const widgetList = ['clock', 'booking', 'poll', 'gallery', 'weather', 'rating'];
+
+const widgetFields = {
+    clock: ['class', 'style', 'countdownto', 'showDateOnly', 'showSeconds', 'showTimezone', 'showClockOnly'],
+    booking: [],
+    poll: [],
+    gallery: [],
+    weather: [],
+    rating: [],
+};
+
 function pad(n){
     return (n.length<2) ? '0'+n : n;
+}
+
+function isImage(filename = '') {
+    return filename.match(/(jpg|jpeg|png|gif|heic|heif|svg|webp|tif)/i);
 }
 
 export default class ArticleEdit extends Component {
@@ -576,7 +591,7 @@ export default class ArticleEdit extends Component {
                 <div class='col-12 d-flex flex-column mb-2 text-white-50'>
                     <details>
                         <summary>
-                            Advanced
+                            Widgets
                         </summary>
                         <div class='row text-dark'>
                             <div class='col-6 d-flex flex-column'>
@@ -588,7 +603,7 @@ export default class ArticleEdit extends Component {
                                             None
                                         </label>
                                     </div>
-                                    {['clock', 'booking', 'poll', 'gallery', 'weather', 'rating'].map(e => (
+                                    {widgetList.map(e => (
                                         <div class='form-check'>
                                             <input class='form-check-input' type='radio' name='widget' id={`widget${e}`} value={e} onInput={handleInput} checked={article.widget === e} />
                                             <label class='form-check-label text-white-50' for={`widget${e}`}>
@@ -596,6 +611,27 @@ export default class ArticleEdit extends Component {
                                             </label>
                                         </div>
                                     ))}
+                                </div>
+                                <div class='form-group'>
+                                    {widgetList.map((wi) => {
+                                        if (article.widget === wi && Array.isArray(widgetFields[wi])) {
+                                            return (
+                                                <div>
+                                                    <label class='text-white-50'>Widget {wi} data</label>
+                                                    <div class='form-group'>
+                                                        {widgetFields[wi].map(field => <div>
+                                                            <label for={`${wi}-${field}Input`} class='text-white-50'>{wi}-{field}</label>
+                                                            <input type='text' class='form-control' id={`${wi}-${field}Input`}
+                                                                name={`${wi}-${field}`}
+                                                                onInput={handleInput}
+                                                                value={article[`${wi}-${field}`]}
+                                                            />
+                                                        </div>)}
+                                                    </div>
+                                                </div>
+                                            );
+                                        }
+                                    })}
                                 </div>
                             </div>
                             <div class='col-6 d-flex flex-column'>
@@ -607,7 +643,7 @@ export default class ArticleEdit extends Component {
                                             None
                                         </label>
                                     </div>                                    
-                                    {['clock', 'booking', 'poll', 'gallery', 'weather', 'rating'].map(e => (
+                                    {widgetList.map(e => (
                                         <div class='form-check'>
                                             <input class='form-check-input' type='radio' name='widgetList' id={`widgetList${e}`} value={e} onInput={handleInput} checked={article.widgetList === e} />
                                             <label class='form-check-label text-white-50' for={`widgetList${e}`}>
@@ -616,8 +652,37 @@ export default class ArticleEdit extends Component {
                                         </div>
                                     ))}
                                 </div>
-                            </div>
+                                <div class='form-group'>
+                                    {widgetList.map((wi) => {
+                                        if (article.widgetList === wi && Array.isArray(widgetFields[wi])) {
+                                            return (
+                                                <div>
+                                                    <label class='text-white-50'>WidgetList {wi} data</label>
+                                                    <div class='form-group'>
+                                                        {widgetFields[wi].map(field => <div>
+                                                            <label for={`${wi}-${field}Input`} class='text-white-50'>{wi}-{field}</label>
+                                                            <input type='text' class='form-control' id={`${wi}-${field}Input`}
+                                                                name={`${wi}-${field}`}
+                                                                onInput={handleInput}
+                                                                value={article[`${wi}-${field}`]}
+                                                            />
+                                                        </div>)}
+                                                    </div>
+                                                </div>
+                                            );
+                                        }
+                                    })}
+                                </div>
 
+                            </div>
+                        </div>
+                    </details>
+
+                    <details>
+                        <summary>
+                            Font size, color and weight
+                        </summary>
+                        <div class='row text-dark'>
                             <div class='col-6 d-flex flex-column'>
                                 <div class='form-group'>
                                     <label class='text-white-50'>Background color</label>
@@ -695,56 +760,61 @@ export default class ArticleEdit extends Component {
                                         >light</button>
                                     </div>
 
-                                    <div class='form-group d-flex align-items-center my-0'>
-                                        <label for='r' class='mr-2 my-0 rounded-circle text-center' style='background-color: #ff0000; width: 25px;'>R</label>
-                                        <input
-                                            class={`form-control mr-2`}
-                                            data-finalname='background'
-                                            name='backgroundHexR'
-                                            type='range'
-                                            min='0'
-                                            max='255'
-                                            id='r'
-                                            step='1'
-                                            value={backgroundHexR}
-                                            onInput={this.setColor}
-                                        />
-                                        <output for='r'>{backgroundHexR}</output>
-                                    </div>  
+                                    <details>
+                                        <summary>
+                                            Custom colors
+                                        </summary>
+                                        <div class='form-group d-flex align-items-center my-0'>
+                                            <label for='r' class='mr-2 my-0 rounded-circle text-center' style='background-color: #ff0000; width: 25px;'>R</label>
+                                            <input
+                                                class={`form-control mr-2`}
+                                                data-finalname='background'
+                                                name='backgroundHexR'
+                                                type='range'
+                                                min='0'
+                                                max='255'
+                                                id='r'
+                                                step='1'
+                                                value={backgroundHexR}
+                                                onInput={this.setColor}
+                                            />
+                                            <output for='r'>{backgroundHexR}</output>
+                                        </div>  
 
-                                    <div class='form-group d-flex align-items-center my-0'>
-                                        <label for='g' class='mr-2 my-0 rounded-circle text-center' style='background-color: #00ff00; width: 25px;'>G</label>
-                                        <input
-                                            class={`form-control mr-2`}
-                                            data-finalname='background'
-                                            name='backgroundHexG'
-                                            type='range'
-                                            min='0'
-                                            max='255'
-                                            id='g'
-                                            step='1'
-                                            value={backgroundHexG}
-                                            onInput={this.setColor}
-                                        />
-                                        <output for='g'>{backgroundHexG}</output>
-                                    </div>  
+                                        <div class='form-group d-flex align-items-center my-0'>
+                                            <label for='g' class='mr-2 my-0 rounded-circle text-center' style='background-color: #00ff00; width: 25px;'>G</label>
+                                            <input
+                                                class={`form-control mr-2`}
+                                                data-finalname='background'
+                                                name='backgroundHexG'
+                                                type='range'
+                                                min='0'
+                                                max='255'
+                                                id='g'
+                                                step='1'
+                                                value={backgroundHexG}
+                                                onInput={this.setColor}
+                                            />
+                                            <output for='g'>{backgroundHexG}</output>
+                                        </div>  
 
-                                    <div class='form-group d-flex align-items-center my-0'>
-                                        <label for='g' class='mr-2 my-0 rounded-circle text-center' style='background-color: #0000ff; width: 25px;'>B</label>
-                                        <input
-                                            class={`form-control mr-2`}
-                                            data-finalname='background'
-                                            name='backgroundHexB'
-                                            type='range'
-                                            min='0'
-                                            max='255'
-                                            id='b'
-                                            step='1'
-                                            value={backgroundHexB}
-                                            onInput={this.setColor}
-                                        />
-                                        <output for='b'>{backgroundHexB}</output>
-                                    </div>  
+                                        <div class='form-group d-flex align-items-center my-0'>
+                                            <label for='g' class='mr-2 my-0 rounded-circle text-center' style='background-color: #0000ff; width: 25px;'>B</label>
+                                            <input
+                                                class={`form-control mr-2`}
+                                                data-finalname='background'
+                                                name='backgroundHexB'
+                                                type='range'
+                                                min='0'
+                                                max='255'
+                                                id='b'
+                                                step='1'
+                                                value={backgroundHexB}
+                                                onInput={this.setColor}
+                                            />
+                                            <output for='b'>{backgroundHexB}</output>
+                                        </div>  
+                                    </details>
 
                                     <div class='text-center rounded-lg' style={`background-color: ${backgroundHex};`}>
                                         <h3 style={`color: ${forgroundHex};`}>{article.background || backgroundHex}</h3>
@@ -828,56 +898,61 @@ export default class ArticleEdit extends Component {
                                         >light</button>
                                     </div>
 
-                                    <div class='form-group d-flex align-items-center my-0'>
-                                        <label for='r' class='mr-2 my-0 rounded-circle text-center' style='background-color: #ff0000; width: 25px;'>R</label>
-                                        <input
-                                            class={`form-control mr-2`}
-                                            data-finalname='forground'
-                                            name='forgroundHexR'
-                                            type='range'
-                                            min='0'
-                                            max='255'
-                                            id='r'
-                                            step='1'
-                                            value={forgroundHexR}
-                                            onInput={this.setColor}
-                                        />
-                                        <output for='r'>{forgroundHexR}</output>
-                                    </div>  
+                                    <details>
+                                        <summary>
+                                            Custom colors
+                                        </summary>
+                                        <div class='form-group d-flex align-items-center my-0'>
+                                            <label for='r' class='mr-2 my-0 rounded-circle text-center' style='background-color: #ff0000; width: 25px;'>R</label>
+                                            <input
+                                                class={`form-control mr-2`}
+                                                data-finalname='forground'
+                                                name='forgroundHexR'
+                                                type='range'
+                                                min='0'
+                                                max='255'
+                                                id='r'
+                                                step='1'
+                                                value={forgroundHexR}
+                                                onInput={this.setColor}
+                                            />
+                                            <output for='r'>{forgroundHexR}</output>
+                                        </div>  
 
-                                    <div class='form-group d-flex align-items-center my-0'>
-                                        <label for='g' class='mr-2 my-0 rounded-circle text-center' style='background-color: #00ff00; width: 25px;'>G</label>
-                                        <input
-                                            class={`form-control mr-2`}
-                                            data-finalname='forground'
-                                            name='forgroundHexG'
-                                            type='range'
-                                            min='0'
-                                            max='255'
-                                            id='g'
-                                            step='1'
-                                            value={forgroundHexG}
-                                            onInput={this.setColor}
-                                        />
-                                        <output for='g'>{forgroundHexG}</output>
-                                    </div>  
+                                        <div class='form-group d-flex align-items-center my-0'>
+                                            <label for='g' class='mr-2 my-0 rounded-circle text-center' style='background-color: #00ff00; width: 25px;'>G</label>
+                                            <input
+                                                class={`form-control mr-2`}
+                                                data-finalname='forground'
+                                                name='forgroundHexG'
+                                                type='range'
+                                                min='0'
+                                                max='255'
+                                                id='g'
+                                                step='1'
+                                                value={forgroundHexG}
+                                                onInput={this.setColor}
+                                            />
+                                            <output for='g'>{forgroundHexG}</output>
+                                        </div>  
 
-                                    <div class='form-group d-flex align-items-center my-0'>
-                                        <label for='g' class='mr-2 my-0 rounded-circle text-center' style='background-color: #0000ff; width: 25px;'>B</label>
-                                        <input
-                                            class={`form-control mr-2`}
-                                            data-finalname='forground'
-                                            name='forgroundHexB'
-                                            type='range'
-                                            min='0'
-                                            max='255'
-                                            id='b'
-                                            step='1'
-                                            value={forgroundHexB}
-                                            onInput={this.setColor}
-                                        />
-                                        <output for='b'>{forgroundHexB}</output>
-                                    </div>  
+                                        <div class='form-group d-flex align-items-center my-0'>
+                                            <label for='g' class='mr-2 my-0 rounded-circle text-center' style='background-color: #0000ff; width: 25px;'>B</label>
+                                            <input
+                                                class={`form-control mr-2`}
+                                                data-finalname='forground'
+                                                name='forgroundHexB'
+                                                type='range'
+                                                min='0'
+                                                max='255'
+                                                id='b'
+                                                step='1'
+                                                value={forgroundHexB}
+                                                onInput={this.setColor}
+                                            />
+                                            <output for='b'>{forgroundHexB}</output>
+                                        </div>  
+                                    </details>
 
                                     <div class='text-center rounded-lg' style={`background-color: ${backgroundHex};`}>
                                         <h3 style={`color: ${forgroundHex};`}>{article.forground || forgroundHex}</h3>
@@ -885,150 +960,156 @@ export default class ArticleEdit extends Component {
                                 </div>
                             </div>
 
-                            <div class='col-6 d-flex flex-column'>
-                                <div class='form-group'>
-                                    <label class='text-white-50'>Title font-size H1</label>
+                            <details class='col-12'>
+                                <summary>
+                                    Custom size & weight
+                                </summary>
+                                <div class='row'>
+                                    <div class='col-6 d-flex flex-column'>
+                                        <div class='form-group'>
+                                            <label class='text-white-50'>Title font-size H1</label>
 
-                                    <div class='form-group d-flex align-items-center my-0'>
-                                        <label for='fontsizeH1' class='mr-2 my-0'>Fontsize</label>
-                                        <input
-                                            class={`form-control mr-2`}
-                                            name='fontsizeH1'
-                                            type='range'
-                                            min='0.5'
-                                            max='10'
-                                            id='fontsizeH1'
-                                            step='0.1'
-                                            value={article.fontsizeH1 || fontsizeH1}
-                                            onInput={handleInput}
-                                        />
-                                        <output for='fontsizeH1'>{article.fontsizeH1 || 'default'}</output>
+                                            <div class='form-group d-flex align-items-center my-0'>
+                                                <label for='fontsizeH1' class='mr-2 my-0'>Fontsize</label>
+                                                <input
+                                                    class={`form-control mr-2`}
+                                                    name='fontsizeH1'
+                                                    type='range'
+                                                    min='0.5'
+                                                    max='10'
+                                                    id='fontsizeH1'
+                                                    step='0.1'
+                                                    value={article.fontsizeH1 || fontsizeH1}
+                                                    onInput={handleInput}
+                                                />
+                                                <output for='fontsizeH1'>{article.fontsizeH1 || 'default'}</output>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class='col-6 d-flex flex-column'>
+                                        <div class='form-group'>
+                                            <label class='text-white-50'>Title font-weight H1</label>
+
+                                            <div class='form-group d-flex align-items-center my-0'>
+                                                <label for='fontweightH1' class='mr-2 my-0'>Fontweight</label>
+                                                <input
+                                                    class={`form-control mr-2`}
+                                                    name='fontweightH1'
+                                                    type='range'
+                                                    min='50'
+                                                    max='1000'
+                                                    id='fontweightH1'
+                                                    step='10'
+                                                    value={article.fontweightH1 || fontweightH1}
+                                                    onInput={handleInput}
+                                                />
+                                                <output for='fontweightH1'>{article.fontweightH1 || 'default'}</output>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class='col-6 d-flex flex-column'>
+                                        <div class='form-group'>
+                                            <label class='text-white-50'>Title font-size H3</label>
+
+                                            <div class='form-group d-flex align-items-center my-0'>
+                                                <label for='fontsizeH3' class='mr-2 my-0'>Fontsize</label>
+                                                <input
+                                                    class={`form-control mr-2`}
+                                                    name='fontsizeH3'
+                                                    type='range'
+                                                    min='0.5'
+                                                    max='10'
+                                                    id='fontsizeH3'
+                                                    step='0.1'
+                                                    value={article.fontsizeH3 || fontsizeH3}
+                                                    onInput={handleInput}
+                                                />
+                                                <output for='fontsizeH3'>{article.fontsizeH3 || 'default'}</output>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class='col-6 d-flex flex-column'>
+                                        <div class='form-group'>
+                                            <label class='text-white-50'>Title font-weight H3</label>
+
+                                            <div class='form-group d-flex align-items-center my-0'>
+                                                <label for='fontweightH3' class='mr-2 my-0'>Fontweight</label>
+                                                <input
+                                                    class={`form-control mr-2`}
+                                                    name='fontweightH3'
+                                                    type='range'
+                                                    min='50'
+                                                    max='1000'
+                                                    id='fontweightH3'
+                                                    step='10'
+                                                    value={article.fontweightH3 || fontweightH3}
+                                                    onInput={handleInput}
+                                                />
+                                                <output for='fontweightH3'>{article.fontweightH3 || 'default'}</output>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class='col-6 d-flex flex-column'>
+                                        <div class='form-group'>
+                                            <label class='text-white-50'>Title font-size H5</label>
+
+                                            <div class='form-group d-flex align-items-center my-0'>
+                                                <label for='fontsizeH5' class='mr-2 my-0'>Fontsize</label>
+                                                <input
+                                                    class={`form-control mr-2`}
+                                                    name='fontsizeH5'
+                                                    type='range'
+                                                    min='0.5'
+                                                    max='10'
+                                                    id='fontsizeH5'
+                                                    step='0.1'
+                                                    value={article.fontsizeH5 || fontsizeH5}
+                                                    onInput={handleInput}
+                                                />
+                                                <output for='fontsizeH5'>{article.fontsizeH5 || 'default'}</output>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class='col-6 d-flex flex-column'>
+                                        <div class='form-group'>
+                                            <label class='text-white-50'>Title font-weight H5</label>
+
+                                            <div class='form-group d-flex align-items-center my-0'>
+                                                <label for='fontweightH5' class='mr-2 my-0'>Fontweight</label>
+                                                <input
+                                                    class={`form-control mr-2`}
+                                                    name='fontweightH5'
+                                                    type='range'
+                                                    min='50'
+                                                    max='1000'
+                                                    id='fontweightH5'
+                                                    step='10'
+                                                    value={article.fontweightH5 || fontweightH5}
+                                                    onInput={handleInput}
+                                                />
+                                                <output for='fontweightH5'>{article.fontweightH5 || 'default'}</output>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class='col-12 text-center'>
+                                        <div class='rounded-lg' style={`background-color: ${backgroundHex};`}>
+                                            <h1 style={`color: ${forgroundHex}; font-size: ${article.fontsizeH1}rem; font-weight: ${article.fontweightH1};`}>H1: {article.title}</h1>
+                                        </div>
+                                    </div>
+                                    <div class='col-4 text-center'>
+                                        <div class='rounded-lg' style={`background-color: ${backgroundHex};`}>
+                                            <h3 style={`color: ${forgroundHex}; font-size: ${article.fontsizeH3}rem; font-weight: ${article.fontweightH3};`}>H3: {article.title}</h3>
+                                        </div>
+                                    </div>
+                                    <div class='col-2 text-center'>
+                                        <div class='rounded-lg' style={`background-color: ${backgroundHex};`}>
+                                            <h5 style={`color: ${forgroundHex}; font-size: ${article.fontsizeH5}rem; font-weight: ${article.fontweightH5};`}>H5: {article.title}</h5>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class='col-6 d-flex flex-column'>
-                                <div class='form-group'>
-                                    <label class='text-white-50'>Title font-weight H1</label>
-
-                                    <div class='form-group d-flex align-items-center my-0'>
-                                        <label for='fontweightH1' class='mr-2 my-0'>Fontweight</label>
-                                        <input
-                                            class={`form-control mr-2`}
-                                            name='fontweightH1'
-                                            type='range'
-                                            min='50'
-                                            max='1000'
-                                            id='fontweightH1'
-                                            step='10'
-                                            value={article.fontweightH1 || fontweightH1}
-                                            onInput={handleInput}
-                                        />
-                                        <output for='fontweightH1'>{article.fontweightH1 || 'default'}</output>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class='col-6 d-flex flex-column'>
-                                <div class='form-group'>
-                                    <label class='text-white-50'>Title font-size H3</label>
-
-                                    <div class='form-group d-flex align-items-center my-0'>
-                                        <label for='fontsizeH3' class='mr-2 my-0'>Fontsize</label>
-                                        <input
-                                            class={`form-control mr-2`}
-                                            name='fontsizeH3'
-                                            type='range'
-                                            min='0.5'
-                                            max='10'
-                                            id='fontsizeH3'
-                                            step='0.1'
-                                            value={article.fontsizeH3 || fontsizeH3}
-                                            onInput={handleInput}
-                                        />
-                                        <output for='fontsizeH3'>{article.fontsizeH3 || 'default'}</output>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class='col-6 d-flex flex-column'>
-                                <div class='form-group'>
-                                    <label class='text-white-50'>Title font-weight H3</label>
-
-                                    <div class='form-group d-flex align-items-center my-0'>
-                                        <label for='fontweightH3' class='mr-2 my-0'>Fontweight</label>
-                                        <input
-                                            class={`form-control mr-2`}
-                                            name='fontweightH3'
-                                            type='range'
-                                            min='50'
-                                            max='1000'
-                                            id='fontweightH3'
-                                            step='10'
-                                            value={article.fontweightH3 || fontweightH3}
-                                            onInput={handleInput}
-                                        />
-                                        <output for='fontweightH3'>{article.fontweightH3 || 'default'}</output>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class='col-6 d-flex flex-column'>
-                                <div class='form-group'>
-                                    <label class='text-white-50'>Title font-size H5</label>
-
-                                    <div class='form-group d-flex align-items-center my-0'>
-                                        <label for='fontsizeH5' class='mr-2 my-0'>Fontsize</label>
-                                        <input
-                                            class={`form-control mr-2`}
-                                            name='fontsizeH5'
-                                            type='range'
-                                            min='0.5'
-                                            max='10'
-                                            id='fontsizeH5'
-                                            step='0.1'
-                                            value={article.fontsizeH5 || fontsizeH5}
-                                            onInput={handleInput}
-                                        />
-                                        <output for='fontsizeH5'>{article.fontsizeH5 || 'default'}</output>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class='col-6 d-flex flex-column'>
-                                <div class='form-group'>
-                                    <label class='text-white-50'>Title font-weight H5</label>
-
-                                    <div class='form-group d-flex align-items-center my-0'>
-                                        <label for='fontweightH5' class='mr-2 my-0'>Fontweight</label>
-                                        <input
-                                            class={`form-control mr-2`}
-                                            name='fontweightH5'
-                                            type='range'
-                                            min='50'
-                                            max='1000'
-                                            id='fontweightH5'
-                                            step='10'
-                                            value={article.fontweightH5 || fontweightH5}
-                                            onInput={handleInput}
-                                        />
-                                        <output for='fontweightH5'>{article.fontweightH5 || 'default'}</output>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class='col-12 text-center'>
-                                <div class='rounded-lg' style={`background-color: ${backgroundHex};`}>
-                                    <h1 style={`color: ${forgroundHex}; font-size: ${article.fontsizeH1}rem; font-weight: ${article.fontweightH1};`}>H1: {article.title}</h1>
-                                </div>
-                            </div>
-                            <div class='col-4 text-center'>
-                                <div class='rounded-lg' style={`background-color: ${backgroundHex};`}>
-                                    <h3 style={`color: ${forgroundHex}; font-size: ${article.fontsizeH3}rem; font-weight: ${article.fontweightH3};`}>H3: {article.title}</h3>
-                                </div>
-                            </div>
-                            <div class='col-2 text-center'>
-                                <div class='rounded-lg' style={`background-color: ${backgroundHex};`}>
-                                    <h5 style={`color: ${forgroundHex}; font-size: ${article.fontsizeH5}rem; font-weight: ${article.fontweightH5};`}>H5: {article.title}</h5>
-                                </div>
-                            </div>
+                            </details>
 
                         </div>
                     </details>
@@ -1585,29 +1666,42 @@ export default class ArticleEdit extends Component {
                             <br /><br /><br /><br /><br />
                         </div>
                     )}
-                    {article && article.img && article.img.map((img, idx) => (
-                        <li class={`list-group-item list-group-item-action flex-column align-items-start ${idx % 2 > 0 ? 'list-group-item-secondary' : ''}`}>
-                            <div class='d-flex w-100 justify-content-between'>
-                                <span class='mb-1'><small>{img.src}</small></span>
-                                <small>{util.formatBytes(util.getString(img, 'stats', 'size'), 2)}</small>
-                                <button class='btn btn-danger btn-sm' data-image={idx} onClick={handleRemoveImageClick}>X</button>
-                            </div>
-                            <div class='d-flex w-100 justify-content-between'>
-                                <p>{img.src && <img src={`https://${imageServer}/150x/${imagePath}/${img.src}`} style='max-height: 150px;'  class='img-fluid' onError={this.handleImageErrored} />}</p>
-                                <small>
-                                    <button class='btn btn-sm m-1' onClick={this.handleClickCode} data-content={`![${img.title || 'Tittel'}](/pho/${img.src}?w=750 '${img.text || ''}')\n`}>
-                                        <i class='fas fa-image'></i> Image
-                                    </button>
-                                    <button class='btn btn-sm m-1' onClick={this.handleClickCode} data-content={`[![${img.title || 'Tittel'}](/pho/${img.src}?w=750#card '${img.text || ''}')](${img.url})\n`}>
-                                        <i class='fas fa-link'></i> Link
-                                    </button>
-                                    <button class='btn btn-sm m-1' onClick={this.handleClickCode} data-content={`![${img.title || 'Tittel'}](/pho/${img.src}?w=750#card '${img.text || ''}')\n`}>
-                                        <i class='fas fa-file-image'></i> Card
-                                    </button>
-                                    <button class='btn btn-sm m-1' onClick={this.handleClickCode} data-content={`![${img.title || 'Tittel'}](/pho/${img.src}?w=750#card2 '${img.text || ''}')\n`}>
-                                        <i class='far fa-image'></i> Card 2
-                                    </button>
-                                    <button class='btn btn-sm m-1' onClick={this.handleClickCode} data-content={`<h5>Detaljer om bildet</h5>
+                    {article && article.img && article.img.map((img, idx) => {
+                        const isImg = isImage(img.ext || img.src);
+                        const ext = img.ext ? img.ext.replace(/\./, '') : '';
+
+                        return (
+                            <li class={`list-group-item list-group-item-action flex-column align-items-start ${idx % 2 > 0 ? 'list-group-item-secondary' : ''}`}>
+                                <div class='d-flex w-100 justify-content-between'>
+                                    <div>
+                                        <h5 class='m-0'>{img.name}</h5>
+                                        <span class='mb-1'><small>{img.src}</small></span>
+                                    </div>
+                                    <small>{util.formatBytes(img.bytes || util.getString(img, 'stats', 'size'), 2)}</small>
+                                    <button class='btn btn-danger btn-sm' data-image={idx} onClick={handleRemoveImageClick}>X</button>
+                                </div>
+                                <div class='d-flex w-100 justify-content-between'>
+                                    {isImg && <p>{img.src && <img src={`https://${imageServer}/150x/${imagePath}/${img.src}`} style='max-height: 150px;'  class='img-fluid' onError={this.handleImageErrored} />}</p>}
+                                    {!isImg && ext && <div class='display-4 text-muted'>
+                                        <i class={`fas fa-file-${ext}`} />
+                                    </div>}
+                                    <small>
+                                        <button class='btn btn-sm m-1' onClick={this.handleClickCode} data-content={`[${img.title || img.name || article.title}](https://${imageServer}/original/${imagePath}/${img.src} '${img.text || ''}')\n`}>
+                                            <i class='fas fa-image'></i> Org
+                                        </button>
+                                        {isImg && <button class='btn btn-sm m-1' onClick={this.handleClickCode} data-content={`![${img.title || img.name || article.title}](https://${imageServer}/800x/${imagePath}/${img.src} '${img.text || ''}')\n`}>
+                                            <i class='fas fa-image'></i> Image
+                                        </button>}
+                                        {isImg && <button class='btn btn-sm m-1' onClick={this.handleClickCode} data-content={`[![${img.title || img.name || article.title}}](https://${imageServer}/800x/${imagePath}/${img.src}#card '${img.text || ''}')](${img.url})\n`}>
+                                            <i class='fas fa-link'></i> Link
+                                        </button>}
+                                        {isImg && <button class='btn btn-sm m-1' onClick={this.handleClickCode} data-content={`![${img.title || img.name || article.title}}](https://${imageServer}/800x/${imagePath}/${img.src}#card '${img.text || ''}')\n`}>
+                                            <i class='fas fa-file-image'></i> Card
+                                        </button>}
+                                        {isImg && <button class='btn btn-sm m-1' onClick={this.handleClickCode} data-content={`![${img.title || img.name || article.title}}](https://${imageServer}/800x/${imagePath}/${img.src}#card2 '${img.text || ''}')\n`}>
+                                            <i class='far fa-image'></i> Card 2
+                                        </button>}
+                                        {isImg && <button class='btn btn-sm m-1' onClick={this.handleClickCode} data-content={`<h5>Detaljer om bildet</h5>
 <ul>
 <li><i class='fas fa-camera'></i> [:img.${idx}.exif.model]</li>
 <li>Objektiv: [:img.${idx}.exif.lensModel]</li>
@@ -1622,52 +1716,53 @@ export default class ArticleEdit extends Component {
 <li><i class='fas fa-print'></i> [:img.${idx}.features.print+size dim] cm</li>
 </ul>
 `}><i class='fas fa-info-circle'></i> Bildeinfo
-                                    </button>
-                                    <button class='btn btn-sm m-1' onClick={this.handleClickCode} data-content={`@[:img.${idx}.exif.lat],[:img.${idx}.exif.lng]\n`}>
-                                        <i class='fas fa-location-arrow'></i> GPS
-                                    </button>
-                                    <button class='btn btn-sm m-1' onClick={this.handleClickCode} data-content={`**Dette bildet er tilsalgs. Send meg en _[e-post](mailto:sorenso@gmail.com?subject=Henvendelse%20ang%20bilde:%20[:img.${idx}.src])_ eller ta kontakt på _[Facebook](http://facebook.com/sorenso)_ om du er interessert.**\n`}>
-                                        <i class='fas fa-shopping-cart'></i> Kjøp
-                                    </button>
-                                </small>
-                                <br />
+                                        </button>}
+                                        <button class='btn btn-sm m-1' onClick={this.handleClickCode} data-content={`@[:img.${idx}.exif.lat],[:img.${idx}.exif.lng]\n`}>
+                                            <i class='fas fa-location-arrow'></i> GPS
+                                        </button>
+                                        <button class='btn btn-sm m-1' onClick={this.handleClickCode} data-content={`**Dette bildet er tilsalgs. Send meg en _[e-post](mailto:sorenso@gmail.com?subject=Henvendelse%20ang%20bilde:%20[:img.${idx}.src])_ eller ta kontakt på _[Facebook](http://facebook.com/sorenso)_ om du er interessert.**\n`}>
+                                            <i class='fas fa-shopping-cart'></i> Kjøp
+                                        </button>
+                                    </small>
+                                    <br />
 
-                            </div>
-                            <div class='d-flex w-100 justify-content-between row'>
-                                {idx === 0 && <div class='col-12 alert alert-primary' role='alert'>
-                                    Bilde 1 blir brukt som hovedbilde i artikkelen.
-                                </div>}
+                                </div>
+                                <div class='d-flex w-100 justify-content-between row'>
+                                    {idx === 0 && <div class='col-12 alert alert-primary' role='alert'>
+                                        Bilde 1 blir brukt som hovedbilde i artikkelen.
+                                    </div>}
 
-                                <div class='form-group col-2'>
-                                    <label for={`img${idx}Title`}>Tittel</label>
-                                </div>
-                                <div class='form-group col-10'>
-                                    <input type='text' class='form-control' id={`img${idx}Title`}
-                                        onInput={linkstate(that, `article.img.${idx}.title`)}
-                                        value={article.img[idx].title} />
-                                </div>
+                                    <div class='form-group col-2'>
+                                        <label for={`img${idx}Title`}>Tittel</label>
+                                    </div>
+                                    <div class='form-group col-10'>
+                                        <input type='text' class='form-control' id={`img${idx}Title`}
+                                            onInput={linkstate(that, `article.img.${idx}.title`)}
+                                            value={article.img[idx].title} />
+                                    </div>
 
-                                <div class='form-group col-2'>
-                                    <label for={`img${idx}URL`}>URL</label>
-                                </div>
-                                <div class='form-group col-10'>
-                                    <input type='text' class='form-control' id={`img${idx}URL`}
-                                        onInput={linkstate(that, `article.img.${idx}.url`)}
-                                        value={article.img[idx].url} />
-                                </div>
+                                    <div class='form-group col-2'>
+                                        <label for={`img${idx}URL`}>URL</label>
+                                    </div>
+                                    <div class='form-group col-10'>
+                                        <input type='text' class='form-control' id={`img${idx}URL`}
+                                            onInput={linkstate(that, `article.img.${idx}.url`)}
+                                            value={article.img[idx].url} />
+                                    </div>
 
-                                <div class='form-group col-2'>
-                                    <label for={`img${idx}Text`}>Tekst</label>
-                                </div>
-                                <div class='form-group col-10'>
-                                    <textarea class='form-control' id={`img${idx}Text`}
-                                        onInput={linkstate(that, `article.img.${idx}.text`)}
-                                        value={article.img[idx].text} />
-                                </div>
+                                    <div class='form-group col-2'>
+                                        <label for={`img${idx}Text`}>Tekst</label>
+                                    </div>
+                                    <div class='form-group col-10'>
+                                        <textarea class='form-control' id={`img${idx}Text`}
+                                            onInput={linkstate(that, `article.img.${idx}.text`)}
+                                            value={article.img[idx].text} />
+                                    </div>
 
-                            </div>
-                        </li>
-                    ))}
+                                </div>
+                            </li>
+                        );
+                    })}
                 </ul>
 
                 <h3>Last opp nytt bilde:</h3>

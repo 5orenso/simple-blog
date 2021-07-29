@@ -8,6 +8,7 @@
   "umd:main": "dist/index.umd.js",
   "scripts": {
     "dev": "preact watch --template src/template.html",
+    "start": "if-env NODE_ENV=production && npm run -s serve || PORT=8082 npm run -s dev",
     "build:widget": "microbundle build",
     "build:lib": "microbundle build -i src/component.js",
     "build": "preact build --no-prerender --no-sw --template src/template.html",

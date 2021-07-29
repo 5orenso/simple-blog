@@ -119,8 +119,8 @@
 
 
                 {% for widget in ['helloworld', 'clock', 'booking', 'poll', 'gallery', 'weather', 'rating'] %}
-                    {% if article.widgetList === widget %}
-                        <div data-widget-host="simple-blog-helloworld">
+                    {% if article.widget === widget %}
+                        <div data-widget-host="simple-blog-{{ widget }}">
                             <script type="text/props">
                                 {
                                     "apiServer": "{{ blog.protocol }}://{{ blog.domain }}",

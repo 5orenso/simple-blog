@@ -66,3 +66,8 @@ _habitat.render({
   selector: '[data-widget-host="simple-blog-helloworld"]',
   clean: true
 });
+
+
+4. Fix src/template.html and add correct habitat:
+
+		<div data-widget-host="simple-blog-helloworld" class="preview">

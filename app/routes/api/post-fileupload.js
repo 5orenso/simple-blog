@@ -28,7 +28,7 @@ const filenamePrefix = 'simpleblog-';
 
 function isImage(file) {
     // image/jpeg, image/png, image/gif
-    if (file.mimetype.match(/^image\/(jpeg|png|gif)/i)) {
+    if (file.mimetype.match(/^image\/(jpeg|png|gif|heic|heif|svg|webp|tiff)/i)) {
         return true;
     }
     return false;
@@ -105,20 +105,20 @@ module.exports = async (req, res) => {
             file.createdDate = new Date();
             file.ext = path.extname(file.name);
             file.newFilename = filenamePrefix + filename + file.ext;
-            file.s3Link = `${s3BaseHref}/${file.newFilename}`;
+            file.s3Link = `${s3BaseHref}/${targetFolder}/${file.newFilename}`;
             const tmpFile = `/tmp/${file.newFilename}`;
             allPromises.push(file.mv(tmpFile)
                 .then(async () => {
                     if (isImage(file)) {
-                        file.s3ThumbLink = `${s3imageThumbBaseHref}/80x80/${file.newFilename}`;
-                        file.s3XSmallLink = `${s3imageThumbBaseHref}/150x/${file.newFilename}`;
-                        file.s3SmallLink = `${s3imageThumbBaseHref}/220x/${file.newFilename}`;
-                        file.s3MediumLink = `${s3imageThumbBaseHref}/400x/${file.newFilename}`;
-                        file.s3LargeLink = `${s3imageThumbBaseHref}/800x/${file.newFilename}`;
-                        file.s3XLargeLink = `${s3imageThumbBaseHref}/1024x/${file.newFilename}`;
-                        file.s3XXLargeLink = `${s3imageThumbBaseHref}/1280x/${file.newFilename}`;
-                        file.s33XLargeLink = `${s3imageThumbBaseHref}/1600x/${file.newFilename}`;
-                        file.s34XLargeLink = `${s3imageThumbBaseHref}/1920x/${file.newFilename}`;
+                        file.s3ThumbLink = `${s3imageThumbBaseHref}/80x80/${targetFolder}/${file.newFilename}`;
+                        file.s3XSmallLink = `${s3imageThumbBaseHref}/150x/${targetFolder}/${file.newFilename}`;
+                        file.s3SmallLink = `${s3imageThumbBaseHref}/220x/${targetFolder}/${file.newFilename}`;
+                        file.s3MediumLink = `${s3imageThumbBaseHref}/400x/${targetFolder}/${file.newFilename}`;
+                        file.s3LargeLink = `${s3imageThumbBaseHref}/800x/${targetFolder}/${file.newFilename}`;
+                        file.s3XLargeLink = `${s3imageThumbBaseHref}/1024x/${targetFolder}/${file.newFilename}`;
+                        file.s3XXLargeLink = `${s3imageThumbBaseHref}/1280x/${targetFolder}/${file.newFilename}`;
+                        file.s33XLargeLink = `${s3imageThumbBaseHref}/1600x/${targetFolder}/${file.newFilename}`;
+                        file.s34XLargeLink = `${s3imageThumbBaseHref}/1920x/${targetFolder}/${file.newFilename}`;
                     }
                     delete file.data;
 
@@ -129,8 +129,14 @@ module.exports = async (req, res) => {
                     if (isImage(file)) {
                         file.dimensions = await imageDimensions(tmpFile);
                         file.exif = await readExif(tmpFile);
-                        file.color = await ColorThief.getColor(tmpFile);
-                        file.palette = await ColorThief.getPalette(tmpFile, 10);
+
+                        try {
+                            file.color = await ColorThief.getColor(tmpFile);
+                            file.palette = await ColorThief.getPalette(tmpFile, 10);
+                        } catch (e) {
+                            file.color = {};
+                            file.palette = {};
+                        }
 
                         file.hsv = util.rgb2hsv(file.color[0], file.color[1], file.color[2]);
                         file.hsvPalette = [];
@@ -140,8 +146,8 @@ module.exports = async (req, res) => {
                                 file.hsvPalette.push(util.rgb2hsv(color[0], color[1], color[2]));
                             }
                         }
-                        file.src = `${fileCategory}/${file.newFilename}`;
                     }
+                    file.src = `${fileCategory}/${file.newFilename}`;
 
                     filesUploaded.push(file);
 

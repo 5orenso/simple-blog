@@ -47,6 +47,14 @@ const fields = {
     fontweightH3: 1,
     fontsizeH5: 1,
     fontweightH5: 1,
+
+    'clock-class': 1,
+    'clock-style': 1,
+    'clock-countdownto': 1,
+    'clock-showDateOnly': 1,
+    'clock-showSeconds': 1,
+    'clock-showTimezone': 1,
+    'clock-showClockOnly': 1,
 };
 
 module.exports = async (req, res) => {

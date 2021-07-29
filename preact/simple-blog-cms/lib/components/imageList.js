@@ -14,6 +14,10 @@ const debug = false;
 const imageWidth = 300;
 const imageHeight = 200;
 
+function isImage(filename = '') {
+    return filename.match(/(jpg|jpeg|png|gif|heic|heif|svg|webp|tif)/i);
+}
+
 export default class ImageList extends Component {
     constructor(props) {
         super(props);
@@ -86,16 +90,16 @@ export default class ImageList extends Component {
 
     getSceneCaptureType(input) {
         // if (input === 0) {
-        //     return <span><i class="far fa-image"></i> Standard</span>;
+        //     return <span><i class="far fa-image" /> Standard</span>;
         // }
         if (input === 1) {
-            return <span><i class="fas fa-mountain"></i> Landscape</span>;
+            return <span><i class="fas fa-mountain" /> Landscape</span>;
         }
         if (input === 2) {
-            return <span><i class="fas fa-user"></i> Portrait</span>;
+            return <span><i class="fas fa-user" /> Portrait</span>;
         }
         if (input === 3) {
-            return <span><i class="fas fa-moon"></i> Night scene</span>;
+            return <span><i class="fas fa-moon" /> Night scene</span>;
         }
         return '';
     }
@@ -247,7 +251,7 @@ export default class ImageList extends Component {
                         />
                     </div>
                     <div class='col-2'>
-                        <button class='btn btn-success' onclick={handleSubmit}><i class="fas fa-search"></i> Søk</button>
+                        <button class='btn btn-success' onclick={handleSubmit}><i class="fas fa-search" /> Søk</button>
                     </div>
                 </div>
                 <div class='d-flex justify-content-center mb-2'>
@@ -262,7 +266,7 @@ export default class ImageList extends Component {
                                 onClick={handleTagClick}
                             >
                                 {filterQuery[key]}
-                                <i class="ml-1 fas fa-times-circle"></i>
+                                <i class="ml-1 fas fa-times-circle" />
                             </span>
                         )}
                     </div>
@@ -300,10 +304,12 @@ export default class ImageList extends Component {
                         </tr>
                     </thead>
                     <tbody>
-                        {imglist.map(img => {
+                        {imglist.map((img) => {
+                            const isImg = isImage(img.ext || img.src);
+                            const ext = img.ext ? img.ext.replace(/\./, '') : '';
                             let geoInfo = [];
                             let geoInfoExtra = [];
-                            util.geoAddressFields().map(key => {
+                            util.geoAddressFields().map((key) => {
                                 const geoData = util.getString(img, 'geo', 'address', key);
                                 if (geoData) {
                                     geoInfo.push(geoData);
@@ -315,7 +321,7 @@ export default class ImageList extends Component {
                             });
                             const geoDisplayName = util.getString(img, 'geo', 'display_name');
                             if (geoDisplayName) {
-                                geoDisplayName.split(', ').map(val => {
+                                geoDisplayName.split(', ').map((val) => {
                                     if (val && geoInfo.indexOf(val) === -1) {
                                         geoInfo.push(val);
                                     }
@@ -328,13 +334,25 @@ export default class ImageList extends Component {
                                     <td scope='row'>{img.id}</td>
                                     <td scope='row' style={`width: ${imageWidth}px !important;`}>
                                         <div style={`position: relative; width: ${imageWidth}px;`}>
-                                            {img.src && <img src={`https://${imageServer}/220x/${imagePath}/${img.src}`} onError={this.handleImageErrored} />}
-                                            <canvas id={`layer-${img.id}`} width='100'
-                                                style='position: absolute; left: 0; top: 0; z-index: 1000; width: 100%; height: 100%;'></canvas>
+                                            {isImg ? (
+                                                <div>
+                                                    {img.src && <img src={`https://${imageServer}/220x/${imagePath}/${img.src}`} onError={this.handleImageErrored} />}
+                                                    <canvas
+                                                        id={`layer-${img.id}`}
+                                                        width='100'
+                                                        style='position: absolute; left: 0; top: 0; z-index: 1000; width: 100%; height: 100%;'
+                                                    />
+                                                </div>
+                                            ) : (
+                                                <div class='display-4 text-muted'>
+                                                    <i class={`fas fa-file-${ext}`} />
+                                                </div>
+                                            )}
                                         </div>
                                     </td>
                                     <td>
                                         {img.exif && img.exif.artist && <h6 class='mb-0'>{util.getString(img, 'exif', 'artist')}</h6>}
+                                        <h5 class='m-0'>{img.name}</h5>
                                         <span>{img.src}</span>
                                         <div class='text-muted'>
                                             {img.exif && img.exif.model && (
@@ -343,8 +361,8 @@ export default class ImageList extends Component {
                                                     data-value={util.getString(img, 'exif', 'model')}
                                                     onClick={handleTagClick}
                                                 >
-                                                    <i class='fas fa-camera'></i> {util.getString(img, 'exif', 'model')}
-                                                    {filterQuery['exif.model'] && <i class="fas fa-times-circle ml-2"></i>}
+                                                    <i class='fas fa-camera' /> {util.getString(img, 'exif', 'model')}
+                                                    {filterQuery['exif.model'] && <i class="fas fa-times-circle ml-2" />}
                                                 </span>
                                             )}
                                             {img.exif && img.exif.lensModel && (
@@ -354,7 +372,7 @@ export default class ImageList extends Component {
                                                     onClick={handleTagClick}
                                                 >
                                                     {util.getString(img, 'exif', 'lensModel')}
-                                                    {filterQuery['exif.lensModel'] && <i class="fas fa-times-circle ml-2"></i>}
+                                                    {filterQuery['exif.lensModel'] && <i class="fas fa-times-circle ml-2" />}
                                                 </span>
                                             )}
                                             {img.exif && img.exif.fNumber && (
@@ -364,7 +382,7 @@ export default class ImageList extends Component {
                                                     onClick={handleTagClick}
                                                 >
                                                     f/{util.getString(img, 'exif', 'fNumber')}
-                                                    {filterQuery['exif.fNumber'] && <i class="fas fa-times-circle ml-2"></i>}
+                                                    {filterQuery['exif.fNumber'] && <i class="fas fa-times-circle ml-2" />}
                                                 </span>
                                             )}
                                             {img.exif && img.exif.focalLength && (
@@ -374,7 +392,7 @@ export default class ImageList extends Component {
                                                     onClick={handleTagClick}
                                                 >
                                                     {util.getString(img, 'exif', 'focalLength')} mm
-                                                    {filterQuery['exif.focalLength'] && <i class="fas fa-times-circle ml-2"></i>}
+                                                    {filterQuery['exif.focalLength'] && <i class="fas fa-times-circle ml-2" />}
                                                 </span>
                                             )}
                                             {img.exif && img.exif.exposureTime && (
@@ -384,7 +402,7 @@ export default class ImageList extends Component {
                                                     onClick={handleTagClick}
                                                 >
                                                     {util.getString(img, 'exif', 'exposureTime')} sec
-                                                    {filterQuery['exif.exposureTime'] && <i class="fas fa-times-circle ml-2"></i>}
+                                                    {filterQuery['exif.exposureTime'] && <i class="fas fa-times-circle ml-2" />}
                                                 </span>
                                             )}
                                             {img.exif && img.exif.photographicSensitivity && (
@@ -394,34 +412,34 @@ export default class ImageList extends Component {
                                                     onClick={handleTagClick}
                                                 >
                                                     ISO: {util.getString(img, 'exif', 'photographicSensitivity')}
-                                                    {filterQuery['exif.photographicSensitivity'] && <i class="fas fa-times-circle ml-2"></i>}
+                                                    {filterQuery['exif.photographicSensitivity'] && <i class="fas fa-times-circle ml-2" />}
                                                 </span>
                                             )}
                                         </div>
                                         <div class='text-muted'>
-                                            <span class='mr-1 badge badge-info'>
-                                                <i class='fas fa-image'></i> {this.getWidth(img)} x {this.getHeight(img)}px
-                                            </span>
+                                            {this.getWidth(img) > 0 && <span class='mr-1 badge badge-info'>
+                                                <i class='fas fa-image' /> {this.getWidth(img)} x {this.getHeight(img)}px
+                                            </span>}
                                             {img.exif && img.exif.lat && <span class='mr-1 badge badge-info'>
-                                                <i class='fas fa-location-arrow'></i> {util.format(img.exif.lat, 5, '.')}, {util.format(img.exif.lng, 5, '.')}
+                                                <i class='fas fa-location-arrow' /> {util.format(img.exif.lat, 5, '.')}, {util.format(img.exif.lng, 5, '.')}
                                             </span>}
                                             {img.features && img.features['print size'] && <span class='mr-1 badge badge-info'>
-                                                <i class='fas fa-print'></i> {this.formatPrintSize(img.features['print size'])} cm
+                                                <i class='fas fa-print' /> {this.formatPrintSize(img.features['print size'])} cm
                                             </span>}
                                             {img.features && img.features.quality && <span class='mr-1 badge badge-info'>
-                                                <i class='fas fa-thermometer-three-quarters'></i> {this.formatQuality(img.features.quality)}
+                                                <i class='fas fa-thermometer-three-quarters' /> {this.formatQuality(img.features.quality)}
                                             </span>}
                                             {img.exif && img.exif.software && <span class='mr-1 badge badge-info'>
-                                                <i class='fas fa-edit'></i> {util.getString(img, 'exif', 'software')}
+                                                <i class='fas fa-edit' /> {util.getString(img, 'exif', 'software')}
                                             </span>}
                                             {img.exif && img.exif.gpsSpeed > 0 && <span class='mr-1 badge badge-info'>
-                                                <i class='fas fa-tachometer-alt'></i> {util.format(img.exif.gpsSpeed, 1)} km/h
+                                                <i class='fas fa-tachometer-alt' /> {util.format(img.exif.gpsSpeed, 1)} km/h
                                             </span>}
                                             {img.exif && img.exif.gpsAltitude > 0 && <span class='mr-1 badge badge-info'>
-                                                <i class='fas fa-mountain'></i> {util.format(img.exif.gpsAltitude, 0)} moh
+                                                <i class='fas fa-mountain' /> {util.format(img.exif.gpsAltitude, 0)} moh
                                             </span>}
                                             {img.exif && img.exif.gpsImgDirection && <span class='mr-1 badge badge-info'>
-                                                <i class="fas fa-compass"></i> {this.getCardinal(img.exif.gpsImgDirection)}
+                                                <i class='fas fa-compass' /> {this.getCardinal(img.exif.gpsImgDirection)}
                                             </span>}
                                             {img.exif && img.exif.hasOwnProperty('sceneCaptureType') && <span class='mr-1 badge badge-info'>
                                                 {this.getSceneCaptureType(img.exif.sceneCaptureType)}
@@ -434,39 +452,43 @@ export default class ImageList extends Component {
                                                     data-value={info}
                                                     onClick={handleTagClick}
                                                 >
-                                                    <i class="fas fa-map-marker-alt mr-1"></i>
+                                                    <i class="fas fa-map-marker-alt mr-1" />
                                                     {info}
-                                                    {filterQuery['geo.display_name'] === info && <i class="fas fa-times-circle ml-2"></i>}
+                                                    {filterQuery['geo.display_name'] === info && <i class="fas fa-times-circle ml-2" />}
                                                 </span>
                                             )}
                                             {geoInfoExtra.map(info =>
                                                 <span class='badge badge-pill badge-secondary mr-1'>
-                                                    <i class="fas fa-map-marker-alt mr-1"></i>
+                                                    <i class="fas fa-map-marker-alt mr-1" />
                                                     {info}
                                                 </span>
                                             )}
                                         </div>
 
-                                        <div class='text-muted'>
+                                        {this.getWidth(img) > 0 && <div class='text-muted'>
                                             <span class='mr-1 badge badge-primary'>
-                                                <a target='_blank' href={`${this.imageServer}/pho/${img.src}?w=1920`} style='color: #ffffff' onClick={e => e.stopPropagation()}>1920 px</a>
+                                                <a target='_blank' href={`https://${imageServer}/1920x/${imagePath}/${img.src}`} style='color: #ffffff' onClick={e => e.stopPropagation()}>1920 px</a>
                                             </span>
                                             <span class='mr-1 badge badge-primary'>
-                                                <a target='_blank' href={`${this.imageServer}/pho/${img.src}?w=1600`} style='color: #ffffff' onClick={e => e.stopPropagation()}>1600 px</a>
+                                                <a target='_blank' href={`https://${imageServer}/1600x/${imagePath}/${img.src}`} style='color: #ffffff' onClick={e => e.stopPropagation()}>1920 px</a>
                                             </span>
                                             <span class='mr-1 badge badge-primary'>
-                                                <a target='_blank' href={`${this.imageServer}/pho/${img.src}?w=1024`} style='color: #ffffff' onClick={e => e.stopPropagation()}>1024 px</a>
+                                                <a target='_blank' href={`https://${imageServer}/1024x/${imagePath}/${img.src}`} style='color: #ffffff' onClick={e => e.stopPropagation()}>1920 px</a>
                                             </span>
                                             <span class='mr-1 badge badge-primary'>
-                                                <a target='_blank' href={`${this.imageServer}/pho/${img.src}?w=800`} style='color: #ffffff' onClick={e => e.stopPropagation()}>800 px</a>
+                                                <a target='_blank' href={`https://${imageServer}/800x/${imagePath}/${img.src}`} style='color: #ffffff' onClick={e => e.stopPropagation()}>1920 px</a>
                                             </span>
                                             <span class='mr-1 badge badge-primary'>
-                                                <a target='_blank' href={`${this.imageServer}/pho/${img.src}?w=300`} style='color: #ffffff' onClick={e => e.stopPropagation()}>300 px</a>
+                                                <a target='_blank' href={`https://${imageServer}/300x/${imagePath}/${img.src}`} style='color: #ffffff' onClick={e => e.stopPropagation()}>1920 px</a>
                                             </span>
                                             <span class='mr-1 badge badge-primary'>
-                                                <a target='_blank' href={`${this.imageServer}/pho/${img.src}?w=150`} style='color: #ffffff' onClick={e => e.stopPropagation()}>150 px</a>
+                                                <a target='_blank' href={`https://${imageServer}/150x/${imagePath}/${img.src}`} style='color: #ffffff' onClick={e => e.stopPropagation()}>1920 px</a>
                                             </span>
-                                        </div>
+                                        </div>}
+
+                                        <span class='mr-1 badge badge-primary'>
+                                            <a target='_blank' href={`https://${imageServer}/original/${imagePath}/${img.src}`} style='color: #ffffff' onClick={e => e.stopPropagation()}>original</a>
+                                        </span>
 
                                     </td>
                                     <td>
@@ -480,8 +502,8 @@ export default class ImageList extends Component {
                                                 data-value={pre.className}
                                                 onClick={handleTagClick}
                                             >
-                                                <i class="fas fa-tag mr-1"></i> {pre.className} ({util.format(pre.probability * 100, 0)}%)
-                                                {filterQuery['predictions.className'] === pre.className && <i class="fas fa-times-circle ml-2"></i>}
+                                                <i class="fas fa-tag mr-1" /> {pre.className} ({util.format(pre.probability * 100, 0)}%)
+                                                {filterQuery['predictions.className'] === pre.className && <i class="fas fa-times-circle ml-2" />}
                                             </span>
                                         )}
                                         {img.predictionsCocoSsd && img.predictionsCocoSsd.map((pre) =>
@@ -490,8 +512,8 @@ export default class ImageList extends Component {
                                                 data-value={pre.class}
                                                 onClick={handleTagClick}
                                             >
-                                                <i class="fas fa-tag mr-1"></i> {pre.class} ({util.format(pre.score * 100, 0)}%)
-                                                {filterQuery['predictionsCocoSsd.class'] === pre.class && <i class="fas fa-times-circle ml-2"></i>}
+                                                <i class="fas fa-tag mr-1" /> {pre.class} ({util.format(pre.score * 100, 0)}%)
+                                                {filterQuery['predictionsCocoSsd.class'] === pre.class && <i class="fas fa-times-circle ml-2" />}
                                             </span>
                                         )}
 
@@ -504,13 +526,13 @@ export default class ImageList extends Component {
                                                     data-value={expression.expression}
                                                     onClick={handleTagClick}
                                                 >
-                                                    <i class="far fa-smile mr-1"></i> {expression.expression} ({util.format(expression.probability * 100, 0)}%)
-                                                    {filterQuery['faceDetections.expressions.expression'] === expression.expression && <i class="fas fa-times-circle ml-2"></i>}
+                                                    <i class="far fa-smile mr-1" /> {expression.expression} ({util.format(expression.probability * 100, 0)}%)
+                                                    {filterQuery['faceDetections.expressions.expression'] === expression.expression && <i class="fas fa-times-circle ml-2" />}
                                                 </span>
                                             );
                                         })}
                                     </td>
-                                    <td>{util.formatBytes(util.getString(img, 'stats', 'size'), 2)}</td>
+                                    <td>{util.formatBytes(img.bytes || util.getString(img, 'stats', 'size'), 2)}</td>
                                 </tr>
                             );
                         })}

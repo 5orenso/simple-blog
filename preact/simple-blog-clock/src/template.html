@@ -7,29 +7,43 @@
 		<style>
 			.preview {
 				width: 100%;
-				max-width: 1100px;
-				margin: 80px auto;
 				border: 1px dashed rgba(0, 0, 0, 0.2);
 				position: relative;
 			}
-
-			.preview::before {
-				content: 'WIDGET PREVIEW';
-				position: absolute;
-				display: block;
-				top: -18px;
-				font-size: 11px;
-				color: rgba(0, 0, 0, 0.5);
-			}
 		</style>
+		<link href="http://localhost:8080/css/bootstrap.min.css" rel="stylesheet">
+		<link href="http://localhost:8080/css/custom.css?v18" rel="stylesheet">
+		<link href="http://localhost:8080/global/css/youtube.css" rel="stylesheet">
+		<link href="http://localhost:8080/css/flag-icon-css/css/flag-icon.min.css" rel="stylesheet">
+		<link href="http://localhost:8080/fonts/fontawesome-free-5.15.3-web/css/all.css" rel="stylesheet">
 		<% preact.headEnd %>
 	</head>
 	<body>
-		<div data-widget-host="habitat" class="preview">
-			<script type="text/props">
-			  { "color": "red"}
-			</script>
+		<div class='container'>
+			<div class='row'>
+				<div class='col-6'>
+					<h5>Count down to 2022-01-03</h5>
+					<div data-widget-host="simple-blog-clock" class="preview">
+						<script type="text/props">
+							{
+								"apiServer": "http://localhost:8080",
+								"articleId": 318
+							}
+						</script>
+					</div>
+				</div>
+				<div class='col-6'>
+					<h5>Normal clock</h5>
+					<div data-widget-host="simple-blog-clock" class="preview">
+						{
+							"apiServer": "http://localhost:8080",
+							"articleId": 319
+						}
+					</div>
+				</div>
+			</div>
 		</div>
+
 		<% preact.bodyEnd %>
 	</body>
 </html>

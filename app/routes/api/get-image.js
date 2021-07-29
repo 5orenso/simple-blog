@@ -46,6 +46,8 @@ module.exports = async (req, res) => {
 
     // Fields to consider:
     const queryFieldsString = [
+        'name',
+        'newName',
         'exif.model',
         'exif.lensModel',
         'exif.exposureTime',
