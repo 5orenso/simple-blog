@@ -13,6 +13,22 @@
     {%- endif -%}"
 {%- endmacro -%}
 
+{%- macro colorArticleBackgroundPadding(category, frontpage, isJumbotron, article) -%}
+    {%- if article && article.background -%}
+        p-2
+    {%- elseif isJumbotron && category.bgColorJumbotron -%}
+        p-2
+    {%- elseif isFrontpage && frontpage.bgColorJumbotron -%}
+        p-2
+    {%- elseif category.bgColorMain -%}
+        p-2
+    {%- elseif frontpage.bgColorMain -%}
+        p-2
+    {%- else -%}
+        p-0
+    {%- endif -%}
+{%- endmacro -%}
+
 {%- macro colorArticleText(category, frontpage, isJumbotron, article, heading) -%}
     style="{%- if article && article.forground -%}
         color: {{ article.forground }} !important;
@@ -46,15 +62,16 @@
 {%- endmacro -%}
 
 {% macro articleTeaser(art, col, extraClasses, heading) %}
-    <div class="col-6 col-sm-4 col-lg-{{ col || 4 }} post-data my-1 {{ extraClasses }}" {{ colorArticleBackground(art.catRef, null, null, art) }}>
-        {% if art.img[0] %}
+    <div class="col-12 col-sm-12 col-md-{{ col || 4 }} post-data my-1 {{ extraClasses }}" >
+        <div {{ colorArticleBackground(art.catRef, null, null, art) }}>
+        {% if art.img[0] && art.img[0].src|match('(jpg|jpeg|png|gif|heic|heif|svg|webp|tif)$') %}
             <div class="post-thumb d-flex align-items-center">
                 <a href="{% if art.url %}{{ art.url }}{% else %}/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}{% endif %}">
-                    <img src="https://{{ imageServer }}/800x/{{ imagePath }}/{{ art.img[0].src }}" alt="{{ art.title|e }}" class="img-fluid rounded">
+                    <img src="https://{{ imageServer }}/800x/{{ imagePath }}/{{ art.img[0].src }}" alt="{{ art.title|e }}" class="img-fluid">
                 </a>
             </div>
         {% endif %}
-        <div class="post-content" {{ colorArticleText(art.catRef, null, null, art) }}>
+        <div class="post-content {{ colorArticleBackgroundPadding(art.catRef, null, null, art) }}" {{ colorArticleText(art.catRef, null, null, art) }}>
             {% if art.catRef.hideFrontpageTitle %}
             {% else %}
                 <{{ heading || 'h3' }}>
@@ -73,7 +90,7 @@
 
 
             {% for widget in ['helloworld', 'clock', 'booking', 'poll', 'gallery', 'weather', 'rating'] %}
-                {% if article.widgetList === widget %}
+                {% if art.widgetList === widget %}
                     <div data-widget-host="simple-blog-{{ widget }}">
                         <script type="text/props">
                             {
@@ -93,7 +110,7 @@
             <!-- <p class="lead">{{ art.body|substring(0, 150)|markdown|cleanHtml }}...</p> -->
             {% if art.catRef.hideMetaInfo %}
             {% else %}
-                <small>
+                <small class='d-none d-lg-inline'>
                     <div {{ colorArticleText(art.catRef, null, null, art) }}>
                         <small class='font-weight-lighter mr-1'>
                             <i class="far fa-folder-open"></i>
@@ -106,6 +123,7 @@
                     </div>
                 </small>
             {% endif %}
+        </div>
         </div>
     </div>
 

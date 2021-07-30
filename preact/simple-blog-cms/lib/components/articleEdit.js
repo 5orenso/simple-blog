@@ -303,14 +303,14 @@ export default class ArticleEdit extends Component {
         console.log('componentDidMount');
         const article = this.props.article;
 
-        var backgroundRgbHex = article.background.replace(/#/, '').match(/.{1,2}/g);
-        var backgroundRgb = [
+        const backgroundRgbHex = article.background ? article.background.replace(/#/, '').match(/.{1,2}/g) : [];
+        const backgroundRgb = [
             parseInt(backgroundRgbHex[0], 16),
             parseInt(backgroundRgbHex[1], 16),
             parseInt(backgroundRgbHex[2], 16)
         ];
-        var forgroundRgbHex = article.background.replace(/#/, '').match(/.{1,2}/g);
-        var forgroundRgb = [
+        const forgroundRgbHex = article.forground ? article.forground.replace(/#/, '').match(/.{1,2}/g) : [];
+        const forgroundRgb = [
             parseInt(forgroundRgbHex[0], 16),
             parseInt(forgroundRgbHex[1], 16),
             parseInt(forgroundRgbHex[2], 16)
@@ -366,8 +366,9 @@ export default class ArticleEdit extends Component {
 
         const images = article.img || [];
         const imagesTotal = images.length;
-        const renderImages = images.slice(0, 1).map(img => {
-            if (img.src) {
+        const renderImages = images.slice(0, 1).map((img) => {
+            const isImg = isImage(img.ext || img.src);
+            if (img.src && isImg) {
                 return (
                     <img src={`https://${imageServer}/800x/${imagePath}/${img.src}`} alt='' title='' class='img-fluid' onError={this.handleImageErrored} />
                 );
@@ -1692,14 +1693,23 @@ export default class ArticleEdit extends Component {
                                         {isImg && <button class='btn btn-sm m-1' onClick={this.handleClickCode} data-content={`![${img.title || img.name || article.title}](https://${imageServer}/800x/${imagePath}/${img.src} '${img.text || ''}')\n`}>
                                             <i class='fas fa-image'></i> Image
                                         </button>}
-                                        {isImg && <button class='btn btn-sm m-1' onClick={this.handleClickCode} data-content={`[![${img.title || img.name || article.title}}](https://${imageServer}/800x/${imagePath}/${img.src}#card '${img.text || ''}')](${img.url})\n`}>
+                                        {isImg && <button class='btn btn-sm m-1' onClick={this.handleClickCode} data-content={`![${img.title || img.name || article.title}](https://${imageServer}/1920x/${imagePath}/${img.src}#fullwidth '${img.text || ''}')\n`}>
+                                            <i class='fas fa-link'></i> Full width
+                                        </button>}
+                                        {isImg && <button class='btn btn-sm m-1' onClick={this.handleClickCode} data-content={`[![${img.title || img.name || article.title}](https://${imageServer}/800x/${imagePath}/${img.src}#card '${img.text || ''}')](${img.url})\n`}>
                                             <i class='fas fa-link'></i> Link
                                         </button>}
-                                        {isImg && <button class='btn btn-sm m-1' onClick={this.handleClickCode} data-content={`![${img.title || img.name || article.title}}](https://${imageServer}/800x/${imagePath}/${img.src}#card '${img.text || ''}')\n`}>
+                                        {isImg && <button class='btn btn-sm m-1' onClick={this.handleClickCode} data-content={`![${img.title || img.name || article.title}](https://${imageServer}/800x/${imagePath}/${img.src}#card '${img.text || ''}')\n`}>
                                             <i class='fas fa-file-image'></i> Card
                                         </button>}
-                                        {isImg && <button class='btn btn-sm m-1' onClick={this.handleClickCode} data-content={`![${img.title || img.name || article.title}}](https://${imageServer}/800x/${imagePath}/${img.src}#card2 '${img.text || ''}')\n`}>
+                                        {isImg && <button class='btn btn-sm m-1' onClick={this.handleClickCode} data-content={`![${img.title || img.name || article.title}](https://${imageServer}/800x/${imagePath}/${img.src}#card2 '${img.text || ''}')\n`}>
                                             <i class='far fa-image'></i> Card 2
+                                        </button>}
+                                        {isImg && <button class='btn btn-sm m-1' onClick={this.handleClickCode} data-content={`![${img.title || img.name || article.title}](https://${imageServer}/800x/${imagePath}/${img.src}#plain '${img.text || ''}')\n`}>
+                                            <i class='far fa-image'></i> Plain
+                                        </button>}
+                                        {isImg && <button class='btn btn-sm m-1' onClick={this.handleClickCode} data-content={`![${img.title || img.name || article.title}](https://${imageServer}/800x/${imagePath}/${img.src}#nolink '${img.text || ''}')\n`}>
+                                            <i class='far fa-image'></i> No link
                                         </button>}
                                         {isImg && <button class='btn btn-sm m-1' onClick={this.handleClickCode} data-content={`<h5>Detaljer om bildet</h5>
 <ul>

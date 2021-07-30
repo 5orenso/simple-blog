@@ -100,7 +100,8 @@ renderer.image = function image($href, title, text) {
                         <p class='card-text'>${title || ''}</p>
                     </div>
                 </div>`;
-        } else if (allClasses[0] === 'card2') {
+        }
+        if (allClasses[0] === 'card2') {
             return `
                 <div class='float-right card col-lg-7 col-md-7 col-sm-12 p-0 ml-2 mb-2 mt-2'>
                     <div class='row no-gutters'>
@@ -114,6 +115,29 @@ renderer.image = function image($href, title, text) {
                             </div>
                         </div>
                     </div>
+                </div>
+            `;
+        }
+        if (allClasses[0] === 'nolink') {
+            return `
+                 <p class="${mediaClass.join(' ')}">
+                    <img src="${src}" alt="${title || text}" title="${title || text}" class="img-fluid">
+                    <div class="image_inline_text"><strong>${text || ''}</strong> ${title || ''}</div>
+                </p>
+            `;
+        }
+        if (allClasses[0] === 'plain') {
+            return `
+                <div class='d-flex justify-content-center'>
+                    <img src="${src}" alt="${title || text}" title="${title || text}" class="img-fluid">
+                </div>
+            `;
+        }
+        if (allClasses[0] === 'fullwidth') {
+            return `
+                <div class='row d-flex justify-content-center'>
+                    <img src="${src}" alt="${title || text}" title="${title || text}" class="img-fluid">
+                    <div class="image_inline_text"><strong>${text || ''}</strong> ${title || ''}</div>
                 </div>
             `;
         }

@@ -1,14 +1,18 @@
 {% import "./articleMacro.html" as articleMacro %}
 
 {% set isPhoto = false %}
+{% set isPhotoCategory = false %}
 {% set baseHref = article.category|replace('/', '', 'g') %}
 {% if baseHref|match('photo') || baseHref|match('film') %}
     {% set isPhoto = true %}
 {% endif %}
+{% if category.type === 5 %}
+    {% set isPhotoCategory = true %}
+{% endif %}
 
 {{ category.headerDetail|safe }}
 
-{% if isPhoto %}
+{% if isPhoto || isPhotoCategory %}
 <div class="container-fluid">
     <div class="row">
         <main class="col-sm-12 col-md-12 blog-main-full">
@@ -18,34 +22,34 @@
         <main class="col-sm-12 col-md-12 pt-3 blog-main">
 {% endif %}
 
-        {% if category.hideTopImage %}
-        {% else %}
-            <div class="blog-post {% if isPhoto %}photo-top pb-4{% endif %}">
-				<div class="blog-top-image {% if article.gallery || article.img[1] %}gallery-post-format{% endif %}">
-                    {% if article.youtube %}
-					    {{ article.youtube|safe }}
-                    {% elseif article.img[0] %}
-                        <div>
-                            <img src="https://{{ imageServer }}/{% if isPhoto %}1920x{% else %}1024x{% endif %}/{{ imagePath }}/{{ article.img[0].src }}" alt="{{ article.title|e }}" class="img-fluid rounded mx-auto d-block">
-                        </div>
-                    {% endif %}
-				</div>
-                {% if article.img[0] && article.img[0].title %}
-                    <div class="image_inline_text">
-                        <strong>{{ article.img[0].title || '' }}</strong>
-                        {{ article.img[0].text || '' }}
-                    </div>
-                {% endif %}
+{% if category.hideTopImage %}
+{% else %}
+<div class="blog-post {% if isPhoto %}photo-top{% endif %}">
+    <div class="blog-top-image {% if article.gallery || article.img[1] %}gallery-post-format{% endif %}">
+        {% if article.youtube %}
+            {{ article.youtube|safe }}
+        {% elseif article.img[0] && article.img[0].src|match('(jpg|jpeg|png|gif|heic|heif|svg|webp|tif)$') %}
+            <div>
+                <img src="https://{{ imageServer }}/{% if isPhoto || isPhotoCategory %}1920x{% else %}1024x{% endif %}/{{ imagePath }}/{{ article.img[0].src }}" alt="{{ article.title|e }}" class="img-fluid mx-auto d-block">
             </div>
         {% endif %}
-
-        </main>
     </div>
+    {% if article.img[0] && article.img[0].title %}
+        <div class="image_inline_text px-2">
+            <strong>{{ article.img[0].title || '' }}</strong>
+            {{ article.img[0].text || '' }}
+        </div>
+    {% endif %}
+</div>
+{% endif %}
+
+</main>
+</div>
 </div>
 
 <div class="container">
     <div class="row">
-        <div class="col-sm-8 blog-main">
+        <div class="col-lg-8 blog-main">
             <div class="blog-post">
                 <h1>{{ article.title }}</h1>
                 <h5 class="blog-post-teaser">{{ article.teaser|safe }}</h5>
@@ -117,6 +121,32 @@
                     </div>
                 {% endif %}
 
+            </div>
+        </div>
+        <div class="d-none d-lg-inline col-lg-3 offset-lg-1 blog-sidebar">
+            {% if article.catRef.hideAuthorInfo %}
+            {% elseif article.author %}
+                <div class="sidebar-module sidebar-module-inset mb-4">
+                    {% set author = blog.author.fallback %}
+                    {% if blog.author[article.author] %}
+                    {% set author = blog.author[article.author] %}
+                    {% endif %}
+                    <div class='col d-flex justify-content-center'>
+                        <img src="{{ author.imageLarge }}" alt="{{ author.nameFull }}" class="img-fluid rounded-circle" style='max-height: 100px;'>
+                    </div>
+                    <div>
+                        <h5 class='font-weight-lighter'><span class='text-muted'>{{ blog.author.by || 'By:' }}</span> {{ author.nameFull }}</h5>
+                        {% include '_elsewhere.html' %}
+                        <details>
+                            <summary>{{ blog.author.details || 'Details:' }}</summary>
+                            {{ author.description }}
+                        </details>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+        <div class="col-lg-8 blog-main">
+            <div class="blog-post">
 
                 {% for widget in ['helloworld', 'clock', 'booking', 'poll', 'gallery', 'weather', 'rating'] %}
                     {% if article.widget === widget %}
@@ -158,7 +188,7 @@
                     {% if (article['img' + i]) %}
                         <p class="image_inline ">
                             <a href="/pho/{{ article['img' + i] }}?w=1800" data-smoothzoom="group1" title="{{ article['title' + i]|e('html') }}">
-                                <img src="https://{{ imageServer }}/800x/{{ imagePath }}/{{ article['img' + i] }}" alt="{{ article['title' + i]|e('html') }}" title="{{ article['title' + i]|e('html') }}" class="img-fluid rounded">
+                                <img src="https://{{ imageServer }}/800x/{{ imagePath }}/{{ article['img' + i] }}" alt="{{ article['title' + i]|e('html') }}" title="{{ article['title' + i]|e('html') }}" class="img-fluid">
                             </a>
                         </p>
                     {% endif %}
@@ -174,9 +204,9 @@
                             {% set imgs = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20] %}
                             {% for i in imgs %}
                                 {% if (article['img' + i][i]) %}
-                                    <span class="float-right img-thumbnail image-thumbnail rounded">
+                                    <span class="float-right img-thumbnail image-thumbnail">
                                         <a href="/pho/{{ article['img' + i][i] }}?w=1800" data-smoothzoom="group1" title="{{ article['imgText' + i][i]|e('html') }}" class="inline-images">
-                                            <img src="https://{{ imageServer }}/400x/{{ imagePath }}/{{ article['img' + i] }}" alt="{{ article['title' + i]|e('html') }}" title="{{ article['title' + i]|e('html') }}" class="img-fluid rounded">
+                                            <img src="https://{{ imageServer }}/400x/{{ imagePath }}/{{ article['img' + i] }}" alt="{{ article['title' + i]|e('html') }}" title="{{ article['title' + i]|e('html') }}" class="img-fluid">
                                         </a><br>
                                         {% if article['imgText' + i][i] %}{{ article['imgText' + i][i] }}{% endif %}
                                     </span>
@@ -257,7 +287,7 @@
                 <div class="container-fluid p-0">
                     <div class="row artlist">
                         {% for art in artlist %}
-                            {{ articleMacro.articleTeaser(art, 3, '', 'h5') }}
+                            {{ articleMacro.articleTeaser(art, 4, '', 'h5') }}
                         {% endfor %}
                     </div>
                 </div>
@@ -265,24 +295,7 @@
 
         </div><!-- /.blog-main -->
 
-        <div class="col-sm-3 offset-sm-1 blog-sidebar">
-            {% if article.catRef.hideAuthorInfo %}
-            {% elseif article.author %}
-                <div class="sidebar-module sidebar-module-inset mb-4">
-                    <h4>{{ blog.whoHeader || 'Skrevet av' }}:</h4>
-                    {% set author = blog.author.fallback %}
-                    {% if blog.author[article.author] %}
-                        {% set author = blog.author[article.author] %}
-                    {% endif %}
-                    <p>
-                        <img src="{{ author.imageLarge }}" alt="{{ author.nameFull }}" class="img-fluid rounded">
-                        <h2>{{ author.nameFull }}</h2>
-                        {% include '_elsewhere.html' %}
-                        {{ author.description }}
-                    </p>
-                </div>
-            {% endif %}
-
+        <div class="d-none d-lg-inline col-lg-3 offset-lg-1 blog-sidebar">
             {% if adlist[0] %}
                 <div class="sidebar-module mb-4">
                     <div class="container-fluid p-0">

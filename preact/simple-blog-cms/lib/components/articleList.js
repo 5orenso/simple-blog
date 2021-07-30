@@ -7,6 +7,10 @@ const initialState = {
 };
 const debug = false;
 
+function isImage(filename = '') {
+    return filename.match(/(jpg|jpeg|png|gif|heic|heif|svg|webp|tif)/i);
+}
+
 export default class ArticleList extends Component {
     constructor(props) {
         super(props);
@@ -181,56 +185,68 @@ export default class ArticleList extends Component {
                         </tr>
                     </thead>
                     <tbody>
-                        {artlist && artlist.map(art => (
-                            <tr data-id={art.id} class={articleId == art.id ? 'bg-primary text-white' : ''} onClick={handleListClick}>
-                                <td scope='row' class='text-right'>{art.id}</td>
-                                <td scope='row' class='text-right'>{art.sort}</td>
-                                <td>
-                                    {art.img && Array.isArray(art.img) && art.img[0] && (
-                                        <span class='text-muted'>
-                                            <img src={`https://${imageServer}/150x/${imagePath}/${art.img[0].src}`} style='max-height: 50px;' class='img-fluid' /> 
-                                            <span class='text-muted'>({art.img.length})</span>
-                                        </span>
-                                    )}
-                                </td>
-                                <td><small class='text-muted'>#{art.categoryId}</small> {art.category}</td>
-                                <td>
-                                    <div class='rounded-lg px-2 py-1' style={`background-color: ${art.background};`}>
-                                        <span style={`color: ${art.forground}; font-weight: ${art.fontweightH1};`}>{art.title}</span>
-                                    </div>
-                                    {art.teaser && <div><small>{art.teaser}</small></div>}
-                                    {art.url && <small><i class='fas fa-link' /> {art.url}</small>}
-                                    <small>
-                                        {Array.isArray(art.tags) && art.tags.map(tag => (
-                                            <span class='badge badge-info mr-1'>{tag}</span>
-                                        ))}
-                                    </small><br />
-                                    <small>
-                                        <small class='text-muted'>
-                                            Ord: {util.wordCount(art.body)}, 
-                                            Lesetid: {util.readTime(art.body, 'no')}
-                                            {util.wordCount(art.notes) && <span class='ml-2 badge badge-dark'>Notater: {util.wordCount(art.notes)} ord</span>}
+                        {artlist && artlist.map((art) => {
+                            const img = art.img[0] || {};
+                            const isImg = isImage(img.ext || img.src);
+                            const ext = img.ext ? img.ext.replace(/\./, '') : '';
+
+                            return (
+                                <tr data-id={art.id} class={articleId == art.id ? 'bg-primary text-white' : ''} onClick={handleListClick}>
+                                    <td scope='row' class='text-right'>{art.id}</td>
+                                    <td scope='row' class='text-right'>{art.sort}</td>
+                                    <td>
+                                        {art.img && Array.isArray(art.img) && art.img[0] && (
+                                            <span class='text-muted'>
+                                                {isImg && <img src={`https://${imageServer}/150x/${imagePath}/${art.img[0].src}`} style='max-height: 50px;' class='img-fluid' />}
+                                                {!isImg && ext && <div class='display-4 text-muted'>
+                                                    <i class={`fas fa-file-${ext}`} />
+                                                </div>}
+
+                                                <span class='text-muted'>({art.img.length})</span>
+                                            </span>
+                                        )}
+                                    </td>
+                                    <td><small class='text-muted'>#{art.categoryId}</small> {art.category}</td>
+                                    <td>
+                                        {art.widget && <span class='badge badge-success float-right ml-1'>{art.widget}</span>}
+                                        {art.widgetList && <span class='badge badge-primary float-right ml-1'>{art.widgetList}</span>}
+                                        <div class='rounded-lg px-2 py-1' style={`background-color: ${art.background};`}>
+                                            <span style={`color: ${art.forground}; font-weight: ${art.fontweightH1};`}>{art.title}</span>
+                                        </div>
+                                        {art.teaser && <div><small>{art.teaser}</small></div>}
+                                        {art.url && <small><i class='fas fa-link' /> {art.url}</small>}
+                                        <small>
+                                            {Array.isArray(art.tags) && art.tags.map(tag => (
+                                                <span class='badge badge-info mr-1'>{tag}</span>
+                                            ))}
+                                        </small><br />
+                                        <small>
+                                            <small class='text-muted'>
+                                                Ord: {util.wordCount(art.body)},
+                                                Lesetid: {util.readTime(art.body, 'no')}
+                                                {util.wordCount(art.notes) && <span class='ml-2 badge badge-dark'>Notater: {util.wordCount(art.notes)} ord</span>}
+                                            </small>
                                         </small>
-                                    </small>
-                                </td>
-                                <td>
-                                    {util.isoDateNormalized(art.published)}<br />
-                                    {art.published !== art.updatedDate && <span class='text-muted'>
-                                        <small><i class='fas fa-user-edit' /> {util.isoDateNormalized(art.updatedDate)}</small>
-                                    </span>}
-                                </td>
-                                <td class='text-center'><span class={`badge badge-${util.getStatusClass(art.status)} p-2`}>{util.getStatus(art.status)}</span></td>
-                                <td>{art.author}</td>
-                                <td>
-                                    <a class='btn btn-sm btn-primary' target='_blank'
-                                        href={`${this.serverName}/v2/${util.htmlIdSafe(art.category || 'no-category')}/${util.htmlIdSafe(art.title || 'no-title')}/${art.id}?previewJwtToken=${previewJwtToken}`}
-                                        onClick={e => e.stopPropagation()}
-                                    >
-                                        <i class='fas fa-external-link-alt' />
-                                    </a>
-                                </td>
-                            </tr>
-                        ))}
+                                    </td>
+                                    <td>
+                                        {util.isoDateNormalized(art.published)}<br />
+                                        {art.published !== art.updatedDate && <span class='text-muted'>
+                                            <small><i class='fas fa-user-edit' /> {util.isoDateNormalized(art.updatedDate)}</small>
+                                        </span>}
+                                    </td>
+                                    <td class='text-center'><span class={`badge badge-${util.getStatusClass(art.status)} p-2`}>{util.getStatus(art.status)}</span></td>
+                                    <td>{art.author}</td>
+                                    <td>
+                                        <a class='btn btn-sm btn-primary' target='_blank'
+                                            href={`${this.serverName}/v2/${util.htmlIdSafe(art.category || 'no-category')}/${util.htmlIdSafe(art.title || 'no-title')}/${art.id}?previewJwtToken=${previewJwtToken}`}
+                                            onClick={e => e.stopPropagation()}
+                                        >
+                                            <i class='fas fa-external-link-alt' />
+                                        </a>
+                                    </td>
+                                </tr>
+                            );
+                        })}
                     </tbody>
                 </table>
             </div>
