@@ -71,3 +71,15 @@ _habitat.render({
 4. Fix src/template.html and add correct habitat:
 
 		<div data-widget-host="simple-blog-helloworld" class="preview">
+
+5. Add widget to simple-blog-cms/lib/components/articleEdit.js
+
+const widgetList = ['clock', 'booking', 'poll', 'gallery', 'weather', 'rating', 'related'];
+
+
+6. Add widget to template/bootstrap4/inc/_blog_v2.html
+
+7. Add widget to template/bootstrap4/inc/_index_v2.html
+
+8. Add widget to template/bootstrap4/inc/articleMacro.html
+

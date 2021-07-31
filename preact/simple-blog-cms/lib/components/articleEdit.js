@@ -45,7 +45,7 @@ const statusList = [
     { value: 2, title: 'Live' },
 ];
 
-const widgetList = ['clock', 'booking', 'poll', 'gallery', 'weather', 'rating'];
+const widgetList = ['clock', 'booking', 'poll', 'gallery', 'weather', 'rating', 'related'];
 
 const widgetFields = {
     clock: ['class', 'style', 'countdownto', 'showDateOnly', 'showSeconds', 'showTimezone', 'showClockOnly'],
@@ -54,6 +54,7 @@ const widgetFields = {
     gallery: [],
     weather: [],
     rating: [],
+    related: [],
 };
 
 function pad(n){

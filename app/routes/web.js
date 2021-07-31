@@ -65,6 +65,7 @@ webRouter.get('/themusher/:raceId', require('./themusher/get-race'));
 // Setup static routes
 webRouter.use('/global/', localUtil.setCacheHeaders);
 webRouter.use('/global/', express.static(`${appPath}template/global/`));
+webRouter.use('/assets/', express.static(`${appPath}template/global/assets/`));
 
 webRouter.use('/template/', localUtil.setCacheHeaders);
 webRouter.use('/template/', express.static(`${appPath}template/`));
