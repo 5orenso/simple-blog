@@ -3,7 +3,7 @@
   "name": "SimpleBlog",
   "short_name": "SimpleBlog",
   "description": "Progressive Web App for SimpleBlog",
-  "start_url": "/index",
+  "start_url": "/",
   "scope": "/",
   "display": "standalone",
   "orientation": "portrait",
