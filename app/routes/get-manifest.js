@@ -38,18 +38,18 @@ module.exports = (req, res) => {
         theme_color: '#808080',
         icons: [
             {
-                src: '/assets/icons/android-icon-36x36.png',
+                src: `/assets/${blog.imagePath}/android-icon-36x36.png`,
                 sizes: '36x36',
                 type: 'image/png',
             },
             {
-                src: '/assets/icons/android-icon-192x192.png',
+                src: `/assets/${blog.imagePath}/android-icon-192x192.png`,
                 sizes: '192x192',
                 type: 'image/png',
                 purpose: 'any maskable',
             },
             {
-                src: '/assets/icons/android-icon-512x512.png',
+                src: `/assets/${blog.imagePath}/android-icon-512x512.png`,
                 sizes: '512x512',
                 type: 'image/png',
             },
