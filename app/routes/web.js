@@ -61,6 +61,7 @@ webRouter.use('/api/', localUtil.setNoCacheHeaders);
 webRouter.use('/api/', require('./api/'));
 
 webRouter.get('/themusher/:raceId', require('./themusher/get-race'));
+webRouter.get('/manifest.json', require('./get-manifest'));
 
 // Setup static routes
 webRouter.use('/global/', localUtil.setCacheHeaders);
