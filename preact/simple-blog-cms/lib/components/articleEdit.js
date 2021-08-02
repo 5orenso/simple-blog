@@ -49,16 +49,16 @@ const widgetList = ['clock', 'booking', 'poll', 'gallery', 'weather', 'rating', 
 
 const widgetFields = {
     clock: ['class', 'style', 'countdownto', 'showDateOnly', 'showSeconds', 'showTimezone', 'showClockOnly'],
-    booking: [],
-    poll: [],
-    gallery: [],
-    weather: [],
-    rating: [],
-    related: [],
+    booking: ['class', 'style', 'sheetId'],
+    poll: ['class', 'style'],
+    gallery: ['class', 'style'],
+    weather: ['class', 'style', 'lat', 'lon', 'height'],
+    rating: ['class', 'style', 'from', 'to'],
+    related: ['class', 'style', 'tags'],
 };
 
-function pad(n){
-    return (n.length<2) ? '0'+n : n;
+function pad(n) {
+    return (n.length < 2) ? `0${n}` : n;
 }
 
 function isImage(filename = '') {

@@ -55,6 +55,31 @@ const fields = {
     'clock-showSeconds': 1,
     'clock-showTimezone': 1,
     'clock-showClockOnly': 1,
+
+    'booking-class': 1,
+    'booking-style': 1,
+    'booking-sheetId': 1,
+
+    'poll-class': 1,
+    'poll-style': 1,
+
+    'gallery-class': 1,
+    'gallery-style': 1,
+
+    'weather-class': 1,
+    'weather-style': 1,
+    'weather-lat': 1,
+    'weather-lon': 1,
+    'weather-height': 1,
+
+    'rating-class': 1,
+    'rating-style': 1,
+    'rating-from': 1,
+    'rating-to': 1,
+
+    'related-class': 1,
+    'related-style': 1,
+    'related-tags': 1,
 };
 
 module.exports = async (req, res) => {

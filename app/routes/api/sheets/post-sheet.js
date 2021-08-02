@@ -7,6 +7,7 @@
 
 'use strict';
 
+const uuidv4 = require('uuid/v4');
 const tc = require('fast-type-check');
 const strftime = require('strftime');
 
@@ -30,24 +31,34 @@ module.exports = async (req, res) => {
     await doc.loadInfo(); // loads document properties and worksheets
     // console.log(doc.title);
 
-    const resourceSheet = doc.sheetsByIndex[0];
+    const signupSheet = doc.sheetsByIndex[1];
 
-    const sheetRows = await resourceSheet.getRows();
-    const resourceSheetHeaders = resourceSheet.headerValues;
+    const sheetRows = await signupSheet.getRows();
 
-    const rows = sheetRows.map((row, idx) => {
-        const data = { idx };
-        resourceSheetHeaders.forEach((col) => {
-            data[col] = row[col];
-        });
-        return data;
+    const { email, course } = req.body;
+    const existingRow = sheetRows.findIndex(row => (row.email === email && row.course === course));
+    if (existingRow > -1) {
+        const data = {
+            title: doc.title,
+            data: 'Allerede påmeldt!',
+            status: 400,
+            id: existingRow.id,
+        };
+        return utilHtml.renderApi(req, res, 400, data);
+    }
+
+    signupSheet.addRow({
+        ...req.body,
+        id: uuidv4(),
+        created: new Date(),
+        logincode: util.generateCode(),
     });
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
     const data = {
         title: doc.title,
-        headers: resourceSheetHeaders,
-        rows,
+        data: 'Row added',
+        status: 202,
     };
-    return utilHtml.renderApi(req, res, 200, data);
+    return utilHtml.renderApi(req, res, 202, data);
 };

@@ -1,5 +1,5 @@
 import { h } from 'preact';
-import { useState, useEffect } from 'preact/hooks';
+import { useState, useEffect, useCallback } from 'preact/hooks';
 import querystring from 'querystring';
 
 function fetchApi({ url, headers = {}, body = {}, settings = {} }) {
@@ -43,6 +43,10 @@ export default function App(props) {
     const [imageServer, setImageServer] = useState({});
     const [imagePath, setImagePath] = useState({});
     const [imageIdx, setImageidx] = useState({});
+    const [sheet, setSheet] = useState({});
+    const [rowid, setRowId] = useState(0);
+    const [input, setInput] = useState({});
+    const [apiResponse, setApiResponse] = useState({});
 
     useEffect(() => {
         const fetchData = async () => {
@@ -51,7 +55,7 @@ export default function App(props) {
                 settings: {
                     apiServer,
                 },
-            })
+            });
             setArticle(result.article);
             setImageServer(result.imageServer);
             setImagePath(result.imagePath);
@@ -61,71 +65,182 @@ export default function App(props) {
         }
     }, [articleId]);
 
-    const { img: images = [] } = article;
-    const scrollImages = (e) => {
-        const totalImages = images.length - 1;
-
-        const { scrollLeft, scrollWidth, clientWidth } = e.target;
-        const imageStep = clientWidth;
-        const imageIdx = scrollLeft / imageStep;
-        // console.log({ e, imageStep, imageIdx, scrollLeft, scrollWidth, clientWidth });
-
-        const nearestInt = Math.round(imageIdx);
-        const diff = Math.abs(nearestInt - imageIdx);
-        // console.log({ nearestInt, diff });
-        if (Number.isInteger(imageIdx) || diff < 0.1) {
-            setImageidx(nearestInt);
+    useEffect(() => {
+        const fetchData = async () => {
+            const result = await fetchApi({
+                url: `/api/sheets/${article['booking-sheetId']}`,
+                settings: {
+                    apiServer,
+                },
+            });
+            setSheet(result);
+        };
+        if (article['booking-sheetId']) {
+            fetchData();
         }
+    }, [article['booking-sheetId']]);
+
+    const onClickRow = useCallback((e) => {
+        const { id } = e.target.closest('tr').dataset;
+        setRowId(id);
+    }, [rowid]);
+
+    const onClickBack = useCallback((e) => {
+        setRowId(0);
+        setApiResponse({});
+    }, [0]);
+
+    const onInput = useCallback((e) => {
+        const { name, value } = e.target;
+        const newInput = { ...input };
+        newInput[name] = value;
+        setInput(newInput);
+    }, [input]);
+
+    const submitForm = useCallback(() => {
+        const postData = async () => {
+            const result = await fetchApi({
+                url: `/api/sheets/${article['booking-sheetId']}`,
+                body: {
+                    ...input,
+                    course: rowid,
+                },
+                settings: {
+                    apiServer,
+                    method: 'POST',
+                },
+            });
+            setApiResponse(result);
+        };
+        if (input.email) {
+            postData();
+        }
+    }, [input, rowid]);
+
+    if (rowid && sheet.rows) {
+        const row = sheet.rows.find(e => e.id === rowid);
+
+        return (
+            <div class={`${article['booking-class']}`} style={`${article['booking-style']}`}>
+                {/* {JSON.stringify(images, null, 4)} */}
+                {/* {JSON.stringify(article['booking-sheetId'])} */}
+                {/* rowid: {rowid}<br /> */}
+                <button class='btn btn-link' type='button' onClick={onClickBack}><i class='fas fa-arrow-left' /> Tilbake</button>
+                <h5>{row.name}</h5>
+                <div>
+                    <span class='font-weight-lighter'>Dato:</span> {row['date from']} - {row['date to']}
+                </div>
+                <div class='mt-3'>
+                    <span class='font-weight-lighter'>Beskrivelse:</span><br/>
+                    {row.description}
+                </div>
+                {row.address && <>
+                    <div class='mt-3'>
+                        <span class='font-weight-lighter'>Sted:</span><br/>
+                        {row.address && <>{row.address}<br /></>}
+                        {row.postalcode && <>{row.postalcode} {row.postalplace}<br/></>}
+                    </div>
+                </>}
+                <div class='mt-3'>
+                    <span class='font-weight-lighter'>Antall plasser:</span> {row['total seats']}<br/>
+                    <span class='font-weight-lighter'>Ledige plasser:</span> {row['free seats']}
+                </div>
+
+                {apiResponse && apiResponse.status ? <>
+                    {apiResponse.status < 300 ? <>
+                        <div class='alert alert-success' role='alert'>
+                            Påmeldingen er mottatt.
+                        </div>
+                    </> : <>
+                        <div class='alert alert-danger' role='alert'>
+                            Noe gikk feil: {apiResponse.data}
+                        </div>
+                    </>}
+                </> : <>
+                    <h5 class='mt-5'>Påmeldingskjema</h5>
+                    <div class='row'>
+                        <div class='col-6 form-group'>
+                            <label for='inputEmail'>E-post</label>
+                            <input type='email' class='form-control' id='inputEmail' aria-describedby='emailHelp' name='email' value={input.email} onInput={onInput} />
+                            {/* <small id='emailHelp' class='form-text text-muted'>We'll never share your email with anyone else.</small> */}
+                        </div>
+                        <div class='col-6 form-group'>
+                            <label for='inputCellphone'>Mobil</label>
+                            <input type='text' class='form-control' id='inputCellphone' name='cellphone' value={input.cellphone} onInput={onInput}  />
+                        </div>
+                        {/* <div class='col-6 form-group'>
+                            <label for='inputPassword'>Passord</label>
+                            <input type='password' class='form-control' id='inputPassword' name='password' value={input.password} onInput={onInput} />
+                        </div> */}
+                    </div>
+                    <div class='row'>
+                        <div class='col-6 form-group'>
+                            <label for='inputFirstname'>Fornavn</label>
+                            <input type='text' class='form-control' id='inputFirstname' name='firstname' value={input.firstname} onInput={onInput}  />
+                        </div>
+                        <div class='col-6 form-group'>
+                            <label for='inputLastname'>Etternavn</label>
+                            <input type='text' class='form-control' id='inputLastname' name='lastname' value={input.lastname} onInput={onInput}  />
+                        </div>
+                    </div>
+                    <div class='row'>
+                        <div class='col-12 form-group'>
+                            <label for='inputAddress'>Adresse</label>
+                            <input type='text' class='form-control' id='inputAddress' name='address' value={input.address} onInput={onInput}  />
+                        </div>
+                    </div>
+                    <div class='row'>
+                        <div class='col-12 form-group'>
+                            <label for='inputPostalcode'>Postnr-/sted</label>
+                            <div class='row'>
+                                <div class='col-3'>
+                                    <input type='text' class='form-control' id='inputPostalcode' name='postalcode' value={input.postalcode} onInput={onInput} cols='4' />
+                                </div>
+                                <div class='col-9'>
+                                    <input type='text' class='form-control' name='postalplace' value={input.postalplace} onInput={onInput}  />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button type='button' class='btn btn-primary float-right' onClick={submitForm}>Meld meg på</button>
+                </>}
+            </div>
+        );
     }
 
     return (
-        <div class={`${article['gallery-class']}`} style={`${article['gallery-style']}`}>
+        <div class={`${article['booking-class']}`} style={`${article['booking-style']}`}>
             {/* {JSON.stringify(images, null, 4)} */}
-            {/* {JSON.stringify(article)} */}
+            {/* {JSON.stringify(article['booking-sheetId'])} */}
+            {/* rowid: {rowid}<br /> */}
 
-            <div class='w-100'>
-                <div
-                    class='d-flex flex-row flex-nowrap bg-light border-top border-bottom'
-                    style='overflow: auto; scroll-snap-type: x mandatory;'
-                    onScroll={scrollImages}
-                >
-                    {images && images.map((img, idx) => (
-                        <div class='col-12 clearfix position-relative p-0'>
-                            <div
-                                class={`w-100 h-100 text-center rounded-lg imageContainer d-flex justify-content-center align-items-center`}
-                                style={`
-                                    scroll-snap-align: start;
-                                    flex-wrap: wrap;
-                                    overflow-y: hidden;
-                                `}
-                            >					
-                                {img.src ? <img
-                                    class='img-fluid'
-                                    src={`https://${imageServer}/800x/${imagePath}/${img.src}`}
-                                    loading='lazy'
-                                    style={`max-height: 75vh; ${idx !== imageIdx ? '' : ''}`}
-                                /> : <>
-                                    <span class='display-1 text-muted'>
-                                        <i class='fas fa-camera' />
-                                    </span>
-                                </>}
-                            </div>
-                        </div>
-                    ))}
-                </div>
-                {images && images.length > 1 && <>
-                    <div class='w-100 text-center'>
-                        <small>
-                            <small>
-                                {images && images.map((img, idx) => <>
-                                    <i class={`${idx === imageIdx ? 'fas' : 'far'} fa-circle mr-1`} />
-                                </>)}
-                            </small>
-                        </small>
+            {sheet && sheet.title ? <>
+                {/* <xmp>{JSON.stringify(sheet.headers)}</xmp> */}
+                <table class='table table-sm table-striped'>
+                    <thead>
+                        <tr>
+                            <th>Kurs</th>
+                            <th class='text-center'>Dato</th>
+                            <th class='text-center'>Ledige plasser</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {sheet.rows && sheet.rows.map(row => <>
+                            <tr onClick={onClickRow} data-id={row.id} style='cursor: pointer;'>
+                                <td>{row.name}</td>
+                                <td class='text-center'>{row['date from']} - {row['date to']}</td>
+                                <td class='text-right'>{row['free seats']}/{row['total seats']}</td>
+                            </tr>
+                        </>)}
+                    </tbody>
+                </table>
+            </> : <>
+                <div class='d-flex justify-content-center py-3'>
+                    <div class='spinner-border' role='status'>
+                        <span class='sr-only'>Loading...</span>
                     </div>
-                </>}
-            </div>
-
+                </div>
+            </>}
         </div>
     );
 }
