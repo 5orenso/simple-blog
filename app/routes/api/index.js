@@ -12,6 +12,7 @@ router.use(cors({
     preflightContinue: true, // All domains should be allowed by default to contact our API.
 }));
 
+router.use('/bookings/', wrap(require('./bookings/')));
 router.use('/sheets/', wrap(require('./sheets/')));
 
 router.get('/article/', wrap(require('./get-article')));

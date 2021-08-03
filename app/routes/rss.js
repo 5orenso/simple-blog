@@ -14,6 +14,8 @@ const swig = require('swig');
 const fs = require('fs');
 const path = require('path');
 
+const { routeName, routePath, run, webUtil, utilHtml, util } = require('../middleware/init')({ __filename, __dirname });
+
 const appPath = `${__dirname}/../../`;
 const templatePath = path.normalize(`${appPath}template/current/`);
 let photoPath = path.normalize(`${appPath}content/images/`);
@@ -31,9 +33,9 @@ const localUtil = new LocalUtil();
 let category;
 let article;
 
-swig.setFilter('markdown', articleUtil.replaceMarked);
-swig.setFilter('formatted', articleUtil.formatDate);
-swig.setFilter('rssdate', articleUtil.rssDate);
+// swig.setFilter('markdown', articleUtil.replaceMarked);
+// swig.setFilter('formatted', articleUtil.formatDate);
+// swig.setFilter('rssdate', articleUtil.rssDate);
 
 // var stats, activeConn, timer, timer_v2, config;
 const rssRouter = express.Router();
@@ -76,6 +78,8 @@ rssRouter.use(morgan('combined', { stream: accessLogStream }));
 // Main route for blog articles.
 rssRouter.use('/*', localUtil.setNoCacheHeaders);
 rssRouter.get('/*', (req, res) => {
+    const { hrstart, runId } = run(req);
+
     // Resolve filename
     const requestUrl = articleUtil.getUrlFromRequest(req);
 
@@ -93,7 +97,7 @@ rssRouter.get('/*', (req, res) => {
     // TODO: How do we bypass the cache?
     const file = articleUtil.getArticleFilename(requestUrl);
     const template = templatePath + (file === 'index' ? 'rss.xml' : 'rss.xml');
-    const tpl = swig.compileFile(template);
+    // const tpl = swig.compileFile(template);
 
     Promise.all([
         category.list('/'),
@@ -105,17 +109,18 @@ rssRouter.get('/*', (req, res) => {
             artlist: contentLists[1],
         }))
         .then((resultArticle) => {
-            res.send(tpl({
+            return webUtil.sendResultResponse(req, res, {
                 blog: rssRouter.config.blog,
                 article: resultArticle,
-            }));
+            }, { runId, routePath, routeName, hrstart, useTemplate: template });
         })
         .catch((opt) => {
-            res.status(404).send(tpl({
+            return webUtil.sendResultResponse(req, res, {
                 blog: rssRouter.config.blog,
                 error: opt.error,
                 article: opt.article,
-            }));
+                status: 404,
+            }, { runId, routePath, routeName, hrstart, useTemplate: template });
         });
 });
 module.exports = rssRouter;

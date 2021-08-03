@@ -30,31 +30,24 @@ module.exports = async (req, res) => {
     await doc.loadInfo(); // loads document properties and worksheets
     // console.log(doc.title);
 
-    const sheets = [];
-    for (let i = 0, l = doc.sheetsByIndex.length; i < l; i += 1) {
-        const sheet = doc.sheetsByIndex[i];
+    const resourceSheet = doc.sheetsByIndex[0];
 
-        const sheetRows = await sheet.getRows();
-        const sheetHeaders = sheet.headerValues;
+    const sheetRows = await resourceSheet.getRows();
+    const resourceSheetHeaders = resourceSheet.headerValues;
 
-        const rows = sheetRows.map((row, idx) => {
-            const data = { idx };
-            sheetHeaders.forEach((col) => {
-                data[col] = row[col];
-            });
-            return data;
+    const rows = sheetRows.map((row, idx) => {
+        const data = { idx };
+        resourceSheetHeaders.forEach((col) => {
+            data[col] = row[col];
         });
-        sheets.push({
-            title: sheet.title,
-            headers: sheetHeaders,
-            rows,
-        });
-    }
+        return data;
+    });
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
     const data = {
         title: doc.title,
-        sheets,
+        headers: resourceSheetHeaders,
+        rows,
     };
     return utilHtml.renderApi(req, res, 200, data);
 };

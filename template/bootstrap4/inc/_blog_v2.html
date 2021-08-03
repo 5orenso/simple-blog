@@ -147,9 +147,9 @@
         </div>
         <div class="col-lg-8 blog-main">
             <div class="blog-post">
-                {% for widget in ['helloworld', 'clock', 'booking', 'poll', 'gallery', 'weather', 'rating', 'related'] %}
+                {% for widget in ['helloworld', 'clock', 'booking', 'sheet', 'poll', 'gallery', 'weather', 'rating', 'related'] %}
                     {% if article.widget === widget %}
-                        <div data-widget-host="simple-blog-{{ widget }}">
+                        <div class='w-100 my-4' data-widget-host="simple-blog-{{ widget }}">
                             <script type="text/props">
                                 {
                                     "apiServer": "{{ blog.protocol }}://{{ blog.domain }}",

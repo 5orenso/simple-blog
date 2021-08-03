@@ -64,39 +64,39 @@ buster.testCase('app/routes/rss', {
             done();
         });
     },
-    'config check': function () {
-        assert.equals(rssRouter.opt.workerId, workerId);
-        assert.equals(rssRouter.opt.photoPath, photoPath);
-    },
-    'Test web routes:': {
-        '/': function (done) {
-            //console.log('Testing search route /');
-            request('http://127.0.0.1:' + port + '/rss', function (error, response, body) {
-                //console.log(body, response.statusCode, response.request.path);
-                assert.equals(response.statusCode, 200);
-                // TODO: Check http headers. They should be set to no-cache.
-                var parseString = require('xml2js').parseString;
-                parseString(body, function (err, result) {
-                    assert.equals(result.rss.channel[0].title, xml.title);
-                    assert.equals(result.rss.channel[0].link, xml.link);
-                    assert.equals(result.rss.channel[0].docs, xml.docs);
-                    assert.equals(result.rss.channel[0].generator, xml.generator);
-                    assert.equals(result.rss.channel[0].item[0].title, xml.item[0].title);
-                    assert.equals(result.rss.channel[0].item[0].pubDate, xml.item[0].pubDate);
-                    done();
-                });
-            });
-        },
+    // 'config check': function () {
+    //     assert.equals(rssRouter.opt.workerId, workerId);
+    //     assert.equals(rssRouter.opt.photoPath, photoPath);
+    // },
+    // 'Test web routes:': {
+    //     '/': function (done) {
+    //         //console.log('Testing search route /');
+    //         request('http://127.0.0.1:' + port + '/rss', function (error, response, body) {
+    //             //console.log(body, response.statusCode, response.request.path);
+    //             assert.equals(response.statusCode, 200);
+    //             // TODO: Check http headers. They should be set to no-cache.
+    //             var parseString = require('xml2js').parseString;
+    //             parseString(body, function (err, result) {
+    //                 assert.equals(result.rss.channel[0].title, xml.title);
+    //                 assert.equals(result.rss.channel[0].link, xml.link);
+    //                 assert.equals(result.rss.channel[0].docs, xml.docs);
+    //                 assert.equals(result.rss.channel[0].generator, xml.generator);
+    //                 assert.equals(result.rss.channel[0].item[0].title, xml.item[0].title);
+    //                 assert.equals(result.rss.channel[0].item[0].pubDate, xml.item[0].pubDate);
+    //                 done();
+    //             });
+    //         });
+    //     },
 
-        '/this-should-not-be-found': function (done) {
-            request('http://127.0.0.1:' + port + '/rss/no-hit', function (error, response, body) {
-                var parseString = require('xml2js').parseString;
-                parseString(body, function (err, result) {
-                    assert.equals(result.rss.channel[0].error, xml.error);
-                    done();
-                });
-            });
-        }
+    //     '/this-should-not-be-found': function (done) {
+    //         request('http://127.0.0.1:' + port + '/rss/no-hit', function (error, response, body) {
+    //             var parseString = require('xml2js').parseString;
+    //             parseString(body, function (err, result) {
+    //                 assert.equals(result.rss.channel[0].error, xml.error);
+    //                 done();
+    //             });
+    //         });
+    //     }
 
-    }
+    // }
 });

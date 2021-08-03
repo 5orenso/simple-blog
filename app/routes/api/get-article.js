@@ -57,13 +57,20 @@ const fields = {
     'clock-showClockOnly': 1,
 
     'booking-class': 1,
+    'booking-table-class': 1,
     'booking-style': 1,
     'booking-sheetId': 1,
+
+    'sheet-class': 1,
+    'sheet-table-class': 1,
+    'sheet-style': 1,
+    'sheet-sheetId': 1,
 
     'poll-class': 1,
     'poll-style': 1,
 
     'gallery-class': 1,
+    'gallery-class-photo': 1,
     'gallery-style': 1,
 
     'weather-class': 1,

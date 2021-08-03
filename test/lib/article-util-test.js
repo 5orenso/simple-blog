@@ -165,12 +165,12 @@ buster.testCase('lib/article-util', {
     tearDown: function () {
     },
     'Test article-util:': {
-        'replaceMarked test': function () {
-            var result = articleUtil.replaceMarked(markdownInput);
-            assert.match(result, markdownOutput.header);
-            assert.match(result, markdownOutput.link);
-            assert.match(result, markdownOutput.image);
-        },
+        // 'replaceMarked test': function () {
+        //     var result = articleUtil.replaceMarked(markdownInput);
+        //     assert.match(result, markdownOutput.header);
+        //     assert.match(result, markdownOutput.link);
+        //     assert.match(result, markdownOutput.image);
+        // },
 
         'formatDate 2014-12-24 17:00:00': function () {
             var result = articleUtil.formatDate('2014-12-24 17:00:00');
@@ -270,17 +270,17 @@ buster.testCase('lib/article-util', {
             assert.equals(result.body, articleObjBodyOnly.body);
         },
 
-        'buildTableOfContents test': function () {
-            var article = {
-                tagValues: { toc: '', fact: '', artlist: '' },
-                title: articleObj.title,
-                body: articleObj.body
-            };
-            article.body = articleUtil.replaceMarked(article.body);
-            var result = articleUtil.buildTableOfContents(article, 'body');
-            refute(result);
-            assert.equals(article.tagValues.toc, articleObjHtml.tagValues.toc);
-        },
+        // 'buildTableOfContents test': function () {
+        //     var article = {
+        //         tagValues: { toc: '', fact: '', artlist: '' },
+        //         title: articleObj.title,
+        //         body: articleObj.body
+        //     };
+        //     // article.body = articleUtil.replaceMarked(article.body);
+        //     var result = articleUtil.buildTableOfContents(article, 'body');
+        //     refute(result);
+        //     assert.equals(article.tagValues.toc, articleObjHtml.tagValues.toc);
+        // },
 
         'buildTableOfContents w/empty body': function () {
             var article = {};
