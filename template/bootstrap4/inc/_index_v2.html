@@ -65,7 +65,7 @@
         {% set art = artlist[0] %}
         <div class="jumbotron px-0 pt-0 pb-0" {{ articleMacro.colorArticleBackground(art.catRef, frontpage, true, art) }}>
             <div class="container-fluid px-0 blog-main" {{ articleMacro.colorArticleText(art.catRef, frontpage, true, art) }}>
-                {% if art.img[0] && art.img[0].src|match('(jpg|jpeg|png|gif|heic|heif|svg|webp|tif)$', 'i') %}
+                {% if art.img[0] && art.img[0].src|match('(jpg|jpeg|png|gif|heic|heif|svg|webp|tif|JPG|JPEG|PNG|GIF|HEIC|HEIF|SVG|WEBP|TIF)$', 'i') %}
                     <div class="jumbotron-thumb d-flex align-items-center">
                         {% if art.isFrontpage %}
                             {% if art.url %}

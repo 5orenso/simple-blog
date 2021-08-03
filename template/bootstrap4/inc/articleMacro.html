@@ -64,7 +64,7 @@
 {% macro articleTeaser(art, col, extraClasses, heading) %}
     <div class="col-12 col-sm-12 col-md-{{ col || 4 }} post-data my-1 {{ extraClasses }}" >
         <div {{ colorArticleBackground(art.catRef, null, null, art) }}>
-        {% if art.img[0] && art.img[0].src|match('(jpg|jpeg|png|gif|heic|heif|svg|webp|tif)$', 'i') %}
+        {% if art.img[0] && art.img[0].src|match('(jpg|jpeg|png|gif|heic|heif|svg|webp|tif|JPG|JPEG|PNG|GIF|HEIC|HEIF|SVG|WEBP|TIF)$', 'i') %}
             <div class="post-thumb d-flex align-items-center">
                 <a href="{% if art.url %}{{ art.url }}{% else %}/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}{% endif %}">
                     <img src="https://{{ imageServer }}/800x/{{ imagePath }}/{{ art.img[0].src }}" alt="{{ art.title|e }}" class="img-fluid">
