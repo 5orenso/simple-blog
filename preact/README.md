@@ -70,7 +70,49 @@ _habitat.render({
 
 4. Fix src/template.html and add correct habitat:
 
-		<div data-widget-host="simple-blog-helloworld" class="preview">
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title><% preact.title %></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1">
+		<style>
+			.preview {
+				width: 100%;
+				border: 1px dashed rgba(0, 0, 0, 0.2);
+				position: relative;
+			}
+		</style>
+		<link href="http://localhost:8080/css/bootstrap.min.css" rel="stylesheet">
+		<link href="http://localhost:8080/css/custom.css?v18" rel="stylesheet">
+		<link href="http://localhost:8080/global/css/youtube.css" rel="stylesheet">
+		<link href="http://localhost:8080/css/flag-icon-css/css/flag-icon.min.css" rel="stylesheet">
+		<link href="http://localhost:8080/fonts/fontawesome-free-5.15.3-web/css/all.css" rel="stylesheet">
+		<% preact.headEnd %>
+	</head>
+	<body>
+		<div class='container'>
+			<div class='row'>
+				<div class='col-12'>
+					<h5>Booking 1</h5>
+					<div data-widget-host="simple-blog-booking" class="preview">
+						<script type="text/props">
+							{
+								"apiServer": "http://localhost:8080",
+								"articleId": 318
+							}
+						</script>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<% preact.bodyEnd %>
+	</body>
+</html>
+
+
+
 
 5. Add widget to simple-blog-cms/lib/components/articleEdit.js
 
@@ -82,4 +124,9 @@ const widgetList = ['clock', 'booking', 'poll', 'gallery', 'weather', 'rating', 
 7. Add widget to template/bootstrap4/inc/_index_v2.html
 
 8. Add widget to template/bootstrap4/inc/articleMacro.html
+
+9. Add line to app/routes/web.js
+
+webRouter.use('/preact/simple-blog-helloworld/', express.static(`${appPath}preact/simple-blog-helloworld/bundle/`));
+
 

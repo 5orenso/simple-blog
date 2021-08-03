@@ -68,7 +68,7 @@ export default function App(props) {
     useEffect(() => {
         const fetchData = async () => {
             const result = await fetchApi({
-                url: `/api/sheets/${article['booking-sheetId']}`,
+                url: `/api/bookings/${article['booking-sheetId']}`,
                 settings: {
                     apiServer,
                 },
@@ -100,7 +100,7 @@ export default function App(props) {
     const submitForm = useCallback(() => {
         const postData = async () => {
             const result = await fetchApi({
-                url: `/api/sheets/${article['booking-sheetId']}`,
+                url: `/api/bookings/${article['booking-sheetId']}`,
                 body: {
                     ...input,
                     course: rowid,
@@ -216,7 +216,7 @@ export default function App(props) {
 
             {sheet && sheet.title ? <>
                 {/* <xmp>{JSON.stringify(sheet.headers)}</xmp> */}
-                <table class='table table-sm table-striped'>
+                <table class={`table ${article['booking-table-class']}`}>
                     <thead>
                         <tr>
                             <th>Kurs</th>

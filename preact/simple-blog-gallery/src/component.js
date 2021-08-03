@@ -85,7 +85,7 @@ export default function App(props) {
 
             <div class='w-100'>
                 <div
-                    class='d-flex flex-row flex-nowrap bg-light border-top border-bottom'
+                    class={`d-flex flex-row flex-nowrap border-top border-bottom ${article['gallery-class-photo'] || 'bg-dark'}`}
                     style='overflow: auto; scroll-snap-type: x mandatory;'
                     onScroll={scrollImages}
                 >
@@ -109,6 +109,15 @@ export default function App(props) {
                                         <i class='fas fa-camera' />
                                     </span>
                                 </>}
+                                {img.title && <div class='position-absolute text-white font-weight-lighter px-3 w-100' style='bottom: 10px; background-color: rgba(0, 0, 0, 0.3)'>
+                                    <strong>{img.title}</strong> {img.text}
+                                </div>}
+                                <div
+                                    class='position-absolute text-white font-weight-lighter px-1 py-1 rounded-lg'
+                                    style='top: 10px; right: 10px; background-color: rgba(0, 0, 0, 0.3); line-height: 0.6em;'
+                                >
+                                    <small><small>{idx + 1} / {images.length}</small></small>
+                                </div>
                             </div>
                         </div>
                     ))}
