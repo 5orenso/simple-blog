@@ -65,7 +65,7 @@ export default function App(props) {
     let filteredImages = images;
     if (article['gallery-start'] || article['gallery-end']) {
         const start = article['gallery-start'] || 0;
-        const end = article['gallery-end'] || images.length - 1;
+        const end = article['gallery-end'] || images.length;
         filteredImages = images.slice(start, end);
     }
     const scrollImages = (e) => {
