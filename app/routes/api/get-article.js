@@ -72,6 +72,8 @@ const fields = {
     'gallery-class': 1,
     'gallery-class-photo': 1,
     'gallery-style': 1,
+    'gallery-start': 1,
+    'gallery-end': 1,
 
     'weather-class': 1,
     'weather-style': 1,

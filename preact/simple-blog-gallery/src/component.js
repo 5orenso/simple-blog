@@ -62,8 +62,14 @@ export default function App(props) {
     }, [articleId]);
 
     const { img: images = [] } = article;
+    let filteredImages = images;
+    if (article['gallery-start'] || article['gallery-end']) {
+        const start = article['gallery-start'] || 0;
+        const end = article['gallery-end'] || images.length - 1;
+        filteredImages = images.slice(start, end);
+    }
     const scrollImages = (e) => {
-        const totalImages = images.length - 1;
+        const totalImages = filteredImages.length - 1;
 
         const { scrollLeft, scrollWidth, clientWidth } = e.target;
         const imageStep = clientWidth;
@@ -89,7 +95,7 @@ export default function App(props) {
                     style='overflow: auto; scroll-snap-type: x mandatory;'
                     onScroll={scrollImages}
                 >
-                    {images && images.map((img, idx) => (
+                    {filteredImages && filteredImages.map((img, idx) => (
                         <div class='col-12 clearfix position-relative p-0'>
                             <div
                                 class={`w-100 h-100 text-center rounded-lg imageContainer d-flex justify-content-center align-items-center`}
@@ -116,17 +122,17 @@ export default function App(props) {
                                     class='position-absolute text-white font-weight-lighter px-1 py-1 rounded-lg'
                                     style='top: 10px; right: 10px; background-color: rgba(0, 0, 0, 0.3); line-height: 0.6em;'
                                 >
-                                    <small><small>{idx + 1} / {images.length}</small></small>
+                                    <small><small>{idx + 1} / {filteredImages.length}</small></small>
                                 </div>
                             </div>
                         </div>
                     ))}
                 </div>
-                {images && images.length > 1 && <>
+                {filteredImages && filteredImages.length > 1 && <>
                     <div class='w-100 text-center'>
                         <small>
                             <small>
-                                {images && images.map((img, idx) => <>
+                                {filteredImages && filteredImages.map((img, idx) => <>
                                     <i class={`${idx === imageIdx ? 'fas' : 'far'} fa-circle mr-1`} />
                                 </>)}
                             </small>
