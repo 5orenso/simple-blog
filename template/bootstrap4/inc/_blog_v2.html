@@ -28,7 +28,7 @@
     <div class="blog-top-image {% if article.gallery || article.img[1] %}gallery-post-format{% endif %}">
         {% if article.youtube %}
             {{ article.youtube|safe }}
-        {% elseif article.img[0] && article.img[0].src|match('(jpg|jpeg|png|gif|heic|heif|svg|webp|tif)$', 'i') %}
+        {% elseif article.img[0] && article.img[0].src|match('(jpg|jpeg|png|gif|heic|heif|svg|webp|tif|JPG)$', 'i') %}
             <div>
                 <img src="https://{{ imageServer }}/{% if isPhoto || isPhotoCategory %}1920x{% else %}1024x{% endif %}/{{ imagePath }}/{{ article.img[0].src }}" alt="{{ article.title|e }}" class="img-fluid mx-auto d-block">
             </div>
