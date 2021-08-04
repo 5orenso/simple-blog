@@ -38,7 +38,7 @@ function fetchApi({ url, headers = {}, body = {}, settings = {} }) {
 }
 
 export default function App(props) {
-    const { apiServer, jwtToken, articleId } = props;
+    const { apiServer, jwtToken, articleId, sheetId } = props;
 
     const [article, setArticle] = useState({});
     const [imageServer, setImageServer] = useState({});
@@ -49,6 +49,8 @@ export default function App(props) {
     const [currentSheet, setCurrentSheet] = useState(0);
     const [input, setInput] = useState({});
     const [apiResponse, setApiResponse] = useState({});
+
+    const googleSheetId = sheetId || article['sheet-sheetId'];
 
     useEffect(() => {
         const fetchData = async () => {
@@ -70,17 +72,17 @@ export default function App(props) {
     useEffect(() => {
         const fetchData = async () => {
             const result = await fetchApi({
-                url: `/api/sheets/${article['sheet-sheetId']}`,
+                url: `/api/sheets/${googleSheetId}`,
                 settings: {
                     apiServer,
                 },
             });
             setDoc(result);
         };
-        if (article['sheet-sheetId']) {
+        if (googleSheetId) {
             fetchData();
         }
-    }, [article['sheet-sheetId']]);
+    }, [googleSheetId]);
 
     const onClickRow = useCallback((e) => {
         const { id } = e.target.closest('tr').dataset;
