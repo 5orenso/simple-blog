@@ -37,7 +37,7 @@ function fetchApi({ url, headers = {}, body = {}, settings = {} }) {
 }
 
 export default function App(props) {
-    const { apiServer, jwtToken, articleId } = props;
+    const { apiServer, jwtToken, articleId, start, end, size = '800x' } = props;
 
     const [article, setArticle] = useState({});
     const [imageServer, setImageServer] = useState({});
@@ -63,10 +63,10 @@ export default function App(props) {
 
     const { img: images = [] } = article;
     let filteredImages = images;
-    if (article['gallery-start'] || article['gallery-end']) {
-        const start = article['gallery-start'] || 0;
-        const end = article['gallery-end'] || images.length;
-        filteredImages = images.slice(start, end);
+    if (article['gallery-start'] || article['gallery-end'] || start || end) {
+        const startIdx = parseInt(start || article['gallery-start'] || 0, 10);
+        const endIdx = parseInt(end || article['gallery-end'] || images.length, 10);
+        filteredImages = images.slice(startIdx, endIdx);
     }
 
     const scrollImages = (e) => {
@@ -108,7 +108,7 @@ export default function App(props) {
                             >					
                                 {img.src ? <img
                                     class='img-fluid'
-                                    src={`https://${imageServer}/800x/${imagePath}/${img.src}`}
+                                    src={`https://${imageServer}/${size}/${imagePath}/${img.src}`}
                                     loading='lazy'
                                     style={`max-height: 75vh; ${idx !== imageIdx ? '' : ''}`}
                                 /> : <>

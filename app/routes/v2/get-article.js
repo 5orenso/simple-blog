@@ -167,6 +167,7 @@ module.exports = async (req, res) => {
 
     if (tc.isObject(article)) {
         article.body = utilHtml.replaceDataTags(article.body || '', article);
+        article.body = utilHtml.replaceContentTags(article.body || '', article, req.config);
         utilHtml.runPlugins(article);
     }
     
