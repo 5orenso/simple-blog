@@ -42,7 +42,7 @@ export default function App(props) {
     const [article, setArticle] = useState({});
     const [imageServer, setImageServer] = useState({});
     const [imagePath, setImagePath] = useState({});
-    const [imageIdx, setImageidx] = useState({});
+    const [imageIdx, setImageidx] = useState(0);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -68,6 +68,7 @@ export default function App(props) {
         const end = article['gallery-end'] || images.length;
         filteredImages = images.slice(start, end);
     }
+
     const scrollImages = (e) => {
         const totalImages = filteredImages.length - 1;
 
@@ -89,14 +90,14 @@ export default function App(props) {
             {/* {JSON.stringify(images, null, 4)} */}
             {/* {JSON.stringify(article)} */}
 
-            <div class='w-100'>
+            <div class='w-100 position-relative'>
                 <div
-                    class={`d-flex flex-row flex-nowrap border-top border-bottom ${article['gallery-class-photo'] || 'bg-dark'}`}
+                    class={`d-flex flex-row flex-nowrap border-top border-bottom`}
                     style='overflow: auto; scroll-snap-type: x mandatory;'
                     onScroll={scrollImages}
                 >
                     {filteredImages && filteredImages.map((img, idx) => (
-                        <div class='col-12 clearfix position-relative p-0'>
+                        <div class={`col-12 clearfix position-relative p-0  ${article['gallery-class-photo'] || 'bg-dark'}`}>
                             <div
                                 class={`w-100 h-100 text-center rounded-lg imageContainer d-flex justify-content-center align-items-center`}
                                 style={`
@@ -115,19 +116,14 @@ export default function App(props) {
                                         <i class='fas fa-camera' />
                                     </span>
                                 </>}
-                                {img.title && <div class='position-absolute text-white font-weight-lighter px-3 w-100' style='bottom: 10px; background-color: rgba(0, 0, 0, 0.3)'>
+                                {img.title && <div class='position-absolute text-white font-weight-lighter px-3 w-100' style='bottom: 10px; background-color: rgba(0, 0, 0, 0.4)'>
                                     <strong>{img.title}</strong> {img.text}
                                 </div>}
-                                <div
-                                    class='position-absolute text-white font-weight-lighter px-1 py-1 rounded-lg'
-                                    style='top: 10px; right: 10px; background-color: rgba(0, 0, 0, 0.3); line-height: 0.6em;'
-                                >
-                                    <small><small>{idx + 1} / {filteredImages.length}</small></small>
-                                </div>
                             </div>
                         </div>
                     ))}
                 </div>
+
                 {filteredImages && filteredImages.length > 1 && <>
                     <div class='w-100 text-center'>
                         <small>
@@ -139,6 +135,14 @@ export default function App(props) {
                         </small>
                     </div>
                 </>}
+
+                <div
+                    class='position-absolute text-white font-weight-lighter px-1 py-1 rounded-lg'
+                    style='top: 10px; right: 10px; background-color: rgba(0, 0, 0, 0.3); line-height: 0.6em;'
+                >
+                    <small><small>{imageIdx + 1} / {filteredImages.length}</small></small>
+                </div>
+
             </div>
 
         </div>
