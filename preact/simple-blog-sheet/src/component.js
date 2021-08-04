@@ -1,6 +1,7 @@
 import { h } from 'preact';
 import { useState, useEffect, useCallback } from 'preact/hooks';
 import querystring from 'querystring';
+import util from 'preact-util';
 
 function fetchApi({ url, headers = {}, body = {}, settings = {} }) {
     const fetchOpt = {
@@ -125,17 +126,91 @@ export default function App(props) {
                             <table class={`table ${article['sheet-table-class']}`}>
                                 <thead>
                                     <tr>
-                                        {sheet.headers && sheet.headers.map(col => <th>
-                                        {col}
-                                        </th>)}
+                                        {sheet.headers && sheet.headers.map((col) => {
+                                            const meta = sheet.headersMeta[col];
+                                            const { textFormat = {}, horizontalAlignment, verticalAlignment } = meta.effectiveFormat || {};
+                                            const { fontSize, bold, underline, strikethrough, italic } = textFormat;
+                                            return (<th style={{
+                                                'font-size': `${fontSize}pt`,
+                                                'text-align': horizontalAlignment,
+                                                'vertical-align': verticalAlignment,
+                                                'font-weight': bold ? 'bold' : 'normal',
+                                                'text-decoration-line': underline ? 'underline' : (strikethrough ? 'line-through' : 'none'),
+                                                'font-style': italic ? 'italic' : 'none',
+                                            }}>
+                                                {col}
+                                            </th>);
+                                        })}
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {sheet.rows && sheet.rows.map(row => <>
+                                    {sheet.rows && sheet.rows.map((row, rowIdx) => <>
                                         <tr onClick={onClickRow} data-id={row.id} style='cursor: pointer;'>
-                                            {sheet.headers && sheet.headers.map(col => <td>
-                                                {row[col]}
-                                            </td>)}
+                                            {sheet.headers && sheet.headers.map((col) => {
+                                                const meta = sheet.meta[rowIdx][col];
+                                                // {
+                                                //     "value": "id",
+                                                //     "valueType": "stringValue",
+                                                //     "formattedValue": "id",
+                                                //     "formula": null,
+                                                //     "formulaError": null,
+                                                //     "effectiveFormat": {
+                                                //         "backgroundColor": {
+                                                //             "red": 1,
+                                                //             "green": 1,
+                                                //             "blue": 1
+                                                //         },
+                                                //         "padding": {
+                                                //             "top": 2,
+                                                //             "right": 3,
+                                                //             "bottom": 2,
+                                                //             "left": 3
+                                                //         },
+                                                //         "horizontalAlignment": "LEFT",
+                                                //         "verticalAlignment": "BOTTOM",
+                                                //         "wrapStrategy": "OVERFLOW_CELL",
+                                                //         "textFormat": {
+                                                //             "foregroundColor": {},
+                                                //             "fontFamily": "Arial",
+                                                //             "fontSize": 10,
+                                                //             "bold": true,
+                                                //             "italic": false,
+                                                //             "strikethrough": false,
+                                                //             "underline": false,
+                                                //             "foregroundColorStyle": {
+                                                //                 "rgbColor": {}
+                                                //             }
+                                                //         },
+                                                //         "hyperlinkDisplayType": "PLAIN_TEXT",
+                                                //         "backgroundColorStyle": {
+                                                //             "rgbColor": {
+                                                //                 "red": 1,
+                                                //                 "green": 1,
+                                                //                 "blue": 1
+                                                //             }
+                                                //         }
+                                                //     }
+                                                // }
+                                                const { textFormat = {}, horizontalAlignment, verticalAlignment, backgroundColor = {} } = meta.effectiveFormat || {};
+                                                const { fontSize, bold, underline, strikethrough, italic, foregroundColor = {} } = textFormat;
+                                                const { red: bgRed, green: bgGreen, blue: bgBlue } = backgroundColor;
+                                                const { red: fgRed, green: fgGreen, blue: fgBlue } = foregroundColor;
+                                                const bgColor = `rgb(${util.normalizeBetween(bgRed, 0, 1, 0, 255)}, ${util.normalizeBetween(bgGreen, 0, 1, 0, 255)}, ${util.normalizeBetween(bgBlue, 0, 1, 0, 255)})`;
+                                                const fgColor = `rgb(${util.normalizeBetween(fgRed, 0, 1, 0, 255)}, ${util.normalizeBetween(fgGreen, 0, 1, 0, 255)}, ${util.normalizeBetween(fgBlue, 0, 1, 0, 255)})`;
+
+                                                return (<td style={{     
+                                                    'color': fgColor,
+                                                    'background-color': bgColor,
+                                                    'font-size': `${fontSize}pt`,
+                                                    'text-align': horizontalAlignment,
+                                                    'vertical-align': verticalAlignment,
+                                                    'font-weight': bold ? 'bold' : 'normal',
+                                                    'text-decoration-line': underline ? 'underline' : (strikethrough ? 'line-through' : 'none'),
+                                                    'font-style': italic ? 'italic' : 'none',
+                                                }}>
+                                                    {row[col]}
+                                                </td>);
+                                            })}
                                         </tr>
                                     </>)}
                                 </tbody>

@@ -35,19 +35,57 @@ module.exports = async (req, res) => {
         const sheet = doc.sheetsByIndex[i];
 
         const sheetRows = await sheet.getRows();
+        await sheet.loadCells();
+
         const sheetHeaders = sheet.headerValues;
 
-        const rows = sheetRows.map((row, idx) => {
-            const data = { idx };
+        const headersMeta = {};
+        sheetHeaders.forEach((col, colIdx) => {
+            const cell = sheet.getCell(0, colIdx);
+            headersMeta[col] = {
+                value: cell.value, // This is the full value in the cell.
+                valueType: cell.valueType, // The type of the value, using google's terminology. One of boolValue, stringValue, numberValue, errorValue
+                formattedValue: cell.formattedValue, // The value in the cell with formatting rules applied. Ex: value is 123.456, formattedValue is $123.46
+                formula: cell.formula, // The formula in the cell (if there is one)
+                formulaError: cell.formulaError, // An error with some details if the formula is invalid
+                note: cell.note, // The note attached to the cell
+                hyperlink: cell.hyperlink, // url - URL of the cell's link if it has a=HYPERLINK formula
+                effectiveFormat: cell.effectiveFormat,
+            };
+        });
+
+        const rows = sheetRows.map((row, rowIdx) => {
+            const data = { idx: rowIdx };
             sheetHeaders.forEach((col) => {
                 data[col] = row[col];
             });
             return data;
         });
+
+        const meta = sheetRows.map((row, rowIdx) => {
+            const data = { idx: rowIdx };
+            sheetHeaders.forEach((col, colIdx) => {
+                const cell = sheet.getCell(rowIdx + 1, colIdx);
+                data[col] = {
+                    value: cell.value, // This is the full value in the cell.
+                    valueType: cell.valueType, // The type of the value, using google's terminology. One of boolValue, stringValue, numberValue, errorValue
+                    formattedValue: cell.formattedValue, // The value in the cell with formatting rules applied. Ex: value is 123.456, formattedValue is $123.46
+                    formula: cell.formula, // The formula in the cell (if there is one)
+                    formulaError: cell.formulaError, // An error with some details if the formula is invalid
+                    note: cell.note, // The note attached to the cell
+                    hyperlink: cell.hyperlink, // url - URL of the cell's link if it has a=HYPERLINK formula
+                    effectiveFormat: cell.effectiveFormat,
+                };
+            });
+            return data;
+        });
+
         sheets.push({
             title: sheet.title,
             headers: sheetHeaders,
+            headersMeta,
             rows,
+            meta,
         });
     }
 

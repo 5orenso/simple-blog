@@ -5,7 +5,7 @@ const { utilExpress: webUtil } = require('node-simple-utilities');
 const wrap = require('../../../middleware/wrap');
 
 // Routes:
-router.get('/:sheetid', wrap(require('./get-sheet')));
-router.post('/:sheetid', wrap(require('./post-sheet')));
+router.get('/:sheetid', wrap(require('./get-booking')));
+router.post('/:sheetid', wrap(require('./post-booking')));
 
 module.exports = router;
