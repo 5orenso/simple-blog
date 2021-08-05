@@ -37,7 +37,7 @@ function fetchApi({ url, headers = {}, body = {}, settings = {} }) {
 }
 
 export default function App(props) {
-    const { apiServer, jwtToken, articleId } = props;
+    const { apiServer, jwtToken, articleId, sheetId, tableClass, className, style } = props;
 
     const [article, setArticle] = useState({});
     const [imageServer, setImageServer] = useState({});
@@ -47,6 +47,8 @@ export default function App(props) {
     const [rowid, setRowId] = useState(0);
     const [input, setInput] = useState({});
     const [apiResponse, setApiResponse] = useState({});
+
+    const googleSheetId = sheetId || article['booking-sheetId'];
 
     useEffect(() => {
         const fetchData = async () => {
@@ -68,17 +70,17 @@ export default function App(props) {
     useEffect(() => {
         const fetchData = async () => {
             const result = await fetchApi({
-                url: `/api/bookings/${article['booking-sheetId']}`,
+                url: `/api/bookings/${googleSheetId}`,
                 settings: {
                     apiServer,
                 },
             });
             setSheet(result);
         };
-        if (article['booking-sheetId']) {
+        if (googleSheetId) {
             fetchData();
         }
-    }, [article['booking-sheetId']]);
+    }, [googleSheetId]);
 
     const onClickRow = useCallback((e) => {
         const { id } = e.target.closest('tr').dataset;
@@ -100,7 +102,7 @@ export default function App(props) {
     const submitForm = useCallback(() => {
         const postData = async () => {
             const result = await fetchApi({
-                url: `/api/bookings/${article['booking-sheetId']}`,
+                url: `/api/bookings/${googleSheetId}`,
                 body: {
                     ...input,
                     course: rowid,
@@ -121,7 +123,7 @@ export default function App(props) {
         const row = sheet.rows.find(e => e.id === rowid);
 
         return (
-            <div class={`${article['booking-class']}`} style={`${article['booking-style']}`}>
+            <div class={`${article['booking-class']} ${className}`} style={`${article['booking-style']} ${style}`}>
                 {/* {JSON.stringify(images, null, 4)} */}
                 {/* {JSON.stringify(article['booking-sheetId'])} */}
                 {/* rowid: {rowid}<br /> */}
@@ -209,14 +211,14 @@ export default function App(props) {
     }
 
     return (
-        <div class={`${article['booking-class']}`} style={`${article['booking-style']}`}>
+        <div class={`${article['booking-class']} ${className}`} style={`${article['booking-style']} ${style}`}>
             {/* {JSON.stringify(images, null, 4)} */}
             {/* {JSON.stringify(article['booking-sheetId'])} */}
             {/* rowid: {rowid}<br /> */}
 
             {sheet && sheet.title ? <>
                 {/* <xmp>{JSON.stringify(sheet.headers)}</xmp> */}
-                <table class={`table ${article['booking-table-class']}`}>
+                <table class={`table ${article['booking-table-class']} ${tableClass}`}>
                     <thead>
                         <tr>
                             <th>Kurs</th>
