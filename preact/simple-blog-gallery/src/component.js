@@ -1,6 +1,17 @@
 import { h } from 'preact';
 import { useState, useEffect } from 'preact/hooks';
 import querystring from 'querystring';
+import Markdown from 'preact-markdown';
+
+const MARKDOWN_OPTIONS = {
+	pedantic: false,
+	gfm: true,
+	breaks: true,
+	sanitize: false,
+	smartLists: true,
+	smartypants: true,
+	xhtml: true,
+};
 
 function fetchApi({ url, headers = {}, body = {}, settings = {} }) {
     const fetchOpt = {
@@ -37,7 +48,7 @@ function fetchApi({ url, headers = {}, body = {}, settings = {} }) {
 }
 
 export default function App(props) {
-    const { apiServer, jwtToken, articleId, start, end, size = '800x' } = props;
+    const { apiServer, jwtToken, articleId, start, end, size = '800x', className, style, photoClass } = props;
 
     const [article, setArticle] = useState({});
     const [imageServer, setImageServer] = useState({});
@@ -86,7 +97,7 @@ export default function App(props) {
     }
 
     return (
-        <div class={`${article['gallery-class']}`} style={`${article['gallery-style']}`}>
+        <div class={`${article['gallery-class']} ${className}`} style={`${article['gallery-style']} ${style}`}>
             {/* {JSON.stringify(images, null, 4)} */}
             {/* {JSON.stringify(article)} */}
 
@@ -97,7 +108,7 @@ export default function App(props) {
                     onScroll={scrollImages}
                 >
                     {filteredImages && filteredImages.map((img, idx) => (
-                        <div class={`col-12 clearfix position-relative p-0  ${article['gallery-class-photo'] || 'bg-dark'}`}>
+                        <div class={`col-12 clearfix position-relative p-0  ${article['gallery-class-photo']} ${photoClass}`}>
                             <div
                                 class={`w-100 h-100 text-center rounded-lg imageContainer d-flex justify-content-center align-items-center`}
                                 style={`
@@ -116,8 +127,8 @@ export default function App(props) {
                                         <i class='fas fa-camera' />
                                     </span>
                                 </>}
-                                {img.title && <div class='position-absolute text-white font-weight-lighter px-3 w-100' style='bottom: 10px; background-color: rgba(0, 0, 0, 0.4)'>
-                                    <strong>{img.title}</strong> {img.text}
+                                {img.title && <div class='position-absolute text-white font-weight-lighter px-3 w-100' style='bottom: 0px; background-color: rgba(0, 0, 0, 0.4)'>
+                                    {img.text && <Markdown markdown={`__${img.title}__ ${img.text}`} markdownOpts={MARKDOWN_OPTIONS} />}
                                 </div>}
                             </div>
                         </div>

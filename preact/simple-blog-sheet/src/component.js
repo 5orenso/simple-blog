@@ -2,6 +2,17 @@ import { h } from 'preact';
 import { useState, useEffect, useCallback } from 'preact/hooks';
 import querystring from 'querystring';
 import util from 'preact-util';
+import Markdown from 'preact-markdown';
+
+const MARKDOWN_OPTIONS = {
+	pedantic: false,
+	gfm: true,
+	breaks: true,
+	sanitize: false,
+	smartLists: true,
+	smartypants: true,
+	xhtml: true,
+};
 
 function fetchApi({ url, headers = {}, body = {}, settings = {} }) {
     const fetchOpt = {
@@ -38,7 +49,7 @@ function fetchApi({ url, headers = {}, body = {}, settings = {} }) {
 }
 
 export default function App(props) {
-    const { apiServer, jwtToken, articleId, sheetId } = props;
+    const { apiServer, jwtToken, articleId, sheetId, tableClass, className, style } = props;
 
     const [article, setArticle] = useState({});
     const [imageServer, setImageServer] = useState({});
@@ -100,7 +111,7 @@ export default function App(props) {
     }, [0]);
 
     return (
-        <div class={`${article['sheet-class']}`} style={`${article['sheet-style']}`}>
+        <div class={`${article['sheet-class']} ${className}`} style={`${article['sheet-style']} ${style}`}>
             {/* {JSON.stringify(doc, null, 4)} */}
             {/* {JSON.stringify(images, null, 4)} */}
             {/* {JSON.stringify(article['sheet-sheetId'])} */}
@@ -125,14 +136,22 @@ export default function App(props) {
                     return (<>
                         <div class='table-responsive'>
                             {/* <xmp>{JSON.stringify(sheet.headers)}</xmp> */}
-                            <table class={`table ${article['sheet-table-class']}`}>
+                            <table class={`table ${article['sheet-table-class']} ${tableClass}`}>
                                 <thead>
                                     <tr>
                                         {sheet.headers && sheet.headers.map((col) => {
                                             const meta = sheet.headersMeta[col];
-                                            const { textFormat = {}, horizontalAlignment, verticalAlignment } = meta.effectiveFormat || {};
-                                            const { fontSize, bold, underline, strikethrough, italic } = textFormat;
+                                            const { textFormat = {}, horizontalAlignment, verticalAlignment, backgroundColor = {} } = meta.effectiveFormat || {};
+                                            const { fontSize, bold, underline, strikethrough, italic, foregroundColor = {} } = textFormat;
+                                            const { red: bgRed = 1, green: bgGreen = 1, blue: bgBlue = 1 } = backgroundColor;
+                                            const { red: fgRed = 0, green: fgGreen = 0, blue: fgBlue = 0 } = foregroundColor;
+                                            const bgColor = `rgb(${util.normalizeBetween(bgRed, 0, 1, 0, 255)}, ${util.normalizeBetween(bgGreen, 0, 1, 0, 255)}, ${util.normalizeBetween(bgBlue, 0, 1, 0, 255)})`;
+                                            const fgColor = `rgb(${util.normalizeBetween(fgRed, 0, 1, 0, 255)}, ${util.normalizeBetween(fgGreen, 0, 1, 0, 255)}, ${util.normalizeBetween(fgBlue, 0, 1, 0, 255)})`;
+
+
                                             return (<th style={{
+                                                'color': fgColor,
+                                                'background-color': bgColor,
                                                 'font-size': `${fontSize}pt`,
                                                 'text-align': horizontalAlignment,
                                                 'vertical-align': verticalAlignment,
@@ -147,7 +166,7 @@ export default function App(props) {
                                 </thead>
                                 <tbody>
                                     {sheet.rows && sheet.rows.map((row, rowIdx) => <>
-                                        <tr onClick={onClickRow} data-id={row.id} style='cursor: pointer;'>
+                                        <tr onClick={onClickRow} data-id={row.id}>
                                             {sheet.headers && sheet.headers.map((col) => {
                                                 const meta = sheet.meta[rowIdx][col];
                                                 // {
@@ -195,8 +214,8 @@ export default function App(props) {
                                                 // }
                                                 const { textFormat = {}, horizontalAlignment, verticalAlignment, backgroundColor = {} } = meta.effectiveFormat || {};
                                                 const { fontSize, bold, underline, strikethrough, italic, foregroundColor = {} } = textFormat;
-                                                const { red: bgRed, green: bgGreen, blue: bgBlue } = backgroundColor;
-                                                const { red: fgRed, green: fgGreen, blue: fgBlue } = foregroundColor;
+                                                const { red: bgRed = 1, green: bgGreen = 1, blue: bgBlue = 1 } = backgroundColor;
+                                                const { red: fgRed = 0, green: fgGreen = 0, blue: fgBlue = 0 } = foregroundColor;
                                                 const bgColor = `rgb(${util.normalizeBetween(bgRed, 0, 1, 0, 255)}, ${util.normalizeBetween(bgGreen, 0, 1, 0, 255)}, ${util.normalizeBetween(bgBlue, 0, 1, 0, 255)})`;
                                                 const fgColor = `rgb(${util.normalizeBetween(fgRed, 0, 1, 0, 255)}, ${util.normalizeBetween(fgGreen, 0, 1, 0, 255)}, ${util.normalizeBetween(fgBlue, 0, 1, 0, 255)})`;
 
@@ -210,7 +229,7 @@ export default function App(props) {
                                                     'text-decoration-line': underline ? 'underline' : (strikethrough ? 'line-through' : 'none'),
                                                     'font-style': italic ? 'italic' : 'none',
                                                 }}>
-                                                    {row[col]}
+                                                    {meta.valueType === 'stringValue' ? <Markdown markdown={row[col]} markdownOpts={MARKDOWN_OPTIONS} /> : <>{row[col]}</>}
                                                 </td>);
                                             })}
                                         </tr>

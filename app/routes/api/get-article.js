@@ -80,6 +80,7 @@ const fields = {
     'weather-lat': 1,
     'weather-lon': 1,
     'weather-height': 1,
+    'weather-date': 1,
 
     'rating-class': 1,
     'rating-style': 1,

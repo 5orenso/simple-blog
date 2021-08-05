@@ -46,5 +46,8 @@
     "setupFiles": [
       "<rootDir>/tests/__mocks__/setupTests.js"
     ]
+  },
+  "dependencies": {
+    "preact-markdown": "^2.0.0"
   }
 }
