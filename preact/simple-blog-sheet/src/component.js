@@ -49,7 +49,7 @@ function fetchApi({ url, headers = {}, body = {}, settings = {} }) {
 }
 
 export default function App(props) {
-    const { apiServer, jwtToken, articleId, sheetId, tableClass, className, style } = props;
+    const { apiServer, jwtToken, articleId, sheetId, tableClass, className, style, showDocTitle = false } = props;
 
     const [article, setArticle] = useState({});
     const [imageServer, setImageServer] = useState({});
@@ -118,7 +118,7 @@ export default function App(props) {
             {/* rowid: {rowid}<br /> */}
 
             {doc && doc.title ? <>
-                <h3>{doc.title}</h3>
+                {(showDocTitle || article['sheet-showDocTitle']) && <h3>{doc.title}</h3>}
                 <div class='mb-2'>
                     <ul class='nav nav-pills'>
                         {doc.sheets && doc.sheets.map((sheet, idx) => <>

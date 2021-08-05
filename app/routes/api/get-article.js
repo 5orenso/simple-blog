@@ -65,6 +65,7 @@ const fields = {
     'sheet-table-class': 1,
     'sheet-style': 1,
     'sheet-sheetId': 1,
+    'sheet-showDocTitle': 1,
 
     'poll-class': 1,
     'poll-style': 1,
