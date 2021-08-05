@@ -51,6 +51,7 @@ module.exports = async (req, res) => {
                 note: cell.note, // The note attached to the cell
                 hyperlink: cell.hyperlink, // url - URL of the cell's link if it has a=HYPERLINK formula
                 effectiveFormat: cell.effectiveFormat,
+                userEnteredFormat: cell.userEnteredFormat,
             };
         });
 
@@ -66,6 +67,8 @@ module.exports = async (req, res) => {
             const data = { idx: rowIdx };
             sheetHeaders.forEach((col, colIdx) => {
                 const cell = sheet.getCell(rowIdx + 1, colIdx);
+                // const isPartOfMerge = cell.isPartOfMerge();
+                // const mergedRanges = isPartOfMerge ? cell.getMergedRanges() : null;
                 data[col] = {
                     value: cell.value, // This is the full value in the cell.
                     valueType: cell.valueType, // The type of the value, using google's terminology. One of boolValue, stringValue, numberValue, errorValue
@@ -75,6 +78,9 @@ module.exports = async (req, res) => {
                     note: cell.note, // The note attached to the cell
                     hyperlink: cell.hyperlink, // url - URL of the cell's link if it has a=HYPERLINK formula
                     effectiveFormat: cell.effectiveFormat,
+                    userEnteredFormat: cell.userEnteredFormat,
+                    // isPartOfMerge,
+                    // mergedRanges,
                 };
             });
             return data;

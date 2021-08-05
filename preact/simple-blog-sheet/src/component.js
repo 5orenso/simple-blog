@@ -141,18 +141,17 @@ export default function App(props) {
                                     <tr>
                                         {sheet.headers && sheet.headers.map((col) => {
                                             const meta = sheet.headersMeta[col];
-                                            const { textFormat = {}, horizontalAlignment, verticalAlignment, backgroundColor = {} } = meta.effectiveFormat || {};
+                                            const { textFormat = {}, horizontalAlignment, verticalAlignment, backgroundColor = {} } = meta.userEnteredFormat || {};
                                             const { fontSize, bold, underline, strikethrough, italic, foregroundColor = {} } = textFormat;
-                                            const { red: bgRed = 1, green: bgGreen = 1, blue: bgBlue = 1 } = backgroundColor;
-                                            const { red: fgRed = 0, green: fgGreen = 0, blue: fgBlue = 0 } = foregroundColor;
-                                            const bgColor = `rgb(${util.normalizeBetween(bgRed, 0, 1, 0, 255)}, ${util.normalizeBetween(bgGreen, 0, 1, 0, 255)}, ${util.normalizeBetween(bgBlue, 0, 1, 0, 255)})`;
-                                            const fgColor = `rgb(${util.normalizeBetween(fgRed, 0, 1, 0, 255)}, ${util.normalizeBetween(fgGreen, 0, 1, 0, 255)}, ${util.normalizeBetween(fgBlue, 0, 1, 0, 255)})`;
-
+                                            const { red: bgRed, green: bgGreen, blue: bgBlue } = backgroundColor;
+                                            const { red: fgRed, green: fgGreen, blue: fgBlue } = foregroundColor;
+                                            const bgColor = bgRed ? `rgb(${util.normalizeBetween(bgRed, 0, 1, 0, 255)}, ${util.normalizeBetween(bgGreen, 0, 1, 0, 255)}, ${util.normalizeBetween(bgBlue, 0, 1, 0, 255)})` : 'inherit';
+                                            const fgColor = fgRed ? `rgb(${util.normalizeBetween(fgRed, 0, 1, 0, 255)}, ${util.normalizeBetween(fgGreen, 0, 1, 0, 255)}, ${util.normalizeBetween(fgBlue, 0, 1, 0, 255)})` : 'inherit';
 
                                             return (<th style={{
                                                 'color': fgColor,
                                                 'background-color': bgColor,
-                                                'font-size': `${fontSize}pt`,
+                                                'font-size': `${fontSize ? `${fontSize}pt` : ''}`,
                                                 'text-align': horizontalAlignment,
                                                 'vertical-align': verticalAlignment,
                                                 'font-weight': bold ? 'bold' : 'normal',
@@ -212,17 +211,17 @@ export default function App(props) {
                                                 //         }
                                                 //     }
                                                 // }
-                                                const { textFormat = {}, horizontalAlignment, verticalAlignment, backgroundColor = {} } = meta.effectiveFormat || {};
+                                                const { textFormat = {}, horizontalAlignment, verticalAlignment, backgroundColor = {} } = meta.userEnteredFormat || {};
                                                 const { fontSize, bold, underline, strikethrough, italic, foregroundColor = {} } = textFormat;
-                                                const { red: bgRed = 1, green: bgGreen = 1, blue: bgBlue = 1 } = backgroundColor;
-                                                const { red: fgRed = 0, green: fgGreen = 0, blue: fgBlue = 0 } = foregroundColor;
-                                                const bgColor = `rgb(${util.normalizeBetween(bgRed, 0, 1, 0, 255)}, ${util.normalizeBetween(bgGreen, 0, 1, 0, 255)}, ${util.normalizeBetween(bgBlue, 0, 1, 0, 255)})`;
-                                                const fgColor = `rgb(${util.normalizeBetween(fgRed, 0, 1, 0, 255)}, ${util.normalizeBetween(fgGreen, 0, 1, 0, 255)}, ${util.normalizeBetween(fgBlue, 0, 1, 0, 255)})`;
+                                                const { red: bgRed, green: bgGreen, blue: bgBlue } = backgroundColor;
+                                                const { red: fgRed, green: fgGreen, blue: fgBlue } = foregroundColor;
+                                                const bgColor = bgRed ? `rgb(${util.normalizeBetween(bgRed, 0, 1, 0, 255)}, ${util.normalizeBetween(bgGreen, 0, 1, 0, 255)}, ${util.normalizeBetween(bgBlue, 0, 1, 0, 255)})` : 'inherit';
+                                                const fgColor = fgRed ? `rgb(${util.normalizeBetween(fgRed, 0, 1, 0, 255)}, ${util.normalizeBetween(fgGreen, 0, 1, 0, 255)}, ${util.normalizeBetween(fgBlue, 0, 1, 0, 255)})` : 'inherit';
 
                                                 return (<td style={{     
                                                     'color': fgColor,
                                                     'background-color': bgColor,
-                                                    'font-size': `${fontSize}pt`,
+                                                    'font-size': `${fontSize ? `${fontSize}pt` : ''}`,
                                                     'text-align': horizontalAlignment,
                                                     'vertical-align': verticalAlignment,
                                                     'font-weight': bold ? 'bold' : 'normal',
