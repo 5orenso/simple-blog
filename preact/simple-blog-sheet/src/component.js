@@ -145,8 +145,8 @@ export default function App(props) {
                                             const { fontSize, bold, underline, strikethrough, italic, foregroundColor = {} } = textFormat;
                                             const { red: bgRed, green: bgGreen, blue: bgBlue } = backgroundColor;
                                             const { red: fgRed, green: fgGreen, blue: fgBlue } = foregroundColor;
-                                            const bgColor = bgRed ? `rgb(${util.normalizeBetween(bgRed, 0, 1, 0, 255)}, ${util.normalizeBetween(bgGreen, 0, 1, 0, 255)}, ${util.normalizeBetween(bgBlue, 0, 1, 0, 255)})` : 'inherit';
-                                            const fgColor = fgRed ? `rgb(${util.normalizeBetween(fgRed, 0, 1, 0, 255)}, ${util.normalizeBetween(fgGreen, 0, 1, 0, 255)}, ${util.normalizeBetween(fgBlue, 0, 1, 0, 255)})` : 'inherit';
+                                            const bgColor = (bgRed || bgGreen || bgBlue) ? `rgb(${util.normalizeBetween(bgRed || 0, 0, 1, 0, 255)}, ${util.normalizeBetween(bgGreen || 0, 0, 1, 0, 255)}, ${util.normalizeBetween(bgBlue || 0, 0, 1, 0, 255)})` : 'inherit';
+                                            const fgColor = (fgRed || fgGreen || fgBlue) ? `rgb(${util.normalizeBetween(fgRed || 0, 0, 1, 0, 255)}, ${util.normalizeBetween(fgGreen || 0, 0, 1, 0, 255)}, ${util.normalizeBetween(fgBlue || 0, 0, 1, 0, 255)})` : 'inherit';
 
                                             return (<th style={{
                                                 'color': fgColor,
@@ -215,8 +215,8 @@ export default function App(props) {
                                                 const { fontSize, bold, underline, strikethrough, italic, foregroundColor = {} } = textFormat;
                                                 const { red: bgRed, green: bgGreen, blue: bgBlue } = backgroundColor;
                                                 const { red: fgRed, green: fgGreen, blue: fgBlue } = foregroundColor;
-                                                const bgColor = bgRed ? `rgb(${util.normalizeBetween(bgRed, 0, 1, 0, 255)}, ${util.normalizeBetween(bgGreen, 0, 1, 0, 255)}, ${util.normalizeBetween(bgBlue, 0, 1, 0, 255)})` : 'inherit';
-                                                const fgColor = fgRed ? `rgb(${util.normalizeBetween(fgRed, 0, 1, 0, 255)}, ${util.normalizeBetween(fgGreen, 0, 1, 0, 255)}, ${util.normalizeBetween(fgBlue, 0, 1, 0, 255)})` : 'inherit';
+                                                const bgColor = (bgRed || bgGreen || bgBlue) ? `rgb(${util.normalizeBetween(bgRed || 0, 0, 1, 0, 255)}, ${util.normalizeBetween(bgGreen || 0, 0, 1, 0, 255)}, ${util.normalizeBetween(bgBlue || 0, 0, 1, 0, 255)})` : 'inherit';
+                                                const fgColor = (fgRed || fgGreen || fgBlue) ? `rgb(${util.normalizeBetween(fgRed || 0, 0, 1, 0, 255)}, ${util.normalizeBetween(fgGreen || 0, 0, 1, 0, 255)}, ${util.normalizeBetween(fgBlue || 0, 0, 1, 0, 255)})` : 'inherit';
 
                                                 return (<td style={{     
                                                     'color': fgColor,
