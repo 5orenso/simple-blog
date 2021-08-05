@@ -50,7 +50,8 @@ function fetchApi({ url, headers = {}, body = {}, settings = {} }) {
 
 export default function App(props) {
     const { apiServer, jwtToken, articleId, sheetId, tableClass, className, style, showDocTitle = false } = props;
-
+    const tableClasses = tableClass ? tableClass.split(',').join(' ') : '';
+    const classNames = className ? className.split(',').join(' ') : '';
     const [article, setArticle] = useState({});
     const [imageServer, setImageServer] = useState({});
     const [imagePath, setImagePath] = useState({});
@@ -111,7 +112,7 @@ export default function App(props) {
     }, [0]);
 
     return (
-        <div class={`${article['sheet-class']} ${className}`} style={`${article['sheet-style']} ${style}`}>
+        <div class={`${article['sheet-class']} ${classNames}`} style={`${article['sheet-style']} ${style}`}>
             {/* {JSON.stringify(doc, null, 4)} */}
             {/* {JSON.stringify(images, null, 4)} */}
             {/* {JSON.stringify(article['sheet-sheetId'])} */}
@@ -136,7 +137,7 @@ export default function App(props) {
                     return (<>
                         <div class='table-responsive'>
                             {/* <xmp>{JSON.stringify(sheet.headers)}</xmp> */}
-                            <table class={`table ${article['sheet-table-class']} ${tableClass}`}>
+                            <table class={`table ${article['sheet-table-class']} ${tableClasses}`}>
                                 <thead>
                                     <tr>
                                         {sheet.headers && sheet.headers.map((col) => {
@@ -167,7 +168,7 @@ export default function App(props) {
                                     {sheet.rows && sheet.rows.map((row, rowIdx) => <>
                                         <tr onClick={onClickRow} data-id={row.id}>
                                             {sheet.headers && sheet.headers.map((col) => {
-                                                const meta = sheet.meta[rowIdx][col];
+                                                const meta = sheet.meta[rowIdx][col] || {};
                                                 // {
                                                 //     "value": "id",
                                                 //     "valueType": "stringValue",
@@ -211,7 +212,8 @@ export default function App(props) {
                                                 //         }
                                                 //     }
                                                 // }
-                                                const { textFormat = {}, horizontalAlignment, verticalAlignment, backgroundColor = {} } = meta.userEnteredFormat || {};
+                                                const { userEnteredFormat = {}, value, valueType, formattedValue, hyperlink } = meta;
+                                                const { textFormat = {}, horizontalAlignment, verticalAlignment, backgroundColor = {} } = userEnteredFormat;
                                                 const { fontSize, bold, underline, strikethrough, italic, foregroundColor = {} } = textFormat;
                                                 const { red: bgRed, green: bgGreen, blue: bgBlue } = backgroundColor;
                                                 const { red: fgRed, green: fgGreen, blue: fgBlue } = foregroundColor;
@@ -228,7 +230,11 @@ export default function App(props) {
                                                     'text-decoration-line': underline ? 'underline' : (strikethrough ? 'line-through' : 'none'),
                                                     'font-style': italic ? 'italic' : 'none',
                                                 }}>
-                                                    {meta.valueType === 'stringValue' ? <Markdown markdown={row[col]} markdownOpts={MARKDOWN_OPTIONS} /> : <>{row[col]}</>}
+                                                    {hyperlink ? <>
+                                                        {meta.valueType === 'stringValue' ? <Markdown markdown={`<a href="${hyperlink}" target="_blank">${row[col]}</a>`} markdownOpts={MARKDOWN_OPTIONS} /> : <>{row[col]}</>}
+                                                    </> : <>
+                                                        {meta.valueType === 'stringValue' ? <Markdown markdown={row[col]} markdownOpts={MARKDOWN_OPTIONS} /> : <>{row[col]}</>}
+                                                    </>}
                                                 </td>);
                                             })}
                                         </tr>
