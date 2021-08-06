@@ -66,6 +66,8 @@ const fields = {
     'sheet-style': 1,
     'sheet-sheetId': 1,
     'sheet-showDocTitle': 1,
+    'sheet-limit': 1,
+    'sheet-showSearch': 1,
 
     'poll-class': 1,
     'poll-style': 1,

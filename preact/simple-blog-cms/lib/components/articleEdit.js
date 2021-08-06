@@ -50,7 +50,7 @@ const widgetList = ['clock', 'booking', 'sheet', 'poll', 'gallery', 'weather', '
 const widgetFields = {
     clock: ['class', 'style', 'countdownto', 'showDateOnly', 'showSeconds', 'showTimezone', 'showClockOnly'],
     booking: ['class', 'style', 'table-class', 'sheetId'],
-    sheet: ['class', 'style', 'table-class', 'sheetId', 'showDocTitle'],
+    sheet: ['class', 'style', 'table-class', 'sheetId', 'showDocTitle', 'limit', 'showSearch'],
     poll: ['class', 'style'],
     gallery: ['class', 'style', 'class-photo', 'start', 'end'],
     weather: ['class', 'style', 'lat', 'lon', 'height', 'date'],
