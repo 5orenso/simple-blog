@@ -127,6 +127,7 @@ export default function App(props) {
         const { idx } = e.target.closest('button').dataset;
         setCurrentSheet(parseInt(idx, 10));
         setSearchText('');
+        setPage(1);
     }, [rowid]);
 
     const onClickPage = useCallback((e) => {
