@@ -289,7 +289,8 @@ export default function App(props) {
                                                 const { red: fgRed, green: fgGreen, blue: fgBlue } = foregroundColor;
                                                 const bgColor = (bgRed || bgGreen || bgBlue) ? `rgb(${util.normalizeBetween(bgRed || 0, 0, 1, 0, 255)}, ${util.normalizeBetween(bgGreen || 0, 0, 1, 0, 255)}, ${util.normalizeBetween(bgBlue || 0, 0, 1, 0, 255)})` : 'inherit';
                                                 const fgColor = (fgRed || fgGreen || fgBlue) ? `rgb(${util.normalizeBetween(fgRed || 0, 0, 1, 0, 255)}, ${util.normalizeBetween(fgGreen || 0, 0, 1, 0, 255)}, ${util.normalizeBetween(fgBlue || 0, 0, 1, 0, 255)})` : 'inherit';
-                                                const content = searchText !== '' ? replaceAllStrings(row[col]) : row[col];
+                                                const cellContent = row[col] || '';
+                                                const content = searchText !== '' ? replaceAllStrings(cellContent) : cellContent;
 
                                                 return (<td style={{     
                                                     'color': fgColor,
