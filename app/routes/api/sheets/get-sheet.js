@@ -36,9 +36,9 @@ module.exports = async (req, res) => {
 
         const sheetRows = await sheet.getRows();
         await sheet.loadCells();
-
         const sheetHeaders = sheet.headerValues;
-
+        const columnMetaData = sheet._columnMetadata;
+        const rowMetaData = sheet._rowMetadata;
         const headersMeta = {};
         sheetHeaders.forEach((col, colIdx) => {
             const cell = sheet.getCell(0, colIdx);
@@ -52,6 +52,7 @@ module.exports = async (req, res) => {
                 hyperlink: cell.hyperlink, // url - URL of the cell's link if it has a=HYPERLINK formula
                 effectiveFormat: cell.effectiveFormat,
                 userEnteredFormat: cell.userEnteredFormat,
+                columnMeta: columnMetaData[colIdx],
             };
         });
 
@@ -70,6 +71,7 @@ module.exports = async (req, res) => {
                 // const isPartOfMerge = cell.isPartOfMerge();
                 // const mergedRanges = isPartOfMerge ? cell.getMergedRanges() : null;
                 data[col] = {
+                    props: rowMetaData[rowIdx],
                     value: cell.value, // This is the full value in the cell.
                     valueType: cell.valueType, // The type of the value, using google's terminology. One of boolValue, stringValue, numberValue, errorValue
                     formattedValue: cell.formattedValue, // The value in the cell with formatting rules applied. Ex: value is 123.456, formattedValue is $123.46

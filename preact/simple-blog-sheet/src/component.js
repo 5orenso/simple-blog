@@ -208,7 +208,7 @@ export default function App(props) {
 
                         <div class='table-responsive'>
                             {/* <xmp>{JSON.stringify(sheet.headers)}</xmp> */}
-                            <table class={`table ${article['sheet-table-class']} ${tableClasses}`}>
+                            <table class={`table ${article['sheet-table-class']} ${tableClasses}`} style={`table-layout: fixed;`}>
                                 <thead>
                                     <tr>
                                         {sheet.headers && sheet.headers.map((col) => {
@@ -219,6 +219,7 @@ export default function App(props) {
                                             const { red: fgRed, green: fgGreen, blue: fgBlue } = foregroundColor;
                                             const bgColor = (bgRed || bgGreen || bgBlue) ? `rgb(${util.normalizeBetween(bgRed || 0, 0, 1, 0, 255)}, ${util.normalizeBetween(bgGreen || 0, 0, 1, 0, 255)}, ${util.normalizeBetween(bgBlue || 0, 0, 1, 0, 255)})` : 'inherit';
                                             const fgColor = (fgRed || fgGreen || fgBlue) ? `rgb(${util.normalizeBetween(fgRed || 0, 0, 1, 0, 255)}, ${util.normalizeBetween(fgGreen || 0, 0, 1, 0, 255)}, ${util.normalizeBetween(fgBlue || 0, 0, 1, 0, 255)})` : 'inherit';
+                                            const { pixelSize: columnWidth } = meta.columnMeta;
 
                                             return (<th style={{
                                                 'color': fgColor,
@@ -229,6 +230,8 @@ export default function App(props) {
                                                 'font-weight': bold ? 'bold' : 'normal',
                                                 'text-decoration-line': underline ? 'underline' : (strikethrough ? 'line-through' : 'none'),
                                                 'font-style': italic ? 'italic' : 'none',
+                                                'width': `${columnWidth}px`,
+                                                // 'height': `${rowHeight}px`,
                                             }}>
                                                 {col}
                                             </th>);
@@ -239,6 +242,7 @@ export default function App(props) {
                                     {finalSheetRows && finalSheetRows.map((row, rowIdx) => <>
                                         <tr onClick={onClickRow} data-id={row.id}>
                                             {sheet.headers && sheet.headers.map((col) => {
+                                                const headerMeta = sheet.headersMeta[col];
                                                 const meta = sheet.meta[rowIdx][col] || {};
                                                 // {
                                                 //     'value': 'id',
@@ -283,8 +287,8 @@ export default function App(props) {
                                                 //         }
                                                 //     }
                                                 // }
-                                                const { userEnteredFormat = {}, value, valueType, formattedValue, hyperlink } = meta;
-                                                const { textFormat = {}, horizontalAlignment, verticalAlignment, backgroundColor = {} } = userEnteredFormat;
+                                                const { userEnteredFormat = {}, value, valueType, formattedValue, hyperlink, props = {} } = meta;
+                                                const { textFormat = {}, horizontalAlignment, verticalAlignment, backgroundColor = {}, wrapStrategy } = userEnteredFormat;
                                                 const { fontSize, bold, underline, strikethrough, italic, foregroundColor = {} } = textFormat;
                                                 const { red: bgRed, green: bgGreen, blue: bgBlue } = backgroundColor;
                                                 const { red: fgRed, green: fgGreen, blue: fgBlue } = foregroundColor;
@@ -292,17 +296,25 @@ export default function App(props) {
                                                 const fgColor = (fgRed || fgGreen || fgBlue) ? `rgb(${util.normalizeBetween(fgRed || 0, 0, 1, 0, 255)}, ${util.normalizeBetween(fgGreen || 0, 0, 1, 0, 255)}, ${util.normalizeBetween(fgBlue || 0, 0, 1, 0, 255)})` : 'inherit';
                                                 const cellContent = row[col] || '';
                                                 const content = searchText !== '' ? replaceAllStrings(cellContent) : cellContent;
+                                                const { pixelSize: columnWidth } = headerMeta.columnMeta;
+                                                const { pixelSize: rowHeight } = props;
 
-                                                return (<td style={{     
-                                                    'color': fgColor,
-                                                    'background-color': bgColor,
-                                                    'font-size': `${fontSize ? `${fontSize}pt` : ''}`,
-                                                    'text-align': horizontalAlignment,
-                                                    'vertical-align': verticalAlignment,
-                                                    'font-weight': bold ? 'bold' : 'normal',
-                                                    'text-decoration-line': underline ? 'underline' : (strikethrough ? 'line-through' : 'none'),
-                                                    'font-style': italic ? 'italic' : 'none',
-                                                }}>
+                                                return (<td 
+                                                    class='p-0'
+                                                    style={{     
+                                                        'color': fgColor,
+                                                        'background-color': bgColor,
+                                                        'font-size': `${fontSize ? `${fontSize}pt` : ''}`,
+                                                        'text-align': horizontalAlignment,
+                                                        'vertical-align': verticalAlignment,
+                                                        'font-weight': bold ? 'bold' : 'normal',
+                                                        'text-decoration-line': underline ? 'underline' : (strikethrough ? 'line-through' : 'none'),
+                                                        'font-style': italic ? 'italic' : 'none',
+                                                        'width': `${columnWidth}px`,
+                                                        'height': `${rowHeight}px`,
+                                                        // 'overflow': `${wrapStrategy === 'OVERFLOW_CELL' ? 'visible' : 'inherit'}`,
+                                                    }}
+                                                >
                                                     {hyperlink ? <>
                                                         <Markdown markdown={`<a href='${hyperlink}' target='_blank'>${content}</a>`} markdownOpts={MARKDOWN_OPTIONS} />
                                                     </> : <>
