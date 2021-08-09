@@ -300,7 +300,7 @@ export default function App(props) {
                                                 const { pixelSize: rowHeight } = props;
 
                                                 return (<td 
-                                                    class='p-0'
+                                                    class='py-0 px-1'
                                                     style={{     
                                                         'color': fgColor,
                                                         'background-color': bgColor,
