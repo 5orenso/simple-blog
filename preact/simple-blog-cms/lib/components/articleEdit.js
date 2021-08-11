@@ -301,6 +301,27 @@ export default class ArticleEdit extends Component {
         });
     }
 
+    setColorToHex = (e) => {
+        const handleInputRaw = this.props.handleInputRaw;
+        const { value } = e.target;
+        const { finalname } = e.target.dataset;
+        const rgbHex = value ? value.replace(/#/, '').match(/.{1,2}/g) : [];
+        const rgb = [
+            parseInt(rgbHex[0], 16),
+            parseInt(rgbHex[1], 16),
+            parseInt(rgbHex[2], 16),
+        ];
+
+        this.setState({
+            [`${finalname}Hex`]: value,
+            [`${finalname}HexR`]: rgb[0],
+            [`${finalname}HexG`]: rgb[1],
+            [`${finalname}HexB`]: rgb[2],
+        }, () => {
+            handleInputRaw(finalname, value);
+        });
+    }
+
     componentDidMount() {
         console.log('componentDidMount');
         const article = this.props.article;
@@ -768,55 +789,14 @@ export default class ArticleEdit extends Component {
                                             Custom colors
                                         </summary>
                                         <div class='form-group d-flex align-items-center my-0'>
-                                            <label for='r' class='mr-2 my-0 rounded-circle text-center' style='background-color: #ff0000; width: 25px;'>R</label>
                                             <input
                                                 class={`form-control mr-2`}
                                                 data-finalname='background'
-                                                name='backgroundHexR'
-                                                type='range'
-                                                min='0'
-                                                max='255'
-                                                id='r'
-                                                step='1'
-                                                value={backgroundHexR}
-                                                onInput={this.setColor}
+                                                type='color'
+                                                value={backgroundHex || '#ffffff'}
+                                                onInput={this.setColorToHex}
                                             />
-                                            <output for='r'>{backgroundHexR}</output>
-                                        </div>  
-
-                                        <div class='form-group d-flex align-items-center my-0'>
-                                            <label for='g' class='mr-2 my-0 rounded-circle text-center' style='background-color: #00ff00; width: 25px;'>G</label>
-                                            <input
-                                                class={`form-control mr-2`}
-                                                data-finalname='background'
-                                                name='backgroundHexG'
-                                                type='range'
-                                                min='0'
-                                                max='255'
-                                                id='g'
-                                                step='1'
-                                                value={backgroundHexG}
-                                                onInput={this.setColor}
-                                            />
-                                            <output for='g'>{backgroundHexG}</output>
-                                        </div>  
-
-                                        <div class='form-group d-flex align-items-center my-0'>
-                                            <label for='g' class='mr-2 my-0 rounded-circle text-center' style='background-color: #0000ff; width: 25px;'>B</label>
-                                            <input
-                                                class={`form-control mr-2`}
-                                                data-finalname='background'
-                                                name='backgroundHexB'
-                                                type='range'
-                                                min='0'
-                                                max='255'
-                                                id='b'
-                                                step='1'
-                                                value={backgroundHexB}
-                                                onInput={this.setColor}
-                                            />
-                                            <output for='b'>{backgroundHexB}</output>
-                                        </div>  
+                                        </div>
                                     </details>
 
                                     <div class='text-center rounded-lg' style={`background-color: ${backgroundHex};`}>
@@ -906,55 +886,14 @@ export default class ArticleEdit extends Component {
                                             Custom colors
                                         </summary>
                                         <div class='form-group d-flex align-items-center my-0'>
-                                            <label for='r' class='mr-2 my-0 rounded-circle text-center' style='background-color: #ff0000; width: 25px;'>R</label>
                                             <input
                                                 class={`form-control mr-2`}
                                                 data-finalname='forground'
-                                                name='forgroundHexR'
-                                                type='range'
-                                                min='0'
-                                                max='255'
-                                                id='r'
-                                                step='1'
-                                                value={forgroundHexR}
-                                                onInput={this.setColor}
+                                                type='color'
+                                                value={forgroundHex || '#000000'}
+                                                onInput={this.setColorToHex}
                                             />
-                                            <output for='r'>{forgroundHexR}</output>
-                                        </div>  
-
-                                        <div class='form-group d-flex align-items-center my-0'>
-                                            <label for='g' class='mr-2 my-0 rounded-circle text-center' style='background-color: #00ff00; width: 25px;'>G</label>
-                                            <input
-                                                class={`form-control mr-2`}
-                                                data-finalname='forground'
-                                                name='forgroundHexG'
-                                                type='range'
-                                                min='0'
-                                                max='255'
-                                                id='g'
-                                                step='1'
-                                                value={forgroundHexG}
-                                                onInput={this.setColor}
-                                            />
-                                            <output for='g'>{forgroundHexG}</output>
-                                        </div>  
-
-                                        <div class='form-group d-flex align-items-center my-0'>
-                                            <label for='g' class='mr-2 my-0 rounded-circle text-center' style='background-color: #0000ff; width: 25px;'>B</label>
-                                            <input
-                                                class={`form-control mr-2`}
-                                                data-finalname='forground'
-                                                name='forgroundHexB'
-                                                type='range'
-                                                min='0'
-                                                max='255'
-                                                id='b'
-                                                step='1'
-                                                value={forgroundHexB}
-                                                onInput={this.setColor}
-                                            />
-                                            <output for='b'>{forgroundHexB}</output>
-                                        </div>  
+                                        </div>
                                     </details>
 
                                     <div class='text-center rounded-lg' style={`background-color: ${backgroundHex};`}>
