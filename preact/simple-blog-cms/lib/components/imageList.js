@@ -467,22 +467,31 @@ export default class ImageList extends Component {
 
                                         {this.getWidth(img) > 0 && <div class='text-muted'>
                                             <span class='mr-1 badge badge-primary'>
-                                                <a target='_blank' href={`https://${imageServer}/1920x/${imagePath}/${img.src}`} style='color: #ffffff' onClick={e => e.stopPropagation()}>1920 px</a>
+                                                <a target='_blank' href={`https://${imageServer}/2500x/${imagePath}/${img.src}`} style='color: #ffffff' onClick={e => e.stopPropagation()}>2500px</a>
                                             </span>
                                             <span class='mr-1 badge badge-primary'>
-                                                <a target='_blank' href={`https://${imageServer}/1600x/${imagePath}/${img.src}`} style='color: #ffffff' onClick={e => e.stopPropagation()}>1920 px</a>
+                                                <a target='_blank' href={`https://${imageServer}/1920x/${imagePath}/${img.src}`} style='color: #ffffff' onClick={e => e.stopPropagation()}>1920px</a>
                                             </span>
                                             <span class='mr-1 badge badge-primary'>
-                                                <a target='_blank' href={`https://${imageServer}/1024x/${imagePath}/${img.src}`} style='color: #ffffff' onClick={e => e.stopPropagation()}>1920 px</a>
+                                                <a target='_blank' href={`https://${imageServer}/1600x/${imagePath}/${img.src}`} style='color: #ffffff' onClick={e => e.stopPropagation()}>1600px</a>
                                             </span>
                                             <span class='mr-1 badge badge-primary'>
-                                                <a target='_blank' href={`https://${imageServer}/800x/${imagePath}/${img.src}`} style='color: #ffffff' onClick={e => e.stopPropagation()}>1920 px</a>
+                                                <a target='_blank' href={`https://${imageServer}/1024x/${imagePath}/${img.src}`} style='color: #ffffff' onClick={e => e.stopPropagation()}>1024px</a>
                                             </span>
                                             <span class='mr-1 badge badge-primary'>
-                                                <a target='_blank' href={`https://${imageServer}/300x/${imagePath}/${img.src}`} style='color: #ffffff' onClick={e => e.stopPropagation()}>1920 px</a>
+                                                <a target='_blank' href={`https://${imageServer}/800x/${imagePath}/${img.src}`} style='color: #ffffff' onClick={e => e.stopPropagation()}>800px</a>
                                             </span>
                                             <span class='mr-1 badge badge-primary'>
-                                                <a target='_blank' href={`https://${imageServer}/150x/${imagePath}/${img.src}`} style='color: #ffffff' onClick={e => e.stopPropagation()}>1920 px</a>
+                                                <a target='_blank' href={`https://${imageServer}/400x/${imagePath}/${img.src}`} style='color: #ffffff' onClick={e => e.stopPropagation()}>400px</a>
+                                            </span>
+                                            <span class='mr-1 badge badge-primary'>
+                                                <a target='_blank' href={`https://${imageServer}/220x/${imagePath}/${img.src}`} style='color: #ffffff' onClick={e => e.stopPropagation()}>220px</a>
+                                            </span>
+                                            <span class='mr-1 badge badge-primary'>
+                                                <a target='_blank' href={`https://${imageServer}/150x/${imagePath}/${img.src}`} style='color: #ffffff' onClick={e => e.stopPropagation()}>150px</a>
+                                            </span>
+                                            <span class='mr-1 badge badge-primary'>
+                                                <a target='_blank' href={`https://${imageServer}/80x80/${imagePath}/${img.src}`} style='color: #ffffff' onClick={e => e.stopPropagation()}>80x80px</a>
                                             </span>
                                         </div>}
 

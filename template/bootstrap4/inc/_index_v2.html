@@ -69,14 +69,14 @@
                     <div class="jumbotron-thumb d-flex align-items-center">
                         {% if art.isFrontpage %}
                             {% if art.url %}
-                                <a href="{{ art.url }}">
+                                <a href="{{ art.url }}" class='w-100'>
                                     <img src="https://{{ imageServer }}/1920x/{{ imagePath }}/{{ art.img[0].src }}" alt="{{ art.title|e }}" class="img-fluid">
                                 </a>
                             {% else %}
                                 <img src="https://{{ imageServer }}/1920x/{{ imagePath }}/{{ art.img[0].src }}" alt="{{ art.title|e }}" class="img-fluid">
                             {% endif %}
                         {% else %}
-                            <a href="/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}" {{ articleMacro.colorArticleText(art.catRef, frontpage, true, art, 'h1') }}>
+                            <a href="/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}" {{ articleMacro.colorArticleText(art.catRef, frontpage, true, art, 'h1') }} class='w-100'>
                                 <img src="https://{{ imageServer }}/1920x/{{ imagePath }}/{{ art.img[0].src }}" alt="{{ art.title|e }}" class="img-fluid">
                             </a>
                         {% endif %}
