@@ -83,9 +83,9 @@
 
             {% if art.catRef.hideFrontpageTeaser %}
             {% elseif art.teaser %}
-                <p class='mb-1'>{{ art.teaser|raw }}</p>
+                <p class='mb-1'>{{ art.teaser|md|safe }}</p>
             {% elseif art.ingress %}
-                <p class='mb-1'>{{ art.ingress|raw }}</p>
+                <p class='mb-1'>{{ art.ingress|md|safe }}</p>
             {% endif %}
 
 
