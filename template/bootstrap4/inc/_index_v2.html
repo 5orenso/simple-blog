@@ -70,14 +70,14 @@
                         {% if art.isFrontpage %}
                             {% if art.url %}
                                 <a href="{{ art.url }}" class='w-100'>
-                                    <img src="https://{{ imageServer }}/1920x/{{ imagePath }}/{{ art.img[0].src }}" alt="{{ art.title|e }}" class="img-fluid">
+                                    <img src="https://{{ imageServer }}/1920x/{{ imagePath }}/{{ art.img[0].src }}" alt="{{ art.title|e }}" class="img-fluid w-100">
                                 </a>
                             {% else %}
-                                <img src="https://{{ imageServer }}/1920x/{{ imagePath }}/{{ art.img[0].src }}" alt="{{ art.title|e }}" class="img-fluid">
+                                <img src="https://{{ imageServer }}/1920x/{{ imagePath }}/{{ art.img[0].src }}" alt="{{ art.title|e }}" class="img-fluid w-100">
                             {% endif %}
                         {% else %}
                             <a href="/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}" {{ articleMacro.colorArticleText(art.catRef, frontpage, true, art, 'h1') }} class='w-100'>
-                                <img src="https://{{ imageServer }}/1920x/{{ imagePath }}/{{ art.img[0].src }}" alt="{{ art.title|e }}" class="img-fluid">
+                                <img src="https://{{ imageServer }}/1920x/{{ imagePath }}/{{ art.img[0].src }}" alt="{{ art.title|e }}" class="img-fluid w-100">
                             </a>
                         {% endif %}
                     </div>
