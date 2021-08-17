@@ -265,15 +265,15 @@ export default function App(props) {
                 </>}
                 <h2>{row.name}</h2>
                 <div>
-                    <span class='font-weight-lighter'><i class='fas fa-calendar-alt' /> Dato:</span> {formatDate(row['date from'])} - {formatDate(row['date to'])}
+                    <span class='font-weight-lighter'><i class='fas fa-calendar-alt text-muted' /> Dato:</span> {formatDate(row['date from'])} - {formatDate(row['date to'])}
                 </div>
                 <div class='mt-3'>
-                    <span class='font-weight-lighter'><i class='fas fa-file-alt' /> Beskrivelse:</span><br/>
+                    <span class='font-weight-lighter'><i class='fas fa-file-alt text-muted' /> Beskrivelse:</span><br/>
                     {row.description}
                 </div>
                 {row.address && <>
                     <div class='mt-3'>
-                        <span class='font-weight-lighter'><i class='fas fa-map-marked-alt' /> Sted:</span><br/>
+                        <span class='font-weight-lighter'><i class='fas fa-map-marked-alt text-muted' /> Sted:</span><br/>
                         {row.address && <>{row.address}<br /></>}
                         {row.postalcode && <>{row.postalcode} {row.postalplace}<br/></>}
                     </div>
@@ -294,14 +294,14 @@ export default function App(props) {
                         </div>
                     </>}
                 </> : <>
-                    <h2 class='mt-5'><i class='fas fa-user-plus' /> Påmeldingskjema</h2>
+                    <h2 class='mt-5'><i class='fas fa-user-plus text-muted' /> Påmeldingskjema</h2>
                     <div class='row'>
                         <div class='col-6 form-group'>
-                            <label for='inputEmail'><i class='fas fa-at' /> E-post</label>
+                            <label for='inputEmail'><i class='fas fa-at text-muted' /> E-post</label>
                             <input type='email' class='form-control' id='inputEmail' aria-describedby='emailHelp' name='email' value={input.email} onInput={onInput} data-validation={FIELDS.email.validation} data-removechars={FIELDS.email.removechars} />
                         </div>
                         <div class='col-6 form-group'>
-                            <label for='inputCellphone'><i class='fas fa-mobile-alt' /> Mobil</label>
+                            <label for='inputCellphone'><i class='fas fa-mobile-alt text-muted' /> Mobil</label>
                             <input type='tel' class='form-control' id='inputCellphone' name='cellphone' value={input.cellphone} onInput={onInput} data-validation={FIELDS.cellphone.validation} data-removechars={FIELDS.cellphone.removechars} />
                         </div>
                         {/* <div class='col-6 form-group'>
@@ -323,12 +323,12 @@ export default function App(props) {
                     </div>
                     <div class='row'>
                         <div class='col-6 form-group'>
-                            <label for='inputChildname'><i class='fas fa-baby' /> Barnets navn</label>
+                            <label for='inputChildname'><i class='fas fa-baby text-muted' /> Barnets navn</label>
                             <input type='text' class='form-control' id='inputChildname' name='childname' value={input.childname} onInput={onInput} data-validation={FIELDS.childname.validation} data-removechars={FIELDS.childname.removechars} />
                             <small id='inputChildnameHelp' class='form-text text-muted'>Fullt navn på barnet som skal på kurs.</small>
                         </div>
                         <div class='col-6 form-group'>
-                            <label for='inputChildBirth'><i class='fas fa-birthday-cake' /> Barnets fødselsdato</label>
+                            <label for='inputChildBirth'><i class='fas fa-birthday-cake text-muted' /> Barnets fødselsdato</label>
                             <input type='date' class='form-control' id='inputChildBirth' name='childbirth' value={input.childbirth} onInput={onInput} data-validation={FIELDS.childbirth.validation} data-removechars={FIELDS.childbirth.removechars}  />
                         </div>
                     </div>
