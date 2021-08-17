@@ -83,10 +83,20 @@
                 {% endif %}
             {% endfor %}
         </ul>
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item ml-auto float-right">
+                <button type='button' class='nav-link btn btn-link' onClick="$('#searchBox').toggle()"><i class="fas fa-search"></i></button>
+            </li>
+        </ul>
 
-        <form class="form-inline my-2 my-lg-0" action="/v2/search/">
-            <input class="form-control mr-sm-2" type="search" placeholder="{{ blog.searchPlaceholder }}" aria-label="Search" name="q" value="{{ queryString.q }}">
-            <button class="btn btn-outline-info my-2 my-sm-0" type="submit">{{ blog.searchButton }}</button>
-        </form>
+
     </div>
 </nav>
+<div id='searchBox' style='display: {% if originalUrlPath|match('/v2/search/') %}block{% else %}none{% endif %};'>
+    <div class='py-2 px-5 d-flex justify-content-center'>
+        <form class="form-inline my-2 my-lg-0" action="/v2/search/">
+            <input class="form-control mr-sm-2" type="search" placeholder="{{ blog.searchPlaceholder }}" aria-label="Search" name="q" value="{{ queryString.q }}">
+            <button class="btn btn-outline-info my-2 my-sm-0" type="submit">{{ blog.searchButton || 'Search' }}</button>
+        </form>
+    </div>
+</div>
