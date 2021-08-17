@@ -1456,19 +1456,12 @@ export default class ArticleEdit extends Component {
                     {[0, 1, 2, 3].map((val, idx) =>
                         <li class={`list-group-item list-group-item-action flex-column align-items-start ${idx % 2 > 0 ? 'list-group-item-secondary' : ''}`}>
                             <div class='form-group row'>
-                                <div class='col-5'>
+                                <div class='col-12'>
                                     <label for='linkTitle'>Tittel på siden du linker til</label>
                                     <input class='form-control' id='linkTitle'
                                         onInput={linkstate(that, `article.links.${val}.title`)}
                                         value={util.getString(article, 'links', val, 'title')}
                                         placeholder='Ie: Litt.no / Sorensos Blog'
-                                    />
-                                </div>
-                                <div class='col-7'>
-                                    <label for='linkText'>Linktekst</label>
-                                    <input class='form-control' id='linkText'
-                                        onInput={linkstate(that, `article.links.${val}.text`)}
-                                        value={util.getString(article, 'links', val, 'text')}
                                     />
                                 </div>
                                 <div class='col-8'>
@@ -1483,7 +1476,7 @@ export default class ArticleEdit extends Component {
                                     <label>&nbsp;</label>
                                     <button class='form-control btn btn-dark m-1'
                                         onClick={this.handleClickCode}
-                                        data-content={`[${util.getString(article, 'links', val, 'title')}](${util.getString(article, 'links', val, 'url')} '${util.getString(article, 'links', val, 'text')}')\n`}>
+                                        data-content={`[${util.getString(article, 'links', val, 'title')}](${util.getString(article, 'links', val, 'url')})\n`}>
                                         Sett inn link i tekst
                                     </button>
                                 </div>

@@ -91,14 +91,14 @@
 
             {% for widget in ['helloworld', 'clock', 'booking', 'sheet', 'poll', 'gallery', 'weather', 'rating', 'related'] %}
                 {% if art.widgetList === widget %}
-                    <div class='w-100 my-2' data-widget-host="simple-blog-{{ widget }}">
+                    <div class='w-100 my-2 clearfix' data-widget-host="simple-blog-{{ widget }}">
                         <script type="text/props">
                             {
                                 "apiServer": "{{ blog.protocol }}://{{ blog.domain }}",
                                 "jwtToken": "{{ jwtToken }}",
                                 "sessionEmail": "{{ session.email }}",
                                 "sessionAge": "{{ session.age }}",
-                                "articleId": {{ article.id }}
+                                "articleId": {{ art.id }}
                             }
                         </script>
                     </div>
