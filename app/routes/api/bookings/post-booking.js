@@ -10,6 +10,7 @@
 const uuidv4 = require('uuid/v4');
 const tc = require('fast-type-check');
 const strftime = require('strftime');
+const Mail = require('../../../../lib/mail');
 
 const { GoogleSpreadsheet } = require('google-spreadsheet');
 
@@ -21,6 +22,7 @@ module.exports = async (req, res) => {
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
     const googleSheetId = req.params.sheetid; // '1A6hdvpg_Kz2mHbcaGA6-RmLvgwALB2bE3kKnPTFtPjE';
     const { google } = req.config;
+    const { email, course } = req.body;
 
     // Initialize the sheet - doc ID is the long id in the sheets URL
     const doc = new GoogleSpreadsheet(googleSheetId);
@@ -31,11 +33,14 @@ module.exports = async (req, res) => {
     await doc.loadInfo(); // loads document properties and worksheets
     // console.log(doc.title);
 
-    const signupSheet = doc.sheetsByIndex[1];
+    const courseSheet = doc.sheetsByIndex[0];
+    const courseRows = await courseSheet.getRows();
 
+    const courseRow = courseRows.find(row => (row.id === course));
+
+    const signupSheet = doc.sheetsByIndex[1];
     const sheetRows = await signupSheet.getRows();
 
-    const { email, course } = req.body;
     const existingRow = sheetRows.findIndex(row => (row.email === email && row.course === course));
     if (existingRow > -1) {
         const data = {
@@ -46,6 +51,41 @@ module.exports = async (req, res) => {
         };
         return utilHtml.renderApi(req, res, 400, data);
     }
+
+    const {
+        cellphone, firstname, lastname, address, postalcode, postalplace,
+        childname, childbirth,
+    } = req.body;
+    const { emailSender, emailSignature } = req.config.blog;
+    const mail = new Mail(req.config);
+    await mail.sendEmail({
+        to: email,
+        from: emailSender,
+        subject: `Kvittering for påmelding: ${doc.title}`,
+        body: `<div style='font-size: 17px;'>Hei ${firstname},
+
+<strong>Du er nå påmeldt kurs:</strong>
+${courseRow.name}
+${courseRow.description}
+${courseRow.address}
+${courseRow.postalcode} ${courseRow.postalplace}
+
+<span style='font-weight: lighter; color: #808080;'>Fra:</span> ${courseRow['date from']}
+<span style='font-weight: lighter; color: #808080;'>Til:</span> ${courseRow['date to']}
+
+<strong>Påmeldingsinformasjon:</strong>
+<span style='font-weight: lighter; color: #808080;'>E-post:</span> ${email}
+<span style='font-weight: lighter; color: #808080;'>Mobil:</span> ${cellphone}
+<span style='font-weight: lighter; color: #808080;'>Navn:</span> ${firstname} ${lastname}
+<span style='font-weight: lighter; color: #808080;'>Barnets navn:</span> ${childname}
+<span style='font-weight: lighter; color: #808080;'>Barnets fødselsdato:</span> ${childbirth}
+<span style='font-weight: lighter; color: #808080;'>Adresse:</span> ${address}
+<span style='font-weight: lighter; color: #808080;'>Sted:</span> ${postalcode} ${postalplace}
+
+${emailSignature}
+
+</div>`.replace(/\n/g, '<br/>'),
+    });
 
     signupSheet.addRow({
         ...req.body,
