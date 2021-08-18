@@ -48,6 +48,7 @@
     ]
   },
   "dependencies": {
+    "preact-markdown": "^2.0.0",
     "preact-util": "^1.4.18"
   }
 }

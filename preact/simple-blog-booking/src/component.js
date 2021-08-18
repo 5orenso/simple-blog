@@ -2,6 +2,17 @@ import { h } from 'preact';
 import { useState, useEffect, useCallback } from 'preact/hooks';
 import querystring from 'querystring';
 import putil from 'preact-util';
+import Markdown from 'preact-markdown';
+
+const MARKDOWN_OPTIONS = {
+	pedantic: false,
+	gfm: true,
+	breaks: true,
+	sanitize: false,
+	smartLists: true,
+	smartypants: true,
+	xhtml: true,
+};
 
 const FIELDS = {
     email: {
@@ -254,27 +265,26 @@ export default function App(props) {
 
         return (
             <div class={`${article['booking-class']} ${className}`} style={`${article['booking-style']} ${style}`}>
-                {/* {JSON.stringify(images, null, 4)} */}
-                {/* {JSON.stringify(article['booking-sheetId'])} */}
-                {/* rowid: {rowid}<br /> */}
-                <button class='btn btn-link' type='button' onClick={onClickBack}><i class='fas fa-arrow-left' /> Tilbake</button>
+                <button class='btn btn-link btn-lg' type='button' onClick={onClickBack}><i class='fas fa-arrow-left' /> Tilbake</button>
                 {row.photo && <>
                     <div>
                         <img class='img-fluid w-100' src={row.photo} />
                     </div>
                 </>}
-                <h2>{row.name}</h2>
+                <h2>
+                    <Markdown markdown={`${row.name}`} markdownOpts={MARKDOWN_OPTIONS} />
+                </h2>
                 <div>
                     <span class='font-weight-lighter'><i class='fas fa-calendar-alt text-muted' /> Dato:</span> {formatDate(row['date from'])} - {formatDate(row['date to'])}
                 </div>
                 <div class='mt-3'>
                     <span class='font-weight-lighter'><i class='fas fa-file-alt text-muted' /> Beskrivelse:</span><br/>
-                    {row.description}
+                    <Markdown markdown={`${row.description}`} markdownOpts={MARKDOWN_OPTIONS} />
                 </div>
                 {row.address && <>
                     <div class='mt-3'>
                         <span class='font-weight-lighter'><i class='fas fa-map-marked-alt text-muted' /> Sted:</span><br/>
-                        {row.address && <>{row.address}<br /></>}
+                        <Markdown markdown={`${row.address}`} markdownOpts={MARKDOWN_OPTIONS} />
                         {row.postalcode && <>{row.postalcode} {row.postalplace}<br/></>}
                     </div>
                 </>}
@@ -396,22 +406,31 @@ export default function App(props) {
                     <thead>
                         <tr>
                             <th>&nbsp;</th>
-                            <th>Kurs</th>
+                            <th style={getHeaderColStyles('name', sheet)}>Kurs</th>
                             <th class='text-center'>Dato</th>
                             <th class='text-center'>Ledige plasser</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {sheet.rows && sheet.rows.map((row) => {
+                        {sheet.rows && sheet.rows.map((row, rowIdx) => {
                             if (!row.id) {
                                 return '';
                             }
                             return (<>
                                 <tr onClick={onClickRow} data-id={row.id} style='cursor: pointer;'>
-                                    <td><button class='btn btn-sm btn-success'><i class='fas fa-arrow-right' /></button></td>
-                                    <td>{row.name}</td>
-                                    <td class='text-center'>{formatDate(row['date from'], true)} - {formatDate(row['date to'], true)}</td>
-                                    <td class='text-right'>{row['free seats']}/{row['total seats']}</td>
+                                    <td class='py-1 px-1'><button class='btn btn-sm btn-success'><i class='fas fa-arrow-right' /></button></td>
+                                    <td class='py-1 px-1'
+                                        style={getColStyles({
+                                            col: 'name',
+                                            row,
+                                            rowIdx,
+                                            sheet
+                                        })}
+                                    >
+                                        <Markdown markdown={`${row.name}`} markdownOpts={MARKDOWN_OPTIONS} />
+                                    </td>
+                                    <td class='text-center py-1 px-1'>{formatDate(row['date from'], true)} - {formatDate(row['date to'], true)}</td>
+                                    <td class='text-right py-1 px-1'>{row['free seats']}/{row['total seats']}</td>
                                 </tr>
                             </>);
                         })}
@@ -426,4 +445,54 @@ export default function App(props) {
             </>}
         </div>
     );
+}
+
+function getHeaderColStyles(col, sheet) {
+    const meta = sheet.headersMeta[col];
+    const { textFormat = {}, horizontalAlignment, verticalAlignment, backgroundColor = {} } = meta.userEnteredFormat || {};
+    const { fontSize, bold, underline, strikethrough, italic, foregroundColor = {} } = textFormat;
+    const { red: bgRed, green: bgGreen, blue: bgBlue } = backgroundColor;
+    const { red: fgRed, green: fgGreen, blue: fgBlue } = foregroundColor;
+    const bgColor = (bgRed || bgGreen || bgBlue) ? `rgb(${putil.normalizeBetween(bgRed || 0, 0, 1, 0, 255)}, ${putil.normalizeBetween(bgGreen || 0, 0, 1, 0, 255)}, ${putil.normalizeBetween(bgBlue || 0, 0, 1, 0, 255)})` : 'inherit';
+    const fgColor = (fgRed || fgGreen || fgBlue) ? `rgb(${putil.normalizeBetween(fgRed || 0, 0, 1, 0, 255)}, ${putil.normalizeBetween(fgGreen || 0, 0, 1, 0, 255)}, ${putil.normalizeBetween(fgBlue || 0, 0, 1, 0, 255)})` : 'inherit';
+    const { pixelSize: columnWidth } = meta.columnMeta;
+    return {
+        'color': fgColor,
+        'background-color': bgColor,
+        'font-size': `${fontSize ? `${fontSize}pt` : ''}`,
+        'text-align': horizontalAlignment,
+        'vertical-align': verticalAlignment,
+        'font-weight': bold ? 'bold' : 'normal',
+        'text-decoration-line': underline ? 'underline' : (strikethrough ? 'line-through' : 'none'),
+        'font-style': italic ? 'italic' : 'none',
+        'width': `${columnWidth}px`,
+        // 'height': `${rowHeight}px`,
+    };   
+}
+
+function getColStyles({ col, row, rowIdx, sheet }) {
+    const headerMeta = sheet.headersMeta[col];
+    const meta = sheet.meta[rowIdx][col] || {};
+    const { userEnteredFormat = {}, value, valueType, formattedValue, hyperlink, props = {} } = meta;
+    const { textFormat = {}, horizontalAlignment, verticalAlignment, backgroundColor = {}, wrapStrategy } = userEnteredFormat;
+    const { fontSize, bold, underline, strikethrough, italic, foregroundColor = {} } = textFormat;
+    const { red: bgRed, green: bgGreen, blue: bgBlue } = backgroundColor;
+    const { red: fgRed, green: fgGreen, blue: fgBlue } = foregroundColor;
+    const bgColor = (bgRed || bgGreen || bgBlue) ? `rgb(${putil.normalizeBetween(bgRed || 0, 0, 1, 0, 255)}, ${putil.normalizeBetween(bgGreen || 0, 0, 1, 0, 255)}, ${putil.normalizeBetween(bgBlue || 0, 0, 1, 0, 255)})` : 'inherit';
+    const fgColor = (fgRed || fgGreen || fgBlue) ? `rgb(${putil.normalizeBetween(fgRed || 0, 0, 1, 0, 255)}, ${putil.normalizeBetween(fgGreen || 0, 0, 1, 0, 255)}, ${putil.normalizeBetween(fgBlue || 0, 0, 1, 0, 255)})` : 'inherit';
+    const { pixelSize: columnWidth } = headerMeta.columnMeta;
+    const { pixelSize: rowHeight } = props;
+    return {     
+        'color': fgColor,
+        'background-color': bgColor,
+        'font-size': `${fontSize ? `${fontSize}pt` : ''}`,
+        'text-align': horizontalAlignment,
+        'vertical-align': verticalAlignment,
+        'font-weight': bold ? 'bold' : 'normal',
+        'text-decoration-line': underline ? 'underline' : (strikethrough ? 'line-through' : 'none'),
+        'font-style': italic ? 'italic' : 'none',
+        'width': `${columnWidth}px`,
+        'height': `${rowHeight}px`,
+        // 'overflow': `${wrapStrategy === 'OVERFLOW_CELL' ? 'visible' : 'inherit'}`,
+    };
 }
