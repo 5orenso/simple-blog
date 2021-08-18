@@ -133,6 +133,56 @@ function formatDate(input, short) {
     return date.toLocaleDateString(locale, options);
 }
 
+function getHeaderColStyles(col, sheet) {
+    const meta = sheet.headersMeta[col];
+    const { textFormat = {}, horizontalAlignment, verticalAlignment, backgroundColor = {} } = meta.userEnteredFormat || {};
+    const { fontSize, bold, underline, strikethrough, italic, foregroundColor = {} } = textFormat;
+    const { red: bgRed, green: bgGreen, blue: bgBlue } = backgroundColor;
+    const { red: fgRed, green: fgGreen, blue: fgBlue } = foregroundColor;
+    const bgColor = (bgRed || bgGreen || bgBlue) ? `rgb(${putil.normalizeBetween(bgRed || 0, 0, 1, 0, 255)}, ${putil.normalizeBetween(bgGreen || 0, 0, 1, 0, 255)}, ${putil.normalizeBetween(bgBlue || 0, 0, 1, 0, 255)})` : 'inherit';
+    const fgColor = (fgRed || fgGreen || fgBlue) ? `rgb(${putil.normalizeBetween(fgRed || 0, 0, 1, 0, 255)}, ${putil.normalizeBetween(fgGreen || 0, 0, 1, 0, 255)}, ${putil.normalizeBetween(fgBlue || 0, 0, 1, 0, 255)})` : 'inherit';
+    const { pixelSize: columnWidth } = meta.columnMeta;
+    return {
+        'color': fgColor,
+        'background-color': bgColor,
+        'font-size': `${fontSize ? `${fontSize}pt` : ''}`,
+        'text-align': horizontalAlignment,
+        'vertical-align': verticalAlignment,
+        'font-weight': bold ? 'bold' : 'normal',
+        'text-decoration-line': underline ? 'underline' : (strikethrough ? 'line-through' : 'none'),
+        'font-style': italic ? 'italic' : 'none',
+        'width': `${columnWidth}px`,
+        // 'height': `${rowHeight}px`,
+    };   
+}
+
+function getColStyles({ col, row, rowIdx, sheet }) {
+    const headerMeta = sheet.headersMeta[col];
+    const meta = sheet.meta[rowIdx][col] || {};
+    const { userEnteredFormat = {}, value, valueType, formattedValue, hyperlink, props = {} } = meta;
+    const { textFormat = {}, horizontalAlignment, verticalAlignment, backgroundColor = {}, wrapStrategy } = userEnteredFormat;
+    const { fontSize, bold, underline, strikethrough, italic, foregroundColor = {} } = textFormat;
+    const { red: bgRed, green: bgGreen, blue: bgBlue } = backgroundColor;
+    const { red: fgRed, green: fgGreen, blue: fgBlue } = foregroundColor;
+    const bgColor = (bgRed || bgGreen || bgBlue) ? `rgb(${putil.normalizeBetween(bgRed || 0, 0, 1, 0, 255)}, ${putil.normalizeBetween(bgGreen || 0, 0, 1, 0, 255)}, ${putil.normalizeBetween(bgBlue || 0, 0, 1, 0, 255)})` : 'inherit';
+    const fgColor = (fgRed || fgGreen || fgBlue) ? `rgb(${putil.normalizeBetween(fgRed || 0, 0, 1, 0, 255)}, ${putil.normalizeBetween(fgGreen || 0, 0, 1, 0, 255)}, ${putil.normalizeBetween(fgBlue || 0, 0, 1, 0, 255)})` : 'inherit';
+    const { pixelSize: columnWidth } = headerMeta.columnMeta;
+    const { pixelSize: rowHeight } = props;
+    return {     
+        'color': fgColor,
+        'background-color': bgColor,
+        'font-size': `${fontSize ? `${fontSize}pt` : ''}`,
+        'text-align': horizontalAlignment,
+        'vertical-align': verticalAlignment,
+        'font-weight': bold ? 'bold' : 'normal',
+        'text-decoration-line': underline ? 'underline' : (strikethrough ? 'line-through' : 'none'),
+        'font-style': italic ? 'italic' : 'none',
+        'width': `${columnWidth}px`,
+        'height': `${rowHeight}px`,
+        // 'overflow': `${wrapStrategy === 'OVERFLOW_CELL' ? 'visible' : 'inherit'}`,
+    };
+}
+
 export default function App(props) {
     const { apiServer, jwtToken, articleId, sheetId, tableClass, className, style } = props;
 
@@ -445,54 +495,4 @@ export default function App(props) {
             </>}
         </div>
     );
-}
-
-function getHeaderColStyles(col, sheet) {
-    const meta = sheet.headersMeta[col];
-    const { textFormat = {}, horizontalAlignment, verticalAlignment, backgroundColor = {} } = meta.userEnteredFormat || {};
-    const { fontSize, bold, underline, strikethrough, italic, foregroundColor = {} } = textFormat;
-    const { red: bgRed, green: bgGreen, blue: bgBlue } = backgroundColor;
-    const { red: fgRed, green: fgGreen, blue: fgBlue } = foregroundColor;
-    const bgColor = (bgRed || bgGreen || bgBlue) ? `rgb(${putil.normalizeBetween(bgRed || 0, 0, 1, 0, 255)}, ${putil.normalizeBetween(bgGreen || 0, 0, 1, 0, 255)}, ${putil.normalizeBetween(bgBlue || 0, 0, 1, 0, 255)})` : 'inherit';
-    const fgColor = (fgRed || fgGreen || fgBlue) ? `rgb(${putil.normalizeBetween(fgRed || 0, 0, 1, 0, 255)}, ${putil.normalizeBetween(fgGreen || 0, 0, 1, 0, 255)}, ${putil.normalizeBetween(fgBlue || 0, 0, 1, 0, 255)})` : 'inherit';
-    const { pixelSize: columnWidth } = meta.columnMeta;
-    return {
-        'color': fgColor,
-        'background-color': bgColor,
-        'font-size': `${fontSize ? `${fontSize}pt` : ''}`,
-        'text-align': horizontalAlignment,
-        'vertical-align': verticalAlignment,
-        'font-weight': bold ? 'bold' : 'normal',
-        'text-decoration-line': underline ? 'underline' : (strikethrough ? 'line-through' : 'none'),
-        'font-style': italic ? 'italic' : 'none',
-        'width': `${columnWidth}px`,
-        // 'height': `${rowHeight}px`,
-    };   
-}
-
-function getColStyles({ col, row, rowIdx, sheet }) {
-    const headerMeta = sheet.headersMeta[col];
-    const meta = sheet.meta[rowIdx][col] || {};
-    const { userEnteredFormat = {}, value, valueType, formattedValue, hyperlink, props = {} } = meta;
-    const { textFormat = {}, horizontalAlignment, verticalAlignment, backgroundColor = {}, wrapStrategy } = userEnteredFormat;
-    const { fontSize, bold, underline, strikethrough, italic, foregroundColor = {} } = textFormat;
-    const { red: bgRed, green: bgGreen, blue: bgBlue } = backgroundColor;
-    const { red: fgRed, green: fgGreen, blue: fgBlue } = foregroundColor;
-    const bgColor = (bgRed || bgGreen || bgBlue) ? `rgb(${putil.normalizeBetween(bgRed || 0, 0, 1, 0, 255)}, ${putil.normalizeBetween(bgGreen || 0, 0, 1, 0, 255)}, ${putil.normalizeBetween(bgBlue || 0, 0, 1, 0, 255)})` : 'inherit';
-    const fgColor = (fgRed || fgGreen || fgBlue) ? `rgb(${putil.normalizeBetween(fgRed || 0, 0, 1, 0, 255)}, ${putil.normalizeBetween(fgGreen || 0, 0, 1, 0, 255)}, ${putil.normalizeBetween(fgBlue || 0, 0, 1, 0, 255)})` : 'inherit';
-    const { pixelSize: columnWidth } = headerMeta.columnMeta;
-    const { pixelSize: rowHeight } = props;
-    return {     
-        'color': fgColor,
-        'background-color': bgColor,
-        'font-size': `${fontSize ? `${fontSize}pt` : ''}`,
-        'text-align': horizontalAlignment,
-        'vertical-align': verticalAlignment,
-        'font-weight': bold ? 'bold' : 'normal',
-        'text-decoration-line': underline ? 'underline' : (strikethrough ? 'line-through' : 'none'),
-        'font-style': italic ? 'italic' : 'none',
-        'width': `${columnWidth}px`,
-        'height': `${rowHeight}px`,
-        // 'overflow': `${wrapStrategy === 'OVERFLOW_CELL' ? 'visible' : 'inherit'}`,
-    };
 }
