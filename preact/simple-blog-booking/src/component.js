@@ -151,7 +151,7 @@ function getHeaderColStyles(col, sheet) {
         'font-weight': bold ? 'bold' : 'normal',
         'text-decoration-line': underline ? 'underline' : (strikethrough ? 'line-through' : 'none'),
         'font-style': italic ? 'italic' : 'none',
-        'width': `${columnWidth}px`,
+        // 'width': `${columnWidth}px`,
         // 'height': `${rowHeight}px`,
     };   
 }
@@ -177,8 +177,8 @@ function getColStyles({ col, row, rowIdx, sheet }) {
         'font-weight': bold ? 'bold' : 'normal',
         'text-decoration-line': underline ? 'underline' : (strikethrough ? 'line-through' : 'none'),
         'font-style': italic ? 'italic' : 'none',
-        'width': `${columnWidth}px`,
-        'height': `${rowHeight}px`,
+        // 'width': `${columnWidth}px`,
+        // 'height': `${rowHeight}px`,
         // 'overflow': `${wrapStrategy === 'OVERFLOW_CELL' ? 'visible' : 'inherit'}`,
     };
 }
