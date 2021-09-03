@@ -340,7 +340,7 @@ export default function App(props) {
                 </>}
                 <div class='mt-3'>
                     <span class='font-weight-lighter'>Antall plasser:</span> {row['total seats']}<br/>
-                    <span class='font-weight-lighter'>Ledige plasser:</span> {row['free seats']}
+                    <span class='font-weight-lighter'>Ledige plasser:</span> {row['free seats']}<br />
                 </div>
 
                 {apiResponse && apiResponse.status ? <>
@@ -349,95 +349,101 @@ export default function App(props) {
                             <i class='fas fa-check text-success' /> Påmeldingen er mottatt.
                         </div>
                     </> : <>
-                        <div class='alert alert-warning' role='alert'>
-                            <i class='fas fa-exclamation-triangle text-danger' /> Noe gikk feil: {apiResponse.data}
+                        <div class='alert alert-danger' role='alert'>
+                            <i class='fas fa-exclamation-triangle text-danger' /> {apiResponse.data}
                         </div>
                     </>}
                 </> : <>
-                    <h2 class='mt-5'><i class='fas fa-user-plus text-muted' /> Påmeldingskjema</h2>
-                    <div class='row'>
-                        <div class='col-6 form-group'>
-                            <label for='inputEmail'><i class='fas fa-at text-muted' /> E-post</label>
-                            <input type='email' class='form-control' id='inputEmail' aria-describedby='emailHelp' name='email' value={input.email} onInput={onInput} data-validation={FIELDS.email.validation} data-removechars={FIELDS.email.removechars} />
+                    {row['free seats'] > 0 ? <>
+                        <h2 class='mt-5'><i class='fas fa-user-plus text-muted' /> Påmeldingskjema</h2>
+                        <div class='row'>
+                            <div class='col-6 form-group'>
+                                <label for='inputEmail'><i class='fas fa-at text-muted' /> E-post</label>
+                                <input type='email' class='form-control' id='inputEmail' aria-describedby='emailHelp' name='email' value={input.email} onInput={onInput} data-validation={FIELDS.email.validation} data-removechars={FIELDS.email.removechars} />
+                            </div>
+                            <div class='col-6 form-group'>
+                                <label for='inputCellphone'><i class='fas fa-mobile-alt text-muted' /> Mobil</label>
+                                <input type='tel' class='form-control' id='inputCellphone' name='cellphone' value={input.cellphone} onInput={onInput} data-validation={FIELDS.cellphone.validation} data-removechars={FIELDS.cellphone.removechars} />
+                            </div>
+                            {/* <div class='col-6 form-group'>
+                                <label for='inputPassword'>Passord</label>
+                                <input type='password' class='form-control' id='inputPassword' name='password' value={input.password} onInput={onInput} />
+                            </div> */}
                         </div>
-                        <div class='col-6 form-group'>
-                            <label for='inputCellphone'><i class='fas fa-mobile-alt text-muted' /> Mobil</label>
-                            <input type='tel' class='form-control' id='inputCellphone' name='cellphone' value={input.cellphone} onInput={onInput} data-validation={FIELDS.cellphone.validation} data-removechars={FIELDS.cellphone.removechars} />
+                        <div class='row'>
+                            <div class='col-6 form-group'>
+                                <label for='inputFirstname'>Fornavn</label>
+                                <input type='text' class='form-control' id='inputFirstname' name='firstname' value={input.firstname} onInput={onInput} data-validation={FIELDS.firstname.validation} data-removechars={FIELDS.firstname.removechars} />
+                                <small id='inputFirstnameHelp' class='form-text text-muted'>Ditt fornavn.</small>
+                            </div>
+                            <div class='col-6 form-group'>
+                                <label for='inputLastname'>Etternavn</label>
+                                <input type='text' class='form-control' id='inputLastname' name='lastname' value={input.lastname} onInput={onInput} data-validation={FIELDS.lastname.validation} data-removechars={FIELDS.lastname.removechars} />
+                                <small id='inputLastnameHelp' class='form-text text-muted'>Ditt etternavn.</small>
+                            </div>
                         </div>
-                        {/* <div class='col-6 form-group'>
-                            <label for='inputPassword'>Passord</label>
-                            <input type='password' class='form-control' id='inputPassword' name='password' value={input.password} onInput={onInput} />
-                        </div> */}
-                    </div>
-                    <div class='row'>
-                        <div class='col-6 form-group'>
-                            <label for='inputFirstname'>Fornavn</label>
-                            <input type='text' class='form-control' id='inputFirstname' name='firstname' value={input.firstname} onInput={onInput} data-validation={FIELDS.firstname.validation} data-removechars={FIELDS.firstname.removechars} />
-                            <small id='inputFirstnameHelp' class='form-text text-muted'>Ditt fornavn.</small>
+                        <div class='row'>
+                            <div class='col-6 form-group'>
+                                <label for='inputChildname'><i class='fas fa-baby text-muted' /> Barnets navn</label>
+                                <input type='text' class='form-control' id='inputChildname' name='childname' value={input.childname} onInput={onInput} data-validation={FIELDS.childname.validation} data-removechars={FIELDS.childname.removechars} />
+                                <small id='inputChildnameHelp' class='form-text text-muted'>Fullt navn på barnet som skal på kurs.</small>
+                            </div>
+                            <div class='col-6 form-group'>
+                                <label for='inputChildBirth'><i class='fas fa-birthday-cake text-muted' /> Barnets fødselsdato</label>
+                                <input type='date' class='form-control' id='inputChildBirth' name='childbirth' value={input.childbirth} onInput={onInput} data-validation={FIELDS.childbirth.validation} data-removechars={FIELDS.childbirth.removechars}  />
+                            </div>
                         </div>
-                        <div class='col-6 form-group'>
-                            <label for='inputLastname'>Etternavn</label>
-                            <input type='text' class='form-control' id='inputLastname' name='lastname' value={input.lastname} onInput={onInput} data-validation={FIELDS.lastname.validation} data-removechars={FIELDS.lastname.removechars} />
-                            <small id='inputLastnameHelp' class='form-text text-muted'>Ditt etternavn.</small>
+                        <div class='row'>
+                            <div class='col-12 form-group'>
+                                <label for='inputAddress'>Adresse</label>
+                                <input type='text' class='form-control' id='inputAddress' name='address' value={input.address} onInput={onInput} data-validation={FIELDS.address.validation} data-removechars={FIELDS.address.removechars} />
+                            </div>
                         </div>
-                    </div>
-                    <div class='row'>
-                        <div class='col-6 form-group'>
-                            <label for='inputChildname'><i class='fas fa-baby text-muted' /> Barnets navn</label>
-                            <input type='text' class='form-control' id='inputChildname' name='childname' value={input.childname} onInput={onInput} data-validation={FIELDS.childname.validation} data-removechars={FIELDS.childname.removechars} />
-                            <small id='inputChildnameHelp' class='form-text text-muted'>Fullt navn på barnet som skal på kurs.</small>
-                        </div>
-                        <div class='col-6 form-group'>
-                            <label for='inputChildBirth'><i class='fas fa-birthday-cake text-muted' /> Barnets fødselsdato</label>
-                            <input type='date' class='form-control' id='inputChildBirth' name='childbirth' value={input.childbirth} onInput={onInput} data-validation={FIELDS.childbirth.validation} data-removechars={FIELDS.childbirth.removechars}  />
-                        </div>
-                    </div>
-                    <div class='row'>
-                        <div class='col-12 form-group'>
-                            <label for='inputAddress'>Adresse</label>
-                            <input type='text' class='form-control' id='inputAddress' name='address' value={input.address} onInput={onInput} data-validation={FIELDS.address.validation} data-removechars={FIELDS.address.removechars} />
-                        </div>
-                    </div>
-                    <div class='row'>
-                        <div class='col-12 form-group'>
-                            <label for='inputPostalcode'>Postnr-/sted</label>
-                            <div class='row'>
-                                <div class='col-3'>
-                                    <input type='text' class='form-control' id='inputPostalcode' name='postalcode' value={input.postalcode} onInput={onInput} cols='4' data-validation='^\d{4}$' data-removechars='[^0-9]' />
-                                </div>
-                                <div class='col-9'>
-                                    <input type='text' class='form-control' name='postalplace' value={input.postalplace} onInput={onInput} data-validation={FIELDS.postalplace.validation} data-removechars={FIELDS.postalplace.removechars} />
+                        <div class='row'>
+                            <div class='col-12 form-group'>
+                                <label for='inputPostalcode'>Postnr-/sted</label>
+                                <div class='row'>
+                                    <div class='col-3'>
+                                        <input type='text' class='form-control' id='inputPostalcode' name='postalcode' value={input.postalcode} onInput={onInput} cols='4' data-validation='^\d{4}$' data-removechars='[^0-9]' />
+                                    </div>
+                                    <div class='col-9'>
+                                        <input type='text' class='form-control' name='postalplace' value={input.postalplace} onInput={onInput} data-validation={FIELDS.postalplace.validation} data-removechars={FIELDS.postalplace.removechars} />
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    {invalidFields && Object.keys(invalidFields).length > 0 && <>
-                        <div class='alert alert-warning' role='alert'>
-                            <ul>
-                                {Object.keys(invalidFields).map(field => <li>
-                                    {FIELDS[field].help}
-                                </li>)}
-                            </ul>
+                        {invalidFields && Object.keys(invalidFields).length > 0 && <>
+                            <div class='alert alert-warning' role='alert'>
+                                <ul>
+                                    {Object.keys(invalidFields).map(field => <li>
+                                        {FIELDS[field].help}
+                                    </li>)}
+                                </ul>
+                            </div>
+                        </>}
+
+                        <button type='button' class={`btn btn-${isOkToSubmit ? 'primary' : 'secondary'} float-right`} onClick={submitForm} disabled={loading || !isOkToSubmit}>
+                            {isOkToSubmit ? <>
+                                Meld meg på!
+                            </> : <>
+                                Fyll inn feltene over...
+                            </>}
+                        </button>
+                        
+                        {loading && <div class='d-flex justify-content-center py-3'>
+                            <div class='spinner-border' role='status'>
+                                <span class='sr-only'>Sender inn informasjonen...</span>
+                            </div>
+                            <div class='ml-3'>
+                                Sender inn informasjonen...
+                            </div>
+                        </div>}
+                    </> : <>
+                        <div class='alert alert-danger text-center py-3 mt-3' role='alert'>
+                            <i class='fas fa-exclamation-triangle' /> Kurset er dessverre fulltegnet.
                         </div>
                     </>}
-
-                    <button type='button' class={`btn btn-${isOkToSubmit ? 'primary' : 'secondary'} float-right`} onClick={submitForm} disabled={loading || !isOkToSubmit}>
-                        {isOkToSubmit ? <>
-                            Meld meg på!
-                        </> : <>
-                            Fyll inn feltene over...
-                        </>}
-                    </button>
-                    
-                    {loading && <div class='d-flex justify-content-center py-3'>
-                        <div class='spinner-border' role='status'>
-                            <span class='sr-only'>Sender inn informasjonen...</span>
-                        </div>
-                        <div class='ml-3'>
-                            Sender inn informasjonen...
-                        </div>
-                    </div>}
 
                 </>}
             </div>

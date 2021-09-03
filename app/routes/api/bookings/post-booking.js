@@ -42,6 +42,16 @@ module.exports = async (req, res) => {
     const sheetRows = await signupSheet.getRows();
 
     const existingRow = sheetRows.findIndex(row => (row.email === email && row.course === course));
+    if (courseRow['free seats'] <= 0) {
+        const data = {
+            title: doc.title,
+            data: 'Kurset er dessverre fulltegnet!',
+            status: 400,
+            id: existingRow.id,
+        };
+        return utilHtml.renderApi(req, res, 400, data);
+    }
+
     if (existingRow > -1) {
         const data = {
             title: doc.title,
