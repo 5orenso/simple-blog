@@ -35,7 +35,7 @@
     
 }
 .verticalTableHeader p {
-    /* margin: 0 -100% ; */
+    margin: 0 -100% ;
     display: inline-block;
 }
 .verticalTableHeader p:before{
