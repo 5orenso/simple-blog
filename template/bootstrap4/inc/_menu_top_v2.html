@@ -2,25 +2,19 @@
         .menuTextColorInline, .menuTextColorInline a:link, .menuTextColorInline a:visited {
             {%- if category.colorMenu -%}
                 color: {{ category.colorMenu }} !important;
-                font-weight: 300;
             {%- elseif frontpage.colorMenu -%}
                 color: {{ frontpage.colorMenu }} !important;
-                font-weight: 300;
             {%- endif -%}
         }
         .menuTextColorInline .active a:link, .menuTextColorInline .active a:visited {
             {%- if category.colorMenu -%}
-                font-weight: 500 !important;
-                text-decoration: underline;
             {%- elseif frontpage.colorMenu -%}
-                font-weight: 500 !important;
-                text-decoration: underline;
             {%- endif -%}
         }
         .menuBackgroundInline {
             {%- if category.bgImageMenu -%}
                 background-image: url('{{ category.bgImageMenu }}') !important; 
-                no-repeat center center fixed; 
+                no-repeat center center fixed;
                 -webkit-background-size: cover;
                 -moz-background-size: cover;
                 -o-background-size: cover;
