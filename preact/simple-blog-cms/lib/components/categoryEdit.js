@@ -18,6 +18,7 @@ const typeList = [
     { value: 3, title: 'Annonser på forsiden øvre' },
     { value: 4, title: 'Annonser på forsiden nedre' },
     { value: 5, title: 'Bildegalleri' },
+    { value: 9, title: 'Blog w/wide image' },
     { value: 6, title: 'Lenker' },
     { value: 7, title: 'Bunnsaker' },
     { value: 8, title: 'Annonser i artikler nedre' },
@@ -170,6 +171,7 @@ export default class CategoryEdit extends Component {
                         </div>
 
                         <h5 class='mt-3'>Avanserte innstillinger</h5>
+
                         <div class='form-check'>
                             <input type='checkbox' class='form-check-input' id='menuInput'
                                 name='menu'
@@ -199,8 +201,22 @@ export default class CategoryEdit extends Component {
                             />
                             <label for='menuInput'>Skjul menytittel</label>
                         </div>
-    
-                        
+
+                        <div class='form-check'>
+                            <input type='checkbox' class='form-check-input' id='hideTranslateLinksInput'
+                                name='hideTranslateLinks'
+                                onInput={e => {
+                                    handleInput(e, {
+                                        name: 'hideTranslateLinks',
+                                        value: category.hideTranslateLinks ? 0 : 1,
+                                    });
+                                }}
+                                value={1}
+                                checked={category.hideTranslateLinks ? 'checked' : ''}
+                            />
+                            <label for='hideTranslateLinksInput'>Skjul oversettingslinker</label>
+                        </div>
+
                         <div class='form-check'>
                             <input type='checkbox' class='form-check-input' id='hideOnFrontpageInput'
                                 name='hideOnFrontpage'

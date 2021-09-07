@@ -21,6 +21,7 @@ const fields = {
     menu: 1,
     limit: 1,
     hideOnFrontpage: 1,
+    hideTranslateLinks: 1,
     hideTopImage: 1,
     hidePrevNext: 1,
     hideArticleList: 1,

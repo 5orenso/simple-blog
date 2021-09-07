@@ -6,7 +6,7 @@
 {% if baseHref|match('photo') || baseHref|match('film') %}
     {% set isPhoto = true %}
 {% endif %}
-{% if category.type === 5 %}
+{% if category.type === 5 || category.type === 9 %}
     {% set isPhotoCategory = true %}
 {% endif %}
 
@@ -30,7 +30,7 @@
             {{ article.youtube|safe }}
         {% elseif article.img[0] && article.img[0].src|match('(jpg|jpeg|png|gif|heic|heif|svg|webp|tif|JPG|JPEG|PNG|GIF|HEIC|HEIF|SVG|WEBP|TIF)$', 'i') %}
             <div>
-                <img src="https://{{ imageServer }}/{% if isPhoto || isPhotoCategory %}1920x{% else %}1024x{% endif %}/{{ imagePath }}/{{ article.img[0].src }}" alt="{{ article.title|e }}" class="img-fluid mx-auto d-block">
+                <img src="https://{{ imageServer }}/{% if isPhoto || isPhotoCategory %}1920x{% else %}1024x{% endif %}/{{ imagePath }}/{{ article.img[0].src }}" alt="{{ article.title|e }}" class="img-fluid mx-auto d-block {% if category.type === 9 %}low-profile{% endif %}">
             </div>
         {% endif %}
     </div>
@@ -105,12 +105,14 @@
                                     <a href="/v2/?tag={{ tag|asUrlSafe }}" class="badge badge-info">{{ tag }}</a>
                                 {% endfor %}
                             {% endif %}
-                            <span class="float-right text-right">
-                                <a class="text-muted mainTextColorInline" target="_blank" href="http://translate.google.com/translate?u={{ shareLink|asUrlSafe }}&hl=en&ie=UTF8&sl=no&tl=en" title="Translate to english"><span class="flag-icon flag-icon-gb"></span></a>
-                                <a class="text-muted mainTextColorInline" target="_blank" href="http://translate.google.com/translate?u={{ shareLink|asUrlSafe }}&hl=de&ie=UTF8&sl=no&tl=de" title="Uberseztung ins Deutsch"><span class="flag-icon flag-icon-de"></span></a>
-                                <a class="text-muted mainTextColorInline" target="_blank" href="http://translate.google.com/translate?u={{ shareLink|asUrlSafe }}&hl=fr&ie=UTF8&sl=no&tl=fr" title="Traduire en Français"><span class="flag-icon flag-icon-fr"></span></a>
-                                <a class="text-muted mainTextColorInline" target="_blank" href="http://translate.google.com/translate?u={{ shareLink|asUrlSafe }}&hl=es&ie=UTF8&sl=no&tl=es" title="Traducir al ingles"><span class="flag-icon flag-icon-es"></span></a>
-                            </span>
+                            {% if !category.hideTranslateLinks %}
+                                <span class="float-right text-right">
+                                    <a class="text-muted mainTextColorInline" target="_blank" href="http://translate.google.com/translate?u={{ shareLink|asUrlSafe }}&hl=en&ie=UTF8&sl=no&tl=en" title="Translate to english"><span class="flag-icon flag-icon-gb"></span></a>
+                                    <a class="text-muted mainTextColorInline" target="_blank" href="http://translate.google.com/translate?u={{ shareLink|asUrlSafe }}&hl=de&ie=UTF8&sl=no&tl=de" title="Uberseztung ins Deutsch"><span class="flag-icon flag-icon-de"></span></a>
+                                    <a class="text-muted mainTextColorInline" target="_blank" href="http://translate.google.com/translate?u={{ shareLink|asUrlSafe }}&hl=fr&ie=UTF8&sl=no&tl=fr" title="Traduire en Français"><span class="flag-icon flag-icon-fr"></span></a>
+                                    <a class="text-muted mainTextColorInline" target="_blank" href="http://translate.google.com/translate?u={{ shareLink|asUrlSafe }}&hl=es&ie=UTF8&sl=no&tl=es" title="Traducir al ingles"><span class="flag-icon flag-icon-es"></span></a>
+                                </span>
+                            {% endif %}
                         </small>
                     </p>
                 {% endif %}

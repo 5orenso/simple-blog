@@ -497,6 +497,22 @@ class Utilities {
             + `${timeObj.minutes ? `${timeObj.minutes} min${timeObj.minutes > 1 ? '' : ''} ` : ''}`
             + `${timeObj.seconds} sec${timeObj.seconds > 1 ? '' : ''}`;
     }
+
+    static isValidEmail(text) {
+        // eslint-disable-next-line
+        const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return re.test(String(text).toLowerCase());
+    }
+
+    static formatLink(link) {
+        if (Utilities.isValidEmail(link)) {
+            return `mailto:${link}`;
+        }
+        if (link.match(/^http/)) {
+            return link;
+        }
+        return `https://${link}`;
+    }
 }
 
 export default Utilities;

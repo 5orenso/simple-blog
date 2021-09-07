@@ -23,3 +23,25 @@
     height: 75vh !important;
     min-height: 300px;
 }
+
+
+.verticalTableHeader {
+    text-align: center;
+    -webkit-transform: rotate(270deg);
+    -moz-transform: rotate(270deg);
+    -ms-transform: rotate(270deg);
+    -o-transform: rotate(270deg);
+    transform: rotate(270deg);
+    
+}
+.verticalTableHeader p {
+    /* margin: 0 -100% ; */
+    display: inline-block;
+}
+.verticalTableHeader p:before{
+    content: '';
+    width: 0;
+    padding-top: 110%;/* takes width as reference, + 10% for faking some extra padding */
+    display: inline-block;
+    vertical-align: middle;
+}

@@ -1408,7 +1408,7 @@ export default class ArticleEdit extends Component {
             <div class='col-12'>
                 <h5>Legg til Youtube video:</h5>
                 <ul class='list-group'>
-                    {[0, 1, 2, 3].map((val, idx) =>
+                    {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((val, idx) =>
                         <li class={`list-group-item list-group-item-action flex-column align-items-start ${idx % 2 > 0 ? 'list-group-item-secondary' : ''}`}>
                             <div class='form-group row'>
                                 <div class='col-5'>
@@ -1453,11 +1453,11 @@ export default class ArticleEdit extends Component {
             <div class='col-12'>
                 <h5>Legg til lenker:</h5>
                 <ul class='list-group'>
-                    {[0, 1, 2, 3].map((val, idx) =>
+                    {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((val, idx) =>
                         <li class={`list-group-item list-group-item-action flex-column align-items-start ${idx % 2 > 0 ? 'list-group-item-secondary' : ''}`}>
                             <div class='form-group row'>
                                 <div class='col-12'>
-                                    <label for='linkTitle'>Tittel på siden du linker til</label>
+                                    <label for='linkTitle'>{idx + 1}: Tittel på siden du linker til</label>
                                     <input class='form-control' id='linkTitle'
                                         onInput={linkstate(that, `article.links.${val}.title`)}
                                         value={util.getString(article, 'links', val, 'title')}
@@ -1469,14 +1469,14 @@ export default class ArticleEdit extends Component {
                                     <input class='form-control' id='link'
                                         onInput={linkstate(that, `article.links.${val}.url`)}
                                         value={util.getString(article, 'links', val, 'url')}
-                                        placeholder='Link til side...'
+                                        placeholder='Link til side, eller e-postadresse.'
                                     />
                                 </div>
                                 <div class='col-4'>
                                     <label>&nbsp;</label>
                                     <button class='form-control btn btn-dark m-1'
                                         onClick={this.handleClickCode}
-                                        data-content={`[${util.getString(article, 'links', val, 'title')}](${util.getString(article, 'links', val, 'url')})\n`}>
+                                        data-content={`[${util.getString(article, 'links', val, 'title')}](${util.formatLink(util.getString(article, 'links', val, 'url'))})\n`}>
                                         Sett inn link i tekst
                                     </button>
                                 </div>
@@ -1621,28 +1621,31 @@ export default class ArticleEdit extends Component {
                                         <i class={`fas fa-file-${ext}`} />
                                     </div>}
                                     <small>
-                                        <button class='btn btn-sm m-1' onClick={this.handleClickCode} data-content={`[${img.title || img.name || article.title}](https://${imageServer}/original/${imagePath}/${img.src} '${img.text || ''}')\n`}>
+                                        <button class='btn btn-sm m-1' onClick={this.handleClickCode} data-content={`[${img.title|| ''}](https://${imageServer}/original/${imagePath}/${img.src} '${img.text || ''}')\n`}>
                                             <i class='fas fa-image'></i> Org
                                         </button>
-                                        {isImg && <button class='btn btn-sm m-1' onClick={this.handleClickCode} data-content={`![${img.title || img.name || article.title}](https://${imageServer}/800x/${imagePath}/${img.src} '${img.text || ''}')\n`}>
+                                        {isImg && <button class='btn btn-sm m-1' onClick={this.handleClickCode} data-content={`![${img.title|| ''}](https://${imageServer}/800x/${imagePath}/${img.src} '${img.text || ''}')\n`}>
                                             <i class='fas fa-image'></i> Image
                                         </button>}
-                                        {isImg && <button class='btn btn-sm m-1' onClick={this.handleClickCode} data-content={`![${img.title || img.name || article.title}](https://${imageServer}/1920x/${imagePath}/${img.src}#fullwidth '${img.text || ''}')\n`}>
+                                        {isImg && <button class='btn btn-sm m-1' onClick={this.handleClickCode} data-content={`[![${img.title|| ''}](https://${imageServer}/800x/${imagePath}/${img.src}#nolink '${img.text || ''}')](${img.url})\n`}>
+                                            <i class='fas fa-image'></i> Image w/link
+                                        </button>}
+                                        {isImg && <button class='btn btn-sm m-1' onClick={this.handleClickCode} data-content={`![${img.title|| ''}](https://${imageServer}/1920x/${imagePath}/${img.src}#fullwidth '${img.text || ''}')\n`}>
                                             <i class='fas fa-link'></i> Full width
                                         </button>}
-                                        {isImg && <button class='btn btn-sm m-1' onClick={this.handleClickCode} data-content={`[![${img.title || img.name || article.title}](https://${imageServer}/800x/${imagePath}/${img.src}#card '${img.text || ''}')](${img.url})\n`}>
+                                        {isImg && <button class='btn btn-sm m-1' onClick={this.handleClickCode} data-content={`[![${img.title|| ''}](https://${imageServer}/800x/${imagePath}/${img.src}#card '${img.text || ''}')](${img.url})\n`}>
                                             <i class='fas fa-link'></i> Link
                                         </button>}
-                                        {isImg && <button class='btn btn-sm m-1' onClick={this.handleClickCode} data-content={`![${img.title || img.name || article.title}](https://${imageServer}/800x/${imagePath}/${img.src}#card '${img.text || ''}')\n`}>
+                                        {isImg && <button class='btn btn-sm m-1' onClick={this.handleClickCode} data-content={`![${img.title|| ''}](https://${imageServer}/800x/${imagePath}/${img.src}#card '${img.text || ''}')\n`}>
                                             <i class='fas fa-file-image'></i> Card
                                         </button>}
-                                        {isImg && <button class='btn btn-sm m-1' onClick={this.handleClickCode} data-content={`![${img.title || img.name || article.title}](https://${imageServer}/800x/${imagePath}/${img.src}#card2 '${img.text || ''}')\n`}>
+                                        {isImg && <button class='btn btn-sm m-1' onClick={this.handleClickCode} data-content={`![${img.title|| ''}](https://${imageServer}/800x/${imagePath}/${img.src}#card2 '${img.text || ''}')\n`}>
                                             <i class='far fa-image'></i> Card 2
                                         </button>}
-                                        {isImg && <button class='btn btn-sm m-1' onClick={this.handleClickCode} data-content={`![${img.title || img.name || article.title}](https://${imageServer}/800x/${imagePath}/${img.src}#plain '${img.text || ''}')\n`}>
+                                        {isImg && <button class='btn btn-sm m-1' onClick={this.handleClickCode} data-content={`![${img.title|| ''}](https://${imageServer}/800x/${imagePath}/${img.src}#plain '${img.text || ''}')\n`}>
                                             <i class='far fa-image'></i> Plain
                                         </button>}
-                                        {isImg && <button class='btn btn-sm m-1' onClick={this.handleClickCode} data-content={`![${img.title || img.name || article.title}](https://${imageServer}/800x/${imagePath}/${img.src}#nolink '${img.text || ''}')\n`}>
+                                        {isImg && <button class='btn btn-sm m-1' onClick={this.handleClickCode} data-content={`![${img.title|| ''}](https://${imageServer}/800x/${imagePath}/${img.src}#nolink '${img.text || ''}')\n`}>
                                             <i class='far fa-image'></i> No link
                                         </button>}
                                         {isImg && <button class='btn btn-sm m-1' onClick={this.handleClickCode} data-content={`<h5>Detaljer om bildet</h5>

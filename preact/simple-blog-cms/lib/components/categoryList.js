@@ -11,6 +11,7 @@ const typeList = [
     { value: 3, title: 'Annonser på forsiden øvre' },
     { value: 4, title: 'Annonser på forsiden nedre' },
     { value: 5, title: 'Bildegalleri' },
+    { value: 9, title: 'Blog w/wide image' },
     { value: 6, title: 'Lenker' },
     { value: 7, title: 'Bunnsaker' },
     { value: 8, title: 'Annonser i artikler nedre' },
@@ -47,25 +48,26 @@ export default class CategoryList extends Component {
                         <thead>
                             <tr>
                                 <th scope='col'>#</th>
-                                <th scope='col'>Bilde</th>
-                                <th scope='col'>Tittel</th>
-                                <th scope='col'>Meny</th>
-                                <th scope='col'>Skjul menytittel</th>
-                                <th scope='col'>Skjul artikkel toppbilde</th>
-                                <th scope='col'>Skjul artikkel forrige-neste linker</th>
-                                <th scope='col'>Skjul artikkel artikkelliste</th>
-                                <th scope='col'>Skjul artikkelliste metainfo</th>
-                                <th scope='col'>Skjul artikkel metainfo</th>
-                                <th scope='col'>Skjul artikkel metainfo utvidet</th>
-                                <th scope='col'>Skjul artikkel forfatterinfo</th>
-                                <th scope='col'>Skjul forside artikkeltittel</th>
-                                <th scope='col'>Skjul forside artikkelteaser</th>
-                                <th scope='col'>Skjul forside paginering</th>
-                                <th scope='col'>Kategori ID</th>
-                                <th scope='col'>Sort</th>
-                                <th scope='col'>Type</th>
-                                <th scope='col'>URL</th>
-                                <th scope='col'>Opprettet</th>
+                                <th scope='col'><p>Bilde</p></th>
+                                <th scope='col'><p>Tittel</p></th>
+                                <th class={styles.verticalTableHeaderFOO} scope='col'><p>Meny</p></th>
+                                <th class={styles.verticalTableHeaderFOO} scope='col'><p>Skjul menytittel</p></th>
+                                <th class={styles.verticalTableHeaderFOO} scope='col'><p>Skjul oversettings linker</p></th>
+                                <th class={styles.verticalTableHeaderFOO} scope='col'><p>Skjul artikkel toppbilde</p></th>
+                                <th class={styles.verticalTableHeaderFOO} scope='col'><p>Skjul artikkel forrige-neste linker</p></th>
+                                <th class={styles.verticalTableHeaderFOO} scope='col'><p>Skjul artikkel artikkelliste</p></th>
+                                <th class={styles.verticalTableHeaderFOO} scope='col'><p>Skjul artikkelliste metainfo</p></th>
+                                <th class={styles.verticalTableHeaderFOO} scope='col'><p>Skjul artikkel metainfo</p></th>
+                                <th class={styles.verticalTableHeaderFOO} scope='col'><p>Skjul artikkel metainfo utvidet</p></th>
+                                <th class={styles.verticalTableHeaderFOO} scope='col'><p>Skjul artikkel forfatterinfo</p></th>
+                                <th class={styles.verticalTableHeaderFOO} scope='col'><p>Skjul forside artikkeltittel</p></th>
+                                <th class={styles.verticalTableHeaderFOO} scope='col'><p>Skjul forside artikkelteaser</p></th>
+                                <th class={styles.verticalTableHeaderFOO} scope='col'><p>Skjul forside paginering</p></th>
+                                <th class={styles.verticalTableHeaderFOO} scope='col'><p>Kategori ID</p></th>
+                                <th class={styles.verticalTableHeaderFOO} scope='col'><p>Sort</p></th>
+                                <th class={styles.verticalTableHeaderFOO} scope='col'><p>Type</p></th>
+                                <th class={styles.verticalTableHeaderFOO} scope='col'><p>URL</p></th>
+                                <th class={styles.verticalTableHeaderFOO} scope='col'><p>Opprettet</p></th>
                             </tr>
                         </thead>
                     <tbody>
@@ -85,18 +87,19 @@ export default class CategoryList extends Component {
 
                                 {cat.title}
                             </td>
-                            <td class='text-center'>{cat.menu ? 'Ja' : 'Nei'}</td>
-                            <td class='text-center'>{cat.hideTitle ? 'Ja' : 'Nei'}</td>
-                            <td class='text-center'>{cat.hideTopImage ? 'Ja' : 'Nei'}</td>
-                            <td class='text-center'>{cat.hidePrevNext ? 'Ja' : 'Nei'}</td>
-                            <td class='text-center'>{cat.hideArticleList ? 'Ja' : 'Nei'}</td>
-                            <td class='text-center'>{cat.hideMetaInfo ? 'Ja' : 'Nei'}</td>
-                            <td class='text-center'>{cat.hideMetaInfoDetail ? 'Ja' : 'Nei'}</td>
-                            <td class='text-center'>{cat.hideMetaInfoDetailAdvanced ? 'Ja' : 'Nei'}</td>
-                            <td class='text-center'>{cat.hideAuthorInfo ? 'Ja' : 'Nei'}</td>
-                            <td class='text-center'>{cat.hideFrontpageTitle ? 'Ja' : 'Nei'}</td>
-                            <td class='text-center'>{cat.hideFrontpageTeaser ? 'Ja' : 'Nei'}</td>
-                            <td class='text-center'>{cat.hideFrontpagePagination ? 'Ja' : 'Nei'}</td>
+                            <td class='text-center' style='font-size: 2.0em;'><i class={`${cat.menu ? `fas fa-check text-success` : 'fas fa-times-circle text-danger'}`} /></td>
+                            <td class='text-center' style='font-size: 2.0em;'><i class={`${cat.hideTitle ? `fas fa-check text-success` : 'fas fa-times-circle text-danger'}`} /></td>
+                            <td class='text-center' style='font-size: 2.0em;'><i class={`${cat.hideTranslateLinks ? `fas fa-check text-success` : 'fas fa-times-circle text-danger'}`} /></td>
+                            <td class='text-center' style='font-size: 2.0em;'><i class={`${cat.hideTopImage ? `fas fa-check text-success` : 'fas fa-times-circle text-danger'}`} /></td>
+                            <td class='text-center' style='font-size: 2.0em;'><i class={`${cat.hidePrevNext ? `fas fa-check text-success` : 'fas fa-times-circle text-danger'}`} /></td>
+                            <td class='text-center' style='font-size: 2.0em;'><i class={`${cat.hideArticleList ? `fas fa-check text-success` : 'fas fa-times-circle text-danger'}`} /></td>
+                            <td class='text-center' style='font-size: 2.0em;'><i class={`${cat.hideMetaInfo ? `fas fa-check text-success` : 'fas fa-times-circle text-danger'}`} /></td>
+                            <td class='text-center' style='font-size: 2.0em;'><i class={`${cat.hideMetaInfoDetail ? `fas fa-check text-success` : 'fas fa-times-circle text-danger'}`} /></td>
+                            <td class='text-center' style='font-size: 2.0em;'><i class={`${cat.hideMetaInfoDetailAdvanced ? `fas fa-check text-success` : 'fas fa-times-circle text-danger'}`} /></td>
+                            <td class='text-center' style='font-size: 2.0em;'><i class={`${cat.hideAuthorInfo ? `fas fa-check text-success` : 'fas fa-times-circle text-danger'}`} /></td>
+                            <td class='text-center' style='font-size: 2.0em;'><i class={`${cat.hideFrontpageTitle ? `fas fa-check text-success` : 'fas fa-times-circle text-danger'}`} /></td>
+                            <td class='text-center' style='font-size: 2.0em;'><i class={`${cat.hideFrontpageTeaser ? `fas fa-check text-success` : 'fas fa-times-circle text-danger'}`} /></td>
+                            <td class='text-center' style='font-size: 2.0em;'><i class={`${cat.hideFrontpagePagination ? `fas fa-check text-success` : 'fas fa-times-circle text-danger'}`} /></td>
                             <td class='text-right'>{cat.artlistCategory}</td>
                             <td class='text-right'>{cat.sort}</td>
                             <td>
