@@ -63,6 +63,7 @@ export default class CategoryList extends Component {
                                 <th class={styles.verticalTableHeaderFOO} scope='col'><p>Skjul forside artikkeltittel</p></th>
                                 <th class={styles.verticalTableHeaderFOO} scope='col'><p>Skjul forside artikkelteaser</p></th>
                                 <th class={styles.verticalTableHeaderFOO} scope='col'><p>Skjul forside paginering</p></th>
+                                <th class={styles.verticalTableHeaderFOO} scope='col'><p>Skjul kategoriforside toppartikkel</p></th>
                                 <th class={styles.verticalTableHeaderFOO} scope='col'><p>Kategori ID</p></th>
                                 <th class={styles.verticalTableHeaderFOO} scope='col'><p>Sort</p></th>
                                 <th class={styles.verticalTableHeaderFOO} scope='col'><p>Type</p></th>
@@ -100,6 +101,7 @@ export default class CategoryList extends Component {
                             <td class='text-center' style='font-size: 2.0em;'><i class={`${cat.hideFrontpageTitle ? `fas fa-check text-success` : 'fas fa-times-circle text-danger'}`} /></td>
                             <td class='text-center' style='font-size: 2.0em;'><i class={`${cat.hideFrontpageTeaser ? `fas fa-check text-success` : 'fas fa-times-circle text-danger'}`} /></td>
                             <td class='text-center' style='font-size: 2.0em;'><i class={`${cat.hideFrontpagePagination ? `fas fa-check text-success` : 'fas fa-times-circle text-danger'}`} /></td>
+                            <td class='text-center' style='font-size: 2.0em;'><i class={`${cat.hideCategoryTopArticle ? `fas fa-check text-success` : 'fas fa-times-circle text-danger'}`} /></td>
                             <td class='text-right'>{cat.artlistCategory}</td>
                             <td class='text-right'>{cat.sort}</td>
                             <td>

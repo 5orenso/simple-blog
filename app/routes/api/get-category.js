@@ -32,6 +32,7 @@ const fields = {
     hideFrontpageTitle: 1,
     hideFrontpageTeaser: 1,
     hideFrontpagePagination: 1,
+    hideCategoryTopArticle: 1,
     showBottomArticleList: 1,
     artlistCategory: 1,
     sort: 1,

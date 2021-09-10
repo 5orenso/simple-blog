@@ -398,6 +398,21 @@ export default class CategoryEdit extends Component {
                             <label for='hideFrontpagePaginationInput'>Skjul forside paginering</label>
                         </div>
 
+                        <div class='form-check'>
+                            <input type='checkbox' class='form-check-input' id='hideCategoryTopArticleInput'
+                                name='hideCategoryTopArticle'
+                                onInput={e => {
+                                    handleInput(e, {
+                                        name: 'hideCategoryTopArticle',
+                                        value: category.hideCategoryTopArticle ? 0 : 1,
+                                    });
+                                }}
+                                value={1}
+                                checked={category.hideCategoryTopArticle === 1 ? 'checked' : ''}
+                            />
+                            <label for='hideCategoryTopArticleInput'>Skjul kategoriforside toppartikkel</label>
+                        </div>
+
                         <div class='form-group mt-3'>
                             <label for='urlInput'><i class='fas fa-link text-muted' /> URL</label>
                             <input type='text' class='form-control' id='urlInput' placeholder='url'
