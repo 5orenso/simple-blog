@@ -511,6 +511,9 @@ class Utilities {
         if (link.match(/^http/)) {
             return link;
         }
+        if (link.match(/^\//)) {
+            return link;
+        }
         return `https://${link}`;
     }
 }
