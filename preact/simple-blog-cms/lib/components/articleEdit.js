@@ -782,6 +782,16 @@ export default class ArticleEdit extends Component {
                                             data-gfixed='247'
                                             data-bfixed='247'
                                         >light</button>
+                                        <button
+                                            class='btn btn-sm btn-outline-success mr-1 mb-1'
+                                            type='button'
+                                            onClick={this.setColorToValue}
+                                            data-finalname='background'
+                                            data-hexfixed=''
+                                            data-rfixed=''
+                                            data-gfixed=''
+                                            data-bfixed=''
+                                        >Original</button>
                                     </div>
 
                                     <details>
@@ -879,6 +889,16 @@ export default class ArticleEdit extends Component {
                                             data-gfixed='247'
                                             data-bfixed='247'
                                         >light</button>
+                                        <button
+                                            class='btn btn-sm btn-outline-success mr-1 mb-1'
+                                            type='button'
+                                            onClick={this.setColorToValue}
+                                            data-finalname='forground'
+                                            data-hexfixed=''
+                                            data-rfixed=''
+                                            data-gfixed=''
+                                            data-bfixed=''
+                                        >Original</button>
                                     </div>
 
                                     <details>
