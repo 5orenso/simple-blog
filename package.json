@@ -70,7 +70,6 @@
   "keywords": [],
   "dependencies": {
     "@google-cloud/translate": "^6.2.7",
-    "@tensorflow/tfjs-converter": "^3.8.0",
     "aws-sdk": "^2.522.0",
     "body-parser": "^1.18.3",
     "client-sessions": "^0.8.0",
