@@ -7,14 +7,16 @@
 
 'use strict';
 
-const MongooseHelper = require('../lib/class/mongoose');
 const _ = require('underscore');
 const express = require('express');
 const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser')
 const compression = require('compression');
 const sessions = require('client-sessions');
 const commander = require('commander');
 const fileUpload = require('express-fileupload');
+
+const MongooseHelper = require('../lib/class/mongoose');
 const Logger = require('../lib/logger');
 const LocalUtil = require('../lib/local-util');
 
@@ -36,6 +38,8 @@ if (config) {
         logger.set('log', config.log);
     }
 }
+
+app.use(cookieParser());
 
 app.use(bodyParser.json({ limit: '100mb' }));
 app.use(bodyParser.urlencoded({ limit: '100mb', extended: true, parameterLimit: 50000 }))

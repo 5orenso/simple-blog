@@ -197,17 +197,19 @@ module.exports = async (req, res) => {
 
     const template = (req.params.id || req.params.filename) ? '/bootstrap4/blog_v2.html' : '/bootstrap4/index_v2.html';
 
+    const language = req.cookies.language;
+
     return webUtil.sendResultResponse(req, res, {
-        article,
-        previousArticle,
-        nextArticle,
-        frontpagelist,
-        artlist,
+        article: util.useLanguage(article, language),
+        previousArticle: util.useLanguage(previousArticle, language),
+        nextArticle: util.useLanguage(nextArticle, language),
+        frontpagelist: util.useLanguage(frontpagelist, language),
+        artlist: util.useLanguage(artlist, language),
         artlistTotal,
-        artlistBottom,
-        category,
-        frontpage,
-        catlist,
+        artlistBottom: util.useLanguage(artlistBottom, language),
+        category: util.useLanguage(category, language),
+        frontpage: util.useLanguage(frontpage, language),
+        catlist: util.useLanguage(catlist, language),
         adlist,
         adlistLower,
         limit,
@@ -218,5 +220,8 @@ module.exports = async (req, res) => {
         isFrontpage,
         imageServer: req.config.blog.imageServer,
         imagePath: req.config.blog.imagePath,
+        hasMoreLanguages: req.config.blog.hasMoreLanguages,
+        originalUrl: req.originalUrl,
+        language,
     }, { runId, routePath, routeName, hrstart, useTemplate: template });
 };

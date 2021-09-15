@@ -50,6 +50,20 @@
             {%- endif -%}
         }
 </style>
+<script>
+function createCookie(name, value, days = 365) {
+    var expires;
+    if (days) {
+        var date = new Date();
+        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+        expires = "; expires=" + date.toGMTString();
+    } else {
+        expires = "";
+    }
+    document.cookie = encodeURIComponent(name) + "=" + encodeURIComponent(value) + expires + "; path=/";
+}
+</script>
+
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark menuBackgroundInline menuTextColorInline">
     <a class="navbar-brand" href="/">
         {%- if frontpage.image -%}
@@ -93,6 +107,13 @@
             {% endfor %}
         </ul>
         <ul class="navbar-nav ml-auto">
+            <li class="nav-item ml-auto float-right pt-2 pr-2">
+                {%- if language === 'en' -%}
+                    <a href="#" onClick="createCookie('language', 'no'); location.reload();">🇳🇴</a>
+                {%- else -%}
+                    <a href="#" onClick="createCookie('language', 'en'); location.reload();">🇬🇧</a>
+                {%- endif -%}
+            </li>
             <li class="nav-item ml-auto float-right">
                 <a href="#" class='nav-link' onClick="$('#searchBox').toggle();"><i class="fas fa-search"></i></a>
             </li>

@@ -7,7 +7,7 @@
 
 'use strict';
 
-const { routeName, routePath, run, webUtil } = require('../../middleware/init')({ __filename, __dirname });
+const { routeName, routePath, run, webUtil, util } = require('../../middleware/init')({ __filename, __dirname });
 
 const Article = require('../../../lib/class/article');
 const Category = require('../../../lib/class/category');
@@ -40,11 +40,13 @@ module.exports = async (req, res) => {
 
     const template = (req.params.id || req.params.filename) ? '/bootstrap4/blog_v2.html' : '/bootstrap4/index_v2.html';
 
+    const language = req.cookies.language;
+
     webUtil.sendResultResponse(req, res, {
-        artlist,
+        artlist: util.useLanguage(artlist, language),
         artlistTotal,
-        category,
-        catlist,
+        category: util.useLanguage(category, language),
+        catlist: util.useLanguage(catlist, language),
         limit,
         page,
         skip,
