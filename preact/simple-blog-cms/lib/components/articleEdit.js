@@ -627,34 +627,71 @@ export default class ArticleEdit extends Component {
                             onInput={handleInput}
                             value={article.titleEn}
                         />
+                        <details>
+                            <summary>
+                                Norwegian 🇳🇴
+                            </summary>
+                            <h5>{article.title}</h5>
+                        </details>
                     </div>
                     <div class='form-group'>
                         <label for='teaserEnInput' class='text-white-50'>Teaser 🇬🇧</label>
                         <input type='text' class='form-control' id='teaserEnInput'
                             name='teaserEn'
                             onInput={handleInput}
-                            value={article.teaserEn} />
+                            value={article.teaserEn}
+                        />
+                        <details>
+                            <summary>
+                                Norwegian 🇳🇴
+                            </summary>
+                            <strong>{article.teaser}</strong>
+                        </details>
                     </div>
                     <div class='form-group'>
                         <label for='ingressEnInput' class='text-white-50'>Ingress 🇬🇧</label>
                         <textarea name='ingressEn' class={`form-control`} id='ingressEnInput' rows='3'
                             onInput={handleTextareaInput}
                             onFocus={this.handleTextareaFocus}
-                            value={article.ingressEn} />
+                            value={article.ingressEn}
+                        />
+                        <details>
+                            <summary>
+                                Norwegian 🇳🇴
+                            </summary>
+                            <div class='lead' id='ingressDisplayEnglishEdit' dangerouslySetInnerHTML={{
+                                __html: utilHtml.replaceMarked(
+                                    utilHtml.replaceDataTags(article.ingress, article)
+                                ),
+                            }}></div>
+                        </details>
                     </div>
                     <div class='form-group flex-grow-1'>
                         <label for='bodyEnInput' class='text-white-50'>Body 🇬🇧</label>
                         <textarea name='bodyEn' class={`${styles.textareaAutoHeight} form-control`} id='bodyEnInput' rows='10'
                             onInput={handleTextareaInput}
                             onFocus={this.handleTextareaFocus}
-                            value={article.bodyEn} />
+                            value={article.bodyEn}
+                        />
                         <small class='float-right'>
                             <small class='text-white'>
                                 Words: {util.wordCount(article.bodyEn)},
                                 Read time: {util.readTime(article.bodyEn, 'en')}
                             </small>
                         </small>
-                        <button type='button' class='btn btn-sm btn-warning' onClick={this.translateToEnglish} data-fromfield='body' data-tofield='bodyEn'>Translate to english</button>
+                        <details>
+                            <summary>
+                                Norwegian 🇳🇴
+                            </summary>
+                            <div id='bodyDisplayEnglishEdit' dangerouslySetInnerHTML={{
+                                __html: utilHtml.replaceMarked(
+                                    utilHtml.replaceDataTags(article.body, article)
+                                ),
+                            }}></div>
+                        </details>
+                    </div>
+                    <div class='form-group flex-grow-1'>
+                        <button type='button' class='btn btn-sm float-right btn-warning' onClick={this.translateToEnglish} data-fromfield='body' data-tofield='bodyEn'>Translate to english with Google</button>
                     </div>
                 </div>}
 
