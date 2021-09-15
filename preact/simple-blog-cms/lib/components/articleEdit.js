@@ -35,6 +35,7 @@ const initialState = {
     fontweightH3: 600,
     fontsizeH5: 1.2,
     fontweightH5: 600,
+    language: 'no',
 };
 const debug = false;
 const editMode = 'textarea'; // div
@@ -322,6 +323,33 @@ export default class ArticleEdit extends Component {
         });
     }
 
+    toggleLanguageMenu = (e) => {
+        const { lang } = e.target.closest('button').dataset;
+        this.setState({
+            language: lang,
+        });
+    }
+
+    translateToEnglish = async (e) => {
+        const { fromfield, tofield } = e.target.closest('button').dataset;
+        const { article, handleTextareaInput } = this.props;
+        const data = {
+            method: 'POST',
+            text: article[fromfield],
+        };
+        util.fetchApi(`/api/translate/`, { method: 'POST', data }, this)
+            .then((result) => {
+                handleTextareaInput({
+                    target: {
+                        name: tofield,
+                        value: result.data.translatedText,
+                    },
+                });
+            })
+            .catch(error => this.addError(error.toString()));
+
+    }
+
     componentDidMount() {
         console.log('componentDidMount');
         const article = this.props.article;
@@ -358,6 +386,7 @@ export default class ArticleEdit extends Component {
             backgroundHex, backgroundHexR, backgroundHexG, backgroundHexB,
             forgroundHex, forgroundHexR, forgroundHexG, forgroundHexB,
             fontsizeH1, fontweightH1, fontsizeH3, fontweightH3, fontsizeH5, fontweightH5,
+            language,
         } = this.state;
         const that = props.that;
         const { imageServer, imagePath } = props;
@@ -579,7 +608,57 @@ export default class ArticleEdit extends Component {
                     </div>
                 </div>
 
-                <div class='col-12 d-flex flex-column'>
+                <div class='col-12'>
+                    <ul class="nav nav-pills nav-fill">
+                        <li class="nav-item">
+                            <button class={`nav-link btn btn-block ${language === 'no' && 'active'}`} onClick={this.toggleLanguageMenu} data-lang='no'>Norsk 🇳🇴</button>
+                        </li>
+                        <li class="nav-item">
+                            <button class={`nav-link btn btn-block ${language === 'en' && 'active'}`} onClick={this.toggleLanguageMenu} data-lang='en'>English 🇬🇧</button>
+                        </li>
+                    </ul>
+                </div>
+
+                {language === 'en' && <div class='col-12 d-flex flex-column'>
+                    <div class='form-group'>
+                        <label for='titleEnInput' class='text-white-50'>Title 🇬🇧</label>
+                        <input type='text' class='form-control' id='titleEnInput'
+                            name='titleEn'
+                            onInput={handleInput}
+                            value={article.titleEn}
+                        />
+                    </div>
+                    <div class='form-group'>
+                        <label for='teaserEnInput' class='text-white-50'>Teaser 🇬🇧</label>
+                        <input type='text' class='form-control' id='teaserEnInput'
+                            name='teaserEn'
+                            onInput={handleInput}
+                            value={article.teaserEn} />
+                    </div>
+                    <div class='form-group'>
+                        <label for='ingressEnInput' class='text-white-50'>Ingress 🇬🇧</label>
+                        <textarea name='ingressEn' class={`form-control`} id='ingressEnInput' rows='3'
+                            onInput={handleTextareaInput}
+                            onFocus={this.handleTextareaFocus}
+                            value={article.ingressEn} />
+                    </div>
+                    <div class='form-group flex-grow-1'>
+                        <label for='bodyEnInput' class='text-white-50'>Body 🇬🇧</label>
+                        <textarea name='bodyEn' class={`${styles.textareaAutoHeight} form-control`} id='bodyEnInput' rows='10'
+                            onInput={handleTextareaInput}
+                            onFocus={this.handleTextareaFocus}
+                            value={article.bodyEn} />
+                        <small class='float-right'>
+                            <small class='text-white'>
+                                Words: {util.wordCount(article.bodyEn)},
+                                Read time: {util.readTime(article.bodyEn, 'en')}
+                            </small>
+                        </small>
+                        <button type='button' class='btn btn-sm btn-warning' onClick={this.translateToEnglish} data-fromfield='body' data-tofield='bodyEn'>Translate to english</button>
+                    </div>
+                </div>}
+
+                {language === 'no' && <div class='col-12 d-flex flex-column'>
                     <div class='form-group'>
                         <label for='titleInput' class='text-white-50'>Tittel</label>
                         <input type='text' class='form-control' id='titleInput' placeholder='Tittel'
@@ -587,6 +666,7 @@ export default class ArticleEdit extends Component {
                             onInput={handleInput}
                             value={article.title} />
                     </div>
+
                     <div class='form-group'>
                         <label for='urlInput' class='text-white-50'>URL</label>
                         <input type='text' class='form-control' id='urlInput' placeholder='Link'
@@ -609,10 +689,9 @@ export default class ArticleEdit extends Component {
                             value={article.ingress} />
                     </div>
 
-                </div>
+                </div>}
 
-
-                <div class='col-12 d-flex flex-column mb-2 text-white-50'>
+                {language === 'no' && <div class='col-12 d-flex flex-column mb-2 text-white-50'>
                     <details>
                         <summary>
                             Widgets
@@ -1076,10 +1155,9 @@ export default class ArticleEdit extends Component {
                         </div>
                     </details>
 
-                </div>
+                </div>}
 
-
-                <div class='col-12 d-flex flex-column'>
+                {language === 'no' && <div class='col-12 d-flex flex-column'>
                     <div class='form-group flex-grow-1'>
                         <label for='bodyInput' class='text-white-50'>Brødtekst</label>
                         <textarea name='body' class={`${styles.textareaAutoHeight} form-control`} id='bodyInput' rows='10'
@@ -1100,7 +1178,7 @@ export default class ArticleEdit extends Component {
                             onFocus={this.handleTextareaFocus}
                             value={article.notes} />
                     </div>
-                </div>
+                </div>}
             </div>
         );
 
@@ -1354,66 +1432,133 @@ export default class ArticleEdit extends Component {
         const renderedPreview = (
             <div class='col-12'>
                 {renderImages}
-                <h1>{article.title}</h1>
-                <h5>{article.teaser}</h5>
-                <div>
-                    <small>
-                        {util.asHumanReadable(article.published)}
-                        {util.asHumanReadable(article.published) !== util.asHumanReadable(article.updatedDate) && <span class='text-muted'> / <i class='fas fa-undo' /> {util.asHumanReadable(article.updatedDate)}</span>}
-                        &nbsp; /  <i class='far fa-folder-open' /> {article.category}
-                        &nbsp; / &nbsp;
-                        <span class={`badge badge-${util.getStatusClass(article.status)} p-2`}>
-                            {util.getStatus(article.status)}
-                        </span>
-                        &nbsp; / 
-                        &nbsp;<a rel='noopener' target='_blank' href={`https://www.facebook.com/sharer.php?u=${shareLink}`}>
-                            <i class='fab fa-facebook'></i>
-                        </a>
-                        &nbsp;<a rel='noopener' target='_blank' href={`https://twitter.com/intent/tweet?url=${shareLink}`
-                            + `&text=${utilHtml.asUrlSafe(article.title)}.%20`
-                            + `${utilHtml.asUrlSafe(article.teaser || article.ingress)}`
-                            + `&via=${utilHtml.asUrlSafe(this.imageServer)}`
-                            + `&hashtags=${utilHtml.asUrlSafe(article.tags)}`}>
-                            <i class='fab fa-twitter'></i>
-                        </a>
-                        &nbsp;<a rel='noopener' target='_blank' href={`https://www.linkedin.com/shareArticle?mini=true`
-                            + `&url=${shareLink}`
-                            + `&summary=${utilHtml.asUrlSafe(article.title)}.%20`
-                            + `${utilHtml.asUrlSafe(article.teaser || article.ingress)}`
-                            + `&source=${utilHtml.asUrlSafe(this.imageServer)}`}>
-                            <i class='fab fa-linkedin-in'></i>
-                        </a>
-                        &nbsp;<a rel='noopener' target='_blank' href={`mailto:?subject=Tips: `
-                            + `${utilHtml.asUrlSafe(article.title)}`
-                            + `&body=Tips fra ${utilHtml.asUrlSafe(this.imageServer)}:%0D%0A%0D%0A`
-                            + `${utilHtml.asUrlSafe(utilHtml.uc(article.title))}%0D%0A%0D%0A`
-                            + `${utilHtml.asUrlSafe(article.teaser || article.ingress)}%0D%0A%0D%0A`
-                            + `Les mer: ${shareLink}`}>
-                            <i class='far fa-envelope'></i>
-                        </a>
-                        &nbsp; /                        
-                        Ord: {util.wordCount(article.body)}
-                        &nbsp; /                        
-                        Lesetid: {util.readTime(article.body, 'no')}
-                    </small>
-                </div>
-                <div class='mb-3'>
-                    <small>
-                        {Array.isArray(article.tags) && article.tags.map(tag =>
-                            <span class='badge badge-info mr-1'>{tag}</span>
-                        )}
-                    </small>
-                </div>
-                <div class='lead' id='ingressDisplay' dangerouslySetInnerHTML={{
-                    __html: utilHtml.replaceMarked(
-                        utilHtml.replaceDataTags(article.ingress, article)
-                    ),
-                }}></div>
-                <div id='bodyDisplay' dangerouslySetInnerHTML={{
-                    __html: utilHtml.replaceMarked(
-                        utilHtml.replaceDataTags(article.body, article)
-                    ),
-                }}></div>
+
+                {language === 'no' && <div>
+                    <h1>{article.title}</h1>
+                    <h5>{article.teaser}</h5>
+                    <div>
+                        <small>
+                            {util.asHumanReadable(article.published)}
+                            {util.asHumanReadable(article.published) !== util.asHumanReadable(article.updatedDate) && <span class='text-muted'> / <i class='fas fa-undo' /> {util.asHumanReadable(article.updatedDate)}</span>}
+                            &nbsp; /  <i class='far fa-folder-open' /> {article.category}
+                            &nbsp; / &nbsp;
+                            <span class={`badge badge-${util.getStatusClass(article.status)} p-2`}>
+                                {util.getStatus(article.status)}
+                            </span>
+                            &nbsp; / 
+                            &nbsp;<a rel='noopener' target='_blank' href={`https://www.facebook.com/sharer.php?u=${shareLink}`}>
+                                <i class='fab fa-facebook'></i>
+                            </a>
+                            &nbsp;<a rel='noopener' target='_blank' href={`https://twitter.com/intent/tweet?url=${shareLink}`
+                                + `&text=${utilHtml.asUrlSafe(article.title)}.%20`
+                                + `${utilHtml.asUrlSafe(article.teaser || article.ingress)}`
+                                + `&via=${utilHtml.asUrlSafe(this.imageServer)}`
+                                + `&hashtags=${utilHtml.asUrlSafe(article.tags)}`}>
+                                <i class='fab fa-twitter'></i>
+                            </a>
+                            &nbsp;<a rel='noopener' target='_blank' href={`https://www.linkedin.com/shareArticle?mini=true`
+                                + `&url=${shareLink}`
+                                + `&summary=${utilHtml.asUrlSafe(article.title)}.%20`
+                                + `${utilHtml.asUrlSafe(article.teaser || article.ingress)}`
+                                + `&source=${utilHtml.asUrlSafe(this.imageServer)}`}>
+                                <i class='fab fa-linkedin-in'></i>
+                            </a>
+                            &nbsp;<a rel='noopener' target='_blank' href={`mailto:?subject=Tips: `
+                                + `${utilHtml.asUrlSafe(article.title)}`
+                                + `&body=Tips fra ${utilHtml.asUrlSafe(this.imageServer)}:%0D%0A%0D%0A`
+                                + `${utilHtml.asUrlSafe(utilHtml.uc(article.title))}%0D%0A%0D%0A`
+                                + `${utilHtml.asUrlSafe(article.teaser || article.ingress)}%0D%0A%0D%0A`
+                                + `Les mer: ${shareLink}`}>
+                                <i class='far fa-envelope'></i>
+                            </a>
+                            &nbsp; /                        
+                            Ord: {util.wordCount(article.body)}
+                            &nbsp; /                        
+                            Lesetid: {util.readTime(article.body, 'no')}
+                        </small>
+                    </div>
+                    <div class='mb-3'>
+                        <small>
+                            {Array.isArray(article.tags) && article.tags.map(tag =>
+                                <span class='badge badge-info mr-1'>{tag}</span>
+                            )}
+                        </small>
+                    </div>
+                    <div class='lead' id='ingressDisplay' dangerouslySetInnerHTML={{
+                        __html: utilHtml.replaceMarked(
+                            utilHtml.replaceDataTags(article.ingress, article)
+                        ),
+                    }}></div>
+                    <div id='bodyDisplay' dangerouslySetInnerHTML={{
+                        __html: utilHtml.replaceMarked(
+                            utilHtml.replaceDataTags(article.body, article)
+                        ),
+                    }}></div>
+                </div>}
+
+                {language === 'en' && <div>
+                    <h1>{article.titleEn}</h1>
+                    <h5>{article.teaserEn}</h5>
+                    <div>
+                        <small>
+                            {util.asHumanReadable(article.published)}
+                            {util.asHumanReadable(article.published) !== util.asHumanReadable(article.updatedDate) && <span class='text-muted'> / <i class='fas fa-undo' /> {util.asHumanReadable(article.updatedDate)}</span>}
+                            &nbsp; /  <i class='far fa-folder-open' /> {article.category}
+                            &nbsp; / &nbsp;
+                            <span class={`badge badge-${util.getStatusClass(article.status)} p-2`}>
+                                {util.getStatus(article.status)}
+                            </span>
+                            &nbsp; / 
+                            &nbsp;<a rel='noopener' target='_blank' href={`https://www.facebook.com/sharer.php?u=${shareLink}`}>
+                                <i class='fab fa-facebook'></i>
+                            </a>
+                            &nbsp;<a rel='noopener' target='_blank' href={`https://twitter.com/intent/tweet?url=${shareLink}`
+                                + `&text=${utilHtml.asUrlSafe(article.title)}.%20`
+                                + `${utilHtml.asUrlSafe(article.teaser || article.ingress)}`
+                                + `&via=${utilHtml.asUrlSafe(this.imageServer)}`
+                                + `&hashtags=${utilHtml.asUrlSafe(article.tags)}`}>
+                                <i class='fab fa-twitter'></i>
+                            </a>
+                            &nbsp;<a rel='noopener' target='_blank' href={`https://www.linkedin.com/shareArticle?mini=true`
+                                + `&url=${shareLink}`
+                                + `&summary=${utilHtml.asUrlSafe(article.title)}.%20`
+                                + `${utilHtml.asUrlSafe(article.teaser || article.ingress)}`
+                                + `&source=${utilHtml.asUrlSafe(this.imageServer)}`}>
+                                <i class='fab fa-linkedin-in'></i>
+                            </a>
+                            &nbsp;<a rel='noopener' target='_blank' href={`mailto:?subject=Tips: `
+                                + `${utilHtml.asUrlSafe(article.title)}`
+                                + `&body=Tips fra ${utilHtml.asUrlSafe(this.imageServer)}:%0D%0A%0D%0A`
+                                + `${utilHtml.asUrlSafe(utilHtml.uc(article.title))}%0D%0A%0D%0A`
+                                + `${utilHtml.asUrlSafe(article.teaser || article.ingress)}%0D%0A%0D%0A`
+                                + `Les mer: ${shareLink}`}>
+                                <i class='far fa-envelope'></i>
+                            </a>
+                            &nbsp; /                        
+                            Words: {util.wordCount(article.bodyEn)}
+                            &nbsp; /                        
+                            Read time: {util.readTime(article.body, 'en')}
+                        </small>
+                    </div>
+                    <div class='mb-3'>
+                        <small>
+                            {Array.isArray(article.tags) && article.tags.map(tag =>
+                                <span class='badge badge-info mr-1'>{tag}</span>
+                            )}
+                        </small>
+                    </div>
+                    <div class='lead' id='ingressDisplay' dangerouslySetInnerHTML={{
+                        __html: utilHtml.replaceMarked(
+                            utilHtml.replaceDataTags(article.ingressEn, article)
+                        ),
+                    }}></div>
+                    <div id='bodyDisplay' dangerouslySetInnerHTML={{
+                        __html: utilHtml.replaceMarked(
+                            utilHtml.replaceDataTags(article.bodyEn, article)
+                        ),
+                    }}></div>
+                </div>}
+
                 <hr />
                 <h6>Notater til artikkelen (vises kun her i admin):</h6>
                 <div id='notesDisplay' class='p-3 bg-secondary text-white font-italic' dangerouslySetInnerHTML={{

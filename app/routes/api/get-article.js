@@ -19,10 +19,17 @@ const fields = {
     sort: 1,
     category: 1,
     categoryId: 1,
+
     title: 1,
     teaser: 1,
     ingress: 1,
     body: 1,
+
+    titleEn: 1,
+    teaserEn: 1,
+    ingressEn: 1,
+    bodyEn: 1,
+
     notes: 1,
     url: 1,
     img: 1,

@@ -932,6 +932,7 @@ export default class SimpleBlogCms extends Component {
 
             filter,
         } = this.state;
+        const { apiServer } = this.props;
         const sessionEmail = this.props.sessionEmail;
         const sessionAge = this.props.sessionAge;
 
@@ -996,6 +997,8 @@ export default class SimpleBlogCms extends Component {
                         <ArticleEdit styles={styles}
                             sessionEmail={sessionEmail}
                             previewJwtToken={previewJwtToken}
+                            jwtToken={previewJwtToken}
+                            apiServer={apiServer}
                             imageServer={imageServer}
                             imagePath={imagePath}
 

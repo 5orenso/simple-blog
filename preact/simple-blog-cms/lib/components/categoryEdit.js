@@ -135,11 +135,18 @@ export default class CategoryEdit extends Component {
                 <div class='row'>
                     <div class='col-6'>
                         <div class='form-group'>
-                            <label for='titleInput'>Tittel</label>
+                            <label for='titleInput'>Tittel 🇳🇴</label>
                             <input type='text' class='form-control' id='titleInput' placeholder='Tittel'
                                 name='title'
                                 onInput={handleInput}
                                 value={category.title} />
+                        </div>
+                        <div class='form-group'>
+                            <label for='titleEnInput'>Tittel 🇬🇧</label>
+                            <input type='text' class='form-control' id='titleEnInput'
+                                name='titleEn'
+                                onInput={handleInput}
+                                value={category.titleEn} />
                         </div>
                         <div class='form-group'>
                             <label for='imageInput'>Image/logo</label>
@@ -606,7 +613,7 @@ export default class CategoryEdit extends Component {
 
                 <div class='row'>
                     <div class='col-6'>
-                        <label for='dropdownInput'><i class='fas fa-code text-muted' /> Dropdown</label>
+                        <label for='dropdownInput'><i class='fas fa-code text-muted' /> Dropdown 🇳🇴</label>
                     </div>
                     <div class='col-6'>
                         &nbsp;
@@ -648,6 +655,39 @@ export default class CategoryEdit extends Component {
 </div>`}
                             </xmp>
                         </small>
+                    </div>
+                </div>
+
+                <div class='row'>
+                    <div class='col-6'>
+                        <label for='dropdownEnInput'><i class='fas fa-code text-muted' /> Dropdown 🇬🇧</label>
+                    </div>
+                    <div class='col-6'>
+                        &nbsp;
+                    </div>
+                </div>
+                <div class='row'>
+                    <div class='col-6'>
+                        <div class='form-group h-100'>
+                            <textarea name='dropdownEn' class={`form-control h-100`} id='dropdownEnInput' rows='3'
+                                onInput={handleTextareaInput}
+                                value={category.dropdownEn} />
+                        </div>
+                    </div>
+                    <div class='col-2'>
+                        <ul class="nav nav-tabs">
+                            <li class="nav-item dropdown show">
+                                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">{category.titleEn}</a>
+                                <div
+                                    id='dropdownEnDisplay'
+                                    dangerouslySetInnerHTML={{
+                                        __html: utilHtml.replaceMarked(
+                                            utilHtml.replaceDataTags(category.dropdownEn || '', category)
+                                        ).replace(/dropdown-menu/, 'dropdown-menu show'),
+                                    }}
+                                />
+                            </li>
+                        </ul>
                     </div>
                 </div>
 
