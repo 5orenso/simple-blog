@@ -213,6 +213,9 @@ export default class ArticleList extends Component {
                                         <div class='rounded-lg px-2 py-1' style={`background-color: ${art.background};`}>
                                             <span style={`color: ${art.forground}; font-weight: ${art.fontweightH1};`}>{art.title}</span>
                                         </div>
+                                        {art.titleEn && <div class='rounded-lg px-2 py-1 mt-1' style={`background-color: ${art.background};`}>
+                                            <span style={`color: ${art.forground}; font-weight: ${art.fontweightH1};`}>🇬🇧 {art.titleEn}</span>
+                                        </div>}
                                         {art.teaser && <div><small>{art.teaser}</small></div>}
                                         {art.url && <small><i class='fas fa-link' /> {art.url}</small>}
                                         <small>
@@ -226,6 +229,11 @@ export default class ArticleList extends Component {
                                                 Lesetid: {util.readTime(art.body, 'no')}
                                                 {util.wordCount(art.notes) && <span class='ml-2 badge badge-dark'>Notater: {util.wordCount(art.notes)} ord</span>}
                                             </small>
+                                            {art.bodyEn && <small class='text-muted'>
+                                                <br />
+                                                🇬🇧 Words: {util.wordCount(art.bodyEn)},
+                                                Read time: {util.readTime(art.bodyEn, 'en')}
+                                            </small>}
                                         </small>
                                     </td>
                                     <td>
