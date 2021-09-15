@@ -30,16 +30,16 @@ router.get('/category/:id', wrap(require('./get-category')));
 router.patch('/category/:id', util.restrict, wrap(require('./patch-category')));
 router.post('/category/', util.restrict, wrap(require('./post-category')));
 
-router.get('/iotdevice/', wrap(require('./get-iotDevice')));
-router.get('/iotdevice/:id', wrap(require('./get-iotDevice')));
-router.patch('/iotdevice/:id', util.restrict, wrap(require('./patch-iotDevice')));
-router.post('/iotdevice/', util.restrict, wrap(require('./post-iotDevice')));
+// router.get('/iotdevice/', wrap(require('./get-iotDevice')));
+// router.get('/iotdevice/:id', wrap(require('./get-iotDevice')));
+// router.patch('/iotdevice/:id', util.restrict, wrap(require('./patch-iotDevice')));
+// router.post('/iotdevice/', util.restrict, wrap(require('./post-iotDevice')));
 
-router.get('/iot/', wrap(require('./get-iot')));
-router.get('/iot/:id', wrap(require('./get-iot')));
-router.get('/iot/:id/data', wrap(require('./get-iot-data')));
-router.patch('/iot/:id', util.restrict, wrap(require('./patch-iot')));
-router.post('/iot/', util.restrict, wrap(require('./post-iot')));
+// router.get('/iot/', wrap(require('./get-iot')));
+// router.get('/iot/:id', wrap(require('./get-iot')));
+// router.get('/iot/:id/data', wrap(require('./get-iot-data')));
+// router.patch('/iot/:id', util.restrict, wrap(require('./patch-iot')));
+// router.post('/iot/', util.restrict, wrap(require('./post-iot')));
 
 
 router.get('/tag/', wrap(require('./get-tag')));

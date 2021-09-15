@@ -9,9 +9,9 @@ require('./test/lib/article-util-test.js');
 require('./test/lib/category-util-test.js');
 require('./test/lib/local-util-test.js');
 
-require('./test/lib/adapter/markdown-test.js');
-require('./test/lib/adapter/postgresql-test.js');
-require('./test/lib/adapter/elasticsearch-test.js');
+// require('./test/lib/adapter/markdown-test.js');
+// require('./test/lib/adapter/postgresql-test.js');
+// require('./test/lib/adapter/elasticsearch-test.js');
 
 require('./test/lib/plugins/flot-test.js');
 require('./test/lib/plugins/wsd-test.js');
