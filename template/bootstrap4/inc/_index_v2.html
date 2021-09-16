@@ -71,7 +71,23 @@
         {% set art = artlist[0] %}
         <div class="jumbotron px-0 pt-0 pb-0" {{ articleMacro.colorArticleBackground(art.catRef, frontpage, true, art) }}>
             <div class="container-fluid px-0 blog-main" {{ articleMacro.colorArticleText(art.catRef, frontpage, true, art) }}>
-                {% if art.img[0] && art.img[0].src|match('(jpg|jpeg|png|gif|heic|heif|svg|webp|tif|JPG|JPEG|PNG|GIF|HEIC|HEIF|SVG|WEBP|TIF)$', 'i') %}
+                {% if art.widgetList === 'gallery' %}
+                    <div class="jumbotron-thumb d-flex align-items-center">
+                        <div class='w-100 my-2 clearfix' data-widget-host="simple-blog-gallery">
+                            <script type="text/props">
+                                {
+                                    "apiServer": "{{ blog.protocol }}://{{ blog.domain }}",
+                                    "jwtToken": "{{ jwtToken }}",
+                                    "sessionEmail": "{{ session.email }}",
+                                    "sessionAge": "{{ session.age }}",
+                                    "articleId": {{ art.id }},
+                                    "size": "1920x"
+                                }
+                            </script>
+                        </div>
+                        <script async src="/preact/simple-blog-gallery/bundle.js?time={{ env.epoch }}"></script>
+                    </div>
+                {% elseif art.img[0] && art.img[0].src|match('(jpg|jpeg|png|gif|heic|heif|svg|webp|tif|JPG|JPEG|PNG|GIF|HEIC|HEIF|SVG|WEBP|TIF)$', 'i') %}
                     <div class="jumbotron-thumb d-flex align-items-center">
                         {% if art.isFrontpage %}
                             {% if art.url %}
@@ -145,7 +161,7 @@
                         </div>
                     {% endif %}
 
-                    {% for widget in ['helloworld', 'clock', 'booking', 'sheet', 'poll', 'gallery', 'weather', 'rating', 'related'] %}
+                    {% for widget in ['helloworld', 'clock', 'booking', 'sheet', 'poll', 'weather', 'rating', 'related'] %}
                         {% if art.widgetList === widget %}
                             <div class='w-100 my-2 clearfix' data-widget-host="simple-blog-{{ widget }}">
                                 <script type="text/props">
@@ -154,7 +170,8 @@
                                         "jwtToken": "{{ jwtToken }}",
                                         "sessionEmail": "{{ session.email }}",
                                         "sessionAge": "{{ session.age }}",
-                                        "articleId": {{ art.id }}
+                                        "articleId": {{ art.id }},
+                                        "size": "1920x"
                                     }
                                 </script>
                             </div>
