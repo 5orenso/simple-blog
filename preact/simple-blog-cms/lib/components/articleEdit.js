@@ -53,7 +53,7 @@ const widgetFields = {
     booking: ['class', 'style', 'table-class', 'sheetId'],
     sheet: ['class', 'style', 'table-class', 'sheetId', 'showDocTitle', 'limit', 'showSearch'],
     poll: ['class', 'style'],
-    gallery: ['class', 'style', 'class-photo', 'start', 'end'],
+    gallery: ['class', 'style', 'class-photo', 'class-photo-img', 'start', 'end'],
     weather: ['class', 'style', 'lat', 'lon', 'height', 'date'],
     rating: ['class', 'style', 'from', 'to'],
     related: ['class', 'style', 'tags'],

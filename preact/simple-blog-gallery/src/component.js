@@ -1,5 +1,5 @@
 import { h } from 'preact';
-import { useState, useEffect } from 'preact/hooks';
+import { useState, useEffect, useCallback, useRef } from 'preact/hooks';
 import querystring from 'querystring';
 import Markdown from 'preact-markdown';
 
@@ -54,6 +54,7 @@ export default function App(props) {
     const [imageServer, setImageServer] = useState({});
     const [imagePath, setImagePath] = useState({});
     const [imageIdx, setImageidx] = useState(0);
+    const imageScrollerRef = useRef(null);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -96,19 +97,40 @@ export default function App(props) {
         }
     }
 
+    const onClickScrollLeft = useCallback((e) => {
+        const el = imageScrollerRef;
+        const width = 0 - el.current.clientWidth;
+        el.current.scrollBy({
+            top: 0,
+            left: width,
+            behavior: 'smooth'
+        });
+    }, []);
+
+    const onClickScrollRight = useCallback((e) => {
+        const el = imageScrollerRef;
+        const width = el.current.clientWidth;
+        el.current.scrollBy({
+            top: 0,
+            left: width,
+            behavior: 'smooth'
+        });
+    }, []);
+
     return (
-        <div class={`${article['gallery-class']} ${className}`} style={`${article['gallery-style']} ${style}`}>
+        <div class={`position-relative ${article['gallery-class']} ${className}`} style={`${article['gallery-style']} ${style}`}>
             {/* {JSON.stringify(images, null, 4)} */}
             {/* {JSON.stringify(article)} */}
 
-            <div class='w-100 position-relative'>
+            <div class='w-100'>
                 <div
                     class={`d-flex flex-row flex-nowrap border-top border-bottom`}
                     style='overflow: auto; scroll-snap-type: x mandatory;'
                     onScroll={scrollImages}
+                    ref={imageScrollerRef}
                 >
                     {filteredImages && filteredImages.map((img, idx) => (
-                        <div class={`col-12 clearfix position-relative p-0  ${article['gallery-class-photo']} ${photoClass}`}>
+                        <div class={`col-12 clearfix position-relative p-0 ${article['gallery-class-photo']} ${photoClass}`}>
                             <div
                                 class={`w-100 h-100 text-center rounded-lg imageContainer d-flex justify-content-center align-items-center`}
                                 style={`
@@ -118,7 +140,7 @@ export default function App(props) {
                                 `}
                             >					
                                 {img.src ? <img
-                                    class='img-fluid'
+                                    class={`img-fluid ${article['gallery-class-photo-img']}`}
                                     src={`https://${imageServer}/${size}/${imagePath}/${img.src}`}
                                     loading='lazy'
                                     style={`max-height: 75vh; ${idx !== imageIdx ? '' : ''}`}
@@ -136,7 +158,7 @@ export default function App(props) {
                 </div>
 
                 {filteredImages && filteredImages.length > 1 && <>
-                    <div class='w-100 text-center'>
+                    <div class='w-100 text-center position-absolute' style='bottom: 20px;'>
                         <small>
                             <small>
                                 {filteredImages && filteredImages.map((img, idx) => <>
@@ -152,6 +174,19 @@ export default function App(props) {
                     style='top: 10px; right: 10px; background-color: rgba(0, 0, 0, 0.3); line-height: 0.6em;'
                 >
                     <small><small>{imageIdx + 1} / {filteredImages.length}</small></small>
+                </div>
+
+                <div
+                    class='position-absolute'
+                    style='top: 50%; left: 5px;'
+                >
+                    <button type='button' class='btn btn-link text-secondary' style='font-size: 2.0em; opacity: 0.4;' onClick={onClickScrollLeft}><i class='fas fa-arrow-circle-left' /></button>
+                </div>
+                <div
+                    class='position-absolute'
+                    style='top: 50%; right: 5px;'
+                >
+                    <button type='button' class='btn btn-link text-secondary' style='font-size: 2.0em; opacity: 0.4;' onClick={onClickScrollRight}><i class='fas fa-arrow-circle-right' /></button>
                 </div>
 
             </div>
