@@ -68,6 +68,9 @@ const fields = {
     footerCol1: 1,
     footerCol2: 1,
     footerCol3: 1,
+    footerCol1En: 1,
+    footerCol2En: 1,
+    footerCol3En: 1,
 };
 
 module.exports = async (req, res) => {
