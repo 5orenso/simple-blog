@@ -71,6 +71,7 @@ module.exports = {
         //googleAnalytics: 'UA-xxxxxxxx-1',
         //googleTagManager: 'GTM-xxxxxx',
         //googleSiteVerification: ''
+        // googleAnalyticsGtag: '',
         author: {
             fallback: {
                 image: '/pho/profile/fish_oistein.jpg?w=50',

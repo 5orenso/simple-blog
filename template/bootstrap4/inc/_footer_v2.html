@@ -205,6 +205,18 @@
         </script>
     {% endif %}
 
+    {% if blog.googleAnalyticsGtag %}
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id={{ blog.googleAnalyticsGtag }}"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', '{{ blog.googleAnalyticsGtag }}');
+        </script>
+    {% endif %}
+
     <script type="text/javascript" src="/global/js/push-notification.js"></script>
 </body>
 </html>
