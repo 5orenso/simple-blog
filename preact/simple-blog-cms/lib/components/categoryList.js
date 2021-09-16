@@ -51,6 +51,7 @@ export default class CategoryList extends Component {
                                 <th scope='col'><p>Bilde</p></th>
                                 <th scope='col'><p>Tittel</p></th>
                                 <th class={styles.verticalTableHeaderFOO} scope='col'><p>Meny</p></th>
+                                <th class={styles.verticalTableHeaderFOO} scope='col'><p>Dropp default artlink</p></th>
                                 <th class={styles.verticalTableHeaderFOO} scope='col'><p>Skjul menytittel</p></th>
                                 <th class={styles.verticalTableHeaderFOO} scope='col'><p>Skjul oversettings linker</p></th>
                                 <th class={styles.verticalTableHeaderFOO} scope='col'><p>Skjul artikkel toppbilde</p></th>
@@ -87,8 +88,12 @@ export default class CategoryList extends Component {
                                 {!cat.type && !cat.menu && <i class='fas fa-question mr-2' />}
 
                                 {cat.title}
+                                {cat.titleEn && <span>
+                                    <br />🇬🇧 {cat.titleEn} 
+                                </span>}
                             </td>
                             <td class='text-center' style='font-size: 2.0em;'><i class={`${cat.menu ? `fas fa-check text-success` : 'fas fa-times-circle text-danger'}`} /></td>
+                            <td class='text-center' style='font-size: 2.0em;'><i class={`${cat.skipDefaultArtLink ? `fas fa-check text-success` : 'fas fa-times-circle text-danger'}`} /></td>
                             <td class='text-center' style='font-size: 2.0em;'><i class={`${cat.hideTitle ? `fas fa-check text-success` : 'fas fa-times-circle text-danger'}`} /></td>
                             <td class='text-center' style='font-size: 2.0em;'><i class={`${cat.hideTranslateLinks ? `fas fa-check text-success` : 'fas fa-times-circle text-danger'}`} /></td>
                             <td class='text-center' style='font-size: 2.0em;'><i class={`${cat.hideTopImage ? `fas fa-check text-success` : 'fas fa-times-circle text-danger'}`} /></td>
