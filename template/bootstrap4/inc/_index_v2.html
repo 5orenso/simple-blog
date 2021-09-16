@@ -73,7 +73,7 @@
             <div class="container-fluid px-0 blog-main" {{ articleMacro.colorArticleText(art.catRef, frontpage, true, art) }}>
                 {% if art.widgetList === 'gallery' %}
                     <div class="jumbotron-thumb d-flex align-items-center">
-                        <div class='w-100 my-2 clearfix' data-widget-host="simple-blog-gallery">
+                        <div class='w-100 my-0 clearfix' data-widget-host="simple-blog-gallery">
                             <script type="text/props">
                                 {
                                     "apiServer": "{{ blog.protocol }}://{{ blog.domain }}",

@@ -122,9 +122,9 @@ export default function App(props) {
             {/* {JSON.stringify(images, null, 4)} */}
             {/* {JSON.stringify(article)} */}
 
-            <div class='w-100'>
+            <div class='w-100 h-100'>
                 <div
-                    class={`d-flex flex-row flex-nowrap border-top border-bottom`}
+                    class={`h-100 d-flex flex-row flex-nowrap border-top border-bottom`}
                     style='overflow: auto; scroll-snap-type: x mandatory;'
                     onScroll={scrollImages}
                     ref={imageScrollerRef}
