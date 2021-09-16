@@ -89,7 +89,7 @@
         <div class="post-content {{ colorArticleBackgroundPadding(art.catRef, null, null, art) }}" {{ colorArticleText(art.catRef, null, null, art) }}>
             {% if art.catRef.hideFrontpageTitle %}
             {% else %}
-                <{{ heading || 'h3' }}>
+                <{{ heading || 'h3' }} class="{{ art.catRef.artlistTitleClass }}">
                     {% if art.url %}
                         <a href="{{ art.url }}" {{ colorArticleText(art.catRef, null, null, art, heading) }}>
                             {{ art.title }}
@@ -106,9 +106,9 @@
 
             {% if art.catRef.hideFrontpageTeaser %}
             {% elseif art.teaser %}
-                <p class='mb-1'>{{ art.teaser|md|safe }}</p>
+                <p class='mb-1 {{ art.catRef.artlistTeaserClass }}'>{{ art.teaser|md|safe }}</p>
             {% elseif art.ingress %}
-                <p class='mb-1'>{{ art.ingress|md|safe }}</p>
+                <p class='mb-1 {{ art.catRef.artlistTeaserClass }}'>{{ art.ingress|md|safe }}</p>
             {% endif %}
 
 

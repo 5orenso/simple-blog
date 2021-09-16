@@ -99,7 +99,7 @@
                 <div class='px-5'>
                     {% if art.catRef.hideFrontpageTitle %}
                     {% elseif art.isFrontpage %}
-                        <h1 class="display-3">
+                        <h1 class="display-3 {{ art.catRef.artlistTitleClass }}">
                             {% if art.url %}
                                 <a href="{{ art.url }}" {{ articleMacro.colorArticleText(art.catRef, frontpage, true, art, 'h1') }}>{{ art.title }}</a>
                             {% else %}
@@ -107,7 +107,7 @@
                             {% endif %}
                         </h1>
                     {% else %}
-                        <h1 class="display-3">
+                        <h1 class="display-3 {{ art.catRef.artlistTitleClass }}">
                             {% if art.url %}
                                 <a href="{{ art.url }}" class='w-100'>
                                     {{ art.title }}
@@ -124,9 +124,9 @@
     
                     {% if art.catRef.hideFrontpageTeaser %}
                     {% elseif art.teaser %}
-                        <p class='mb-1'>{{ art.teaser|md|safe }}</p>
+                        <p class='mb-1 {{ art.catRef.artlistTeaserClass }}'>{{ art.teaser|md|safe }}</p>
                     {% elseif art.ingress %}
-                        <p class='mb-1'>{{ art.ingress|md|safe }}</p>
+                        <p class='mb-1 {{ art.catRef.artlistTeaserClass }}'>{{ art.ingress|md|safe }}</p>
                     {% endif %}
 
                     {% if art.isFrontpage || art.catRef.hideMetaInfo %}

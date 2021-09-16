@@ -206,7 +206,7 @@ export default class CategoryEdit extends Component {
                                 value={1}
                                 checked={category.skipDefaultArtLink ? 'checked' : ''}
                             />
-                            <label for='menuInput'>Ikke link til artikler uten URL</label>
+                            <label for='skipDefaultArtLinkInput'>Ikke link til artikler uten URL</label>
                         </div>
 
                         <div class='form-check'>
@@ -531,7 +531,7 @@ export default class CategoryEdit extends Component {
                             />
                         </div>
                         <div class='form-group'>
-                            <label for='artlistTitleClassInput'><i class='fas fa-paint-roller text-muted' /> Artlist image classes</label>
+                            <label for='artlistTitleClassInput'><i class='fas fa-paint-roller text-muted' /> Artlist title classes</label>
                             <input type='text' class='form-control' id='artlistTitleClassInput'
                                 name='artlistTitleClass'
                                 onInput={handleInput}
@@ -539,7 +539,7 @@ export default class CategoryEdit extends Component {
                             />
                         </div>
                         <div class='form-group'>
-                            <label for='artlistTeaserClassInput'><i class='fas fa-paint-roller text-muted' /> Artlist image classes</label>
+                            <label for='artlistTeaserClassInput'><i class='fas fa-paint-roller text-muted' /> Artlist teaser classes</label>
                             <input type='text' class='form-control' id='artlistTeaserClassInput'
                                 name='artlistTeaserClass'
                                 onInput={handleInput}
