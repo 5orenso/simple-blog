@@ -106,7 +106,7 @@ function createCookie(name, value, days = 365) {
                                 <img src="{{ cat.image }}" style='max-height: 30px;'/>
                             {%- endif -%}
                             {%- if !cat.hideTitle -%}
-                                {{ cat.title }}
+                                <nobr>{{ cat.title }}</nobr>
                             {%- endif -%}
                         </a>
                         {{ cat.dropdown|raw }}
@@ -118,7 +118,7 @@ function createCookie(name, value, days = 365) {
                                 <img src="{{ cat.image }}" style='max-height: 30px;'/>
                             {%- endif -%}
                             {%- if !cat.hideTitle -%}
-                                {{ cat.title }}
+                                <nobr>{{ cat.title }}</nobr>
                             {%- endif -%}
                         </a>
                     </li>
@@ -128,9 +128,9 @@ function createCookie(name, value, days = 365) {
         <ul class="navbar-nav ml-auto">
             <li class="nav-item ml-auto float-right pt-2 pr-2">
                 {%- if language === 'en' -%}
-                    <a href="#" onClick="createCookie('language', 'no'); location.reload();">🇳🇴</a>
+                    <a href="#" onClick="createCookie('language', 'no'); location.reload();" style='font-size: 1.5em;'>🇳🇴</a>
                 {%- else -%}
-                    <a href="#" onClick="createCookie('language', 'en'); location.reload();">🇬🇧</a>
+                    <a href="#" onClick="createCookie('language', 'en'); location.reload();" style='font-size: 1.5em;'>🇬🇧</a>
                 {%- endif -%}
             </li>
             <li class="nav-item ml-auto float-right">
