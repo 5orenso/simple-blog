@@ -290,9 +290,9 @@
                 </nav>
             {% endif %}
 
-            {% if category.showBottomArticleList %}
+            {% if category.showBottomArticleList && artlist[0] %}
                 <h4>{{ blog.readRelated || 'Les også' }}:</h4>
-                <div class="container-fluid p-0">
+                <div class="container-fluid p-0" {{ articleMacro.colorArticleBackground(artlist[0].catRef) }}>
                     <div class="row artlist">
                         {% for art in artlist %}
                             {{ articleMacro.articleTeaser(art, 4, '', 'h5') }}
@@ -307,7 +307,7 @@
             <div class="d-none d-lg-inline col-lg-3 offset-lg-1 blog-sidebar">
                 {% if adlist[0] %}
                     <div class="sidebar-module mb-4">
-                        <div class="container-fluid p-0">
+                        <div class="container-fluid p-0" {{ articleMacro.colorArticleBackground(adlist[0].catRef) }}>
                             <div class="row">
                                 {% for art in adlist %}
                                     <div class="col-12 mb-2  d-flex align-items-center justify-content-center">
@@ -329,19 +329,18 @@
                     </div>
                 {% endif %}
 
-                <div class="sidebar-module mb-4">
-                    {% if category.hideArticleList %}
-                    {% else %}
+                {% if !category.hideArticleList && artlist[0] %}
+                    <div class="sidebar-module mb-4">
                         <h4>{{ blog.moreHeader || 'Flere i 📂' }} {{ baseHref }}</h4>
-                        <div class="container-fluid">
+                        <div class="container-fluid" {{ articleMacro.colorArticleBackground(artlist[0].catRef) }}>
                             <div class="row artlist">
                                 {% for art in artlist %}
                                     {{ articleMacro.articleTeaser(art, 12, '', 'h3') }}
                                 {% endfor %}
                             </div>
                         </div>
-                    {% endif %}
-                </div>
+                    </div>
+                {% endif %}
             </div><!-- /.blog-sidebar -->
         {% endif %}
 

@@ -47,6 +47,7 @@ const fields = {
     colorMenu: 1,
     menuCss: 1,
     logoCss: 1,
+    artlistCss: 1,
     colorJumbotron: 1,
     colorMain: 1,
     colorBottom: 1,

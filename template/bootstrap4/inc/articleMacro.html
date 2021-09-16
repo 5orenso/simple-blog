@@ -10,6 +10,13 @@
         background-color: {{ category.bgColorMain }} !important;
     {%- elseif frontpage.bgColorMain -%}
         background-color: {{ frontpage.bgColorMain }} !important;
+    {%- endif -%}
+    {%- if category.artlistCss -%}
+        {{ category.artlistCss }}
+    {%- elseif frontpage.artlistCss -%}
+        {{ frontpage.artlistCss }}
+    {%- elseif blog.artlistCss -%}
+        {{ blog.artlistCss }}
     {%- endif -%}"
 {%- endmacro -%}
 
