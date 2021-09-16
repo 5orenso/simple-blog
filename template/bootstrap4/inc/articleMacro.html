@@ -69,84 +69,84 @@
 {%- endmacro -%}
 
 {% macro articleTeaser(art, col, extraClasses, heading) %}
-    <div class="col-12 col-sm-12 col-md-{{ col || 4 }} post-data my-1 {{ extraClasses }}" >
+    <div class="col-12 col-sm-12 col-md-{{ col || 4 }} post-data my-1 {{ extraClasses }} {{ art.catRef.artlistContainerClass }}" >
         <div {{ colorArticleBackground(art.catRef, null, null, art) }}>
-        {% if art.img[0] && art.img[0].src|match('(jpg|jpeg|png|gif|heic|heif|svg|webp|tif|JPG|JPEG|PNG|GIF|HEIC|HEIF|SVG|WEBP|TIF)$', 'i') %}
-            <div class="post-thumb d-flex align-items-center">
-                {% if art.url %}
-                    <a href="{{ art.url }}" {{ colorArticleText(art.catRef, null, null, art, heading) }}>
-                        <img src="https://{{ imageServer }}/800x/{{ imagePath }}/{{ art.img[0].src }}" alt="{{ art.title|e }}" class="img-fluid {{ art.catRef.artlistImageClass }}">
-                    </a>
-                {% elseif art.catRef.skipDefaultArtLink %}
-                    <img src="https://{{ imageServer }}/800x/{{ imagePath }}/{{ art.img[0].src }}" alt="{{ art.title|e }}" class="img-fluid {{ art.catRef.artlistImageClass }}">
-                {% else %}
-                    <a href="/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}">
-                        <img src="https://{{ imageServer }}/800x/{{ imagePath }}/{{ art.img[0].src }}" alt="{{ art.title|e }}" class="img-fluid {{ art.catRef.artlistImageClass }}">
-                    </a>
-                {% endif %}
-            </div>
-        {% endif %}
-        <div class="post-content {{ colorArticleBackgroundPadding(art.catRef, null, null, art) }}" {{ colorArticleText(art.catRef, null, null, art) }}>
-            {% if art.catRef.hideFrontpageTitle %}
-            {% else %}
-                <{{ heading || 'h3' }} class="{{ art.catRef.artlistTitleClass }}">
+            {% if art.img[0] && art.img[0].src|match('(jpg|jpeg|png|gif|heic|heif|svg|webp|tif|JPG|JPEG|PNG|GIF|HEIC|HEIF|SVG|WEBP|TIF)$', 'i') %}
+                <div class="post-thumb d-flex align-items-center">
                     {% if art.url %}
                         <a href="{{ art.url }}" {{ colorArticleText(art.catRef, null, null, art, heading) }}>
-                            {{ art.title }}
+                            <img src="https://{{ imageServer }}/800x/{{ imagePath }}/{{ art.img[0].src }}" alt="{{ art.title|e }}" class="img-fluid {{ art.catRef.artlistImageClass }}">
                         </a>
                     {% elseif art.catRef.skipDefaultArtLink %}
-                        {{ art.title }}
+                        <img src="https://{{ imageServer }}/800x/{{ imagePath }}/{{ art.img[0].src }}" alt="{{ art.title|e }}" class="img-fluid {{ art.catRef.artlistImageClass }}">
                     {% else %}
-                        <a href="/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}" {{ colorArticleText(art.catRef, null, null, art, heading) }}>
-                            {{ art.title }}
+                        <a href="/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}">
+                            <img src="https://{{ imageServer }}/800x/{{ imagePath }}/{{ art.img[0].src }}" alt="{{ art.title|e }}" class="img-fluid {{ art.catRef.artlistImageClass }}">
                         </a>
                     {% endif %}
-                </{{ heading || 'h3' }}>
+                </div>
             {% endif %}
-
-            {% if art.catRef.hideFrontpageTeaser %}
-            {% elseif art.teaser %}
-                <p class='mb-1 {{ art.catRef.artlistTeaserClass }}'>{{ art.teaser|md|safe }}</p>
-            {% elseif art.ingress %}
-                <p class='mb-1 {{ art.catRef.artlistTeaserClass }}'>{{ art.ingress|md|safe }}</p>
-            {% endif %}
-
-
-            {% for widget in ['helloworld', 'clock', 'booking', 'sheet', 'poll', 'gallery', 'weather', 'rating', 'related'] %}
-                {% if art.widgetList === widget %}
-                    <div class='w-100 my-2 clearfix' data-widget-host="simple-blog-{{ widget }}">
-                        <script type="text/props">
-                            {
-                                "apiServer": "{{ blog.protocol }}://{{ blog.domain }}",
-                                "jwtToken": "{{ jwtToken }}",
-                                "sessionEmail": "{{ session.email }}",
-                                "sessionAge": "{{ session.age }}",
-                                "articleId": {{ art.id }}
-                            }
-                        </script>
-                    </div>
-                    <script async src="/preact/simple-blog-{{ widget }}/bundle.js?time={{ env.epoch }}"></script>
+            <div class="post-content {{ colorArticleBackgroundPadding(art.catRef, null, null, art) }}" {{ colorArticleText(art.catRef, null, null, art) }}>
+                {% if art.catRef.hideFrontpageTitle %}
+                {% else %}
+                    <{{ heading || 'h3' }} class="{{ art.catRef.artlistTitleClass }}">
+                        {% if art.url %}
+                            <a href="{{ art.url }}" {{ colorArticleText(art.catRef, null, null, art, heading) }}>
+                                {{ art.title }}
+                            </a>
+                        {% elseif art.catRef.skipDefaultArtLink %}
+                            {{ art.title }}
+                        {% else %}
+                            <a href="/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}" {{ colorArticleText(art.catRef, null, null, art, heading) }}>
+                                {{ art.title }}
+                            </a>
+                        {% endif %}
+                    </{{ heading || 'h3' }}>
                 {% endif %}
-            {% endfor %}
+
+                {% if art.catRef.hideFrontpageTeaser %}
+                {% elseif art.teaser %}
+                    <p class='mb-1 {{ art.catRef.artlistTeaserClass }}'>{{ art.teaser|md|safe }}</p>
+                {% elseif art.ingress %}
+                    <p class='mb-1 {{ art.catRef.artlistTeaserClass }}'>{{ art.ingress|md|safe }}</p>
+                {% endif %}
 
 
-            <!-- <p class="lead">{{ art.body|substring(0, 150)|markdown|cleanHtml }}...</p> -->
-            {% if art.catRef.hideMetaInfo %}
-            {% else %}
-                <small class='d-none d-lg-inline'>
-                    <div {{ colorArticleText(art.catRef, null, null, art) }}>
-                        <small class='font-weight-lighter mr-1'>
-                            <i class="far fa-folder-open"></i>
-                            <a href="/v2/{{ art.category|asLinkPart }}/" class="post-cat text-muted" {{ colorArticleText(art.catRef, null, null, art) }}>{{ art.category }}</a>
-                        </small>
-                        <small class='font-weight-lighter mr-1'>/</small>
-                        <small class='font-weight-lighter mr-1'>{{ art.published|asHumanReadable }}</small>
-                        <small class='font-weight-lighter mr-1'>/</small>
-                        <small class='font-weight-lighter mr-1'><a title="Lesetid for artikkel"><i class="far fa-clock"></i> {{ art.body|readTime('no') }}</a></small>
-                    </div>
-                </small>
-            {% endif %}
-        </div>
+                {% for widget in ['helloworld', 'clock', 'booking', 'sheet', 'poll', 'gallery', 'weather', 'rating', 'related'] %}
+                    {% if art.widgetList === widget %}
+                        <div class='w-100 my-2 clearfix' data-widget-host="simple-blog-{{ widget }}">
+                            <script type="text/props">
+                                {
+                                    "apiServer": "{{ blog.protocol }}://{{ blog.domain }}",
+                                    "jwtToken": "{{ jwtToken }}",
+                                    "sessionEmail": "{{ session.email }}",
+                                    "sessionAge": "{{ session.age }}",
+                                    "articleId": {{ art.id }}
+                                }
+                            </script>
+                        </div>
+                        <script async src="/preact/simple-blog-{{ widget }}/bundle.js?time={{ env.epoch }}"></script>
+                    {% endif %}
+                {% endfor %}
+
+
+                <!-- <p class="lead">{{ art.body|substring(0, 150)|markdown|cleanHtml }}...</p> -->
+                {% if art.catRef.hideMetaInfo %}
+                {% else %}
+                    <small class='d-none d-lg-inline'>
+                        <div {{ colorArticleText(art.catRef, null, null, art) }}>
+                            <small class='font-weight-lighter mr-1'>
+                                <i class="far fa-folder-open"></i>
+                                <a href="/v2/{{ art.category|asLinkPart }}/" class="post-cat text-muted" {{ colorArticleText(art.catRef, null, null, art) }}>{{ art.category }}</a>
+                            </small>
+                            <small class='font-weight-lighter mr-1'>/</small>
+                            <small class='font-weight-lighter mr-1'>{{ art.published|asHumanReadable }}</small>
+                            <small class='font-weight-lighter mr-1'>/</small>
+                            <small class='font-weight-lighter mr-1'><a title="Lesetid for artikkel"><i class="far fa-clock"></i> {{ art.body|readTime('no') }}</a></small>
+                        </div>
+                    </small>
+                {% endif %}
+            </div>
         </div>
     </div>
 

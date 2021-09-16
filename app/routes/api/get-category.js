@@ -50,6 +50,7 @@ const fields = {
     logoCss: 1,
     artlistCss: 1,
 
+    artlistContainerClass: 1,
     artlistImageClass: 1,
     artlistTitleClass: 1,
     artlistTeaserClass: 1,
