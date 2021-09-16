@@ -20,6 +20,7 @@ const fields = {
     image: 1,
     type: 1,
     menu: 1,
+    skipDefaultArtLink: 1,
     limit: 1,
     hideOnFrontpage: 1,
     hideTranslateLinks: 1,
@@ -48,6 +49,11 @@ const fields = {
     menuCss: 1,
     logoCss: 1,
     artlistCss: 1,
+
+    artlistImageClass: 1,
+    artlistTitleClass: 1,
+    artlistTeaserClass: 1,
+
     colorJumbotron: 1,
     colorMain: 1,
     colorBottom: 1,

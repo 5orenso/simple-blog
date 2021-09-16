@@ -76,15 +76,23 @@
                         {% if art.isFrontpage %}
                             {% if art.url %}
                                 <a href="{{ art.url }}" class='w-100'>
-                                    <img src="https://{{ imageServer }}/1920x/{{ imagePath }}/{{ art.img[0].src }}" alt="{{ art.title|e }}" class="img-fluid w-100">
+                                    <img src="https://{{ imageServer }}/1920x/{{ imagePath }}/{{ art.img[0].src }}" alt="{{ art.title|e }}" class="img-fluid w-100 {{ art.catRef.artlistImageClass }}">
                                 </a>
                             {% else %}
-                                <img src="https://{{ imageServer }}/1920x/{{ imagePath }}/{{ art.img[0].src }}" alt="{{ art.title|e }}" class="img-fluid w-100">
+                                <img src="https://{{ imageServer }}/1920x/{{ imagePath }}/{{ art.img[0].src }}" alt="{{ art.title|e }}" class="img-fluid w-100 {{ art.catRef.artlistImageClass }}">
                             {% endif %}
-                        {% else %}
-                            <a href="/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}" {{ articleMacro.colorArticleText(art.catRef, frontpage, true, art, 'h1') }} class='w-100'>
-                                <img src="https://{{ imageServer }}/1920x/{{ imagePath }}/{{ art.img[0].src }}" alt="{{ art.title|e }}" class="img-fluid w-100">
-                            </a>
+                        {% else %}                            
+                            {% if art.url %}
+                                <a href="{{ art.url }}" class='w-100'>
+                                    <img src="https://{{ imageServer }}/1920x/{{ imagePath }}/{{ art.img[0].src }}" alt="{{ art.title|e }}" class="img-fluid w-100 {{ art.catRef.artlistImageClass }}">
+                                </a>
+                            {% elseif art.catRef.skipDefaultArtLink %}
+                                <img src="https://{{ imageServer }}/1920x/{{ imagePath }}/{{ art.img[0].src }}" alt="{{ art.title|e }}" class="img-fluid w-100 {{ art.catRef.artlistImageClass }}">
+                            {% else %}
+                                <a href="/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}" {{ articleMacro.colorArticleText(art.catRef, frontpage, true, art, 'h1') }} class='w-100'>
+                                    <img src="https://{{ imageServer }}/1920x/{{ imagePath }}/{{ art.img[0].src }}" alt="{{ art.title|e }}" class="img-fluid w-100 {{ art.catRef.artlistImageClass }}">
+                                </a>
+                            {% endif %}
                         {% endif %}
                     </div>
                 {% endif %}
@@ -100,9 +108,17 @@
                         </h1>
                     {% else %}
                         <h1 class="display-3">
-                            <a href="/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}" {{ articleMacro.colorArticleText(art.catRef, frontpage, true, art, 'h1') }}>
+                            {% if art.url %}
+                                <a href="{{ art.url }}" class='w-100'>
+                                    {{ art.title }}
+                                </a>
+                            {% elseif art.catRef.skipDefaultArtLink %}
                                 {{ art.title }}
-                            </a>
+                            {% else %}
+                                <a href="/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}" {{ articleMacro.colorArticleText(art.catRef, frontpage, true, art, 'h1') }}>
+                                    {{ art.title }}
+                                </a>
+                            {% endif %}
                         </h1>
                     {% endif %}
     
@@ -119,7 +135,7 @@
                             {% if 1 == 1 %}
                                 <small class='mr-2 font-weight-lighter'>
                                     <i class="far fa-folder-open"></i>
-                                    <a href="/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}" class="post-cat" {{ articleMacro.colorArticleText(art.catRef, null, null, art) }}>{{ art.category }}</a>
+                                    <a href="/v2/{{ art.category|asLinkPart }}/" class="post-cat" {{ articleMacro.colorArticleText(art.catRef, null, null, art) }}>{{ art.category }}</a>
                                 </small>
                             {% endif %}
                             <small class='font-weight-lighter mr-2'>/</small>
@@ -162,7 +178,7 @@
                             <a target="_blank" href="{{ art.url }}" title="{{ art.title|e }} - {{ art.teaser|e }}">
                         {% endif %}
                             {% if art.img[0] %}
-                                <img src="https://{{ imageServer }}/150x/{{ imagePath }}/{{ art.img[0].src }}" alt="{{ art.title|e }} - {{ art.teaser|e }}" class="img-fluid adImage"><br clear="all">
+                                <img src="https://{{ imageServer }}/150x/{{ imagePath }}/{{ art.img[0].src }}" alt="{{ art.title|e }} - {{ art.teaser|e }}" class="img-fluid adImage {{ art.catRef.artlistImageClass }}"><br clear="all">
                             {% endif %}
                         {% if art.url %}
                             </a>
@@ -236,7 +252,7 @@
                             <a target="_blank" href="{{ art.url }}" title="{{ art.title|e }} - {{ art.teaser|e }}">
                         {% endif %}
                             {% if art.img[0] %}
-                                <img src="https://{{ imageServer }}/150x/{{ imagePath }}/{{ art.img[0].src }}" alt="{{ art.title|e }} - {{ art.teaser|e }}" class="img-fluid adImage"><br clear="all">
+                                <img src="https://{{ imageServer }}/150x/{{ imagePath }}/{{ art.img[0].src }}" alt="{{ art.title|e }} - {{ art.teaser|e }}" class="img-fluid adImage {{ art.catRef.artlistImageClass }}"><br clear="all">
                             {% endif %}
                         {% if art.url %}
                             </a>

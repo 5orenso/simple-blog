@@ -73,18 +73,34 @@
         <div {{ colorArticleBackground(art.catRef, null, null, art) }}>
         {% if art.img[0] && art.img[0].src|match('(jpg|jpeg|png|gif|heic|heif|svg|webp|tif|JPG|JPEG|PNG|GIF|HEIC|HEIF|SVG|WEBP|TIF)$', 'i') %}
             <div class="post-thumb d-flex align-items-center">
-                <a href="{% if art.url %}{{ art.url }}{% else %}/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}{% endif %}">
-                    <img src="https://{{ imageServer }}/800x/{{ imagePath }}/{{ art.img[0].src }}" alt="{{ art.title|e }}" class="img-fluid">
-                </a>
+                {% if art.url %}
+                    <a href="{{ art.url }}" {{ colorArticleText(art.catRef, null, null, art, heading) }}>
+                        <img src="https://{{ imageServer }}/800x/{{ imagePath }}/{{ art.img[0].src }}" alt="{{ art.title|e }}" class="img-fluid {{ art.catRef.artlistImageClass }}">
+                    </a>
+                {% elseif art.catRef.skipDefaultArtLink %}
+                    <img src="https://{{ imageServer }}/800x/{{ imagePath }}/{{ art.img[0].src }}" alt="{{ art.title|e }}" class="img-fluid {{ art.catRef.artlistImageClass }}">
+                {% else %}
+                    <a href="/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}">
+                        <img src="https://{{ imageServer }}/800x/{{ imagePath }}/{{ art.img[0].src }}" alt="{{ art.title|e }}" class="img-fluid {{ art.catRef.artlistImageClass }}">
+                    </a>
+                {% endif %}
             </div>
         {% endif %}
         <div class="post-content {{ colorArticleBackgroundPadding(art.catRef, null, null, art) }}" {{ colorArticleText(art.catRef, null, null, art) }}>
             {% if art.catRef.hideFrontpageTitle %}
             {% else %}
                 <{{ heading || 'h3' }}>
-                    <a href="{% if art.url %}{{ art.url }}{% else %}/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}{% endif %}" {{ colorArticleText(art.catRef, null, null, art, heading) }}>
+                    {% if art.url %}
+                        <a href="{{ art.url }}" {{ colorArticleText(art.catRef, null, null, art, heading) }}>
+                            {{ art.title }}
+                        </a>
+                    {% elseif art.catRef.skipDefaultArtLink %}
                         {{ art.title }}
-                    </a>
+                    {% else %}
+                        <a href="/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}" {{ colorArticleText(art.catRef, null, null, art, heading) }}>
+                            {{ art.title }}
+                        </a>
+                    {% endif %}
                 </{{ heading || 'h3' }}>
             {% endif %}
 

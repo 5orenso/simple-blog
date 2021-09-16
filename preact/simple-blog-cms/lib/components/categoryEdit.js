@@ -195,6 +195,21 @@ export default class CategoryEdit extends Component {
                         </div>
 
                         <div class='form-check'>
+                            <input type='checkbox' class='form-check-input' id='skipDefaultArtLinkInput'
+                                name='skipDefaultArtLink'
+                                onInput={e => {
+                                    handleInput(e, {
+                                        name: 'skipDefaultArtLink',
+                                        value: category.skipDefaultArtLink ? 0 : 1,
+                                    });
+                                }}
+                                value={1}
+                                checked={category.skipDefaultArtLink ? 'checked' : ''}
+                            />
+                            <label for='menuInput'>Ikke link til artikler uten URL</label>
+                        </div>
+
+                        <div class='form-check'>
                             <input type='checkbox' class='form-check-input' id='hideTitleInput'
                                 name='hideTitle'
                                 onInput={e => {
@@ -506,6 +521,32 @@ export default class CategoryEdit extends Component {
                                 value={category.artlistCss}
                             />
                         </div>
+
+                        <div class='form-group'>
+                            <label for='artlistImageClassInput'><i class='fas fa-paint-roller text-muted' /> Artlist image classes</label>
+                            <input type='text' class='form-control' id='artlistImageClassInput'
+                                name='artlistImageClass'
+                                onInput={handleInput}
+                                value={category.artlistImageClass}
+                            />
+                        </div>
+                        <div class='form-group'>
+                            <label for='artlistTitleClassInput'><i class='fas fa-paint-roller text-muted' /> Artlist image classes</label>
+                            <input type='text' class='form-control' id='artlistTitleClassInput'
+                                name='artlistTitleClass'
+                                onInput={handleInput}
+                                value={category.artlistTitleClass}
+                            />
+                        </div>
+                        <div class='form-group'>
+                            <label for='artlistTeaserClassInput'><i class='fas fa-paint-roller text-muted' /> Artlist image classes</label>
+                            <input type='text' class='form-control' id='artlistTeaserClassInput'
+                                name='artlistTeaserClass'
+                                onInput={handleInput}
+                                value={category.artlistTeaserClass}
+                            />
+                        </div>
+
                         <div class='form-group'>
                             <label for='bgColorJumbotronInput'><i class='fas fa-paint-roller text-muted' /> Background Color Frontpage jumbotron</label>
                             <input type='text' class='form-control' id='bgColorJumbotronInput' placeholder='bgColorJumbotron'
