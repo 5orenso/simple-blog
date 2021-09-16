@@ -483,6 +483,14 @@ export default class CategoryEdit extends Component {
                             />
                         </div>
                         <div class='form-group'>
+                            <label for='menuCssInput'><i class='fas fa-paint-roller text-muted' /> Menu CSS</label>
+                            <textarea type='text' class='form-control' id='menuCssInput' rows='5'
+                                name='menuCss'
+                                onInput={handleInput}
+                                value={category.menuCss}
+                            />
+                        </div>
+                        <div class='form-group'>
                             <label for='bgColorJumbotronInput'><i class='fas fa-paint-roller text-muted' /> Background Color Frontpage jumbotron</label>
                             <input type='text' class='form-control' id='bgColorJumbotronInput' placeholder='bgColorJumbotron'
                                 name='bgColorJumbotron'

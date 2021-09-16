@@ -45,6 +45,7 @@ const fields = {
     dropdown: 1,
     dropdownEn: 1,
     colorMenu: 1,
+    menuCss: 1,
     colorJumbotron: 1,
     colorMain: 1,
     colorBottom: 1,

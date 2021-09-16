@@ -48,6 +48,14 @@
             {%- elseif blog.backgroundColor -%}
                 background-color: {{ blog.backgroundColor }} !important;
             {%- endif -%}
+
+            {%- if category.menuCss -%}
+                {{ category.menuCss }}
+            {%- elseif frontpage.menuCss -%}
+                {{ frontpage.menuCss }}
+            {%- elseif blog.menuCss -%}
+                {{ blog.menuCss }}
+            {%- endif -%}
         }
 </style>
 <script>
