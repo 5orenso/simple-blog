@@ -20,12 +20,14 @@ module.exports = async (req, res) => {
     const artFrontpage = new Article();
     const artAds = new Article();
     const artAdsLower = new Article();
+    const artAdsLowerUpper = new Article();
     const artBottom = new Article();
 
     const catFrontpage = new Category();
     const catMenu = new Category();
     const catAds = new Category();
     const catAdsLower = new Category();
+    const catAdsLowerUpper = new Category();
     const cat = new Category();
     const catBottom = new Category();
 
@@ -190,8 +192,8 @@ module.exports = async (req, res) => {
         });
     }
 
-    const adcatsLowerUpper = await catAdsLower.find(queryAdsLowerUpper);
-    const adlistLowerUpper = await artAdsLower.find({ status: 2, categoryId: { $in: adcatsLowerUpper.map(c => c.id) }});
+    const adcatsLowerUpper = await catAdsLowerUpper.find(queryAdsLowerUpper);
+    const adlistLowerUpper = await artAdsLowerUpper.find({ status: 2, categoryId: { $in: adcatsLowerUpper.map(c => c.id) }});
     if (tc.isArray(adlistLowerUpper)) {
         adlistLowerUpper.forEach((a) => {
             a.catRef = adcatsLowerUpper.find(c => c.id === a.categoryId);
