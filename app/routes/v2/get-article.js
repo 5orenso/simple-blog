@@ -48,6 +48,7 @@ module.exports = async (req, res) => {
     let queryCategory = {};
     let queryAds = {};
     let queryAdsLower = {};
+    let queryAdsLowerUpper = {};
 
     if (req.query.previewJwtToken) {
         const jwtData = util.decodeJwtToken(req.query.previewJwtToken, req.config);
@@ -154,9 +155,11 @@ module.exports = async (req, res) => {
         }
         queryAds = { type: 2 };
         queryAdsLower = { type: 8 };
+        queryAdsLowerUpper = { type: 23 };
     } else {
         queryAds = { type: 3 };
         queryAdsLower = { type: 4 };
+        queryAdsLowerUpper = { type: 22 };
     }
 
     if (isFrontpage && frontpagelist.length > 0) {
@@ -187,6 +190,14 @@ module.exports = async (req, res) => {
         });
     }
 
+    const adcatsLowerUpper = await catAdsLower.find(queryAdsLowerUpper);
+    const adlistLowerUpper = await artAdsLower.find({ status: 2, categoryId: { $in: adcatsLowerUpper.map(c => c.id) }});
+    if (tc.isArray(adlistLowerUpper)) {
+        adlistLowerUpper.forEach((a) => {
+            a.catRef = adcatsLowerUpper.find(c => c.id === a.categoryId);
+        });
+    }
+
     const artcatsBottom = await catBottom.find({ type: 7 });
     const artlistBottom = await artBottom.find({ status: 2, categoryId: { $in: artcatsBottom.map(c => c.id) }});
     if (tc.isArray(artlistBottom)) {
@@ -212,6 +223,7 @@ module.exports = async (req, res) => {
         catlist: util.useLanguage(catlist, language),
         adlist,
         adlistLower,
+        adlistLowerUpper,
         limit,
         page,
         skip,
