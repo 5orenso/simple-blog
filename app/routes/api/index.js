@@ -13,7 +13,7 @@ router.use(cors({
 }));
 
 router.post('/translate/', util.restrict, wrap(require('./post-translate')));
-router.get('/instagram/', util.restrict, wrap(require('./get-instagram')));
+// router.get('/instagram/', util.restrict, wrap(require('./get-instagram')));
 
 router.use('/bookings/', wrap(require('./bookings/')));
 router.use('/sheets/', wrap(require('./sheets/')));
