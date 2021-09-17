@@ -106,9 +106,9 @@
 
                 {% if art.catRef.hideFrontpageTeaser %}
                 {% elseif art.teaser %}
-                    <p class='mb-1 {{ art.catRef.artlistTeaserClass }}'>{{ art.teaser|md|safe }}</p>
+                    <div class='mb-1 {{ art.catRef.artlistTeaserClass }}'>{{ art.teaser|md|safe }}</div>
                 {% elseif art.ingress %}
-                    <p class='mb-1 {{ art.catRef.artlistTeaserClass }}'>{{ art.ingress|md|safe }}</p>
+                    <div class='mb-1 {{ art.catRef.artlistTeaserClass }}'>{{ art.ingress|md|safe }}</div>
                 {% endif %}
 
 

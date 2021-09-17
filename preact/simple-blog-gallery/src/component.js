@@ -117,14 +117,17 @@ export default function App(props) {
         });
     }, []);
 
+    const hasPrev = imageIdx > 0;
+    const hasNext = imageIdx < filteredImages.length - 1;
+
     return (
         <div class={`position-relative ${article['gallery-class']} ${className}`} style={`${article['gallery-style']} ${style}`}>
             {/* {JSON.stringify(images, null, 4)} */}
             {/* {JSON.stringify(article)} */}
 
-            <div class='w-100 h-100'>
+            <div class='w-100'>
                 <div
-                    class={`h-100 d-flex flex-row flex-nowrap border-top border-bottom`}
+                    class={`d-flex flex-row flex-nowrap border-top border-bottom`}
                     style='overflow: auto; scroll-snap-type: x mandatory;'
                     onScroll={scrollImages}
                     ref={imageScrollerRef}
@@ -132,7 +135,7 @@ export default function App(props) {
                     {filteredImages && filteredImages.map((img, idx) => (
                         <div class={`col-12 clearfix position-relative p-0 ${article['gallery-class-photo']} ${photoClass}`}>
                             <div
-                                class={`w-100 h-100 text-center rounded-lg imageContainer d-flex justify-content-center align-items-center`}
+                                class={`w-100 text-center rounded-lg imageContainer d-flex justify-content-center align-items-center`}
                                 style={`
                                     scroll-snap-align: start;
                                     flex-wrap: wrap;
@@ -158,7 +161,7 @@ export default function App(props) {
                 </div>
 
                 {filteredImages && filteredImages.length > 1 && <>
-                    <div class='w-100 text-center position-absolute' style='bottom: 20px;'>
+                    <div class='w-100 text-center position-absolute text-white' style='bottom: 20px;'>
                         <small>
                             <small>
                                 {filteredImages && filteredImages.map((img, idx) => <>
@@ -176,18 +179,18 @@ export default function App(props) {
                     <small><small>{imageIdx + 1} / {filteredImages.length}</small></small>
                 </div>
 
-                <div
-                    class='position-absolute'
+                {hasPrev && <div
+                    class='position-absolute d-none d-lg-block'
                     style='top: 50%; left: 5px;'
                 >
                     <button type='button' class='btn btn-link text-secondary' style='font-size: 2.0em; opacity: 0.4;' onClick={onClickScrollLeft}><i class='fas fa-arrow-circle-left' /></button>
-                </div>
-                <div
-                    class='position-absolute'
+                </div>}
+                {hasNext && <div
+                    class='position-absolute d-none d-lg-block'
                     style='top: 50%; right: 5px;'
                 >
                     <button type='button' class='btn btn-link text-secondary' style='font-size: 2.0em; opacity: 0.4;' onClick={onClickScrollRight}><i class='fas fa-arrow-circle-right' /></button>
-                </div>
+                </div>}
 
             </div>
 
