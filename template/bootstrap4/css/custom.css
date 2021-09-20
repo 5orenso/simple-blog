@@ -341,6 +341,11 @@ td .markup p {
     margin: 0 !important;
 }
 
+.text-overflow {
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
 @media (min-width: 544px) {
     html {
       font-size: 1rem;
