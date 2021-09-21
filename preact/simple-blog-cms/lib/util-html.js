@@ -12,26 +12,6 @@ const renderer = new marked.Renderer();
 //                            // … other options aren't changed
 // });
 
-// Markdown setup.
-marked.setOptions({
-    renderer: renderer,
-    // highlight: function(code, language) {
-    //     // console.log(code, language);
-    //     // if (language) {
-    //     //     return hljs.highlight(language, code).value;
-    //     // }
-    //     return hljs.highlightAuto(code).value;
-    // },
-    pedantic: false,
-    gfm: true,
-    tables: true,
-    breaks: true,
-    sanitize: false,
-    smartLists: true,
-    smartypants: true,
-    xhtml: false,
-});
-
 renderer.heading = function heading(text, level) {
     const escapedText = text.toLowerCase().replace(/[^\w]+/g, '-');
     return `<h${level} class='toc-${level}'><a name='${
@@ -88,7 +68,7 @@ renderer.image = function image($href, title, text) {
     const src = `${serverName}${$href}`;
     const href = $href.replace(/(w=[0-9]+)/, 'w=1800');
     const mediaClass = [];
-    const result = src.match(/#([a-z0-9,]+)$/);
+    const result = src.match(/#([a-z0-9,]+)$/i);
     if (result) {
         const allClasses = result[1].split(',');
         if (allClasses[0] === 'card') {
@@ -133,6 +113,41 @@ renderer.image = function image($href, title, text) {
                 </div>
             `;
         }
+        if (allClasses[0] === 'circle') {
+            return `
+                <div class='text-center border rounded-circle imageRounded text-muted pt-2' style='background-image: url("${src}"); background-size: cover;'>
+                    &nbsp;
+                </div>
+            `;
+        }
+        if (allClasses[0] === 'circleXL') {
+            return `
+                <div class='text-center border rounded-circle imageRounded imageRoundedXLarge text-muted pt-2' style='background-image: url("${src}"); background-size: cover;'>
+                    &nbsp;
+                </div>
+            `;
+        }
+        if (allClasses[0] === 'circleL') {
+            return `
+                <div class='text-center border rounded-circle imageRounded imageRoundedLarge text-muted pt-2' style='background-image: url("${src}"); background-size: cover;'>
+                    &nbsp;
+                </div>
+            `;
+        }
+        if (allClasses[0] === 'circleM') {
+            return `
+                <div class='text-center border rounded-circle imageRounded imageRoundedMedium text-muted pt-2' style='background-image: url("${src}"); background-size: cover;'>
+                    &nbsp;
+                </div>
+            `;
+        }
+        if (allClasses[0] === 'circleS') {
+            return `
+                <div class='text-center border rounded-circle imageRounded imageRoundedSmall text-muted pt-2' style='background-image: url("${src}"); background-size: cover;'>
+                    &nbsp;
+                </div>
+            `;
+        }
         if (allClasses[0] === 'fullwidth') {
             return `
                 <div class='row d-flex justify-content-center'>
@@ -153,6 +168,26 @@ renderer.image = function image($href, title, text) {
             <div class='image_inline_text'><strong>${text || ''}</strong> ${title || ''}</div>
         </p>`;
 };
+
+// Markdown setup.
+marked.setOptions({
+    renderer: renderer,
+    // highlight: function(code, language) {
+    //     // console.log(code, language);
+    //     // if (language) {
+    //     //     return hljs.highlight(language, code).value;
+    //     // }
+    //     return hljs.highlightAuto(code).value;
+    // },
+    pedantic: false,
+    gfm: true,
+    tables: true,
+    breaks: true,
+    sanitize: false,
+    smartLists: true,
+    smartypants: true,
+    xhtml: false,
+});
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 class HtmlUtilities {

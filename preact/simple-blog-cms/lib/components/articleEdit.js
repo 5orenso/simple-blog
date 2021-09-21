@@ -1847,6 +1847,9 @@ export default class ArticleEdit extends Component {
                                         {isImg && <button class='btn btn-sm m-1' onClick={this.handleClickCode} data-content={`![${img.title|| ''}](https://${imageServer}/800x/${imagePath}/${img.src}#plain '${img.text || ''}')\n`}>
                                             <i class='far fa-image'></i> Plain
                                         </button>}
+                                        {isImg && <button class='btn btn-sm m-1' onClick={this.handleClickCode} data-content={`![${img.title|| ''}](https://${imageServer}/800x/${imagePath}/${img.src}#circle '${img.text || ''}')\n`}>
+                                            <i class='far fa-image'></i> Circle
+                                        </button>}
                                         {isImg && <button class='btn btn-sm m-1' onClick={this.handleClickCode} data-content={`![${img.title|| ''}](https://${imageServer}/800x/${imagePath}/${img.src}#nolink '${img.text || ''}')\n`}>
                                             <i class='far fa-image'></i> No link
                                         </button>}
