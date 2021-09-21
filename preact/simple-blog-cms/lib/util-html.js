@@ -68,12 +68,12 @@ renderer.image = function image($href, title, text) {
     const src = `${serverName}${$href}`;
     const href = $href.replace(/(w=[0-9]+)/, 'w=1800');
     const mediaClass = [];
-    const result = src.match(/#([a-z0-9,]+)$/i);
+    const result = src.match(/#([a-z0-9,-]+)$/i);
     if (result) {
         const allClasses = result[1].split(',');
         if (allClasses[0] === 'card') {
             return `
-                <div class='card float-right col-lg-4 col-md-6 col-sm-12 p-0 ml-2 mb-2 mt-2'>
+                <div class='card float-right col-lg-4 col-md-6 col-sm-12 p-0 ml-2 mb-2 mt-2 ${allClasses.join(' ')}'>
                     <img class='card-img-top' src='${src}' alt='${title || text}'>
                     <div class='card-body'>
                         <h5 class='card-title'>${text || ''}</h5>
@@ -83,7 +83,7 @@ renderer.image = function image($href, title, text) {
         }
         if (allClasses[0] === 'card2') {
             return `
-                <div class='float-right card col-lg-7 col-md-7 col-sm-12 p-0 ml-2 mb-2 mt-2'>
+                <div class='float-right card col-lg-7 col-md-7 col-sm-12 p-0 ml-2 mb-2 mt-2 ${allClasses.join(' ')}'>
                     <div class='row no-gutters'>
                         <div class='col-md-4'>
                             <img class='card-img img-fluid' src='${src}' alt='${title || text}'>
@@ -100,7 +100,7 @@ renderer.image = function image($href, title, text) {
         }
         if (allClasses[0] === 'nolink') {
             return `
-                 <p class="${mediaClass.join(' ')}">
+                 <p class="${allClasses.join(' ')}">
                     <img src="${src}" alt="${title || text}" title="${title || text}" class="img-fluid">
                     <div class="image_inline_text"><strong>${text || ''}</strong> ${title || ''}</div>
                 </p>
@@ -108,49 +108,49 @@ renderer.image = function image($href, title, text) {
         }
         if (allClasses[0] === 'plain') {
             return `
-                <div class='d-flex justify-content-center'>
+                <div class='d-flex justify-content-center ${allClasses.join(' ')}'>
                     <img src="${src}" alt="${title || text}" title="${title || text}" class="img-fluid">
                 </div>
             `;
         }
         if (allClasses[0] === 'circle') {
             return `
-                <div class='text-center border rounded-circle imageRounded text-muted pt-2' style='background-image: url("${src}"); background-size: cover;'>
+                <div class='text-center border rounded-circle imageRounded text-muted pt-2 ${allClasses.join(' ')}' style='background-image: url("${src}"); background-size: cover;'>
                     &nbsp;
                 </div>
             `;
         }
         if (allClasses[0] === 'circleXL') {
             return `
-                <div class='text-center border rounded-circle imageRounded imageRoundedXLarge text-muted pt-2' style='background-image: url("${src}"); background-size: cover;'>
+                <div class='text-center border rounded-circle imageRounded imageRoundedXLarge text-muted pt-2 ${allClasses.join(' ')}' style='background-image: url("${src}"); background-size: cover;'>
                     &nbsp;
                 </div>
             `;
         }
         if (allClasses[0] === 'circleL') {
             return `
-                <div class='text-center border rounded-circle imageRounded imageRoundedLarge text-muted pt-2' style='background-image: url("${src}"); background-size: cover;'>
+                <div class='text-center border rounded-circle imageRounded imageRoundedLarge text-muted pt-2 ${allClasses.join(' ')}' style='background-image: url("${src}"); background-size: cover;'>
                     &nbsp;
                 </div>
             `;
         }
         if (allClasses[0] === 'circleM') {
             return `
-                <div class='text-center border rounded-circle imageRounded imageRoundedMedium text-muted pt-2' style='background-image: url("${src}"); background-size: cover;'>
+                <div class='text-center border rounded-circle imageRounded imageRoundedMedium text-muted pt-2 ${allClasses.join(' ')}' style='background-image: url("${src}"); background-size: cover;'>
                     &nbsp;
                 </div>
             `;
         }
         if (allClasses[0] === 'circleS') {
             return `
-                <div class='text-center border rounded-circle imageRounded imageRoundedSmall text-muted pt-2' style='background-image: url("${src}"); background-size: cover;'>
+                <div class='text-center border rounded-circle imageRounded imageRoundedSmall text-muted pt-2 ${allClasses.join(' ')}' style='background-image: url("${src}"); background-size: cover;'>
                     &nbsp;
                 </div>
             `;
         }
         if (allClasses[0] === 'fullwidth') {
             return `
-                <div class='row d-flex justify-content-center'>
+                <div class='row d-flex justify-content-center ${allClasses.join(' ')}'>
                     <img src="${src}" alt="${title || text}" title="${title || text}" class="img-fluid">
                     <div class="image_inline_text"><strong>${text || ''}</strong> ${title || ''}</div>
                 </div>
