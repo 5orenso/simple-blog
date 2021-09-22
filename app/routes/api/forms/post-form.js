@@ -49,7 +49,7 @@ module.exports = async (req, res) => {
     }
 
     const {
-        cellphone, phone, firstname, lastname, address, postalcode, postalplace,
+        cellphone, phone, firstname, lastname, address, zip, place,
     } = req.body;
     const { emailSender, emailSignature } = req.config.blog;
     const mail = new Mail(req.config);
@@ -66,7 +66,7 @@ module.exports = async (req, res) => {
 <span style='font-weight: lighter; color: #808080;'>Mobil:</span> ${cellphone || phone}
 <span style='font-weight: lighter; color: #808080;'>Navn:</span> ${firstname} ${lastname}
 <span style='font-weight: lighter; color: #808080;'>Adresse:</span> ${address}
-<span style='font-weight: lighter; color: #808080;'>Sted:</span> ${postalcode} ${postalplace}
+<span style='font-weight: lighter; color: #808080;'>Sted:</span> ${zip} ${place}
 
 ${emailSignature}
 
