@@ -232,7 +232,7 @@ export default function App(props) {
                                             </td>
                                             <td class='text-center'>
                                                 <nobr>
-                                                    {putil.getNestedValue(weatherFormatted[date], 'precipitation_amount')} <span class='text-muted font-weight-lighter'>mm</span>
+                                                    {putil.format(putil.getNestedValue(weatherFormatted[date], 'precipitation_amount'), 1)} <span class='text-muted font-weight-lighter'>mm</span>
                                                 </nobr>
                                             </td>
                                             <td class='text-center'>
