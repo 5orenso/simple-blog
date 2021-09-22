@@ -71,10 +71,30 @@ function windDirection(deg) {
     return "N";
 }
 
+function getTemperatureColor(temp) {
+    if (temp <= 0) {
+        return 'text-primary';
+    } else {
+        return 'text-danger';
+    }
+}
+
+function getWindSpeedColor(speed) {
+    if (speed > 10) {
+        return 'text-warning';
+    } else if (speed > 20) {
+        return 'text-danger';
+    } else {
+        return '';
+    }
+}
+
 export default function App(props) {
     const { apiServer, place, lat, lon, pt, altitude, className = '', style = '' } = props;
 
-    const [weather, setWeather] = useState({});
+    const [weather, setWeather] = useState([]);
+    const [weatherFormatted, setWeatherFormatted] = useState({});
+    const [weatherKeys, setWeatherKeys] = useState([]);
     const [showWeather, setShowWeather] = useState(false);
 
     useEffect(() => {
@@ -93,6 +113,77 @@ export default function App(props) {
                 },
             });
             setWeather(result.data);
+            const formatted = {};
+            if (result.data) {
+                for (let i = 0, l = result.data.length; i < l; i += 1) {
+                    const { time, instant, next_6_hours } = result.data[i];
+                    const nightRegexp = new RegExp('T00:00');
+                    const morningRegexp = new RegExp('T06:00');
+                    const dayRegexp = new RegExp('T12:00');
+                    const eveningRegexp = new RegExp('T18:00');
+                    const date = putil.isoDate(time, false, false, true);
+                    if (!formatted[date]) {
+                        formatted[date] = {
+                            air_temperatures: [],
+                            wind_speeds: [],
+                            precipitation_amount: 0,
+                        };
+                    }
+                    if (nightRegexp.test(time)) {
+                        formatted[date].air_temperatures.push(putil.getNestedValue(instant, 'details.air_temperature'));
+                        formatted[date].wind_speeds.push(putil.getNestedValue(instant, 'details.wind_speed'));
+                        formatted[date].precipitation_amount += putil.getNestedValue(next_6_hours, 'details.precipitation_amount');
+                        formatted[date].night = {
+                            time,
+                            instant,
+                            next_6_hours,
+                        };
+                    }
+                    if (morningRegexp.test(time)) {
+                        formatted[date].air_temperatures.push(putil.getNestedValue(instant, 'details.air_temperature'));
+                        formatted[date].wind_speeds.push(putil.getNestedValue(instant, 'details.wind_speed'));
+                        formatted[date].precipitation_amount += putil.getNestedValue(next_6_hours, 'details.precipitation_amount');
+                        formatted[date].morning = {
+                            time,
+                            instant,
+                            next_6_hours,
+                        };
+                    }
+                    if (dayRegexp.test(time)) {
+                        formatted[date].air_temperatures.push(putil.getNestedValue(instant, 'details.air_temperature'));
+                        formatted[date].wind_speeds.push(putil.getNestedValue(instant, 'details.wind_speed'));
+                        formatted[date].precipitation_amount += putil.getNestedValue(next_6_hours, 'details.precipitation_amount');
+                        formatted[date].day = {
+                            time,
+                            instant,
+                            next_6_hours,
+                        };
+                    }
+                    if (eveningRegexp.test(time)) {
+                        formatted[date].air_temperatures.push(putil.getNestedValue(instant, 'details.air_temperature'));
+                        formatted[date].wind_speeds.push(putil.getNestedValue(instant, 'details.wind_speed'));
+                        formatted[date].precipitation_amount += putil.getNestedValue(next_6_hours, 'details.precipitation_amount');
+                        formatted[date].evening = {
+                            time,
+                            instant,
+                            next_6_hours,
+                        };
+                    }
+                }
+                const keys = Object.keys(formatted);
+                setWeatherKeys(keys);
+                console.log({ formatted });
+                for (let i = 0, l = keys.length; i < l; i += 1) {
+                     const key = keys[i];
+                     const temperatures = formatted[key].air_temperatures;
+                     const wind_speeds = formatted[key].wind_speeds;
+                     formatted[key].air_temperatures_min = Math.min(...temperatures);
+                     formatted[key].air_temperatures_max = Math.max(...temperatures);
+                     formatted[key].wind_speeds_min = Math.min(...wind_speeds);
+                     formatted[key].wind_speeds_max = Math.max(...wind_speeds);
+                }
+                setWeatherFormatted(formatted);
+            }
         };
         if ((lat && lon) || pt) {
             fetchData();
@@ -107,28 +198,53 @@ export default function App(props) {
         return (
             <div class={`${className}`} style={`${style}`}>
                 {weather && weather.length > 0 && <>
-                    <div class='row' onClick={onClickShowWeather}>
+                    <div onClick={onClickShowWeather}>
                         {/* <xmp>{JSON.stringify(weather, null, 4)}</xmp> */}
                         {place && <div class='col-12 mt-4'>
                             <h5>{place}</h5>
                         </div>}
-                        {weather && weather.length > 0 && weather.slice(0, 8).map(w => (
-                            <div class='col-3 text-center my-4'>
-                                <h5 class='text-muted'>{putil.isoTime(w.time)}</h5>
-                                <img src={`${apiServer}/global/assets/svg/${putil.getNestedValue(w, 'next_1_hours.summary.symbol_code')}.svg`} /><br />
-                                <nobr>
-                                    <span>
-                                        <i class='fas fa-temperature-low text-muted ml-1' />
-                                    </span> {putil.getNestedValue(w, 'instant.details.air_temperature')} <span class='text-muted font-weight-lighter'>°C</span>
-                                </nobr><br />
-                                <span class='text-overflow'>
-                                    {/* <i class='fas fa-compass text-muted ml-1' /> {mu.windDirection(util.getNestedValue(w, 'instant.details.wind_from_direction'))}<br /> */}
-                                    <i class='fas fa-wind text-muted ml-1' /> {putil.getNestedValue(w, 'instant.details.wind_speed')}<span class='text-muted font-weight-lighter'>m/s</span> <span class='text-muted font-weight-lighter'>{windDirection(putil.getNestedValue(w, 'instant.details.wind_from_direction'))}</span><br />
-                                    <i class='fas fa-cloud-rain text-muted ml-1' /> {putil.getNestedValue(w, 'next_1_hours.details.precipitation_amount')} <span class='text-muted font-weight-lighter'>mm</span><br />
-                                    {/* <i class='fas fa-tint text-muted ml-1' /> {putil.getNestedValue(w, 'instant.details.relative_humidity')} <span class='text-muted'>%</span><br /> */}
-                                </span>
-                            </div>
-                        ))}
+                        <div class='table-responsive'>
+                            <table class='table table-striped table-sm'>
+                                <thead>
+                                    <tr>
+                                        <th>&nbsp;</th>
+                                        <th>Natt</th>
+                                        <th>Morgen</th>
+                                        <th>Ettermiddag</th>
+                                        <th>Kveld</th>
+                                        <th>Temp</th>
+                                        <th>Nebør</th>
+                                        <th>Wind</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {weatherKeys && weatherKeys.map(date => <>
+                                        <tr>
+                                            <td>{date}</td>
+                                            <td class='text-center'>{putil.getNestedValue(weatherFormatted[date].night, 'next_6_hours.summary.symbol_code') && <img style='width: 40px;' src={`${apiServer}/global/assets/svg/${putil.getNestedValue(weatherFormatted[date].night, 'next_6_hours.summary.symbol_code')}.svg`} />}</td>
+                                            <td class='text-center'>{putil.getNestedValue(weatherFormatted[date].morning, 'next_6_hours.summary.symbol_code') && <img style='width: 40px;' src={`${apiServer}/global/assets/svg/${putil.getNestedValue(weatherFormatted[date].morning, 'next_6_hours.summary.symbol_code')}.svg`} />}</td>
+                                            <td class='text-center'>{putil.getNestedValue(weatherFormatted[date].day, 'next_6_hours.summary.symbol_code') && <img style='width: 40px;' src={`${apiServer}/global/assets/svg/${putil.getNestedValue(weatherFormatted[date].day, 'next_6_hours.summary.symbol_code')}.svg`} />}</td>
+                                            <td class='text-center'>{putil.getNestedValue(weatherFormatted[date].evening, 'next_6_hours.summary.symbol_code') && <img style='width: 40px;' src={`${apiServer}/global/assets/svg/${putil.getNestedValue(weatherFormatted[date].evening, 'next_6_hours.summary.symbol_code')}.svg`} />}</td>
+                                            <td class='text-center'>
+                                                <nobr>
+                                                    <i class='fas fa-temperature-low text-muted ml-1' /> <span class={getTemperatureColor(putil.getNestedValue(weatherFormatted[date], 'air_temperatures_min'))}>{putil.getNestedValue(weatherFormatted[date], 'air_temperatures_min')}</span> - <span class={getTemperatureColor(putil.getNestedValue(weatherFormatted[date], 'air_temperatures_max'))}>{putil.getNestedValue(weatherFormatted[date], 'air_temperatures_max')}</span> <span class='text-muted font-weight-lighter'>°C</span>
+                                                </nobr>
+                                            </td>
+                                            <td class='text-center'>
+                                                <nobr>
+                                                    {putil.getNestedValue(weatherFormatted[date], 'precipitation_amount')} <span class='text-muted font-weight-lighter'>mm</span>
+                                                </nobr>
+                                            </td>
+                                            <td class='text-center'>
+                                                <nobr>
+                                                    <i class='fas fa-wind text-muted ml-1' /> <span class={getWindSpeedColor(putil.getNestedValue(weatherFormatted[date], 'wind_speeds_min'))}>{putil.getNestedValue(weatherFormatted[date], 'wind_speeds_min')}</span> - <span class={getWindSpeedColor(putil.getNestedValue(weatherFormatted[date], 'wind_speeds_max'))}>{putil.getNestedValue(weatherFormatted[date], 'wind_speeds_max')}</span> <span class='text-muted font-weight-lighter'>m/s</span>
+                                                </nobr>
+                                            </td>
+                                        </tr>
+                                    </>)}
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </>}
             </div>
