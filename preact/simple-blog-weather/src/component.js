@@ -207,20 +207,20 @@ export default function App(props) {
                             <table class='table table-striped table-sm'>
                                 <thead>
                                     <tr>
-                                        <th>&nbsp;</th>
-                                        <th>Natt</th>
-                                        <th>Morgen</th>
-                                        <th>Ettermiddag</th>
-                                        <th>Kveld</th>
-                                        <th>Temp</th>
-                                        <th>Nebør</th>
-                                        <th>Wind</th>
+                                        <th class='text-center'>&nbsp;</th>
+                                        <th class='text-center'>Natt</th>
+                                        <th class='text-center'>Morgen</th>
+                                        <th class='text-center'>Ettermiddag</th>
+                                        <th class='text-center'>Kveld</th>
+                                        <th class='text-center'>Temp</th>
+                                        <th class='text-center'>Nebør</th>
+                                        <th class='text-center'>Wind</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {weatherKeys && weatherKeys.map(date => <>
                                         <tr>
-                                            <td>{date}</td>
+                                            <td class='text-center'>{date}</td>
                                             <td class='text-center'>{putil.getNestedValue(weatherFormatted[date].night, 'next_6_hours.summary.symbol_code') && <img style='width: 40px;' src={`${apiServer}/global/assets/svg/${putil.getNestedValue(weatherFormatted[date].night, 'next_6_hours.summary.symbol_code')}.svg`} />}</td>
                                             <td class='text-center'>{putil.getNestedValue(weatherFormatted[date].morning, 'next_6_hours.summary.symbol_code') && <img style='width: 40px;' src={`${apiServer}/global/assets/svg/${putil.getNestedValue(weatherFormatted[date].morning, 'next_6_hours.summary.symbol_code')}.svg`} />}</td>
                                             <td class='text-center'>{putil.getNestedValue(weatherFormatted[date].day, 'next_6_hours.summary.symbol_code') && <img style='width: 40px;' src={`${apiServer}/global/assets/svg/${putil.getNestedValue(weatherFormatted[date].day, 'next_6_hours.summary.symbol_code')}.svg`} />}</td>
