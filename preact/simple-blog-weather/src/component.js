@@ -227,7 +227,7 @@ export default function App(props) {
                                             <td class='text-center'>{putil.getNestedValue(weatherFormatted[date].evening, 'next_6_hours.summary.symbol_code') && <img style='width: 40px;' src={`${apiServer}/global/assets/svg/${putil.getNestedValue(weatherFormatted[date].evening, 'next_6_hours.summary.symbol_code')}.svg`} />}</td>
                                             <td class='text-center'>
                                                 <nobr>
-                                                    <i class='fas fa-temperature-low text-muted ml-1' /> <span class={getTemperatureColor(putil.getNestedValue(weatherFormatted[date], 'air_temperatures_min'))}>{putil.format(putil.getNestedValue(weatherFormatted[date], 'air_temperatures_min'), 1)}</span> - <span class={getTemperatureColor(putil.getNestedValue(weatherFormatted[date], 'air_temperatures_max'))}>{putil.format(putil.getNestedValue(weatherFormatted[date], 'air_temperatures_max'), 1)}</span> <span class='text-muted font-weight-lighter'>°C</span>
+                                                    <i class='fas fa-temperature-low text-muted ml-1' /> <span class={getTemperatureColor(putil.getNestedValue(weatherFormatted[date], 'air_temperatures_min'))}>{putil.format(putil.getNestedValue(weatherFormatted[date], 'air_temperatures_min'), 1)}</span> <span class='text-muted font-weight-lighter'>-</span> <span class={getTemperatureColor(putil.getNestedValue(weatherFormatted[date], 'air_temperatures_max'))}>{putil.format(putil.getNestedValue(weatherFormatted[date], 'air_temperatures_max'), 1)}</span> <span class='text-muted font-weight-lighter'>°C</span>
                                                 </nobr>
                                             </td>
                                             <td class='text-center'>
@@ -237,7 +237,7 @@ export default function App(props) {
                                             </td>
                                             <td class='text-center'>
                                                 <nobr>
-                                                    <i class='fas fa-wind text-muted ml-1' /> <span class={getWindSpeedColor(putil.getNestedValue(weatherFormatted[date], 'wind_speeds_min'))}>{putil.format(putil.getNestedValue(weatherFormatted[date], 'wind_speeds_min'), 1)}</span> - <span class={getWindSpeedColor(putil.getNestedValue(weatherFormatted[date], 'wind_speeds_max'))}>{putil.format(putil.getNestedValue(weatherFormatted[date], 'wind_speeds_max'), 1)}</span> <span class='text-muted font-weight-lighter'>m/s</span>
+                                                    <i class='fas fa-wind text-muted ml-1' /> <span class={getWindSpeedColor(putil.getNestedValue(weatherFormatted[date], 'wind_speeds_min'))}>{putil.format(putil.getNestedValue(weatherFormatted[date], 'wind_speeds_min'), 1)}</span> <span class='text-muted font-weight-lighter'>-</span> <span class={getWindSpeedColor(putil.getNestedValue(weatherFormatted[date], 'wind_speeds_max'))}>{putil.format(putil.getNestedValue(weatherFormatted[date], 'wind_speeds_max'), 1)}</span> <span class='text-muted font-weight-lighter'>m/s</span>
                                                 </nobr>
                                             </td>
                                         </tr>
@@ -258,7 +258,7 @@ export default function App(props) {
                 {weather && weather.length > 0 && weather.slice(0, 1).map(w => <>
                     <div onClick={onClickShowWeather}>
                         <nobr>
-                            {place ? <span class='mr-2'>{place}:</span> : ''}
+                            {place ? <span class='mr-2 font-weight-bold'>{place}:</span> : ''}
                             <span class='font-weight-light text-muted'>{putil.isoTime(w.time)}</span>:
                             <img src={`${apiServer}/global/assets/svg/${putil.getNestedValue(w, 'next_1_hours.summary.symbol_code')}.svg`}
                                 class='ml-2'
@@ -272,7 +272,9 @@ export default function App(props) {
                             </span> 
                             <span class='ml-2'>
                                 <i class='fas fa-wind text-muted' /> {putil.getNestedValue(w, 'instant.details.wind_speed')}<span class='text-muted font-weight-lighter'>m/s</span> <span class='text-muted font-weight-lighter'>{windDirection(putil.getNestedValue(w, 'instant.details.wind_from_direction'))}</span>
-                            </span> 
+                            </span>
+
+                            <button type='button' class='btn btn-sm btn-outline-primary ml-3 py-0'><i class='fas fa-info-circle' /> Detaljer</button>
                         </nobr>
                     </div>
                 </>)}
