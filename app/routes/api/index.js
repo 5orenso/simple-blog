@@ -16,6 +16,7 @@ router.post('/translate/', util.restrict, wrap(require('./post-translate')));
 // router.get('/instagram/', util.restrict, wrap(require('./get-instagram')));
 
 router.use('/bookings/', wrap(require('./bookings/')));
+router.use('/forms/', wrap(require('./forms/')));
 router.use('/sheets/', wrap(require('./sheets/')));
 
 router.get('/article/', wrap(require('./get-article')));

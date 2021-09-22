@@ -46,11 +46,12 @@ const statusList = [
     { value: 2, title: 'Live' },
 ];
 
-const widgetList = ['clock', 'booking', 'sheet', 'poll', 'gallery', 'weather', 'rating', 'related'];
+const widgetList = ['clock', 'booking', 'form', 'sheet', 'poll', 'gallery', 'weather', 'rating', 'related'];
 
 const widgetFields = {
     clock: ['class', 'style', 'countdownto', 'showDateOnly', 'showSeconds', 'showTimezone', 'showClockOnly'],
     booking: ['class', 'style', 'table-class', 'sheetId'],
+    form: ['class', 'style', 'table-class', 'sheetId'],
     sheet: ['class', 'style', 'table-class', 'sheetId', 'showDocTitle', 'limit', 'showSearch'],
     poll: ['class', 'style'],
     gallery: ['class', 'style', 'class-photo', 'class-photo-img', 'start', 'end'],

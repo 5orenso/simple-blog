@@ -97,6 +97,7 @@ webRouter.use('/preact/simple-blog-cms/', express.static(`${appPath}preact/simpl
 webRouter.use('/preact/simple-blog-helloworld/', express.static(`${appPath}preact/simple-blog-helloworld/bundle/`));
 webRouter.use('/preact/simple-blog-clock/', express.static(`${appPath}preact/simple-blog-clock/bundle/`));
 webRouter.use('/preact/simple-blog-booking/', express.static(`${appPath}preact/simple-blog-booking/bundle/`));
+webRouter.use('/preact/simple-blog-form/', express.static(`${appPath}preact/simple-blog-form/bundle/`));
 webRouter.use('/preact/simple-blog-sheet/', express.static(`${appPath}preact/simple-blog-sheet/bundle/`));
 webRouter.use('/preact/simple-blog-poll/', express.static(`${appPath}preact/simple-blog-poll/bundle/`));
 webRouter.use('/preact/simple-blog-gallery/', express.static(`${appPath}preact/simple-blog-gallery/bundle/`));

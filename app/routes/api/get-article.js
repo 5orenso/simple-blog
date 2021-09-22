@@ -68,6 +68,11 @@ const fields = {
     'booking-style': 1,
     'booking-sheetId': 1,
 
+    'form-class': 1,
+    'form-table-class': 1,
+    'form-style': 1,
+    'form-sheetId': 1,
+
     'sheet-class': 1,
     'sheet-table-class': 1,
     'sheet-style': 1,
