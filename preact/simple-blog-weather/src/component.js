@@ -227,7 +227,7 @@ export default function App(props) {
                                             <td class='text-center'>{putil.getNestedValue(weatherFormatted[date].evening, 'next_6_hours.summary.symbol_code') && <img style='width: 40px;' src={`${apiServer}/global/assets/svg/${putil.getNestedValue(weatherFormatted[date].evening, 'next_6_hours.summary.symbol_code')}.svg`} />}</td>
                                             <td class='text-center'>
                                                 <nobr>
-                                                    <i class='fas fa-temperature-low text-muted ml-1' /> <span class={getTemperatureColor(putil.getNestedValue(weatherFormatted[date], 'air_temperatures_min'))}>{putil.getNestedValue(weatherFormatted[date], 'air_temperatures_min')}</span> - <span class={getTemperatureColor(putil.getNestedValue(weatherFormatted[date], 'air_temperatures_max'))}>{putil.getNestedValue(weatherFormatted[date], 'air_temperatures_max')}</span> <span class='text-muted font-weight-lighter'>°C</span>
+                                                    <i class='fas fa-temperature-low text-muted ml-1' /> <span class={getTemperatureColor(putil.getNestedValue(weatherFormatted[date], 'air_temperatures_min'))}>{putil.format(putil.getNestedValue(weatherFormatted[date], 'air_temperatures_min'), 1)}</span> - <span class={getTemperatureColor(putil.getNestedValue(weatherFormatted[date], 'air_temperatures_max'))}>{putil.format(putil.getNestedValue(weatherFormatted[date], 'air_temperatures_max'), 1)}</span> <span class='text-muted font-weight-lighter'>°C</span>
                                                 </nobr>
                                             </td>
                                             <td class='text-center'>
@@ -237,7 +237,7 @@ export default function App(props) {
                                             </td>
                                             <td class='text-center'>
                                                 <nobr>
-                                                    <i class='fas fa-wind text-muted ml-1' /> <span class={getWindSpeedColor(putil.getNestedValue(weatherFormatted[date], 'wind_speeds_min'))}>{putil.getNestedValue(weatherFormatted[date], 'wind_speeds_min')}</span> - <span class={getWindSpeedColor(putil.getNestedValue(weatherFormatted[date], 'wind_speeds_max'))}>{putil.getNestedValue(weatherFormatted[date], 'wind_speeds_max')}</span> <span class='text-muted font-weight-lighter'>m/s</span>
+                                                    <i class='fas fa-wind text-muted ml-1' /> <span class={getWindSpeedColor(putil.getNestedValue(weatherFormatted[date], 'wind_speeds_min'))}>{putil.format(putil.getNestedValue(weatherFormatted[date], 'wind_speeds_min'), 1)}</span> - <span class={getWindSpeedColor(putil.getNestedValue(weatherFormatted[date], 'wind_speeds_max'))}>{putil.format(putil.getNestedValue(weatherFormatted[date], 'wind_speeds_max'), 1)}</span> <span class='text-muted font-weight-lighter'>m/s</span>
                                                 </nobr>
                                             </td>
                                         </tr>
