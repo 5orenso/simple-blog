@@ -55,7 +55,7 @@ const widgetFields = {
     sheet: ['class', 'style', 'table-class', 'sheetId', 'showDocTitle', 'limit', 'showSearch'],
     poll: ['class', 'style'],
     gallery: ['class', 'style', 'class-photo', 'class-photo-img', 'start', 'end'],
-    weather: ['class', 'style', 'lat', 'lon', 'height', 'date'],
+    weather: ['class', 'style', 'name', 'height', 'lat', 'lon', 'date'],
     rating: ['class', 'style', 'from', 'to'],
     related: ['class', 'style', 'tags'],
 };

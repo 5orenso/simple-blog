@@ -93,9 +93,10 @@ const fields = {
 
     'weather-class': 1,
     'weather-style': 1,
+    'weather-name': 1,
+    'weather-altitude': 1,
     'weather-lat': 1,
     'weather-lon': 1,
-    'weather-height': 1,
     'weather-date': 1,
 
     'rating-class': 1,
