@@ -110,16 +110,16 @@ export default function App(props) {
                                 <h5 class='text-muted'>{putil.isoTime(w.time)}</h5>
                                 <img src={`${apiServer}/global/assets/svg/${putil.getNestedValue(w, 'next_1_hours.summary.symbol_code')}.svg`} /><br />
                                 <nobr>
-                                    <small>
+                                    <span>
                                         <i class='fas fa-temperature-low text-muted ml-1' />
-                                    </small> {putil.getNestedValue(w, 'instant.details.air_temperature')} <span class='text-muted font-weight-lighter'>°C</span>
+                                    </span> {putil.getNestedValue(w, 'instant.details.air_temperature')} <span class='text-muted font-weight-lighter'>°C</span>
                                 </nobr><br />
-                                <small class='text-overflow'>
+                                <span class='text-overflow'>
                                     {/* <i class='fas fa-compass text-muted ml-1' /> {mu.windDirection(util.getNestedValue(w, 'instant.details.wind_from_direction'))}<br /> */}
                                     <i class='fas fa-wind text-muted ml-1' /> {putil.getNestedValue(w, 'instant.details.wind_speed')}<span class='text-muted font-weight-lighter'>m/s</span> <span class='text-muted font-weight-lighter'>{windDirection(putil.getNestedValue(w, 'instant.details.wind_from_direction'))}</span><br />
                                     <i class='fas fa-cloud-rain text-muted ml-1' /> {putil.getNestedValue(w, 'next_1_hours.details.precipitation_amount')} <span class='text-muted font-weight-lighter'>mm</span><br />
                                     {/* <i class='fas fa-tint text-muted ml-1' /> {putil.getNestedValue(w, 'instant.details.relative_humidity')} <span class='text-muted'>%</span><br /> */}
-                                </small>
+                                </span>
                             </div>
                         ))}
                     </div>
@@ -136,20 +136,20 @@ export default function App(props) {
                     <div onClick={onClickShowWeather}>
                         <nobr>
                             {place ? `${place}:` : ''}
-                            <small class='font-weight-light text-muted'>{putil.isoTime(w.time)}</small>:
+                            <span class='font-weight-light text-muted'>{putil.isoTime(w.time)}</span>:
                             <img src={`${apiServer}/global/assets/svg/${putil.getNestedValue(w, 'next_1_hours.summary.symbol_code')}.svg`}
                                 class='ml-2'
                                 style='height: 20px;'
                             />
-                            {putil.getNestedValue(w, 'next_1_hours.details.precipitation_amount') > 0 && <small class='ml-2'>
+                            {putil.getNestedValue(w, 'next_1_hours.details.precipitation_amount') > 0 && <span class='ml-2'>
                                 {putil.getNestedValue(w, 'next_1_hours.details.precipitation_amount')}<span class='text-muted font-weight-lighter'>mm</span>
-                            </small>}
-                            <small class='ml-2'>
+                            </span>}
+                            <span class='ml-2'>
                                 <i class='fas fa-temperature-low text-muted' /> {putil.getNestedValue(w, 'instant.details.air_temperature')}<span class='text-muted font-weight-lighter'>°C</span>
-                            </small> 
-                            <small class='ml-2'>
+                            </span> 
+                            <span class='ml-2'>
                                 <i class='fas fa-wind text-muted' /> {putil.getNestedValue(w, 'instant.details.wind_speed')}<span class='text-muted font-weight-lighter'>m/s</span> <span class='text-muted font-weight-lighter'>{windDirection(putil.getNestedValue(w, 'instant.details.wind_from_direction'))}</span>
-                            </small> 
+                            </span> 
                         </nobr>
                     </div>
                 </>)}
