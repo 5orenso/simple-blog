@@ -72,7 +72,7 @@ function windDirection(deg) {
 }
 
 export default function App(props) {
-    const { apiServer, name, lat, lon, altitude, className = '', style = '' } = props;
+    const { apiServer, place, lat, lon, altitude, className = '', style = '' } = props;
 
     const [weather, setWeather] = useState({});
     const [showWeather, setShowWeather] = useState(false);
@@ -103,7 +103,7 @@ export default function App(props) {
                     <div class='row' onClick={onClickShowWeather}>
                         {/* <xmp>{JSON.stringify(weather, null, 4)}</xmp> */}
                         <div class='col-12 mt-4'>
-                            <h5>{name}</h5>
+                            <h5>{place}</h5>
                         </div>
                         {weather && weather.length > 0 && weather.slice(0, 8).map(w => (
                             <div class='col-3 text-center my-4'>
@@ -135,7 +135,7 @@ export default function App(props) {
                 {weather && weather.length > 0 && weather.slice(0, 1).map(w => <>
                     <div onClick={onClickShowWeather}>
                         <nobr>
-                            {name ? `${name}:` : ''}
+                            {place ? `${place}:` : ''}
                             <small class='font-weight-light text-muted'>{putil.isoTime(w.time)}</small>:
                             <img src={`${apiServer}/global/assets/svg/${putil.getNestedValue(w, 'next_1_hours.summary.symbol_code')}.svg`}
                                 class='ml-2'
