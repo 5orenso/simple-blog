@@ -87,7 +87,7 @@ export default function App(props) {
                 longitude = parts[1];
             }
             const result = await fetchApi({
-                url: `/api/yr/?lat=${lat}&lon=${lon}&altitude=${altitude}`,
+                url: `/api/yr/?lat=${latitude}&lon=${longitude}&altitude=${altitude}`,
                 settings: {
                     apiServer,
                 },
