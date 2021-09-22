@@ -72,13 +72,20 @@ function windDirection(deg) {
 }
 
 export default function App(props) {
-    const { apiServer, place, lat, lon, altitude, className = '', style = '' } = props;
+    const { apiServer, place, lat, lon, pt, altitude, className = '', style = '' } = props;
 
     const [weather, setWeather] = useState({});
     const [showWeather, setShowWeather] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
+            let latitude = lat;
+            let longitude = lon;
+            if (pt) {
+                const parts = pt.split(',');
+                latitude = parts[0];
+                longitude = parts[1];
+            }
             const result = await fetchApi({
                 url: `/api/yr/?lat=${lat}&lon=${lon}&altitude=${altitude}`,
                 settings: {
@@ -87,10 +94,10 @@ export default function App(props) {
             });
             setWeather(result.data);
         };
-        if (lat && lon) {
+        if ((lat && lon) || pt) {
             fetchData();
         }
-    }, [lat, lon, altitude]);
+    }, [lat, lon, pt, altitude]);
 
     const onClickShowWeather = useCallback((e) => {
         setShowWeather(!showWeather);
