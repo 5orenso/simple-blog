@@ -54,3 +54,8 @@ cd Dropbox
 Delete an index in Elasticsearch>
 $ curl -XDELETE 'http://172.30.0.227:9200/lokenhavna.no/'
 
+
+### Move images
+
+aws s3 cp 
+
