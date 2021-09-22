@@ -102,9 +102,9 @@ export default function App(props) {
                 {weather && weather.length > 0 && <>
                     <div class='row' onClick={onClickShowWeather}>
                         {/* <xmp>{JSON.stringify(weather, null, 4)}</xmp> */}
-                        <div class='col-12 mt-4'>
+                        {place && <div class='col-12 mt-4'>
                             <h5>{place}</h5>
-                        </div>
+                        </div>}
                         {weather && weather.length > 0 && weather.slice(0, 8).map(w => (
                             <div class='col-3 text-center my-4'>
                                 <h5 class='text-muted'>{putil.isoTime(w.time)}</h5>
@@ -135,7 +135,7 @@ export default function App(props) {
                 {weather && weather.length > 0 && weather.slice(0, 1).map(w => <>
                     <div onClick={onClickShowWeather}>
                         <nobr>
-                            {place ? `${place}:` : ''}
+                            {place ? <span class='mr-2'>{place}:</span> : ''}
                             <span class='font-weight-light text-muted'>{putil.isoTime(w.time)}</span>:
                             <img src={`${apiServer}/global/assets/svg/${putil.getNestedValue(w, 'next_1_hours.summary.symbol_code')}.svg`}
                                 class='ml-2'
