@@ -62,13 +62,11 @@ module.exports = async (req, res) => {
 <strong>Du er nå påmeldt: ${doc.title}!</strong>
 
 <strong>Påmeldingsinformasjon:</strong>
-<span style='font-weight: lighter; color: #808080;'>E-post:</span> ${email}
-<span style='font-weight: lighter; color: #808080;'>Mobil:</span> ${cellphone || phone}
-<span style='font-weight: lighter; color: #808080;'>Navn:</span> ${firstname} ${lastname}
-<span style='font-weight: lighter; color: #808080;'>Adresse:</span> ${address}
-<span style='font-weight: lighter; color: #808080;'>Sted:</span> ${zip} ${place}
+<span style='font-weight: lighter; color: #808080;'>E-post:</span> ${email || ''}
+<span style='font-weight: lighter; color: #808080;'>Mobil:</span> ${cellphone || phone || ''}
+<span style='font-weight: lighter; color: #808080;'>Navn:</span> ${firstname || ''} ${lastname || ''}
 
-${emailSignature}
+${emailSignature || ''}
 
 </div>`.replace(/\n/g, '<br/>'),
     });
