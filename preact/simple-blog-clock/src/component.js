@@ -119,7 +119,7 @@ export default function App(props) {
         });
 
         Object.keys(timeLeft).forEach((interval) => {
-            if (key === 'd' && !timeLeft[interval]) {
+            if (timerComponents.length === 0 && !timeLeft[interval]) {
                 return;
             }
             timerComponents.push(<span>
