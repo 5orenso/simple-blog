@@ -433,7 +433,20 @@ export default function App(props) {
                             <div class='form-group'>
                                 {row.description && <Markdown markdown={`${row.description}`} markdownOpts={MARKDOWN_OPTIONS} />}
                                 <label for={`${row.name}Input`}>{row.title}</label>
-                                <input type={row.type} class='form-control' id={`${row.name}Input`} name={row.name} value={input[row.name]} aria-describedby={`${row.name}Help`} onInput={onInput} data-validation={row.validation} data-removechars={row.removechars} data-help={row.helpvalidation} />
+                                <input 
+                                    type={row.type} 
+                                    class='form-control' 
+                                    id={`${row.name}Input`} 
+                                    name={row.name} 
+                                    value={input[row.name]} 
+                                    aria-describedby={`${row.name}Help`} 
+                                    onInput={onInput} 
+                                    data-validation={row.validation} 
+                                    data-removechars={row.removechars} 
+                                    data-help={row.helpvalidation}
+                                    min={row.min}
+                                    max={row.max}
+                                />
                                 {row.help && <small id={`${row.name}Help`} class='form-text text-muted'>{row.help}</small>}
                                 {invalidFields[row.name] && <div id={`validationFeedback${row.name}`} class='invalid-feedback'>
                                     {invalidFields[row.name]}
