@@ -75,6 +75,26 @@ module.exports = async (req, res) => {
             ],
         };
         category = await cat.findOne(queryCategory);
+        if (!category) {
+            category = {
+                id: 100000404,
+                title: '404 - Not found',
+                skipDefaultArtLink: 1,
+                hideOnFrontpage: 1,
+                hideTranslateLinks: 1,
+                hideTopImage: 1,
+                hidePrevNext: 1,
+                hideArticleList: 1,
+                hideMetaInfo: 1,
+                hideMetaInfoDetail: 1,
+                hideMetaInfoDetailAdvanced: 1,
+                hideAuthorInfo: 1,
+                hideFrontpageTitle: 1,
+                hideFrontpageTeaser: 1,
+                hideFrontpagePagination: 1,
+                hideCategoryTopArticle: 1,
+            };
+        }
         limit = category.limit || limit;
         queryList.categoryId = category.id;
         query.categoryId = category.id;
@@ -127,9 +147,18 @@ module.exports = async (req, res) => {
 
     limit = parseInt(limit, 10);
 
-    const article = await art.findOne(query);
+    let article = await art.findOne(query);
     let artlist = [];
-    if (limit > 0) {
+    if (category && category.id === 100000404) {
+        article = {
+            categoryId: 100000404,
+            id: 100000404,
+            title: '404 - Page not found',
+            body: '<div class="display-1 text-muted text-center mb-4"><i class="fas fa-wrench"></i></div> <div class="text-center">Please use the menu to navigate or search for the content you are looking for.</div>',
+        };
+        artlist = [article];
+        contentCatlist.push(category);
+    } else if (limit > 0) {
         artlist = await art.find(queryList, {}, { limit, skip });
     }
 
@@ -217,6 +246,7 @@ module.exports = async (req, res) => {
     const language = req.cookies.language;
 
     return webUtil.sendResultResponse(req, res, {
+        status: (category && category.id === 100000404) ? 404 : 200,
         article: util.useLanguage(article, language),
         previousArticle: util.useLanguage(previousArticle, language),
         nextArticle: util.useLanguage(nextArticle, language),
