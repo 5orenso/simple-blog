@@ -103,6 +103,7 @@ webRouter.use('/preact/simple-blog-poll/', express.static(`${appPath}preact/simp
 webRouter.use('/preact/simple-blog-gallery/', express.static(`${appPath}preact/simple-blog-gallery/bundle/`));
 webRouter.use('/preact/simple-blog-weather/', express.static(`${appPath}preact/simple-blog-weather/bundle/`));
 webRouter.use('/preact/simple-blog-rating/', express.static(`${appPath}preact/simple-blog-rating/bundle/`));
+webRouter.use('/preact/simple-blog-cookies/', express.static(`${appPath}preact/simple-blog-cookies/bundle/`));
 
 webRouter.post('/push-register', require('./post-push-register'));
 webRouter.post('/push-error', require('./post-push-error'));

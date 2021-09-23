@@ -107,6 +107,9 @@ const fields = {
     'related-class': 1,
     'related-style': 1,
     'related-tags': 1,
+
+    'cookies-class': 1,
+    'cookies-style': 1,
 };
 
 module.exports = async (req, res) => {

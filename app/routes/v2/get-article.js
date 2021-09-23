@@ -244,6 +244,7 @@ module.exports = async (req, res) => {
     const template = (req.params.id || req.params.filename) ? '/bootstrap4/blog_v2.html' : '/bootstrap4/index_v2.html';
 
     const language = req.cookies.language;
+    const disableCookies = req.cookies.disableCookies === 'yes';
 
     return webUtil.sendResultResponse(req, res, {
         status: (category && category.id === 100000404) ? 404 : 200,
@@ -271,5 +272,6 @@ module.exports = async (req, res) => {
         hasMoreLanguages: req.config.blog.hasMoreLanguages,
         originalUrl: req.originalUrl,
         language,
+        disableCookies,
     }, { runId, routePath, routeName, hrstart, useTemplate: template });
 };

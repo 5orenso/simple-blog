@@ -46,7 +46,7 @@ const statusList = [
     { value: 2, title: 'Live' },
 ];
 
-const widgetList = ['clock', 'booking', 'form', 'sheet', 'poll', 'gallery', 'weather', 'rating', 'related'];
+const widgetList = ['clock', 'booking', 'form', 'sheet', 'poll', 'gallery', 'weather', 'rating', 'related', 'cookies'];
 
 const widgetFields = {
     clock: ['class', 'style', 'countdownto', 'showDateOnly', 'showSeconds', 'showTimezone', 'showClockOnly'],
@@ -58,6 +58,7 @@ const widgetFields = {
     weather: ['class', 'style', 'name', 'height', 'lat', 'lon', 'date'],
     rating: ['class', 'style', 'from', 'to'],
     related: ['class', 'style', 'tags'],
+    cookies: ['class', 'style'],
 };
 
 function pad(n) {
