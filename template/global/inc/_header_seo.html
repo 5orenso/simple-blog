@@ -1,25 +1,29 @@
 {% macro title %}
-    {% if isDetailView %}
+    {%- if isDetailView -%}
         {{ article.title|striptags|removeLineBreaks|e('html') }}
-    {% else %}
+    {%- else -%}
         {{ author.nameFull|removeLineBreaks|e('html') }} | {{ blog.title|removeLineBreaks|e('html') }}
-    {% endif %}
+    {%- endif -%}
 {% endmacro %}
 
 {% macro image %}
-    {% if isDetailView && article.img[0] %}
+    {%- if isDetailView && article.img[0] -%}
         {{ blog.protocol }}://{{ blog.domain }}/pho/{{ article.img[0].src }}?w=600
-    {% else %}
+    {%- else -%}
         {{ blog.protocol }}://{{ blog.domain }}{{ blog.author.fallback.image }}
     {% endif %}
 {% endmacro %}
 
 {% macro description %}
-    {% if isDetailView %}
-        {{ article.teaser|striptags|removeLineBreaks|e('html') }} {{ article.ingress|striptags|removeLineBreaks|e('html') }}
-    {% else %}
+    {%- if isDetailView -%}
+        {%- if article.metaDescription -%}
+            {{ article.metaDescription }}
+        {%- else -%}
+            {{ article.teaser|striptags|removeLineBreaks|e('html') }} {{ article.ingress|striptags|removeLineBreaks|e('html') }}
+        {%- endif -%}
+    {%- else -%}
         {{ blog.description|removeLineBreaks|e('html') }}
-    {% endif %}
+    {%- endif -%}
 {% endmacro %}
 
 <!-- Verification -->
@@ -28,8 +32,8 @@
 
 {% set categoryName = article.baseHref|replace('/', '', 'g')|capitalize %}
 {% if isDetailView %}
-    <meta name="description" content="{{ article.teaser|striptags|removeLineBreaks|e('html') }} {{ article.ingress|striptags|removeLineBreaks|e('js')|e('html') }}" />
-    <meta name="keywords" content="{{ article.tags|striptags|removeLineBreaks|e('html') }}" />
+    <meta name="description" content="{{ description()|oneline }}" />
+    <meta name="keywords" content="{%- if article.tags -%}{{ article.tags|striptags|removeLineBreaks|e('html') }},{%- endif -%}{{ article.words }}" />
     {% set shareLink = blog.protocol + '://' + blog.domain + '/' + article.category|url_encode + '/' + article.title|url_encode + '/' + article.id %}
     <meta property="og:url" content="{{ shareLink }}" />
     <meta property="og:type" content="article" />
@@ -50,15 +54,16 @@
     <!-- Twitter Card -->
     <meta name="twitter:site" content="{{ blog.social.twitter }}" />
     <meta name="twitter:text:title" content="{{ title()|oneline }}" />
-    {%- if product.hasImage %}
-    <meta name="twitter:image" content="{{ image()|oneline }}" />
+    {%- if article.img[0] %}
+        <meta name="twitter:image" content="{{ image()|oneline }}" />
     {%- endif %}
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:description" content="{{ description()|oneline }}" />
     <meta name="twitter:creator" content="{{ blog.social.twitter }}" />
 
 {% else %}
     <meta name="description" content="{{ description()|oneline }}" />
-    <meta name="keywords" content="{{ article.tags|striptags|removeLineBreaks|e('html') }}" />
+    <meta name="keywords" content="{%- if article.tags -%}{{ article.tags|striptags|removeLineBreaks|e('html') }},{%- endif -%}{{ article.words }}" />
     {% set shareLink = blog.protocol + '://' + blog.domain + '/' + article.category|url_encode + '/' %}
     <meta property="og:url" content="{{ shareLink }}" />
     <meta property="og:type" content="article" />

@@ -171,6 +171,7 @@ module.exports = async (req, res) => {
     const artlistTotal = await art.count(queryList);
 
     if (tc.isObject(article)) {
+        article.bodyRaw = `${article.body}`;
         article.body = utilHtml.replaceDataTags(article.body || '', article);
         article.body = utilHtml.replaceContentTags(article.body || '', article, req.config);
         utilHtml.runPlugins(article);
@@ -207,6 +208,9 @@ module.exports = async (req, res) => {
             a.catRef = artcatsBottom.find(c => c.id === a.categoryId);
         });
     }
+
+    article.words = util.getWords(article).join(',');
+    article.metaDescription = util.getShortText(article.bodyRaw);
 
     const template = (req.params.id || req.params.filename) ? '/bootstrap4/blog_v2.html' : '/bootstrap4/index_v2.html';
 
