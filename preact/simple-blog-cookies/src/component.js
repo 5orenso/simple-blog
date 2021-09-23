@@ -47,9 +47,9 @@ export default function App(props) {
                 onClick={onClickToggleCookie}
             >
                 {disableCookies === 'yes' ? <>
-                    <i class='fas fa-cookie-bite' /> Enable tracking cookies
+                    <i class='fas fa-cookie-bite' /> Enable cookies
                 </> : <>
-                    <i class='fas fa-cookie-bite' /> Disable tracking cookies
+                    <i class='fas fa-cookie-bite' /> Disable cookies
                 </>}
             </button>
         </div>
