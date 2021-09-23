@@ -48,7 +48,7 @@ function fetchApi({ url, headers = {}, body = {}, settings = {} }) {
 }
 
 export default function App(props) {
-    const { apiServer, jwtToken, articleId, start, end, size = '800x', className, style, photoClass } = props;
+    const { apiServer, jwtToken, articleId, start, end, size = '800x', className = '', style = '', photoClass = '', imgClass = '' } = props;
 
     const [article, setArticle] = useState({});
     const [imageServer, setImageServer] = useState({});
@@ -143,7 +143,7 @@ export default function App(props) {
                                 `}
                             >					
                                 {img.src ? <img
-                                    class={`img-fluid ${article['gallery-class-photo-img']}`}
+                                    class={`img-fluid ${article['gallery-class-photo-img']} ${imgClass}`}
                                     src={`https://${imageServer}/${size}/${imagePath}/${img.src}`}
                                     loading='lazy'
                                     style={`max-height: 75vh; ${idx !== imageIdx ? '' : ''}`}
