@@ -209,8 +209,8 @@ module.exports = async (req, res) => {
         });
     }
 
+    article.metaDescription = util.getShortText(`${article.ingress} ${article.bodyRaw}`);
     article.words = util.getWords(article).join(',');
-    article.metaDescription = util.getShortText(article.bodyRaw);
 
     const template = (req.params.id || req.params.filename) ? '/bootstrap4/blog_v2.html' : '/bootstrap4/index_v2.html';
 
