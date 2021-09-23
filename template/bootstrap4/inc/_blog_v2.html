@@ -151,7 +151,7 @@
             </div>
         {% endif %}
 
-        {% if adlist[0] || !category.hideArticleList %}
+        {% if !category.hideArticleList %}
             <div class="col-lg-8 blog-main">
         {% else %}
             <div class="col-lg-12 blog-main">
@@ -303,7 +303,7 @@
 
         </div><!-- /.blog-main -->
 
-        {% if adlist[0] || !category.hideArticleList %}
+        {% if !category.hideArticleList %}
             <div class="d-none d-lg-inline col-lg-3 offset-lg-1 blog-sidebar">
                 {% if adlist[0] %}
                     <div class="sidebar-module mb-4">
