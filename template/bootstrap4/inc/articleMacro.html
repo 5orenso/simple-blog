@@ -68,6 +68,26 @@
     {%- endif -%}"
 {%- endmacro -%}
 
+{% macro adList(adlist) %}
+    <div class="container-fluid" {{ colorArticleBackground(adlist[0].catRef) }}>
+        <div class="row d-flex justify-content-center adContainer">
+            {% for art in adlist %}
+                <div class="col my-2 d-flex align-items-center justify-content-center {{ art.catRef.artlistContainerClass }} adBox">
+                    {% if art.url %}
+                        <a target="_blank" href="{{ art.url }}" title="{{ art.title|e }} - {{ art.teaser|e }}">
+                    {% endif %}
+                        {% if art.img[0] %}
+                            <img src="https://{{ imageServer }}/220x/{{ imagePath }}/{{ art.img[0].src }}" alt="{{ art.title|e }} - {{ art.teaser|e }}" class="img-fluid adImage {{ art.catRef.artlistImageClass }}"><br clear="all">
+                        {% endif %}
+                    {% if art.url %}
+                        </a>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endmacro %}
+
 {% macro articleTeaser(art, col, extraClasses, heading) %}
     <div class="{% if art.catRef.artlistColClass %}{{ art.catRef.artlistColClass }}{% else %}col-12 col-sm-12 col-md-{{ col || 4 }} post-data my-1{% endif %} {{ extraClasses }} {{ art.catRef.artlistContainerClass }}" >
         <div {{ colorArticleBackground(art.catRef, null, null, art) }}>

@@ -329,6 +329,19 @@ pre code {
     border-radius: .25em;
 }
 
+.adContainer {
+    overflow: auto;
+    /* scroll-snap-type: x mandatory; */
+    /* scroll-snap-type: x proximity; */
+}
+
+.adBox {
+    min-width: 150px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    /* scroll-snap-align: start; */
+}
+
 .adImage {
     max-height: 100px;
     /* -webkit-filter: grayscale(100%);

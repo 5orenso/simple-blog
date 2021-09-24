@@ -189,23 +189,7 @@
     {% endif %}
 
     {% if adlist[0] %}
-        <div class="container-fluid mb-2 mt-2" {{ articleMacro.colorArticleBackground(adlist[0].catRef) }}>
-            <div class="row d-flex justify-content-center">
-                {% for art in adlist %}
-                    <div class="col my-1 d-flex align-items-center justify-content-center {{ art.catRef.artlistContainerClass }}">
-                        {% if art.url %}
-                            <a target="_blank" href="{{ art.url }}" title="{{ art.title|e }} - {{ art.teaser|e }}">
-                        {% endif %}
-                            {% if art.img[0] %}
-                                <img src="https://{{ imageServer }}/150x/{{ imagePath }}/{{ art.img[0].src }}" alt="{{ art.title|e }} - {{ art.teaser|e }}" class="img-fluid adImage {{ art.catRef.artlistImageClass }}"><br clear="all">
-                            {% endif %}
-                        {% if art.url %}
-                            </a>
-                        {% endif %}
-                    </div>
-                {% endfor %}
-            </div>
-        </div>
+        {{ articleMacro.adList(adlist) }}
     {% endif %}
     
     <div class="container">
@@ -263,42 +247,10 @@
     </div>
 
     {% if adlistLowerUpper[0] %}
-        <div class="container-fluid mt-2" {{ articleMacro.colorArticleBackground(adlistLowerUpper[0].catRef) }}>
-            <div class="row d-flex justify-content-center">
-                {% for art in adlistLowerUpper %}
-                    <div class="col my-1 d-flex align-items-center justify-content-center {{ art.catRef.artlistContainerClass }}">
-                        {% if art.url %}
-                            <a target="_blank" href="{{ art.url }}" title="{{ art.title|e }} - {{ art.teaser|e }}">
-                        {% endif %}
-                            {% if art.img[0] %}
-                                <img src="https://{{ imageServer }}/220x/{{ imagePath }}/{{ art.img[0].src }}" alt="{{ art.title|e }} - {{ art.teaser|e }}" class="img-fluid adImage {{ art.catRef.artlistImageClass }}"><br clear="all">
-                            {% endif %}
-                        {% if art.url %}
-                            </a>
-                        {% endif %}
-                    </div>
-                {% endfor %}
-            </div>
-        </div>
+        {{ articleMacro.adList(adlistLowerUpper) }}
     {% endif %}
     {% if adlistLower[0] %}
-        <div class="container-fluid mt-2" {{ articleMacro.colorArticleBackground(adlistLower[0].catRef) }}>
-            <div class="row d-flex justify-content-center">
-                {% for art in adlistLower %}
-                    <div class="col my-1 d-flex align-items-center justify-content-center {{ art.catRef.artlistContainerClass }}">
-                        {% if art.url %}
-                            <a target="_blank" href="{{ art.url }}" title="{{ art.title|e }} - {{ art.teaser|e }}">
-                        {% endif %}
-                            {% if art.img[0] %}
-                                <img src="https://{{ imageServer }}/150x/{{ imagePath }}/{{ art.img[0].src }}" alt="{{ art.title|e }} - {{ art.teaser|e }}" class="img-fluid adImage {{ art.catRef.artlistImageClass }}"><br clear="all">
-                            {% endif %}
-                        {% if art.url %}
-                            </a>
-                        {% endif %}
-                    </div>
-                {% endfor %}
-            </div>
-        </div>
+        {{ articleMacro.adList(adlistLower) }}
     {% endif %}
 
 {% if !queryString.tag && !queryString.q %}
