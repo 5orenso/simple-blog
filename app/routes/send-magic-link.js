@@ -12,6 +12,10 @@ module.exports = (req, res) => {
     const hrstart = process.hrtime();
     webUtil.printIfDev(`Route: ${routePath}/${routeName}`, req.query, req.param);
 
+    if (req.useragent.isBot) {
+        return res.redirect(`/v2/`);
+    }
+
     const generateJwt = account => jwt.sign({ email: account.email }, req.config.jwt.secret);
     const token = generateJwt({ email: req.config.blog.email });
 
@@ -25,6 +29,19 @@ module.exports = (req, res) => {
 As requested the Simple-Blog server has sent you a magic link 🎩 to be able to login to your blog admin.
 <a href="${req.config.blog.protocol}://${req.config.blog.domain}/verify-magic-link?token=${encodeURIComponent(token)}">
 Click this link to magically login to your blog 👌</a>
+
+<hr />
+<span style='color: #808080'>
+isMobile: ${req.useragent.isMobile}
+isDesktop: ${req.useragent.isDesktop}
+isBot: ${req.useragent.isBot}
+browser: ${req.useragent.browser}
+version: ${req.useragent.version}
+os: ${req.useragent.os}
+platform: ${req.useragent.platform}
+source: ${req.useragent.source}
+</span>
+<hr />
 
 Best regard,
 The Simple-Blog server

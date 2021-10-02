@@ -10,7 +10,8 @@
 const _ = require('underscore');
 const express = require('express');
 const bodyParser = require('body-parser');
-const cookieParser = require('cookie-parser')
+const cookieParser = require('cookie-parser');
+const useragent = require('express-useragent');
 const compression = require('compression');
 const sessions = require('client-sessions');
 const commander = require('commander');
@@ -40,7 +41,7 @@ if (config) {
 }
 
 app.use(cookieParser());
-
+app.use(useragent.express()); // Parse useragent
 app.use(bodyParser.json({ limit: '100mb' }));
 app.use(bodyParser.urlencoded({ limit: '100mb', extended: true, parameterLimit: 50000 }))
 
