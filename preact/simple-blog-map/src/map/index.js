@@ -63,7 +63,7 @@ L.Icon.Default.mergeOptions({
 const createClusterCustomIcon = function (cluster) {
   return L.divIcon({
     html: `<span>${cluster.getChildCount()}</span>`,
-    className: style['marker-cluster-custom'],
+    className: 'marker-cluster-custom',
     iconSize: L.point(40, 40, true),
   });
 };
