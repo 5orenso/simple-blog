@@ -15,6 +15,9 @@ module.exports = (req, res) => {
     if (req.useragent.isBot) {
         return res.redirect(`/v2/`);
     }
+    if (!req.useragent.isMobile && !req.useragent.isDesktop) {
+        return res.redirect(`/v2/`);
+    }
 
     // Request header:
     // ${JSON.stringify(req.headers, null, 4)}
