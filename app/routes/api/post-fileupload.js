@@ -12,6 +12,10 @@ const path = require('path');
 const fs = require('fs');
 const ColorThief = require('colorthief');
 
+const tj = require('@tmcw/togeojson');
+const DOMParser = require('xmldom').DOMParser;
+const xmlParser = require('xml-js');
+const geoLib = require('geo-lib');
 const ExifImage = require('exif').ExifImage;
 const sizeOf = require('image-size');
 
@@ -32,6 +36,32 @@ function isImage(file) {
         return true;
     }
     return false;
+}
+
+function isGpx(file) {
+    // image/jpeg, image/png, image/gif
+    if (file.ext.match(/gpx/i)) {
+        return true;
+    }
+    return false;
+}
+
+function avg(arr) {
+    return arr.reduce((a, b) => a + b, 0) / arr.length;
+}
+
+function toDegrees(angle) {
+    return angle * (180 / Math.PI);
+}
+
+function calcAngle(height, distance) {
+    if (distance <= 0) {
+        return 0;
+    }
+    const degrees = toDegrees(Math.atan(height / distance));
+    const percent = degrees / 45 * 100;
+    // console.log({ height, distance, degrees, percent });
+    return percent;
 }
 
 function readExif(image) {
@@ -58,6 +88,193 @@ function imageDimensions(image) {
             return resolve(dimensions);
         });
     });
+}
+
+function smoothOut(arr, variance) {
+    const tAvg = avg(arr) * variance;
+    const ret = [];
+    for (let i = 0; i < arr.length; i += 1) {
+        const prev = i > 0 ? ret[i - 1] : arr[i];
+        const next = i < arr.length ? arr[i] : arr[i - 1];
+        ret[i] = avg([tAvg, avg([prev, arr[i], next])]);
+    }
+    return ret;
+}
+
+function parseTrkPoints(points = []) {
+    const finalResult = {
+        totalDistance: 0,
+        maxSpeed: 0,
+        avgSpeed: 0,
+        ascent: 0,
+        decent: 0,
+        duration: 0,
+        rest: 0,
+        startTime: new Date().getTime(),
+        endTime: 0,
+        startLatlng: [],
+        endLatlng: [],
+        states: [],
+    };
+    const speeds = [];
+    const climbs = [];
+    const allSpeeds = [];
+    const allElevations = [];
+    const allDistances = [];
+    const ascent = [];
+    const decent = [];
+    // const pointsSmooth = simplify(points, 0.0001);
+    // console.log(pointsSmooth);
+    // console.log(points);
+    let prevPt;
+    let firstPt;
+    let lastPt;
+    let startTime = new Date().getTime();
+    let endTime = 0;
+    let stateDuration = 0;
+    let stateDistance = 0;
+    let stateSpeeds = [];
+    let currentState = 'rest';
+    let prevState = 'rest';
+    for (let j = 0, m = points.length; j < m; j += 1) {
+        const pt = points[j];
+        if (!pt.firstPt) {
+            firstPt = pt;
+        }
+        lastPt = pt;
+        // console.log(j, pt);
+        // {
+        //     _attributes: { lat: '61.006554', lon: '9.975422' },
+        //     ele: 560,
+        //     time: '2020-08-10T16:53:07Z',
+        //     x: 9.975422,
+        //     y: 61.006554
+        // }
+        if (tc.checkNested(prevPt, 'lat')) {
+            const ptime = new Date(prevPt.time).getTime();
+            const time = new Date(pt.time).getTime();
+            if (time > endTime) {
+                endTime = time;
+            }
+            if (time < startTime) {
+                startTime = time;
+            }
+            const result = geoLib.distance({
+                p1: { lat: prevPt.lat, lon: prevPt.lon },
+                p2: { lat: pt.lat, lon: pt.lon },
+                timeUsed: (time - ptime) / 1000,
+            });
+            // console.log(result, prevPt, pt);
+            // {
+            //     distance: 0.01,
+            //     unit: 'km',
+            //     method: 'haversine',
+            //     timeUsedInSeconds: 3,
+            //     speedKph: 12,
+            //     speedMph: 7.46,
+            //     speedMpk: '5:0'
+            // }
+            // Total distance:
+            const ascending = pt.ele - prevPt.ele;
+            let percent = calcAngle(ascending, result.distance * 1000);
+            if (percent > 30) {
+                percent = 30;
+            }
+            if (percent < -30) {
+                percent = -30;
+            }
+            climbs.push(tc.isNumber(percent) ? percent : 0);
+
+            finalResult.totalDistance += result.distance;
+            allDistances.push(result.distance);
+            finalResult.duration += (time - ptime) / 1000;
+
+            if (result.speedKph <= 0.3) {
+                finalResult.rest += (time - ptime) / 1000;
+                currentState = 'rest';
+            } else {
+                speeds.push(result.speedKph / 3.6);
+                currentState = 'running';
+            }
+            // Total elevation
+            if (prevPt.ele > pt.ele) {
+                decent.push(prevPt.ele - pt.ele);
+            } else if (prevPt.ele < pt.ele) {
+                ascent.push(pt.ele - prevPt.ele);
+            }
+            allSpeeds.push(result.speedKph / 3.6);
+            allElevations.push(pt.ele);
+
+            if (prevState !== currentState) {
+                if (stateDuration > 10) {
+                    let state = prevState;
+                    let avgSpeed = util.avgArr(stateSpeeds);
+
+                    if (prevState === 'rest') {
+                        state = stateDuration > 900 ? 'restTrail' : 'rest';
+                        avgSpeed = 0;
+                    }
+                    finalResult.states.push({
+                        state,
+                        duration: stateDuration,
+                        distance: stateDistance,
+                        avgSpeed,
+                    });
+                    stateDuration = (time - ptime) / 1000;
+                    stateDistance = result.distance;
+                    stateSpeeds = [];
+                    prevState = currentState;
+                } else {
+                    stateDuration += (time - ptime) / 1000;
+                    stateDistance += result.distance;
+                    if (result.speedKph >= 0) {
+                        stateSpeeds.push(result.speedKph / 3.6);
+                    }
+                }
+            } else {
+                stateDuration += (time - ptime) / 1000;
+                stateDistance += result.distance;
+                if (result.speedKph >= 0) {
+                    stateSpeeds.push(result.speedKph / 3.6);
+                }
+                prevState = currentState;
+            }
+        }
+        prevPt = pt;
+    }
+    let state = prevState;
+    let avgSpeed = util.avgArr(stateSpeeds);
+
+    if (prevState === 'rest') {
+        state = stateDuration > 900 ? 'rest' : 'stop';
+        avgSpeed = 0;
+    }
+
+    finalResult.states.push({
+        state,
+        duration: stateDuration,
+        distance: stateDistance,
+        avgSpeed,
+    });
+
+    // finalResult.avgSpeed = totalSpeed / totalMovingPoints;
+    const speedsSmooth = smoothOut(speeds, 0.85);
+
+    finalResult.speeds = smoothOut(allSpeeds, 0.85);
+    finalResult.elevations = allElevations;
+    finalResult.climbs = climbs;
+    finalResult.distances = allDistances;
+    finalResult.temperatures = [];
+    finalResult.avgSpeed = avg(speedsSmooth);
+    finalResult.maxSpeed = Math.max(...speedsSmooth);
+    finalResult.ascent = ascent.reduce((a, b) => a + b, 0);
+    finalResult.decent = decent.reduce((a, b) => a + b, 0);
+    finalResult.startLatlng = [firstPt.lat, firstPt.lon];
+    finalResult.endLatlng = [lastPt.lat, lastPt.lon];
+    finalResult.startTime = startTime;
+    finalResult.endTime = endTime;
+
+    return finalResult;
 }
 
 module.exports = async (req, res) => {
@@ -147,6 +364,89 @@ module.exports = async (req, res) => {
                             }
                         }
                     }
+
+                    if (isGpx(file)) {
+                        const xmlString = fs.readFileSync(tmpFile, 'utf8');
+                        const gpxXml = new DOMParser().parseFromString(xmlString);
+                        file.geoJSON = tj.gpx(gpxXml, { styles: true });
+                        const jsonObj = xmlParser.xml2json(xmlString, { compact: true, spaces: 4 });
+                        const gpxObj = JSON.parse(jsonObj);
+                        file.gpx = gpxObj.gpx;
+                        file.gpxInfo = {
+                            totalDistance: 0,
+                            maxSpeed: 0,
+                            avgSpeed: 0,
+                            ascent: 0,
+                            decent: 0,
+                            duration: 0,
+                            rest: 0,
+                            startLatlng: [],
+                            endLatlng: [],
+                        };
+
+                        if (tc.checkNested(file.gpx, 'trk') && tc.isArray(file.gpx.trk)) {
+                            file.gpx.trk.forEach((trk) => {
+                                if (tc.checkNested(trk, 'trkseg', 'trkpt')) {
+                                    const points = trk.trkseg.trkpt.map((p) => {
+                                        // console.log({ trk, p }, tc.checkNested(p, 'time', '_text'));
+                                        let time;
+                                        if (tc.checkNested(p, 'time')) {
+                                            if (tc.checkNested(p, 'time', '_text')) {
+                                                time = tc.getNestedValue(p, 'time._text');
+                                            } else {
+                                                time = p.time;
+                                            }
+                                        }
+                                        let ele;
+                                        if (tc.checkNested(p, 'ele')) {
+                                            if (tc.checkNested(p, 'ele', '_text')) {
+                                                ele = parseInt(tc.getNestedValue(p, 'ele._text'), 10);
+                                            } else {
+                                                ele = parseInt(p.ele, 10);
+                                            }
+                                        }
+                                        return {
+                                            ...p,
+                                            x: parseFloat(tc.getNestedValue(p, '_attributes.lon') || p.lon),
+                                            y: parseFloat(tc.getNestedValue(p, '_attributes.lat') || p.lat),
+                                            lon: parseFloat(tc.getNestedValue(p, '_attributes.lon') || p.lon),
+                                            lat: parseFloat(tc.getNestedValue(p, '_attributes.lat') || p.lat),
+                                            time,
+                                            ele,
+                                        };
+                                    });
+
+                                    const result = parseTrkPoints(points);
+                                    file.gpxInfo.totalDistance += result.totalDistance;
+                                    file.gpxInfo.maxSpeed += result.maxSpeed;
+                                    file.gpxInfo.avgSpeed += result.avgSpeed;
+                                    file.gpxInfo.ascent += result.ascent;
+                                    file.gpxInfo.decent += result.decent;
+                                    file.gpxInfo.duration += result.duration;
+                                    file.gpxInfo.rest += result.rest;
+
+                                    file.gpxInfo.startTime = result.startTime;
+                                    file.gpxInfo.endTime = result.endTime;
+                                }
+                            });
+                        } else if (tc.checkNested(file.gpx, 'trk', 'trkseg', 'trkpt')) {
+                            const points = file.gpx.trk.trkseg.trkpt.map(p => ({
+                                ...p,
+                                x: parseFloat(tc.getNestedValue(p, '_attributes.lon') || p.lon),
+                                y: parseFloat(tc.getNestedValue(p, '_attributes.lat') || p.lat),
+                                lon: parseFloat(tc.getNestedValue(p, '_attributes.lon') || p.lon),
+                                lat: parseFloat(tc.getNestedValue(p, '_attributes.lat') || p.lat),
+                                time: tc.checkNested(p, 'time', '_text') ? tc.getNestedValue(p, 'time._text') : p.time,
+                                ele: parseInt(tc.getNestedValue(p, 'ele._text') || p.ele, 10),
+                            }));
+
+                            const result = parseTrkPoints(points);
+                            file.gpxInfo = {
+                                ...result,
+                            };
+                        }
+                    }
+
                     file.src = `${fileCategory}/${file.newFilename}`;
 
                     filesUploaded.push(file);

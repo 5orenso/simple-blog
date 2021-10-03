@@ -16,6 +16,35 @@ module.exports = (req, res) => {
         return res.redirect(`/v2/`);
     }
 
+    // Request header:
+    // ${JSON.stringify(req.headers, null, 4)}
+    // {
+    // "host": "femundlopet.no:1100",
+    // "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
+    // "accept-encoding": "gzip, deflate, br",
+    // "accept-language": "en-GB,en;q=0.5",
+    // "cloudfront-forwarded-proto": "https",
+    // "cloudfront-is-desktop-viewer": "true",
+    // "cloudfront-is-mobile-viewer": "false",
+    // "cloudfront-is-smarttv-viewer": "false",
+    // "cloudfront-is-tablet-viewer": "false",
+    // "cloudfront-viewer-country": "NO",
+    // "cookie": "PHPSESSID=kqglc1pvqp4hqic5kvpptr1siv; _ga=GA1.1.195418726.1628583887; _ga_6DHN8B6D0J=GS1.1.1633191924.23.0.1633191925.0; catAccCookies=1; disableCookies=null; language=no; session=DeHCAPnNQpv5ihT4o9vadQ.jL9t8pPVg9D5dB8imbHV4wABrmK2wmZ_5TV20jy9qWkZBJphs32r35Jqlx0B7vb01OdtBqIxbS7picn-NmgmNxZDqJBeIv4bhTEQjafKFI6F2aEPl4kLCWrw6rm7f4xWYtlAp53haJSG0W6vIWHvbA.1632316283686.2592000000.w4afeNZT_G0Zn7jQM0Ru3f7ItIFtBZPmspKRYgngIvo",
+    // "referer": "https://femundlopet.no/v2/",
+    // "sec-fetch-dest": "document",
+    // "sec-fetch-mode": "navigate",
+    // "sec-fetch-site": "same-origin",
+    // "sec-fetch-user": "?1",
+    // "upgrade-insecure-requests": "1",
+    // "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:92.0) Gecko/20100101 Firefox/92.0",
+    // "via": "2.0 84e4cca7594b188d1fc78926770ee142.cloudfront.net (CloudFront)",
+    // "x-amz-cf-id": "AKR9tdgX9YBIEtqarmDVeceS1KDgROp3kcuhEkiNF3I4CNfzMTexWA==",
+    // "x-forwarded-for": "46.212.86.188, 70.132.45.166",
+    // "x-forwarded-port": "1100",
+    // "x-forwarded-proto": "http",
+    // "connection": "keep-alive"
+    // }
+
     const generateJwt = account => jwt.sign({ email: account.email }, req.config.jwt.secret);
     const token = generateJwt({ email: req.config.blog.email });
 

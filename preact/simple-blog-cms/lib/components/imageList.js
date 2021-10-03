@@ -345,7 +345,7 @@ export default class ImageList extends Component {
                                                 </div>
                                             ) : (
                                                 <div class='display-4 text-muted'>
-                                                    <i class={`fas fa-file-${ext}`} />
+                                                    {ext === 'gpx' ? <i class='fas fa-map-marked-alt' /> : <i class={`fas fa-file-${ext}`} />}
                                                 </div>
                                             )}
                                         </div>

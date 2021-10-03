@@ -105,6 +105,9 @@ webRouter.use('/preact/simple-blog-weather/', express.static(`${appPath}preact/s
 webRouter.use('/preact/simple-blog-rating/', express.static(`${appPath}preact/simple-blog-rating/bundle/`));
 webRouter.use('/preact/simple-blog-cookies/', express.static(`${appPath}preact/simple-blog-cookies/bundle/`));
 
+webRouter.use('/preact/simple-blog-map/', express.static(`${appPath}preact/simple-blog-map/bundle/`));
+webRouter.use('/assets/', express.static(`${appPath}preact/simple-blog-map/bundle/assets/`));
+
 webRouter.post('/push-register', require('./post-push-register'));
 webRouter.post('/push-error', require('./post-push-error'));
 webRouter.get('/push-send', require('./get-push-send'));

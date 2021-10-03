@@ -46,7 +46,7 @@ const statusList = [
     { value: 2, title: 'Live' },
 ];
 
-const widgetList = ['clock', 'booking', 'form', 'sheet', 'poll', 'gallery', 'weather', 'rating', 'related', 'cookies'];
+const widgetList = ['clock', 'booking', 'form', 'sheet', 'poll', 'gallery', 'weather', 'map', 'rating', 'related', 'cookies'];
 
 const widgetFields = {
     clock: ['class', 'style', 'countdownto', 'showDateOnly', 'showSeconds', 'showTimezone', 'showClockOnly'],
@@ -56,6 +56,7 @@ const widgetFields = {
     poll: ['class', 'style'],
     gallery: ['class', 'style', 'class-photo', 'class-photo-img', 'start', 'end'],
     weather: ['class', 'style', 'name', 'height', 'lat', 'lon', 'date'],
+    map: ['class', 'style'],
     rating: ['class', 'style', 'from', 'to'],
     related: ['class', 'style', 'tags'],
     cookies: ['class', 'style'],
@@ -1822,7 +1823,7 @@ export default class ArticleEdit extends Component {
                                 <div class='d-flex w-100 justify-content-between'>
                                     {isImg && <p>{img.src && <img src={`https://${imageServer}/150x/${imagePath}/${img.src}`} style='max-height: 150px;'  class='img-fluid' onError={this.handleImageErrored} />}</p>}
                                     {!isImg && ext && <div class='display-4 text-muted'>
-                                        <i class={`fas fa-file-${ext}`} />
+                                        {ext === 'gpx' ? <i class='fas fa-map-marked-alt' /> : <i class={`fas fa-file-${ext}`} />}
                                     </div>}
                                     <small>
                                         <button class='btn btn-sm m-1' onClick={this.handleClickCode} data-content={`[${img.title|| ''}](https://${imageServer}/original/${imagePath}/${img.src} '${img.text || ''}')\n`}>
@@ -1874,6 +1875,9 @@ export default class ArticleEdit extends Component {
                                         <button class='btn btn-sm m-1' onClick={this.handleClickCode} data-content={`@[:img.${idx}.exif.lat],[:img.${idx}.exif.lng]\n`}>
                                             <i class='fas fa-location-arrow'></i> GPS
                                         </button>
+                                        {ext === 'gpx' && <button class='btn btn-sm m-1' onClick={this.handleClickCode} data-content={`{{widget name=map fileIdx=${idx}}}\n`}>
+                                            <i class='fas fa-location-arrow'></i> Widget map
+                                        </button>}
                                         <button class='btn btn-sm m-1' onClick={this.handleClickCode} data-content={`**Dette bildet er tilsalgs. Send meg en _[e-post](mailto:sorenso@gmail.com?subject=Henvendelse%20ang%20bilde:%20[:img.${idx}.src])_ eller ta kontakt på _[Facebook](http://facebook.com/sorenso)_ om du er interessert.**\n`}>
                                             <i class='fas fa-shopping-cart'></i> Kjøp
                                         </button>
@@ -1968,9 +1972,18 @@ export default class ArticleEdit extends Component {
                         </div>
                     )}
                     {imglist.map((img, idx) => {
+                        const isImg = isImage(img.ext || img.src);
+                        const ext = img.ext ? img.ext.replace(/\./, '') : '';
+
                         return (
                             <div class='col-2 p-1'>
-                                {img.src && <img src={`https://${imageServer}/150x/${imagePath}/${img.src}`} class='img-fluid' data-idx={idx} onclick={handleImglistClick} onError={this.handleImageErrored}/>}
+                                {isImg && <img src={`https://${imageServer}/150x/${imagePath}/${img.src}`} class='img-fluid' data-idx={idx} onclick={handleImglistClick} onError={this.handleImageErrored}/>}
+                                {!isImg && ext && <div class='display-4 text-muted'>
+                                    {ext === 'gpx' ? <i class='fas fa-map-marked-alt' /> : <i class={`fas fa-file-${ext}`} />}
+                                </div>}
+                                <small class='text-muted'>
+                                    {img.name}
+                                </small>
                             </div>
                         );
                     })}

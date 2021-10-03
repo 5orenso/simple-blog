@@ -131,7 +131,7 @@
                     <div class='mb-1 {{ art.catRef.artlistTeaserClass }}'>{{ art.ingress|md|safe }}</div>
                 {% endif %}
 
-                {% for widget in ['helloworld', 'clock', 'booking', 'form', 'sheet', 'poll', 'gallery', 'weather', 'rating', 'related'] %}
+                {% for widget in ['helloworld', 'clock', 'booking', 'form', 'sheet', 'poll', 'gallery', 'weather', 'map', 'rating', 'related'] %}
                     {% if art.widgetList === widget %}
                         <div class='w-100 my-2 clearfix' data-widget-host="simple-blog-{{ widget }}">
                             <script type="text/props">
