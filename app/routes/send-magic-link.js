@@ -12,10 +12,18 @@ module.exports = (req, res) => {
     const hrstart = process.hrtime();
     webUtil.printIfDev(`Route: ${routePath}/${routeName}`, req.query, req.param);
 
-    if (req.useragent.isBot) {
-        return res.redirect(`/v2/`);
-    }
-    if (!req.useragent.isMobile && !req.useragent.isDesktop) {
+    // if (req.useragent.isBot) {
+    //     return res.redirect(`/v2/`);
+    // }
+    // if (!req.useragent.isMobile && !req.useragent.isDesktop) {
+    //     return res.redirect(`/v2/`);
+    // }
+    if (req.headers['cloudfront-viewer-country'] === 'NO') {
+        // Good to go!
+    } else if (req.headers['cloudfront-is-desktop-viewer'] === 'false'
+        && req.headers['cloudfront-is-mobile-viewer'] === 'false'
+        && req.headers['cloudfront-is-smarttv-viewer'] === 'false'
+        && req.headers['cloudfront-is-tablet-viewer'] === 'false') {
         return res.redirect(`/v2/`);
     }
 
