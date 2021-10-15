@@ -18,12 +18,14 @@ module.exports = async (req, res) => {
 
     const art = new Article();
     const artFrontpage = new Article();
+    const artFrontpageBanner = new Article();
     const artAds = new Article();
     const artAdsLower = new Article();
     const artAdsLowerUpper = new Article();
     const artBottom = new Article();
 
     const catFrontpage = new Category();
+    const catFrontpageBanner = new Category();
     const catMenu = new Category();
     const catAds = new Category();
     const catAdsLower = new Category();
@@ -193,6 +195,13 @@ module.exports = async (req, res) => {
         queryAdsLowerUpper = { type: 22 };
     }
 
+    const frontpageBannercats = await catFrontpageBanner.find({ type: 24 });
+    const artlistFrontpageBanner = await artFrontpageBanner.find({ status: 2, categoryId: { $in: frontpageBannercats.map(c => c.id) } });
+    if (tc.isArray(artlistFrontpageBanner)) {
+        artlistFrontpageBanner.forEach((a) => {
+            a.catRef = frontpageBannercats.find(c => c.id === a.categoryId);
+        });
+    }
     if (isFrontpage && frontpagelist.length > 0) {
         artlist = frontpagelist.concat(artlist);
     }
@@ -258,6 +267,7 @@ module.exports = async (req, res) => {
         category: util.useLanguage(category, language),
         frontpage: util.useLanguage(frontpage, language),
         catlist: util.useLanguage(catlist, language),
+        artlistFrontpageBanner: util.useLanguage(artlistFrontpageBanner, language),
         adlist,
         adlistLower,
         adlistLowerUpper,

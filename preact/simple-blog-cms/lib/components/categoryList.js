@@ -21,6 +21,7 @@ const typeList = [
     { value: 18, title: 'Spesialløsninger innhold nedre' },
     { value: 20, title: 'Annonser i spesialløsninger øvre' },
     { value: 21, title: 'Annonser i spesialløsningernedre' },
+    { value: 24, title: 'Forsiden under toppsak' },
 ];
 
 export default class CategoryList extends Component {

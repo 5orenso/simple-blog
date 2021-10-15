@@ -191,7 +191,17 @@
     {% if adlist[0] %}
         {{ articleMacro.adList(adlist) }}
     {% endif %}
-    
+
+    {% if artlistFrontpageBanner[0] %}
+        <div class="container">
+            <div class="row">
+                {% for art in artlistFrontpageBanner %}
+                    {{ articleMacro.articleTeaser(art, 12, 'text-center py-0 my-0', 'h3') }}
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+
     <div class="container">
         <div class="row">
             <main class="col-sm-12 col-md-12 pt-0 blog-main">
