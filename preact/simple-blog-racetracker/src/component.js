@@ -186,11 +186,18 @@ export default function App(props) {
         <div class={`${article['clock-class']}`} style={`${article['clock-style']}`}>
             {/* <xmp>{JSON.stringify(rawRaceData, null, 4)}</xmp> */}
 
-            <div class='mb-2'>
-                <ul class='nav nav-pills nav-fill'>
+            <div class='mb-5'>
+                <ul class='nav nav-pills nav-justified'>
                     {races && races.map((race, idx) => <>
                         <li class='nav-item mr-3'>
-                            <button class={`btn btn-block nav-link ${currentRace === idx ? 'active' : ''} text-center`} data-idx={idx} data-current={currentRace} onClick={onClickTab}>{race}</button>
+                            <button
+                                class={`btn btn-lg btn-block nav-link border ${currentRace === idx ? 'active' : ''} text-center`}
+                                data-idx={idx}
+                                data-current={currentRace}
+                                onClick={onClickTab}
+                            >
+                                {race}
+                            </button>
                         </li>
                     </>)}
                 </ul>
