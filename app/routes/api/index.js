@@ -19,6 +19,7 @@ router.use('/bookings/', wrap(require('./bookings/')));
 router.use('/forms/', wrap(require('./forms/')));
 router.use('/sheets/', wrap(require('./sheets/')));
 router.use('/yr/', wrap(require('./yr/')));
+router.use('/proxy/', wrap(require('./proxy/')));
 
 router.get('/article/', wrap(require('./get-article')));
 router.get('/article/:id', wrap(require('./get-article')));

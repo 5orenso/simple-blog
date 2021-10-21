@@ -66,7 +66,7 @@ export default function App(props) {
 
     const bgClasses = ['bg-success', 'bg-warning', 'bg-danger', 'bg-primary', 'bg-secondary'];
     const searchWords = searchText.trim().split(' ');
-    const regexpList = searchWords.map(word => new RegExp(`(${word})`, 'i'));
+    const regexpList = searchWords.filter(w => w.length > 1).map(word => new RegExp(`(${word})`, 'i'));
     const replacer = (match, p1, offset, string) => {
         const stringWithoutHtml = string.replace(/<.+?>/g, '');
         const bgClass = searchWords.findIndex(e => e.toLowerCase() === p1.toLowerCase());

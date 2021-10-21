@@ -83,6 +83,13 @@ function calculateTimeLeft({ countdownto }) {
             m: Math.floor((difference / 1000 / 60) % 60),
             s: Math.floor((difference / 1000) % 60),
         };
+    } else {
+        timeLeft = {
+            d: 0,
+            h: 0,
+            m: 0,
+            s: 0,
+        };
     }
     return timeLeft;
 }
@@ -136,7 +143,11 @@ export default function App(props) {
 
     return (
         <div class={`${article['clock-class']}`} style={`${article['clock-style']}`}>
-            {timerComponents.length ? timerComponents : <span>{timeNow}</span>}
+            {countdownto ? <>
+                {timerComponents.length ? timerComponents : ''}
+            </> : <>
+                {timerComponents.length ? timerComponents : <span>{timeNow}</span>}
+            </>}
             {/* {JSON.stringify(article)} */}
         </div>
     );
