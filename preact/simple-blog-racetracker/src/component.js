@@ -224,7 +224,7 @@ export default function App(props) {
                             <thead>
                                 <tr>
                                     <th scope='col'>#</th>
-                                    <th scope='col'>Bib</th>
+                                    {/* <th scope='col'>Bib</th> */}
                                     <th scope='col'>Name</th>
                                     <th scope='col'>Club/Team</th>
                                     <th scope='col'>Nation</th>
@@ -244,7 +244,7 @@ export default function App(props) {
                                     return (<>
                                         <tr>
                                             <td class='font-weight-light'>{idx + 1}</td>
-                                            <td>{musher.Bib}</td>
+                                            {/* <td>{musher.Bib}</td> */}
                                             <td>
                                                 <nobr>
                                                     <Markdown markdown={`${musherName}`} markdownOpts={MARKDOWN_OPTIONS} />
