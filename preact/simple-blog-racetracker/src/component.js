@@ -58,7 +58,7 @@ function fetchApi({ url, headers = {}, body = {}, settings = {} }) {
 }
 
 export default function App(props) {
-    const { apiServer, jwtToken, articleId, showSearch = true } = props;
+    const { apiServer, jwtToken, articleId, showSearch = true, language = 'EN' } = props;
 
     const [article, setArticle] = useState({});
     useEffect(() => {
@@ -188,18 +188,34 @@ export default function App(props) {
 
             <div class='mb-5'>
                 <ul class='nav nav-pills nav-justified'>
-                    {races && races.map((race, idx) => <>
-                        <li class='nav-item mr-3'>
-                            <button
-                                class={`btn btn-lg btn-block nav-link border ${currentRace === idx ? 'active' : ''} text-center`}
-                                data-idx={idx}
-                                data-current={currentRace}
-                                onClick={onClickTab}
-                            >
-                                {race}
-                            </button>
-                        </li>
-                    </>)}
+                    {races && races.map((race, idx) =>  {
+                        const regexp = new RegExp('^{(.+?)}$');
+                        let raceName = race;
+                        if (regexp.test(race)) {
+                            const raceLang = {};
+                            const raceString = race.replace(/^\{(.+?)\}$/, '$1');
+                            const raceParts = raceString.split('|');
+                            raceParts.forEach(lang => {
+                                const parts = lang.split(':');
+                                raceLang[parts[0]] = parts[1];
+                            });
+                            if (raceLang[language]) {
+                                raceName = raceLang[language];
+                            }
+                        }
+                        return (<>
+                            <li class='nav-item mr-3'>
+                                <button
+                                    class={`btn btn-lg btn-block nav-link border ${currentRace === idx ? 'active' : ''} text-center`}
+                                    data-idx={idx}
+                                    data-current={currentRace}
+                                    onClick={onClickTab}
+                                >
+                                    {raceName}
+                                </button>
+                            </li>
+                        </>);
+                    })}
                 </ul>
             </div>
 
@@ -216,9 +232,23 @@ export default function App(props) {
                 if (!rows || rows.length === 0) {
                     return '';
                 }
+                const regexp = new RegExp('^{(.+?)}$');
+                let raceName = race;
+                if (regexp.test(race)) {
+                    const raceLang = {};
+                    const raceString = race.replace(/^\{(.+?)\}$/, '$1');
+                    const raceParts = raceString.split('|');
+                    raceParts.forEach(lang => {
+                        const parts = lang.split(':');
+                        raceLang[parts[0]] = parts[1];
+                    });
+                    if (raceLang[language]) {
+                        raceName = raceLang[language];
+                    }
+                }
 
                 return (<>
-                    <h5 class='mt-5'>{racePrefix || ''} {race}</h5>
+                    <h5 class='mt-5'>{racePrefix || ''} {raceName}</h5>
                     <div class='table-responsive-xl'>
                         <table class='table table-striped'>
                             <thead>
