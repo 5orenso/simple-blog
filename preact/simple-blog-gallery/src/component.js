@@ -135,15 +135,23 @@ export default function App(props) {
                     {filteredImages && filteredImages.map((img, idx) => (
                         <div class={`col-12 clearfix position-relative p-0 ${article['gallery-class-photo']} ${photoClass}`}>
                             <div
-                                class={`w-100 text-center rounded-lg imageContainer d-flex justify-content-center align-items-center`}
+                                class={`w-100 h-100 text-center rounded-lg imageContainer d-flex justify-content-center align-items-center`}
                                 style={`
                                     scroll-snap-align: start;
                                     flex-wrap: wrap;
                                     overflow-y: hidden;
                                 `}
-                            >					
+                            >
+                                <div
+                                    class='position-absolute w-100 h-100'
+                                    style={`
+                                        background-image: url('${`https://${imageServer}/400x/${imagePath}/${img.src}`}'); background-size: cover;
+                                        filter: blur(10px);
+                                        opacity: 0.5;
+                                    `}
+                                />
                                 {img.src ? <img
-                                    class={`img-fluid ${article['gallery-class-photo-img']} ${imgClass}`}
+                                    class={`img-fluid position-relative ${article['gallery-class-photo-img']} ${imgClass}`}
                                     src={`https://${imageServer}/${size}/${imagePath}/${img.src}`}
                                     loading='lazy'
                                     style={`max-height: 75vh; ${idx !== imageIdx ? '' : ''}`}
@@ -152,7 +160,7 @@ export default function App(props) {
                                         <i class='fas fa-camera' />
                                     </span>
                                 </>}
-                                {img.title && <div class='position-absolute text-white font-weight-lighter px-3 w-100' style='bottom: 0px; background-color: rgba(0, 0, 0, 0.4)'>
+                                {img.title && <div class='position-absolute text-white font-weight-lighter pt-1 pb-4 w-100' style='bottom: 0px; background-color: rgba(0, 0, 0, 0.6)'>
                                     {img.text && <Markdown markdown={`__${img.title}__ ${img.text}`} markdownOpts={MARKDOWN_OPTIONS} />}
                                 </div>}
                             </div>
@@ -170,26 +178,25 @@ export default function App(props) {
                             </small>
                         </small>
                     </div>
+                    <div
+                        class='position-absolute text-white font-weight-lighter px-1 py-1 rounded-lg'
+                        style='top: 10px; right: 10px; background-color: rgba(0, 0, 0, 0.3); line-height: 0.6em;'
+                    >
+                        <small>{imageIdx + 1} / {filteredImages.length}</small>
+                    </div>
                 </>}
-
-                <div
-                    class='position-absolute text-white font-weight-lighter px-1 py-1 rounded-lg'
-                    style='top: 10px; right: 10px; background-color: rgba(0, 0, 0, 0.3); line-height: 0.6em;'
-                >
-                    <small><small>{imageIdx + 1} / {filteredImages.length}</small></small>
-                </div>
 
                 {hasPrev && <div
                     class='position-absolute d-none d-lg-block'
                     style='top: 50%; left: 5px;'
                 >
-                    <button type='button' class='btn btn-link text-secondary' style='font-size: 2.0em; opacity: 0.4;' onClick={onClickScrollLeft}><i class='fas fa-arrow-circle-left' /></button>
+                    <button type='button' class='btn btn-link text-secondary' style='font-size: 2.0em; opacity: 0.6;' onClick={onClickScrollLeft}><i class='fas fa-arrow-circle-left' /></button>
                 </div>}
                 {hasNext && <div
                     class='position-absolute d-none d-lg-block'
                     style='top: 50%; right: 5px;'
                 >
-                    <button type='button' class='btn btn-link text-secondary' style='font-size: 2.0em; opacity: 0.4;' onClick={onClickScrollRight}><i class='fas fa-arrow-circle-right' /></button>
+                    <button type='button' class='btn btn-link text-secondary' style='font-size: 2.0em; opacity: 0.6;' onClick={onClickScrollRight}><i class='fas fa-arrow-circle-right' /></button>
                 </div>}
 
             </div>
