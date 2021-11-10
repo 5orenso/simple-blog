@@ -190,13 +190,13 @@ export default function App(props) {
                     class='position-absolute d-none d-lg-block'
                     style='top: 50%; left: 5px;'
                 >
-                    <button type='button' class='btn btn-link text-secondary' style='font-size: 2.0em; opacity: 0.6;' onClick={onClickScrollLeft}><i class='fas fa-arrow-circle-left' /></button>
+                    <button type='button' class='btn btn-link text-secondary' style='font-size: 3.0em; opacity: 0.7;' onClick={onClickScrollLeft}><i class='fas fa-arrow-circle-left' /></button>
                 </div>}
                 {hasNext && <div
                     class='position-absolute d-none d-lg-block'
                     style='top: 50%; right: 5px;'
                 >
-                    <button type='button' class='btn btn-link text-secondary' style='font-size: 2.0em; opacity: 0.6;' onClick={onClickScrollRight}><i class='fas fa-arrow-circle-right' /></button>
+                    <button type='button' class='btn btn-link text-secondary' style='font-size: 3.0em; opacity: 0.7;' onClick={onClickScrollRight}><i class='fas fa-arrow-circle-right' /></button>
                 </div>}
 
             </div>
