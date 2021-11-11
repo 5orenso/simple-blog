@@ -6,6 +6,8 @@ import ImageUpload from './imageUpload';
 import MessagesLite from './messagesLite';
 
 import Edit from './article/edit';
+import Preview from './article/preview';
+import FrontpagePreview from './article/frontpagePreview';
 import Menu from './article/menu';
 
 import util from '../util';
@@ -434,411 +436,10 @@ console.log('articleEdit.render');
             }
         });
 
-        // const renderedMenu = (
-        //     <nav class='nav nav-pills nav-fill mb-3 sticky-top bg-light'>
-        //         <a class={`nav-item nav-link ${currentMenu === 'preview' ? 'active' : ''}`} href='#'
-        //             onClick={this.handleMenuClick} data-menu='preview'><i class='fas fa-eye'></i> Forhåndsvisning</a>
-        //         <a class={`nav-item nav-link ${currentMenu === 'frontpagepreview' ? 'active' : ''}`} href='#'
-        //             onClick={this.handleMenuClick} data-menu='frontpagepreview'><i class='fas fa-eye'></i> I lister</a>
-        //         <a class={`nav-item nav-link ${currentMenu === 'images' ? 'active' : ''}`} href='#'
-        //             onClick={this.handleMenuClick} data-menu='images'><i class='fas fa-images'></i> Bilder ({imagesTotal})</a>
-        //         <a class={`nav-item nav-link ${currentMenu === 'youtube' ? 'active' : ''}`} href='#'
-        //             onClick={this.handleMenuClick} data-menu='youtube'><i class='fas fa-video'></i> Youtube</a>
-        //         <a class={`nav-item nav-link ${currentMenu === 'links' ? 'active' : ''}`} href='#'
-        //             onClick={this.handleMenuClick} data-menu='links'><i class='fas fa-link'></i> Lenker</a>
-        //         <a class={`nav-item nav-link ${currentMenu === 'meta' ? 'active' : ''}`} href='#'
-        //             onClick={this.handleMenuClick} data-menu='meta'><i class='fas fa-tags'></i> Meta</a>
-        //         <a class={`nav-item nav-link ${currentMenu === 'markdown' ? 'active' : ''}`} href='#'
-        //             onClick={this.handleMenuClick} data-menu='markdown'><i class='fas fa-code'></i> Annet</a>
-        //     </nav>
-        // );
-
         const shareLink = `${this.imageServer}/${utilHtml.asLinkPart(article.category)}/${utilHtml.asLinkPart(article.title)}/${article.id}`;
 // {/* <div class='rounded-lg' style={`background-color: ${backgroundHex};`}>
 //                                     <h1 style={`color: ${forgroundHex}; font-size: ${article.fontsize}em; font-weight: ${article.fontweight};`}>{article.title}</h1>
 //                                 </div> */}
-
-        const renderedFrontpagePreview = (
-            <div class='col-12 pt-3'>
-                <div class='row'>
-                    <div class='col-12 pt-3' style={`background-color: ${backgroundHex}; color: ${forgroundHex};`}>
-                        {renderImages}
-                        <h1 style={`color: ${forgroundHex}; font-size: ${article.fontsizeH1}rem; font-weight: ${article.fontweightH1};`}>{article.title}</h1>
-                        <h5>{article.teaser}</h5>
-                        <div>
-                            <small>
-                                {util.asHumanReadable(article.published)}
-                                {util.asHumanReadable(article.published) !== util.asHumanReadable(article.updatedDate) && <span class='text-muted'> / <i class='fas fa-undo' /> {util.asHumanReadable(article.updatedDate)}</span>}
-                                &nbsp; /  <i class='far fa-folder-open' /> {article.category}
-                                &nbsp; / &nbsp;
-                                <span class={`badge badge-${util.getStatusClass(article.status)} p-2`}>
-                                    {util.getStatus(article.status)}
-                                </span>
-                                &nbsp; / 
-                                &nbsp;<a rel='noopener' target='_blank' href={`https://www.facebook.com/sharer.php?u=${shareLink}`}>
-                                    <i class='fab fa-facebook'></i>
-                                </a>
-                                &nbsp;<a rel='noopener' target='_blank' href={`https://twitter.com/intent/tweet?url=${shareLink}`
-                                    + `&text=${utilHtml.asUrlSafe(article.title)}.%20`
-                                    + `${utilHtml.asUrlSafe(article.teaser || article.ingress)}`
-                                    + `&via=${utilHtml.asUrlSafe(this.imageServer)}`
-                                    + `&hashtags=${utilHtml.asUrlSafe(article.tags)}`}>
-                                    <i class='fab fa-twitter'></i>
-                                </a>
-                                &nbsp;<a rel='noopener' target='_blank' href={`https://www.linkedin.com/shareArticle?mini=true`
-                                    + `&url=${shareLink}`
-                                    + `&summary=${utilHtml.asUrlSafe(article.title)}.%20`
-                                    + `${utilHtml.asUrlSafe(article.teaser || article.ingress)}`
-                                    + `&source=${utilHtml.asUrlSafe(this.imageServer)}`}>
-                                    <i class='fab fa-linkedin-in'></i>
-                                </a>
-                                &nbsp;<a rel='noopener' target='_blank' href={`mailto:?subject=Tips: `
-                                    + `${utilHtml.asUrlSafe(article.title)}`
-                                    + `&body=Tips fra ${utilHtml.asUrlSafe(this.imageServer)}:%0D%0A%0D%0A`
-                                    + `${utilHtml.asUrlSafe(utilHtml.uc(article.title))}%0D%0A%0D%0A`
-                                    + `${utilHtml.asUrlSafe(article.teaser || article.ingress)}%0D%0A%0D%0A`
-                                    + `Les mer: ${shareLink}`}>
-                                    <i class='far fa-envelope'></i>
-                                </a>
-                                &nbsp; /                        
-                                Ord: {util.wordCount(article.body)}
-                                &nbsp; /                        
-                                Lesetid: {util.readTime(article.body, 'no')}
-                            </small>
-                        </div>
-                        <div class='mb-3'>
-                            <small>
-                                {Array.isArray(article.tags) && article.tags.map(tag =>
-                                    <span class='badge badge-info mr-1'>{tag}</span>
-                                )}
-                            </small>
-                        </div>
-                        <div class='lead' id='ingressDisplay' dangerouslySetInnerHTML={{
-                            __html: utilHtml.replaceMarked(
-                                utilHtml.replaceDataTags(article.ingress, article)
-                            ),
-                        }}></div>
-                    </div>
-                </div>
-                <div class='row mt-4'>
-                    <div class='col-4 pt-3' style={`background-color: ${backgroundHex}; color: ${forgroundHex};`}>
-                        {renderImages}
-                        <h3 style={`color: ${forgroundHex}; font-size: ${article.fontsizeH3}rem; font-weight: ${article.fontweightH3};`}>{article.title}</h3>
-                        <h5>{article.teaser}</h5>
-                        <div>
-                            <small>
-                                {util.asHumanReadable(article.published)}
-                                {util.asHumanReadable(article.published) !== util.asHumanReadable(article.updatedDate) && <span class='text-muted'> / <i class='fas fa-undo' /> {util.asHumanReadable(article.updatedDate)}</span>}
-                                &nbsp; /  <i class='far fa-folder-open' /> {article.category}
-                                &nbsp; / &nbsp;
-                                <span class={`badge badge-${util.getStatusClass(article.status)} p-2`}>
-                                    {util.getStatus(article.status)}
-                                </span>
-                                &nbsp; / 
-                                &nbsp;<a rel='noopener' target='_blank' href={`https://www.facebook.com/sharer.php?u=${shareLink}`}>
-                                    <i class='fab fa-facebook'></i>
-                                </a>
-                                &nbsp;<a rel='noopener' target='_blank' href={`https://twitter.com/intent/tweet?url=${shareLink}`
-                                    + `&text=${utilHtml.asUrlSafe(article.title)}.%20`
-                                    + `${utilHtml.asUrlSafe(article.teaser || article.ingress)}`
-                                    + `&via=${utilHtml.asUrlSafe(this.imageServer)}`
-                                    + `&hashtags=${utilHtml.asUrlSafe(article.tags)}`}>
-                                    <i class='fab fa-twitter'></i>
-                                </a>
-                                &nbsp;<a rel='noopener' target='_blank' href={`https://www.linkedin.com/shareArticle?mini=true`
-                                    + `&url=${shareLink}`
-                                    + `&summary=${utilHtml.asUrlSafe(article.title)}.%20`
-                                    + `${utilHtml.asUrlSafe(article.teaser || article.ingress)}`
-                                    + `&source=${utilHtml.asUrlSafe(this.imageServer)}`}>
-                                    <i class='fab fa-linkedin-in'></i>
-                                </a>
-                                &nbsp;<a rel='noopener' target='_blank' href={`mailto:?subject=Tips: `
-                                    + `${utilHtml.asUrlSafe(article.title)}`
-                                    + `&body=Tips fra ${utilHtml.asUrlSafe(this.imageServer)}:%0D%0A%0D%0A`
-                                    + `${utilHtml.asUrlSafe(utilHtml.uc(article.title))}%0D%0A%0D%0A`
-                                    + `${utilHtml.asUrlSafe(article.teaser || article.ingress)}%0D%0A%0D%0A`
-                                    + `Les mer: ${shareLink}`}>
-                                    <i class='far fa-envelope'></i>
-                                </a>
-                                &nbsp; /                        
-                                Ord: {util.wordCount(article.body)}
-                                &nbsp; /                        
-                                Lesetid: {util.readTime(article.body, 'no')}
-                            </small>
-                        </div>
-                        <div class='mb-3'>
-                            <small>
-                                {Array.isArray(article.tags) && article.tags.map(tag =>
-                                    <span class='badge badge-info mr-1'>{tag}</span>
-                                )}
-                            </small>
-                        </div>
-                        <div class='lead' id='ingressDisplay' dangerouslySetInnerHTML={{
-                            __html: utilHtml.replaceMarked(
-                                utilHtml.replaceDataTags(article.ingress, article)
-                            ),
-                        }}></div>
-                    </div>
-                    <div class='col-3 offset-1 pt-3' style={`background-color: ${backgroundHex}; color: ${forgroundHex};`}>
-                        {renderImages}
-                        <h3 style={`color: ${forgroundHex}; font-size: ${article.fontsizeH3}rem; font-weight: ${article.fontweightH3};`}>{article.title}</h3>
-                        <h6>{article.teaser}</h6>
-                        <div>
-                            <small>
-                                {util.asHumanReadable(article.published)}
-                                {util.asHumanReadable(article.published) !== util.asHumanReadable(article.updatedDate) && <span class='text-muted'> / <i class='fas fa-undo' /> {util.asHumanReadable(article.updatedDate)}</span>}
-                                &nbsp; /  <i class='far fa-folder-open' /> {article.category}
-                                &nbsp; / &nbsp;
-                                <span class={`badge badge-${util.getStatusClass(article.status)} p-2`}>
-                                    {util.getStatus(article.status)}
-                                </span>
-                                &nbsp; / 
-                                &nbsp;<a rel='noopener' target='_blank' href={`https://www.facebook.com/sharer.php?u=${shareLink}`}>
-                                    <i class='fab fa-facebook'></i>
-                                </a>
-                                &nbsp;<a rel='noopener' target='_blank' href={`https://twitter.com/intent/tweet?url=${shareLink}`
-                                    + `&text=${utilHtml.asUrlSafe(article.title)}.%20`
-                                    + `${utilHtml.asUrlSafe(article.teaser || article.ingress)}`
-                                    + `&via=${utilHtml.asUrlSafe(this.imageServer)}`
-                                    + `&hashtags=${utilHtml.asUrlSafe(article.tags)}`}>
-                                    <i class='fab fa-twitter'></i>
-                                </a>
-                                &nbsp;<a rel='noopener' target='_blank' href={`https://www.linkedin.com/shareArticle?mini=true`
-                                    + `&url=${shareLink}`
-                                    + `&summary=${utilHtml.asUrlSafe(article.title)}.%20`
-                                    + `${utilHtml.asUrlSafe(article.teaser || article.ingress)}`
-                                    + `&source=${utilHtml.asUrlSafe(this.imageServer)}`}>
-                                    <i class='fab fa-linkedin-in'></i>
-                                </a>
-                                &nbsp;<a rel='noopener' target='_blank' href={`mailto:?subject=Tips: `
-                                    + `${utilHtml.asUrlSafe(article.title)}`
-                                    + `&body=Tips fra ${utilHtml.asUrlSafe(this.imageServer)}:%0D%0A%0D%0A`
-                                    + `${utilHtml.asUrlSafe(utilHtml.uc(article.title))}%0D%0A%0D%0A`
-                                    + `${utilHtml.asUrlSafe(article.teaser || article.ingress)}%0D%0A%0D%0A`
-                                    + `Les mer: ${shareLink}`}>
-                                    <i class='far fa-envelope'></i>
-                                </a>
-                                &nbsp; /                        
-                                Ord: {util.wordCount(article.body)}
-                                &nbsp; /                        
-                                Lesetid: {util.readTime(article.body, 'no')}
-                            </small>
-                        </div>
-                        <div class='mb-3'>
-                            <small>
-                                {Array.isArray(article.tags) && article.tags.map(tag =>
-                                    <span class='badge badge-info mr-1'>{tag}</span>
-                                )}
-                            </small>
-                        </div>
-                        <div class='lead' id='ingressDisplay' dangerouslySetInnerHTML={{
-                            __html: utilHtml.replaceMarked(
-                                utilHtml.replaceDataTags(article.ingress, article)
-                            ),
-                        }}></div>
-                    </div>
-                    <div class='col-2 offset-1 pt-3' style={`background-color: ${backgroundHex}; color: ${forgroundHex};`}>
-                        {renderImages}
-                        <h5 style={`color: ${forgroundHex}; font-size: ${article.fontsizeH5}rem; font-weight: ${article.fontweightH5};`}>{article.title}</h5>
-                        <h6>{article.teaser}</h6>
-                        <div>
-                            <small>
-                                {util.asHumanReadable(article.published)}
-                                {util.asHumanReadable(article.published) !== util.asHumanReadable(article.updatedDate) && <span class='text-muted'> / <i class='fas fa-undo' /> {util.asHumanReadable(article.updatedDate)}</span>}
-                                &nbsp; /  <i class='far fa-folder-open' /> {article.category}
-                                &nbsp; / &nbsp;
-                                <span class={`badge badge-${util.getStatusClass(article.status)} p-2`}>
-                                    {util.getStatus(article.status)}
-                                </span>
-                                &nbsp; / 
-                                &nbsp;<a rel='noopener' target='_blank' href={`https://www.facebook.com/sharer.php?u=${shareLink}`}>
-                                    <i class='fab fa-facebook'></i>
-                                </a>
-                                &nbsp;<a rel='noopener' target='_blank' href={`https://twitter.com/intent/tweet?url=${shareLink}`
-                                    + `&text=${utilHtml.asUrlSafe(article.title)}.%20`
-                                    + `${utilHtml.asUrlSafe(article.teaser || article.ingress)}`
-                                    + `&via=${utilHtml.asUrlSafe(this.imageServer)}`
-                                    + `&hashtags=${utilHtml.asUrlSafe(article.tags)}`}>
-                                    <i class='fab fa-twitter'></i>
-                                </a>
-                                &nbsp;<a rel='noopener' target='_blank' href={`https://www.linkedin.com/shareArticle?mini=true`
-                                    + `&url=${shareLink}`
-                                    + `&summary=${utilHtml.asUrlSafe(article.title)}.%20`
-                                    + `${utilHtml.asUrlSafe(article.teaser || article.ingress)}`
-                                    + `&source=${utilHtml.asUrlSafe(this.imageServer)}`}>
-                                    <i class='fab fa-linkedin-in'></i>
-                                </a>
-                                &nbsp;<a rel='noopener' target='_blank' href={`mailto:?subject=Tips: `
-                                    + `${utilHtml.asUrlSafe(article.title)}`
-                                    + `&body=Tips fra ${utilHtml.asUrlSafe(this.imageServer)}:%0D%0A%0D%0A`
-                                    + `${utilHtml.asUrlSafe(utilHtml.uc(article.title))}%0D%0A%0D%0A`
-                                    + `${utilHtml.asUrlSafe(article.teaser || article.ingress)}%0D%0A%0D%0A`
-                                    + `Les mer: ${shareLink}`}>
-                                    <i class='far fa-envelope'></i>
-                                </a>
-                                &nbsp; /                        
-                                Ord: {util.wordCount(article.body)}
-                                &nbsp; /                        
-                                Lesetid: {util.readTime(article.body, 'no')}
-                            </small>
-                        </div>
-                        <div class='mb-3'>
-                            <small>
-                                {Array.isArray(article.tags) && article.tags.map(tag =>
-                                    <span class='badge badge-info mr-1'>{tag}</span>
-                                )}
-                            </small>
-                        </div>
-                        <div class='lead' id='ingressDisplay' dangerouslySetInnerHTML={{
-                            __html: utilHtml.replaceMarked(
-                                utilHtml.replaceDataTags(article.ingress, article)
-                            ),
-                        }}></div>
-                    </div>
-                </div>
-            </div>
-        );
-
-
-        const renderedPreview = (
-            <div class='col-12'>
-                {renderImages}
-
-                {language === 'no' && <div>
-                    <h1>{article.title}</h1>
-                    <h5>{article.teaser}</h5>
-                    <div>
-                        <small>
-                            {util.asHumanReadable(article.published)}
-                            {util.asHumanReadable(article.published) !== util.asHumanReadable(article.updatedDate) && <span class='text-muted'> / <i class='fas fa-undo' /> {util.asHumanReadable(article.updatedDate)}</span>}
-                            &nbsp; /  <i class='far fa-folder-open' /> {article.category}
-                            &nbsp; / &nbsp;
-                            <span class={`badge badge-${util.getStatusClass(article.status)} p-2`}>
-                                {util.getStatus(article.status)}
-                            </span>
-                            &nbsp; / 
-                            &nbsp;<a rel='noopener' target='_blank' href={`https://www.facebook.com/sharer.php?u=${shareLink}`}>
-                                <i class='fab fa-facebook'></i>
-                            </a>
-                            &nbsp;<a rel='noopener' target='_blank' href={`https://twitter.com/intent/tweet?url=${shareLink}`
-                                + `&text=${utilHtml.asUrlSafe(article.title)}.%20`
-                                + `${utilHtml.asUrlSafe(article.teaser || article.ingress)}`
-                                + `&via=${utilHtml.asUrlSafe(this.imageServer)}`
-                                + `&hashtags=${utilHtml.asUrlSafe(article.tags)}`}>
-                                <i class='fab fa-twitter'></i>
-                            </a>
-                            &nbsp;<a rel='noopener' target='_blank' href={`https://www.linkedin.com/shareArticle?mini=true`
-                                + `&url=${shareLink}`
-                                + `&summary=${utilHtml.asUrlSafe(article.title)}.%20`
-                                + `${utilHtml.asUrlSafe(article.teaser || article.ingress)}`
-                                + `&source=${utilHtml.asUrlSafe(this.imageServer)}`}>
-                                <i class='fab fa-linkedin-in'></i>
-                            </a>
-                            &nbsp;<a rel='noopener' target='_blank' href={`mailto:?subject=Tips: `
-                                + `${utilHtml.asUrlSafe(article.title)}`
-                                + `&body=Tips fra ${utilHtml.asUrlSafe(this.imageServer)}:%0D%0A%0D%0A`
-                                + `${utilHtml.asUrlSafe(utilHtml.uc(article.title))}%0D%0A%0D%0A`
-                                + `${utilHtml.asUrlSafe(article.teaser || article.ingress)}%0D%0A%0D%0A`
-                                + `Les mer: ${shareLink}`}>
-                                <i class='far fa-envelope'></i>
-                            </a>
-                            &nbsp; /                        
-                            Ord: {util.wordCount(article.body)}
-                            &nbsp; /                        
-                            Lesetid: {util.readTime(article.body, 'no')}
-                        </small>
-                    </div>
-                    <div class='mb-3'>
-                        <small>
-                            {Array.isArray(article.tags) && article.tags.map(tag =>
-                                <span class='badge badge-info mr-1'>{tag}</span>
-                            )}
-                        </small>
-                    </div>
-                    <div class='lead' id='ingressDisplay' dangerouslySetInnerHTML={{
-                        __html: utilHtml.replaceMarked(
-                            utilHtml.replaceDataTags(article.ingress, article)
-                        ),
-                    }}></div>
-                    <div id='bodyDisplay' dangerouslySetInnerHTML={{
-                        __html: utilHtml.replaceMarked(
-                            utilHtml.replaceDataTags(article.body, article)
-                        ),
-                    }}></div>
-                </div>}
-
-                {language === 'en' && <div>
-                    <h1>{article.titleEn}</h1>
-                    <h5>{article.teaserEn}</h5>
-                    <div>
-                        <small>
-                            {util.asHumanReadable(article.published)}
-                            {util.asHumanReadable(article.published) !== util.asHumanReadable(article.updatedDate) && <span class='text-muted'> / <i class='fas fa-undo' /> {util.asHumanReadable(article.updatedDate)}</span>}
-                            &nbsp; /  <i class='far fa-folder-open' /> {article.category}
-                            &nbsp; / &nbsp;
-                            <span class={`badge badge-${util.getStatusClass(article.status)} p-2`}>
-                                {util.getStatus(article.status)}
-                            </span>
-                            &nbsp; / 
-                            &nbsp;<a rel='noopener' target='_blank' href={`https://www.facebook.com/sharer.php?u=${shareLink}`}>
-                                <i class='fab fa-facebook'></i>
-                            </a>
-                            &nbsp;<a rel='noopener' target='_blank' href={`https://twitter.com/intent/tweet?url=${shareLink}`
-                                + `&text=${utilHtml.asUrlSafe(article.title)}.%20`
-                                + `${utilHtml.asUrlSafe(article.teaser || article.ingress)}`
-                                + `&via=${utilHtml.asUrlSafe(this.imageServer)}`
-                                + `&hashtags=${utilHtml.asUrlSafe(article.tags)}`}>
-                                <i class='fab fa-twitter'></i>
-                            </a>
-                            &nbsp;<a rel='noopener' target='_blank' href={`https://www.linkedin.com/shareArticle?mini=true`
-                                + `&url=${shareLink}`
-                                + `&summary=${utilHtml.asUrlSafe(article.title)}.%20`
-                                + `${utilHtml.asUrlSafe(article.teaser || article.ingress)}`
-                                + `&source=${utilHtml.asUrlSafe(this.imageServer)}`}>
-                                <i class='fab fa-linkedin-in'></i>
-                            </a>
-                            &nbsp;<a rel='noopener' target='_blank' href={`mailto:?subject=Tips: `
-                                + `${utilHtml.asUrlSafe(article.title)}`
-                                + `&body=Tips fra ${utilHtml.asUrlSafe(this.imageServer)}:%0D%0A%0D%0A`
-                                + `${utilHtml.asUrlSafe(utilHtml.uc(article.title))}%0D%0A%0D%0A`
-                                + `${utilHtml.asUrlSafe(article.teaser || article.ingress)}%0D%0A%0D%0A`
-                                + `Les mer: ${shareLink}`}>
-                                <i class='far fa-envelope'></i>
-                            </a>
-                            &nbsp; /                        
-                            Words: {util.wordCount(article.bodyEn)}
-                            &nbsp; /                        
-                            Read time: {util.readTime(article.body, 'en')}
-                        </small>
-                    </div>
-                    <div class='mb-3'>
-                        <small>
-                            {Array.isArray(article.tags) && article.tags.map(tag =>
-                                <span class='badge badge-info mr-1'>{tag}</span>
-                            )}
-                        </small>
-                    </div>
-                    <div class='lead' id='ingressDisplay' dangerouslySetInnerHTML={{
-                        __html: utilHtml.replaceMarked(
-                            utilHtml.replaceDataTags(article.ingressEn, article)
-                        ),
-                    }}></div>
-                    <div id='bodyDisplay' dangerouslySetInnerHTML={{
-                        __html: utilHtml.replaceMarked(
-                            utilHtml.replaceDataTags(article.bodyEn, article)
-                        ),
-                    }}></div>
-                </div>}
-
-                <hr />
-                <h6>Notater til artikkelen (vises kun her i admin):</h6>
-                <div id='notesDisplay' class='p-3 bg-secondary text-white font-italic' dangerouslySetInnerHTML={{
-                    __html: utilHtml.replaceMarked(
-                        utilHtml.replaceDataTags(article.notes, article)
-                    ),
-                }}></div>
-            </div>
-        );
 
         const renderedYoutube = (
             <div class='col-12'>
@@ -1028,7 +629,7 @@ console.log('articleEdit.render');
                 <ul class='list-group mb-4'>
                     {article && (!article.img || article.img.length <= 0) && (
                         <div class='col-12 text-center text-muted'>
-                            <h1><i class='fas fa-images'></i> Ingen bilder i artikkelen</h1>
+                            <h1><i class='fas fa-images' /> Ingen bilder i artikkelen</h1>
                             <h5>Slik legger du til bilder:</h5>
                             <ul>
                                 <li>Last opp nye bilder med bildeopplastingen under.</li>
@@ -1058,59 +659,59 @@ console.log('articleEdit.render');
                                     </div>}
                                     <small>
                                         <button class='btn btn-sm m-1' onClick={this.handleClickCode} data-content={`[${img.title|| ''}](https://${imageServer}/original/${imagePath}/${img.src} '${img.text || ''}')\n`}>
-                                            <i class='fas fa-image'></i> Org
+                                            <i class='fas fa-image' /> Org
                                         </button>
                                         {isImg && <button class='btn btn-sm m-1' onClick={this.handleClickCode} data-content={`![${img.title|| ''}](https://${imageServer}/800x/${imagePath}/${img.src} '${img.text || ''}')\n`}>
-                                            <i class='fas fa-image'></i> Image
+                                            <i class='fas fa-image' /> Image
                                         </button>}
                                         {isImg && <button class='btn btn-sm m-1' onClick={this.handleClickCode} data-content={`[![${img.title|| ''}](https://${imageServer}/800x/${imagePath}/${img.src}#nolink '${img.text || ''}')](${img.url})\n`}>
-                                            <i class='fas fa-image'></i> Image w/link
+                                            <i class='fas fa-image' /> Image w/link
                                         </button>}
                                         {isImg && <button class='btn btn-sm m-1' onClick={this.handleClickCode} data-content={`![${img.title|| ''}](https://${imageServer}/1920x/${imagePath}/${img.src}#fullwidth '${img.text || ''}')\n`}>
-                                            <i class='fas fa-link'></i> Full width
+                                            <i class='fas fa-link' /> Full width
                                         </button>}
                                         {isImg && <button class='btn btn-sm m-1' onClick={this.handleClickCode} data-content={`[![${img.title|| ''}](https://${imageServer}/800x/${imagePath}/${img.src}#card '${img.text || ''}')](${img.url})\n`}>
-                                            <i class='fas fa-link'></i> Link
+                                            <i class='fas fa-link' /> Link
                                         </button>}
                                         {isImg && <button class='btn btn-sm m-1' onClick={this.handleClickCode} data-content={`![${img.title|| ''}](https://${imageServer}/800x/${imagePath}/${img.src}#card '${img.text || ''}')\n`}>
-                                            <i class='fas fa-file-image'></i> Card
+                                            <i class='fas fa-file-image' /> Card
                                         </button>}
                                         {isImg && <button class='btn btn-sm m-1' onClick={this.handleClickCode} data-content={`![${img.title|| ''}](https://${imageServer}/800x/${imagePath}/${img.src}#card2 '${img.text || ''}')\n`}>
-                                            <i class='far fa-image'></i> Card 2
+                                            <i class='far fa-image' /> Card 2
                                         </button>}
                                         {isImg && <button class='btn btn-sm m-1' onClick={this.handleClickCode} data-content={`![${img.title|| ''}](https://${imageServer}/800x/${imagePath}/${img.src}#plain '${img.text || ''}')\n`}>
-                                            <i class='far fa-image'></i> Plain
+                                            <i class='far fa-image' /> Plain
                                         </button>}
                                         {isImg && <button class='btn btn-sm m-1' onClick={this.handleClickCode} data-content={`![${img.title|| ''}](https://${imageServer}/800x/${imagePath}/${img.src}#circle '${img.text || ''}')\n`}>
-                                            <i class='far fa-image'></i> Circle
+                                            <i class='far fa-image' /> Circle
                                         </button>}
                                         {isImg && <button class='btn btn-sm m-1' onClick={this.handleClickCode} data-content={`![${img.title|| ''}](https://${imageServer}/800x/${imagePath}/${img.src}#nolink '${img.text || ''}')\n`}>
-                                            <i class='far fa-image'></i> No link
+                                            <i class='far fa-image' /> No link
                                         </button>}
                                         {isImg && <button class='btn btn-sm m-1' onClick={this.handleClickCode} data-content={`<h5>Detaljer om bildet</h5>
 <ul>
-<li><i class='fas fa-camera'></i> [:img.${idx}.exif.model]</li>
+<li><i class='fas fa-camera' /> [:img.${idx}.exif.model]</li>
 <li>Objektiv: [:img.${idx}.exif.lensModel]</li>
 <li>Blender: f/[:img.${idx}.exif.fNumber]</li>
 <li>Brennvidde: [:img.${idx}.exif.focalLength] mm</li>
 <li>Eksponering: [:img.${idx}.exif.exposureTime] sec</li>
 <li>ISO: [:img.${idx}.exif.photographicSensitivity]</li>
 <li>Oppløsning: [:img.${idx}.features.width] x [:img.${idx}.features.height]px ([:img.${idx}.stats.size size])</li>
-<li><i class='fas fa-clock'></i> [:img.${idx}.exif.dateTimeOriginal date]</li>
-<li><i class='fas fa-mountain'></i> [:img.${idx}.exif.gpsAltitude] moh</li>
-<li><i class='fas fa-location-arrow'></i> [:img.${idx}.exif.lat position], [:img.${idx}.exif.lng position]</li>
-<li><i class='fas fa-print'></i> [:img.${idx}.features.print+size dim] cm</li>
+<li><i class='fas fa-clock' /> [:img.${idx}.exif.dateTimeOriginal date]</li>
+<li><i class='fas fa-mountain' /> [:img.${idx}.exif.gpsAltitude] moh</li>
+<li><i class='fas fa-location-arrow' /> [:img.${idx}.exif.lat position], [:img.${idx}.exif.lng position]</li>
+<li><i class='fas fa-print' /> [:img.${idx}.features.print+size dim] cm</li>
 </ul>
-`}><i class='fas fa-info-circle'></i> Bildeinfo
+`}><i class='fas fa-info-circle' /> Bildeinfo
                                         </button>}
                                         <button class='btn btn-sm m-1' onClick={this.handleClickCode} data-content={`@[:img.${idx}.exif.lat],[:img.${idx}.exif.lng]\n`}>
-                                            <i class='fas fa-location-arrow'></i> GPS
+                                            <i class='fas fa-location-arrow' /> GPS
                                         </button>
                                         {ext === 'gpx' && <button class='btn btn-sm m-1' onClick={this.handleClickCode} data-content={`{{widget name=map fileIdx=${idx}}}\n`}>
-                                            <i class='fas fa-location-arrow'></i> Widget map
+                                            <i class='fas fa-location-arrow' /> Widget map
                                         </button>}
                                         <button class='btn btn-sm m-1' onClick={this.handleClickCode} data-content={`**Dette bildet er tilsalgs. Send meg en _[e-post](mailto:sorenso@gmail.com?subject=Henvendelse%20ang%20bilde:%20[:img.${idx}.src])_ eller ta kontakt på _[Facebook](http://facebook.com/sorenso)_ om du er interessert.**\n`}>
-                                            <i class='fas fa-shopping-cart'></i> Kjøp
+                                            <i class='fas fa-shopping-cart' /> Kjøp
                                         </button>
                                     </small>
                                     <br />
@@ -1173,7 +774,7 @@ console.log('articleEdit.render');
                             />
                         </div>
                         <div class='col-2'>
-                            <button class='btn btn-success' onclick={e => handleImageSubmit(e, 54)}><i class='fas fa-search'></i> Søk</button>
+                            <button class='btn btn-success' onclick={e => handleImageSubmit(e, 54)}><i class='fas fa-search' /> Søk</button>
                         </div>
 
                     </div>
@@ -1190,13 +791,13 @@ console.log('articleEdit.render');
                                 onClick={handleImageTagClick}
                             >
                                 {filterQuery[key]}
-                                <i class='ml-1 fas fa-times-circle'></i>
+                                <i class='ml-1 fas fa-times-circle' />
                             </span>
                         )}
                     </div>
                     {imglist.length <= 0 && (
                         <div class='col-12 text-center text-muted'>
-                            <h1><i class='fas fa-images'></i> Ingen bilder å vise...</h1>
+                            <h1><i class='fas fa-images' /> Ingen bilder å vise...</h1>
                             <h5>Du kan forsøke å søke etter stikkord i bildene.</h5>
                             Feks: 'person', 'norway', 'kolsås', 'dog', 'ski'
                             <br /><br /><br /><br /><br />
@@ -1255,13 +856,13 @@ console.log('articleEdit.render');
                             {Array.isArray(taglist) && taglist.map((tag, idx) =>
                                 <span class={`badge badge-${currentTagIdx === idx ? 'warning' : 'light'} mr-1`}
                                     onClick={e => this.handleTagAdd(e, handleInput, tag.title)}
-                                >{tag.title} <small class='text-muted'>({tag.count})</small> <i class='fas fa-plus'></i></span>
+                                >{tag.title} <small class='text-muted'>({tag.count})</small> <i class='fas fa-plus' /></span>
                             )}
 
                             {Array.isArray(article.tags) && article.tags.map(tag =>
                                 <span class='badge badge-info mr-1'>{tag} <i class='fas fa-times-circle'
                                     onClick={e => this.handleTagRemove(e, handleInput, tag)}
-                                ></i></span>
+                                 /></span>
                             )}
                             <div class='mt-3 mb-3'>
                                 <small>
@@ -1269,7 +870,7 @@ console.log('articleEdit.render');
                                     {Array.isArray(article.classifiedWords) && article.classifiedWords.map(word =>
                                         <span class='badge badge-success mr-1'
                                             onClick={e => this.handleTagAdd(e, handleInput, word)}
-                                        ><i class='fas fa-comment-dots mr-1'></i> {word} <i class='fas fa-plus'></i></span>
+                                        ><i class='fas fa-comment-dots mr-1' /> {word} <i class='fas fa-plus' /></span>
                                     )}
                                 </small>
                                 <small>
@@ -1277,7 +878,7 @@ console.log('articleEdit.render');
                                     {Array.isArray(article.relevantWords) && article.relevantWords.map(word =>
                                         <span class='badge badge-danger mr-1'
                                             onClick={e => this.handleTagAdd(e, handleInput, word)}
-                                        ><i class='fas fa-comment-dots mr-1'></i> {word} <i class='fas fa-plus'></i></span>
+                                        ><i class='fas fa-comment-dots mr-1' /> {word} <i class='fas fa-plus' /></span>
                                     )}
                                 </small>
                             </div>
@@ -1317,14 +918,14 @@ console.log('articleEdit.render');
                                                         <span class='badge badge-primary mr-1'
                                                             onClick={e => this.handleTagAdd(e, handleInput, info)}
                                                         >
-                                                            <i class='fas fa-map-marker-alt mr-1'></i> {info} <i class='fas fa-plus'></i>
+                                                            <i class='fas fa-map-marker-alt mr-1' /> {info} <i class='fas fa-plus' />
                                                         </span>
                                                     )}
                                                     {geoInfoExtra.map(info =>
                                                         <span class='badge badge-danger mr-1'
                                                             onClick={e => this.handleTagAdd(e, handleInput, info)}
                                                         >
-                                                            <i class='fas fa-map-marker-alt mr-1'></i> {info} <i class='fas fa-plus'></i>
+                                                            <i class='fas fa-map-marker-alt mr-1' /> {info} <i class='fas fa-plus' />
                                                         </span>
                                                     )}
                                                     <br />
@@ -1332,12 +933,12 @@ console.log('articleEdit.render');
                                                     {Array.isArray(img.predictions) && img.predictions.map(pre =>
                                                         <span class='badge badge-secondary mr-1'
                                                             onClick={e => this.handleTagAdd(e, handleInput, pre.className)}
-                                                        ><i class='fas fa-tag mr-1'></i> {pre.className} <i class='fas fa-plus'></i></span>
+                                                        ><i class='fas fa-tag mr-1' /> {pre.className} <i class='fas fa-plus' /></span>
                                                     )}
                                                     {Array.isArray(img.predictionsCocoSsd) && img.predictionsCocoSsd.map(pre =>
                                                         <span class='badge badge-dark mr-1'
                                                             onClick={e => this.handleTagAdd(e, handleInput, pre.class)}
-                                                        ><i class='fas fa-tag mr-1'></i> {pre.class} <i class='fas fa-plus'></i></span>
+                                                        ><i class='fas fa-tag mr-1' /> {pre.class} <i class='fas fa-plus' /></span>
                                                     )}
                                                 </div>
                                             </div>
@@ -1358,6 +959,8 @@ console.log('articleEdit.render');
                         <Edit
                             article={article}
                             catlist={catlist}
+                            language={language}
+                            toggleLanguageMenu={this.toggleLanguageMenu}
                             handleClickBack={handleClickBack}
                             handleClickSave={handleClickSave}
                             handleClickNew={handleClickNew}
@@ -1381,8 +984,20 @@ console.log('articleEdit.render');
                                 handleMenuClick={this.handleMenuClick}
                                 currentMenu={currentMenu}
                             />
-                            {currentMenu === 'preview' && renderedPreview}
-                            {currentMenu === 'frontpagepreview' && renderedFrontpagePreview}
+                            {currentMenu === 'preview' && <Preview
+                                article={article}
+                                language={language}
+                                imageServer={imageServer}
+                                imagePath={imagePath}
+                            />}
+                            {currentMenu === 'frontpagepreview' && <FrontpagePreview
+                                article={article}
+                                language={language}
+                                imageServer={imageServer}
+                                imagePath={imagePath}
+                                backgroundHex={backgroundHex}
+                                forgroundHex={forgroundHex}
+                            />}
                             {currentMenu === 'images' && renderedImages}
                             {currentMenu === 'youtube' && renderedYoutube}
                             {currentMenu === 'links' && renderedLinks}

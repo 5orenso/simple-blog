@@ -83,20 +83,12 @@ export default class Edit extends Component {
         this.setState({ toggleDropdown });
     }
 
-    toggleLanguageMenu = (e) => {
-        const { lang } = e.target.closest('button').dataset;
-        this.setState({
-            language: lang,
-        });
-    }
-
     render() {
         const {
             currentMenu, currentTagIdx, currentTag, toggleDropdown,
             backgroundHex, backgroundHexR, backgroundHexG, backgroundHexB,
             forgroundHex, forgroundHexR, forgroundHexG, forgroundHexB,
             fontsizeH1, fontweightH1, fontsizeH3, fontweightH3, fontsizeH5, fontweightH5,
-            language,
         } = this.state;
         const {
             article = {},
@@ -109,6 +101,7 @@ export default class Edit extends Component {
             handleAddImage,
             handleRemoveImageClick,
             handleTextareaInput,
+            toggleLanguageMenu,
 
             previewJwtToken,
             sessionEmail = '',
@@ -116,6 +109,7 @@ export default class Edit extends Component {
             imagePath,
             styles = {},
             messages,
+            language,
         } = this.props;
 
         const authorDefault = sessionEmail.replace(/\@.+$/, '');
@@ -285,10 +279,10 @@ export default class Edit extends Component {
                 <div class='col-12'>
                     <ul class="nav nav-pills nav-fill">
                         <li class="nav-item">
-                            <button class={`nav-link btn btn-block ${language === 'no' && 'active'}`} onClick={this.toggleLanguageMenu} data-lang='no'>Norsk 🇳🇴</button>
+                            <button class={`nav-link btn btn-block ${language === 'no' && 'active'}`} onClick={toggleLanguageMenu} data-lang='no'>Norsk 🇳🇴</button>
                         </li>
                         <li class="nav-item">
-                            <button class={`nav-link btn btn-block ${language === 'en' && 'active'}`} onClick={this.toggleLanguageMenu} data-lang='en'>English 🇬🇧</button>
+                            <button class={`nav-link btn btn-block ${language === 'en' && 'active'}`} onClick={toggleLanguageMenu} data-lang='en'>English 🇬🇧</button>
                         </li>
                     </ul>
                 </div>
