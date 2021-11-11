@@ -9,6 +9,11 @@ import Edit from './article/edit';
 import Preview from './article/preview';
 import FrontpagePreview from './article/frontpagePreview';
 import Menu from './article/menu';
+import Youtube from './article/youtube';
+import Links from './article/links';
+import Meta from './article/meta';
+import Markdown from './article/markdown';
+import Images from './article/images';
 
 import util from '../util';
 import utilHtml from '../util-html';
@@ -441,516 +446,8 @@ console.log('articleEdit.render');
 //                                     <h1 style={`color: ${forgroundHex}; font-size: ${article.fontsize}em; font-weight: ${article.fontweight};`}>{article.title}</h1>
 //                                 </div> */}
 
-        const renderedYoutube = (
-            <div class='col-12'>
-                <h5>Legg til Youtube video:</h5>
-                <ul class='list-group'>
-                    {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((val, idx) =>
-                        <li class={`list-group-item list-group-item-action flex-column align-items-start ${idx % 2 > 0 ? 'list-group-item-secondary' : ''}`}>
-                            <div class='form-group row'>
-                                <div class='col-5'>
-                                    <label for='youtubeTitle'>Tittel</label>
-                                    <input class='form-control' id='youtubeTitle'
-                                        onInput={linkstate(that, `article.youtubeVideos.${val}.title`)}
-                                        value={util.getString(article, 'youtubeVideos', val, 'title')}
-                                    />
-                                </div>
-                                <div class='col-7'>
-                                    <label for='youtubeText'>Tekst</label>
-                                    <input class='form-control' id='youtubeText'
-                                        onInput={linkstate(that, `article.youtubeVideos.${val}.text`)}
-                                        value={util.getString(article, 'youtubeVideos', val, 'text')}
-                                    />
-                                </div>
-                                <div class='col-8'>
-                                    <label for='youtube'>YouTube URL</label>
-                                    <input class='form-control' id='youtube'
-                                        onInput={linkstate(that, `article.youtubeVideos.${val}.url`)}
-                                        value={util.getString(article, 'youtubeVideos', val, 'url')}
-                                        placeholder='Link til Youtube video'
-                                    />
-                                    <small id='youtubeHelp' class='form-text text-muted'>Youtube watch URL.</small>
-                                </div>
-                                <div class='col-4'>
-                                    <label>&nbsp;</label>
-                                    <button class='form-control btn btn-dark m-1'
-                                        onClick={this.handleClickCode}
-                                        data-content={`![${util.getString(article, 'youtubeVideos', val, 'title')}](${util.getString(article, 'youtubeVideos', val, 'url')} '${util.getString(article, 'youtubeVideos', val, 'text')}')\n`}>
-                                        Sett inn video i tekst
-                                    </button>
-                                </div>
-                            </div>
-                        </li>
-                    )}
-                </ul>
-            </div>
-        );
-
-        const renderedLinks = (
-            <div class='col-12'>
-                <h5>Legg til lenker:</h5>
-                <ul class='list-group'>
-                    {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((val, idx) =>
-                        <li class={`list-group-item list-group-item-action flex-column align-items-start ${idx % 2 > 0 ? 'list-group-item-secondary' : ''}`}>
-                            <div class='form-group row'>
-                                <div class='col-12'>
-                                    <label for='linkTitle'>{idx + 1}: Tittel på siden du linker til</label>
-                                    <input class='form-control' id='linkTitle'
-                                        onInput={linkstate(that, `article.links.${val}.title`)}
-                                        value={util.getString(article, 'links', val, 'title')}
-                                        placeholder='Ie: Litt.no / Sorensos Blog'
-                                    />
-                                </div>
-                                <div class='col-8'>
-                                    <label for='link'>Link</label>
-                                    <input class='form-control' id='link'
-                                        onInput={linkstate(that, `article.links.${val}.url`)}
-                                        value={util.getString(article, 'links', val, 'url')}
-                                        placeholder='Link til side, eller e-postadresse.'
-                                    />
-                                </div>
-                                <div class='col-4'>
-                                    <label>&nbsp;</label>
-                                    <button class='form-control btn btn-dark m-1'
-                                        onClick={this.handleClickCode}
-                                        data-content={`[${util.getString(article, 'links', val, 'title')}](${util.formatLink(util.getString(article, 'links', val, 'url'))})\n`}>
-                                        Sett inn link i tekst
-                                    </button>
-                                </div>
-                            </div>
-                        </li>
-                    )}
-                </ul>
-            </div>
-        );
-
-        const renderedMarkdown = (
-            <div class='col-12'>
-                <h5>Annen markdown som er kjekk å vite om:</h5>
-                <div class='form-group row mt-4'>
-                    <div class='col-sm-2'>
-                        <label for='link'>Tabell</label>
-                    </div>
-                    <div class='col-sm-10'>
-                        <input class='form-control'
-                            onInput={linkstate(this, `markdown.tableTitle`)}
-                            value={util.getString(this, 'state', 'markdown', 'tableTitle')}
-                            placeholder='Tittel på tabellen...'
-                        />
-                        <textarea class='form-control'
-                            onInput={linkstate(this, `markdown.tableCsv`)}
-                            value={util.getString(this, 'state', 'markdown', 'tableCsv')}
-                            placeholder='Klipp og lim fra Excel...'
-                        />
-                    </div>
-                    <div class='offset-sm-2 col-sm-10'>
-                        <button class='form-control btn btn-dark m-1'
-                            onClick={this.handleClickCode}
-                            data-content={this.markdownTable(
-                                util.getString(this, 'state', 'markdown', 'tableCsv'),
-                                util.getString(this, 'state', 'markdown', 'tableTitle'),
-                            )}>
-                            Sett inn tabell
-                        </button>
-                    </div>
-                </div>
-
-                <div class='form-group row mt-4'>
-                    <div class='col-sm-2'>
-                        <label for='link'>Sitat</label>
-                    </div>
-                    <div class='col-sm-10'>
-                        <textarea class='form-control'
-                            onInput={linkstate(this, `markdown.quote`)}
-                            value={util.getString(this, 'state', 'markdown', 'quote')}
-                            placeholder='Skriv inn sitat...'
-                        />
-                    </div>
-                    <div class='offset-sm-2 col-sm-10'>
-                        <button class='form-control btn btn-dark m-1'
-                            onClick={this.handleClickCode}
-                            data-content={this.markdownQuote(util.getString(this, 'state', 'markdown', 'quote'))}>
-                            Sett inn sitat
-                        </button>
-                    </div>
-                </div>
-
-                <div class='form-group row mt-4'>
-                    <div class='col-sm-2'>
-                        <label for='link'>Kode</label>
-                    </div>
-                    <div class='col-sm-10'>
-                        <select class='form-control'
-                            onInput={linkstate(this, `markdown.codeLanguage`)}
-                            value={util.getString(this, 'state', 'markdown', 'codeLanguage')}
-                        >
-                            <option value=''>-- velg språk ---</option>
-                            <option>arduino</option>
-                            <option>bash</option>
-                            <option>c++</option>
-                            <option>css</option>
-                            <option>excel</option>
-                            <option>diff</option>
-                            <option>go</option>
-                            <option>html</option>
-                            <option>javascript</option>
-                            <option>json</option>
-                            <option>markdown</option>
-                            <option>perl</option>
-                            <option>php</option>
-                            <option>python</option>
-                            <option>rust</option>
-                            <option>sql</option>
-                            <option>yaml</option>
-                        </select>
-                        <textarea class='form-control'
-                            onInput={linkstate(this, `markdown.code`)}
-                            value={util.getString(this, 'state', 'markdown', 'code')}
-                            placeholder='Skriv inn kodelinjene dine...'
-                        />
-                    </div>
-                    <div class='offset-sm-2 col-sm-10'>
-                        <button class='form-control btn btn-dark m-1'
-                            onClick={this.handleClickCode}
-                            data-content={this.markdownCode(util.getString(this, 'state', 'markdown', 'code'), util.getString(this, 'state', 'markdown', 'codeLanguage'))}>
-                            Sett inn koden
-                        </button>
-                    </div>
-                </div>
-            </div>
-        );
-
         const apiUrl = `/api/fileupload/?category=${article.category || 'no-category'}`
             + `&title=${util.htmlIdSafe(article.title) || 'no-title'}`;
-        const renderedImages = (
-            <div class='col-12'>
-
-                <h3>Bilder i artikkelen:</h3>
-                <ul class='list-group mb-4'>
-                    {article && (!article.img || article.img.length <= 0) && (
-                        <div class='col-12 text-center text-muted'>
-                            <h1><i class='fas fa-images' /> Ingen bilder i artikkelen</h1>
-                            <h5>Slik legger du til bilder:</h5>
-                            <ul>
-                                <li>Last opp nye bilder med bildeopplastingen under.</li>
-                                <li>Søk etter bilder du allerede har i arkivet.</li>
-                            </ul>
-                            <br /><br /><br /><br /><br />
-                        </div>
-                    )}
-                    {article && article.img && article.img.map((img, idx) => {
-                        const isImg = isImage(img.ext || img.src);
-                        const ext = img.ext ? img.ext.replace(/\./, '') : '';
-
-                        return (
-                            <li class={`list-group-item list-group-item-action flex-column align-items-start ${idx % 2 > 0 ? 'list-group-item-secondary' : ''}`}>
-                                <div class='d-flex w-100 justify-content-between'>
-                                    <div>
-                                        <h5 class='m-0'>{img.name}</h5>
-                                        <span class='mb-1'><small>{img.src}</small></span>
-                                    </div>
-                                    <small>{util.formatBytes(img.bytes || util.getString(img, 'stats', 'size'), 2)}</small>
-                                    <button class='btn btn-danger btn-sm' data-image={idx} onClick={handleRemoveImageClick}>X</button>
-                                </div>
-                                <div class='d-flex w-100 justify-content-between'>
-                                    {isImg && <p>{img.src && <img src={`https://${imageServer}/150x/${imagePath}/${img.src}`} style='max-height: 150px;'  class='img-fluid' onError={this.handleImageErrored} />}</p>}
-                                    {!isImg && ext && <div class='display-4 text-muted'>
-                                        {ext === 'gpx' ? <i class='fas fa-map-marked-alt' /> : <i class={`fas fa-file-${ext}`} />}
-                                    </div>}
-                                    <small>
-                                        <button class='btn btn-sm m-1' onClick={this.handleClickCode} data-content={`[${img.title|| ''}](https://${imageServer}/original/${imagePath}/${img.src} '${img.text || ''}')\n`}>
-                                            <i class='fas fa-image' /> Org
-                                        </button>
-                                        {isImg && <button class='btn btn-sm m-1' onClick={this.handleClickCode} data-content={`![${img.title|| ''}](https://${imageServer}/800x/${imagePath}/${img.src} '${img.text || ''}')\n`}>
-                                            <i class='fas fa-image' /> Image
-                                        </button>}
-                                        {isImg && <button class='btn btn-sm m-1' onClick={this.handleClickCode} data-content={`[![${img.title|| ''}](https://${imageServer}/800x/${imagePath}/${img.src}#nolink '${img.text || ''}')](${img.url})\n`}>
-                                            <i class='fas fa-image' /> Image w/link
-                                        </button>}
-                                        {isImg && <button class='btn btn-sm m-1' onClick={this.handleClickCode} data-content={`![${img.title|| ''}](https://${imageServer}/1920x/${imagePath}/${img.src}#fullwidth '${img.text || ''}')\n`}>
-                                            <i class='fas fa-link' /> Full width
-                                        </button>}
-                                        {isImg && <button class='btn btn-sm m-1' onClick={this.handleClickCode} data-content={`[![${img.title|| ''}](https://${imageServer}/800x/${imagePath}/${img.src}#card '${img.text || ''}')](${img.url})\n`}>
-                                            <i class='fas fa-link' /> Link
-                                        </button>}
-                                        {isImg && <button class='btn btn-sm m-1' onClick={this.handleClickCode} data-content={`![${img.title|| ''}](https://${imageServer}/800x/${imagePath}/${img.src}#card '${img.text || ''}')\n`}>
-                                            <i class='fas fa-file-image' /> Card
-                                        </button>}
-                                        {isImg && <button class='btn btn-sm m-1' onClick={this.handleClickCode} data-content={`![${img.title|| ''}](https://${imageServer}/800x/${imagePath}/${img.src}#card2 '${img.text || ''}')\n`}>
-                                            <i class='far fa-image' /> Card 2
-                                        </button>}
-                                        {isImg && <button class='btn btn-sm m-1' onClick={this.handleClickCode} data-content={`![${img.title|| ''}](https://${imageServer}/800x/${imagePath}/${img.src}#plain '${img.text || ''}')\n`}>
-                                            <i class='far fa-image' /> Plain
-                                        </button>}
-                                        {isImg && <button class='btn btn-sm m-1' onClick={this.handleClickCode} data-content={`![${img.title|| ''}](https://${imageServer}/800x/${imagePath}/${img.src}#circle '${img.text || ''}')\n`}>
-                                            <i class='far fa-image' /> Circle
-                                        </button>}
-                                        {isImg && <button class='btn btn-sm m-1' onClick={this.handleClickCode} data-content={`![${img.title|| ''}](https://${imageServer}/800x/${imagePath}/${img.src}#nolink '${img.text || ''}')\n`}>
-                                            <i class='far fa-image' /> No link
-                                        </button>}
-                                        {isImg && <button class='btn btn-sm m-1' onClick={this.handleClickCode} data-content={`<h5>Detaljer om bildet</h5>
-<ul>
-<li><i class='fas fa-camera' /> [:img.${idx}.exif.model]</li>
-<li>Objektiv: [:img.${idx}.exif.lensModel]</li>
-<li>Blender: f/[:img.${idx}.exif.fNumber]</li>
-<li>Brennvidde: [:img.${idx}.exif.focalLength] mm</li>
-<li>Eksponering: [:img.${idx}.exif.exposureTime] sec</li>
-<li>ISO: [:img.${idx}.exif.photographicSensitivity]</li>
-<li>Oppløsning: [:img.${idx}.features.width] x [:img.${idx}.features.height]px ([:img.${idx}.stats.size size])</li>
-<li><i class='fas fa-clock' /> [:img.${idx}.exif.dateTimeOriginal date]</li>
-<li><i class='fas fa-mountain' /> [:img.${idx}.exif.gpsAltitude] moh</li>
-<li><i class='fas fa-location-arrow' /> [:img.${idx}.exif.lat position], [:img.${idx}.exif.lng position]</li>
-<li><i class='fas fa-print' /> [:img.${idx}.features.print+size dim] cm</li>
-</ul>
-`}><i class='fas fa-info-circle' /> Bildeinfo
-                                        </button>}
-                                        <button class='btn btn-sm m-1' onClick={this.handleClickCode} data-content={`@[:img.${idx}.exif.lat],[:img.${idx}.exif.lng]\n`}>
-                                            <i class='fas fa-location-arrow' /> GPS
-                                        </button>
-                                        {ext === 'gpx' && <button class='btn btn-sm m-1' onClick={this.handleClickCode} data-content={`{{widget name=map fileIdx=${idx}}}\n`}>
-                                            <i class='fas fa-location-arrow' /> Widget map
-                                        </button>}
-                                        <button class='btn btn-sm m-1' onClick={this.handleClickCode} data-content={`**Dette bildet er tilsalgs. Send meg en _[e-post](mailto:sorenso@gmail.com?subject=Henvendelse%20ang%20bilde:%20[:img.${idx}.src])_ eller ta kontakt på _[Facebook](http://facebook.com/sorenso)_ om du er interessert.**\n`}>
-                                            <i class='fas fa-shopping-cart' /> Kjøp
-                                        </button>
-                                    </small>
-                                    <br />
-
-                                </div>
-                                <div class='d-flex w-100 justify-content-between row'>
-                                    {idx === 0 && <div class='col-12 alert alert-primary' role='alert'>
-                                        Bilde 1 blir brukt som hovedbilde i artikkelen.
-                                    </div>}
-
-                                    <div class='form-group col-2'>
-                                        <label for={`img${idx}Title`}>Tittel</label>
-                                    </div>
-                                    <div class='form-group col-10'>
-                                        <input type='text' class='form-control' id={`img${idx}Title`}
-                                            onInput={linkstate(that, `article.img.${idx}.title`)}
-                                            value={article.img[idx].title} />
-                                    </div>
-
-                                    <div class='form-group col-2'>
-                                        <label for={`img${idx}URL`}>URL</label>
-                                    </div>
-                                    <div class='form-group col-10'>
-                                        <input type='text' class='form-control' id={`img${idx}URL`}
-                                            onInput={linkstate(that, `article.img.${idx}.url`)}
-                                            value={article.img[idx].url} />
-                                    </div>
-
-                                    <div class='form-group col-2'>
-                                        <label for={`img${idx}Text`}>Tekst</label>
-                                    </div>
-                                    <div class='form-group col-10'>
-                                        <textarea class='form-control' id={`img${idx}Text`}
-                                            onInput={linkstate(that, `article.img.${idx}.text`)}
-                                            value={article.img[idx].text} />
-                                    </div>
-
-                                </div>
-                            </li>
-                        );
-                    })}
-                </ul>
-
-                <h3>Last opp nytt bilde:</h3>
-                <div class='form-group mb-4'>
-                    <ImageUpload
-                        apiUrl={apiUrl}
-                        apiServer={that.props.apiServer}
-                        jwtToken={that.props.jwtToken}
-                        handleAddImage={handleAddImage}
-                    />
-                </div>
-
-                <h3>Bildearkivet:</h3>
-                <div class='col-12'>
-                    <div class='d-flex justify-content-center'>
-                        <div class='col-10 mb-2'>
-                            <input type='text' class='form-control' placeholder='Søk etter bilder' name='q'
-                                onKeypress={e => handleImageInput(e, 54)}
-                            />
-                        </div>
-                        <div class='col-2'>
-                            <button class='btn btn-success' onclick={e => handleImageSubmit(e, 54)}><i class='fas fa-search' /> Søk</button>
-                        </div>
-
-                    </div>
-                </div>
-                <div class='row mb-4'>
-                    <div class='col-1 text-right text-muted'>
-                        {Object.keys(filterQuery).length > 0 && 'Filters:'}
-                    </div>
-                    <div class='col-12'>
-                        {Object.keys(filterQuery).map(key =>
-                            <span class={`mr-1 badge badge-danger`}
-                                data-name={key}
-                                data-value={filterQuery[key]}
-                                onClick={handleImageTagClick}
-                            >
-                                {filterQuery[key]}
-                                <i class='ml-1 fas fa-times-circle' />
-                            </span>
-                        )}
-                    </div>
-                    {imglist.length <= 0 && (
-                        <div class='col-12 text-center text-muted'>
-                            <h1><i class='fas fa-images' /> Ingen bilder å vise...</h1>
-                            <h5>Du kan forsøke å søke etter stikkord i bildene.</h5>
-                            Feks: 'person', 'norway', 'kolsås', 'dog', 'ski'
-                            <br /><br /><br /><br /><br />
-                        </div>
-                    )}
-                    {imglist.map((img, idx) => {
-                        const isImg = isImage(img.ext || img.src);
-                        const ext = img.ext ? img.ext.replace(/\./, '') : '';
-
-                        return (
-                            <div class='col-2 p-1'>
-                                {isImg && <img src={`https://${imageServer}/150x/${imagePath}/${img.src}`} class='img-fluid' data-idx={idx} onclick={handleImglistClick} onError={this.handleImageErrored}/>}
-                                {!isImg && ext && <div class='display-4 text-muted'>
-                                    {ext === 'gpx' ? <i class='fas fa-map-marked-alt' /> : <i class={`fas fa-file-${ext}`} />}
-                                </div>}
-                                <small class='text-muted'>
-                                    {img.name}
-                                </small>
-                            </div>
-                        );
-                    })}
-                </div>
-            </div>
-        );
-
-        const renderedMeta = (
-            <div class='col-12'>
-                <div class='row'>
-                    <div class='col-12'>
-                        <div class='form-group'>
-                            <label for='publishedInput'>Published</label>
-                            <input type='text' class='form-control' id='publishedInput' placeholder='Publiseringsdato'
-                                name='published'
-                                onInput={handleInput}
-                                value={article.published} />
-                        </div>
-                    </div>
-                    <div class='col-12'>
-                        <div class='form-group'>
-                            <label for='youtubeInput'>Youtube link</label>
-                            <input type='text' class='form-control' id='youtubeInput' placeholder='Youtube link'
-                                name='youtube'
-                                onInput={handleInput}
-                                value={article.youtube} />
-                        </div>
-                    </div>
-                    <div class='col-12'>
-                        <div class='form-group'>
-                            <label for='tagsInput'>Tags</label>
-                            <input type='text' class='form-control' id='tagsInput' placeholder='Tags'
-                                name='tagSearch'
-                                onInput={e => this.handleTagsInput(e, handleInput)}
-                                onKeydown={e => this.handleKeydown(e, handleInput, taglist)}
-                                value={currentTag || article.tagSearch} />
-
-                            {Array.isArray(taglist) && taglist.map((tag, idx) =>
-                                <span class={`badge badge-${currentTagIdx === idx ? 'warning' : 'light'} mr-1`}
-                                    onClick={e => this.handleTagAdd(e, handleInput, tag.title)}
-                                >{tag.title} <small class='text-muted'>({tag.count})</small> <i class='fas fa-plus' /></span>
-                            )}
-
-                            {Array.isArray(article.tags) && article.tags.map(tag =>
-                                <span class='badge badge-info mr-1'>{tag} <i class='fas fa-times-circle'
-                                    onClick={e => this.handleTagRemove(e, handleInput, tag)}
-                                 /></span>
-                            )}
-                            <div class='mt-3 mb-3'>
-                                <small>
-                                    {Array.isArray(article.classifiedWords) ? <h5>Language classification</h5> : ''}
-                                    {Array.isArray(article.classifiedWords) && article.classifiedWords.map(word =>
-                                        <span class='badge badge-success mr-1'
-                                            onClick={e => this.handleTagAdd(e, handleInput, word)}
-                                        ><i class='fas fa-comment-dots mr-1' /> {word} <i class='fas fa-plus' /></span>
-                                    )}
-                                </small>
-                                <small>
-                                    {Array.isArray(article.relevantWords) ? <h5>Language processing</h5> : ''}
-                                    {Array.isArray(article.relevantWords) && article.relevantWords.map(word =>
-                                        <span class='badge badge-danger mr-1'
-                                            onClick={e => this.handleTagAdd(e, handleInput, word)}
-                                        ><i class='fas fa-comment-dots mr-1' /> {word} <i class='fas fa-plus' /></span>
-                                    )}
-                                </small>
-                            </div>
-                            <div class='mb-3'>
-                                <small>
-                                    {Array.isArray(article.img) ? <h5>Image recognition</h5> : ''}
-                                    {Array.isArray(article.img) && article.img.map(img => {
-                                        let geoInfo = [];
-                                        let geoInfoExtra = [];
-                                        util.geoAddressFields().map(key => {
-                                            const geoData = util.getString(img, 'geo', 'address', key);
-                                            if (geoData) {
-                                                geoInfo.push(geoData);
-                                                const geoDataExtra = util.geoAddressGetExtraTags(key);
-                                                if (geoDataExtra) {
-                                                    geoInfoExtra = geoInfoExtra.concat(geoDataExtra);
-                                                }
-                                            }
-                                        });
-                                        const geoDisplayName = util.getString(img, 'geo', 'display_name');
-                                        if (geoDisplayName) {
-                                            geoDisplayName.split(', ').map(val => {
-                                                if (val && geoInfo.indexOf(val) === -1) {
-                                                    geoInfo.push(val);
-                                                }
-                                            })
-                                        }
-                                        geoInfo = util.asUniqArray(geoInfo);
-
-                                        return (
-                                            <div class='row mb-3'>
-                                                <div class='col-4'>
-                                                    {img.src && <img src={`${this.imageServer}/pho/${img.src}?w=500`} class='img-fluid' onError={this.handleImageErrored} />}
-                                                </div>
-                                                <div class='col-8'>
-                                                    {geoInfo.map(info =>
-                                                        <span class='badge badge-primary mr-1'
-                                                            onClick={e => this.handleTagAdd(e, handleInput, info)}
-                                                        >
-                                                            <i class='fas fa-map-marker-alt mr-1' /> {info} <i class='fas fa-plus' />
-                                                        </span>
-                                                    )}
-                                                    {geoInfoExtra.map(info =>
-                                                        <span class='badge badge-danger mr-1'
-                                                            onClick={e => this.handleTagAdd(e, handleInput, info)}
-                                                        >
-                                                            <i class='fas fa-map-marker-alt mr-1' /> {info} <i class='fas fa-plus' />
-                                                        </span>
-                                                    )}
-                                                    <br />
-
-                                                    {Array.isArray(img.predictions) && img.predictions.map(pre =>
-                                                        <span class='badge badge-secondary mr-1'
-                                                            onClick={e => this.handleTagAdd(e, handleInput, pre.className)}
-                                                        ><i class='fas fa-tag mr-1' /> {pre.className} <i class='fas fa-plus' /></span>
-                                                    )}
-                                                    {Array.isArray(img.predictionsCocoSsd) && img.predictionsCocoSsd.map(pre =>
-                                                        <span class='badge badge-dark mr-1'
-                                                            onClick={e => this.handleTagAdd(e, handleInput, pre.class)}
-                                                        ><i class='fas fa-tag mr-1' /> {pre.class} <i class='fas fa-plus' /></span>
-                                                    )}
-                                                </div>
-                                            </div>
-                                        );
-                                    })}
-                                </small>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        );
 
         return (
             <div class='container-fluid col-12 vh-100'>
@@ -969,12 +466,17 @@ console.log('articleEdit.render');
                             handleAddImage={handleAddImage}
                             handleRemoveImageClick={handleRemoveImageClick}
                             handleTextareaInput={handleTextareaInput}
+                            handleTextareaFocus={this.handleTextareaFocus}
                             previewJwtToken={previewJwtToken}
                             sessionEmail={sessionEmail}
                             imageServer={imageServer}
                             imagePath={imagePath}
+                            serverName={this.serverName}
                             styles={styles}
                             messages={messages}
+                            setColorToValue={this.setColorToValue}
+                            setColorToHex={this.setColorToHex}
+                            translateToEnglish={this.translateToEnglish}
                         />
                     </div>
                     <div class='col-12 col-md-6 mt-2 mt-md-0 overflow-auto vh-100' id='previewColumn'>
@@ -998,11 +500,49 @@ console.log('articleEdit.render');
                                 backgroundHex={backgroundHex}
                                 forgroundHex={forgroundHex}
                             />}
-                            {currentMenu === 'images' && renderedImages}
-                            {currentMenu === 'youtube' && renderedYoutube}
-                            {currentMenu === 'links' && renderedLinks}
-                            {currentMenu === 'meta' && renderedMeta}
-                            {currentMenu === 'markdown' && renderedMarkdown}
+                            {currentMenu === 'images' && <Images
+                                that={that}
+                                article={article}
+                                imglist={imglist}
+                                handleRemoveImageClick={handleRemoveImageClick}
+                                handleClickCode={this.handleClickCode}
+                                imageServer={imageServer}
+                                imagePath={imagePath}
+                                apiUrl={apiUrl}
+                                filterQuery={filterQuery}
+                                handleAddImage={handleAddImage}
+                                handleImageInput={handleImageInput}
+                                handleImageSubmit={handleImageSubmit}
+                                handleImglistClick={handleImglistClick}
+                                handleImageTagClick={handleImageTagClick}
+                            />}
+                            {currentMenu === 'youtube' && <Youtube
+                                that={that}
+                                article={article}
+                                handleClickCode={this.handleClickCode}
+                            />}
+                            {currentMenu === 'links' && <Links
+                                that={that}
+                                article={article}
+                                handleClickCode={this.handleClickCode}                            
+                            />}
+                            {currentMenu === 'meta' && <Meta
+                                article={article}
+                                imageServer={imageServer}
+                                handleInput={handleInput}
+                                handleTagAdd={this.handleTagAdd}
+                                handleTagRemove={this.handleTagAdd}
+                                handleTagsInput={this.handleTagsInput}
+                                handleKeydown={this.handleKeydown}
+                                currentTag={currentTag}
+                                taglist={taglist}
+                            />}
+                            {currentMenu === 'markdown' && <Markdown
+                                handleClickCode={this.handleClickCode}
+                                markdownTable={this.markdownTable}
+                                markdownQuote={this.markdownQuote}
+                                markdownCode={this.markdownCode}
+                            />}
                         </div>
                     </div>
 

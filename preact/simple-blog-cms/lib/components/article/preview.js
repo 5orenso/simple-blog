@@ -19,6 +19,22 @@ function isImage(filename = '') {
     return filename.match(/(jpg|jpeg|png|gif|heic|heif|svg|webp|tif)/i);
 }
 
+class Body extends Component {
+    render() {
+        const {
+            value,
+            article,
+        } = this.props;
+        return (
+            <div id='bodyDisplay' dangerouslySetInnerHTML={{
+                __html: utilHtml.replaceMarked(
+                    utilHtml.replaceDataTags(value, article)
+                ),
+            }}></div>
+        );
+    }
+}
+
 export default class Edit extends Component {
     constructor(props) {
         super(props);
@@ -91,9 +107,9 @@ export default class Edit extends Component {
                             <i class='far fa-envelope' />
                         </a>
                         &nbsp; /                        
-                        Ord: {util.wordCount(article.body)}
+                        {/* Ord: {util.wordCount(article.body)}
                         &nbsp; /                        
-                        Lesetid: {util.readTime(article.body, 'no')}
+                        Lesetid: {util.readTime(article.body, 'no')} */}
                     </small>
                 </div>
                 <div class='mb-3'>
@@ -108,11 +124,7 @@ export default class Edit extends Component {
                         utilHtml.replaceDataTags(article.ingress, article)
                     ),
                 }}></div>
-                <div id='bodyDisplay' dangerouslySetInnerHTML={{
-                    __html: utilHtml.replaceMarked(
-                        utilHtml.replaceDataTags(article.body, article)
-                    ),
-                }}></div>
+                <Body value={article.body} article={article} />
             </div>}
 
             {language === 'en' && <div>

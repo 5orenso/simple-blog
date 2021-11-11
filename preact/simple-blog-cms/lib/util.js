@@ -446,10 +446,15 @@ class Utilities {
 
     static wordCount(text) {
         if (typeof text === 'string') {
+            // return text.match(/[^a-z]/gi).length;
+
             // Remove all html
             let textWork = text.replace(/<[^>]*>?/gm, '');
+
+            // DO NOT USE! Serious performance issues!
             // Remove all markdown
-            textWork = removeMarkdown(textWork);
+            // textWork = removeMarkdown(textWork);
+
             // Remove all special characters
             textWork.replace(/[a-z0-9æøå]+/gi, ' ');
             // Truncate all whitespaces
