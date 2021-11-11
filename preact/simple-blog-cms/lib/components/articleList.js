@@ -223,7 +223,7 @@ export default class ArticleList extends Component {
                                                 <span class='badge badge-info mr-1'>{tag}</span>
                                             ))}
                                         </small><br />
-                                        {/* <small>
+                                        <small>
                                             <small class='text-muted'>
                                                 Ord: {util.wordCount(art.body)},
                                                 Lesetid: {util.readTime(art.body, 'no')}
@@ -234,7 +234,7 @@ export default class ArticleList extends Component {
                                                 🇬🇧 Words: {util.wordCount(art.bodyEn)},
                                                 Read time: {util.readTime(art.bodyEn, 'en')}
                                             </small>}
-                                        </small> */}
+                                        </small>
                                     </td>
                                     <td>
                                         {util.isoDateNormalized(art.published)}<br />

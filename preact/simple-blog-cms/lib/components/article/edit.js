@@ -17,21 +17,6 @@ const initialState = {
         tableY: 5,
         codeLanguage: util.get('markdownCodeLanguage'),
     },
-    backgroundHexR: 255,
-    backgroundHexG: 255,
-    backgroundHexB: 255,
-    backgroundHex: '#ffffff',
-    forgroundHexR: 0,
-    forgroundHexG: 0,
-    forgroundHexB: 0,
-    forgroundHex: '#000000',
-    fontsizeH1: 4,
-    fontweightH1: 600,
-    fontsizeH3: 1.3,
-    fontweightH3: 600,
-    fontsizeH5: 1.2,
-    fontweightH5: 600,
-    language: 'no',
 };
 const debug = false;
 
@@ -99,10 +84,7 @@ export default class Edit extends Component {
 
     render() {
         const {
-            currentMenu, currentTagIdx, currentTag, toggleDropdown,
-            backgroundHex, backgroundHexR, backgroundHexG, backgroundHexB,
-            forgroundHex, forgroundHexR, forgroundHexG, forgroundHexB,
-            fontsizeH1, fontweightH1, fontsizeH3, fontweightH3, fontsizeH5, fontweightH5,
+            toggleDropdown,
         } = this.state;
         const {
             article = {},
@@ -129,6 +111,21 @@ export default class Edit extends Component {
             messages,
             language,
             translateToEnglish,
+
+            backgroundHex,
+            backgroundHexR,
+            backgroundHexG,
+            backgroundHexB,
+            forgroundHex,
+            forgroundHexR,
+            forgroundHexG,
+            forgroundHexB,
+            fontsizeH1,
+            fontweightH1,
+            fontsizeH3,
+            fontweightH3,
+            fontsizeH5,
+            fontweightH5,
         } = this.props;
 
         const authorDefault = sessionEmail.replace(/\@.+$/, '');

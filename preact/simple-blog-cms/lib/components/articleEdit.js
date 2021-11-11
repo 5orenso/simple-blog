@@ -477,6 +477,21 @@ console.log('articleEdit.render');
                             setColorToValue={this.setColorToValue}
                             setColorToHex={this.setColorToHex}
                             translateToEnglish={this.translateToEnglish}
+
+                            backgroundHex={backgroundHex}
+                            backgroundHexR={backgroundHexR}
+                            backgroundHexG={backgroundHexG}
+                            backgroundHexB={backgroundHexB}
+                            forgroundHex={forgroundHex}
+                            forgroundHexR={forgroundHexR}
+                            forgroundHexG={forgroundHexG}
+                            forgroundHexB={forgroundHexB}
+                            fontsizeH1={fontsizeH1}
+                            fontweightH1={fontweightH1}
+                            fontsizeH3={fontsizeH3}
+                            fontweightH3={fontweightH3}
+                            fontsizeH5={fontsizeH5}
+                            fontweightH5={fontweightH5}
                         />
                     </div>
                     <div class='col-12 col-md-6 mt-2 mt-md-0 overflow-auto vh-100' id='previewColumn'>
