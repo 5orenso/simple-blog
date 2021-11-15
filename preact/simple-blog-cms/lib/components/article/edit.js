@@ -3,6 +3,7 @@ import { h, Component } from 'preact';
 import MessagesLite from '../messagesLite';
 
 import util from '../../util';
+import utilHtml from '../../util-html';
 
 const initialState = {
     currentMenu: 'preview',
