@@ -25,10 +25,10 @@ function pad(number) {
 
 function byBib(a, b) {
     if (a.Bib < b.Bib) {
-        return 1;
+        return -1;
     }
     if (a.Bib > b.Bib) {
-        return -1;
+        return 1;
     }
     return 0;
 }
