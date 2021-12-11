@@ -24,10 +24,10 @@ function pad(number) {
 }
 
 function byBib(a, b) {
-    if (a.bib < b.bib) {
+    if (a.Bib < b.Bib) {
         return 1;
     }
-    if (a.bib > b.bib) {
+    if (a.Bib > b.Bib) {
         return -1;
     }
     return 0;
@@ -257,7 +257,7 @@ export default function App(props) {
                     }
                 }
 
-                const hasBib = !!rows[0].bib;
+                const hasBib = !!rows[0].Bib;
 
                 return (<>
                     <h5 class='mt-5'>{racePrefix || ''} {raceName}</h5>
