@@ -23,6 +23,16 @@ function pad(number) {
     return r;
 }
 
+function byBib(a, b) {
+    if (a.bib < b.bib) {
+        return 1;
+    }
+    if (a.bib > b.bib) {
+        return -1;
+    }
+    return 0;
+}
+
 function fetchApi({ url, headers = {}, body = {}, settings = {} }) {
     const fetchOpt = {
         credentials: 'omit',
@@ -247,14 +257,19 @@ export default function App(props) {
                     }
                 }
 
+                const hasBib = !!rows[0].bib;
+
                 return (<>
                     <h5 class='mt-5'>{racePrefix || ''} {raceName}</h5>
                     <div class='table-responsive-xl'>
                         <table class='table table-striped'>
                             <thead>
                                 <tr>
-                                    <th scope='col'>#</th>
-                                    {/* <th scope='col'>Bib</th> */}
+                                    {hasBib ? <>
+                                        <th scope='col'>Bib</th>
+                                    </> : <>
+                                        <th scope='col'>#</th>                                
+                                    </>}
                                     <th scope='col'>Name</th>
                                     <th scope='col'>Club/Team</th>
                                     <th scope='col'>Nation</th>
@@ -262,7 +277,7 @@ export default function App(props) {
                                 </tr>
                             </thead>
                             <tbody>
-                                {rows.map((musher, idx) => {
+                                {rows.sort(byBib).map((musher, idx) => {
                                     // // in a browser environment: countries.registerLocale(require("i18n-iso-countries/langs/en.json"));
                                     // console.log(
                                     // "USA (Alpha-3) => " + countries.alpha3ToAlpha2("USA") + " (Alpha-2)"
@@ -273,8 +288,11 @@ export default function App(props) {
                                 
                                     return (<>
                                         <tr>
-                                            <td class='font-weight-light'>{idx + 1}</td>
-                                            {/* <td>{musher.Bib}</td> */}
+                                            {hasBib ? <>
+                                                <td>{musher.Bib}</td>
+                                            </> : <>
+                                                <td class='font-weight-light'>{idx + 1}</td>
+                                            </>}
                                             <td>
                                                 <nobr>
                                                     <Markdown markdown={`${musherName}`} markdownOpts={MARKDOWN_OPTIONS} />
