@@ -1,6 +1,6 @@
 {
-  "name": "The Musher",
-  "short_name": "the-musher",
+  "name": "QPaws",
+  "short_name": "qpaws",
   "description": "Progressive Web App for logging all details related to your mushing, dogs and training.",
   "start_url": "/global/themusher/index.html",
   "scope": "/global/themusher/",

@@ -147,6 +147,19 @@
     background-color: #FF5917;
 }
 
+.bootstrap-dark .bg-primary {
+    background-color: #FF5917 !important;
+}
+.bootstrap-dark .bg-success {
+    background-color: #5FC04D !important;
+}
+.bootstrap-dark .bg-info {
+    background-color: #89CCF4 !important;
+}
+
+.bootstrap-dark .invalid-feedback {
+    color: #FF5917;
+}
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 /* Lightmode: primary */
@@ -295,4 +308,18 @@
     color: #fff;
     border-color: #FF6321;
     background-color: #FF6321;
+}
+
+.bootstrap .bg-primary {
+    background-color: #FF6321 !important;
+}
+.bootstrap .bg-success {
+    background-color: #5FC04D !important;
+}
+.bootstrap .bg-info {
+    background-color: #89CCF4 !important;
+}
+
+.bootstrap .invalid-feedback {
+    color: #FF6321;
 }
