@@ -68,7 +68,8 @@ module.exports = async (req, res) => {
     } = req.body;
     const { emailSender, emailSignature } = req.config.blog;
     const mail = new Mail(req.config);
-    await mail.sendEmail({
+
+    const mailObject = {
         to: email,
         from: emailSender,
         subject: `Kvittering for påmelding: ${doc.title}`,
@@ -95,14 +96,32 @@ ${courseRow.postalcode} ${courseRow.postalplace}
 ${emailSignature}
 
 </div>`.replace(/\n/g, '<br/>'),
-    });
+    };
+    await mail.sendEmail(mailObject);
 
-    signupSheet.addRow({
-        ...req.body,
-        id: uuidv4(),
-        created: new Date(),
-        logincode: util.generateCode(),
-    });
+    mailObject.to = req.config.blog.emailSender;
+    await mail.sendEmail(mailObject);
+
+    try {
+        signupSheet.addRow({
+            ...req.body,
+            id: uuidv4(),
+            created: new Date(),
+            logincode: util.generateCode(),
+        });
+    } catch (err) {
+        const errorMailObject = {
+            to: 'sorenso@gmail.com',
+            from: emailSender,
+            subject: `Feil i lagring av påmelding ${req.config.blog.emailSender}`,
+            body: `ERROR!
+
+<xmp>${err}</xmp>
+
+`.replace(/\n/g, '<br/>'),
+        };
+        await mail.sendEmail(errorMailObject);
+    }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
     const data = {
