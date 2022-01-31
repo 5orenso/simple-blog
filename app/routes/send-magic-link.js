@@ -67,7 +67,7 @@ module.exports = (req, res) => {
         body: `Hi ${req.config.blog.email} 🤠,
 
 As requested the Simple-Blog server has sent you a magic link 🎩 to be able to login to your blog admin.
-<a href="${req.config.blog.protocol}://${req.config.blog.domain}/verify-magic-link?token=${encodeURIComponent(token)}">
+<a href="${req.config.blog.protocol}://${req.config.blog.admindomain || req.config.blog.domain}/verify-magic-link?token=${encodeURIComponent(token)}">
 Click this link to magically login to your blog 👌</a>
 
 <hr />
