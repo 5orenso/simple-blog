@@ -59,3 +59,4 @@ preact/npm-debug.log
 .nyc_output/
 
 preact/**/src/index.ejs
+package-lock.json

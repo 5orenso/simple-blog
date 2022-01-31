@@ -69,12 +69,6 @@ rssRouter.setConfig = function doSetConfig(conf, opt) {
     }
 };
 
-// create a write stream (in append mode)
-const accessLogStream = fs.createWriteStream(`${appPath}/logs/rss-access.log`, { flags: 'a' });
-
-// Setup the logger
-rssRouter.use(morgan('combined', { stream: accessLogStream }));
-
 // Main route for blog articles.
 rssRouter.use('/*', localUtil.setNoCacheHeaders);
 rssRouter.get('/*', (req, res) => {
