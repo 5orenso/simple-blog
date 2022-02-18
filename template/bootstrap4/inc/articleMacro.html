@@ -80,7 +80,7 @@
                             <img src="https://{{ imageServer }}/{% if art.catRef.artlistImageSize %}{{ art.catRef.artlistImageSize }}{% else %}220x{% endif %}/{{ imagePath }}/{{ art.img[0].src }}"
                                 alt="{{ art.title|e }} - {{ art.teaser|e }}"
                                 class="{% if art.catRef.artlistImageClass %}{{ art.catRef.artlistImageClass }}{% else %}img-fluid adImage{% endif %}"
-                                style="{% if art.catRef.artlistImageCss %}{{ art.catRef.artlistImageCss }}{% endif %}"
+                                {% if art.catRef.artlistImageCss %}style="{{ art.catRef.artlistImageCss }}"{% endif %}
                             ><br clear="all">
                         {% elseif art.teaser %}
                             <div class='{{ art.catRef.artlistTeaserClass }}'>{{ art.teaser|md|safe }}</div>
@@ -103,7 +103,11 @@
                 <div class="post-thumb d-flex align-items-center">
                     {% if art.url %}
                         <a href="{{ art.url }}" {{ colorArticleText(art.catRef, null, null, art, heading) }}>
-                            <img src="https://{{ imageServer }}/800x/{{ imagePath }}/{{ art.img[0].src }}" alt="{{ art.title|e }}" class="{% if art.catRef.artlistImageClass %}{{ art.catRef.artlistImageClass }}{% else %}img-fluid{% endif %}">
+                            <img src="https://{{ imageServer }}/800x/{{ imagePath }}/{{ art.img[0].src }}"
+                                alt="{{ art.title|e }}"
+                                class="{% if art.catRef.artlistImageClass %}{{ art.catRef.artlistImageClass }}{% else %}img-fluid{% endif %}"
+                                {% if art.catRef.artlistImageCss %}style="{{ art.catRef.artlistImageCss }}"{% endif %}
+                            >
                         </a>
                     {% elseif art.catRef.skipDefaultArtLink %}
                         <img src="https://{{ imageServer }}/800x/{{ imagePath }}/{{ art.img[0].src }}" alt="{{ art.title|e }}" class="img-fluid {{ art.catRef.artlistImageClass }}">
