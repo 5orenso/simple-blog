@@ -57,6 +57,8 @@ const fields = {
     artlistTitleClass: 1,
     artlistTeaserClass: 1,
 
+    artlistImageSize: 1,
+
     colorJumbotron: 1,
     colorMain: 1,
     colorBottom: 1,
