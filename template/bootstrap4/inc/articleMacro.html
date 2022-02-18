@@ -77,7 +77,11 @@
                         <a target="_blank" href="{{ art.url }}" title="{{ art.title|e }} - {{ art.teaser|e }}">
                     {% endif %}
                         {% if art.img[0] %}
-                            <img src="https://{{ imageServer }}/{% if art.catRef.artlistImageSize %}{{ art.catRef.artlistImageSize }}{% else %}220x{% endif %}/{{ imagePath }}/{{ art.img[0].src }}" alt="{{ art.title|e }} - {{ art.teaser|e }}" class="{% if art.catRef.artlistImageClass %}{{ art.catRef.artlistImageClass }}{% else %}img-fluid adImage{% endif %}" style="{{ art.catRef.artlistImageCss }}"><br clear="all">
+                            <img src="https://{{ imageServer }}/{% if art.catRef.artlistImageSize %}{{ art.catRef.artlistImageSize }}{% else %}220x{% endif %}/{{ imagePath }}/{{ art.img[0].src }}"
+                                alt="{{ art.title|e }} - {{ art.teaser|e }}"
+                                class="{% if art.catRef.artlistImageClass %}{{ art.catRef.artlistImageClass }}{% else %}img-fluid adImage{% endif %}"
+                                style="{% if art.catRef.artlistImageCss %}{{ art.catRef.artlistImageCss }}{% endif %}"
+                            ><br clear="all">
                         {% elseif art.teaser %}
                             <div class='{{ art.catRef.artlistTeaserClass }}'>{{ art.teaser|md|safe }}</div>
                         {% elseif art.ingress %}
