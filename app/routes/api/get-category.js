@@ -36,6 +36,7 @@ const fields = {
     hideFrontpagePagination: 1,
     hideCategoryTopArticle: 1,
     showBottomArticleList: 1,
+    artlistSkipLinkTarget: 1,
     artlistCategory: 1,
     sort: 1,
     url: 1,

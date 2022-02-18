@@ -438,6 +438,21 @@ export default class CategoryEdit extends Component {
                             <label for='hideCategoryTopArticleInput'>Skjul kategoriforside toppartikkel</label>
                         </div>
 
+                        <div class='form-check'>
+                            <input type='checkbox' class='form-check-input' id='artlistSkipLinkTargetInput'
+                                name='artlistSkipLinkTarget'
+                                onInput={e => {
+                                    handleInput(e, {
+                                        name: 'artlistSkipLinkTarget',
+                                        value: category.artlistSkipLinkTarget ? 0 : 1,
+                                    });
+                                }}
+                                value={1}
+                                checked={category.artlistSkipLinkTarget === 1 ? 'checked' : ''}
+                            />
+                            <label for='artlistSkipLinkTargetInput'>Ikke bruk link target='_blank'</label>
+                        </div>
+
                         <div class='form-group mt-3'>
                             <label for='urlInput'><i class='fas fa-link text-muted' /> URL</label>
                             <input type='text' class='form-control' id='urlInput' placeholder='url'

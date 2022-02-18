@@ -74,7 +74,7 @@
             {% for art in adlist %}
                 <div class="{% if art.catRef.artlistColClass %}{{ art.catRef.artlistColClass }}{% else %}col my-2 d-flex align-items-center justify-content-center adBox {% endif %}">
                     {% if art.url %}
-                        <a target="_blank" href="{{ art.url }}" title="{{ art.title|e }} - {{ art.teaser|e }}">
+                        <a {% if art.catRef.artlistSkipLinkTarget %}{% else %}target="_blank"{% endif %} href="{{ art.url }}" title="{{ art.title|e }} - {{ art.teaser|e }}">
                     {% endif %}
                         {% if art.img[0] %}
                             <img src="https://{{ imageServer }}/{% if art.catRef.artlistImageSize %}{{ art.catRef.artlistImageSize }}{% else %}220x{% endif %}/{{ imagePath }}/{{ art.img[0].src }}"
