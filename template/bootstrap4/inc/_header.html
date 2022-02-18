@@ -64,6 +64,8 @@
     .mainTextColorInline {
         {%- if category.colorMain -%}
             color: {{ category.colorMain }} !important;
+        {%- elseif frontpage.bgColorMain -%}
+            color: {{ frontpage.colorMain }} !important;
         {%- endif -%}
     }
     .mainBackgroundInline {
