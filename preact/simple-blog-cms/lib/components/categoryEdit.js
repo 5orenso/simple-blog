@@ -534,6 +534,14 @@ export default class CategoryEdit extends Component {
                             />
                         </div>
                         <div class='form-group'>
+                            <label for='artlistRowClassInput'><i class='fas fa-paint-roller text-muted' /> Artlist row classes</label>
+                            <input type='text' class='form-control' id='artlistRowClassInput'
+                                name='artlistRowClass'
+                                onInput={handleInput}
+                                value={category.artlistRowClass}
+                            />
+                        </div>
+                        <div class='form-group'>
                             <label for='artlistContainerClassInput'><i class='fas fa-paint-roller text-muted' /> Artlist container classes</label>
                             <input type='text' class='form-control' id='artlistContainerClassInput'
                                 name='artlistContainerClass'

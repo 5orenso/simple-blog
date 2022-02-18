@@ -51,6 +51,7 @@ const fields = {
     artlistCss: 1,
 
     artlistColClass: 1,
+    artlistRowClass: 1,
     artlistContainerClass: 1,
     artlistImageClass: 1,
     artlistTitleClass: 1,
