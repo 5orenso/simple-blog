@@ -63,8 +63,10 @@ module.exports = (req, res) => {
     mail.sendEmail({
         to: req.config.blog.email,
         from: emailSender,
-        subject: 'Magic link 🎩',
+        subject: `${req.config.blog.domain}: Magic link 🎩 `,
         body: `Hi ${req.config.blog.email} 🤠,
+
+Domain: ${req.config.blog.domain}
 
 As requested the Simple-Blog server has sent you a magic link 🎩 to be able to login to your blog admin.
 <a href="${req.config.blog.protocol}://${req.config.blog.admindomain || req.config.blog.domain}/verify-magic-link?token=${encodeURIComponent(token)}">
