@@ -69,7 +69,7 @@
 {%- endmacro -%}
 
 {% macro adList(adlist) %}
-    <div class="{{ adlist[0].catRef.artlistContainerClass }} container-fluid" {{ colorArticleBackground(adlist[0].catRef) }}>
+    <div class="{% if adlist[0].catRef.artlistContainerClass %}{{ adlist[0].catRef.artlistContainerClass }}{% else %}container-fluid{% endif %}" {{ colorArticleBackground(adlist[0].catRef) }}>
         <div class="{% if adlist[0].catRef.artlistRowClass %}{{ adlist[0].catRef.artlistRowClass }}{% else %}row d-flex justify-content-center adContainer{% endif %}">
             {% for art in adlist %}
                 <div class="{% if art.catRef.artlistColClass %}{{ art.catRef.artlistColClass }}{% else %}col my-2 d-flex align-items-center justify-content-center adBox {% endif %}">
