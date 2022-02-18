@@ -78,6 +78,10 @@
                     {% endif %}
                         {% if art.img[0] %}
                             <img src="https://{{ imageServer }}/220x/{{ imagePath }}/{{ art.img[0].src }}" alt="{{ art.title|e }} - {{ art.teaser|e }}" class="img-fluid adImage {{ art.catRef.artlistImageClass }}"><br clear="all">
+                        {% elseif art.teaser %}
+                            <div class='{{ art.catRef.artlistTeaserClass }}'>{{ art.teaser|md|safe }}</div>
+                        {% elseif art.ingress %}
+                            <div class='{{ art.catRef.artlistTeaserClass }}'>{{ art.ingress|md|safe }}</div>
                         {% endif %}
                     {% if art.url %}
                         </a>
