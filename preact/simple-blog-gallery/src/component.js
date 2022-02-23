@@ -138,7 +138,6 @@ export default function App(props) {
                                 class={`w-100 h-100 text-center rounded-lg imageContainer d-flex justify-content-center align-items-center ${article['gallery-img-wrapper-class']}`}
                                 style={`
                                     scroll-snap-align: start;
-                                    flex-wrap: wrap;
                                     overflow-y: hidden;
                                 `}
                             >
