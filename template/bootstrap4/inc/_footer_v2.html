@@ -133,19 +133,17 @@
                     </div>
                 </small>
             </div>
-            <div class="row">
-                <div class="col-12 text-center bottomTextColorInline">
+            <div class="col-12 text-center bottomTextColorInline">
+                <small>
                     <small>
-                        <small>
-                            {% if disableCookies %}
-                                <a href="#" onClick="createCookie('disableCookies', 'no'); location.reload();" class='text-muted bottomTextColorInline'>Enable cookies</a>
-                            {% else %}
-                                <a href="#" onClick="createCookie('disableCookies', 'yes'); location.reload();" class='text-muted bottomTextColorInline'>Disable cookies</a>
-                            {% endif %}
-                            - <a href="/send-magic-link" class='text-muted font-weight-lighter bottomTextColorInline' rel=”nofollow”>Send a magic link 🎩  to login.</a><br>
-                        </small>
+                        {% if disableCookies %}
+                            <a href="#" onClick="createCookie('disableCookies', 'no'); location.reload();" class='text-muted bottomTextColorInline'>Enable cookies</a>
+                        {% else %}
+                            <a href="#" onClick="createCookie('disableCookies', 'yes'); location.reload();" class='text-muted bottomTextColorInline'>Disable cookies</a>
+                        {% endif %}
+                        - <a href="/send-magic-link" class='text-muted font-weight-lighter bottomTextColorInline' rel=”nofollow”>Send a magic link 🎩  to login.</a><br>
                     </small>
-                </div>
+                </small>
             </div>
         </div>
     </footer>
