@@ -127,6 +127,9 @@ export default class Edit extends Component {
             fontweightH3,
             fontsizeH5,
             fontweightH5,
+
+            classNames,
+            cssStyles,
         } = this.props;
 
         const authorDefault = sessionEmail.replace(/\@.+$/, '');
@@ -883,24 +886,24 @@ export default class Edit extends Component {
                     <div class='row text-dark'>
                         <div class='col-6 d-flex flex-column'>
                             <div class='form-group'>
-                                <label for='classes' class='mr-2 my-0'>classes</label>
+                                <label for='classes' class='mr-2 my-0'>classNames</label>
                                 <input
                                     class={`form-control mr-2`}
-                                    name='classes'
-                                    id='classes'
-                                    value={article.classes || classes}
+                                    name='classNames'
+                                    id='classNames'
+                                    value={article.classNames || classNames}
                                     onInput={handleInput}
                                 />
                             </div>
                         </div>
                         <div class='col-6 d-flex flex-column'>
                             <div class='form-group'>
-                                <label for='styles' class='mr-2 my-0'>styles</label>
+                                <label for='cssStyles' class='mr-2 my-0'>cssStyles</label>
                                 <input
                                     class={`form-control mr-2`}
-                                    name='styles'
-                                    id='styles'
-                                    value={article.styles || styles}
+                                    name='cssStyles'
+                                    id='cssStyles'
+                                    value={article.cssStyles || cssStyles}
                                     onInput={handleInput}
                                 />
                             </div>

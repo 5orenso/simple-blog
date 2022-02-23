@@ -55,8 +55,8 @@ const fields = {
     fontsizeH5: 1,
     fontweightH5: 1,
 
-    classes: 1,
-    styles: 1,
+    classNames: 1,
+    cssStyles: 1,
 
     'clock-class': 1,
     'clock-style': 1,
