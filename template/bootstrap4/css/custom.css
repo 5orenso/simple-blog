@@ -428,26 +428,26 @@ td .markup p {
     top: 185px;
 }
 
-@media (min-width: 544px) {
-    html {
-      font-size: 1rem;
-    }
-    .display-3 {
-        font-size: 2.5rem;
-    }
-    .gallery-height {
-        height: 500px;
-    }
-    .gallery-position-bottom {
-        top: 185px;
-    }
-}
 @media (min-width: 350px) {
     html {
       font-size: 1rem;
     }
     .display-3 {
         font-size: 2.2rem;
+    }
+    .gallery-height {
+        height: 400px;
+    }
+    .gallery-position-bottom {
+        top: 55px;
+    }
+}
+@media (min-width: 544px) {
+    html {
+      font-size: 1rem;
+    }
+    .display-3 {
+        font-size: 2.5rem;
     }
     .gallery-height {
         height: 500px;
