@@ -431,6 +431,15 @@ td .markup p {
     height: 300px !important;
 }
 
+.no-scrollbar {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none;  /* Internet Explorer 10+ */
+}
+.no-scrollbar::-webkit-scrollbar { /* WebKit */
+    width: 0;
+    height: 0;
+}
+
 @media (min-width: 350px) {
     html {
       font-size: 1rem;
