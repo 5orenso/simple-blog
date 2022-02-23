@@ -434,11 +434,14 @@ td .markup p {
     .gallery-height {
         height: 500px;
     }
+    .gallery-position-bottom {
+        top: 185px;
+    }
 }
 /* Medium devices (tablets, 768px and up) */
 @media (min-width: 768px) {
     html {
-      font-size: 1.1rem;
+        font-size: 1.1rem;
     }
     .display-3 {
         font-size: 3.0rem;
@@ -446,11 +449,14 @@ td .markup p {
     .gallery-height {
         height: 500px;
     }
+    .gallery-position-bottom {
+        top: 185px;
+    }
 }
 /* Large devices (desktops, 992px and up) */
 @media (min-width: 992px) {
     html {
-      font-size: 1.2rem;
+        font-size: 1.2rem;
     }
     .display-3 {
         font-size: 3.5rem;
@@ -458,16 +464,22 @@ td .markup p {
     .gallery-height {
         height: 600px;
     }
+    .gallery-position-bottom {
+        top: 300px;
+    }
 }
 /* Extra large devices (large desktops, 1200px and up) */
 @media (min-width: 1200px) {
     html {
-      font-size: 1.2rem;
+        font-size: 1.2rem;
     }
     .display-3 {
         font-size: 4rem;
     }
     .gallery-height {
         height: 750px;
+    }
+    .gallery-position-bottom {
+        top: 505px;
     }
 }
