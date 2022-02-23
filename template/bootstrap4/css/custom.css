@@ -431,6 +431,9 @@ td .markup p {
     .display-3 {
         font-size: 2.5rem;
     }
+    .gallery-height {
+        height: 500px;
+    }
 }
 /* Medium devices (tablets, 768px and up) */
 @media (min-width: 768px) {
@@ -439,6 +442,9 @@ td .markup p {
     }
     .display-3 {
         font-size: 3.0rem;
+    }
+    .gallery-height {
+        height: 500px;
     }
 }
 /* Large devices (desktops, 992px and up) */
@@ -449,6 +455,9 @@ td .markup p {
     .display-3 {
         font-size: 3.5rem;
     }
+    .gallery-height {
+        height: 600px;
+    }
 }
 /* Extra large devices (large desktops, 1200px and up) */
 @media (min-width: 1200px) {
@@ -457,5 +466,8 @@ td .markup p {
     }
     .display-3 {
         font-size: 4rem;
+    }
+    .gallery-height {
+        height: 750px;
     }
 }
