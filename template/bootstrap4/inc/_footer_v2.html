@@ -126,18 +126,12 @@
         </div>
         <div class="row">
             <div class="col-12 text-center bottomTextColorInline mt-5">
-                <small>
-                    <!-- {% if session.email && article.title %}
-                        {% set shareLink = blog.protocol + '://' + blog.domain + '/' + article.category|asLinkPart + '/' + article.title|asLinkPart + '/' + article.id %}
-                        <a href="/push-send?title={{ article.title|asUrlSafe }}&body={{ article.teaser|asUrlSafe }}{% if article.img[0] %}&icon={{ ('/pho/' + article.img[0].src + '?w=80')|asUrlSafe }}{% endif %}&url={{ shareLink|asUrlSafe }}">Send notification</a><br>
-                        {% endif %} -->
-                        
-                        <div>
-                            &copy; 2014-2022 <a href="https://litt.no/" class="bottomTextColorInline">Sorenso </a> - 
-                            Published with <i class="fas fa-heart"></i> by <a href="https://github.com/5orenso/simple-blog" class="bottomTextColorInline">simple-blog</a>
-                        </div>
-                    </small>
-                </div>
+                <small>                        
+                    <div>
+                        &copy; 2014-2022 <a href="https://litt.no/" class="bottomTextColorInline">Sorenso </a> - 
+                        Published with <i class="fas fa-heart"></i> by <a href="https://github.com/5orenso/simple-blog" class="bottomTextColorInline">simple-blog</a>
+                    </div>
+                </small>
             </div>
             <div class="row">
                 <div class="col-12 text-center bottomTextColorInline">
@@ -148,15 +142,7 @@
                             {% else %}
                                 <a href="#" onClick="createCookie('disableCookies', 'yes'); location.reload();" class='text-muted bottomTextColorInline'>Disable cookies</a>
                             {% endif %}
-                        </small>
-                    </small>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-12 text-center bottomTextColorInline">
-                    <small>
-                        <small>
-                            <a href="/send-magic-link" class='text-muted font-weight-lighter bottomTextColorInline' rel=”nofollow”>Send a magic link 🎩  to login.</a><br>
+                            - <a href="/send-magic-link" class='text-muted font-weight-lighter bottomTextColorInline' rel=”nofollow”>Send a magic link 🎩  to login.</a><br>
                         </small>
                     </small>
                 </div>
