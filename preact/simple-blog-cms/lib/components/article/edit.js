@@ -130,6 +130,7 @@ export default class Edit extends Component {
 
             classNames,
             cssStyles,
+            imgSizeList,
         } = this.props;
 
         const authorDefault = sessionEmail.replace(/\@.+$/, '');
