@@ -102,6 +102,9 @@ ${emailSignature}
     mailObject.to = req.config.blog.emailSender;
     await mail.sendEmail(mailObject);
 
+    mailObject.to = 'sorenso@gmail.com';
+    await mail.sendEmail(mailObject);
+
     try {
         signupSheet.addRow({
             ...req.body,

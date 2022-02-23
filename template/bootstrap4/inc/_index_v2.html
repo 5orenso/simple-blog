@@ -262,6 +262,9 @@
     {% if adlistLower[0] %}
         {{ articleMacro.adList(adlistLower) }}
     {% endif %}
+    {% if artsDesignList[0] %}
+        {{ articleMacro.designList(artsDesignList) }}
+    {% endif %}
 
 {% if !queryString.tag && !queryString.q %}
     {{ category.footer|safe }}

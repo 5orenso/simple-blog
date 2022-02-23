@@ -23,6 +23,7 @@ module.exports = async (req, res) => {
     const artAdsLower = new Article();
     const artAdsLowerUpper = new Article();
     const artBottom = new Article();
+    const artsDesign = new Article();
 
     const catFrontpage = new Category();
     const catFrontpageBanner = new Category();
@@ -32,6 +33,7 @@ module.exports = async (req, res) => {
     const catAdsLowerUpper = new Category();
     const cat = new Category();
     const catBottom = new Category();
+    const catsDesign = new Category();
 
     let isFrontpage = true;
     let isDetailView = false;
@@ -53,6 +55,7 @@ module.exports = async (req, res) => {
     let queryAds = {};
     let queryAdsLower = {};
     let queryAdsLowerUpper = {};
+    let queryDesign = {};
 
     if (req.query.previewJwtToken) {
         const jwtData = util.decodeJwtToken(req.query.previewJwtToken, req.config);
@@ -189,10 +192,12 @@ module.exports = async (req, res) => {
         queryAds = { type: 2 };
         queryAdsLower = { type: 8 };
         queryAdsLowerUpper = { type: 23 };
+        queryDesign = { type: 26 };
     } else {
         queryAds = { type: 3 };
         queryAdsLower = { type: 4 };
         queryAdsLowerUpper = { type: 22 };
+        queryDesign = { type: 25 };
     }
 
     const frontpageBannercats = await catFrontpageBanner.find({ type: 24 });
@@ -239,6 +244,14 @@ module.exports = async (req, res) => {
         });
     }
 
+    const catsDesignList = await catsDesign.find(queryDesign);
+    const artsDesignList = await artsDesign.find({ status: 2, categoryId: { $in: catsDesignList.map(c => c.id) }});
+    if (tc.isArray(artsDesignList)) {
+        artsDesignList.forEach((a) => {
+            a.catRef = catsDesignList.find(c => c.id === a.categoryId);
+        });
+    }
+
     const artcatsBottom = await catBottom.find({ type: 7 });
     const artlistBottom = await artBottom.find({ status: 2, categoryId: { $in: artcatsBottom.map(c => c.id) }});
     if (tc.isArray(artlistBottom)) {
@@ -271,6 +284,7 @@ module.exports = async (req, res) => {
         adlist,
         adlistLower,
         adlistLowerUpper,
+        artsDesignList,
         limit,
         page,
         skip,

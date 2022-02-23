@@ -96,6 +96,30 @@
     </div>
 {% endmacro %}
 
+{% macro designList(artlist) %}
+    {% for art in artlist %}
+        <div class="{% if art.catRef.artlistColClass %}{{ art.catRef.artlistColClass }}{% else %}col my-2 d-flex align-items-center justify-content-center adBox {% endif %}">
+            {% if art.url %}
+                <a {% if art.catRef.artlistSkipLinkTarget %}{% else %}target="_blank"{% endif %} href="{{ art.url }}" title="{{ art.title|e }} - {{ art.teaser|e }}">
+            {% endif %}
+                {% if art.img[0] %}
+                    <img src="https://{{ imageServer }}/{% if art.catRef.artlistImageSize %}{{ art.catRef.artlistImageSize }}{% else %}220x{% endif %}/{{ imagePath }}/{{ art.img[0].src }}"
+                        alt="{{ art.title|e }} - {{ art.teaser|e }}"
+                        class="{% if art.catRef.artlistImageClass %}{{ art.catRef.artlistImageClass }}{% else %}img-fluid adImage{% endif %}"
+                        {% if art.catRef.artlistImageCss %}style="{{ art.catRef.artlistImageCss }}"{% endif %}
+                    ><br clear="all">
+                {% elseif art.teaser %}
+                    <div class='{{ art.catRef.artlistTeaserClass }}'>{{ art.teaser|md|safe }}</div>
+                {% elseif art.ingress %}
+                    <div class='{{ art.catRef.artlistTeaserClass }}'>{{ art.ingress|md|safe }}</div>
+                {% endif %}
+            {% if art.url %}
+                </a>
+            {% endif %}
+        </div>
+    {% endfor %}
+{% endmacro %}
+
 {% macro articleTeaser(art, col, extraClasses, heading) %}
     <div class="{% if art.catRef.artlistColClass %}{{ art.catRef.artlistColClass }}{% else %}col-12 col-sm-12 col-md-{{ col || 4 }} post-data my-1{% endif %} {{ extraClasses }} {{ art.catRef.artlistContainerClass }}" >
         <div {{ colorArticleBackground(art.catRef, null, null, art) }}>
