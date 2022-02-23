@@ -73,7 +73,11 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark menuBackgroundInline menuTextColorInline">
     <a class="navbar-brand" href="/">
         {%- if frontpage.image -%}
-            <img src="https://{{ imageServer }}{{ frontpage.image }}" class='logoStyle' />
+            {%- if frontpage.image|match('http') -%}
+                <img src="{{ frontpage.image }}" class='logoStyle' />
+            {%- else -%}
+                <img src="https://{{ imageServer }}{{ frontpage.image }}" class='logoStyle' />
+            {%- endif -%}
         {%- endif -%}
         {%- if !frontpage.hideTitle -%}
             {{ frontpage.title || blog.title|removeLineBreaks|raw }}
