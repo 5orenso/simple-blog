@@ -135,7 +135,7 @@ export default function App(props) {
                     {filteredImages && filteredImages.map((img, idx) => (
                         <div class={`col-12 clearfix position-relative p-0 ${article['gallery-class-photo']} ${photoClass}`}>
                             <div
-                                class={`w-100 h-100 text-center rounded-lg imageContainer d-flex justify-content-center align-items-center`}
+                                class={`w-100 h-100 text-center rounded-lg imageContainer d-flex justify-content-center align-items-center ${article['gallery-img-wrapper-class']}`}
                                 style={`
                                     scroll-snap-align: start;
                                     flex-wrap: wrap;
