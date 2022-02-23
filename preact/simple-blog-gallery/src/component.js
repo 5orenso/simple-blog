@@ -127,7 +127,7 @@ export default function App(props) {
 
             <div class={`w-100 ${article['gallery-wrapper-class']}`}>
                 <div
-                    class={`d-flex flex-row flex-nowrap border-top border-bottom`}
+                    class={`d-flex flex-row flex-nowrap ${article['gallery-wrapper-inner-class'] ? article['gallery-wrapper-inner-class'] : 'border-top border-bottom'}`}
                     style='overflow: auto; scroll-snap-type: x mandatory;'
                     onScroll={scrollImages}
                     ref={imageScrollerRef}
