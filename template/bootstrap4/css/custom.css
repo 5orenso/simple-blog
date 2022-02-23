@@ -412,15 +412,15 @@ td .markup p {
 }
 
 .img-fill {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    overflow: hidden !important;
 }
 .img-fill img {
-    flex-shrink: 0;
-    min-width: 100%;
-    min-height: 100%
+    flex-shrink: 0 !important;
+    min-width: 100% !important;
+    min-height: 100% !important;
 }
 
 @media (min-width: 544px) {

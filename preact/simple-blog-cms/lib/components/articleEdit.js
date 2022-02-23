@@ -64,7 +64,7 @@ const widgetFields = {
     form: ['class', 'style', 'table-class', 'sheetId'],
     sheet: ['class', 'style', 'table-class', 'sheetId', 'showDocTitle', 'limit', 'showSearch'],
     poll: ['class', 'style'],
-    gallery: ['class', 'style', 'class-photo', 'class-photo-img', 'img-wrapper-class', 'start', 'end'],
+    gallery: ['class', 'style', 'wrapper-class', 'class-photo', 'class-photo-img', 'img-wrapper-class', 'start', 'end'],
     weather: ['class', 'style', 'name', 'height', 'lat', 'lon', 'date'],
     map: ['class', 'style'],
     rating: ['class', 'style', 'from', 'to'],

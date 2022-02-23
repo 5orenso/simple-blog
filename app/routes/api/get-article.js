@@ -85,6 +85,7 @@ const fields = {
     'poll-style': 1,
 
     'gallery-class': 1,
+    'gallery-wrapper-class': 1,
     'gallery-class-photo': 1,
     'gallery-class-photo-img': 1,
     'gallery-img-wrapper-class': 1,
