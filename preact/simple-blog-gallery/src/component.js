@@ -154,7 +154,7 @@ export default function App(props) {
                                     class={`img-fluid position-relative ${article['gallery-class-photo-img']} ${imgClass}`}
                                     src={`https://${imageServer}/${size}/${imagePath}/${img.src}`}
                                     loading='lazy'
-                                    style={`max-height: 75vh; ${idx !== imageIdx ? '' : ''}`}
+                                    style={`${idx !== imageIdx ? '' : ''}`}
                                 /> : <>
                                     <span class='display-1 text-muted'>
                                         <i class='fas fa-camera' />
