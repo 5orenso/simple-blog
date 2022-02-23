@@ -22,7 +22,8 @@
                 -moz-background-size: cover;
                 -o-background-size: cover;
                 background-size: cover;
-            {%- elseif category.bgColorBottom -%}
+            {%- endif -%}
+            {%- if category.bgColorBottom -%}
                 background-color: {{ category.bgColorBottom }} !important;
             {%- elseif frontpage.bgColorBottom -%}
                 background-color: {{ frontpage.bgColorBottom }} !important;
