@@ -411,6 +411,18 @@ td .markup p {
 	min-height: 17px;
 }
 
+.img-fill {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden
+}
+.img-fill img {
+    flex-shrink: 0;
+    min-width: 100%;
+    min-height: 100%
+}
+
 @media (min-width: 544px) {
     html {
       font-size: 1rem;
