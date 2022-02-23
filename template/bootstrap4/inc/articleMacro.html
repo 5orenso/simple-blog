@@ -77,7 +77,7 @@
                         <a {% if art.catRef.artlistSkipLinkTarget %}{% else %}target="_blank"{% endif %} href="{{ art.url }}" title="{{ art.title|e }} - {{ art.teaser|e }}">
                     {% endif %}
                         {% if art.img[0] %}
-                            <img src="https://{{ imageServer }}/{% if art.catRef.artlistImageSize %}{{ art.catRef.artlistImageSize }}{% else %}220x{% endif %}/{{ imagePath }}/{{ art.img[0].src }}"
+                            <img src="https://{{ imageServer }}/{% if art.imgSizeList %}{{ art.imgSizeList }}{% elseif art.catRef.artlistImageSize %}{{ art.catRef.artlistImageSize }}{% else %}220x{% endif %}/{{ imagePath }}/{{ art.img[0].src }}"
                                 alt="{{ art.title|e }} - {{ art.teaser|e }}"
                                 class="{% if art.catRef.artlistImageClass %}{{ art.catRef.artlistImageClass }}{% else %}img-fluid adImage{% endif %}"
                                 {% if art.catRef.artlistImageCss %}style="{{ art.catRef.artlistImageCss }}"{% endif %}
@@ -103,7 +103,7 @@
                 <a {% if art.catRef.artlistSkipLinkTarget %}{% else %}target="_blank"{% endif %} href="{{ art.url }}" title="{{ art.title|e }} - {{ art.teaser|e }}">
             {% endif %}
                 {% if art.img[0] %}
-                    <img src="https://{{ imageServer }}/{% if art.catRef.artlistImageSize %}{{ art.catRef.artlistImageSize }}{% else %}220x{% endif %}/{{ imagePath }}/{{ art.img[0].src }}"
+                    <img src="https://{{ imageServer }}/{% if art.imgSizeList %}{{ art.imgSizeList }}{% elseif art.catRef.artlistImageSize %}{{ art.catRef.artlistImageSize }}{% else %}220x{% endif %}/{{ imagePath }}/{{ art.img[0].src }}"
                         alt="{{ art.title|e }} - {{ art.teaser|e }}"
                         class="{% if art.catRef.artlistImageClass %}{{ art.catRef.artlistImageClass }}{% else %}img-fluid{% endif %}"
                         {% if art.catRef.artlistImageCss %}style="{{ art.catRef.artlistImageCss }}"{% endif %}
@@ -127,17 +127,17 @@
                 <div class="post-thumb d-flex align-items-center">
                     {% if art.url %}
                         <a href="{{ art.url }}" {{ colorArticleText(art.catRef, null, null, art, heading) }}>
-                            <img src="https://{{ imageServer }}/800x/{{ imagePath }}/{{ art.img[0].src }}"
+                            <img src="https://{{ imageServer }}/{% if art.imgSizeList %}{{ art.imgSizeList }}{% elseif art.catRef.artlistImageSize %}{{ art.catRef.artlistImageSize }}{% else %}800x{% endif %}/{{ imagePath }}/{{ art.img[0].src }}"
                                 alt="{{ art.title|e }}"
                                 class="{% if art.catRef.artlistImageClass %}{{ art.catRef.artlistImageClass }}{% else %}img-fluid{% endif %}"
                                 {% if art.catRef.artlistImageCss %}style="{{ art.catRef.artlistImageCss }}"{% endif %}
                             >
                         </a>
                     {% elseif art.catRef.skipDefaultArtLink %}
-                        <img src="https://{{ imageServer }}/800x/{{ imagePath }}/{{ art.img[0].src }}" alt="{{ art.title|e }}" class="img-fluid {{ art.catRef.artlistImageClass }}">
+                        <img src="https://{{ imageServer }}/{% if art.imgSizeList %}{{ art.imgSizeList }}{% elseif art.catRef.artlistImageSize %}{{ art.catRef.artlistImageSize }}{% else %}800x{% endif %}/{{ imagePath }}/{{ art.img[0].src }}" alt="{{ art.title|e }}" class="img-fluid {{ art.catRef.artlistImageClass }}">
                     {% else %}
                         <a href="/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}">
-                            <img src="https://{{ imageServer }}/800x/{{ imagePath }}/{{ art.img[0].src }}" alt="{{ art.title|e }}" class="img-fluid {{ art.catRef.artlistImageClass }}">
+                            <img src="https://{{ imageServer }}/{% if art.imgSizeList %}{{ art.imgSizeList }}{% elseif art.catRef.artlistImageSize %}{{ art.catRef.artlistImageSize }}{% else %}800x{% endif %}/{{ imagePath }}/{{ art.img[0].src }}" alt="{{ art.title|e }}" class="img-fluid {{ art.catRef.artlistImageClass }}">
                         </a>
                     {% endif %}
                 </div>

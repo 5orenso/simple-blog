@@ -908,6 +908,18 @@ export default class Edit extends Component {
                                 />
                             </div>
                         </div>
+                        <div class='col-6 d-flex flex-column'>
+                            <div class='form-group'>
+                                <label for='imgSizeList' class='mr-2 my-0'>imgSizeList (80x80, 150x, 220x, 400x, 800x, 1024x, 1280x, 1600x, 1920x, 2500x)</label>
+                                <input
+                                    class={`form-control mr-2`}
+                                    name='imgSizeList'
+                                    id='imgSizeList'
+                                    value={article.imgSizeList || imgSizeList}
+                                    onInput={handleInput}
+                                />
+                            </div>
+                        </div>
                     </div>
                 </details>
             </div>}

@@ -549,7 +549,7 @@ export default class CategoryEdit extends Component {
                         </div>
 
                         <div class='form-group'>
-                            <label for='artlistImageSizeInput'><i class='fas fa-paint-roller text-muted' /> Artlist Image Size (80x80, 150x, 220x, 400x, 800x, 1024x, 1280x, 1600x, 1920x, 2500x</label>
+                            <label for='artlistImageSizeInput'><i class='fas fa-paint-roller text-muted' /> Artlist Image Size (80x80, 150x, 220x, 400x, 800x, 1024x, 1280x, 1600x, 1920x, 2500x)</label>
                             <input type='text' class='form-control' id='artlistImageSizeInput' rows='5'
                                 name='artlistImageSize'
                                 onInput={handleInput}
