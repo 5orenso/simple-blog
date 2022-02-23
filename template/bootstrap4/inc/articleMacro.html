@@ -98,7 +98,7 @@
 
 {% macro designList(artlist) %}
     {% for art in artlist %}
-        <div class="{% if art.catRef.artlistColClass %}{{ art.catRef.artlistColClass }}{% else %}col my-2 d-flex align-items-center justify-content-center adBox {% endif %}">
+        <div class="{% if art.classNames %}{{ art.classNames }}{% endif %}" {% if art.cssStyles %}style="{{ art.cssStyles }}"{% endif %}>
             {% if art.url %}
                 <a {% if art.catRef.artlistSkipLinkTarget %}{% else %}target="_blank"{% endif %} href="{{ art.url }}" title="{{ art.title|e }} - {{ art.teaser|e }}">
             {% endif %}
