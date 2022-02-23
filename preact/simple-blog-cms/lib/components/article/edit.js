@@ -34,7 +34,7 @@ const widgetFields = {
     form: ['class', 'style', 'table-class', 'sheetId'],
     sheet: ['class', 'style', 'table-class', 'sheetId', 'showDocTitle', 'limit', 'showSearch'],
     poll: ['class', 'style'],
-    gallery: ['class', 'style', 'wrapper-class', 'wrapper-inner-class', 'class-photo', 'skip-background-images', 'class-photo-img', 'img-wrapper-class', 'start', 'end'],
+    gallery: ['class', 'style', 'wrapper-class', 'wrapper-inner-class', 'class-photo', 'skip-background-images', 'class-photo-img', 'img-wrapper-class', 'start', 'end', 'nav-back', 'nav-forward', 'nav-class'],
     weather: ['class', 'style', 'name', 'height', 'lat', 'lon', 'date'],
     map: ['class', 'style'],
     rating: ['class', 'style', 'from', 'to'],
