@@ -113,13 +113,15 @@
             {% endfor %}
         </ul>
         <ul class="navbar-nav ml-auto">
-            <li class="nav-item ml-auto float-right pt-0 pr-2">
-                {%- if language === 'en' -%}
-                    <a href="#" onClick="createCookie('language', 'no'); location.reload();" style='font-size: 1.6em;'>🇳🇴</a>
-                {%- else -%}
-                    <a href="#" onClick="createCookie('language', 'en'); location.reload();" style='font-size: 1.6em;'>🇬🇧</a>
-                {%- endif -%}
-            </li>
+            {%- if !frontpage.hideLanguage -%}
+                <li class="nav-item ml-auto float-right pt-0 pr-2">
+                    {%- if language === 'en' -%}
+                        <a href="#" onClick="createCookie('language', 'no'); location.reload();" style='font-size: 1.6em;'>🇳🇴</a>
+                    {%- else -%}
+                        <a href="#" onClick="createCookie('language', 'en'); location.reload();" style='font-size: 1.6em;'>🇬🇧</a>
+                    {%- endif -%}
+                </li>
+            {%- endif -%}
             <li class="nav-item ml-auto float-right">
                 <a href="#" class='nav-link' onClick="$('#searchBox').toggle();"><i class="fas fa-search"></i></a>
             </li>
