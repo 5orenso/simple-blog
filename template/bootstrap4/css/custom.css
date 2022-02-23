@@ -424,6 +424,14 @@ td .markup p {
     object-fit: cover;
 }
 
+.gallery-height {
+    height: 400px;
+}
+.gallery-position-bottom {
+    top: 155px;
+    height: 300px !important;
+}
+
 @media (min-width: 350px) {
     html {
       font-size: 1rem;
