@@ -141,14 +141,14 @@ export default function App(props) {
                                     overflow-y: hidden;
                                 `}
                             >
-                                <div
+                                {!article['gallery-skip-background-images'] && <div
                                     class='position-absolute w-100 h-100'
                                     style={`
                                         background-image: url('${`https://${imageServer}/400x/${imagePath}/${img.src}`}'); background-size: cover;
                                         filter: blur(10px);
                                         opacity: 0.5;
                                     `}
-                                />
+                                />}
                                 {img.src ? <img
                                     class={`img-fluid position-relative ${article['gallery-class-photo-img']} ${imgClass}`}
                                     src={`https://${imageServer}/${size}/${imagePath}/${img.src}`}

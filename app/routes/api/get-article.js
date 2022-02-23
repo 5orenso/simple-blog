@@ -89,6 +89,7 @@ const fields = {
     'gallery-wrapper-inner-class': 1,
     'gallery-class-photo': 1,
     'gallery-class-photo-img': 1,
+    'gallery-skip-background-images': 1,
     'gallery-img-wrapper-class': 1,
     'gallery-style': 1,
     'gallery-start': 1,
