@@ -876,6 +876,37 @@ export default class Edit extends Component {
                     </div>
                 </details>
 
+                <details>
+                    <summary>
+                        Classes and styles
+                    </summary>
+                    <div class='row text-dark'>
+                        <div class='col-6 d-flex flex-column'>
+                            <div class='form-group'>
+                                <label for='classes' class='mr-2 my-0'>classes</label>
+                                <input
+                                    class={`form-control mr-2`}
+                                    name='classes'
+                                    id='classes'
+                                    value={article.classes || classes}
+                                    onInput={handleInput}
+                                />
+                            </div>
+                        </div>
+                        <div class='col-6 d-flex flex-column'>
+                            <div class='form-group'>
+                                <label for='styles' class='mr-2 my-0'>styles</label>
+                                <input
+                                    class={`form-control mr-2`}
+                                    name='styles'
+                                    id='styles'
+                                    value={article.styles || styles}
+                                    onInput={handleInput}
+                                />
+                            </div>
+                        </div>
+                    </div>
+                </details>
             </div>}
 
             {language === 'no' && <div class='col-12 d-flex flex-column'>
