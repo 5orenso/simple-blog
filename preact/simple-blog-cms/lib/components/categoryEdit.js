@@ -217,7 +217,7 @@ export default class CategoryEdit extends Component {
                                 name='hideLanguage'
                                 onInput={e => {
                                     handleInput(e, {
-                                        name: 'hideTitle',
+                                        name: 'hideLanguage',
                                         value: category.hideLanguage ? 0 : 1,
                                     });
                                 }}
