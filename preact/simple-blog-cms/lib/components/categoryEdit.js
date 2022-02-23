@@ -224,7 +224,7 @@ export default class CategoryEdit extends Component {
                                 value={1}
                                 checked={category.hideLanguage ? 'checked' : ''}
                             />
-                            <label for='menuInput'>Skjul språkvalg</label>
+                            <label for='hideLanguageInput'>Skjul språkvalg</label>
                         </div>
                         <div class='form-check'>
                             <input type='checkbox' class='form-check-input' id='hideTitleInput'
@@ -238,7 +238,7 @@ export default class CategoryEdit extends Component {
                                 value={1}
                                 checked={category.hideTitle ? 'checked' : ''}
                             />
-                            <label for='menuInput'>Skjul menytittel</label>
+                            <label for='hideTitleInput'>Skjul menytittel</label>
                         </div>
 
                         <div class='form-check'>
