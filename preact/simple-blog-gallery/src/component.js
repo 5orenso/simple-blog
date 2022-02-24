@@ -54,6 +54,7 @@ export default function App(props) {
     const [imageServer, setImageServer] = useState({});
     const [imagePath, setImagePath] = useState({});
     const [imageIdx, setImageidx] = useState(0);
+    const [autoscroll, setAutoscroll] = useState(true);
     const imageScrollerRef = useRef(null);
 
     useEffect(() => {
@@ -98,6 +99,7 @@ export default function App(props) {
     }
 
     const onClickScrollLeft = useCallback((e) => {
+        setAutoscroll(false);
         const el = imageScrollerRef;
         const width = 0 - el.current.clientWidth;
         el.current.scrollBy({
@@ -108,6 +110,7 @@ export default function App(props) {
     }, []);
 
     const onClickScrollRight = useCallback((e) => {
+        setAutoscroll(false);
         const el = imageScrollerRef;
         const width = el.current.clientWidth;
         el.current.scrollBy({
@@ -122,7 +125,7 @@ export default function App(props) {
     const hasNext = imageIdx < filteredImages.length - 1;
 
     if (autoScroll || article['gallery-autoscroll']) {
-        if (hasNext) {
+        if (hasNext && autoscroll) {
             useEffect(() => {
                 setTimeout(() => {
                     const el = imageScrollerRef;
@@ -134,6 +137,8 @@ export default function App(props) {
                     });
                 }, parseInt(autoScroll || article['gallery-autoscroll'], 10));
             });
+        } else {
+            setAutoscroll(false);
         }
     }
 
