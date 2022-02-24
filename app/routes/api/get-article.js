@@ -88,6 +88,7 @@ const fields = {
     'poll-class': 1,
     'poll-style': 1,
 
+    'gallery-autoscroll': 1,
     'gallery-nav-class': 1,
     'gallery-nav-back': 1,
     'gallery-nav-forward': 1,

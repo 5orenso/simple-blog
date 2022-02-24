@@ -48,7 +48,7 @@ function fetchApi({ url, headers = {}, body = {}, settings = {} }) {
 }
 
 export default function App(props) {
-    const { apiServer, jwtToken, articleId, start, end, size = '800x', className = '', style = '', photoClass = '', imgClass = '' } = props;
+    const { apiServer, jwtToken, articleId, start, end, size = '800x', className = '', style = '', photoClass = '', imgClass = '', autoScroll } = props;
 
     const [article, setArticle] = useState({});
     const [imageServer, setImageServer] = useState({});
@@ -116,6 +116,24 @@ export default function App(props) {
             behavior: 'smooth'
         });
     }, []);
+
+    if (autoScroll || article['gallery-autoscroll']) {
+        useEffect(() => {
+            setTimeout(() => {
+                const hasNextImage = imageIdx < filteredImages.length - 1;
+                if (!hasNextImage) {
+                    setImageidx(0);
+                }
+                const el = imageScrollerRef;
+                const width = el.current.clientWidth;
+                el.current.scrollBy({
+                    top: 0,
+                    left: width,
+                    behavior: 'smooth'
+                });
+            }, parseInt(autoScroll || article['gallery-autoscroll'], 10));
+        });
+    }
 
     const hasPrev = imageIdx > 0;
     const hasNext = imageIdx < filteredImages.length - 1;
