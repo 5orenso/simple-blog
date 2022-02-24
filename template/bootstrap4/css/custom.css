@@ -514,7 +514,7 @@ td .markup p {
         height: 750px;
     }
     .gallery-position-bottom {
-        top: 460px;
-        height: 400px !important;
+        top: 360px;
+        height: 500px !important;
     }
 }
