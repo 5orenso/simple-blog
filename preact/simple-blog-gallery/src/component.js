@@ -124,7 +124,6 @@ export default function App(props) {
                 const el = imageScrollerRef;
                 const width = el.current.clientWidth;
                 if (!hasNextImage) {
-                    setImageidx(0);
                     el.current.scrollTo({
                         top: 0,
                         left: 0,
