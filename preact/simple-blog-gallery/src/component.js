@@ -121,16 +121,22 @@ export default function App(props) {
         useEffect(() => {
             setTimeout(() => {
                 const hasNextImage = imageIdx < filteredImages.length - 1;
-                if (!hasNextImage) {
-                    setImageidx(0);
-                }
                 const el = imageScrollerRef;
                 const width = el.current.clientWidth;
-                el.current.scrollBy({
-                    top: 0,
-                    left: width,
-                    behavior: 'smooth'
-                });
+                if (!hasNextImage) {
+                    setImageidx(0);
+                    el.current.scrollTo({
+                        top: 0,
+                        left: 0,
+                        behavior: 'smooth'
+                    });
+                } else {
+                    el.current.scrollBy({
+                        top: 0,
+                        left: width,
+                        behavior: 'smooth'
+                    });
+                }
             }, parseInt(autoScroll || article['gallery-autoscroll'], 10));
         });
     }
