@@ -125,6 +125,7 @@ export default function App(props) {
                 const width = el.current.clientWidth;
                 if (!hasNextImage) {
                     const totalImages = filteredImages.length - 1;
+                    setImageidx(0);
                     el.current.scrollBy({
                         top: 0,
                         left: 0 - (totalImages * width),
