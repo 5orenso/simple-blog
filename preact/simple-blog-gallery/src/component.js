@@ -124,9 +124,10 @@ export default function App(props) {
                 const el = imageScrollerRef;
                 const width = el.current.clientWidth;
                 if (!hasNextImage) {
-                    el.current.scrollTo({
+                    const totalImages = filteredImages.length - 1;
+                    el.current.scrollBy({
                         top: 0,
-                        left: 0,
+                        left: 0 - (totalImages * width),
                         behavior: 'smooth'
                     });
                 } else {
