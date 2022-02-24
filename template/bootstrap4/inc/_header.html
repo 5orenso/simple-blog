@@ -52,6 +52,14 @@
     <link rel="stylesheet" href="/fonts/fontawesome-free-5.15.3-web/css/all.css">
     <script src="/js/jquery-3.2.1.min.js"></script>
 
+    
+    {% include '../../global/inc/_header_fileupload.html' %}
+    {% include '../../global/inc/_header_seo.html' %}
+    
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+    integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+    crossorigin=""
+    />
     {%- if category.pageFont -%}
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -61,14 +69,6 @@
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="{{ frontpage.pageFont }}" rel="stylesheet"> 
     {%- endif -%}
-
-    {% include '../../global/inc/_header_fileupload.html' %}
-    {% include '../../global/inc/_header_seo.html' %}
-
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
-        integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
-        crossorigin=""
-    />
 </head>
 <style>
     .mainTextColorInline {
