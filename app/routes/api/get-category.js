@@ -51,6 +51,7 @@ const fields = {
     menuCss: 1,
     logoCss: 1,
     artlistCss: 1,
+    pageFont: 1,
 
     artlistImageCss: 1,
 
