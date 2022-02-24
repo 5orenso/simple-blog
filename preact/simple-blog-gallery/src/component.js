@@ -87,7 +87,7 @@ export default function App(props) {
         const { scrollLeft, scrollWidth, clientWidth } = e.target;
         const imageStep = clientWidth;
         const imageIdx = scrollLeft / imageStep;
-        console.log({ e, imageStep, imageIdx, scrollLeft, scrollWidth, clientWidth });
+        // console.log({ e, imageStep, imageIdx, scrollLeft, scrollWidth, clientWidth });
 
         const nearestInt = Math.round(imageIdx);
         const diff = Math.abs(nearestInt - imageIdx);
@@ -117,32 +117,25 @@ export default function App(props) {
         });
     }, []);
 
+
+    const hasPrev = imageIdx > 0;
+    const hasNext = imageIdx < filteredImages.length - 1;
+
     if (autoScroll || article['gallery-autoscroll']) {
-        useEffect(() => {
-            setTimeout(() => {
-                const hasNextImage = imageIdx < filteredImages.length - 1;
-                const el = imageScrollerRef;
-                const width = el.current.clientWidth;
-                if (!hasNextImage) {
-                    setImageidx(0);
-                    el.current.scrollTo({
-                        top: 0,
-                        left: 0,
-                        behavior: 'smooth'
-                    });
-                } else {
+        if (hasNext) {
+            useEffect(() => {
+                setTimeout(() => {
+                    const el = imageScrollerRef;
+                    const width = el.current.clientWidth;
                     el.current.scrollBy({
                         top: 0,
                         left: width,
                         behavior: 'smooth'
                     });
-                }
-            }, parseInt(autoScroll || article['gallery-autoscroll'], 10));
-        });
+                }, parseInt(autoScroll || article['gallery-autoscroll'], 10));
+            });
+        }
     }
-
-    const hasPrev = imageIdx > 0;
-    const hasNext = imageIdx < filteredImages.length - 1;
 
     return (
         <div class={`position-relative ${article['gallery-class']} ${className}`} style={`${article['gallery-style']} ${style}`}>
