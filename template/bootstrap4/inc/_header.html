@@ -57,49 +57,60 @@
     {% include '../../global/inc/_header_seo.html' %}
     
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
-    integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
-    crossorigin=""
+        integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+        crossorigin=""
     />
     {%- if category.pageFont -%}
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="{{ category.pageFont }}" rel="stylesheet"> 
+        <link href="{{ category.pageFont }}" rel="stylesheet">
+        <style>
+            {%- if category.pageFontCss -%}
+                {{ category.pageFontCss }}
+            {%- endif -%}
+        </style>
     {%- elseif frontpage.pageFont -%}
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="{{ frontpage.pageFont }}" rel="stylesheet"> 
+        <link href="{{ frontpage.pageFont }}" rel="stylesheet">
+        <style>
+            {%- if frontpage.pageFontCss -%}
+                {{ frontpage.pageFontCss }}
+            {%- endif -%}
+        </style>
     {%- endif -%}
-</head>
-<style>
-    .mainTextColorInline {
-        {%- if category.colorMain -%}
+
+    <style>
+        .mainTextColorInline {
+            {%- if category.colorMain -%}
             color: {{ category.colorMain }} !important;
-        {%- elseif frontpage.bgColorMain -%}
+            {%- elseif frontpage.bgColorMain -%}
             color: {{ frontpage.colorMain }} !important;
-        {%- endif -%}
-    }
-    .mainBackgroundInline {
-        {%- if category.bgImageMain -%}
+            {%- endif -%}
+        }
+        .mainBackgroundInline {
+            {%- if category.bgImageMain -%}
             background-image: url('{{ category.bgImageMain }}') !important; 
             no-repeat center center fixed; 
             -webkit-background-size: cover;
             -moz-background-size: cover;
             -o-background-size: cover;
             background-size: cover;
-        {%- elseif frontpage.bgImageMain -%}
+            {%- elseif frontpage.bgImageMain -%}
             background-image: url('{{ frontpage.bgImageMain }}') !important; 
             no-repeat center center fixed; 
             -webkit-background-size: cover;
             -moz-background-size: cover;
             -o-background-size: cover;
             background-size: cover;
-        {%- elseif category.bgColorMain -%}
+            {%- elseif category.bgColorMain -%}
             background-color: {{ category.bgColorMain }} !important;
-        {%- elseif frontpage.bgColorMain -%}
+            {%- elseif frontpage.bgColorMain -%}
             background-color: {{ frontpage.bgColorMain }} !important;
-        {%- endif -%}
-    }
-</style>
+            {%- endif -%}
+        }
+    </style>
+</head>
 <body class="mainBackgroundInline mainTextColorInline">
 
 {% include '../../global/inc/_header_seo_rich_cards.html' %}

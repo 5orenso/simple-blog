@@ -555,6 +555,14 @@ export default class CategoryEdit extends Component {
                                 value={category.pageFont}
                             />
                         </div>
+                        <div class='form-group'>
+                            <label for='pageFontCssInput'><i class='fas fa-paint-roller text-muted' /> Page font activation</label>
+                            <textarea type='text' class='form-control' id='pageFontCssInput' rows='5'
+                                name='pageFontCss'
+                                onInput={handleInput}
+                                value={category.pageFontCss}
+                            />
+                        </div>
 
                         <div class='form-group'>
                             <label for='artlistImageSizeInput'><i class='fas fa-paint-roller text-muted' /> Artlist Image Size (80x80, 150x, 220x, 400x, 800x, 1024x, 1280x, 1600x, 1920x, 2500x)</label>
