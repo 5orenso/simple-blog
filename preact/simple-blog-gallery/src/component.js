@@ -87,7 +87,7 @@ export default function App(props) {
         const { scrollLeft, scrollWidth, clientWidth } = e.target;
         const imageStep = clientWidth;
         const imageIdx = scrollLeft / imageStep;
-        // console.log({ e, imageStep, imageIdx, scrollLeft, scrollWidth, clientWidth });
+        console.log({ e, imageStep, imageIdx, scrollLeft, scrollWidth, clientWidth });
 
         const nearestInt = Math.round(imageIdx);
         const diff = Math.abs(nearestInt - imageIdx);
@@ -124,11 +124,10 @@ export default function App(props) {
                 const el = imageScrollerRef;
                 const width = el.current.clientWidth;
                 if (!hasNextImage) {
-                    const totalImages = filteredImages.length - 1;
                     setImageidx(0);
-                    el.current.scrollBy({
+                    el.current.scrollTo({
                         top: 0,
-                        left: 0 - (totalImages * width),
+                        left: 0,
                         behavior: 'smooth'
                     });
                 } else {
