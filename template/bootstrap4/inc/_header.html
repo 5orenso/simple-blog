@@ -63,19 +63,19 @@
     {%- if category.pageFont -%}
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="{{ category.pageFont }}" rel="stylesheet">
+        <link href="{{ category.pageFont|raw }}" rel="stylesheet">
         <style>
             {%- if category.pageFontCss -%}
-                {{ category.pageFontCss }}
+                {{ category.pageFontCss|raw }}
             {%- endif -%}
         </style>
     {%- elseif frontpage.pageFont -%}
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="{{ frontpage.pageFont }}" rel="stylesheet">
+        <link href="{{ frontpage.pageFont|raw }}" rel="stylesheet">
         <style>
             {%- if frontpage.pageFontCss -%}
-                {{ frontpage.pageFontCss }}
+                {{ frontpage.pageFontCss|raw }}
             {%- endif -%}
         </style>
     {%- endif -%}
