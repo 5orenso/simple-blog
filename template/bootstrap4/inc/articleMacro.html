@@ -76,7 +76,9 @@
                     {% if art.url %}
                         <a {% if art.catRef.artlistSkipLinkTarget %}{% else %}target="_blank"{% endif %} href="{{ art.url }}" title="{{ art.title|e }} - {{ art.teaser|e }}">
                     {% endif %}
-                        {% if art.img[0] %}
+                        {% if art.ingress %}
+                            <div class='{{ art.catRef.artlistTeaserClass }}'>{{ art.ingress|md|safe }}</div>
+                        {% elseif art.img[0] %}
                             <img src="https://{{ imageServer }}/{% if art.imgSizeList %}{{ art.imgSizeList }}{% elseif art.catRef.artlistImageSize %}{{ art.catRef.artlistImageSize }}{% else %}220x{% endif %}/{{ imagePath }}/{{ art.img[0].src }}"
                                 alt="{{ art.title|e }} - {{ art.teaser|e }}"
                                 class="{% if art.catRef.artlistImageClass %}{{ art.catRef.artlistImageClass }}{% else %}img-fluid adImage{% endif %}"
@@ -84,8 +86,6 @@
                             ><br clear="all">
                         {% elseif art.teaser %}
                             <div class='{{ art.catRef.artlistTeaserClass }}'>{{ art.teaser|md|safe }}</div>
-                        {% elseif art.ingress %}
-                            <div class='{{ art.catRef.artlistTeaserClass }}'>{{ art.ingress|md|safe }}</div>
                         {% endif %}
                     {% if art.url %}
                         </a>
@@ -102,7 +102,9 @@
             {% if art.url %}
                 <a {% if art.catRef.artlistSkipLinkTarget %}{% else %}target="_blank"{% endif %} href="{{ art.url }}" title="{{ art.title|e }} - {{ art.teaser|e }}">
             {% endif %}
-                {% if art.img[0] %}
+                {% if art.ingress %}
+                    <div class='{{ art.catRef.artlistTeaserClass }}'>{{ art.ingress|md|safe }}</div>
+                {% elseif art.img[0] %}
                     <img src="https://{{ imageServer }}/{% if art.imgSizeList %}{{ art.imgSizeList }}{% elseif art.catRef.artlistImageSize %}{{ art.catRef.artlistImageSize }}{% else %}220x{% endif %}/{{ imagePath }}/{{ art.img[0].src }}"
                         alt="{{ art.title|e }} - {{ art.teaser|e }}"
                         class="{% if art.catRef.artlistImageClass %}{{ art.catRef.artlistImageClass }}{% else %}img-fluid{% endif %}"
@@ -110,8 +112,6 @@
                     ><br clear="all">
                 {% elseif art.teaser %}
                     <div class='{{ art.catRef.artlistTeaserClass }}'>{{ art.teaser|md|safe }}</div>
-                {% elseif art.ingress %}
-                    <div class='{{ art.catRef.artlistTeaserClass }}'>{{ art.ingress|md|safe }}</div>
                 {% endif %}
             {% if art.url %}
                 </a>
