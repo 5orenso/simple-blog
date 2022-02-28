@@ -154,6 +154,13 @@ export default class CategoryEdit extends Component {
                                 value={category.titleEn} />
                         </div>
                         <div class='form-group'>
+                            <label for='subTitleInput'>subTitle</label>
+                            <input type='text' class='form-control' id='subTitleInput' placeholder='Tittel for undersider'
+                                name='subTitle'
+                                onInput={handleInput}
+                                value={category.subTitle} />
+                        </div>
+                        <div class='form-group'>
                             <label for='imageInput'>Image/logo</label>
                             <input type='text' class='form-control' id='imageInput' placeholder='Image'
                                 name='image'
