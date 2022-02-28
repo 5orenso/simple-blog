@@ -90,6 +90,7 @@ const fields = {
 
     'gallery-autoscroll': 1,
     'gallery-nav-class': 1,
+    'gallery-nav-style': 1,
     'gallery-nav-back': 1,
     'gallery-nav-forward': 1,
     'gallery-class': 1,

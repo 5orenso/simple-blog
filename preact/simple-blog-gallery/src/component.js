@@ -211,13 +211,13 @@ export default function App(props) {
                     class='position-absolute d-none d-lg-block'
                     style={`${article['gallery-nav-back'] ? article['gallery-nav-back'] : 'top: 50%; left: 5px;'}`}
                 >
-                    <button type='button' class={`btn btn-link ${article['gallery-nav-class'] ? article['gallery-nav-class'] : 'text-secondary'}`} style='font-size: 3.0em; opacity: 0.7;' onClick={onClickScrollLeft}><i class='fas fa-arrow-circle-left' /></button>
+                    <button type='button' class={`btn btn-link ${article['gallery-nav-class'] ? article['gallery-nav-class'] : 'text-secondary'}`} style={`${article['gallery-nav-style'] ? article['gallery-nav-style'] : 'font-size: 3.0em;'} opacity: 0.7;`} onClick={onClickScrollLeft}><i class='fas fa-arrow-circle-left' /></button>
                 </div>}
                 {hasNext && <div
                     class='position-absolute d-none d-lg-block'
                     style={`${article['gallery-nav-forward'] ? article['gallery-nav-forward'] : 'top: 50%; right: 5px;'}`}
                 >
-                    <button type='button' class={`btn btn-link ${article['gallery-nav-class'] ? article['gallery-nav-class'] : 'text-secondary'}`} style='font-size: 3.0em; opacity: 0.7;' onClick={onClickScrollRight}><i class='fas fa-arrow-circle-right' /></button>
+                    <button type='button' class={`btn btn-link ${article['gallery-nav-class'] ? article['gallery-nav-class'] : 'text-secondary'}`} style={`${article['gallery-nav-style'] ? article['gallery-nav-style'] : 'font-size: 3.0em;'} opacity: 0.7;`} onClick={onClickScrollRight}><i class='fas fa-arrow-circle-right' /></button>
                 </div>}
 
             </div>
