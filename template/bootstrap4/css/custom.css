@@ -431,7 +431,7 @@ td .markup p {
     height: 300px !important;
 }
 .gallery-position-bottom img {
-    max-height: 300px;
+    max-height: 300px !important;
 }
 
 
@@ -459,7 +459,7 @@ td .markup p {
         height: 300px !important;
     }
     .gallery-position-bottom img {
-        max-height: 300px;
+        max-height: 300px !important;
     }
 }
 @media (min-width: 544px) {
@@ -477,7 +477,7 @@ td .markup p {
         height: 400px !important;
     }
     .gallery-position-bottom img {
-        max-height: 400px;
+        max-height: 400px !important;
     }
 }
 /* Medium devices (tablets, 768px and up) */
@@ -496,7 +496,7 @@ td .markup p {
         height: 400px !important;
     }
     .gallery-position-bottom img {
-        max-height: 400px;
+        max-height: 400px !important;
     }
 }
 /* Large devices (desktops, 992px and up) */
@@ -515,7 +515,7 @@ td .markup p {
         height: 400px !important;
     }
     .gallery-position-bottom img {
-        max-height: 400px;
+        max-height: 400px !important;
     }
 }
 /* Extra large devices (large desktops, 1200px and up) */
@@ -534,7 +534,7 @@ td .markup p {
         height: 400px !important;
     }
     .gallery-position-bottom img {
-        max-height: 400px;
+        max-height: 400px !important;
     }
 }
 /* Extra large devices (large desktops, 1200px and up) */
@@ -553,6 +553,6 @@ td .markup p {
         height: 500px !important;
     }
     .gallery-position-bottom img {
-        max-height: 500px;
+        max-height: 500px !important;
     }
 }
