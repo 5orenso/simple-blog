@@ -427,7 +427,7 @@ td .markup p {
     height: 400px;
 }
 .gallery-position-bottom {
-    top: calc(50vh - 500px + 115px);
+    top: calc(50vh - 300px + 115px);
     height: 300px !important;
 }
 
@@ -451,7 +451,7 @@ td .markup p {
         height: 400px;
     }
     .gallery-position-bottom {
-        top: calc(50vh - 500px + 115px);
+        top: calc(50vh - 300px + 115px);
         height: 300px !important;
     }
 }
@@ -466,7 +466,7 @@ td .markup p {
         height: 500px;
     }
     .gallery-position-bottom {
-        top: calc(50vh - 500px + 115px);
+        top: calc(50vh - 400px + 115px);
         height: 400px !important;
     }
 }
@@ -482,7 +482,7 @@ td .markup p {
         height: 500px;
     }
     .gallery-position-bottom {
-        top: calc(50vh - 500px + 115px);
+        top: calc(50vh - 400px + 115px);
         height: 400px !important;
     }
 }
@@ -498,12 +498,28 @@ td .markup p {
         height: 600px;
     }
     .gallery-position-bottom {
-        top: calc(50vh - 500px + 115px);
+        top: calc(50vh - 400px + 115px);
         height: 400px !important;
     }
 }
 /* Extra large devices (large desktops, 1200px and up) */
 @media (min-width: 1200px) {
+    html {
+        font-size: 1.2rem;
+    }
+    .display-3 {
+        font-size: 4rem;
+    }
+    .gallery-height {
+        height: 750px;
+    }
+    .gallery-position-bottom {
+        top: calc(50vh - 400px + 115px);
+        height: 400px !important;
+    }
+}
+/* Extra large devices (large desktops, 1200px and up) */
+@media (min-width: 1500px) {
     html {
         font-size: 1.2rem;
     }
