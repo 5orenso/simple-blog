@@ -79,7 +79,7 @@
                 <img src="https://{{ imageServer }}{{ frontpage.image }}" class='logoStyle' />
             {%- endif -%}
         {%- endif -%}
-        {%- if frontpage.subTitle -%}
+        {%- if !isFrontpage && frontpage.subTitle -%}
             {{ frontpage.subTitle|removeLineBreaks|raw }}
         {%- elseif !frontpage.hideTitle -%}
             {{ frontpage.title || blog.title|removeLineBreaks|raw }}
