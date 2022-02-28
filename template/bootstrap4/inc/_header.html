@@ -84,6 +84,16 @@
         </style>
     {%- endif -%}
 
+    {%- if category.globalStyle -%}
+        <style>
+            {{ category.globalStyle|raw }}
+        </style>
+    {%- elseif frontpage.pageFont -%}
+        <style>
+            {{ frontpage.globalStyle|raw }}
+        </style>
+    {%- endif -%}
+
     <style>
         .mainTextColorInline {
             {%- if category.colorMain -%}
