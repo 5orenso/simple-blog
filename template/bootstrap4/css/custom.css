@@ -427,7 +427,7 @@ td .markup p {
     height: 400px;
 }
 .gallery-position-bottom {
-    top: calc(50vh - 300px + 115px);
+    top: calc(50vh - 300px + 80px);
     height: 300px !important;
 }
 
@@ -451,7 +451,7 @@ td .markup p {
         height: 400px;
     }
     .gallery-position-bottom {
-        top: calc(50vh - 300px + 115px);
+        top: calc(50vh - 300px + 80px);
         height: 300px !important;
     }
 }
@@ -466,7 +466,7 @@ td .markup p {
         height: 500px;
     }
     .gallery-position-bottom {
-        top: calc(50vh - 400px + 115px);
+        top: calc(50vh - 400px + 80px);
         height: 400px !important;
     }
 }
@@ -482,7 +482,7 @@ td .markup p {
         height: 500px;
     }
     .gallery-position-bottom {
-        top: calc(50vh - 400px + 115px);
+        top: calc(50vh - 400px + 80px);
         height: 400px !important;
     }
 }
@@ -498,7 +498,7 @@ td .markup p {
         height: 600px;
     }
     .gallery-position-bottom {
-        top: calc(50vh - 400px + 115px);
+        top: calc(50vh - 400px + 80px);
         height: 400px !important;
     }
 }
