@@ -445,9 +445,7 @@ td .markup p {
 }
 
 .fullwidth {
-    width: 100vw;
-    opacity: 0.5;
-    background:red;
+    width: 98vw;
     position : absolute;
     left: 50%;
     -webkit-transform: translate(-50%, 0);
