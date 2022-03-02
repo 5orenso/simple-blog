@@ -142,7 +142,7 @@ module.exports = async (req, res) => {
     const skip = parseInt(req.query.offset || 0, 10);
 
     if (req.query.category) {
-        query.category = req.query.category,
+        query.category = req.query.category;
     }
     if (req.query.categoryId) {
         query.categoryId = parseInt(req.query.categoryId, 10);
