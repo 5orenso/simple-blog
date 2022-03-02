@@ -66,9 +66,9 @@ export default function App(props) {
         titleStyle = '',
         ingressClass = '',
         ingressStyle = '',
-        showTitle = true,
-        showIngress = true,
-        showImage = true,
+        showTitle = 1,
+        showIngress = 1,
+        showImage = 1,
         linkTarget = '',
     } = props;
 
@@ -106,7 +106,7 @@ export default function App(props) {
                     const img = art.img && art.img.length > 0 ? art.img[0] : null;
                     return (
                         <div class={`position-relative ${colClass || 'col'}`} style={colStyle}>
-                            {img && <>
+                            {showImage == 1 && img && <>
                                 <img
                                     src={`https://${imageServer}/${imageSize}/${imagePath}/${img.src}`}
                                     class={imageClass}
@@ -114,14 +114,14 @@ export default function App(props) {
                                 />
                             </>}
                             <a href={art.url} class='stretched-link' target={linkTarget}>
-                                <h3
+                                {showTitle == 1 && <h3
                                     class={titleClass}
                                     style={titleStyle}
                                 >
                                     {art.title}
-                                </h3>
+                                </h3>}
                             </a>
-                            <div 
+                            {showIngress == 1 && <div 
                                 class={ingressClass}
                                 style={ingressStyle}
                             >
@@ -130,7 +130,7 @@ export default function App(props) {
                                 </> : <>
                                     {art.ingress && <Markdown markdown={art.ingress} markdownOpts={MARKDOWN_OPTIONS} />}
                                 </>}
-                            </div>
+                            </div>}
                         </div>
                     );
                 })}
