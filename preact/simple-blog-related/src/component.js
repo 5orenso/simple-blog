@@ -57,9 +57,9 @@ export default function App(props) {
         colStyle = '',
     } = props;
 
-    const [artlist, setArtlist] = useState({});
-    const [imageServer, setImageServer] = useState({});
-    const [imagePath, setImagePath] = useState({});
+    const [artlist, setArtlist] = useState([]);
+    const [imageServer, setImageServer] = useState('');
+    const [imagePath, setImagePath] = useState('');
     const [imageIdx, setImageidx] = useState(0);
     const [autoscroll, setAutoscroll] = useState(true);
     const imageScrollerRef = useRef(null);
