@@ -150,6 +150,9 @@ module.exports = async (req, res) => {
     if (req.query.categoryIn && req.query.categoryIn.length > 0) {
         query.categoryId = { $in: req.query.categoryIn.split(',').map(c => parseInt(c, 10)) };
     }
+    if (req.query.idIn && req.query.idIn.length > 0) {
+        query.id = { $in: req.query.idIn.split(',').map(id => parseInt(id, 10)) };
+    }
     if (req.query.status) {
         query.status = req.query.status;
     }
