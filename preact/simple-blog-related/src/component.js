@@ -51,8 +51,8 @@ export default function App(props) {
     const {
         apiServer,
         jwtToken,
-        categoryId,
-        categoryIn,
+        categoryId = '',
+        categoryIn = '',
         tag,
         imageSize = '220x',
         containerClass = '',
@@ -95,7 +95,7 @@ export default function App(props) {
         if (categoryId) {
             fetchData();
         }
-    }, [categoryId]);
+    }, [categoryId, categoryIn]);
 
     return (
         <div class={`${containerClass || 'container-fluid'}`} style={containerStyle}>
