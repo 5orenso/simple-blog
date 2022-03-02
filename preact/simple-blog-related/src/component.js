@@ -83,7 +83,7 @@ export default function App(props) {
     useEffect(() => {
         const fetchData = async () => {
             const result = await fetchApi({
-                url: `/api/article/?category=${categoryId}&categoryIn=${categoryIn}`,
+                url: `/api/article/?categoryId=${categoryId}&categoryIn=${categoryIn}`,
                 settings: {
                     apiServer,
                 },

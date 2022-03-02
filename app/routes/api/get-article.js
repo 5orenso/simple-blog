@@ -142,7 +142,10 @@ module.exports = async (req, res) => {
     const skip = parseInt(req.query.offset || 0, 10);
 
     if (req.query.category) {
-        query.categoryId = parseInt(req.query.category, 10);
+        query.category = req.query.category,
+    }
+    if (req.query.categoryId) {
+        query.categoryId = parseInt(req.query.categoryId, 10);
     }
     if (req.query.categoryIn && req.query.categoryIn.length > 0) {
         query.categoryIn = { $in: req.query.categoryIn.split(',').map(c => parseInt(c, 10)) };
