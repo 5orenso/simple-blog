@@ -448,9 +448,10 @@ td .markup p {
     width: 98vw;
     position : absolute;
     left: 50%;
-    -webkit-transform: translate(-50%, 0);
-    -moz-transform: translate(-50%, 0);
-    transform: translate(-50%, 0);
+    top: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
 }
 
 @media (min-width: 350px) {
