@@ -116,12 +116,12 @@ export default function App(props) {
                                 />
                             </>}
                             <a href={art.url} class='stretched-link' target={linkTarget}>
-                                {showTitle == 1 && <h3
+                                {showTitle == 1 && <h5
                                     class={titleClass}
                                     style={titleStyle}
                                 >
                                     {art.title}
-                                </h3>}
+                                </h5>}
                             </a>
                             {showIngress == 1 && <div 
                                 class={ingressClass}
