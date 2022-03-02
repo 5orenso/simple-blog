@@ -144,7 +144,7 @@ module.exports = async (req, res) => {
     if (req.query.category) {
         query.category = req.query.category;
     }
-    if (req.query.categoryIn) {
+    if (req.query.categoryIn && req.query.categoryIn.length > 0) {
         query.categoryIn = { $in: req.query.categoryIn.split(',') };
     }
     if (req.query.status) {
