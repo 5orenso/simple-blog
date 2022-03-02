@@ -48,7 +48,14 @@ function fetchApi({ url, headers = {}, body = {}, settings = {} }) {
 }
 
 export default function App(props) {
-    const { apiServer, jwtToken, categoryId, start, end, size = '220x', className = '', style = '' } = props;
+    const { apiServer, jwtToken, categoryId, start, end, size = '220x', 
+        containerClass = '',
+        rowClass = '',
+        colClass = '',
+        containerStyle = '',
+        rowStyle = '',
+        colStyle = '',
+    } = props;
 
     const [artlist, setArtlist] = useState({});
     const [imageServer, setImageServer] = useState({});
@@ -75,13 +82,13 @@ export default function App(props) {
     }, [categoryId]);
 
     return (
-        <div class={`position-relative ${article['gallery-class']} ${className}`} style={`${article['gallery-style']} ${style}`}>
+        <div class={`${containerClass || 'container-fluid'}`} style={containerStyle}>
             {/* {JSON.stringify(images, null, 4)} */}
             {/* {JSON.stringify(article)} */}
 
-            <div class={`w-100 ${article['gallery-wrapper-class']}`}>
+            <div class={`${rowClass || 'row'}`} style={rowStyle}>
                 {artlist && artlist.map((art, idx) => (
-                    <div class={`col-12 clearfix position-relative p-0 ${article['gallery-class-photo']} ${photoClass}`}>
+                    <div class={`${colClass || 'col'}`} style={colStyle}>
                         {art.title}
                     </div>
                 ))}
