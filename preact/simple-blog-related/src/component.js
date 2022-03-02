@@ -108,7 +108,7 @@ export default function App(props) {
                         <div class={`position-relative ${colClass || 'col'}`} style={colStyle}>
                             {img && <>
                                 <img
-                                    src={`https://${imageServer}/${imagePath}/${imageSize}/${img.src}`}
+                                    src={`https://${imageServer}/${imageSize}/${imagePath}/${img.src}`}
                                     class={imageClass}
                                     style={imageStyle}
                                 />
