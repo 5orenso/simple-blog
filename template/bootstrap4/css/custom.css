@@ -444,6 +444,19 @@ td .markup p {
     height: 0;
 }
 
+.fullwidth {
+    width: 100vw;
+    height: 50px;
+    opacity: 0.5;
+    background:red;
+    position : absolute;
+    left: 50%;
+    top: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+
 @media (min-width: 350px) {
     html {
       font-size: 1rem;
