@@ -152,7 +152,9 @@ module.exports = async (req, res) => {
     }
 
     let apiContent;
-    const data = {};
+    const data = {
+        query,
+    };
     if (req.query.query) {
         const { list, total } = await art.search(req.query.query, {}, { limit, skip, query });
         data.artlist = list;
