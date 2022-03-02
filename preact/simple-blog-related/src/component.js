@@ -48,13 +48,28 @@ function fetchApi({ url, headers = {}, body = {}, settings = {} }) {
 }
 
 export default function App(props) {
-    const { apiServer, jwtToken, categoryId, start, end, size = '220x', 
+    const {
+        apiServer,
+        jwtToken,
+        categoryId,
+        tag,
+        imageSize = '220x',
         containerClass = '',
         rowClass = '',
         colClass = '',
         containerStyle = '',
         rowStyle = '',
         colStyle = '',
+        imageClass = 'img-fluid',
+        imageStyle = '',
+        titleClass = '',
+        titleStyle = '',
+        ingressClass = '',
+        ingressStyle = '',
+        showTitle = true,
+        showIngress = true,
+        showImage = true,
+        linkTarget = '',
     } = props;
 
     const [artlist, setArtlist] = useState([]);
@@ -87,11 +102,38 @@ export default function App(props) {
             {/* {JSON.stringify(article)} */}
 
             <div class={`${rowClass || 'row'}`} style={rowStyle}>
-                {artlist && artlist.map((art, idx) => (
-                    <div class={`${colClass || 'col'}`} style={colStyle}>
-                        {art.title}
-                    </div>
-                ))}
+                {artlist && artlist.map((art, idx) => {
+                    const img = art.img && art.img.length > 0 ? art.img[0] : null;
+                    return (
+                        <div class={`position-relative ${colClass || 'col'}`} style={colStyle}>
+                            {img && <>
+                                <img
+                                    src={`https://${imageServer}/${imageSize}/${img.src}`}
+                                    class={imageClass}
+                                    style={imageStyle}
+                                />
+                            </>}
+                            <a href={art.url} class='stretched-link' target={linkTarget}>
+                                <h3
+                                    class={titleClass}
+                                    style={titleStyle}
+                                >
+                                    {art.title}
+                                </h3>
+                            </a>
+                            <div 
+                                class={ingressClass}
+                                style={ingressStyle}
+                            >
+                                {art.teaser ? <>
+                                    {art.teaser && <Markdown markdown={art.teaser} markdownOpts={MARKDOWN_OPTIONS} />}
+                                </> : <>
+                                    {art.ingress && <Markdown markdown={art.ingress} markdownOpts={MARKDOWN_OPTIONS} />}
+                                </>}
+                            </div>
+                        </div>
+                    );
+                })}
             </div>
         </div>
     );
