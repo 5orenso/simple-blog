@@ -165,7 +165,7 @@ module.exports = async (req, res) => {
         const { list, total } = await art.search(req.query.query, {}, { limit, skip, query });
         data.artlist = list;
         data.total = total;
-    } else if (query.id) {
+    } else if (req.params.id) {
         apiContent = await art.findOne(query, fields);
         data.article = apiContent;
     } else {
