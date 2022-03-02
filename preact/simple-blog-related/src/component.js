@@ -52,6 +52,7 @@ export default function App(props) {
         apiServer,
         jwtToken,
         categoryId,
+        categoryIn,
         tag,
         imageSize = '220x',
         containerClass = '',
@@ -82,7 +83,7 @@ export default function App(props) {
     useEffect(() => {
         const fetchData = async () => {
             const result = await fetchApi({
-                url: `/api/article/?category${categoryId}`,
+                url: `/api/article/?category=${categoryId}&categoryIn=${categoryIn}`,
                 settings: {
                     apiServer,
                 },
