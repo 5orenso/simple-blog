@@ -48,7 +48,7 @@ function fetchApi({ url, headers = {}, body = {}, settings = {} }) {
 }
 
 export default function App(props) {
-    const { apiServer, jwtToken, articleId, start, end, size = '220x', className = '', style = '' } = props;
+    const { apiServer, jwtToken, categoryId, start, end, size = '220x', className = '', style = '' } = props;
 
     const [article, setArticle] = useState({});
     const [imageServer, setImageServer] = useState({});
@@ -60,7 +60,7 @@ export default function App(props) {
     useEffect(() => {
         const fetchData = async () => {
             const result = await fetchApi({
-                url: `/api/article/${articleId}`,
+                url: `/api/article/?category${categoryId}`,
                 settings: {
                     apiServer,
                 },
@@ -69,10 +69,10 @@ export default function App(props) {
             setImageServer(result.imageServer);
             setImagePath(result.imagePath);
         };
-        if (articleId) {
+        if (categoryId) {
             fetchData();
         }
-    }, [articleId]);
+    }, [categoryId]);
 
     const { img: images = [] } = article;
 
@@ -82,65 +82,39 @@ export default function App(props) {
             {/* {JSON.stringify(article)} */}
 
             <div class={`w-100 ${article['gallery-wrapper-class']}`}>
-                <div
-                    class={`d-flex flex-row flex-nowrap no-scrollbar ${article['gallery-wrapper-inner-class'] ? article['gallery-wrapper-inner-class'] : 'border-top border-bottom'}`}
-                    style='overflow: auto; scroll-snap-type: x mandatory;'
-                    onScroll={scrollImages}
-                    ref={imageScrollerRef}
-                >
-                    {filteredImages && filteredImages.map((img, idx) => (
-                        <div class={`col-12 clearfix position-relative p-0 ${article['gallery-class-photo']} ${photoClass}`}>
-                            <div
-                                class={`w-100 h-100 text-center rounded-lg imageContainer d-flex justify-content-center align-items-center ${article['gallery-img-wrapper-class']}`}
+                {images && images.map((img, idx) => (
+                    <div class={`col-12 clearfix position-relative p-0 ${article['gallery-class-photo']} ${photoClass}`}>
+                        <div
+                            class={`w-100 h-100 text-center rounded-lg imageContainer d-flex justify-content-center align-items-center ${article['gallery-img-wrapper-class']}`}
+                            style={`
+                                scroll-snap-align: start;
+                                overflow-y: hidden;
+                            `}
+                        >
+                            {!article['gallery-skip-background-images'] && <div
+                                class='position-absolute w-100 h-100'
                                 style={`
-                                    scroll-snap-align: start;
-                                    overflow-y: hidden;
+                                    background-image: url('${`https://${imageServer}/400x/${imagePath}/${img.src}`}'); background-size: cover;
+                                    filter: blur(10px);
+                                    opacity: 0.5;
                                 `}
-                            >
-                                {!article['gallery-skip-background-images'] && <div
-                                    class='position-absolute w-100 h-100'
-                                    style={`
-                                        background-image: url('${`https://${imageServer}/400x/${imagePath}/${img.src}`}'); background-size: cover;
-                                        filter: blur(10px);
-                                        opacity: 0.5;
-                                    `}
-                                />}
-                                {img.src ? <img
-                                    class={`img-fluid position-relative ${article['gallery-class-photo-img']} ${imgClass}`}
-                                    src={`https://${imageServer}/${size}/${imagePath}/${img.src}`}
-                                    loading='lazy'
-                                    style={`${idx !== imageIdx ? '' : ''}`}
-                                /> : <>
-                                    <span class='display-1 text-muted'>
-                                        <i class='fas fa-camera' />
-                                    </span>
-                                </>}
-                                {img.title && <div class='position-absolute text-white font-weight-lighter pt-1 pb-4 w-100' style='bottom: 0px; background-color: rgba(0, 0, 0, 0.6)'>
-                                    {img.text && <Markdown markdown={`__${img.title}__ ${img.text}`} markdownOpts={MARKDOWN_OPTIONS} />}
-                                </div>}
-                            </div>
+                            />}
+                            {img.src ? <img
+                                class={`img-fluid position-relative ${article['gallery-class-photo-img']} ${imgClass}`}
+                                src={`https://${imageServer}/${size}/${imagePath}/${img.src}`}
+                                loading='lazy'
+                                style={`${idx !== imageIdx ? '' : ''}`}
+                            /> : <>
+                                <span class='display-1 text-muted'>
+                                    <i class='fas fa-camera' />
+                                </span>
+                            </>}
+                            {img.title && <div class='position-absolute text-white font-weight-lighter pt-1 pb-4 w-100' style='bottom: 0px; background-color: rgba(0, 0, 0, 0.6)'>
+                                {img.text && <Markdown markdown={`__${img.title}__ ${img.text}`} markdownOpts={MARKDOWN_OPTIONS} />}
+                            </div>}
                         </div>
-                    ))}
-                </div>
-
-                {filteredImages && filteredImages.length > 1 && <>
-                    <div class='w-100 text-center position-absolute text-white' style='bottom: 20px;'>
-                        <small>
-                            <small>
-                                {filteredImages && filteredImages.map((img, idx) => <>
-                                    <i class={`${idx === imageIdx ? 'fas' : 'far'} fa-circle mr-1`} />
-                                </>)}
-                            </small>
-                        </small>
                     </div>
-                    <div
-                        class='position-absolute text-white font-weight-lighter px-1 py-1 rounded-lg'
-                        style='top: 10px; right: 10px; background-color: rgba(0, 0, 0, 0.3); line-height: 0.6em;'
-                    >
-                        <small>{imageIdx + 1} / {filteredImages.length}</small>
-                    </div>
-                </>}
-
+                ))}
             </div>
         </div>
     );
