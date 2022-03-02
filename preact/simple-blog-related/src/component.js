@@ -96,7 +96,7 @@ export default function App(props) {
         if (categoryId) {
             fetchData();
         }
-    }, [categoryId, categoryIn]);
+    }, [categoryId, categoryIn, idIn]);
 
     return (
         <div class={`${containerClass || 'container-fluid'}`} style={containerStyle}>
