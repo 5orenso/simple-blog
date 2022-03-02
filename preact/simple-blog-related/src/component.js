@@ -109,20 +109,23 @@ export default function App(props) {
                     return (
                         <div class={`position-relative ${colClass || 'col'}`} style={colStyle}>
                             {showImage == 1 && img && <>
-                                <img
-                                    src={`https://${imageServer}/${imageSize}/${imagePath}/${img.src}`}
-                                    class={imageClass}
-                                    style={imageStyle}
-                                />
+                                <a href={art.url} class='stretched-link' target={linkTarget}>
+                                    <img
+                                        src={`https://${imageServer}/${imageSize}/${imagePath}/${img.src}`}
+                                        class={imageClass}
+                                        style={imageStyle}
+                                    />
+                                </a>
                             </>}
-                            <a href={art.url} class='stretched-link' target={linkTarget}>
-                                {showTitle == 1 && <h5
-                                    class={titleClass}
-                                    style={titleStyle}
-                                >
+                                
+                            {showTitle == 1 && <h5
+                                class={titleClass}
+                                style={titleStyle}
+                            >
+                                <a href={art.url} class='stretched-link' target={linkTarget}>
                                     {art.title}
-                                </h5>}
-                            </a>
+                                </a>
+                            </h5>}
                             {showIngress == 1 && <div 
                                 class={ingressClass}
                                 style={ingressStyle}
