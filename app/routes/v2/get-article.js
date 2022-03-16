@@ -133,7 +133,7 @@ module.exports = async (req, res) => {
     if (tc.isObject(frontpage)) {
         queryFrontpage.categoryId = frontpage.id;
         if (page <= 1) {
-            frontpagelist = await artFrontpage.find(queryFrontpage, {}, { limit });
+            frontpagelist = await artFrontpage.find(queryFrontpage, {}, { limit: frontpage.limit >= 0 ? frontpage.limit : limit });
         }
         if (tc.isArray(frontpagelist)) {
             for (let i = 0, l = frontpagelist.length; i < l; i += 1) {
