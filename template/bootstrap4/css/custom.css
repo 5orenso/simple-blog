@@ -113,8 +113,8 @@ html {
     text-align: center;
     /* border: 1px solid #dee2e6; */
     /* border-radius: .25rem; */
-    /* min-height: 50px;
-    max-height: 200px; */
+    /* min-height: 50px; */
+    max-height: 350px;
     overflow: hidden;
 }
 .post-thumb a, .post-thumb-wide a {
