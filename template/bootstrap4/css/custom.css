@@ -444,7 +444,7 @@ td .markup p {
     height: 0;
 }
 
-.fullwidth {
+.fullwidthImage {
     width: 98vw;
     position : absolute;
     left: 50%;

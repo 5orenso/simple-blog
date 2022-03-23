@@ -149,9 +149,8 @@ renderer.image = function image($href, title, text) {
             `;
         }
         if (allClasses[0] === 'fullwidth') {
-            // <div class='row d-flex justify-content-center ${allClasses.join(' ')}'>
             return `
-                <div class='row d-flex justify-content-center'>
+                <div class='row d-flex justify-content-center ${allClasses.join(' ')}'>
                     <img src='${src}' alt='${title || text}' title='${title || text}' class='img-fluid'>
                     <div class='image_inline_text'><strong>${text || ''}</strong> ${title || ''}</div>
                 </div>
