@@ -11,6 +11,13 @@
     {%- elseif frontpage.bgColorMain -%}
         background-color: {{ frontpage.bgColorMain }} !important;
     {%- endif -%}
+    {%- if frontpage.useImageOneAsBackground -%}
+        background: url(https://{{ imageServer }}/1920x/{{ imagePath }}/{{ article.img[0].src }}) no-repeat center center fixed; 
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+    {%- endif -%}
     {%- if category.artlistCss -%}
         {{ category.artlistCss }}
     {%- elseif frontpage.artlistCss -%}
@@ -47,13 +54,6 @@
         color: {{ category.colorMain }} !important;
     {%- elseif frontpage.colorMain -%}
         color: {{ frontpage.colorMain }} !important;
-    {%- endif -%}
-    {%- if frontpage.useImageOneAsBackground -%}
-        background: url(https://{{ imageServer }}/1920x/{{ imagePath }}/{{ article.img[0].src }}) no-repeat center center fixed; 
-        -webkit-background-size: cover;
-        -moz-background-size: cover;
-        -o-background-size: cover;
-        background-size: cover;
     {%- endif -%}
     {%- if heading === 'h1' && article && article.fontsizeH1 -%}
         font-size: {{ article.fontsizeH1 }}rem;
