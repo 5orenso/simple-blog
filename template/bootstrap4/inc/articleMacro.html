@@ -17,6 +17,12 @@
         -moz-background-size: cover;
         -o-background-size: cover;
         background-size: cover;
+    {%- elseif category.useImageOneAsBackground -%}
+        background: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(https://{{ imageServer }}/1920x/{{ imagePath }}/{{ article.img[0].src }}) no-repeat center center fixed;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
     {%- endif -%}
     {%- if category.artlistCss -%}
         {{ category.artlistCss }}
@@ -79,7 +85,7 @@
     <div class="{% if adlist[0].catRef.artlistContainerClass %}{{ adlist[0].catRef.artlistContainerClass }}{% else %}container-fluid{% endif %}" {{ colorArticleBackground(adlist[0].catRef) }}>
         <div class="{% if adlist[0].catRef.artlistRowClass %}{{ adlist[0].catRef.artlistRowClass }}{% else %}row d-flex justify-content-center adContainer{% endif %}">
             {% for art in adlist %}
-                <div class="{% if art.catRef.artlistColClass %}{{ art.catRef.artlistColClass }}{% else %}col my-2 d-flex align-items-center justify-content-center adBox {% endif %}">
+                <div class="{% if art.catRef.artlistColClass %}{{ art.catRef.artlistColClass }}{% else %}col my-2 d-flex align-items-center justify-content-center adBox {% endif %}" {{ colorArticleBackground(art.catRef, null, null, art) }}>
                     {% if art.url %}
                         <a {% if art.catRef.artlistSkipLinkTarget %}{% else %}target="_blank"{% endif %} href="{{ art.url }}" title="{{ art.title|e }} - {{ art.teaser|e }}">
                     {% endif %}
