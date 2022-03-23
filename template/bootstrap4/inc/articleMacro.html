@@ -131,26 +131,23 @@
     <div class="{% if art.catRef.artlistColClass %}{{ art.catRef.artlistColClass }}{% else %}col-12 col-sm-12 col-md-{{ col || 4 }} post-data my-1{% endif %} {{ extraClasses }} {{ art.catRef.artlistContainerClass }}" >
         <div {{ colorArticleBackground(art.catRef, null, null, art) }}>
             {% if art.img[0] && art.img[0].src|match('(jpg|jpeg|png|gif|heic|heif|svg|webp|tif|JPG|JPEG|PNG|GIF|HEIC|HEIF|SVG|WEBP|TIF)$', 'i') %}
-                {% if art.catRef.useImageOneAsBackground %}
-                {% else %}
-                    <div class="post-thumb d-flex align-items-center">
-                        {% if art.url %}
-                            <a href="{{ art.url }}" {{ colorArticleText(art.catRef, null, null, art, heading) }}>
-                                <img src="https://{{ imageServer }}/{% if art.imgSizeList %}{{ art.imgSizeList }}{% elseif art.catRef.artlistImageSize %}{{ art.catRef.artlistImageSize }}{% else %}800x{% endif %}/{{ imagePath }}/{{ art.img[0].src }}"
-                                    alt="{{ art.title|e }}"
-                                    class="{% if art.catRef.artlistImageClass %}{{ art.catRef.artlistImageClass }}{% else %}img-fluid{% endif %}"
-                                    {% if art.catRef.artlistImageCss %}style="{{ art.catRef.artlistImageCss }}"{% endif %}
-                                >
-                            </a>
-                        {% elseif art.catRef.skipDefaultArtLink %}
+                <div class="post-thumb d-flex align-items-center">
+                    {% if art.url %}
+                        <a href="{{ art.url }}" {{ colorArticleText(art.catRef, null, null, art, heading) }}>
+                            <img src="https://{{ imageServer }}/{% if art.imgSizeList %}{{ art.imgSizeList }}{% elseif art.catRef.artlistImageSize %}{{ art.catRef.artlistImageSize }}{% else %}800x{% endif %}/{{ imagePath }}/{{ art.img[0].src }}"
+                                alt="{{ art.title|e }}"
+                                class="{% if art.catRef.artlistImageClass %}{{ art.catRef.artlistImageClass }}{% else %}img-fluid{% endif %}"
+                                {% if art.catRef.artlistImageCss %}style="{{ art.catRef.artlistImageCss }}"{% endif %}
+                            >
+                        </a>
+                    {% elseif art.catRef.skipDefaultArtLink %}
+                        <img src="https://{{ imageServer }}/{% if art.imgSizeList %}{{ art.imgSizeList }}{% elseif art.catRef.artlistImageSize %}{{ art.catRef.artlistImageSize }}{% else %}800x{% endif %}/{{ imagePath }}/{{ art.img[0].src }}" alt="{{ art.title|e }}" class="img-fluid {{ art.catRef.artlistImageClass }}">
+                    {% else %}
+                        <a href="/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}">
                             <img src="https://{{ imageServer }}/{% if art.imgSizeList %}{{ art.imgSizeList }}{% elseif art.catRef.artlistImageSize %}{{ art.catRef.artlistImageSize }}{% else %}800x{% endif %}/{{ imagePath }}/{{ art.img[0].src }}" alt="{{ art.title|e }}" class="img-fluid {{ art.catRef.artlistImageClass }}">
-                        {% else %}
-                            <a href="/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}">
-                                <img src="https://{{ imageServer }}/{% if art.imgSizeList %}{{ art.imgSizeList }}{% elseif art.catRef.artlistImageSize %}{{ art.catRef.artlistImageSize }}{% else %}800x{% endif %}/{{ imagePath }}/{{ art.img[0].src }}" alt="{{ art.title|e }}" class="img-fluid {{ art.catRef.artlistImageClass }}">
-                            </a>
-                        {% endif %}
-                    </div>
-                {% endif %}
+                        </a>
+                    {% endif %}
+                </div>
             {% endif %}
             <div class="post-content {{ colorArticleBackgroundPadding(art.catRef, null, null, art) }}" {{ colorArticleText(art.catRef, null, null, art) }}>
                 {% if art.catRef.hideFrontpageTitle %}
