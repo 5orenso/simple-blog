@@ -106,7 +106,18 @@ html {
     height: 250px;
     overflow: hidden;
 }
-.post-thumb a {
+.post-thumb-wide {
+    /* padding-top: 66%; 1:1 Aspect Ratio */
+    /* position: relative; */
+    /* background-color: #f0f0f0; */
+    text-align: center;
+    /* border: 1px solid #dee2e6; */
+    /* border-radius: .25rem; */
+    /* min-height: 50px;
+    max-height: 200px; */
+    overflow: hidden;
+}
+.post-thumb a, .post-thumb-wide a {
     /* position: absolute;
     top: 0;
     left: 0;
@@ -116,7 +127,7 @@ html {
     width: 100%;
     color: #a0a0a0;
 }
-.post-thumb a img {
+.post-thumb a img, .post-thumb-wide a img {
     /* position: absolute;
     bottom: 0; */
     display: block;
@@ -126,7 +137,7 @@ html {
     width: 100%;
     height: 100%;
 }
-.post-thumb div {
+.post-thumb div, .post-thumb-wide div {
     position: absolute;
     top: 35%;
     left: 0;
