@@ -178,10 +178,13 @@
                         {% endif %}
 
                         {% if art.catRef.hideFrontpageTeaser %}
-                        {% elseif art.teaser %}
-                            <div class='mb-1 {{ art.catRef.artlistTeaserClass }}'>{{ art.teaser|md|safe }}</div>
-                        {% elseif art.ingress %}
-                            <div class='mb-1 {{ art.catRef.artlistTeaserClass }}'>{{ art.ingress|md|safe }}</div>
+                        {% else %}
+                            {% if art.teaser %}
+                                <div class='mb-1 {{ art.catRef.artlistTeaserClass }} font-weight-bold'>{{ art.teaser|md|safe }}</div>
+                            {% endif %}
+                            {% if art.ingress %}
+                                <div class='mb-1 {{ art.catRef.artlistTeaserClass }}'>{{ art.ingress|md|safe }}</div>
+                            {% endif %}
                         {% endif %}
 
                         {% for widget in ['helloworld', 'clock', 'booking', 'form', 'sheet', 'poll', 'gallery', 'weather', 'map', 'rating', 'related'] %}
