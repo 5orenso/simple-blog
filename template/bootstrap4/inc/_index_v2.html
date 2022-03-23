@@ -213,7 +213,7 @@
                 <div class="row">
                     {% for art in artlist %}
                         {% if loop.index > startArt %}
-                            {{ articleMacro.articleTeaser(art, 4, '', 'h3') }}
+                            {{ articleMacro.articleTeaser(art, 4, '', 'h3', loop.index) }}
                         {% endif %}
                     {% endfor %}
                 </div>
