@@ -58,6 +58,7 @@ const fields = {
     classNames: 1,
     cssStyles: 1,
     imgSizeList: 1,
+    backgroundRgb: 1,
 
     'clock-class': 1,
     'clock-style': 1,
