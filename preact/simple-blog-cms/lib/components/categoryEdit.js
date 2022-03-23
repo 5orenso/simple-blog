@@ -607,6 +607,14 @@ export default class CategoryEdit extends Component {
                                 value={category.globalStyle}
                             />
                         </div>
+                        <div class='form-group'>
+                            <label for='detailContainerCss'><i class='fas fa-paint-roller text-muted' /> detailContainerCss</label>
+                            <textarea type='text' class='form-control' id='detailContainerCss' rows='5'
+                                name='detailContainerCss'
+                                onInput={handleInput}
+                                value={category.detailContainerCss}
+                            />
+                        </div>
 
                         <div class='form-group'>
                             <label for='artlistImageSizeInput'><i class='fas fa-paint-roller text-muted' /> Artlist Image Size (80x80, 150x, 220x, 400x, 800x, 1024x, 1280x, 1600x, 1920x, 2500x)</label>

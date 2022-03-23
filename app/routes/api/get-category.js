@@ -57,6 +57,7 @@ const fields = {
     pageFont: 1,
     pageFontCss: 1,
     globalStyle: 1,
+    detailContainerCss: 1,
 
     artlistImageCss: 1,
 
