@@ -136,6 +136,9 @@
 {% macro articleTeaser(art, col, extraClasses, heading) %}
     <div class="{% if art.catRef.artlistColClass %}{{ art.catRef.artlistColClass }}{% else %}col-12 col-sm-12 col-md-{{ col || 4 }} post-data my-1{% endif %} {{ extraClasses }} {{ art.catRef.artlistContainerClass }}" >
         <div {{ colorArticleBackground(art.catRef, null, null, art) }}>
+
+            {{ art.catRef.listStyle }}
+
             {% if art.img[0] && art.img[0].src|match('(jpg|jpeg|png|gif|heic|heif|svg|webp|tif|JPG|JPEG|PNG|GIF|HEIC|HEIF|SVG|WEBP|TIF)$', 'i') %}
                 <div class="post-thumb d-flex align-items-center">
                     {% if art.url %}

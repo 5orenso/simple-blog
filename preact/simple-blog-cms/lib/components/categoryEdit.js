@@ -140,6 +140,14 @@ export default class CategoryEdit extends Component {
                 <div class='row'>
                     <div class='col-6'>
                         <div class='form-group'>
+                            <label for='listStyle'>listStyle</label>
+                            <input type='text' class='form-control' id='listStyle'
+                                name='listStyle'
+                                onInput={handleInput}
+                                value={category.listStyle} />
+                            <small class='text-muted'>wide, wideDynamic</small>
+                        </div>
+                        <div class='form-group'>
                             <label for='titleInput'>Tittel 🇳🇴</label>
                             <input type='text' class='form-control' id='titleInput' placeholder='Tittel'
                                 name='title'
