@@ -158,7 +158,7 @@
                         </div>
                     {% endif %}
                 </div>
-                <div class='col-6'>
+                <div class='col-6 {{ idx|wideDynamicOther }}'>
                     <div class="post-content {{ colorArticleBackgroundPadding(art.catRef, null, null, art) }}" {{ colorArticleText(art.catRef, null, null, art) }}>
                         {% if art.catRef.hideFrontpageTitle %}
                         {% else %}
