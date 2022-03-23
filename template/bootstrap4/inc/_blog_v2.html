@@ -58,7 +58,7 @@
             <div class="col-lg-8 blog-main">
         {% endif %}
             <div class="blog-post">
-                <h1>{{ article.title }}</h1>
+                <h1 class="{{ category.artlistTitleClass }}">{{ article.title }}</h1>
                 <h5 class="blog-post-teaser">{{ article.teaser|safe }}</h5>
                 {% if article.catRef.hideMetaInfoDetail %}
                 {% else %}
