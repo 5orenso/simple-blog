@@ -70,7 +70,7 @@
         {% set startArt = 1 %}
         {% set art = artlist[0] %}
         <div class="jumbotron px-0 pt-0 pb-0" {{ articleMacro.colorArticleBackground(art.catRef, frontpage, true, art) }}>
-            <div class="px-0 blog-main{% if art.catRef.artlistContainerClass %}{{ art.catRef.artlistContainerClass }}{% else %}container-fluid{% endif %}" {{ articleMacro.colorArticleText(art.catRef, frontpage, true, art) }}>
+            <div class="px-0 blog-main {% if art.catRef.artlistContainerClass %}{{ art.catRef.artlistContainerClass }}{% else %}container-fluid{% endif %}" {{ articleMacro.colorArticleText(art.catRef, frontpage, true, art) }}>
                 {% if art.widgetList === 'gallery' %}
                     <div class="jumbotron-thumb d-flex align-items-center">
                         <div class='w-100 my-0 clearfix' data-widget-host="simple-blog-gallery">
