@@ -88,29 +88,32 @@
                         <script async src="/preact/simple-blog-gallery/bundle.js?time={{ env.epoch }}"></script>
                     </div>
                 {% elseif art.img[0] && art.img[0].src|match('(jpg|jpeg|png|gif|heic|heif|svg|webp|tif|JPG|JPEG|PNG|GIF|HEIC|HEIF|SVG|WEBP|TIF)$', 'i') %}
-                    <div class="jumbotron-thumb d-flex align-items-center">
-                        {% if art.isFrontpage %}
-                            {% if art.url %}
-                                <a href="{{ art.url }}" class='w-100'>
+                    {% if art.catRef.useImageOneAsBackground %}
+                    {% else %}
+                        <div class="jumbotron-thumb d-flex align-items-center">
+                            {% if art.isFrontpage %}
+                                {% if art.url %}
+                                    <a href="{{ art.url }}" class='w-100'>
+                                        <img src="https://{{ imageServer }}/1920x/{{ imagePath }}/{{ art.img[0].src }}" alt="{{ art.title|e }}" class="img-fluid w-100 {{ art.catRef.artlistImageClass }}">
+                                    </a>
+                                {% else %}
                                     <img src="https://{{ imageServer }}/1920x/{{ imagePath }}/{{ art.img[0].src }}" alt="{{ art.title|e }}" class="img-fluid w-100 {{ art.catRef.artlistImageClass }}">
-                                </a>
-                            {% else %}
-                                <img src="https://{{ imageServer }}/1920x/{{ imagePath }}/{{ art.img[0].src }}" alt="{{ art.title|e }}" class="img-fluid w-100 {{ art.catRef.artlistImageClass }}">
+                                {% endif %}
+                            {% else %}                            
+                                {% if art.url %}
+                                    <a href="{{ art.url }}" class='w-100'>
+                                        <img src="https://{{ imageServer }}/1920x/{{ imagePath }}/{{ art.img[0].src }}" alt="{{ art.title|e }}" class="img-fluid w-100 {{ art.catRef.artlistImageClass }}">
+                                    </a>
+                                {% elseif art.catRef.skipDefaultArtLink %}
+                                    <img src="https://{{ imageServer }}/1920x/{{ imagePath }}/{{ art.img[0].src }}" alt="{{ art.title|e }}" class="img-fluid w-100 {{ art.catRef.artlistImageClass }}">
+                                {% else %}
+                                    <a href="/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}" {{ articleMacro.colorArticleText(art.catRef, frontpage, true, art, 'h1') }} class='w-100'>
+                                        <img src="https://{{ imageServer }}/1920x/{{ imagePath }}/{{ art.img[0].src }}" alt="{{ art.title|e }}" class="img-fluid w-100 {{ art.catRef.artlistImageClass }}">
+                                    </a>
+                                {% endif %}
                             {% endif %}
-                        {% else %}                            
-                            {% if art.url %}
-                                <a href="{{ art.url }}" class='w-100'>
-                                    <img src="https://{{ imageServer }}/1920x/{{ imagePath }}/{{ art.img[0].src }}" alt="{{ art.title|e }}" class="img-fluid w-100 {{ art.catRef.artlistImageClass }}">
-                                </a>
-                            {% elseif art.catRef.skipDefaultArtLink %}
-                                <img src="https://{{ imageServer }}/1920x/{{ imagePath }}/{{ art.img[0].src }}" alt="{{ art.title|e }}" class="img-fluid w-100 {{ art.catRef.artlistImageClass }}">
-                            {% else %}
-                                <a href="/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}" {{ articleMacro.colorArticleText(art.catRef, frontpage, true, art, 'h1') }} class='w-100'>
-                                    <img src="https://{{ imageServer }}/1920x/{{ imagePath }}/{{ art.img[0].src }}" alt="{{ art.title|e }}" class="img-fluid w-100 {{ art.catRef.artlistImageClass }}">
-                                </a>
-                            {% endif %}
-                        {% endif %}
-                    </div>
+                        </div>
+                    {% endif %}
                 {% endif %}
                 <div class='px-5'>
                     {% if art.catRef.hideFrontpageTitle %}

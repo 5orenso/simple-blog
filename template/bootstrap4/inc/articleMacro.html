@@ -48,6 +48,13 @@
     {%- elseif frontpage.colorMain -%}
         color: {{ frontpage.colorMain }} !important;
     {%- endif -%}
+    {%- if category.useImageOneAsBackground -%}
+        background: url(https://{{ imageServer }}/1920x/{{ imagePath }}/{{ article.img[0].src }}) no-repeat center center fixed; 
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+    {%- endif -%}
     {%- if heading === 'h1' && article && article.fontsizeH1 -%}
         font-size: {{ article.fontsizeH1 }}rem;
     {%- endif -%}
