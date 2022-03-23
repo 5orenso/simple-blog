@@ -222,6 +222,35 @@ export default class CategoryEdit extends Component {
                         </div>
 
                         <div class='form-check'>
+                            <input type='checkbox' class='form-check-input' id='useImageOneAsBackground'
+                                name='useImageOneAsBackground'
+                                onInput={e => {
+                                    handleInput(e, {
+                                        name: 'useImageOneAsBackground',
+                                        value: category.useImageOneAsBackground ? 0 : 1,
+                                    });
+                                }}
+                                value={1}
+                                checked={category.useImageOneAsBackground ? 'checked' : ''}
+                            />
+                            <label for='useImageOneAsBackground'>Use image 1 as background image on top of page.</label>
+                        </div>
+                        <div class='form-check'>
+                            <input type='checkbox' class='form-check-input' id='startPageAtTop'
+                                name='startPageAtTop'
+                                onInput={e => {
+                                    handleInput(e, {
+                                        name: 'startPageAtTop',
+                                        value: category.startPageAtTop ? 0 : 1,
+                                    });
+                                }}
+                                value={1}
+                                checked={category.startPageAtTop ? 'checked' : ''}
+                            />
+                            <label for='startPageAtTop'>Start page at the very top and not below menu.</label>
+                        </div>
+
+                        <div class='form-check'>
                             <input type='checkbox' class='form-check-input' id='hideLanguageInput'
                                 name='hideLanguage'
                                 onInput={e => {

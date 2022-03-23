@@ -58,5 +58,4 @@ preact/npm-debug.log
 # nyc / coverage
 .nyc_output/
 
-preact/**/src/index.ejs
 package-lock.json
