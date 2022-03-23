@@ -12,13 +12,13 @@
         background-color: {{ frontpage.bgColorMain }} !important;
     {%- endif -%}
     {%- if frontpage.useImageOneAsBackground && article -%}
-        background: linear-gradient(0deg, {{ article.backgroundRgb || 'rgba(0, 0, 0, 0.5)' }}, {{ article.backgroundRgb || 'rgba(0, 0, 0, 0.5)' }}), url(https://{{ imageServer }}/1920x/{{ imagePath }}/{{ article.img[0].src }}) no-repeat center center fixed;
+        background: linear-gradient(0deg, {{ article.backgroundRgb || 'rgba(0, 0, 0, 0.5)' }}, {{ article.backgroundRgb || 'rgba(0, 0, 0, 0.5)' }}), url(https://{{ imageServer }}/1920x/{{ imagePath }}/{{ article.img[0].src }}) no-repeat center center;
         -webkit-background-size: cover;
         -moz-background-size: cover;
         -o-background-size: cover;
         background-size: cover;
     {%- elseif category.useImageOneAsBackground && article -%}
-        background: linear-gradient(0deg, {{ article.backgroundRgb || 'rgba(0, 0, 0, 0.5)' }}, {{ article.backgroundRgb || 'rgba(0, 0, 0, 0.5)' }}), url(https://{{ imageServer }}/1920x/{{ imagePath }}/{{ article.img[0].src }}) no-repeat center center fixed;
+        background: linear-gradient(0deg, {{ article.backgroundRgb || 'rgba(0, 0, 0, 0.5)' }}, {{ article.backgroundRgb || 'rgba(0, 0, 0, 0.5)' }}), url(https://{{ imageServer }}/1920x/{{ imagePath }}/{{ article.img[0].src }}) no-repeat center center;
         -webkit-background-size: cover;
         -moz-background-size: cover;
         -o-background-size: cover;
