@@ -137,7 +137,7 @@
     {% if art.catRef && art.catRef.listStyle === 'wideDynamic' %}
         <div class="{% if art.catRef.artlistColClass %}{{ art.catRef.artlistColClass }}{% else %}col-12 post-data my-1{% endif %} {{ extraClasses }} {{ art.catRef.artlistContainerClass }}">
             <div class='row' {{ colorArticleBackground(art.catRef, null, null, art) }}>
-                <div class='col-6 {{ idx % 2 === 0 ? 'float-right' : 'float-left' }}>    
+                <div class='col-6 {{ idx|wideDynamic }}'>
                     {% if art.img[0] && art.img[0].src|match('(jpg|jpeg|png|gif|heic|heif|svg|webp|tif|JPG|JPEG|PNG|GIF|HEIC|HEIF|SVG|WEBP|TIF)$', 'i') %}
                         <div class="post-thumb d-flex align-items-center">
                             {% if art.url %}
