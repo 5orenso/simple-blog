@@ -130,6 +130,7 @@ export default class Edit extends Component {
 
             classNames,
             cssStyles,
+            backgroundRgb,
             imgSizeList,
         } = this.props;
 
@@ -905,6 +906,18 @@ export default class Edit extends Component {
                                     name='cssStyles'
                                     id='cssStyles'
                                     value={article.cssStyles || cssStyles}
+                                    onInput={handleInput}
+                                />
+                            </div>
+                        </div>
+                        <div class='col-6 d-flex flex-column'>
+                            <div class='form-group'>
+                                <label for='backgroundRgb' class='mr-2 my-0'>backgroundRgb</label>
+                                <input
+                                    class={`form-control mr-2`}
+                                    name='backgroundRgb'
+                                    id='backgroundRgb'
+                                    value={article.backgroundRgb || backgroundRgb}
                                     onInput={handleInput}
                                 />
                             </div>
