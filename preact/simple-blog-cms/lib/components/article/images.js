@@ -118,6 +118,9 @@ export default class Edit extends Component {
                                     {isImg && <button class='btn btn-sm m-1' onClick={handleClickCode} data-content={`![${img.title|| ''}](https://${imageServer}/800x/${imagePath}/${img.src}#card '${img.text || ''}')\n`}>
                                         <i class='fas fa-file-image' /> Card
                                     </button>}
+                                    {isImg && <button class='btn btn-sm m-1' onClick={handleClickCode} data-content={`![${img.title|| ''}](https://${imageServer}/800x/${imagePath}/${img.src}#cardleft '${img.text || ''}')\n`}>
+                                        <i class='fas fa-file-image' /> Card left
+                                    </button>}
                                     {isImg && <button class='btn btn-sm m-1' onClick={handleClickCode} data-content={`![${img.title|| ''}](https://${imageServer}/800x/${imagePath}/${img.src}#card2 '${img.text || ''}')\n`}>
                                         <i class='far fa-image' /> Card 2
                                     </button>}
