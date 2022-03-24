@@ -174,6 +174,22 @@
     {% endif %}
 {% endmacro %}
 
+{% macro articleTeaserReadmore(art, col, extraClasses, heading, idx) %}
+    {% if art.catRef.hideFrontpageTitle %}
+    {% else %}
+        {% if art.url %}
+            <a class='btn btn-primary artlist-readmore artlist-readmore-{{ idx }}' href="{{ art.url }}">
+                {{ art.title }}
+            </a>
+        {% elseif art.catRef.skipDefaultArtLink %}
+        {% elseif art.body %}
+            <a class='btn btn-primary artlist-readmore artlist-readmore-{{ idx }}' href="/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}">
+                {{ art.title }}
+            </a>
+        {% endif %}
+    {% endif %}
+{% endmacro %}
+
 {% macro articleTeaserTeaser(art, col, extraClasses, heading, idx) %}
     {% if art.catRef.hideFrontpageTeaser %}
     {% else %}
@@ -234,6 +250,7 @@
                         {{ articleTeaserTeaser(art, col, extraClasses, heading, idx) }}
                         {{ articleTeaserWidget(art, col, extraClasses, heading, idx) }}
                         {{ articleTeaserMeta(art, col, extraClasses, heading, idx) }}
+                        {{ articleTeaserReadmore(art, col, extraClasses, heading, idx) }}
                     </div>
                 </div>
 
@@ -262,6 +279,7 @@
                         {{ articleTeaserTeaser(art, col, extraClasses, heading, idx) }}
                         {{ articleTeaserWidget(art, col, extraClasses, heading, idx) }}
                         {{ articleTeaserMeta(art, col, extraClasses, heading, idx) }}
+                        {{ articleTeaserReadmore(art, col, extraClasses, heading, idx) }}
                     </div>
                 </div>
             </div>
