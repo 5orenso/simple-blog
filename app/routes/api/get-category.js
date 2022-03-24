@@ -60,6 +60,7 @@ const fields = {
     detailContainerCss: 1,
     listStyle: 1,
     showImage2AsBannerBelow: 1,
+    readMore: 1,
 
     artlistImageCss: 1,
 

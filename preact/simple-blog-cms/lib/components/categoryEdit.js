@@ -140,21 +140,6 @@ export default class CategoryEdit extends Component {
                 <div class='row'>
                     <div class='col-6'>
                         <div class='form-group'>
-                            <label for='listStyle'>listStyle</label>
-                            <input type='text' class='form-control' id='listStyle'
-                                name='listStyle'
-                                onInput={handleInput}
-                                value={category.listStyle} />
-                            <small class='text-muted'>wide, wideDynamic, fullwidthGallery</small>
-                        </div>
-                        <div class='form-group'>
-                            <label for='showImage2AsBannerBelow'>showImage2AsBannerBelow</label>
-                            <input type='text' class='form-control' id='showImage2AsBannerBelow'
-                                name='showImage2AsBannerBelow'
-                                onInput={handleInput}
-                                value={category.showImage2AsBannerBelow} />
-                        </div>
-                        <div class='form-group'>
                             <label for='titleInput'>Tittel 🇳🇴</label>
                             <input type='text' class='form-control' id='titleInput' placeholder='Tittel'
                                 name='title'
@@ -188,6 +173,28 @@ export default class CategoryEdit extends Component {
                                 name='sort'
                                 onInput={handleInput}
                                 value={category.sort} />
+                        </div>
+                        <div class='form-group'>
+                            <label for='listStyle'>listStyle</label>
+                            <input type='text' class='form-control' id='listStyle'
+                                name='listStyle'
+                                onInput={handleInput}
+                                value={category.listStyle} />
+                            <small class='text-muted'>wide, wideDynamic, fullwidthGallery</small>
+                        </div>
+                        <div class='form-group'>
+                            <label for='showImage2AsBannerBelow'>showImage2AsBannerBelow</label>
+                            <input type='text' class='form-control' id='showImage2AsBannerBelow'
+                                name='showImage2AsBannerBelow'
+                                onInput={handleInput}
+                                value={category.showImage2AsBannerBelow} />
+                        </div>
+                        <div class='form-group'>
+                            <label for='readMore'>readMore</label>
+                            <input type='text' class='form-control' id='readMore'
+                                name='readMore'
+                                onInput={handleInput}
+                                value={category.readMore} />
                         </div>
                         <div class='form-group'>
                             <label for='limitInput'>Limit</label>

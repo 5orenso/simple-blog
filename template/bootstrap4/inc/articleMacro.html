@@ -179,12 +179,20 @@
     {% else %}
         {% if art.url %}
             <a class='btn btn-primary artlist-readmore artlist-readmore-{{ idx }}' href="{{ art.url }}">
-                {{ art.title }}
+                {% if art.catRef.readMore %}
+                    {{ art.catRef.readMore }}
+                {% else %}
+                    Les mer <i class='fas fa-angle-right'></i>
+                {% endif %}
             </a>
         {% elseif art.catRef.skipDefaultArtLink %}
         {% elseif art.body %}
             <a class='btn btn-primary artlist-readmore artlist-readmore-{{ idx }}' href="/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}">
-                {{ art.title }}
+                {% if art.catRef.readMore %}
+                    {{ art.catRef.readMore }}
+                {% else %}
+                    Les mer <i class='fas fa-angle-right'></i>
+                {% endif %}
             </a>
         {% endif %}
     {% endif %}
