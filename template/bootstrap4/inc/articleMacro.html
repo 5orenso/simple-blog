@@ -135,7 +135,7 @@
 
 {% macro articleTeaserImage(art, imgIdx, size, heading, idx, classNames) %}
     {% if art.img[imgIdx] && art.img[imgIdx].src|match('(jpg|jpeg|png|gif|heic|heif|svg|webp|tif|JPG|JPEG|PNG|GIF|HEIC|HEIF|SVG|WEBP|TIF)$', 'i') %}
-        <div class="{{ classNames }} d-flex align-items-center">
+        <div class="{{ classNames }}">
             {% if art.url %}
             <a href="{{ art.url }}" {{ colorArticleText(art.catRef, null, null, art, heading) }}>
                 <img src="https://{{ imageServer }}/{% if art.imgSizeList %}{{ art.imgSizeList }}{% elseif art.catRef.artlistImageSize %}{{ art.catRef.artlistImageSize }}{% else %}{{ size }}{% endif %}/{{ imagePath }}/{{ art.img[imgIdx].src }}"
@@ -229,7 +229,7 @@
         <div class="{% if art.catRef.artlistColClass %}{{ art.catRef.artlistColClass }}{% else %}col-12 post-data my-1{% endif %} {{ extraClasses }} {{ art.catRef.artlistContainerClass }}">
             <div {{ colorArticleBackground(art.catRef, null, null, art) }}>
                 <div class='col-6 {{ idx|wideDynamic }}'>
-                    {{ articleTeaserImage(art, 0, '800x', heading, idx, 'post-thumb-wide') }}
+                    {{ articleTeaserImage(art, 0, '800x', heading, idx, 'post-thumb-wide d-flex align-items-center') }}
                 </div>
                 <div class='col-6 {{ idx|wideDynamicOther }}'>
                     <div class="post-content {{ colorArticleBackgroundPadding(art.catRef, null, null, art) }}" {{ colorArticleText(art.catRef, null, null, art) }}>
@@ -251,7 +251,7 @@
         <div class="{% if art.catRef.artlistColClass %}{{ art.catRef.artlistColClass }}{% else %}col-12 post-data my-1{% endif %} {{ extraClasses }} {{ art.catRef.artlistContainerClass }}">
             <div {{ colorArticleBackground(art.catRef, null, null, art) }}>
                 <div class='col-6'>
-                    {{ articleTeaserImage(art, 0, '800x', heading, idx, 'post-thumb-wide') }}
+                    {{ articleTeaserImage(art, 0, '800x', heading, idx, 'post-thumb-wide d-flex align-items-center') }}
                 </div>
                 <div class='col-6'>
                     <div class="post-content {{ colorArticleBackgroundPadding(art.catRef, null, null, art) }}" {{ colorArticleText(art.catRef, null, null, art) }}>
@@ -267,7 +267,7 @@
     {% else %}
         <div class="{% if art.catRef.artlistColClass %}{{ art.catRef.artlistColClass }}{% else %}col-12 col-sm-12 col-md-{{ col || 4 }} post-data my-1{% endif %} {{ extraClasses }} {{ art.catRef.artlistContainerClass }}" >
             <div {{ colorArticleBackground(art.catRef, null, null, art) }}>
-                {{ articleTeaserImage(art, 0, '800x', heading, idx, 'post-thumb-wide') }}
+                {{ articleTeaserImage(art, 0, '800x', heading, idx, 'post-thumb d-flex align-items-center') }}
 
                 <div class="post-content {{ colorArticleBackgroundPadding(art.catRef, null, null, art) }}" {{ colorArticleText(art.catRef, null, null, art) }}>
                     {{ articleTeaserTitle(art, col, extraClasses, heading, idx) }}
