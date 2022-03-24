@@ -178,7 +178,7 @@
     {% if art.catRef.hideFrontpageTitle %}
     {% else %}
         {% if art.url %}
-            <a class='btn btn-primary artlist-readmore artlist-readmore-{{ idx }}' href="{{ art.url }}">
+            <a class='btn btn-primary text-white artlist-readmore artlist-readmore-{{ idx }}' href="{{ art.url }}">
                 {% if art.catRef.readMore %}
                     {{ art.catRef.readMore }}
                 {% else %}
@@ -187,7 +187,7 @@
             </a>
         {% elseif art.catRef.skipDefaultArtLink %}
         {% elseif art.body %}
-            <a class='btn btn-primary artlist-readmore artlist-readmore-{{ idx }}' href="/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}">
+            <a class='btn btn-primary text-white artlist-readmore artlist-readmore-{{ idx }}' href="/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}">
                 {% if art.catRef.readMore %}
                     {{ art.catRef.readMore }}
                 {% else %}
