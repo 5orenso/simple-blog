@@ -126,7 +126,7 @@ html {
     /* border-radius: .25rem; */
     /* min-height: 50px; */
     height: 350px;
-    overflow: hidden;
+    width: 100vw;
 }
 .post-thumb-banner-image {
     max-height: 350px;
