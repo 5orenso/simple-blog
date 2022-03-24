@@ -79,6 +79,7 @@ module.exports = async (req, res) => {
                 { url2: { $regex: new RegExp(req.params.category) } },
             ],
         };
+console.log({ queryCategory });
         category = await cat.findOne(queryCategory);
         if (!category) {
             category = {
@@ -151,6 +152,8 @@ module.exports = async (req, res) => {
     }
 
     limit = parseInt(limit, 10);
+
+console.log({ query });
 
     let article = await art.findOne(query);
     let artlist = [];
