@@ -237,14 +237,16 @@
                     </div>
                 </div>
 
-                {% set images = [0,1,2,3,4,5,6,7,8] %}
-                {% for i in images %}
-                    {% if art.img[i] %}
-                        <div class='col-4'>
-                            {{ articleTeaserImage(art, i, '800x', heading, idx, 'post-thumb-wide d-flex align-items-center') }}
-                        </div>
-                    {% endif %}
-                {% endfor %}
+                <div class='row'>
+                    {% set images = [0,1,2,3,4,5,6,7,8] %}
+                    {% for i in images %}
+                        {% if art.img[i] %}
+                            <div class='col-4'>
+                                {{ articleTeaserImage(art, i, '800x', heading, idx, 'post-thumb-wide d-flex align-items-center') }}
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
             </div>
         </div>
 
