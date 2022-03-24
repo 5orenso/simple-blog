@@ -242,7 +242,9 @@
             </div>
         </div>
         {% if art.catRef.showImage2AsBannerBelow %}
-            {{ articleTeaserImage(art, 1, '1600x', heading, idx, 'post-thumb-banner') }}
+            <div class='post-thumb-banner'>
+                {{ articleTeaserImage(art, 1, '1920x', heading, idx, 'fullwidthImage') }}
+            </div>
         {% endif %}
 
     {% elseif art.catRef && art.catRef.listStyle === 'wide' %}
