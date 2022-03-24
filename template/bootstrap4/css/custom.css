@@ -117,6 +117,15 @@ html {
     max-height: 350px;
     overflow: hidden;
 }
+.post-thumb-gallery {
+    /* padding-top: 66%; 1:1 Aspect Ratio */
+    /* position: relative; */
+    /* background-color: #f0f0f0; */
+    text-align: center;
+    /* border: 1px solid #dee2e6; */
+    /* border-radius: .25rem; */
+    /* min-height: 50px; */
+}
 .post-thumb-banner {
     /* padding-top: 66%; 1:1 Aspect Ratio */
     /* position: relative; */
