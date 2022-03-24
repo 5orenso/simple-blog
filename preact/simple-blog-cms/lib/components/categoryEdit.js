@@ -145,7 +145,7 @@ export default class CategoryEdit extends Component {
                                 name='listStyle'
                                 onInput={handleInput}
                                 value={category.listStyle} />
-                            <small class='text-muted'>wide, wideDynamic</small>
+                            <small class='text-muted'>wide, wideDynamic, fullwidthGallery</small>
                         </div>
                         <div class='form-group'>
                             <label for='showImage2AsBannerBelow'>showImage2AsBannerBelow</label>

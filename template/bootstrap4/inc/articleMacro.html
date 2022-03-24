@@ -225,7 +225,30 @@
 {% endmacro %}
 
 {% macro articleTeaser(art, col, extraClasses, heading, idx) %}
-    {% if art.catRef && art.catRef.listStyle === 'wideDynamic' %}
+    {% if art.catRef && art.catRef.listStyle === 'fullwidthGallery' %}
+        <div class="{% if art.catRef.artlistColClass %}{{ art.catRef.artlistColClass }}{% else %}col-12 post-data my-1{% endif %} {{ extraClasses }} {{ art.catRef.artlistContainerClass }}">
+            <div {{ colorArticleBackground(art.catRef, null, null, art) }}>
+                <div class='col-12'>
+                    <div class="post-content {{ colorArticleBackgroundPadding(art.catRef, null, null, art) }}" {{ colorArticleText(art.catRef, null, null, art) }}>
+                        {{ articleTeaserTitle(art, col, extraClasses, heading, idx) }}
+                        {{ articleTeaserTeaser(art, col, extraClasses, heading, idx) }}
+                        {{ articleTeaserWidget(art, col, extraClasses, heading, idx) }}
+                        {{ articleTeaserMeta(art, col, extraClasses, heading, idx) }}
+                    </div>
+                </div>
+
+                {% set images = [0,1,2,3,4,5,6,7,8] %}
+                {% for i in images %}
+                    {% if art.img[i] %}
+                        <div class='col-4'>
+                            {{ articleTeaserImage(art, i, '800x', heading, idx, 'post-thumb-wide d-flex align-items-center') }}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+
+    {% elseif art.catRef && art.catRef.listStyle === 'wideDynamic' %}
         <div class="{% if art.catRef.artlistColClass %}{{ art.catRef.artlistColClass }}{% else %}col-12 post-data my-1{% endif %} {{ extraClasses }} {{ art.catRef.artlistContainerClass }}">
             <div {{ colorArticleBackground(art.catRef, null, null, art) }}>
                 <div class='col-6 {{ idx|wideDynamic }}'>
@@ -243,7 +266,6 @@
         </div>
         {% if art.catRef.showImage2AsBannerBelow && art.img[1] %}
             <div class='post-thumb-banner position-relative'>
-                FOOBAR
                 {{ articleTeaserImage(art, 1, '1920x', heading, idx, 'fullwidthImage post-thumb-banner-image') }}
             </div>
         {% endif %}
@@ -264,6 +286,11 @@
                 </div>
             </div>
         </div>
+        {% if art.catRef.showImage2AsBannerBelow && art.img[1] %}
+            <div class='post-thumb-banner position-relative'>
+                {{ articleTeaserImage(art, 1, '1920x', heading, idx, 'fullwidthImage post-thumb-banner-image') }}
+            </div>
+        {% endif %}
 
     {% else %}
         <div class="{% if art.catRef.artlistColClass %}{{ art.catRef.artlistColClass }}{% else %}col-12 col-sm-12 col-md-{{ col || 4 }} post-data my-1{% endif %} {{ extraClasses }} {{ art.catRef.artlistContainerClass }}" >
