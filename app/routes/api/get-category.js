@@ -59,6 +59,7 @@ const fields = {
     globalStyle: 1,
     detailContainerCss: 1,
     listStyle: 1,
+    showImage2AsBannerBelow: 1,
 
     artlistImageCss: 1,
 

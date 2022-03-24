@@ -148,6 +148,13 @@ export default class CategoryEdit extends Component {
                             <small class='text-muted'>wide, wideDynamic</small>
                         </div>
                         <div class='form-group'>
+                            <label for='showImage2AsBannerBelow'>showImage2AsBannerBelow</label>
+                            <input type='text' class='form-control' id='showImage2AsBannerBelow'
+                                name='showImage2AsBannerBelow'
+                                onInput={handleInput}
+                                value={category.showImage2AsBannerBelow} />
+                        </div>
+                        <div class='form-group'>
                             <label for='titleInput'>Tittel 🇳🇴</label>
                             <input type='text' class='form-control' id='titleInput' placeholder='Tittel'
                                 name='title'

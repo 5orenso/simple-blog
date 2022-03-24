@@ -70,7 +70,7 @@
         }
 </style>
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark menuBackgroundInline menuTextColorInline {% if frontpage.startPageAtTop %}position-absolute w-100{% endif %}">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark menuBackgroundInline menuTextColorInline {% if frontpage.startPageAtTop %}position-absolute w-100{% endif %}" style="{% if frontpage.startPageAtTop %}z-index: 1000;{% endif %}">
     <a class="navbar-brand" href="/">
         {%- if frontpage.image -%}
             {%- if frontpage.image|match('http') -%}

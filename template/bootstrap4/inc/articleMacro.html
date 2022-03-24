@@ -133,22 +133,22 @@
     {% endfor %}
 {% endmacro %}
 
-{% macro articleTeaserImage(art, col, extraClasses, heading, idx, classNames) %}
-    {% if art.img[0] && art.img[0].src|match('(jpg|jpeg|png|gif|heic|heif|svg|webp|tif|JPG|JPEG|PNG|GIF|HEIC|HEIF|SVG|WEBP|TIF)$', 'i') %}
+{% macro articleTeaserImage(art, imgIdx, col, extraClasses, heading, idx, classNames) %}
+    {% if art.img[imgIdx] && art.img[imgIdx].src|match('(jpg|jpeg|png|gif|heic|heif|svg|webp|tif|JPG|JPEG|PNG|GIF|HEIC|HEIF|SVG|WEBP|TIF)$', 'i') %}
         <div class="{{ classNames }} d-flex align-items-center">
             {% if art.url %}
             <a href="{{ art.url }}" {{ colorArticleText(art.catRef, null, null, art, heading) }}>
-                <img src="https://{{ imageServer }}/{% if art.imgSizeList %}{{ art.imgSizeList }}{% elseif art.catRef.artlistImageSize %}{{ art.catRef.artlistImageSize }}{% else %}800x{% endif %}/{{ imagePath }}/{{ art.img[0].src }}"
+                <img src="https://{{ imageServer }}/{% if art.imgSizeList %}{{ art.imgSizeList }}{% elseif art.catRef.artlistImageSize %}{{ art.catRef.artlistImageSize }}{% else %}800x{% endif %}/{{ imagePath }}/{{ art.img[imgIdx].src }}"
                 alt="{{ art.title|e }}"
                 class="{% if art.catRef.artlistImageClass %}{{ art.catRef.artlistImageClass }}{% else %}img-fluid{% endif %}"
                 {% if art.catRef.artlistImageCss %}style="{{ art.catRef.artlistImageCss }}"{% endif %}
                 >
             </a>
             {% elseif art.catRef.skipDefaultArtLink %}
-            <img src="https://{{ imageServer }}/{% if art.imgSizeList %}{{ art.imgSizeList }}{% elseif art.catRef.artlistImageSize %}{{ art.catRef.artlistImageSize }}{% else %}800x{% endif %}/{{ imagePath }}/{{ art.img[0].src }}" alt="{{ art.title|e }}" class="img-fluid {{ art.catRef.artlistImageClass }}">
+            <img src="https://{{ imageServer }}/{% if art.imgSizeList %}{{ art.imgSizeList }}{% elseif art.catRef.artlistImageSize %}{{ art.catRef.artlistImageSize }}{% else %}800x{% endif %}/{{ imagePath }}/{{ art.img[imgIdx].src }}" alt="{{ art.title|e }}" class="img-fluid {{ art.catRef.artlistImageClass }}">
             {% else %}
             <a href="/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}">
-                <img src="https://{{ imageServer }}/{% if art.imgSizeList %}{{ art.imgSizeList }}{% elseif art.catRef.artlistImageSize %}{{ art.catRef.artlistImageSize }}{% else %}800x{% endif %}/{{ imagePath }}/{{ art.img[0].src }}" alt="{{ art.title|e }}" class="img-fluid {{ art.catRef.artlistImageClass }}">
+                <img src="https://{{ imageServer }}/{% if art.imgSizeList %}{{ art.imgSizeList }}{% elseif art.catRef.artlistImageSize %}{{ art.catRef.artlistImageSize }}{% else %}800x{% endif %}/{{ imagePath }}/{{ art.img[imgIdx].src }}" alt="{{ art.title|e }}" class="img-fluid {{ art.catRef.artlistImageClass }}">
             </a>
             {% endif %}
         </div>
@@ -229,7 +229,7 @@
         <div class="{% if art.catRef.artlistColClass %}{{ art.catRef.artlistColClass }}{% else %}col-12 post-data my-1{% endif %} {{ extraClasses }} {{ art.catRef.artlistContainerClass }}">
             <div {{ colorArticleBackground(art.catRef, null, null, art) }}>
                 <div class='col-6 {{ idx|wideDynamic }}'>
-                    {{ articleTeaserImage(art, col, extraClasses, heading, idx, 'post-thumb-wide') }}
+                    {{ articleTeaserImage(art, 0, col, extraClasses, heading, idx, 'post-thumb-wide') }}
                 </div>
                 <div class='col-6 {{ idx|wideDynamicOther }}'>
                     <div class="post-content {{ colorArticleBackgroundPadding(art.catRef, null, null, art) }}" {{ colorArticleText(art.catRef, null, null, art) }}>
@@ -241,13 +241,31 @@
                 </div>
             </div>
         </div>
+        {% if art.catRef.showImage2AsBannerBelow %}
+            {{ articleTeaserImage(art, 1, col, extraClasses, heading, idx, 'post-thumb-banner') }}
+        {% endif %}
 
     {% elseif art.catRef && art.catRef.listStyle === 'wide' %}
+        <div class="{% if art.catRef.artlistColClass %}{{ art.catRef.artlistColClass }}{% else %}col-12 post-data my-1{% endif %} {{ extraClasses }} {{ art.catRef.artlistContainerClass }}">
+            <div {{ colorArticleBackground(art.catRef, null, null, art) }}>
+                <div class='col-6'>
+                    {{ articleTeaserImage(art, 0, col, extraClasses, heading, idx, 'post-thumb-wide') }}
+                </div>
+                <div class='col-6'>
+                    <div class="post-content {{ colorArticleBackgroundPadding(art.catRef, null, null, art) }}" {{ colorArticleText(art.catRef, null, null, art) }}>
+                        {{ articleTeaserTitle(art, col, extraClasses, heading, idx) }}
+                        {{ articleTeaserTeaser(art, col, extraClasses, heading, idx) }}
+                        {{ articleTeaserWidget(art, col, extraClasses, heading, idx) }}
+                        {{ articleTeaserMeta(art, col, extraClasses, heading, idx) }}
+                    </div>
+                </div>
+            </div>
+        </div>
 
     {% else %}
         <div class="{% if art.catRef.artlistColClass %}{{ art.catRef.artlistColClass }}{% else %}col-12 col-sm-12 col-md-{{ col || 4 }} post-data my-1{% endif %} {{ extraClasses }} {{ art.catRef.artlistContainerClass }}" >
             <div {{ colorArticleBackground(art.catRef, null, null, art) }}>
-                {{ articleTeaserImage(art, col, extraClasses, heading, idx, 'post-thumb') }}
+                {{ articleTeaserImage(art, 0, col, extraClasses, heading, idx, 'post-thumb') }}
 
                 <div class="post-content {{ colorArticleBackgroundPadding(art.catRef, null, null, art) }}" {{ colorArticleText(art.catRef, null, null, art) }}>
                     {{ articleTeaserTitle(art, col, extraClasses, heading, idx) }}
@@ -258,5 +276,5 @@
             </div>
         </div>
 
-        {% endif %}
+    {% endif %}
 {% endmacro %}
