@@ -48,7 +48,7 @@
 </div>
 </div>
 
-<div class="container" style="{%- if category.useImageOneAsBackground -%}
+<div class="container blog-post-container" style="{%- if category.useImageOneAsBackground -%}
         background: url(https://{{ imageServer }}/{% if isPhoto || isPhotoCategory %}1920x{% else %}1024x{% endif %}/{{ imagePath }}/{{ article.img[0].src }}) no-repeat center center; 
     {%- endif -%} {{ category.detailContainerCss }}">
     <div class="row">
@@ -58,7 +58,7 @@
             <div class="col-lg-8 blog-main">
         {% endif %}
             <div class="blog-post">
-                <h1 class="{{ category.artlistTitleClass }}">{{ article.title }}</h1>
+                <h1 class="blog-post-title {{ category.artlistTitleClass }}">{{ article.title }}</h1>
                 <h5 class="blog-post-teaser">{{ article.teaser|safe }}</h5>
                 {% if article.catRef.hideMetaInfoDetail %}
                 {% else %}
