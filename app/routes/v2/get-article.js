@@ -79,7 +79,7 @@ module.exports = async (req, res) => {
                 { url2: { $regex: new RegExp(req.params.category) } },
             ],
         };
-console.log({ queryCategory });
+console.log({ queryCategory: JSON.stringify(queryCategory, null, 4) });
         category = await cat.findOne(queryCategory);
         if (!category) {
             category = {
