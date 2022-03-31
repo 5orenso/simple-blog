@@ -54,7 +54,7 @@ const initialState = {
 
     currentPage: 1,
     articlesPerPage: 20,
-    categoriesPerPage: 20,
+    categoriesPerPage: 50,
     tagsPerPage: 20,
 
     query: '',
