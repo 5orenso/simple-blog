@@ -103,16 +103,16 @@ export default class Edit extends Component {
                                     <button class='btn btn-sm m-1' onClick={handleClickCode} data-content={`[${img.title|| ''}](https://${imageServer}/original/${imagePath}/${img.src} '${img.text || ''}')\n`}>
                                         <i class='fas fa-image' /> Org
                                     </button>
-                                    {isImg && <button class='btn btn-sm m-1' onClick={handleClickCode} data-content={`![${img.title|| ''}](https://${imageServer}/800x/${imagePath}/${img.src} '${img.text || ''}')\n`}>
+                                    {isImg && <button class='btn btn-sm m-1' onClick={handleClickCode} data-content={`![${img.title|| ''}](https://${imageServer}/1024x/${imagePath}/${img.src} '${img.text || ''}')\n`}>
                                         <i class='fas fa-image' /> Image
                                     </button>}
-                                    {isImg && <button class='btn btn-sm m-1' onClick={handleClickCode} data-content={`[![${img.title|| ''}](https://${imageServer}/800x/${imagePath}/${img.src}#nolink '${img.text || ''}')](${img.url})\n`}>
+                                    {isImg && <button class='btn btn-sm m-1' onClick={handleClickCode} data-content={`[![${img.title|| ''}](https://${imageServer}/1024x/${imagePath}/${img.src}#nolink '${img.text || ''}')](${img.url})\n`}>
                                         <i class='fas fa-image' /> Image w/link
                                     </button>}
                                     {isImg && <button class='btn btn-sm m-1' onClick={handleClickCode} data-content={`![${img.title|| ''}](https://${imageServer}/1920x/${imagePath}/${img.src}#fullwidth '${img.text || ''}')\n`}>
                                         <i class='fas fa-link' /> Full width
                                     </button>}
-                                    {isImg && <button class='btn btn-sm m-1' onClick={handleClickCode} data-content={`[![${img.title|| ''}](https://${imageServer}/800x/${imagePath}/${img.src}#card '${img.text || ''}')](${img.url})\n`}>
+                                    {isImg && <button class='btn btn-sm m-1' onClick={handleClickCode} data-content={`[![${img.title|| ''}](https://${imageServer}/1024x/${imagePath}/${img.src}#card '${img.text || ''}')](${img.url})\n`}>
                                         <i class='fas fa-link' /> Link
                                     </button>}
                                     {isImg && <button class='btn btn-sm m-1' onClick={handleClickCode} data-content={`![${img.title|| ''}](https://${imageServer}/800x/${imagePath}/${img.src}#card '${img.text || ''}')\n`}>
@@ -124,13 +124,13 @@ export default class Edit extends Component {
                                     {isImg && <button class='btn btn-sm m-1' onClick={handleClickCode} data-content={`![${img.title|| ''}](https://${imageServer}/800x/${imagePath}/${img.src}#card2 '${img.text || ''}')\n`}>
                                         <i class='far fa-image' /> Card 2
                                     </button>}
-                                    {isImg && <button class='btn btn-sm m-1' onClick={handleClickCode} data-content={`![${img.title|| ''}](https://${imageServer}/800x/${imagePath}/${img.src}#plain '${img.text || ''}')\n`}>
+                                    {isImg && <button class='btn btn-sm m-1' onClick={handleClickCode} data-content={`![${img.title|| ''}](https://${imageServer}/1024x/${imagePath}/${img.src}#plain '${img.text || ''}')\n`}>
                                         <i class='far fa-image' /> Plain
                                     </button>}
                                     {isImg && <button class='btn btn-sm m-1' onClick={handleClickCode} data-content={`![${img.title|| ''}](https://${imageServer}/800x/${imagePath}/${img.src}#circle '${img.text || ''}')\n`}>
                                         <i class='far fa-image' /> Circle
                                     </button>}
-                                    {isImg && <button class='btn btn-sm m-1' onClick={handleClickCode} data-content={`![${img.title|| ''}](https://${imageServer}/800x/${imagePath}/${img.src}#nolink '${img.text || ''}')\n`}>
+                                    {isImg && <button class='btn btn-sm m-1' onClick={handleClickCode} data-content={`![${img.title|| ''}](https://${imageServer}/1024x/${imagePath}/${img.src}#nolink '${img.text || ''}')\n`}>
                                         <i class='far fa-image' /> No link
                                     </button>}
                                     {isImg && <button class='btn btn-sm m-1' onClick={handleClickCode} data-content={`<h5>Detaljer om bildet</h5>
