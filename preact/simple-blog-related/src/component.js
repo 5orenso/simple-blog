@@ -55,7 +55,7 @@ export default function App(props) {
         categoryIn = '',
         idIn = '',
         tag,
-        imageSize = '220x',
+        imageSize = '400x',
         containerClass = '',
         rowClass = '',
         colClass = '',
