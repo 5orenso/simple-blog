@@ -353,21 +353,25 @@ module.exports = async (req, res) => {
                         file.dimensions = await imageDimensions(tmpFile);
                         file.exif = await readExif(tmpFile);
 
-                        // Load the model.
-                        const model = await mobilenet.load({
-                            version: 2,
-                            alpha: 1,
-                        });
-
-                        const imageBuffer = fs.readFileSync(tmpFile);
-                        const tensor = tfnode.node.decodeImage(imageBuffer)
-
-                        // Classify the image.
-                        predictions = await model.classify(tensor);
-
-                        const cocoSsdModel = await cocoSsd.load();
-                        predictionsCocoSsd = await cocoSsdModel.detect(tensor);
-                        // console.log({ predictions, predictionsCocoSsd });
+                        try {
+                            // Load the model.
+                            const model = await mobilenet.load({
+                                version: 2,
+                                alpha: 1,
+                            });
+    
+                            const imageBuffer = fs.readFileSync(tmpFile);
+                            const tensor = tfnode.node.decodeImage(imageBuffer)
+    
+                            // Classify the image.
+                            predictions = await model.classify(tensor);
+    
+                            const cocoSsdModel = await cocoSsd.load();
+                            predictionsCocoSsd = await cocoSsdModel.detect(tensor);
+                            // console.log({ predictions, predictionsCocoSsd });
+                        } catch (e) {
+                            console.log(e);
+                        }
 
                         try {
                             file.color = await ColorThief.getColor(tmpFile);
