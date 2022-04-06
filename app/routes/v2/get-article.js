@@ -153,8 +153,6 @@ console.log({ queryCategory: JSON.stringify(queryCategory, null, 4) });
 
     limit = parseInt(limit, 10);
 
-console.log({ query });
-
     let article = await art.findOne(query);
     let artlist = [];
     if (category && category.id === 100000404) {
