@@ -161,13 +161,13 @@
         <{{ heading || 'h3' }} class="{{ art.catRef.artlistTitleClass }} artlist-title artlist-title-{{ idx }}">
             {% if art.url %}
                 <a href="{{ art.url }}" {{ colorArticleText(art.catRef, null, null, art, heading) }}>
-                    {{ art.title }}
+                    {{ art.title|md|safe }}
                 </a>
             {% elseif art.catRef.skipDefaultArtLink %}
-                {{ art.title }}
+                {{ art.title|md|safe }}
             {% else %}
                 <a href="/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}" {{ colorArticleText(art.catRef, null, null, art, heading) }}>
-                    {{ art.title }}
+                    {{ art.title|md|safe }}
                 </a>
             {% endif %}
         </{{ heading || 'h3' }}>
