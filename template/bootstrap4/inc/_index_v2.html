@@ -120,10 +120,10 @@
                     {% elseif art.isFrontpage %}
                         <h1 class="display-3 {{ art.catRef.artlistTitleClass }}">
                             {% if art.url %}
-                                <a href="{{ art.url }}" {{ articleMacro.colorArticleText(art.catRef, frontpage, true, art, 'h1') }}>{{ art.title|md|safe }}</a>
+                                <a href="{{ art.url }}" {{ articleMacro.colorArticleText(art.catRef, frontpage, true, art, 'h1') }}>{{ art.title|md(true)|safe }}</a>
                             {% else %}
                                 <a href="/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}" {{ articleMacro.colorArticleText(art.catRef, frontpage, true, art, 'h1') }}>
-                                    {{ art.title|md|safe }}
+                                    {{ art.title|md(true)|safe }}
                                 </a>
                             {% endif %}
                         </h1>
@@ -131,13 +131,13 @@
                         <h1 class="display-3 {{ art.catRef.artlistTitleClass }}">
                             {% if art.url %}
                                 <a href="{{ art.url }}" class='w-100'>
-                                    {{ art.title|md|safe }}
+                                    {{ art.title|md(true)|safe }}
                                 </a>
                             {% elseif art.catRef.skipDefaultArtLink %}
-                                {{ art.title|md|safe }}
+                                {{ art.title|md(true)|safe }}
                             {% else %}
                                 <a href="/v2/{{ art.category|asLinkPart }}/{{ art.title|asLinkPart }}/{{ art.id }}" {{ articleMacro.colorArticleText(art.catRef, frontpage, true, art, 'h1') }}>
-                                    {{ art.title|md|safe }}
+                                    {{ art.title|md(true)|safe }}
                                 </a>
                             {% endif %}
                         </h1>
