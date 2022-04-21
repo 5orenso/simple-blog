@@ -141,7 +141,20 @@
                         {% else %}
                             <a href="#" onClick="createCookie('disableCookies', 'yes'); location.reload();" class='text-muted bottomTextColorInline'>Disable cookies</a>
                         {% endif %}
-                        - <a href="/send-magic-link" class='text-muted font-weight-lighter bottomTextColorInline' rel=”nofollow”>Send a magic link 🎩  to login.</a><br>
+
+                        <div class='clearfix' data-widget-host="simple-blog-loginlink">
+                            <script type="text/props">
+                                {
+                                    "apiServer": "{{ blog.protocol }}://{{ blog.domain }}",
+                                    "jwtToken": "{{ jwtToken }}",
+                                    "sessionEmail": "{{ session.email }}",
+                                    "sessionAge": "{{ session.age }}",
+                                    "articleId": {{ article.id }}
+                                }
+                            </script>
+                        </div>
+                        <script async src="/preact/simple-blog-loginlink/bundle.js?time={{ env.epoch }}"></script>
+
                     </small>
                 </small>
             </div>
@@ -223,6 +236,6 @@
         {% endif %}
     {% endif %}
     
-    <script type="text/javascript" src="/global/js/push-notification.js"></script>
+    <!-- <script type="text/javascript" src="/global/js/push-notification.js"></script> -->
 </body>
 </html>
