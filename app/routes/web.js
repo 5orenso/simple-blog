@@ -106,6 +106,7 @@ webRouter.use('/preact/simple-blog-rating/', express.static(`${appPath}preact/si
 webRouter.use('/preact/simple-blog-cookies/', express.static(`${appPath}preact/simple-blog-cookies/bundle/`));
 webRouter.use('/preact/simple-blog-racetracker/', express.static(`${appPath}preact/simple-blog-racetracker/bundle/`));
 webRouter.use('/preact/simple-blog-related/', express.static(`${appPath}preact/simple-blog-related/bundle/`));
+webRouter.use('/preact/simple-blog-loginlink/', express.static(`${appPath}preact/simple-blog-loginlink/bundle/`));
 
 webRouter.use('/preact/simple-blog-map/', express.static(`${appPath}preact/simple-blog-map/bundle/`));
 webRouter.use('/assets/', express.static(`${appPath}preact/simple-blog-map/bundle/assets/`));
@@ -121,7 +122,7 @@ webRouter.get('/photos/*', (req, res) => {
     res.sendFile(requestUrl, { root: path.normalize(req.config.adapter.markdown.photoPath) });
 });
 
-webRouter.get('/send-magic-link', require('./send-magic-link'));
+// webRouter.get('/send-magic-link', require('./send-magic-link'));
 webRouter.get('/verify-magic-link', require('./verify-magic-link'));
 
 webRouter.get('/ajax/savefile', util.restrict, require('./post-savefile'));

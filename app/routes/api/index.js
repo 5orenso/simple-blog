@@ -56,4 +56,6 @@ router.post('/author/', util.restrict, wrap(require('./post-author')));
 
 router.post('/fileupload/', util.restrict, wrap(require('./post-fileupload')));
 
+router.post('/send-magic-link', require('../send-magic-link'));
+
 module.exports = router;
