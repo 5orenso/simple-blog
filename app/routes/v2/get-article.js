@@ -218,6 +218,7 @@ console.log({ queryCategory: JSON.stringify(queryCategory, null, 4) });
         article.bodyRaw = `${article.body}`;
         article.body = utilHtml.replaceDataTags(article.body || '', article);
         article.body = utilHtml.replaceContentTags(article.body || '', article, req.config);
+        article.body = utilHtml.replaceBBTags(article.body || '', article, req.config);
         utilHtml.runPlugins(article);
     }
     
