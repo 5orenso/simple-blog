@@ -130,13 +130,12 @@ export default class Edit extends Component {
                                     {isImg && <button class='btn btn-sm m-1' onClick={handleClickCode} data-content={`![${img.title|| ''}](https://${imageServer}/1024x/${imagePath}/${img.src}#plainLeft '${img.text || ''}')\n`}>
                                         <i class='far fa-image' /> Plain Left
                                     </button>}
-                                    {isImg && <button class='btn btn-sm m-1' onClick={handleClickCode} data-content={`<div class='row my-5'><div class='col-xl-8 col-lg-7 col-md-6 col-sm-12'>\n\nInsert text...\n</div><div class='col-xl-4 col-lg-5 col-md-6 col-sm-12'>\n\n<img src="/1024x/${imagePath}/${img.src}" class="img-fluid">\n</div></div>\n\n`}>
+                                    {isImg && <button class='btn btn-sm m-1' onClick={handleClickCode} data-content={`[right]\n<img src="/1024x/${imagePath}/${img.src}" class="img-fluid">\nInsert text...\n[/right]\n\n`}>
                                         <i class='far fa-image' /> Float Right
                                     </button>}
-                                    {isImg && <button class='btn btn-sm m-1' onClick={handleClickCode} data-content={`<div class='row my-5'><div class='col-xl-4 col-lg-5 col-md-6 col-sm-12'>\n\n<img src="/1024x/${imagePath}/${img.src}" class="img-fluid">\n</div><div class='col-xl-8 col-lg-7 col-md-6 col-sm-12'>\n\nInsert text...\n</div></div>\n\n`}>
+                                    {isImg && <button class='btn btn-sm m-1' onClick={handleClickCode} data-content={`[left]\n<img src="/1024x/${imagePath}/${img.src}" class="img-fluid">\nInsert text...\n[/left]\n\n`}>
                                         <i class='far fa-image' /> Float Left
                                     </button>}
-
 
                                     {isImg && <button class='btn btn-sm m-1' onClick={handleClickCode} data-content={`![${img.title|| ''}](https://${imageServer}/800x/${imagePath}/${img.src}#circle '${img.text || ''}')\n`}>
                                         <i class='far fa-image' /> Circle
