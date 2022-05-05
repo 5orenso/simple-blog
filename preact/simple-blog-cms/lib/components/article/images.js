@@ -13,6 +13,15 @@ const initialState = {
 
 const debug = false;
 
+function bySortOrder(a, b) {
+    if ((a.sort && !b.sort) || a.sort > b.sort) {
+        return -1;
+    } else if ((!a.sort && b.sort) || a.sort < b.sort) {
+        return 1;
+    }
+    return 0;
+}
+
 function pad(n) {
     return (n.length < 2) ? `0${n}` : n;
 }
@@ -184,6 +193,15 @@ export default class Edit extends Component {
                                     <input type='text' class='form-control' id={`img${idx}Title`}
                                         onInput={linkstate(that, `article.img.${idx}.title`)}
                                         value={article.img[idx].title} />
+                                </div>
+
+                                <div class='form-group col-2'>
+                                    <label for={`img${idx}Sort`}>Sort</label>
+                                </div>
+                                <div class='form-group col-10'>
+                                    <input type='text' class='form-control' id={`img${idx}Sort`}
+                                        onInput={linkstate(that, `article.img.${idx}.sort`)}
+                                        value={article.img[idx].sort} />
                                 </div>
 
                                 <div class='form-group col-2'>

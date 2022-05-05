@@ -474,6 +474,7 @@ module.exports = async (req, res) => {
                     }
 
                     file.src = `${fileCategory}/${file.newFilename}`;
+                    file.uuidv4 = uuidv4();
 
                     filesUploaded.push(file);
 

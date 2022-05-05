@@ -7,8 +7,18 @@
 
 'use strict';
 
-const { run, webUtil, utilHtml } = require('../../middleware/init')({ __filename, __dirname });
+const uuidv4 = require('uuid/v4');
+const { run, webUtil, utilHtml, localUtil } = require('../../middleware/init')({ __filename, __dirname });
 const Article = require('../../../lib/class/article');
+
+function bySortOrder(a, b) {
+    if ((a.sort && !b.sort) || a.sort > b.sort) {
+        return -1;
+    } else if ((!a.sort && b.sort) || a.sort < b.sort) {
+        return 1;
+    }
+    return 0;
+}
 
 module.exports = async (req, res) => {
     run(req);
@@ -29,7 +39,12 @@ module.exports = async (req, res) => {
                     ...currentImg,
                     ...updateArticle.img[i],
                 };
+                if (!updateArticle.img[i].uuidv4) {
+                    updateArticle.img[i].uuidv4 = uuidv4();
+                }
             }
+
+            updateArticle.img = updateArticle.img.sort(bySortOrder);
         }
 
         apiContent = await art.save(updateArticle);
