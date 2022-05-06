@@ -28,7 +28,13 @@ class Body extends Component {
         return (
             <div id='bodyDisplay' dangerouslySetInnerHTML={{
                 __html: utilHtml.replaceMarked(
-                    utilHtml.replaceDataTags(value, article)
+                    utilHtml.replaceContentTags(
+                        utilHtml.replaceBBTags(
+                            utilHtml.replaceDataTags(value, article),
+                            article,
+                        ),
+                        article,
+                    ),
                 ),
             }}></div>
         );

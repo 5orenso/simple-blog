@@ -287,6 +287,93 @@ class HtmlUtilities {
         return content;
     }
 
+    static replaceBBTags(content = '', article = {}, config = { blog: {} }) {
+        if (typeof content !== 'string') {
+            return content;
+        }
+        function replacer(match, p1, p2, p3) {
+            // p1 = tag
+            // p2 = params
+            // p3 = content
+            const tag = p1.toLowerCase();
+            const params = p2.split(' ');
+            const opts = {};
+            const content = p3.trim();
+            const contentLines = content.split('\n');
+            params.forEach((e) => {
+                const param = e.split('=');
+                if (param[0] && param[1]) {
+                    opts[param[0]] = param[1].replace(/;/g, ' ');
+                }
+            });
+            if (!opts.articleId) {
+                opts.articleId = article.id;
+            }
+            if (['poll', 'booking', 'clock', 'form', 'gallery', 'map', 'racetracker', 'rating', 'related', 'sheet', 'weather'].includes(tag)) {
+                const replacerResult = `<div class='w-100 ${opts.containerClasses || 'my-3 border'} clearfix' data-widget-host="simple-blog-${tag}">
+                <h3>WIDGET: ${tag}</h3>
+<xmp>
+    "apiServer": "${config.blog.protocol}://${config.blog.domain}",
+    "content": "${content}",
+${Object.keys(opts).map(key => `    "${key}": "${opts[key]}"`).join(',\n')}
+</xmp>
+</div>
+<script async src="/preact/simple-blog-${tag}/bundle.js?time=${new Date().getTime()}"></script>
+                `;
+                return replacerResult;
+            }
+            if (['left'].includes(tag)) {
+                return `<div class='row my-4 clearfix'><div class='col-xl-4 col-lg-5 col-md-6 col-sm-12'>
+${marked(contentLines[0])}
+</div><div class='col-xl-8 col-lg-7 col-md-6 col-sm-12'>
+${contentLines.slice(1).join('\n')}
+</div></div>`;
+            }
+            if (['right'].includes(tag)) {
+                return `<div class='row my-4 clearfix'><div class='col-xl-8 col-lg-7 col-md-6 col-sm-12'>
+${contentLines.slice(1).join('\n')}
+</div><div class='col-xl-4 col-lg-5 col-md-6 col-sm-12'>
+${marked(contentLines[0])}
+</div></div>`;
+            }
+        }
+        const reg = /\[([a-z]+)(.*?)\]([\s\S]*?(?=\[\/\1\]))\[\/\1\]/g;
+        const finalResult = content.replace(reg, replacer);
+        return finalResult;
+    }
+
+    static replaceContentTags(content = '', article = {}, config = { blog: {} }) {
+        if (typeof content !== 'string') {
+            return content;
+        }
+        function replacer(match, p1) {
+            const parts = p1.split(' ');
+            parts.shift();
+            const opts = {};
+            parts.forEach((e) => {
+                const param = e.split('=');
+                opts[param[0]] = param[1].replace(/;/g, ' ');
+            });
+            if (!opts.articleId) {
+                opts.articleId = article.id;
+            }
+
+            const replacerResult = `<div class='w-100 ${opts.containerClasses || 'my-3'} clearfix border' data-widget-host="simple-blog-${opts.name}">
+                <h3>WIDGET: ${opts.name}</h3>
+<xmp>
+    "apiServer": "${config.blog.protocol}://${config.blog.domain}",
+${Object.keys(opts).map(key => `    "${key}": "${opts[key]}"`).join(',\n')}
+</xmp>
+</div>
+            `;
+            return replacerResult;
+        }
+
+        const reg = /\{\{([a-zA-ZæøåÆØÅ0-9 ,=;:_./-]+)\}\}/g;
+        const finalResult = content.replace(reg, replacer);
+        return finalResult;
+    }
+
     static mapNorwegianLetter(match, letter) {
         switch (letter) {
             case 'æ': return 'a';

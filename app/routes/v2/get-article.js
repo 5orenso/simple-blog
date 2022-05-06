@@ -79,7 +79,7 @@ module.exports = async (req, res) => {
                 { url2: { $regex: new RegExp(req.params.category) } },
             ],
         };
-console.log({ queryCategory: JSON.stringify(queryCategory, null, 4) });
+// console.log({ queryCategory: JSON.stringify(queryCategory, null, 4) });
         category = await cat.findOne(queryCategory);
         if (!category) {
             category = {
@@ -219,6 +219,10 @@ console.log({ queryCategory: JSON.stringify(queryCategory, null, 4) });
         article.body = utilHtml.replaceDataTags(article.body || '', article);
         article.body = utilHtml.replaceContentTags(article.body || '', article, req.config);
         article.body = utilHtml.replaceBBTags(article.body || '', article, req.config);
+        
+        article.bodyEn = utilHtml.replaceDataTags(article.bodyEn || '', article);
+        article.bodyEn = utilHtml.replaceContentTags(article.bodyEn || '', article, req.config);
+        article.bodyEn = utilHtml.replaceBBTags(article.bodyEn || '', article, req.config);
         utilHtml.runPlugins(article);
     }
     
