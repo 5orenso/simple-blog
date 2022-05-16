@@ -149,9 +149,13 @@ export default class Edit extends Component {
                         <span class='d-sm-none'><i class='fas fa-save' /></span>
                         <span class='d-none d-sm-block'><i class='fas fa-save' /> Lagre</span>
                     </button>
-                    <a class='btn btn-primary' target='_blank' href={`${serverName}/v2/${util.htmlIdSafe(article.category || 'no-category')}/${util.htmlIdSafe(article.title || 'no-title')}/${article.id}?previewJwtToken=${previewJwtToken}`}>
+                    <a class='btn btn-primary mr-2' target='_blank' href={`${serverName}/v2/${util.htmlIdSafe(article.category || 'no-category')}/${util.htmlIdSafe(article.title || 'no-title')}/${article.id}?previewJwtToken=${previewJwtToken}`}>
                         <span class='d-sm-none'><i class='fas fa-external-link-alt' /></span>
                         <span class='d-none d-sm-block'><i class='fas fa-external-link-alt' /> Preview</span>
+                    </a>
+                    <a class='btn btn-info' target='_blank' href={`${serverName}/v2/${util.htmlIdSafe(article.category || 'no-category')}/${util.htmlIdSafe(article.title || 'no-title')}/${article.id}`}>
+                        <span class='d-sm-none'><i class='fas fa-external-link-alt' /></span>
+                        <span class='d-none d-sm-block'><i class='fas fa-external-link-alt' /> Link</span>
                     </a>
                 </div>
                 <div class='col-3'>
@@ -246,7 +250,7 @@ export default class Edit extends Component {
                                 Alle
                             </a>
                             {catlist.map(cat =>
-                                <a class={`dropdown-item ${article.category === cat.title ? 'text-success' : ''} ${!cat.type && !cat.menu ? 'text-muted font-weight-lighter' : ''}`} 
+                                <a class={`dropdown-item ${article.category === cat.title ? 'text-success' : ''} ${!cat.type && !cat.menu ? 'text-muted font-weight-lighter' : ''}`}
                                     href='#'
                                     data-key='category'
                                     data-val={cat.title}
@@ -471,7 +475,7 @@ export default class Edit extends Component {
                                     <label class='form-check-label text-white-50' for={`widgetListNone`}>
                                         None
                                     </label>
-                                </div>                                    
+                                </div>
                                 {widgetList.map(e => (
                                     <div class='form-check'>
                                         <input class='form-check-input' type='radio' name='widgetList' id={`widgetList${e}`} value={e} onInput={handleInput} checked={article.widgetList === e} />
