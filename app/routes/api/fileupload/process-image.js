@@ -30,7 +30,7 @@ const main = async () => {
     const image = new Image();
     const article = new Article();
     const imageUtil = new ImageUtil();
-    await imageUtil.loadModels();
+    // await imageUtil.loadModels();
     const imgObj = await image.findOne({ id: commander.imageid }, {});
 
     const filename = `${photoPath}${imgObj.src}`;

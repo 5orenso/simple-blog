@@ -19,9 +19,9 @@ const geoLib = require('geo-lib');
 const ExifImage = require('exif').ExifImage;
 const sizeOf = require('image-size');
 
-const tfnode = require('@tensorflow/tfjs-node')
-const mobilenet = require('@tensorflow-models/mobilenet');
-const cocoSsd = require('@tensorflow-models/coco-ssd');
+// const tfnode = require('@tensorflow/tfjs-node')
+// const mobilenet = require('@tensorflow-models/mobilenet');
+// const cocoSsd = require('@tensorflow-models/coco-ssd');
 
 const Image = require('../../../lib/class/image');
 const ImageUtil = require('../../../lib/class/image-util');
@@ -353,25 +353,25 @@ module.exports = async (req, res) => {
                         file.dimensions = await imageDimensions(tmpFile);
                         file.exif = await readExif(tmpFile);
 
-                        try {
-                            // Load the model.
-                            const model = await mobilenet.load({
-                                version: 2,
-                                alpha: 1,
-                            });
-    
-                            const imageBuffer = fs.readFileSync(tmpFile);
-                            const tensor = tfnode.node.decodeImage(imageBuffer)
-    
-                            // Classify the image.
-                            predictions = await model.classify(tensor);
-    
-                            const cocoSsdModel = await cocoSsd.load();
-                            predictionsCocoSsd = await cocoSsdModel.detect(tensor);
-                            // console.log({ predictions, predictionsCocoSsd });
-                        } catch (e) {
-                            console.log(e);
-                        }
+                        // try {
+                        //     // Load the model.
+                        //     const model = await mobilenet.load({
+                        //         version: 2,
+                        //         alpha: 1,
+                        //     });
+
+                        //     const imageBuffer = fs.readFileSync(tmpFile);
+                        //     const tensor = tfnode.node.decodeImage(imageBuffer)
+
+                        //     // Classify the image.
+                        //     predictions = await model.classify(tensor);
+
+                        //     const cocoSsdModel = await cocoSsd.load();
+                        //     predictionsCocoSsd = await cocoSsdModel.detect(tensor);
+                        //     // console.log({ predictions, predictionsCocoSsd });
+                        // } catch (e) {
+                        //     console.log(e);
+                        // }
 
                         try {
                             file.color = await ColorThief.getColor(tmpFile);
