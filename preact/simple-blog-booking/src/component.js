@@ -21,7 +21,8 @@ const FIELDS = {
         required: true,
     },
     cellphone: {
-        validation: '^(0047|\\\+47|47)?[2-9]\\\d{7}$',
+        // validation: '^(0047|\\\+47|47)?[2-9]\\\d{7}$',
+        validation: '^\\\+?[0-9]{8,}$',
         removechars: '[ a-zA-Z]',
         help: 'Mobilnummer er ikke gyldig. Sjekk at du har skrevet det riktig.',
         required: true,
@@ -52,6 +53,16 @@ const FIELDS = {
         removechars: null,
         help: 'Adressen er ikke gyldig. Må være minst 2 bokstaver langt.',
     },
+    team: {
+        validation: '^.{2,}$',
+        removechars: null,
+        help: 'Team er ikke gyldig. Må være minst 2 bokstaver langt.',
+    },
+    club: {
+        validation: '^.{2,}$',
+        removechars: null,
+        help: 'Klubb er ikke gyldig. Må være minst 2 bokstaver langt.',
+    },
     postalplace: {
         validation: '^.{2,}$',
         removechars: null,
@@ -62,10 +73,15 @@ const FIELDS = {
         removechars: null,
         help: 'Postnummer er ikke gyldig. Må være kun 4 tall.',
     },
+    country: {
+        validation: '^.{2,}$',
+        removechars: null,
+        help: 'Land er ikke gyldig. Må være minst 2 bokstaver langt.',
+    },
 };
 
-function hasAllFields(object) {
-    const fields = Object.keys(FIELDS);
+function hasAllFields(object, fields) {
+    // const fields = Object.keys(FIELDS);
     const isMissingInfo = fields.some((field) => {
         if (FIELDS[field].required && !object[field]) {
             return true;
@@ -184,7 +200,17 @@ function getColStyles({ col, row, rowIdx, sheet }) {
 }
 
 export default function App(props) {
-    const { apiServer, jwtToken, articleId, sheetId, tableClass, className, style } = props;
+    const {
+        apiServer,
+        jwtToken,
+        articleId,
+        sheetId,
+        // fields = 'email,cellphone,firstname,lastname,childname,childbirth,address,postalplace',
+        fields = 'email,cellphone,firstname,lastname,address,postalplace,team,club,country',
+        tableClass,
+        className,
+        style,
+    } = props;
 
     const [article, setArticle] = useState({});
     const [imageServer, setImageServer] = useState({});
@@ -199,6 +225,7 @@ export default function App(props) {
     const [invalidFields, setInvalidFields] = useState({});
 
     const googleSheetId = sheetId || article['booking-sheetId'];
+    const parsedFields = fields.split(',').map(f => f.trim());
 
     useEffect(() => {
         const fetchData = async () => {
@@ -257,7 +284,7 @@ export default function App(props) {
         newInput[name] = newValue;
         setInput(newInput);
         // Check all required fields
-        setIsOkToSubmit(hasAllFields(newInput));
+        setIsOkToSubmit(hasAllFields(newInput, parsedFields));
 
         // Validate input
         if (validation) {
@@ -374,50 +401,62 @@ export default function App(props) {
                     {row['free seats'] > 0 ? <>
                         <h2 class='mt-5'><i class='fas fa-user-plus text-muted' /> Påmeldingskjema</h2>
                         <div class='row'>
-                            <div class='col-6 form-group'>
+                            {parsedFields.indexOf('email') > -1 && <div class='col-6 form-group'>
                                 <label for='inputEmail'><i class='fas fa-at text-muted' /> E-post</label>
                                 <input type='email' class='form-control' id='inputEmail' aria-describedby='emailHelp' name='email' value={input.email} onInput={onInput} onBlur={onBlur} data-validation={FIELDS.email.validation} data-removechars={FIELDS.email.removechars} />
-                            </div>
-                            <div class='col-6 form-group'>
+                            </div>}
+                            {parsedFields.indexOf('cellphone') > -1 && <div class='col-6 form-group'>
                                 <label for='inputCellphone'><i class='fas fa-mobile-alt text-muted' /> Mobil</label>
                                 <input type='tel' class='form-control' id='inputCellphone' name='cellphone' value={input.cellphone} onInput={onInput} onBlur={onBlur} data-validation={FIELDS.cellphone.validation} data-removechars={FIELDS.cellphone.removechars} />
-                            </div>
+                            </div>}
                             {/* <div class='col-6 form-group'>
                                 <label for='inputPassword'>Passord</label>
                                 <input type='password' class='form-control' id='inputPassword' name='password' value={input.password} onInput={onInput} onBlur={onBlur} />
                             </div> */}
                         </div>
                         <div class='row'>
-                            <div class='col-6 form-group'>
+                            {parsedFields.indexOf('firstname') > -1 && <div class='col-6 form-group'>
                                 <label for='inputFirstname'>Fornavn</label>
                                 <input type='text' class='form-control' id='inputFirstname' name='firstname' value={input.firstname} onInput={onInput} onBlur={onBlur} data-validation={FIELDS.firstname.validation} data-removechars={FIELDS.firstname.removechars} />
                                 <small id='inputFirstnameHelp' class='form-text text-muted'>Ditt fornavn.</small>
-                            </div>
-                            <div class='col-6 form-group'>
+                            </div>}
+                            {parsedFields.indexOf('lastname') > -1 && <div class='col-6 form-group'>
                                 <label for='inputLastname'>Etternavn</label>
                                 <input type='text' class='form-control' id='inputLastname' name='lastname' value={input.lastname} onInput={onInput} onBlur={onBlur} data-validation={FIELDS.lastname.validation} data-removechars={FIELDS.lastname.removechars} />
                                 <small id='inputLastnameHelp' class='form-text text-muted'>Ditt etternavn.</small>
-                            </div>
+                            </div>}
                         </div>
                         <div class='row'>
-                            <div class='col-6 form-group'>
+                            {parsedFields.indexOf('childname') > -1 && <div class='col-6 form-group'>
                                 <label for='inputChildname'><i class='fas fa-baby text-muted' /> Barnets navn</label>
                                 <input type='text' class='form-control' id='inputChildname' name='childname' value={input.childname} onInput={onInput} onBlur={onBlur} data-validation={FIELDS.childname.validation} data-removechars={FIELDS.childname.removechars} />
                                 <small id='inputChildnameHelp' class='form-text text-muted'>Fullt navn på barnet som skal på kurs.</small>
-                            </div>
-                            <div class='col-6 form-group'>
+                            </div>}
+                            {parsedFields.indexOf('childbirth') > -1 && <div class='col-6 form-group'>
                                 <label for='inputChildBirth'><i class='fas fa-birthday-cake text-muted' /> Barnets fødselsdato</label>
                                 <input type='date' class='form-control' id='inputChildBirth' name='childbirth' value={input.childbirth} onInput={onInput} onBlur={onBlur} data-validation={FIELDS.childbirth.validation} data-removechars={FIELDS.childbirth.removechars}  />
-                            </div>
+                            </div>}
                         </div>
                         <div class='row'>
-                            <div class='col-12 form-group'>
+                            {parsedFields.indexOf('team') > -1 && <div class='col-6 form-group'>
+                                <label for='inputTeam'>Team</label>
+                                <input type='text' class='form-control' id='inputTeam' name='team' value={input.team} onInput={onInput} onBlur={onBlur} data-validation={FIELDS.team.validation} data-removechars={FIELDS.team.removechars} />
+                                <small id='inputTeamHelp' class='form-text text-muted'>Navn på teamet ditt</small>
+                            </div>}
+                            {parsedFields.indexOf('club') > -1 && <div class='col-6 form-group'>
+                                <label for='inputClub'>Klubb</label>
+                                <input type='text' class='form-control' id='inputClub' name='club' value={input.club} onInput={onInput} onBlur={onBlur} data-validation={FIELDS.club.validation} data-removechars={FIELDS.club.removechars} />
+                                <small id='inputClubHelp' class='form-text text-muted'>Navn på klubb eller idrettslag</small>
+                            </div>}
+                        </div>
+                        <div class='row'>
+                            {parsedFields.indexOf('address') > -1 && <div class='col-12 form-group'>
                                 <label for='inputAddress'>Adresse</label>
                                 <input type='text' class='form-control' id='inputAddress' name='address' value={input.address} onInput={onInput} onBlur={onBlur} data-validation={FIELDS.address.validation} data-removechars={FIELDS.address.removechars} />
-                            </div>
+                            </div>}
                         </div>
                         <div class='row'>
-                            <div class='col-12 form-group'>
+                            {parsedFields.indexOf('postalplace') > -1 && <div class='col-12 form-group'>
                                 <label for='inputPostalcode'>Postnr-/sted</label>
                                 <div class='row'>
                                     <div class='col-3'>
@@ -427,7 +466,13 @@ export default function App(props) {
                                         <input type='text' class='form-control' name='postalplace' value={input.postalplace} onInput={onInput} onBlur={onBlur} data-validation={FIELDS.postalplace.validation} data-removechars={FIELDS.postalplace.removechars} />
                                     </div>
                                 </div>
-                            </div>
+                            </div>}
+                        </div>
+                        <div class='row'>
+                            {parsedFields.indexOf('country') > -1 && <div class='col-12 form-group'>
+                                <label for='inputCountry'>Land</label>
+                                <input type='text' class='form-control' id='inputCountry' name='country' value={input.country} onInput={onInput} onBlur={onBlur} data-validation={FIELDS.country.validation} data-removechars={FIELDS.country.removechars} />
+                            </div>}
                         </div>
 
                         {invalidFields && Object.keys(invalidFields).length > 0 && <>
@@ -458,7 +503,7 @@ export default function App(props) {
                         </div>}
                     </> : <>
                         <div class='alert alert-danger text-center py-3 mt-3' role='alert'>
-                            <i class='fas fa-exclamation-triangle' /> Kurset er dessverre fulltegnet.
+                            <i class='fas fa-exclamation-triangle' /> Dessverre fulltegnet.
                         </div>
                     </>}
 
@@ -479,7 +524,7 @@ export default function App(props) {
                     <thead>
                         <tr>
                             <th>&nbsp;</th>
-                            <th style={getHeaderColStyles('name', sheet)}>Kurs</th>
+                            <th style={getHeaderColStyles('name', sheet)}>Arrangement</th>
                             <th class='text-center'>Dato</th>
                             <th class='text-center'>Ledige plasser</th>
                         </tr>

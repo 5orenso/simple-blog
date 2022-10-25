@@ -19,7 +19,7 @@ const { routeName, routePath, run, webUtil, utilHtml, util } = require('../../..
 module.exports = async (req, res) => {
     const { hrstart, runId } = run(req);
 
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     const googleSheetId = req.params.sheetid; // '1A6hdvpg_Kz2mHbcaGA6-RmLvgwALB2bE3kKnPTFtPjE';
     const { google } = req.config;
     const { email, course } = req.body;
@@ -45,7 +45,7 @@ module.exports = async (req, res) => {
     if (courseRow['free seats'] <= 0) {
         const data = {
             title: doc.title,
-            data: 'Kurset er dessverre fulltegnet!',
+            data: 'Dessverre fulltegnet!',
             status: 400,
             id: existingRow.id,
         };
@@ -75,7 +75,7 @@ module.exports = async (req, res) => {
         subject: `Kvittering for påmelding: ${doc.title}`,
         body: `<div style='font-size: 17px;'>Hei ${firstname},
 
-<strong>Du er nå påmeldt kurs:</strong>
+<strong>Du er nå påmeldt:</strong>
 ${courseRow.name}
 ${courseRow.description}
 ${courseRow.address}
@@ -126,7 +126,7 @@ ${emailSignature}
         await mail.sendEmail(errorMailObject);
     }
 
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     const data = {
         title: doc.title,
         data: 'Row added',
