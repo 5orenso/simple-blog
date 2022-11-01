@@ -207,6 +207,7 @@ export default function App(props) {
         sheetId,
         fields = 'email,cellphone,firstname,lastname,childname,childbirth,address,postalplace',
         // fields = 'email,cellphone,firstname,lastname,address,postalplace,team,club,country',
+        showParticipants = false,
         tableClass,
         className,
         style,
@@ -219,6 +220,7 @@ export default function App(props) {
     const [sheet, setSheet] = useState({});
     const [rowid, setRowId] = useState(0);
     const [loading, setLoading] = useState(false);
+    const [viewParticipants, toggleParticipants] = useState(false);
     const [isOkToSubmit, setIsOkToSubmit] = useState(false);
     const [input, setInput] = useState({});
     const [apiResponse, setApiResponse] = useState({});
@@ -512,11 +514,68 @@ export default function App(props) {
         );
     }
 
+    if (viewParticipants) {
+        return (<>
+            <button type='button' class='btn btn-primary' onClick={() => toggleParticipants(false)}>
+                <i class='fas fa-chevron-left' /> Tilbake
+            </button>
+
+            {sheet && sheet.title ? <>
+                {/* <xmp>{JSON.stringify(sheet.headers)}</xmp> */}
+                {sheet.rows && sheet.rows.filter(e => e.visible == '1').map((row, rowIdx) => {
+                    if (!row.id) {
+                        return '';
+                    }
+                    return (<>
+                        <div class='font-weight-bold text-center mb-2' style='font-size: 20px;'>
+                            {row.name}
+                            <span class='font-weight-light ml-2 float-right'>({row['free seats']}/{row['total seats']})</span>
+                        </div>
+                        <table class='table table-sm table-striped mb-5'>
+                            <thead>
+                                <tr>
+                                    <th>Navn</th>
+                                    <th>country</th>
+                                    <th>team</th>
+                                    <th class='d-none d-lg-block'>club</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {sheet.participantsRows && sheet.participantsRows.filter(e => row.id === e.course).map((participant, participantIdx) => {
+                                    return (<tr>
+                                        <td>{participant.firstname} {participant.lastname}</td>
+                                        <td>{participant.country}</td>
+                                        <td>{participant.team}</td>
+                                        <td class='d-none d-lg-block'>{participant.club}</td>
+                                    </tr>);
+                                })}
+                            </tbody>
+                        </table>
+                        {/* {JSON.stringify(sheet.participantsRows.filter(e => row.id === e.course), null, 4)} */}
+                    </>);
+                })}
+            </> : <>
+                <div class='d-flex justify-content-center py-3'>
+                    <div class='spinner-border' role='status'>
+                        <span class='sr-only'>Loading...</span>
+                    </div>
+                </div>
+            </>}
+
+        </>);
+    }
+
     return (
         <div class={`${article['booking-class']} ${className}`} style={`${article['booking-style']} ${style}`}>
             {/* {JSON.stringify(images, null, 4)} */}
             {/* {JSON.stringify(article['booking-sheetId'])} */}
             {/* rowid: {rowid}<br /> */}
+
+            {showParticipants && <>
+                <button type='button' class='btn btn-primary mb-2 float-right' onClick={() => toggleParticipants(true)}>
+                    Vis deltakere <i class='fas fa-chevron-right' />
+                </button>
+            </>}
 
             {sheet && sheet.title ? <>
                 {/* <xmp>{JSON.stringify(sheet.headers)}</xmp> */}

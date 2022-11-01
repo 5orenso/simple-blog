@@ -17,7 +17,7 @@ const { routeName, routePath, run, webUtil, utilHtml, util } = require('../../..
 module.exports = async (req, res) => {
     const { hrstart, runId } = run(req);
 
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     const googleSheetId = req.params.sheetid; // '1A6hdvpg_Kz2mHbcaGA6-RmLvgwALB2bE3kKnPTFtPjE';
     const { google } = req.config;
 
@@ -54,11 +54,15 @@ module.exports = async (req, res) => {
         };
     });
 
+    const visibleCourses = [];
     const rows = sheetRows.map((row, idx) => {
         const data = { idx };
         resourceSheetHeaders.forEach((col) => {
             data[col] = row[col];
         });
+        if (data.visible) {
+            visibleCourses.push(data.id);
+        }
         return data;
     });
 
@@ -86,11 +90,29 @@ module.exports = async (req, res) => {
         return data;
     });
 
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+    // fields = 'email,cellphone,firstname,lastname,childname,childbirth,address,postalplace',
+    // // fields = 'email,cellphone,firstname,lastname,address,postalplace,team,club,country',
+    const publicVisibleFields = ['firstname', 'lastname', 'postalplace', 'team', 'club', 'country', 'course', 'created'];
+    const participantsSheet = doc.sheetsByIndex[1];
+    const participantsSheetRows = await participantsSheet.getRows();
+    await participantsSheet.loadCells();
+    const participantsSheetHeaders = participantsSheet.headerValues.filter(e => publicVisibleFields.includes(e));
+    const participantsRows = participantsSheetRows.map((row, idx) => {
+        const data = { idx };
+        participantsSheetHeaders.forEach((col) => {
+            data[col] = row[col];
+        });
+        return data;
+    }).filter(e => visibleCourses.includes(e.course));
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     const data = {
         title: doc.title,
         headers: resourceSheetHeaders,
         rows,
+        participantsHeaders: participantsSheetHeaders,
+        participantsRows,
+        visibleCourses,
         headersMeta,
         meta,
     };
