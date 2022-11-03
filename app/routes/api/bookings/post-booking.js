@@ -64,7 +64,7 @@ module.exports = async (req, res) => {
 
     const {
         cellphone, firstname, lastname, address, postalcode, postalplace,
-        childname, childbirth,
+        childname, childbirth, team, club, country,
     } = req.body;
     const { emailSender, emailSignature } = req.config.blog;
     const mail = new Mail(req.config);
@@ -88,10 +88,13 @@ ${courseRow.postalcode} ${courseRow.postalplace}
 <span style='font-weight: lighter; color: #808080;'>E-post:</span> ${email}
 <span style='font-weight: lighter; color: #808080;'>Mobil:</span> ${cellphone}
 <span style='font-weight: lighter; color: #808080;'>Navn:</span> ${firstname} ${lastname}
-<span style='font-weight: lighter; color: #808080;'>Barnets navn:</span> ${childname}
-<span style='font-weight: lighter; color: #808080;'>Barnets fødselsdato:</span> ${childbirth}
-<span style='font-weight: lighter; color: #808080;'>Adresse:</span> ${address}
-<span style='font-weight: lighter; color: #808080;'>Sted:</span> ${postalcode} ${postalplace}
+${childname ? `<span style='font-weight: lighter; color: #808080;'>Barnets navn:</span> ${childname}` : ''}
+${childbirth ? `<span style='font-weight: lighter; color: #808080;'>Barnets fødselsdato:</span> ${childbirth}` : ''}
+${address ? `<span style='font-weight: lighter; color: #808080;'>Adresse:</span> ${address}` : ''}
+${postalplace ? `<span style='font-weight: lighter; color: #808080;'>Sted:</span> ${postalcode} ${postalplace}` : ''}
+${country ? `<span style='font-weight: lighter; color: #808080;'>Land:</span> ${country}` : ''}
+${team ? `<span style='font-weight: lighter; color: #808080;'>Team:</span> ${team}` : ''}
+${club ? `<span style='font-weight: lighter; color: #808080;'>Klubb:</span> ${club}` : ''}
 
 ${emailSignature}
 
