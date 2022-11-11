@@ -75,7 +75,9 @@ module.exports = async (req, res) => {
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     const data = {
+        status: 200,
         message: `Sent email to `,
+        emailRecipients,
     };
     return utilHtml.renderApi(req, res, 200, data);
 };

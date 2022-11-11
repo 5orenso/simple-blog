@@ -604,11 +604,15 @@ export default function App(props) {
             {apiResponse && apiResponse.status ? <>
                 {apiResponse.status < 300 ? <>
                     <div class='alert alert-success' role='alert'>
-                        <i class='fas fa-check text-success' /> E-post er sent
+                        <i class='fas fa-check text-success' /> E-post er sent<br />
+                        {apiResponse?.emailRecipients?.length} mottakere<br />
+                        <hr />
+                        {apiResponse?.emailRecipients?.map(e => <div>{e.firstname} {e.lastname} ({e.email})</div>)}
+
                     </div>
                 </> : <>
                     <div class='alert alert-danger' role='alert'>
-                        <i class='fas fa-exclamation-triangle text-danger' /> {apiResponse.data}
+                        <i class='fas fa-exclamation-triangle text-danger' /> {JSON.stringify(apiResponse, null, 4)}
                     </div>
                 </>}
             </> : <>
@@ -616,6 +620,9 @@ export default function App(props) {
                     <i class='fas fa-paper-plane' /> Send e-post
                 </button>
             </>}
+
+
+            <xmp>{JSON.stringify(apiResponse, null, 4)}</xmp>
 
         </>);
     }
