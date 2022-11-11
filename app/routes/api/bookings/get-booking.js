@@ -97,6 +97,8 @@ module.exports = async (req, res) => {
     const participantsSheetRows = await participantsSheet.getRows();
     await participantsSheet.loadCells();
     const participantsSheetHeaders = participantsSheet.headerValues.filter(e => publicVisibleFields.includes(e));
+    const participantsSheetHeadersAll = participantsSheet.headerValues;
+
     const participantsRows = participantsSheetRows.map((row, idx) => {
         const data = { idx };
         participantsSheetHeaders.forEach((col) => {
@@ -111,6 +113,7 @@ module.exports = async (req, res) => {
         headers: resourceSheetHeaders,
         rows,
         participantsHeaders: participantsSheetHeaders,
+        participantsHeadersAll: participantsSheetHeadersAll,
         participantsRows,
         visibleCourses,
         headersMeta,

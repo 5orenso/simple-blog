@@ -139,10 +139,10 @@ function formatDate(input, short) {
     let options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
     if (short) {
         options = {
-            weekday: "short",
-            year: "numeric",
-            month: "2-digit",
-            day: "numeric"
+            weekday: 'short',
+            year: 'numeric',
+            month: '2-digit',
+            day: 'numeric'
         };
     }
 
@@ -208,6 +208,7 @@ export default function App(props) {
         fields = 'email,cellphone,firstname,lastname,childname,childbirth,address,postalplace',
         // fields = 'email,cellphone,firstname,lastname,address,postalplace,team,club,country',
         showParticipants = false,
+        showSendEmail = false,
         tableClass,
         className,
         style,
@@ -221,8 +222,12 @@ export default function App(props) {
     const [rowid, setRowId] = useState(0);
     const [loading, setLoading] = useState(false);
     const [viewParticipants, toggleParticipants] = useState(false);
+    const [viewEmail, toggleEmail] = useState(false);
     const [isOkToSubmit, setIsOkToSubmit] = useState(false);
     const [input, setInput] = useState({});
+    const [emailInput, setEmailInput] = useState({
+        body: 'Hei [:firstname],\n\nTakk for at du ...\n\nMvh,\nSimple Blog',
+    });
     const [apiResponse, setApiResponse] = useState({});
     const [invalidFields, setInvalidFields] = useState({});
 
@@ -270,6 +275,12 @@ export default function App(props) {
         setRowId(0);
         setApiResponse({});
     }, [0]);
+
+    const onSendEmailInput = useCallback((e) => {
+        const { value } = e.target;
+        const { name } = e.target.dataset;
+        setEmailInput({ ...emailInput, [name]: value });
+    }, [emailInput]);
 
     const onInput = useCallback((e) => {
         const { name, value } = e.target;
@@ -355,6 +366,27 @@ export default function App(props) {
             setLoading(false);
         }
     }, [input, rowid]);
+
+    const submitSendEmailForm = useCallback(async () => {
+        const postData = async () => {
+            const result = await fetchApi({
+                url: `/api/bookings/sendemail/${googleSheetId}`,
+                body: {
+                    ...emailInput,
+                },
+                settings: {
+                    apiServer,
+                    method: 'POST',
+                },
+            });
+            setApiResponse(result);
+        };
+        if (emailInput.field && emailInput.body) {
+            setLoading(true);
+            await postData();
+            setLoading(false);
+        }
+    }, [emailInput]);
 
     if (rowid && sheet.rows) {
         const row = sheet.rows.find(e => e.id === rowid);
@@ -514,6 +546,80 @@ export default function App(props) {
         );
     }
 
+    if (viewEmail) {
+        return (<>
+            <button type='button' class='btn btn-primary mb-3' onClick={() => toggleEmail(false)}>
+                <i class='fas fa-chevron-left' /> Tilbake
+            </button>
+
+            {/* <div class='input-group mb-1'>
+                <div class='input-group-prepend'>
+                    <span class='input-group-text' id='basic-addon1'>Avsender</span>
+                </div>
+                <input type='text' class='form-control' placeholder='Username' aria-label='Username' aria-describedby='basic-addon1' />
+            </div> */}
+
+            {/* <xmp>{JSON.stringify(emailInput, null, 4)}</xmp> */}
+
+            {sheet && sheet.title ? <>
+                <div class='input-group mb-2'>
+                    <div class='input-group-prepend'>
+                        <label class='input-group-text' for='inputGroupSelect01'>Felt</label>
+                    </div>
+                    <select class='custom-select' id='inputGroupSelect01' data-name={'field'} onInput={onSendEmailInput}>
+                        <option selected>Choose...</option>
+                        {sheet?.participantsHeadersAll?.map(header => <option value={header}>{header}</option>)}
+                    </select>
+                </div>
+                <div class='input-group mb-0'>
+                    <div class='input-group-prepend'>
+                        <span class='input-group-text' id='basic-addon1'>Verdi</span>
+                    </div>
+                    <input type='text' class='form-control' placeholder='Betalt' aria-label='Username' aria-describedby='basic-addon1' data-name={'value'} onInput={onSendEmailInput} />
+                </div>
+                <small id='emailHelp' class='form-text text-muted mb-2'>Tomt felt betyr alle som ikke har noe i valgte felt.</small>
+            </> : <>
+                <div class='d-flex justify-content-center py-3'>
+                    <div class='spinner-border' role='status'>
+                        <span class='sr-only'>Loading...</span>
+                    </div>
+                </div>
+            </>}
+
+            <div class='input-group mb-2'>
+                <div class='input-group-prepend'>
+                    <span class='input-group-text' id='basic-addon1'>Subject</span>
+                </div>
+                <input type='text' class='form-control' placeholder='' aria-label='' aria-describedby='basic-addon1' data-name={'subject'} onInput={onSendEmailInput} />
+            </div>
+
+            <div class='input-group mb-2'>
+                <div class='input-group-prepend'>
+                    <span class='input-group-text'>E-post</span>
+                </div>
+                <textarea class='form-control' aria-label='With textarea' rows={20} data-name={'body'} onInput={onSendEmailInput}>{emailInput.body}</textarea>
+            </div>
+            <small id='emailHelp' class='form-text text-muted mb-2'>Støtter tagger. Feks: [:firstname] [:lastname]</small>
+
+            {apiResponse && apiResponse.status ? <>
+                {apiResponse.status < 300 ? <>
+                    <div class='alert alert-success' role='alert'>
+                        <i class='fas fa-check text-success' /> E-post er sent
+                    </div>
+                </> : <>
+                    <div class='alert alert-danger' role='alert'>
+                        <i class='fas fa-exclamation-triangle text-danger' /> {apiResponse.data}
+                    </div>
+                </>}
+            </> : <>
+                <button type='button' class='btn btn-block btn-success mb-4' onClick={submitSendEmailForm}>
+                    <i class='fas fa-paper-plane' /> Send e-post
+                </button>
+            </>}
+
+        </>);
+    }
+
     if (viewParticipants) {
         return (<>
             <button type='button' class='btn btn-primary' onClick={() => toggleParticipants(false)}>
@@ -572,8 +678,13 @@ export default function App(props) {
             {/* rowid: {rowid}<br /> */}
 
             {showParticipants && <>
-                <button type='button' class='btn btn-primary mb-2 float-right' onClick={() => toggleParticipants(true)}>
+                <button type='button' class='btn btn-primary mb-2 float-right ml-2' onClick={() => toggleParticipants(true)}>
                     Vis deltakere <i class='fas fa-chevron-right' />
+                </button>
+            </>}
+            {showSendEmail && <>
+                <button type='button' class='btn btn-primary mb-2 float-right' onClick={() => toggleEmail(true)}>
+                    Send e-post <i class='fas fa-chevron-right' />
                 </button>
             </>}
 

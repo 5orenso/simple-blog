@@ -8,5 +8,6 @@ const wrap = require('../../../middleware/wrap');
 router.get('/:sheetid', wrap(require('./get-booking')));
 router.post('/:sheetid', wrap(require('./post-booking')));
 router.post('/log/:sheetid', wrap(require('./post-log-booking')));
+router.post('/sendemail/:sheetid', wrap(require('./post-send-email')));
 
 module.exports = router;
