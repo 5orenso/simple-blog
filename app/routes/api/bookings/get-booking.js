@@ -92,7 +92,7 @@ module.exports = async (req, res) => {
 
     // fields = 'email,cellphone,firstname,lastname,childname,childbirth,address,postalplace',
     // // fields = 'email,cellphone,firstname,lastname,address,postalplace,team,club,country',
-    const publicVisibleFields = ['firstname', 'lastname', 'postalplace', 'team', 'club', 'country', 'course', 'created'];
+    const publicVisibleFields = ['firstname', 'lastname', 'postalplace', 'team', 'club', 'country', 'course', 'created', 'startnumber'];
     const participantsSheet = doc.sheetsByIndex[1];
     const participantsSheetRows = await participantsSheet.getRows();
     await participantsSheet.loadCells();
