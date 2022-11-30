@@ -206,6 +206,7 @@ export default function App(props) {
         articleId,
         sheetId,
         fields = 'email,cellphone,firstname,lastname,childname,childbirth,address,postalplace',
+        participantsFields = 'name,country,team,club',
         // fields = 'email,cellphone,firstname,lastname,address,postalplace,team,club,country',
         showParticipants = false,
         showSendEmail = false,
@@ -233,6 +234,7 @@ export default function App(props) {
 
     const googleSheetId = sheetId || article['booking-sheetId'];
     const parsedFields = fields.split(',').map(f => f.trim());
+    const parsedParticipantsFields = participantsFields.split(',').map(f => f.trim());
 
     useEffect(() => {
         const fetchData = async () => {
@@ -647,19 +649,22 @@ export default function App(props) {
                         <table class='table table-sm table-striped mb-5'>
                             <thead>
                                 <tr>
-                                    <th>Navn</th>
-                                    <th>country</th>
-                                    <th>team</th>
-                                    <th class='d-none d-lg-block'>club</th>
+                                    {parsedParticipantsFields.indexOf('startnumber') > -1 && <th>Startnr</th>}
+                                    {parsedParticipantsFields.indexOf('name') > -1 && <th>Navn</th>}
+                                    {parsedParticipantsFields.indexOf('country') > -1 && <th>country</th>}
+                                    {parsedParticipantsFields.indexOf('team') > -1 && <th>team</th>}
+                                    {parsedParticipantsFields.indexOf('club') > -1 && <th class='d-none d-lg-block'>club</th>}
                                 </tr>
                             </thead>
                             <tbody>
                                 {sheet.participantsRows && sheet.participantsRows.filter(e => row.id === e.course).map((participant, participantIdx) => {
                                     return (<tr>
-                                        <td>{participant.firstname} {participant.lastname}</td>
-                                        <td>{participant.country}</td>
-                                        <td>{participant.team}</td>
-                                        <td class='d-none d-lg-block'>{participant.club}</td>
+
+                                        {parsedParticipantsFields.indexOf('startnumber') > -1 && <td>{participant.startnumber}</td>}
+                                        {parsedParticipantsFields.indexOf('name') > -1 && <td>{participant.firstname} {participant.lastname}</td>}
+                                        {parsedParticipantsFields.indexOf('country') > -1 && <td>{participant.country}</td>}
+                                        {parsedParticipantsFields.indexOf('team') > -1 && <td>{participant.team}</td>}
+                                        {parsedParticipantsFields.indexOf('club') > -1 && <td class='d-none d-lg-block'>{participant.club}</td>}
                                     </tr>);
                                 })}
                             </tbody>
