@@ -24,6 +24,9 @@ function pad(number) {
 }
 
 function byBib(a, b) {
+    if (!a.bib) {
+        return -1;
+    }
     if (a.Bib < b.Bib) {
         return -1;
     }
@@ -102,8 +105,9 @@ export default function App(props) {
                 },
             })
             setRawRaceData(result.data);
+            // console.log('result.data', result.data);
             // {
-            //     "Bib": "",
+            //     "Bib": 1,
             //     "Name": "Simen BÆKKEN @FJELL_FANTEN",
             //     "Club/Team": "Jotunheimen hundekjørerlag",
             //     "Nation": "NOR",
@@ -268,7 +272,7 @@ export default function App(props) {
                                     {hasBib ? <>
                                         <th scope='col'>Bib</th>
                                     </> : <>
-                                        <th scope='col'>#</th>                                
+                                        <th scope='col'>#</th>
                                     </>}
                                     <th scope='col'>Name</th>
                                     <th scope='col'>Club/Team</th>
@@ -285,7 +289,7 @@ export default function App(props) {
                                     const countryAlpha2 = `${countries.alpha3ToAlpha2(musher.Nation)}`.toLowerCase();
                                     const musherName = searchText !== '' ? replaceAllStrings(musher.Name) : musher.Name;
                                     const musherTeam = searchText !== '' ? replaceAllStrings(musher['Club/Team']) : musher['Club/Team'];
-                                
+
                                     return (<>
                                         <tr>
                                             {hasBib ? <>
