@@ -24,9 +24,18 @@ function pad(number) {
 }
 
 function byBib(a, b) {
-    if (!a.bib) {
+    if (a.Bib === b.Bib) {
+        return 0;
+    }
+    if (!a.Bib) {
+        return 1;
+    }
+    if (!b.Bib) {
         return -1;
     }
+    // if (!a.bib) {
+    //     return -1;
+    // }
     if (a.Bib < b.Bib) {
         return -1;
     }
