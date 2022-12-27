@@ -99,7 +99,7 @@
                                 {% else %}
                                     <img src="https://{{ imageServer }}/1920x/{{ imagePath }}/{{ art.img[0].src }}" alt="{{ art.title|e }}" class="img-fluid w-100 {{ art.catRef.artlistImageClass }}">
                                 {% endif %}
-                            {% else %}                            
+                            {% else %}
                                 {% if art.url %}
                                     <a href="{{ art.url }}" class='w-100'>
                                         <img src="https://{{ imageServer }}/1920x/{{ imagePath }}/{{ art.img[0].src }}" alt="{{ art.title|e }}" class="img-fluid w-100 {{ art.catRef.artlistImageClass }}">
@@ -142,7 +142,7 @@
                             {% endif %}
                         </h1>
                     {% endif %}
-    
+
                     {% if art.catRef.hideFrontpageTeaser %}
                     {% elseif art.teaser %}
                         <div class='mb-1 {{ art.catRef.artlistTeaserClass }}'>{{ art.teaser|md|safe }}</div>
@@ -166,7 +166,7 @@
                         </div>
                     {% endif %}
 
-                    {% for widget in ['helloworld', 'clock', 'booking', 'form', 'sheet', 'poll', 'weather', 'map', 'rating', 'related', 'cookies'] %}
+                    {% for widget in ['helloworld', 'clock', 'booking', 'form', 'sheet', 'poll', 'weather', 'map', 'rating', 'related', 'cookies', 'livecenter'] %}
                         {% if art.widgetList === widget %}
                             <div class='w-100 my-2 clearfix' data-widget-host="simple-blog-{{ widget }}">
                                 <script type="text/props">
@@ -186,7 +186,7 @@
 
 
                 </div>
-    
+
             </div>
         </div>
     {% endif %}

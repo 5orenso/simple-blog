@@ -49,7 +49,7 @@
 </div>
 
 <div class="container blog-post-container" style="{%- if category.useImageOneAsBackground -%}
-        background: url(https://{{ imageServer }}/{% if isPhoto || isPhotoCategory %}1920x{% else %}1024x{% endif %}/{{ imagePath }}/{{ article.img[0].src }}) no-repeat center center; 
+        background: url(https://{{ imageServer }}/{% if isPhoto || isPhotoCategory %}1920x{% else %}1024x{% endif %}/{{ imagePath }}/{{ article.img[0].src }}) no-repeat center center;
     {%- endif -%} {{ category.detailContainerCss }}">
     <div class="row">
         {% if article.catRef.hideAuthorInfo %}
@@ -81,7 +81,7 @@
                                         {{ article.status|getStatus }}
                                     </span>
                                 {% endif %}
-                                &nbsp; / &nbsp; 
+                                &nbsp; / &nbsp;
                             {% endif %}
 
                             {% set shareLink = blog.protocol + '://' + blog.domain + '/' + article.category|asLinkPart + '/' + article.title|asLinkPart + '/' + article.id %}
@@ -98,7 +98,7 @@
 
                             {% if article.catRef.hideMetaInfoDetailAdvanced %}
                             {% else %}
-                                &nbsp; / &nbsp; 
+                                &nbsp; / &nbsp;
                                 <a class="text-muted mainTextColorInline" title="Lesetid for artikkel"><i class="far fa-clock"></i> {{ article.body|readTime('no') }}</a>
                             {% endif %}
 
@@ -160,7 +160,7 @@
             <div class="col-lg-12 blog-main">
         {% endif %}
             <div class="blog-post position-relative">
-                {% for widget in ['helloworld', 'clock', 'booking', 'form', 'sheet', 'poll', 'gallery', 'weather', 'map', 'rating', 'related', 'cookies'] %}
+                {% for widget in ['helloworld', 'clock', 'booking', 'form', 'sheet', 'poll', 'gallery', 'weather', 'map', 'rating', 'related', 'cookies', 'livecenter'] %}
                     {% if article.widget === widget %}
                         <div class='w-100 my-3 clearfix' data-widget-host="simple-blog-{{ widget }}">
                             <script type="text/props">
@@ -255,7 +255,7 @@
 
                 {{ category.footerDetail|safe }}
 
-                
+
             </div><!-- /.blog-post -->
 
             <div class="col social-share text-right">

@@ -19,6 +19,8 @@ const fields = {
     sort: 1,
     category: 1,
     categoryId: 1,
+    date: 1,
+    dateEnd: 1,
 
     title: 1,
     teaser: 1,
@@ -129,6 +131,12 @@ const fields = {
 module.exports = async (req, res) => {
     run(req);
 
+    let isAdmin = false;
+    if (req.session) {
+        console.log('req.session', req.session);
+        isAdmin = true;
+    }
+
     const art = new Article();
 
     let query = {};
@@ -158,6 +166,10 @@ module.exports = async (req, res) => {
         query.status = req.query.status;
     }
 
+    if (req.query.loadAll) {
+        delete query.status;
+    }
+
     let apiContent;
     const data = {
         query,
@@ -170,12 +182,11 @@ module.exports = async (req, res) => {
         apiContent = await art.findOne(query, fields);
         data.article = apiContent;
     } else {
-        apiContent = await art.find(query, fields, { limit, skip });
+        apiContent = await art.find(query, fields, { limit, skip, sort: req.query.sort });
         data.artlist = apiContent;
         const total = await art.count(query);
         data.total = total;
     }
-
     if (data.artlist && data.artlist.length > 0) {
         data.artlist.forEach((a) => {
             if (!a.url) {
@@ -209,4 +220,5 @@ module.exports = async (req, res) => {
     data.imageServer = req.config.blog.imageServer;
     data.imagePath = req.config.blog.imagePath;
     utilHtml.renderApi(req, res, 200, data);
+    // webUtil.renderApi(req, res, 200, data);
 };

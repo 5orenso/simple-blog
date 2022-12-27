@@ -31,21 +31,25 @@ module.exports = async (req, res) => {
         const updateArticle = webUtil.cleanObject(req.body, { nullIsUndefined: true });
 
         // We want to preserve the AI and file info resolved in the background:
-        const currentArticle = await art.findOne(query, { img: 1 });
-        if (currentArticle.img && Array.isArray(currentArticle.img)) {
-            for (let i = 0, l = currentArticle.img.length; i < l; i += 1) {
-                const currentImg = currentArticle.img[i];
-                updateArticle.img[i] = {
-                    ...currentImg,
-                    ...updateArticle.img[i],
-                };
-                if (!updateArticle.img[i].uuidv4) {
-                    updateArticle.img[i].uuidv4 = uuidv4();
-                }
-            }
+        const currentArticle = await art.findOne(query, { id: 1, img: 1 });
 
-            updateArticle.img = updateArticle.img.sort(bySortOrder);
+        if (updateArticle.img) {
+            if (currentArticle.img && Array.isArray(currentArticle.img)) {
+                for (let i = 0, l = currentArticle.img.length; i < l; i += 1) {
+                    const currentImg = currentArticle.img[i];
+                    updateArticle.img[i] = {
+                        ...currentImg,
+                        ...updateArticle.img[i],
+                    };
+                    if (!updateArticle.img[i].uuidv4) {
+                        updateArticle.img[i].uuidv4 = uuidv4();
+                    }
+                }
+
+                updateArticle.img = updateArticle.img.sort(bySortOrder);
+            }
         }
+        updateArticle.id = parseInt(currentArticle.id, 10);
 
         apiContent = await art.save(updateArticle);
         return utilHtml.renderApi(req, res, 202, apiContent);

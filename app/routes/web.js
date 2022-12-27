@@ -107,6 +107,7 @@ webRouter.use('/preact/simple-blog-cookies/', express.static(`${appPath}preact/s
 webRouter.use('/preact/simple-blog-racetracker/', express.static(`${appPath}preact/simple-blog-racetracker/bundle/`));
 webRouter.use('/preact/simple-blog-related/', express.static(`${appPath}preact/simple-blog-related/bundle/`));
 webRouter.use('/preact/simple-blog-loginlink/', express.static(`${appPath}preact/simple-blog-loginlink/bundle/`));
+webRouter.use('/preact/simple-blog-livecenter/', express.static(`${appPath}preact/simple-blog-livecenter/bundle/`));
 
 webRouter.use('/preact/simple-blog-map/', express.static(`${appPath}preact/simple-blog-map/bundle/`));
 webRouter.use('/assets/', express.static(`${appPath}preact/simple-blog-map/bundle/assets/`));

@@ -15,6 +15,8 @@ router.use(cors({
 router.post('/translate/', util.restrict, wrap(require('./post-translate')));
 // router.get('/instagram/', util.restrict, wrap(require('./get-instagram')));
 
+router.get('/info', wrap(require('./get-info')));
+
 router.use('/bookings/', wrap(require('./bookings/')));
 router.use('/forms/', wrap(require('./forms/')));
 router.use('/sheets/', wrap(require('./sheets/')));
@@ -33,6 +35,7 @@ router.get('/category/', wrap(require('./get-category')));
 router.get('/category/:id', wrap(require('./get-category')));
 router.patch('/category/:id', util.restrict, wrap(require('./patch-category')));
 router.post('/category/', util.restrict, wrap(require('./post-category')));
+
 
 // router.get('/iotdevice/', wrap(require('./get-iotDevice')));
 // router.get('/iotdevice/:id', wrap(require('./get-iotDevice')));

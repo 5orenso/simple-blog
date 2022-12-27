@@ -56,7 +56,7 @@ const statusList = [
     { value: 2, title: 'Live' },
 ];
 
-const widgetList = ['clock', 'booking', 'form', 'sheet', 'poll', 'gallery', 'weather', 'map', 'rating', 'related', 'cookies'];
+const widgetList = ['clock', 'booking', 'form', 'sheet', 'poll', 'gallery', 'weather', 'map', 'rating', 'related', 'cookies', 'livecenter'];
 
 const widgetFields = {
     clock: ['class', 'style', 'countdownto', 'showDateOnly', 'showSeconds', 'showTimezone', 'showClockOnly'],
@@ -539,7 +539,7 @@ console.log('articleEdit.render');
                             {currentMenu === 'links' && <Links
                                 that={that}
                                 article={article}
-                                handleClickCode={this.handleClickCode}                            
+                                handleClickCode={this.handleClickCode}
                             />}
                             {currentMenu === 'meta' && <Meta
                                 article={article}
