@@ -62,7 +62,8 @@ class Program extends Component {
 
     loadAll = async () => {
         const { articleStore } = this.props.stores;
-        await articleStore.loadArtlist({ limit: 50, category: 'Program', key: 'program', sort: 'date' });
+        const { categoryProgram, categoryProgramId } = this.props;
+        await articleStore.loadArtlist({ limit: 50, category: categoryProgram, key: 'program', sort: 'date' });
         this.scrollToNextProgram()
     }
 
@@ -92,13 +93,14 @@ class Program extends Component {
 
     createArticle = async () => {
         const { newArticle } = this.state;
+        const { categoryProgram, categoryProgramId } = this.props;
         const { appState, articleStore } = this.props.stores;
         const { currentEmail } = appState;
 
         await articleStore.createArticle({
             author: currentEmail,
-            category: 'Program',
-            cateogryId: 20,
+            category: categoryProgram,
+            cateogryId: categoryProgramId,
             status: 2,
             ...newArticle,
         });

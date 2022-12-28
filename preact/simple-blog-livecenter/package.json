@@ -57,6 +57,6 @@
     "preact-markdown": "^2.1.0",
     "preact-router": "^4.1.0",
     "preact-storemodel": "^1.1.26",
-    "preact-util": "^1.4.52"
+    "preact-util": "^1.4.53"
   }
 }

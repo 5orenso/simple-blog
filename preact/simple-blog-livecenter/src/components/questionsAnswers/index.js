@@ -26,12 +26,13 @@ class Program extends Component {
     }
 
     loadAll = async () => {
+        const { categoryQa, categoryQaId } = this.props;
         const { articleStore, appState } = this.props.stores;
         const { currentEmail, isAdmin, isExpert } = appState;
         if (isAdmin || isExpert) {
-            await articleStore.loadArtlist({ limit: 50, category: 'qa', key: 'qa', loadAll: 1 });
+            await articleStore.loadArtlist({ limit: 50, category: categoryQa, key: 'qa', loadAll: 1 });
         } else {
-            await articleStore.loadArtlist({ limit: 10, category: 'qa', key: 'qa' });
+            await articleStore.loadArtlist({ limit: 10, category: categoryQa, key: 'qa' });
         }
     }
 
@@ -60,13 +61,14 @@ class Program extends Component {
 
     createArticle = async () => {
         const { newArticle } = this.state;
+        const { categoryQa, categoryQaId } = this.props;
         const { appState, articleStore } = this.props.stores;
         const { currentEmail } = appState;
 
         await articleStore.createArticle({
             author: currentEmail,
-            category: 'qa',
-            cateogryId: 19,
+            category: categoryQa,
+            cateogryId: categoryQaId,
             status: 1,
             title: `Spørsmål fra bruker: ${currentEmail}`,
             ...newArticle,

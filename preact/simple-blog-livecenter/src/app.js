@@ -506,7 +506,7 @@ language: ${language}<br />
                         >
                             <Router onChange={this.handleRoute} history={history}>
                                 {/* <AsyncRoute stores={this.stores} {...this.props} scrolledDown={scrolledDownPlaceholder} default getComponent={() => import('./routes/start').then(module => module.default)} /> */}
-                                <Start stores={this.stores} scrolledDown={scrolledDownPlaceholder} default />
+                                <Start stores={this.stores} scrolledDown={scrolledDownPlaceholder} {...this.props} default />
 
                                 <LoadingSpinner default goto='/' gotoTitle='Home' routerName='livecenter' />
                             </Router>

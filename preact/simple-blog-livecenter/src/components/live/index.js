@@ -32,8 +32,9 @@ class Live extends Component {
     }
 
     loadAll = async () => {
+        const { categoryLive, categoryLiveId } = this.props;
         const { articleStore } = this.props.stores;
-        await articleStore.loadArtlist({ limit: 10, category: 'other', key: 'live' });
+        await articleStore.loadArtlist({ limit: 10, category: categoryLive, key: 'live' });
         this.checkHeights();
     }
 
@@ -86,13 +87,14 @@ class Live extends Component {
 
     createArticle = async () => {
         const { newArticle } = this.state;
+        const { categoryLive, categoryLiveId } = this.props;
         const { appState, articleStore } = this.props.stores;
         const { currentEmail } = appState;
 
         await articleStore.createArticle({
             author: currentEmail,
-            category: 'other',
-            cateogryId: 5,
+            category: categoryLive,
+            cateogryId: categoryLiveId,
             status: 2,
             ...newArticle,
         });

@@ -85,7 +85,7 @@ class Start extends Component {
                             color: #ffffff;
                         `}
                     >
-                        <Status stores={this.props.stores} />
+                        <Status stores={this.props.stores} {...this.props} />
                     </div>
 
                     <div
@@ -96,7 +96,7 @@ class Start extends Component {
                             color: rgb(55, 75, 80);
                         `}
                     >
-                        <Program stores={this.props.stores} />
+                        <Program stores={this.props.stores} {...this.props} />
                     </div>
 
 
@@ -109,17 +109,17 @@ class Start extends Component {
                     >
                         <div class='row'>
                             <div class='col-12 col-lg-9 py-2'>
-                                {mainView === 'direktesport' && <DirekteSportView stores={this.props.stores} />}
-                                {mainView === 'results' && <ResultsView stores={this.props.stores} />}
-                                {mainView === 'tracking' && <TrackingView stores={this.props.stores} />}
+                                {mainView === 'direktesport' && <DirekteSportView stores={this.props.stores} {...this.props} />}
+                                {mainView === 'results' && <ResultsView stores={this.props.stores} {...this.props} />}
+                                {mainView === 'tracking' && <TrackingView stores={this.props.stores} {...this.props} />}
 
-                                {(!mainView || mainView === 'webcam') && <Webcam stores={this.props.stores} />}
+                                {(!mainView || mainView === 'webcam') && <Webcam stores={this.props.stores} {...this.props} />}
                             </div>
                             <div class='col-12 col-lg-3 d-flex flex-column align-items-center justify-content-center'>
-                                <Webcams stores={this.props.stores} mainView={mainView} />
-                                <DirekteSport stores={this.props.stores} mainView={mainView} />
-                                <Results stores={this.props.stores} mainView={mainView} />
-                                <Tracking stores={this.props.stores} mainView={mainView} />
+                                <Webcams stores={this.props.stores} mainView={mainView} {...this.props} />
+                                <DirekteSport stores={this.props.stores} mainView={mainView} {...this.props} />
+                                <Results stores={this.props.stores} mainView={mainView} {...this.props} />
+                                <Tracking stores={this.props.stores} mainView={mainView} {...this.props} />
                             </div>
                         </div>
                     </div>
@@ -131,10 +131,10 @@ class Start extends Component {
                     <div class='col-12 offset-0 col-sm-8 offset-sm-2 col-lg-6 offset-lg-3 mt-5'>
                         <div class='row'>
                             <div class='col-12 col-lg-6'>
-                                <Live stores={this.props.stores} />
+                                <Live stores={this.props.stores} {...this.props} />
                             </div>
                             <div class='col-12 col-lg-6'>
-                                <QuestionsAnswers stores={this.props.stores} />
+                                <QuestionsAnswers stores={this.props.stores} {...this.props} />
                             </div>
                         </div>
                     </div>

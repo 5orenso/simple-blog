@@ -36,7 +36,6 @@ router.get('/category/:id', wrap(require('./get-category')));
 router.patch('/category/:id', util.restrict, wrap(require('./patch-category')));
 router.post('/category/', util.restrict, wrap(require('./post-category')));
 
-
 // router.get('/iotdevice/', wrap(require('./get-iotDevice')));
 // router.get('/iotdevice/:id', wrap(require('./get-iotDevice')));
 // router.patch('/iotdevice/:id', util.restrict, wrap(require('./patch-iotDevice')));
