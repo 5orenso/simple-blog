@@ -52,7 +52,7 @@ class Start extends Component {
                         <div class='w-25 d-flex align-items-center justify-content-start'>&nbsp;</div>
 
                         <div class='w-50 d-flex align-items-center'>
-                            <img src='/assets/images/logo.png' alt='logo' class='img-fluid' />
+                            <img src='./assets/images/logo.png' alt='logo' class='img-fluid' />
                         </div>
 
                         <div class='w-25 d-flex align-items-center justify-content-end'>&nbsp;</div>
