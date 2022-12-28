@@ -5,7 +5,8 @@ export default {
         if (!env.isWatch) {
             config.output = {
                 path: __dirname + '/bundle',
-                filename: '[name].js'
+                filename: '[name].js',
+                publicPath: '/preact/simple-blog-livecenter/',
             };
         }
 	},
