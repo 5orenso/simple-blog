@@ -101,6 +101,7 @@ class Program extends Component {
             showInput: false,
             newArticle: {
                 title: '',
+                teaser: '',
                 body: '',
             },
         });
@@ -128,7 +129,7 @@ class Program extends Component {
                     <i class='fas fa-times'></i> Avbryt
                 </button>
             </> : <>
-                <button type='button' class='btn btn-sm btn-primary float-right' onClick={this.toggleInput}>
+                <button type='button' class='btn btn-sm btn-success float-right' onClick={this.toggleInput}>
                     <i class='fas fa-plus'></i> Nytt spørsmål
                 </button>
             </>}
@@ -137,8 +138,24 @@ class Program extends Component {
 
             {showInput && <>
                 <div class='d-flex flex-column justify-content-start overflow-auto mb-5'>
-                    <div class='bg-primary text-white px-3 py-1'>
-                        <h5>Spør ekspertene</h5>
+                    <div
+                        class='px-3 py-1'
+                        style={`
+                            background-color: rgb(35, 139, 147);
+                            color: rgb(172, 219, 226);
+                        `}
+                    >
+                        <h5>Nytt spørsmål</h5>
+                    </div>
+                    <div class='form-group mt-2'>
+                        <input
+                            type='text'
+                            class='form-control'
+                            id='teaserInput'
+                            placeholder='Fullt navn'
+                            onInput={linkState(this, 'newArticle.teaser')}
+                            value={newArticle.teaser}
+                        />
                     </div>
                     <div class='form-group'>
                         <textarea
@@ -150,7 +167,7 @@ class Program extends Component {
                             value={newArticle.ingress}
                         />
                     </div>
-                    <button type='button' class='btn btn-block btn-primary' onClick={this.createArticle}>
+                    <button type='button' class='btn btn-block btn-success' onClick={this.createArticle}>
                         <i class='fas fa-save'></i> Send inn spørsmål
                     </button>
                 </div>
