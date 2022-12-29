@@ -82,13 +82,18 @@ class Start extends Component {
                     </div>
 
                     <div
-                        class='col-12  d-flex justify-content-between'
+                        class='col-12'
                         style={`
                             background-color: rgb(35, 139, 147);
                             color: rgb(172, 219, 226);
                         `}
                     >
-                        <Status stores={this.props.stores} {...this.props} />
+                        {/* <div class='d-flex justify-content-center display-4 w-100 py-3' >
+                            Femundløpet Live 2023
+                        </div> */}
+                        <div class='d-flex justify-content-between'>
+                            <Status stores={this.props.stores} {...this.props} />
+                        </div>
                     </div>
 
                     <div

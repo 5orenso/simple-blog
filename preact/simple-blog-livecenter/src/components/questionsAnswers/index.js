@@ -195,7 +195,7 @@ class Program extends Component {
                                     </div>
                                     <div class='text-right'>
                                         <small>
-                                            {isToday ? util.formatDate(art.published, {
+                                            {art.teaser || 'anonym'} - {isToday ? util.formatDate(art.published, {
                                                 locale: 'nb',
                                                 hour: '2-digit',
                                                 minute: '2-digit',

@@ -21,6 +21,8 @@ const MongooseHelper = require('../lib/class/mongoose');
 const Logger = require('../lib/logger');
 const LocalUtil = require('../lib/local-util');
 
+const WebSocketServer = require('../lib/class/websocket-server');
+
 const logger = new Logger();
 const localUtil = new LocalUtil();
 const cookieMaxAgeSession = (30 * 86400 * 1000);
@@ -138,3 +140,9 @@ const server = app.listen(config.app.port, () => {
     // console.log('$ kill -USR2 ' + process.pid + ' && curl http://localhost:8080/tech/_test_col && ' +
     //    'curl http://localhost:8080/gc && curl http://localhost:8080/gc');
 });
+
+// Start Web socket server
+setTimeout(() => {
+    const ws = new WebSocketServer(config);
+    ws.run();
+}, 1000);

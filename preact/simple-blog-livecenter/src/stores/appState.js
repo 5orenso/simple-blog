@@ -81,6 +81,10 @@ class AppState {
 
     @observable apiServerChanged = false;
 
+    @observable webocketUrl = util.getWebsocketServer();
+
+    @observable webocketUrlChanged = false;
+
     @observable fingerprint = '';
 
     @observable path = '/';
@@ -274,6 +278,13 @@ class AppState {
     @observable currentCheckpoint = this.checkpoints[0];
 
     @observable loadMore = () => {};
+
+    @action
+    setWebsocketServer(webocketUrl) {
+        util.setWebsocketServer(webocketUrl);
+        this.webocketUrl = webocketUrl;
+        this.webocketUrlChanged = true;
+    }
 
     @action
     setLoadMore(func) {

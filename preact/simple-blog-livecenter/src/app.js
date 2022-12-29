@@ -9,6 +9,8 @@ import AsyncRoute from 'preact-async-route';
 
 import util from 'preact-util';
 
+const W3CWebSocket = require('websocket').w3cwebsocket;
+
 const history = createHashHistory();
 
 import Start from './routes/start';
@@ -179,6 +181,12 @@ class App extends Component {
         }
 
         this.setAppLoaded(true);
+
+        this.websocket({
+            id: 1000,
+            firstname: 'anonymous',
+            lastname: 'anonymous',
+        });
 
         // console.log({ appVersion });
         // if (appVersion === 'prod' && storedLocation === 'beta') {
@@ -460,6 +468,42 @@ language: ${language}<br />
         appState.checkShareApi();
     }
 
+    websocket(user) {
+        const { webocketUrl } = appState;
+        const client = new W3CWebSocket(webocketUrl, 'echo-protocol');
+
+        client.onerror = function(err) {
+            console.log('Connection Error', err);
+        };
+
+        client.onopen = function() {
+            console.log('WebSocket Client Connected');
+            client.send(JSON.stringify({
+                userId: user.id,
+                userName: `${user.firstname} ${user.lastname}`,
+                type: 'auth',
+            }));
+            // function sendNumber() {
+            //     if (client.readyState === client.OPEN) {
+            //         var number = Math.round(Math.random() * 0xFFFFFF);
+            //         client.send(number.toString());
+            //         setTimeout(sendNumber, 1000);
+            //     }
+            // }
+            // sendNumber();
+        };
+
+        client.onclose = function() {
+            console.log('echo-protocol Client Closed');
+        };
+
+        client.onmessage = function(e) {
+            if (typeof e.data === 'string') {
+                console.log("Received: '" + e.data + "'");
+            }
+        };
+    }
+
     componentWillMount() {
         // window.addEventListener("cordovacallbackerror", (event) => {
         //     // event.error contains the original error object
@@ -468,6 +512,10 @@ language: ${language}<br />
         const inputProps = util.collectPropsFromElement(window.document.body);
         const apiServer = inputProps.apiServer || this.props.apiServer || `${window.location.protocol}//${window.location.host}`;
         util.setApiServer(apiServer);
+
+        const websocketUrl = inputProps.websocketUrl || this.props.websocketUrl || `wss://${window.location.host}:1337`;
+        appState.setWebsocketServer(websocketUrl);
+
         // this.ensureCordova();
         this.checkShareApi();
         this.loadAll();
