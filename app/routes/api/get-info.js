@@ -21,12 +21,18 @@ module.exports = async (req, res) => {
     const { hrstart, runId }  = run(req);
 
     let currentEmail;
+    let jwtToken = null;
+
+console.log('req.cookies', JSON.stringify(req.cookies, null, 4));
 
     if (req.session && req.session.email) {
         currentEmail = req.session.email;
+        if (req.hasOwnProperty('config') && req.config.hasOwnProperty('jwt')) {
+            jwtToken = util.makeJwtToken({ email: req.session.email }, req.config);
+        }
     } else {
-        const jwtToken = getToken(req);
-        const decodedToken = util.decodeJwtToken(jwtToken, req.config);
+        const inputJwtToken = getToken(req);
+        const decodedToken = util.decodeJwtToken(inputJwtToken, req.config);
         if (decodedToken && decodedToken.email) {
             currentEmail = decodedToken.email;
         }
@@ -50,6 +56,7 @@ module.exports = async (req, res) => {
             isAdmin,
             isExpert,
             currentEmail,
+            jwtToken,
         },
     };
 

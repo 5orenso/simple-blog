@@ -133,7 +133,7 @@ module.exports = async (req, res) => {
 
     let isAdmin = false;
     if (req.session) {
-        console.log('req.session', req.session);
+        // console.log('req.session', req.session);
         isAdmin = true;
     }
 

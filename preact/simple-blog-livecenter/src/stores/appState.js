@@ -831,11 +831,13 @@ class AppState {
     }
 
     async getInfo() {
-        const res = await util.fetchApi('/api/info', { publish: false });
+        const res = await util.fetchApi('/api/info', { publish: false, credentials: 'include' });
         if (res.status === 200) {
             this.updateField('isAdmin', res.data.isAdmin);
             this.updateField('isExpert', res.data.isExpert);
             this.updateField('currentEmail', res.data.currentEmail);
+            this.updateField('jwtToken', res.data.jwtToken);
+            util.setJwtToken(res.data.jwtToken);
         }
     }
 
