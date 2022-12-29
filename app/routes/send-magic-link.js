@@ -1,13 +1,13 @@
 'use strict';
 
-const { routeName, routePath, run, webUtil, utilHtml } = require('../middleware/init')({ __filename, __dirname });
+const { routeName, routePath, run, webUtil, utilHtml, tc } = require('../middleware/init')({ __filename, __dirname });
 
 const jwt = require('jsonwebtoken');
 const Mail = require('../../lib/mail');
 
 const emailSender = 'simple-blog@litt.no';
 
-module.exports = (req, res) => {
+module.exports = async (req, res) => {
     const hrstart = process.hrtime();
     webUtil.printIfDev(`Route: ${routePath}/${routeName}`, req.query, req.param);
 
@@ -55,15 +55,79 @@ module.exports = (req, res) => {
     // "connection": "keep-alive"
     // }
 
+    const currentEmail = req.body.email;
+    let isAdmin = false;
+    if (tc.isString(req.config.blog.email)) {
+        isAdmin = req.config.blog.email === currentEmail;
+    } else if (tc.isArray(req.config.blog.email)) {
+        isAdmin = req.config.blog.email.includes(currentEmail);
+    }
+    let isExpert = false;
+    if (tc.isArray(req.config.blog.experts)) {
+        isExpert = req.config.blog.experts.includes(currentEmail);
+    }
+    if (currentEmail && !isAdmin && !isExpert) {
+        return utilHtml.renderApi(req, res, 403, {
+            status: 403,
+            title: 'Email not allowed',
+            body: `Email ${currentEmail} is not allowed to access this site.`,
+        });
+    }
+
     const generateJwt = account => jwt.sign({ email: account.email }, req.config.jwt.secret);
-    const token = generateJwt({ email: req.config.blog.email });
+    let email;
+    if (tc.isString(req.body.email)) {
+        email = req.body.email;
+    } else if (tc.isArray(req.config.blog.email)) {
+        email = req.config.blog.email[0];
+    } else if (tc.isString(req.config.blog.email)) {
+        email = req.config.blog.email;
+    }
+    const token = generateJwt({ email });
 
     const mail = new Mail(req.config);
-    mail.sendEmail({
-        to: req.config.blog.email,
-        from: emailSender,
-        subject: `${req.config.blog.domain}: Magic link 🎩 `,
-        body: `Hi ${req.config.blog.email} 🤠,
+    if (isExpert) {
+        await mail.sendEmail({
+            to: currentEmail,
+            from: emailSender,
+            subject: `${req.config.blog.domain}: Magic link 🎩 `,
+            body: `Hi ${req.config.blog.email} 🤠,
+
+Domain: ${req.config.blog.domain}
+
+As requested the Simple-Blog server has sent you a magic link 🎩 to be able to login as expert.
+<a href="${req.config.blog.protocol}://${req.config.blog.admindomain || req.config.blog.domain}/verify-magic-link?token=${encodeURIComponent(token)}">
+Click this link to magically login to your blog 👌</a>
+
+<hr />
+<span style='color: #808080'>
+isMobile: ${req.useragent.isMobile}
+isDesktop: ${req.useragent.isDesktop}
+isBot: ${req.useragent.isBot}
+browser: ${req.useragent.browser}
+version: ${req.useragent.version}
+os: ${req.useragent.os}
+platform: ${req.useragent.platform}
+source: ${req.useragent.source}
+</span>
+<hr />
+
+Best regard,
+The Simple-Blog server
+
+<i style="color: #c0c0c0;">
+Request header:
+${JSON.stringify(req.headers, null, 4)}
+</i>
+`.replace(/\n/g, '<br>'),
+        });
+    } else {
+        // Admin with or without email:
+        await mail.sendEmail({
+            to: isAdmin ? currentEmail : req.config.blog.email,
+            from: emailSender,
+            subject: `${req.config.blog.domain}: Magic link 🎩 `,
+            body: `Hi ${req.config.blog.email} 🤠,
 
 Domain: ${req.config.blog.domain}
 
@@ -92,16 +156,16 @@ Request header:
 ${JSON.stringify(req.headers, null, 4)}
 </i>
 `.replace(/\n/g, '<br>'),
-    })
-        .then(() => {
-            utilHtml.renderApi(req, res, 200, {
-                status: 200,
-                title: 'Magic link sent to your email',
-                teaser: 'Swooosj!',
-                body: `Go check your email and click the link inside the email to login to your blog.
-
-                No username and password required.
-                `,
-            });
         });
+    }
+
+    utilHtml.renderApi(req, res, 200, {
+        status: 200,
+        title: 'Magic link sent to your email',
+        teaser: 'Swooosj!',
+        body: `Go check your email and click the link inside the email to login to your blog.
+
+        No username and password required.
+        `,
+    });
 };

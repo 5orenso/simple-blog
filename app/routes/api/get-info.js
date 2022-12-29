@@ -18,12 +18,10 @@ function getToken(request) {
 }
 
 module.exports = async (req, res) => {
-    const { hrstart, runId }  = run(req);
+    const { hrstart, runId } = run(req);
 
     let currentEmail;
     let jwtToken = null;
-
-console.log('req.cookies', JSON.stringify(req.cookies, null, 4));
 
     if (req.session && req.session.email) {
         currentEmail = req.session.email;
