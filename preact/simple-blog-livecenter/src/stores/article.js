@@ -43,6 +43,12 @@ class ArticleStore extends StoreModel {
 
     @observable artlistProgram = [];
 
+    @observable artlistAdTop = [];
+
+    @observable artlistAdCenter = [];
+
+    @observable artlistAdBottom = [];
+
     @observable tags = [];
 
     @observable time = new Date().getTime();
@@ -61,6 +67,12 @@ class ArticleStore extends StoreModel {
                 this.updateKeyValue('artlistQa', response.artlist);
             } else if (key === 'program') {
                 this.updateKeyValue('artlistProgram', response.artlist);
+            } else if (key === 'adTop') {
+                this.updateKeyValue('artlistAdTop', response.artlist);
+            } else if (key === 'adCenter') {
+                this.updateKeyValue('artlistAdCenter', response.artlist);
+            } else if (key === 'adBottom') {
+                this.updateKeyValue('artlistAdBottom', response.artlist);
             } else {
                 this.updateKeyValue('artlist', response.artlist);
             }

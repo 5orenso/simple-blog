@@ -23,6 +23,8 @@ class AppState {
         this.setView(util.getObject('view'));
     }
 
+    @observable isDevelopment = process.env.NODE_ENV === 'development';
+
     @observable state = 'active';
 
     @observable currentEmail = null;

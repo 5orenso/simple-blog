@@ -16,6 +16,9 @@ import TrackingView from '../components/tracking/view';
 import Program from '../components/program/';
 import Live from '../components/live/';
 import QuestionsAnswers from '../components/questionsAnswers/';
+import AdTop from '../components/ads/top';
+import AdCenter from '../components/ads/center';
+import AdBottom from '../components/ads/bottom';
 
 @observer
 class Start extends Component {
@@ -39,12 +42,12 @@ class Start extends Component {
     render() {
         const { sessionid } = this.state;
         const { appState } = this.props.stores;
-        const { mainView, currentEmail, isAdmin, isExpert } = appState;
+        const { mainView, currentEmail, isAdmin, isExpert, isDevelopment } = appState;
         return (<>
             <div class='container-fluid mb-5'>
                 <div class='row'>
                     <div
-                        class='col-12 offset-0 col-sm-8 offset-sm-2 col-lg-6 offset-lg-3 d-flex justify-content-between py-3'
+                        class='col-12 d-flex justify-content-between py-3'
                         style={`
                             background-color: rgb(172, 219, 226);
                         `}
@@ -52,13 +55,13 @@ class Start extends Component {
                         <div class='w-25 d-flex align-items-center justify-content-start'>&nbsp;</div>
 
                         <div class='w-50 d-flex align-items-center'>
-                            <img src='./assets/images/logo.png' alt='logo' class='img-fluid' />
+                            <img src={`${isDevelopment ? '' : '/preact/simple-blog-livecenter'}/assets/images/logo.png`} alt='logo' class='img-fluid' />
                         </div>
 
                         <div class='w-25 d-flex align-items-center justify-content-end'>&nbsp;</div>
                     </div>
 
-                    <div class='col-12 offset-0 col-sm-8 offset-sm-2 col-lg-6 offset-lg-3 d-flex justify-content-end'>
+                    <div class='col-12  d-flex justify-content-end'>
                         <div class='d-flex justify-content-end align-items-end'>
                             <small>
                                 <span class='badge badge-pill badge-success'>
@@ -74,22 +77,22 @@ class Start extends Component {
                         </div>
                     </div>
 
-                    <div class='col-12 offset-0 col-sm-8 offset-sm-2 col-lg-6 offset-lg-3 d-flex justify-content-center py-5'>
-                        Annonser
+                    <div class='col-12  d-flex justify-content-center py-1'>
+                        <AdTop stores={this.props.stores} {...this.props} />
                     </div>
 
                     <div
-                        class='col-12 offset-0 col-sm-8 offset-sm-2 col-lg-6 offset-lg-3 d-flex justify-content-between'
+                        class='col-12  d-flex justify-content-between'
                         style={`
                             background-color: rgb(35, 139, 147);
-                            color: #ffffff;
+                            color: rgb(172, 219, 226);
                         `}
                     >
                         <Status stores={this.props.stores} {...this.props} />
                     </div>
 
                     <div
-                        class='col-12 offset-0 col-sm-8 offset-sm-2 col-lg-6 offset-lg-3'
+                        class='col-12 '
                         style={`
                             background-color: rgb(55, 75, 80);
                             border-bottom: rgb(92, 109, 112) 1px solid;
@@ -101,7 +104,7 @@ class Start extends Component {
 
 
                     <div
-                        class='col-12 offset-0 col-sm-8 offset-sm-2 col-lg-6 offset-lg-3'
+                        class='col-12 '
                         style={`
                             background-color: rgb(55, 75, 80);
                             color: #ffffff;
@@ -124,19 +127,34 @@ class Start extends Component {
                         </div>
                     </div>
 
-                    <div class='col-12 offset-0 col-sm-8 offset-sm-2 col-lg-6 offset-lg-3 d-flex justify-content-center py-5'>
-                        Annonser
+                    <div class='col-12  d-flex justify-content-center py-1'>
+                        <AdCenter stores={this.props.stores} {...this.props} />
                     </div>
 
-                    <div class='col-12 offset-0 col-sm-8 offset-sm-2 col-lg-6 offset-lg-3 mt-5'>
+                    <div
+                        class='col-12 mt-1 px-4 pb-3'
+                        style={`
+                            background-color: rgb(35, 139, 147);
+                            color: rgb(172, 219, 226);
+                        `}
+                    >
                         <div class='row'>
-                            <div class='col-12 col-lg-6'>
+                            <div class='col-12 d-flex justify-content-center display-4' >
+                                Femundløpet Livesenter
+                            </div>
+                        </div>
+                        <div class='row'>
+                            <div class='col-12 col-lg-6 py-3' style='background-color: #ffffff; color: #000000;'>
                                 <Live stores={this.props.stores} {...this.props} />
                             </div>
-                            <div class='col-12 col-lg-6'>
+                            <div class='col-12 col-lg-6 py-3' style='background-color: #ffffff; color: #000000;'>
                                 <QuestionsAnswers stores={this.props.stores} {...this.props} />
                             </div>
                         </div>
+                    </div>
+
+                    <div class='col-12  d-flex justify-content-center py-1'>
+                        <AdBottom stores={this.props.stores} {...this.props} />
                     </div>
                 </div>
             </div>
