@@ -47,5 +47,8 @@
     "setupFiles": [
       "<rootDir>/tests/__mocks__/setupTests.js"
     ]
+  },
+  "dependencies": {
+    "preact-util": "^1.4.53"
   }
 }

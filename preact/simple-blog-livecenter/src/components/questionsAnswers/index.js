@@ -214,7 +214,7 @@ class Program extends Component {
                                 <div class='d-flex flex-column' style='max-width: 80%;'>
                                     {art.status === 1 ? <>
                                         {showAnswer[art.id] ? <>
-                                            <div class='p-2 bg-primary text-white rounded-lg overflow-hidden' style='max-height: 70vh;'>
+                                            <div class='p-2 bg-light text-white rounded-lg overflow-hidden' style='max-height: 70vh;'>
                                                 <div class='d-flex flex-column justify-content-start overflow-auto mb-5'>
                                                     <div class='bg-primary text-white px-3 py-1'>
                                                         <h5>{currentEmail}:</h5>
