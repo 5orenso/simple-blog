@@ -58,6 +58,7 @@ export default class CategoryList extends Component {
                                 <th class={styles.verticalTableHeaderFOO} scope='col'><p>Meny</p></th>
                                 <th class={styles.verticalTableHeaderFOO} scope='col'><p>Dropp default artlink</p></th>
                                 <th class={styles.verticalTableHeaderFOO} scope='col'><p>Skjul menytittel</p></th>
+                                <th class={styles.verticalTableHeaderFOO} scope='col'><p>Vis kun brødtekst</p></th>
                                 <th class={styles.verticalTableHeaderFOO} scope='col'><p>Skjul artikkel tittel</p></th>
                                 <th class={styles.verticalTableHeaderFOO} scope='col'><p>Skjul på forsiden</p></th>
                                 <th class={styles.verticalTableHeaderFOO} scope='col'><p>Skjul oversettings linker</p></th>
@@ -104,6 +105,7 @@ export default class CategoryList extends Component {
                             <td class='text-center' style='font-size: 2.0em;'><i class={`${cat.menu ? `fas fa-check text-success` : 'fas fa-times-circle text-danger'}`} /></td>
                             <td class='text-center' style='font-size: 2.0em;'><i class={`${cat.skipDefaultArtLink ? `fas fa-check text-success` : 'fas fa-times-circle text-danger'}`} /></td>
                             <td class='text-center' style='font-size: 2.0em;'><i class={`${cat.hideTitle ? `fas fa-check text-success` : 'fas fa-times-circle text-danger'}`} /></td>
+                            <td class='text-center' style='font-size: 2.0em;'><i class={`${cat.showOnlyBody ? `fas fa-check text-success` : 'fas fa-times-circle text-danger'}`} /></td>
                             <td class='text-center' style='font-size: 2.0em;'><i class={`${cat.hideDetailTitle ? `fas fa-check text-success` : 'fas fa-times-circle text-danger'}`} /></td>
                             <td class='text-center' style='font-size: 2.0em;'><i class={`${cat.hideOnFrontpage ? `fas fa-check text-success` : 'fas fa-times-circle text-danger'}`} /></td>
                             <td class='text-center' style='font-size: 2.0em;'><i class={`${cat.hideTranslateLinks ? `fas fa-check text-success` : 'fas fa-times-circle text-danger'}`} /></td>

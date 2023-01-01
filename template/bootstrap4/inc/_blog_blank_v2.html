@@ -54,115 +54,118 @@
         background: url(https://{{ imageServer }}/{% if isPhoto || isPhotoCategory %}1920x{% else %}1024x{% endif %}/{{ imagePath }}/{{ article.img[0].src }}) no-repeat center center;
     {%- endif -%} {{ category.detailContainerCss }}">
     <div class="row">
-        {% if article.catRef.hideAuthorInfo %}
-            <div class="col-lg-12 blog-main">
+        {% if article.catRef.showOnlyBody %}
         {% else %}
-            <div class="col-lg-8 blog-main">
-        {% endif %}
-            <div class="blog-post">
-                {% if article.catRef.hideDetailTitle %}
-                {% else %}
-                    <h1 class="blog-post-title {{ category.artlistTitleClass }}">{{ article.title|md(true)|safe }}</h1>
-                {% endif %}
-                {% if article.catRef.hideDetailTeaser %}
-                {% elseif article.teaser %}
-                    <h5 class="blog-post-teaser">{{ article.teaser|safe }}</h5>
-                {% endif %}
-                {% if article.catRef.hideMetaInfoDetail %}
-                {% else %}
-                    <p class="blog-post-meta mt-1">
-                        <small class='font-weight-lighter'>
+            {% if article.catRef.hideAuthorInfo %}
+                <div class="col-lg-12 blog-main">
+            {% else %}
+                <div class="col-lg-8 blog-main">
+            {% endif %}
+                <div class="blog-post">
+                    {% if article.catRef.hideDetailTitle %}
+                    {% else %}
+                        <h1 class="blog-post-title {{ category.artlistTitleClass }}">{{ article.title|md(true)|safe }}</h1>
+                    {% endif %}
+                    {% if article.catRef.hideDetailTeaser %}
+                    {% elseif article.teaser %}
+                        <h5 class="blog-post-teaser">{{ article.teaser|safe }}</h5>
+                    {% endif %}
+                    {% if article.catRef.hideMetaInfoDetail %}
+                    {% else %}
+                        <p class="blog-post-meta mt-1">
+                            <small class='font-weight-lighter'>
 
-                            {% if article.catRef.hideMetaInfoDetailAdvanced %}
-                            {% else %}
-                                {% if article.published %}
-                                    {{ blog.textPublished }} {{ article.published|asHumanReadable }}
+                                {% if article.catRef.hideMetaInfoDetailAdvanced %}
+                                {% else %}
+                                    {% if article.published %}
+                                        {{ blog.textPublished }} {{ article.published|asHumanReadable }}
+                                    {% endif %}
+                                    {% if article.updatedDate &&  article.updatedDate != article.published %}
+                                        <span class='text-muted mainTextColorInline'>&nbsp; / &nbsp; {{ blog.textLastUpdated || '<i class="fas fa-undo"></i>'|raw }} {{ article.updatedDate|asHumanReadable }}</span>
+                                    {% endif %}
+                                    &nbsp; / &nbsp; <a href="/v2/{{ category.title }}/" class="post-cat text-muted mainTextColorInline">
+                                        <i class="far fa-folder-open"></i> {{ category.title }}
+                                    </a>
+                                    {% if article.status !== 2 %}
+                                        &nbsp; / &nbsp; <span class="badge badge-{{ article.status|getStatusClass }}">
+                                            {{ article.status|getStatus }}
+                                        </span>
+                                    {% endif %}
+                                    &nbsp; / &nbsp;
                                 {% endif %}
-                                {% if article.updatedDate &&  article.updatedDate != article.published %}
-                                    <span class='text-muted mainTextColorInline'>&nbsp; / &nbsp; {{ blog.textLastUpdated || '<i class="fas fa-undo"></i>'|raw }} {{ article.updatedDate|asHumanReadable }}</span>
+
+                                {% if article.catRef.hideShareButtons %}
+                                {% else %}
+                                    {% set shareLink = blog.protocol + '://' + blog.domain + '/' + article.category|asLinkPart + '/' + article.title|asLinkPart + '/' + article.id %}
+                                    <a class="text-muted mainTextColorInline" rel="noopener" target="_blank" href="https://www.facebook.com/sharer.php?u={{ shareLink|asUrlSafe }}">
+                                        <i class="fab fa-facebook"></i>
+                                    </a>
+                                    <a class="text-muted mainTextColorInline" rel="noopener" target="_blank" href="https://twitter.com/intent/tweet?url={{ shareLink|asUrlSafe }}&text={{ article.title|asUrlSafe }}.%20{{ (article.teaser || article.ingress)|striptags|asUrlSafe }}{% if blog.socialUser.twitter %}&via={{ blog.socialUser.twitter|asUrlSafe }}{% endif %}&hashtags={{ article.tags|asUrlSafe }}">
+                                        <i class="fab fa-twitter"></i>
+                                    </a>
+                                    <a class="text-muted mainTextColorInline" rel="noopener" target="_blank" href="https://www.linkedin.com/shareArticle?mini=true&url={{ shareLink|asUrlSafe }}&summary={{ article.title|asUrlSafe }}.%20{{ (article.teaser || article.ingress)|asUrlSafe }}&source={{ blog.domain }}">
+                                        <i class="fab fa-linkedin-in"></i>
+                                    </a>
+                                    <a class="text-muted mainTextColorInline" rel="noopener" target="_blank" href="mailto:?subject=Tips: {{ article.title|asUrlSafe }}&body=Tips fra {{ blog.domain }}:%0D%0A%0D%0A{{ article.title|uc|asUrlSafe }}%0D%0A%0D%0A{{ (article.teaser || article.ingress)|asUrlSafe }}%0D%0A%0D%0ALes mer: {{ shareLink|asUrlSafe }}"><i class="far fa-envelope"></i></a>
                                 {% endif %}
-                                &nbsp; / &nbsp; <a href="/v2/{{ category.title }}/" class="post-cat text-muted mainTextColorInline">
-                                    <i class="far fa-folder-open"></i> {{ category.title }}
-                                </a>
-                                {% if article.status !== 2 %}
-                                    &nbsp; / &nbsp; <span class="badge badge-{{ article.status|getStatusClass }}">
-                                        {{ article.status|getStatus }}
+
+                                {% if article.catRef.hideMetaInfoDetailAdvanced %}
+                                {% else %}
+                                    &nbsp; / &nbsp;
+                                    <a class="text-muted mainTextColorInline" title="Lesetid for artikkel"><i class="far fa-clock"></i> {{ article.body|readTime('no') }}</a>
+                                {% endif %}
+
+                                {% if article.tags %}
+                                    <br />
+                                    {% for tag in article.tags %}
+                                        <a href="/v2/?tag={{ tag|asUrlSafe }}" class="badge badge-info">{{ tag }}</a>
+                                    {% endfor %}
+                                {% endif %}
+                                {% if !category.hideTranslateLinks %}
+                                    <span class="float-right text-right">
+                                        <a class="text-muted mainTextColorInline" target="_blank" href="http://translate.google.com/translate?u={{ shareLink|asUrlSafe }}&hl=en&ie=UTF8&sl=no&tl=en" title="Translate to english"><span class="flag-icon flag-icon-gb"></span></a>
+                                        <a class="text-muted mainTextColorInline" target="_blank" href="http://translate.google.com/translate?u={{ shareLink|asUrlSafe }}&hl=de&ie=UTF8&sl=no&tl=de" title="Uberseztung ins Deutsch"><span class="flag-icon flag-icon-de"></span></a>
+                                        <a class="text-muted mainTextColorInline" target="_blank" href="http://translate.google.com/translate?u={{ shareLink|asUrlSafe }}&hl=fr&ie=UTF8&sl=no&tl=fr" title="Traduire en Français"><span class="flag-icon flag-icon-fr"></span></a>
+                                        <a class="text-muted mainTextColorInline" target="_blank" href="http://translate.google.com/translate?u={{ shareLink|asUrlSafe }}&hl=es&ie=UTF8&sl=no&tl=es" title="Traducir al ingles"><span class="flag-icon flag-icon-es"></span></a>
                                     </span>
                                 {% endif %}
-                                &nbsp; / &nbsp;
-                            {% endif %}
-
-                            {% if article.catRef.hideShareButtons %}
-                            {% else %}
-                                {% set shareLink = blog.protocol + '://' + blog.domain + '/' + article.category|asLinkPart + '/' + article.title|asLinkPart + '/' + article.id %}
-                                <a class="text-muted mainTextColorInline" rel="noopener" target="_blank" href="https://www.facebook.com/sharer.php?u={{ shareLink|asUrlSafe }}">
-                                    <i class="fab fa-facebook"></i>
-                                </a>
-                                <a class="text-muted mainTextColorInline" rel="noopener" target="_blank" href="https://twitter.com/intent/tweet?url={{ shareLink|asUrlSafe }}&text={{ article.title|asUrlSafe }}.%20{{ (article.teaser || article.ingress)|striptags|asUrlSafe }}{% if blog.socialUser.twitter %}&via={{ blog.socialUser.twitter|asUrlSafe }}{% endif %}&hashtags={{ article.tags|asUrlSafe }}">
-                                    <i class="fab fa-twitter"></i>
-                                </a>
-                                <a class="text-muted mainTextColorInline" rel="noopener" target="_blank" href="https://www.linkedin.com/shareArticle?mini=true&url={{ shareLink|asUrlSafe }}&summary={{ article.title|asUrlSafe }}.%20{{ (article.teaser || article.ingress)|asUrlSafe }}&source={{ blog.domain }}">
-                                    <i class="fab fa-linkedin-in"></i>
-                                </a>
-                                <a class="text-muted mainTextColorInline" rel="noopener" target="_blank" href="mailto:?subject=Tips: {{ article.title|asUrlSafe }}&body=Tips fra {{ blog.domain }}:%0D%0A%0D%0A{{ article.title|uc|asUrlSafe }}%0D%0A%0D%0A{{ (article.teaser || article.ingress)|asUrlSafe }}%0D%0A%0D%0ALes mer: {{ shareLink|asUrlSafe }}"><i class="far fa-envelope"></i></a>
-                            {% endif %}
-
-                            {% if article.catRef.hideMetaInfoDetailAdvanced %}
-                            {% else %}
-                                &nbsp; / &nbsp;
-                                <a class="text-muted mainTextColorInline" title="Lesetid for artikkel"><i class="far fa-clock"></i> {{ article.body|readTime('no') }}</a>
-                            {% endif %}
-
-                            {% if article.tags %}
-                                <br />
-                                {% for tag in article.tags %}
-                                    <a href="/v2/?tag={{ tag|asUrlSafe }}" class="badge badge-info">{{ tag }}</a>
-                                {% endfor %}
-                            {% endif %}
-                            {% if !category.hideTranslateLinks %}
-                                <span class="float-right text-right">
-                                    <a class="text-muted mainTextColorInline" target="_blank" href="http://translate.google.com/translate?u={{ shareLink|asUrlSafe }}&hl=en&ie=UTF8&sl=no&tl=en" title="Translate to english"><span class="flag-icon flag-icon-gb"></span></a>
-                                    <a class="text-muted mainTextColorInline" target="_blank" href="http://translate.google.com/translate?u={{ shareLink|asUrlSafe }}&hl=de&ie=UTF8&sl=no&tl=de" title="Uberseztung ins Deutsch"><span class="flag-icon flag-icon-de"></span></a>
-                                    <a class="text-muted mainTextColorInline" target="_blank" href="http://translate.google.com/translate?u={{ shareLink|asUrlSafe }}&hl=fr&ie=UTF8&sl=no&tl=fr" title="Traduire en Français"><span class="flag-icon flag-icon-fr"></span></a>
-                                    <a class="text-muted mainTextColorInline" target="_blank" href="http://translate.google.com/translate?u={{ shareLink|asUrlSafe }}&hl=es&ie=UTF8&sl=no&tl=es" title="Traducir al ingles"><span class="flag-icon flag-icon-es"></span></a>
-                                </span>
-                            {% endif %}
-                        </small>
-                    </p>
-                {% endif %}
-
-                {% if article.ingress %}
-                    <div class="lead mb-3">
-                        {% if isPhoto %}
-                            {{ article.ingress|imgSize(945)|md|safe }}
-                        {% else %}
-                            {{ article.ingress|imgSize(750)|md|safe }}
-                        {% endif %}
-                    </div>
-                {% endif %}
-
-            </div>
-        </div>
-        {% if !article.catRef.hideAuthorInfo &&  article.author %}
-            <div class="d-none d-lg-inline col-lg-3 offset-lg-1 blog-sidebar">
-                <div class="sidebar-module sidebar-module-inset mb-4">
-                    {% set author = blog.author.fallback %}
-                    {% if blog.author[article.author] %}
-                    {% set author = blog.author[article.author] %}
+                            </small>
+                        </p>
                     {% endif %}
-                    <div class='col d-flex justify-content-center'>
-                        <img src="{{ author.imageLarge }}" alt="{{ author.nameFull }}" class="img-fluid rounded-circle" style='max-height: 100px;'>
-                    </div>
-                    <div>
-                        <h5 class='font-weight-lighter'><span class='text-muted'>{{ blog.author.by || 'By:' }}</span> {{ author.nameFull }}</h5>
-                        {% include '_elsewhere.html' %}
-                        <details>
-                            <summary>{{ blog.author.details || 'Details:' }}</summary>
-                            {{ author.description }}
-                        </details>
-                    </div>
+
+                    {% if article.ingress %}
+                        <div class="lead mb-3">
+                            {% if isPhoto %}
+                                {{ article.ingress|imgSize(945)|md|safe }}
+                            {% else %}
+                                {{ article.ingress|imgSize(750)|md|safe }}
+                            {% endif %}
+                        </div>
+                    {% endif %}
+
                 </div>
             </div>
+            {% if !article.catRef.hideAuthorInfo &&  article.author %}
+                <div class="d-none d-lg-inline col-lg-3 offset-lg-1 blog-sidebar">
+                    <div class="sidebar-module sidebar-module-inset mb-4">
+                        {% set author = blog.author.fallback %}
+                        {% if blog.author[article.author] %}
+                        {% set author = blog.author[article.author] %}
+                        {% endif %}
+                        <div class='col d-flex justify-content-center'>
+                            <img src="{{ author.imageLarge }}" alt="{{ author.nameFull }}" class="img-fluid rounded-circle" style='max-height: 100px;'>
+                        </div>
+                        <div>
+                            <h5 class='font-weight-lighter'><span class='text-muted'>{{ blog.author.by || 'By:' }}</span> {{ author.nameFull }}</h5>
+                            {% include '_elsewhere.html' %}
+                            <details>
+                                <summary>{{ blog.author.details || 'Details:' }}</summary>
+                                {{ author.description }}
+                            </details>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
         {% endif %}
 
         {% if !category.hideArticleList %}
