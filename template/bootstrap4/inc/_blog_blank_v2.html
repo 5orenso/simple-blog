@@ -60,8 +60,14 @@
             <div class="col-lg-8 blog-main">
         {% endif %}
             <div class="blog-post">
-                <h1 class="blog-post-title {{ category.artlistTitleClass }}">{{ article.title|md(true)|safe }}</h1>
-                <h5 class="blog-post-teaser">{{ article.teaser|safe }}</h5>
+                {% if article.catRef.hideDetailTitle %}
+                {% else %}
+                    <h1 class="blog-post-title {{ category.artlistTitleClass }}">{{ article.title|md(true)|safe }}</h1>
+                {% endif %}
+                {% if article.catRef.hideDetailTeaser %}
+                {% elseif article.teaser %}
+                    <h5 class="blog-post-teaser">{{ article.teaser|safe }}</h5>
+                {% endif %}
                 {% if article.catRef.hideMetaInfoDetail %}
                 {% else %}
                     <p class="blog-post-meta mt-1">

@@ -17,6 +17,7 @@ const fields = {
     title: 1,
     titleEn: 1,
     hideTitle: 1,
+    hideDetailTitle: 1,
     subTitle: 1,
     image: 1,
     type: 1,
