@@ -67,10 +67,12 @@ export default class CategoryList extends Component {
                                 <th class={styles.verticalTableHeaderFOO} scope='col'><p>Skjul artikkel metainfo</p></th>
                                 <th class={styles.verticalTableHeaderFOO} scope='col'><p>Skjul artikkel metainfo utvidet</p></th>
                                 <th class={styles.verticalTableHeaderFOO} scope='col'><p>Skjul artikkel forfatterinfo</p></th>
+                                <th class={styles.verticalTableHeaderFOO} scope='col'><p>Skjul deleknapper</p></th>
                                 <th class={styles.verticalTableHeaderFOO} scope='col'><p>Skjul forside artikkeltittel</p></th>
                                 <th class={styles.verticalTableHeaderFOO} scope='col'><p>Skjul forside artikkelteaser</p></th>
                                 <th class={styles.verticalTableHeaderFOO} scope='col'><p>Skjul forside paginering</p></th>
                                 <th class={styles.verticalTableHeaderFOO} scope='col'><p>Skjul kategoriforside toppartikkel</p></th>
+                                <th class={styles.verticalTableHeaderFOO} scope='col'><p>Vis full bredde</p></th>
                                 <th class={styles.verticalTableHeaderFOO} scope='col'><p>Kategori ID</p></th>
                                 <th class={styles.verticalTableHeaderFOO} scope='col'><p>Sort</p></th>
                                 <th class={styles.verticalTableHeaderFOO} scope='col'><p>Type</p></th>
@@ -80,7 +82,7 @@ export default class CategoryList extends Component {
                         </thead>
                     <tbody>
                     {catlist.map(cat =>
-                        <tr data-id={cat.id} onClick={handleListClick} class={`${!cat.menu && cat.type !== 1 && 'text-muted'} 
+                        <tr data-id={cat.id} onClick={handleListClick} class={`${!cat.menu && cat.type !== 1 && 'text-muted'}
                             ${cat.type === 1 && 'bg-info text-white'} ${cat.menu && 'font-weight-bolder'} `}>
                             <td scope='row'>{cat.id}</td>
                             <td>{cat.image && <img src={cat.image} style='max-height: 30px;' />}</td>
@@ -95,7 +97,7 @@ export default class CategoryList extends Component {
 
                                 {cat.title}
                                 {cat.titleEn && <span>
-                                    <br />🇬🇧 {cat.titleEn} 
+                                    <br />🇬🇧 {cat.titleEn}
                                 </span>}
                             </td>
                             <td class='text-center' style='font-size: 2.0em;'><i class={`${cat.menu ? `fas fa-check text-success` : 'fas fa-times-circle text-danger'}`} /></td>
@@ -110,10 +112,12 @@ export default class CategoryList extends Component {
                             <td class='text-center' style='font-size: 2.0em;'><i class={`${cat.hideMetaInfoDetail ? `fas fa-check text-success` : 'fas fa-times-circle text-danger'}`} /></td>
                             <td class='text-center' style='font-size: 2.0em;'><i class={`${cat.hideMetaInfoDetailAdvanced ? `fas fa-check text-success` : 'fas fa-times-circle text-danger'}`} /></td>
                             <td class='text-center' style='font-size: 2.0em;'><i class={`${cat.hideAuthorInfo ? `fas fa-check text-success` : 'fas fa-times-circle text-danger'}`} /></td>
+                            <td class='text-center' style='font-size: 2.0em;'><i class={`${cat.hideShareButtons ? `fas fa-check text-success` : 'fas fa-times-circle text-danger'}`} /></td>
                             <td class='text-center' style='font-size: 2.0em;'><i class={`${cat.hideFrontpageTitle ? `fas fa-check text-success` : 'fas fa-times-circle text-danger'}`} /></td>
                             <td class='text-center' style='font-size: 2.0em;'><i class={`${cat.hideFrontpageTeaser ? `fas fa-check text-success` : 'fas fa-times-circle text-danger'}`} /></td>
                             <td class='text-center' style='font-size: 2.0em;'><i class={`${cat.hideFrontpagePagination ? `fas fa-check text-success` : 'fas fa-times-circle text-danger'}`} /></td>
                             <td class='text-center' style='font-size: 2.0em;'><i class={`${cat.hideCategoryTopArticle ? `fas fa-check text-success` : 'fas fa-times-circle text-danger'}`} /></td>
+                            <td class='text-center' style='font-size: 2.0em;'><i class={`${cat.showFullWidth ? `fas fa-check text-success` : 'fas fa-times-circle text-danger'}`} /></td>
                             <td class='text-right'>{cat.artlistCategory}</td>
                             <td class='text-right'>{cat.sort}</td>
                             <td>

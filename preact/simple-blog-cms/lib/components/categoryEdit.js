@@ -161,6 +161,13 @@ export default class CategoryEdit extends Component {
                                 value={category.subTitle} />
                         </div>
                         <div class='form-group'>
+                            <label for='templateInput'>template (/bootstrap4/(blog_v2|blank_v2).html)</label>
+                            <input type='text' class='form-control' id='templateInput' placeholder='/bootstrap4/blog_v2.html'
+                                name='template'
+                                onInput={handleInput}
+                                value={category.template} />
+                        </div>
+                        <div class='form-group'>
                             <label for='imageInput'>Image/logo</label>
                             <input type='text' class='form-control' id='imageInput' placeholder='Image'
                                 name='image'
@@ -438,6 +445,21 @@ export default class CategoryEdit extends Component {
                         </div>
 
                         <div class='form-check'>
+                            <input type='checkbox' class='form-check-input' id='hideShareButtonsInput'
+                                name='hideShareButtons'
+                                onInput={e => {
+                                    handleInput(e, {
+                                        name: 'hideShareButtons',
+                                        value: category.hideShareButtons ? 0 : 1,
+                                    });
+                                }}
+                                value={1}
+                                checked={category.hideShareButtons === 1 ? 'checked' : ''}
+                            />
+                            <label for='hideShareButtonsInput'>Skjul deleknapper</label>
+                        </div>
+
+                        <div class='form-check'>
                             <input type='checkbox' class='form-check-input' id='showBottomArticleListInput'
                                 name='showBottomArticleList'
                                 onInput={e => {
@@ -450,6 +472,21 @@ export default class CategoryEdit extends Component {
                                 checked={category.showBottomArticleList === 1 ? 'checked' : ''}
                             />
                             <label for='showBottomArticleListInput'>Vis artikkel artikkeliste bunn</label>
+                        </div>
+
+                        <div class='form-check'>
+                            <input type='checkbox' class='form-check-input' id='showFullWidthInput'
+                                name='showFullWidth'
+                                onInput={e => {
+                                    handleInput(e, {
+                                        name: 'showFullWidth',
+                                        value: category.showFullWidth ? 0 : 1,
+                                    });
+                                }}
+                                value={1}
+                                checked={category.showFullWidth === 1 ? 'checked' : ''}
+                            />
+                            <label for='showFullWidthInput'>Bruk full bredde</label>
                         </div>
 
                         <div class='form-check'>
@@ -783,7 +820,7 @@ export default class CategoryEdit extends Component {
                                         Menu 3
                                     </div>
                                 </div>
-                            </div> 
+                            </div>
                         </div>
                         <div class='p-0' style={`height: 400px; background-image: url(${category.bgImageMain}); background-color: ${category.bgColorMain}; color: ${category.colorMain}; overflow: hidden;`}>
                             <div class='container-fluid pt-0' style={`background-color: ${category.bgColorJumbotron}; color: ${category.colorJumbotron}`}>
@@ -791,14 +828,14 @@ export default class CategoryEdit extends Component {
                                     <div class='col-12'>
                                         <h1>Main</h1>
                                         <p>
-                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
-                                            Ultricies mi eget mauris pharetra et ultrices. Eu sem integer vitae justo eget. 
-                                            Felis bibendum ut tristique et egestas quis ipsum suspendisse ultrices. 
-                                            Enim diam vulputate ut pharetra sit amet aliquam id diam. 
-                                            Cursus turpis massa tincidunt dui ut ornare lectus. 
-                                            Vestibulum rhoncus est pellentesque elit ullamcorper dignissim. 
-                                            Tristique risus nec feugiat in fermentum posuere urna nec. 
-                                            Et leo duis ut diam quam nulla porttitor massa id. 
+                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                                            Ultricies mi eget mauris pharetra et ultrices. Eu sem integer vitae justo eget.
+                                            Felis bibendum ut tristique et egestas quis ipsum suspendisse ultrices.
+                                            Enim diam vulputate ut pharetra sit amet aliquam id diam.
+                                            Cursus turpis massa tincidunt dui ut ornare lectus.
+                                            Vestibulum rhoncus est pellentesque elit ullamcorper dignissim.
+                                            Tristique risus nec feugiat in fermentum posuere urna nec.
+                                            Et leo duis ut diam quam nulla porttitor massa id.
                                         </p>
                                     </div>
                                 </div>

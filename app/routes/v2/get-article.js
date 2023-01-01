@@ -95,6 +95,7 @@ module.exports = async (req, res) => {
                 hideMetaInfoDetail: 1,
                 hideMetaInfoDetailAdvanced: 1,
                 hideAuthorInfo: 1,
+                hideShareButtons: 1,
                 hideFrontpageTitle: 1,
                 hideFrontpageTeaser: 1,
                 hideFrontpagePagination: 1,
@@ -219,13 +220,13 @@ module.exports = async (req, res) => {
         article.body = utilHtml.replaceDataTags(article.body || '', article);
         article.body = utilHtml.replaceContentTags(article.body || '', article, req.config);
         article.body = utilHtml.replaceBBTags(article.body || '', article, req.config);
-        
+
         article.bodyEn = utilHtml.replaceDataTags(article.bodyEn || '', article);
         article.bodyEn = utilHtml.replaceContentTags(article.bodyEn || '', article, req.config);
         article.bodyEn = utilHtml.replaceBBTags(article.bodyEn || '', article, req.config);
         utilHtml.runPlugins(article);
     }
-    
+
     const adcats = await catAds.find(queryAds);
     const adlist = await artAds.find({ status: 2, categoryId: { $in: adcats.map(c => c.id) } });
     if (tc.isArray(adlist)) {
@@ -269,7 +270,10 @@ module.exports = async (req, res) => {
     article.metaDescription = util.getShortText(`${article.ingress || ''} ${article.bodyRaw || ''}`);
     article.words = util.getWords(article).join(',');
 
-    const template = (req.params.id || req.params.filename) ? '/bootstrap4/blog_v2.html' : '/bootstrap4/index_v2.html';
+    let template = (req.params.id || req.params.filename) ? '/bootstrap4/blog_v2.html' : '/bootstrap4/index_v2.html';
+    if (category?.template) {
+        template = category.template;
+    }
 
     const language = req.cookies.language;
     const disableCookies = req.cookies.disableCookies === 'yes';
