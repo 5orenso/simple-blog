@@ -54,8 +54,8 @@ class Start extends Component {
                     >
                         <div class='w-25 d-flex align-items-center justify-content-start'>&nbsp;</div>
 
-                        <div class='w-50 d-flex align-items-center'>
-                            <img src={`${isDevelopment ? '' : '/preact/simple-blog-livecenter'}/assets/images/logo.png`} alt='logo' class='img-fluid' />
+                        <div class='w-50 d-flex justify-content-center align-items-center'>
+                            <img src={`${isDevelopment ? '' : '/preact/simple-blog-livecenter'}/assets/images/logo.png`} alt='logo' class='img-fluid' style='max-height: 100px;' />
                         </div>
 
                         <div class='w-25 d-flex align-items-center justify-content-end'>&nbsp;</div>
@@ -77,9 +77,9 @@ class Start extends Component {
                         </div>
                     </div>
 
-                    <div class='col-12  d-flex justify-content-center py-1'>
+                    {/* <div class='col-12  d-flex justify-content-center py-1'>
                         <AdTop stores={this.props.stores} {...this.props} />
-                    </div>
+                    </div> */}
 
                     <div
                         class='col-12'
@@ -137,17 +137,12 @@ class Start extends Component {
                     </div>
 
                     <div
-                        class='col-12 mt-1 px-4 pb-3'
+                        class='col-12 mt-1 px-4 pb-3 pt-3'
                         style={`
                             background-color: rgb(35, 139, 147);
                             color: rgb(172, 219, 226);
                         `}
                     >
-                        <div class='row'>
-                            <div class='col-12 d-flex justify-content-center display-4' >
-                                Femundløpet Livesenter
-                            </div>
-                        </div>
                         <div class='row'>
                             <div class='col-12 col-lg-6 py-3' style='background-color: #ffffff; color: #000000;'>
                                 <Live stores={this.props.stores} {...this.props} />
