@@ -49,11 +49,11 @@ class Webcams extends Component {
         const { mainView, checkpoints, checkpoint } = appState;
 
         return (<>
-            <button type='button' class={`btn btn-block ${mainView === 'webcam' ? 'btn-success' : 'btn-info'}`} onClick={this.toggleList}>
+            <button type='button' class={`btn ${mainView === 'webcam' ? 'btn-success' : 'btn-info'} mx-1 mt-1`} onClick={this.toggleList}>
                 Webcam <i class='fas fa-bars' />
             </button>
 
-            {showList && <div class='d-flex flex-column ml-3 mb-3'>
+            {showList && <div class='w-100 d-flex flex-column ml-3 mb-3'>
                 {checkpoints && checkpoints.map(cp => {
                     return <>
                         <button type='button' class={`btn btn-link p-0 text-left ${checkpoint === cp.id ? 'text-primary' : 'text-white'}`} data-id={cp.id} onClick={this.chooseCheckpoint}><nobr>{cp.name}</nobr></button>

@@ -279,6 +279,8 @@ class AppState {
 
     @observable loadMore = () => {};
 
+    @observable mainViewCallback = () => {};
+
     @action
     setWebsocketServer(webocketUrl) {
         util.setWebsocketServer(webocketUrl);
@@ -831,6 +833,12 @@ class AppState {
     @action
     setMainView(view) {
         this.mainView = view;
+        this.mainViewCallback(view);
+    }
+
+    @action
+    setMainViewCallback(func) {
+        this.mainViewCallback = func;
     }
 
     async getFingerprint() {

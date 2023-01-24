@@ -134,7 +134,7 @@ class Program extends Component {
                             <i class='fas fa-times'></i> Avbryt
                         </button>
                     </> : <>
-                        <button type='button' class='btn btn-sm btn-primary' onClick={this.toggleInput}>
+                        <button type='button' class='btn btn-sm btn-primary position-absolute' style='top: 10px; right: 0px; z-index: 10000;' onClick={this.toggleInput}>
                             <i class='fas fa-plus'></i> Nytt program
                         </button>
                     </>}
@@ -217,7 +217,7 @@ class Program extends Component {
 
                         return (
                             <div
-                                class='col-4 clearfix p-0'
+                                class='col-6 col-md-4 col-lg-3 clearfix p-0'
                                 style={`
                                     line-height: 1.1em;
                                     ${hasBeen ? 'opacity: 0.5' : ''};

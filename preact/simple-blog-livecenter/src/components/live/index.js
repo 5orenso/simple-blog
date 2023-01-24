@@ -199,7 +199,7 @@ class Live extends Component {
                             ref={c => this.blockRefs[art.id] = c}
                         >
                             <div
-                                class='text-white px-2'
+                                class='text-white px-2 rounded-lg'
                                 style={`
                                     background-color: rgb(230, 120, 77);
                                 `}

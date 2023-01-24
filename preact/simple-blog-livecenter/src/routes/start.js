@@ -7,6 +7,8 @@ import Markdown from 'preact-markdown';
 import Webcams from '../components/webcams/';
 import DirekteSport from '../components/direkteSport/';
 import DirekteSportView from '../components/direkteSport/view';
+import WebTv from '../components/webtv/';
+import WebTvView from '../components/webtv/view';
 import Status from '../components/status/';
 import Webcam from '../components/webcam/';
 import Results from '../components/results/';
@@ -20,6 +22,20 @@ import AdTop from '../components/ads/top';
 import AdCenter from '../components/ads/center';
 import AdBottom from '../components/ads/bottom';
 
+function scrollTo(element, top = 0, left = 0) {
+    // element.scrollTop = to;
+    element.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+        inline: "start",
+    });
+    // element.scrollTo({
+    //     top,
+    //     left,
+    //     behavior: 'smooth'
+    // });
+}
+
 @observer
 class Start extends Component {
   	constructor(props) {
@@ -27,27 +43,61 @@ class Start extends Component {
         this.state = {
             sessionid: new Date().getTime(),
         };
+        this.mainContainer = null;
     }
 
-    compenentDidMount() {
-        document.addEventListener("visibilitychange", () => {
-            if (document.visibilityState === "visible") {
-                // page is visible
-            } else {
-                // page is hidden
-            }
+    toggleMenu = () => {
+        const { showMenu } = this.state;
+        this.setState({
+            showMenu: !showMenu,
         });
     }
 
+    scrollToMainContainer = (view) => {
+        console.log('scrollToMainContainer', view, this.mainContainer);
+        if (this.mainContainer) {
+            scrollTo(this.mainContainer);
+        }
+    }
+
+    loadAll = () => {
+console.log('loadAll');
+        const { appState } = this.props.stores;
+        appState.setMainViewCallback(this.scrollToMainContainer);
+    }
+
+    componentDidMount() {
+        this.loadAll();
+        // document.addEventListener('visibilitychange', () => {
+        //     if (document.visibilityState === 'visible') {
+        //         // page is visible
+        //     } else {
+        //         // page is hidden
+        //     }
+        // });
+    }
+
     render() {
-        const { sessionid } = this.state;
+        const { sessionid, showMenu } = this.state;
         const { appState } = this.props.stores;
         const { mainView, currentEmail, isAdmin, isExpert, isDevelopment } = appState;
         return (<>
+            <style>
+                {`
+                    .fullScreen {
+                        width: 100vw;
+                        height: 100vh;
+                        position: fixed;
+                        top: 0;
+                        left: 0;
+                        z-index: 9999;
+                    }
+                `}
+            </style>
             <div class='container-fluid mb-5'>
                 <div class='row'>
                     <div
-                        class='col-12 d-flex justify-content-between py-3'
+                        class='col-12 d-flex justify-content-between pt-2'
                         style={`
                             background-color: rgb(172, 219, 226);
                         `}
@@ -58,10 +108,33 @@ class Start extends Component {
                             <img src={`${isDevelopment ? '' : '/preact/simple-blog-livecenter'}/assets/images/logo.png`} alt='logo' class='img-fluid' style='max-height: 100px;' />
                         </div>
 
-                        <div class='w-25 d-flex align-items-center justify-content-end'>&nbsp;</div>
+                        <div class='w-25 d-flex align-items-center justify-content-end position-relative'>
+                            <i class='fas fa-bars' style='font-size: 3.0em;' onClick={this.toggleMenu} />
+
+                            {showMenu && <div
+                                class='position-absolute p-3 rounded-lg'
+                                style='
+                                    height: 200px;
+                                    width: 250px;
+                                    right: 0;
+                                    bottom: -165px;
+                                    z-index: 10001;
+                                    background-color: rgb(35, 139, 147);
+                                    color: #ffffff;
+                                '>
+                                <a href='https://www.femundlopet.no/v2/' class='btn btn-block btn-link text-left text-white'>Forsiden</a>
+                                <a href='https://www.femundlopet.no/v2/siste-nytt/' class='btn btn-block btn-link text-left text-white'>Siste nytt</a>
+                                <a href='https://femundlopet.no/v2/for-utovere/program-/32' class='btn btn-block btn-link text-left text-white'>Program</a>
+                            </div>}
+                        </div>
                     </div>
 
-                    <div class='col-12  d-flex justify-content-end'>
+                    {(isAdmin || isExpert) && <div
+                        class='col-12  d-flex justify-content-end'
+                        style={`
+                            background-color: rgb(172, 219, 226);
+                        `}
+                    >
                         <div class='d-flex justify-content-end align-items-end'>
                             <small>
                                 <span class='badge badge-pill badge-success'>
@@ -75,7 +148,7 @@ class Start extends Component {
                                 </span>
                             </small>
                         </div>
-                    </div>
+                    </div>}
 
                     {/* <div class='col-12  d-flex justify-content-center py-1'>
                         <AdTop stores={this.props.stores} {...this.props} />
@@ -116,15 +189,19 @@ class Start extends Component {
                         `}
                     >
                         <div class='row'>
-                            <div class='col-12 col-lg-9 py-2'>
+                            <div
+                                class='col-12 col-lg-12 py-2'
+                                ref={c => this.mainContainer = c}
+                            >
                                 {mainView === 'direktesport' && <DirekteSportView stores={this.props.stores} {...this.props} />}
+                                {mainView === 'webtv' && <WebTvView stores={this.props.stores} {...this.props} />}
                                 {mainView === 'results' && <ResultsView stores={this.props.stores} {...this.props} />}
                                 {mainView === 'tracking' && <TrackingView stores={this.props.stores} {...this.props} />}
-
                                 {(!mainView || mainView === 'webcam') && <Webcam stores={this.props.stores} {...this.props} />}
                             </div>
-                            <div class='col-12 col-lg-3 d-flex flex-column align-items-center justify-content-center'>
+                            <div class='col-12 col-lg-12 d-flex flex-wrap flex-row align-items-center justify-content-center pb-2'>
                                 <Webcams stores={this.props.stores} mainView={mainView} {...this.props} />
+                                <WebTv stores={this.props.stores} mainView={mainView} {...this.props} />
                                 <DirekteSport stores={this.props.stores} mainView={mainView} {...this.props} />
                                 <Results stores={this.props.stores} mainView={mainView} {...this.props} />
                                 <Tracking stores={this.props.stores} mainView={mainView} {...this.props} />
@@ -137,23 +214,41 @@ class Start extends Component {
                     </div>
 
                     <div
-                        class='col-12 mt-1 px-4 pb-3 pt-3'
+                        class='col-12 mt-1 px-3 pb-3 pt-3'
                         style={`
                             background-color: rgb(35, 139, 147);
                             color: rgb(172, 219, 226);
                         `}
                     >
                         <div class='row'>
-                            <div class='col-12 col-lg-6 py-3' style='background-color: #ffffff; color: #000000; border-right: 10px rgb(35, 139, 147) solid;'>
-                                <Live stores={this.props.stores} {...this.props} />
+                            <div
+                                class='col-12 col-md-6 mb-2 p-1'
+                            >
+                                <div class='w-100 p-2 rounded-lg'
+                                    style='
+                                        background-color: #ffffff;
+                                        color: #000000;
+                                    '
+                                >
+                                    <Live stores={this.props.stores} {...this.props} />
+                                </div>
                             </div>
-                            <div class='col-12 col-lg-6 py-3' style='background-color: #ffffff; color: #000000; border-left: 10px rgb(35, 139, 147) solid;'>
-                                <QuestionsAnswers stores={this.props.stores} {...this.props} />
+                            <div
+                                class='col-12 col-md-6 mb-2 p-1'
+                            >
+                                <div class='w-100 p-2 rounded-lg'
+                                    style='
+                                        background-color: #ffffff;
+                                        color: #000000;
+                                    '
+                                >
+                                    <QuestionsAnswers stores={this.props.stores} {...this.props} />
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class='col-12  d-flex justify-content-center py-1'>
+                    <div class='col-12  d-flex justify-content-center py-3'>
                         <AdBottom stores={this.props.stores} {...this.props} />
                     </div>
                 </div>

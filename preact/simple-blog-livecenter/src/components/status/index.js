@@ -179,7 +179,7 @@ class Status extends Component {
             {weather[0] && <>
                 <div class='d-flex align-items-center'>
                     {currentCheckpoint && <>
-                        {currentCheckpoint.name} {currentCheckpoint.altitude} moh
+                        {currentCheckpoint.name} <span class='d-none d-sm-inline-block ml-2'>{currentCheckpoint.altitude} moh</span>
                     </>}
                 </div>
                 <div class='d-flex flex-row align-items-center'>
@@ -190,8 +190,12 @@ class Status extends Component {
                             height='50'
                         />
                     </div>
-                    <div class='ml-3 d-flex align-items-center'><i class='fas fa-temperature-low text-muted' /> {weather[0].instant?.details?.air_temperature} °C</div>
-                    <div class='ml-3 d-flex align-items-center'><i class='fas fa-wind text-muted' />{weather[0].instant?.details?.wind_speed} m/s - {windDirection(weather[0].instant?.details?.wind_from_direction)}</div>
+                    <div class='ml-3 '>
+                        <i class='fas fa-temperature-low text-muted' /> {weather[0].instant?.details?.air_temperature} °C
+                    </div>
+                    <div class='ml-3 d-none d-sm-block'>
+                        <i class='fas fa-wind text-muted' />{weather[0].instant?.details?.wind_speed} m/s - {windDirection(weather[0].instant?.details?.wind_from_direction)}
+                    </div>
                     {/* <div class='mr-3 d-flex align-items-center'>{weather[0].instant?.details?.air_pressure_at_sea_level} hPa</div> */}
                     {/* <div class='mr-3 d-flex align-items-center'>{weather[0].instant?.details?.relative_humidity} %</div> */}
                 </div>

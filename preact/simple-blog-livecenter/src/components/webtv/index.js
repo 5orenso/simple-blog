@@ -5,7 +5,7 @@ import { Text, Localizer } from 'preact-i18n';
 import Markdown from 'preact-markdown';
 
 @observer
-class Tracking extends Component {
+class WebTv extends Component {
   	constructor(props) {
         super(props);
         this.state = {
@@ -15,16 +15,17 @@ class Tracking extends Component {
     setMainView = () => {
         const { appState } = this.props.stores;
         const { mainView } = appState;
-        appState.setMainView(mainView === 'tracking' ? null : 'tracking');
+        appState.setMainView(mainView === 'webtv' ? null : 'webtv');
     }
 
     render() {
         const { appState } = this.props.stores;
         const { mainView } = appState;
+
         return (<>
-            <button type='button' class={`btn ${mainView === 'tracking' ? 'btn-success' : 'btn-info'} mx-1 mt-1`} onClick={this.setMainView}>Tracking</button>
+            <button type='button' class={`btn ${mainView === 'webtv' ? 'btn-success' : 'btn-info'} mx-1 mt-1`} onClick={this.setMainView}>Web TV</button>
         </>);
     }
 }
 
-export default Tracking;
+export default WebTv;

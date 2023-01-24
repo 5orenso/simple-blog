@@ -16,16 +16,19 @@ class DirekteSportView extends Component {
         const { appState } = this.props.stores;
 
         return (<>
-            <iframe
-                style='width: 100%; height: 60vh;'
-                width="800"
-                height="600"
-                src="https://themusher.app/index#/embed/tracking/10/d7a1f4b3-4c50-4b50-bd98-baef8aa3f9bf"
-                title="Tracking"
-                frameborder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowfullscreen
-            />
+            <div class='row'>
+                <iframe
+                    class=''
+                    style='width: 100%; height: 80vh;'
+                    width='800'
+                    height='600'
+                    src='https://themusher.app/index#/embed/tracking/10/d7a1f4b3-4c50-4b50-bd98-baef8aa3f9bf'
+                    title='Tracking'
+                    frameborder='0'
+                    allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
+                    allowfullscreen
+                />
+            </div>
         </>);
     }
 }

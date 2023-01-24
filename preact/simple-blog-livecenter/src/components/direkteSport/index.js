@@ -23,7 +23,7 @@ class DirekteSport extends Component {
         const { mainView } = appState;
 
         return (<>
-            <button type='button' class={`btn btn-block ${mainView === 'direktesport' ? 'btn-success' : 'btn-info'}`} onClick={this.setMainView}>Direktesport</button>
+            <button type='button' class={`btn ${mainView === 'direktesport' ? 'btn-success' : 'btn-info'} mx-1 mt-1`} onClick={this.setMainView}>Direktesport.no</button>
         </>);
     }
 }

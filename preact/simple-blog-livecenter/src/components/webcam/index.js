@@ -45,9 +45,9 @@ class Webcam extends Component {
                     "wind_speed": 1.4
                 }
             }, */}
-
-            <div class='d-flex flex-row'>
-                <div class='flex-grow-1'>
+            <div class='row'>
+            <div class='d-flex flex-row justify-content-center'>
+                <div class='flex-grow-1 d-flex justify-content-center'>
                     {currentCheckpoint && <>
                         {currentCheckpoint.camera && <>
                             <img src={currentCheckpoint.camera} class='img-fluid' /><br />
@@ -61,6 +61,7 @@ class Webcam extends Component {
                         </>;
                     })}
                 </div> */}
+            </div>
             </div>
         </>);
     }
