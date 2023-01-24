@@ -144,10 +144,10 @@ class Start extends Component {
                         `}
                     >
                         <div class='row'>
-                            <div class='col-12 col-lg-6 py-3' style='background-color: #ffffff; color: #000000;'>
+                            <div class='col-12 col-lg-6 py-3' style='background-color: #ffffff; color: #000000; border-right: 10px rgb(35, 139, 147) solid;'>
                                 <Live stores={this.props.stores} {...this.props} />
                             </div>
-                            <div class='col-12 col-lg-6 py-3' style='background-color: #ffffff; color: #000000;'>
+                            <div class='col-12 col-lg-6 py-3' style='background-color: #ffffff; color: #000000; border-left: 10px rgb(35, 139, 147) solid;'>
                                 <QuestionsAnswers stores={this.props.stores} {...this.props} />
                             </div>
                         </div>
