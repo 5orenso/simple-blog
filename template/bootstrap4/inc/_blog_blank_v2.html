@@ -176,7 +176,7 @@
             <div class="blog-post position-relative">
                 {% for widget in ['helloworld', 'clock', 'booking', 'form', 'sheet', 'poll', 'gallery', 'weather', 'map', 'rating', 'related', 'cookies', 'livecenter'] %}
                     {% if article.widget === widget %}
-                        <div class='w-100 my-3 clearfix' data-widget-host="simple-blog-{{ widget }}">
+                        <div class='w-100 mb-2 clearfix' data-widget-host="simple-blog-{{ widget }}">
                             <script type="text/props">
                                 {
                                     "apiServer": "{{ blog.protocol }}://{{ blog.domain }}",

@@ -15,6 +15,8 @@ const MARKDOWN_OPTIONS = {
 	xhtml: true,
 };
 
+const MAX_ARTICLE_TO_SHOW = 5;
+
 @observer
 class Program extends Component {
   	constructor(props) {
@@ -120,7 +122,7 @@ class Program extends Component {
         if (showMore) {
             finalArtlist = artlistQa.slice(0, artlistQa.length);
         } else {
-            finalArtlist = artlistQa.slice(0, 3);
+            finalArtlist = artlistQa.slice(0, MAX_ARTICLE_TO_SHOW);
         }
 
         return (<>

@@ -20,7 +20,7 @@ class DirekteSportView extends Component {
                 style='width: 100%; height: 60vh;'
                 width="800"
                 height="600"
-                src="https://themusher.app/index#/embed/top10/10/d7a1f4b3-4c50-4b50-bd98-baef8aa3f9bf"
+                src="https://themusher.app/index#/embed/results/20/1df75188-ff4b-4d17-b080-cb329a95d63d"
                 title="Tracking"
                 frameborder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"

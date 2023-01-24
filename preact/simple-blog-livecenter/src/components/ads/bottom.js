@@ -34,7 +34,7 @@ class AdBottom extends Component {
                         <div class='flex-grow-1 mx-1'>
                             <a href={ad.url} target='_blank' rel='noopener noreferrer'>
                                 {ad.img && ad.img[0] && <>
-                                    <img src={`${imageDomain}/400x/${imageDomainPath}/${ad.img[0].src}`} class='img-fluid' />
+                                    <img src={`${imageDomain}/400x/${imageDomainPath}/${ad.img[0].src}`} class='img-fluid' style='max-height: 70px;' />
                                 </>}
                             </a>
                         </div>

@@ -15,6 +15,9 @@ const MARKDOWN_OPTIONS = {
 	xhtml: true,
 };
 
+const RELOAD_INTERVAL_IN_SEC = 10;
+const MAX_ARTICLE_TO_SHOW = 10;
+
 @observer
 class Live extends Component {
   	constructor(props) {
@@ -29,6 +32,7 @@ class Live extends Component {
             newArticle: {},
         };
         this.blockRefs = {};
+        this.updateTimer;
     }
 
     loadAll = async () => {
@@ -36,6 +40,11 @@ class Live extends Component {
         const { articleStore } = this.props.stores;
         await articleStore.loadArtlist({ limit: 10, category: categoryLive, key: 'live' });
         this.checkHeights();
+
+        clearTimeout(this.updateTimer);
+        this.updateTimer = setTimeout(() => {
+            this.loadAll();
+        }, RELOAD_INTERVAL_IN_SEC * 1000);
     }
 
     checkHeights = () => {
@@ -121,7 +130,7 @@ class Live extends Component {
         if (showMore) {
             finalArtlist = artlistLive.slice(0, artlistLive.length);
         } else {
-            finalArtlist = artlistLive.slice(0, 3);
+            finalArtlist = artlistLive.slice(0, MAX_ARTICLE_TO_SHOW);
         }
         return (<>
             {isAdmin && <>
