@@ -82,6 +82,7 @@ class Program extends Component {
                 title: '',
                 body: '',
             },
+            message: 'Spørsmålet er sendt til ekspertene',
         });
     }
 
@@ -114,7 +115,7 @@ class Program extends Component {
     }
 
     render() {
-        const { newArticle, showInput, showMore, showAnswer } = this.state;
+        const { newArticle, showInput, showMore, showAnswer, message } = this.state;
         const { articleStore, appState } = this.props.stores;
         const { currentEmail, isAdmin, isExpert } = appState;
         const { artlistQa } = articleStore;
@@ -131,21 +132,23 @@ class Program extends Component {
                     <i class='fas fa-times'></i> Avbryt
                 </button>
             </> : <>
-                <button type='button' class='btn btn-sm btn-success float-right' onClick={this.toggleInput}>
+                <button type='button' class='btn btn-sm bg-live-light text-live-dark float-right' onClick={this.toggleInput}>
                     <i class='fas fa-plus'></i> Nytt spørsmål
                 </button>
             </>}
 
             <h5 class='border-bottom pb-2'>Spør våre eksperter</h5>
 
+            {message && <>
+                <div class='alert alert-success' role='alert'>
+                    {message} <i class='fas fa-smile' />
+                </div>
+            </>}
+
             {showInput && <>
                 <div class='d-flex flex-column   overflow-auto mb-5'>
                     <div
-                        class='px-3 py-1'
-                        style={`
-                            background-color: rgb(35, 139, 147);
-                            color: rgb(172, 219, 226);
-                        `}
+                        class='px-3 py-1 bg-live-light text-live-dark'
                     >
                         <h5>Nytt spørsmål</h5>
                     </div>
@@ -169,7 +172,7 @@ class Program extends Component {
                             value={newArticle.ingress}
                         />
                     </div>
-                    <button type='button' class='btn btn-block btn-success' onClick={this.createArticle}>
+                    <button type='button' class='btn btn-block bg-live-dark text-live-light' onClick={this.createArticle}>
                         <i class='fas fa-save'></i> Send inn spørsmål
                     </button>
                 </div>
@@ -189,14 +192,14 @@ class Program extends Component {
                     const updatedIsThisWeek = dateDiff.days < 7;
 
                     return (<>
-                        <div class='d-flex flex-column mb-3'>
+                        <div class='d-flex flex-column mb-4'>
                             <div class='d-flex justify-content-start'>
                                 <div class='d-flex flex-column' style='max-width: 80%;'>
-                                    <div class={`p-2 ${art.status === 1 ? 'bg-warning' : 'bg-secondary'} text-white rounded-lg overflow-hidden`} style='max-height: 70vh;'>
+                                    <div class={`p-2 ${art.status === 1 ? 'bg-warning' : 'bg-live-light text-live-dark'} rounded-lg overflow-hidden`} style='max-height: 70vh;'>
                                         {art.ingress || art.title}
                                     </div>
                                     <div class='text-right'>
-                                        <small>
+                                        <small class='text-muted'>
                                             {art.teaser || 'anonym'} - {isToday ? util.formatDate(art.published, {
                                                 locale: 'nb',
                                                 hour: '2-digit',
@@ -241,18 +244,18 @@ class Program extends Component {
                                             </div>
                                         </> : <>
                                             {isAdmin && <>
-                                                <button type='button' class='btn btn-block btn-link' onClick={this.toggleShowAnswer} data-id={art.id}>
-                                                    Svar på spørsmål
+                                                <button type='button' class='btn btn-sm btn-block btn-primary' onClick={this.toggleShowAnswer} data-id={art.id}>
+                                                    <i class='fas fa-megaphone' /> Svar på spørsmål
                                                 </button>
                                             </>}
                                         </>}
 
                                     </> : <>
-                                        <div class='p-2 bg-primary text-white rounded-lg overflow-hidden' style='max-height: 70vh;'>
+                                        <div class='p-2 bg-live-dark text-live-light rounded-lg overflow-hidden' style='max-height: 70vh;'>
                                             <Markdown markdown={`${art.body}`} markedOpts={MARKDOWN_OPTIONS} />
                                         </div>
                                         <div class='text-right'>
-                                            <small>
+                                            <small class='text-muted'>
                                                 {art.author} - {updatedIsToday ? util.formatDate(art.updatedDate, {
                                                     locale: 'nb',
                                                     hour: '2-digit',

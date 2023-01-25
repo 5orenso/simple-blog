@@ -22,7 +22,7 @@ class Tracking extends Component {
         const { appState } = this.props.stores;
         const { mainView } = appState;
         return (<>
-            <button type='button' class={`btn ${mainView === 'tracking' ? 'btn-success' : 'btn-info'} mx-1 mt-1`} onClick={this.setMainView}>Tracking</button>
+            <button type='button' class={`btn ${mainView === 'tracking' ? 'bg-live-dark text-live-light' : 'bg-live-light text-live-dark'} mx-1 mt-1`} onClick={this.setMainView}>Tracking</button>
         </>);
     }
 }

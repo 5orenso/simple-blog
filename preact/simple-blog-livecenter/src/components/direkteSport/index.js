@@ -23,7 +23,8 @@ class DirekteSport extends Component {
         const { mainView } = appState;
 
         return (<>
-            <button type='button' class={`btn ${mainView === 'direktesport' ? 'btn-success' : 'btn-info'} mx-1 mt-1`} onClick={this.setMainView}>Direktesport.no</button>
+            {/* <button type='button' class={`btn ${mainView === 'direktesport' ? 'btn-success' : 'btn-info'} mx-1 mt-1`} onClick={this.setMainView}>Direktesport.no</button> */}
+            <a class={`btn ${mainView === 'direktesport' ? 'bg-live-dark text-live-light' : 'bg-live-light text-live-dark'} mx-1 mt-1`} native target='_blank' href='https://www.direktesport.no/'>Direktesport.no</a>
         </>);
     }
 }

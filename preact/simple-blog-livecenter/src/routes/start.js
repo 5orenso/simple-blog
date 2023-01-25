@@ -54,16 +54,19 @@ class Start extends Component {
     }
 
     scrollToMainContainer = (view) => {
-        console.log('scrollToMainContainer', view, this.mainContainer);
+        // console.log('scrollToMainContainer', view, this.mainContainer);
         if (this.mainContainer) {
             scrollTo(this.mainContainer);
         }
     }
 
-    loadAll = () => {
-console.log('loadAll');
+    loadAll = (props = this.props) => {
         const { appState } = this.props.stores;
         appState.setMainViewCallback(this.scrollToMainContainer);
+        const { page, artid } = props;
+        if (page) {
+            appState.setMainView(page);
+        }
     }
 
     componentDidMount() {
@@ -77,7 +80,14 @@ console.log('loadAll');
         // });
     }
 
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.page !== this.props.page) {
+            this.loadAll(nextProps);
+        }
+    }
+
     render() {
+        const { artid } = this.props;
         const { sessionid, showMenu } = this.state;
         const { appState } = this.props.stores;
         const { mainView, currentEmail, isAdmin, isExpert, isDevelopment } = appState;
@@ -92,8 +102,21 @@ console.log('loadAll');
                         left: 0;
                         z-index: 9999;
                     }
+                    .bg-live-dark {
+                        background-color: rgb(29, 138, 146);
+                    }
+                    .bg-live-light {
+                        background-color: rgb(87, 190, 199);
+                    }
+                    .text-live-dark {
+                        color: rgb(55, 75, 80);
+                    }
+                    .text-live-light {
+                        color: rgb(255, 255, 255);
+                    }
                 `}
             </style>
+            {/* <xmp>{JSON.stringify(this.props, null, 2)}</xmp> */}
             <div class='container-fluid mb-5'>
                 <div class='row'>
                     <div
@@ -122,8 +145,8 @@ console.log('loadAll');
                                     background-color: rgb(35, 139, 147);
                                     color: #ffffff;
                                 '>
-                                <a href='https://www.femundlopet.no/v2/' class='btn btn-block btn-link text-left text-white'>Forsiden</a>
-                                <a href='https://www.femundlopet.no/v2/siste-nytt/' class='btn btn-block btn-link text-left text-white'>Siste nytt</a>
+                                <a href='https://www.femundlopet.no/v2/' class='btn btn-block btn-link text-left text-white'>Femundlopet.no</a>
+                                <a href='https://www.femundlopet.no/v2/for-utovere/pameldte/50' class='btn btn-block btn-link text-left text-white'>Deltakere</a>
                                 <a href='https://femundlopet.no/v2/for-utovere/program-/32' class='btn btn-block btn-link text-left text-white'>Program</a>
                             </div>}
                         </div>
@@ -214,11 +237,7 @@ console.log('loadAll');
                     </div>
 
                     <div
-                        class='col-12 mt-1 px-3 pb-3 pt-3'
-                        style={`
-                            background-color: rgb(35, 139, 147);
-                            color: rgb(172, 219, 226);
-                        `}
+                        class='col-12 mt-1 px-3 pb-3 pt-3 bg-live-dark text-live-light'
                     >
                         <div class='row'>
                             <div
@@ -248,9 +267,9 @@ console.log('loadAll');
                         </div>
                     </div>
 
-                    <div class='col-12  d-flex justify-content-center py-3'>
+                    {/* <div class='col-12  d-flex justify-content-center py-3'>
                         <AdBottom stores={this.props.stores} {...this.props} />
-                    </div>
+                    </div> */}
                 </div>
             </div>
         </>);

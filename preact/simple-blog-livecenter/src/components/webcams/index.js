@@ -49,7 +49,7 @@ class Webcams extends Component {
         const { mainView, checkpoints, checkpoint } = appState;
 
         return (<>
-            <button type='button' class={`btn ${mainView === 'webcam' ? 'btn-success' : 'btn-info'} mx-1 mt-1`} onClick={this.toggleList}>
+            <button type='button' class={`btn ${mainView === 'webcam' ? 'bg-live-dark text-live-light' : 'bg-live-light text-live-dark'} mx-1 mt-1`} onClick={this.toggleList}>
                 Webcam <i class='fas fa-bars' />
             </button>
 

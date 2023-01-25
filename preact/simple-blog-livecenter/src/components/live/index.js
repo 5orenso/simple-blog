@@ -144,7 +144,7 @@ class Live extends Component {
                     </button>
                 </>}
             </>}
-            <h5 class='border-bottom pb-2'>Live</h5>
+            <h5 class='border-bottom pb-2'>Siste nytt</h5>
             {/* {JSON.stringify(artlist)} */}
 
             {isAdmin && <>
@@ -199,10 +199,7 @@ class Live extends Component {
                             ref={c => this.blockRefs[art.id] = c}
                         >
                             <div
-                                class='text-white px-2 rounded-lg'
-                                style={`
-                                    background-color: rgb(230, 120, 77);
-                                `}
+                                class='px-2 rounded-lg bg-live-dark text-live-light'
                             >
                                 {art.title}
                             </div>

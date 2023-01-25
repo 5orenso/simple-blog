@@ -182,11 +182,11 @@ class App extends Component {
 
         this.setAppLoaded(true);
 
-        this.websocket({
-            id: 1000,
-            firstname: 'anonymous',
-            lastname: 'anonymous',
-        });
+        // this.websocket({
+        //     id: 1000,
+        //     firstname: 'anonymous',
+        //     lastname: 'anonymous',
+        // });
 
         // console.log({ appVersion });
         // if (appVersion === 'prod' && storedLocation === 'beta') {
@@ -554,6 +554,8 @@ language: ${language}<br />
                         >
                             <Router onChange={this.handleRoute} history={history}>
                                 {/* <AsyncRoute stores={this.stores} {...this.props} scrolledDown={scrolledDownPlaceholder} default getComponent={() => import('./routes/start').then(module => module.default)} /> */}
+                                <Start stores={this.stores} scrolledDown={scrolledDownPlaceholder} {...this.props} path="/:page/:artid" />
+                                <Start stores={this.stores} scrolledDown={scrolledDownPlaceholder} {...this.props} path="/:page" />
                                 <Start stores={this.stores} scrolledDown={scrolledDownPlaceholder} {...this.props} default />
 
                                 <LoadingSpinner default goto='/' gotoTitle='Home' routerName='livecenter' />

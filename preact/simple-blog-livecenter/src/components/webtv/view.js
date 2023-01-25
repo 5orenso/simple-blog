@@ -6,7 +6,7 @@ import Markdown from 'preact-markdown';
 import linkState from 'linkstate';
 
 const RELOAD_INTERVAL_IN_SEC = 60;
-const MAX_ARTICLE_TO_SHOW = 10;
+const MAX_ARTICLE_TO_SHOW = 50;
 
 function youtubeThumb($content, $size = 'medium') {
     if (typeof $content !== 'string') {
@@ -134,9 +134,15 @@ class WebTvView extends Component {
     }
 
     setLastVideo = () => {
+        const { artid } = this.props;
         const { articleStore } = this.props.stores;
         const { artlistWebtv } = articleStore;
-        const viewArticle = artlistWebtv[0];
+        let viewArticle;
+        if (artid) {
+            viewArticle = artlistWebtv.find((article) => article.id === parseInt(artid, 10));
+        } else {
+            viewArticle = artlistWebtv[0];
+        }
         this.setState({
             viewArticle,
         });
@@ -216,46 +222,55 @@ class WebTvView extends Component {
                                     >
                                         <div class='d-flex flex-row flex-nowrap h-100 w-100'>
                                             <div
-                                                class=''
+                                                class='bg-live-dark text-live-light'
                                                 style='
                                                     width: 40%;
-                                                    background-color: rgb(29, 138, 146);
                                                 '
                                             >
                                                 <img src={youtubeThumb(art.youtube)} class='img-fluid' /><br />
                                             </div>
                                             <div
-                                                class='pl-2'
+                                                class='pl-2 bg-live-light text-live-dark'
                                                 style='
                                                     width: 60%;
-                                                    color: rgb(55, 75, 80);
-                                                    background-color: rgb(87, 190, 199);
+                                                    overflow: hidden;
+                                                    text-overflow: ellipsis;
+                                                    display: -webkit-box;
+                                                    -webkit-line-clamp: 3; /* number of lines to show */
+                                                            line-clamp: 3;
+                                                    -webkit-box-orient: vertical;
                                                 '
                                             >
                                                 <small>
                                                     <strong>
                                                         {art.title}<br />
                                                     </strong>
-                                                    {art.ingress}<br />
+                                                    {art.ingress && <>
+                                                        {art.ingress}<br />
+                                                    </>}
                                                     {/* {youtubeVideo(art.youtube)}<br /> */}
                                                     <small>
-                                                {isThisWeek ? <>
-                                                    {util.formatDate(art.updatedDate || art.published, {
-                                                        locale: 'nb',
-                                                        hour: '2-digit',
-                                                        minute: '2-digit',
-                                                        weekday: 'short',
-                                                    }, true)}
-                                                </> : <>
-                                                    {util.formatDate(art.updatedDate || art.published, {
-                                                        locale: 'nb',
-                                                        hour: '2-digit',
-                                                        minute: '2-digit',
-                                                        day: 'numeric',
-                                                        month: 'short',
-                                                    }, true)}
-                                                </>}
-                                            </small>
+                                                        {isThisWeek ? <>
+                                                            {util.formatDate(art.updatedDate || art.published, {
+                                                                locale: 'nb',
+                                                                hour: '2-digit',
+                                                                minute: '2-digit',
+                                                                weekday: 'short',
+                                                            }, true)}
+                                                        </> : <>
+                                                            {util.formatDate(art.updatedDate || art.published, {
+                                                                locale: 'nb',
+                                                                hour: '2-digit',
+                                                                minute: '2-digit',
+                                                                day: 'numeric',
+                                                                month: 'short',
+                                                            }, true)}
+                                                        </>}
+                                                    </small>
+                                                    {isAdmin && <>
+                                                        <br />
+                                                        <a href={`/#/webtv/${art.id}`} native target='_blank'>&raquo; Link</a>
+                                                    </>}
                                                 </small>
                                             </div>
                                         </div>
