@@ -139,7 +139,7 @@ class Program extends Component {
             <h5 class='border-bottom pb-2'>Spør våre eksperter</h5>
 
             {showInput && <>
-                <div class='d-flex flex-column justify-content-start overflow-auto mb-5'>
+                <div class='d-flex flex-column   overflow-auto mb-5'>
                     <div
                         class='px-3 py-1'
                         style={`

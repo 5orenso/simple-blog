@@ -15,7 +15,7 @@ const MARKDOWN_OPTIONS = {
 	xhtml: true,
 };
 
-const RELOAD_INTERVAL_IN_SEC = 10;
+const RELOAD_INTERVAL_IN_SEC = 60;
 const MAX_ARTICLE_TO_SHOW = 10;
 
 @observer

@@ -17,19 +17,17 @@ class DirekteSportView extends Component {
 
         return (<>
             <div class='row'>
-
-            <div class='d-flex flex-row justify-content-center'>
-                <iframe
-                    width="800"
-                    height="448"
-
-                    src="https://www.youtube.com/embed/mVef2v1OYhw"
-                    title="YouTube video player"
-                    frameborder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowfullscreen
-                />
-            </div>
+                <div class='w-100 d-flex flex-row justify-content-center'>
+                    <iframe
+                        width="800"
+                        height="448"
+                        src="https://www.youtube.com/embed/mVef2v1OYhw"
+                        title="YouTube video player"
+                        frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowfullscreen
+                    />
+                </div>
             </div>
         </>);
     }

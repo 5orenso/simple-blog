@@ -46,22 +46,22 @@ class Webcam extends Component {
                 }
             }, */}
             <div class='row'>
-            <div class='d-flex flex-row justify-content-center'>
-                <div class='flex-grow-1 d-flex justify-content-center'>
-                    {currentCheckpoint && <>
-                        {currentCheckpoint.camera && <>
-                            <img src={currentCheckpoint.camera} class='img-fluid' /><br />
+                <div class='w-100 d-flex flex-row justify-content-center'>
+                    <div class='flex-grow-1 d-flex justify-content-center'>
+                        {currentCheckpoint && <>
+                            {currentCheckpoint.camera && <>
+                                <img src={currentCheckpoint.camera} class='img-fluid' /><br />
+                            </>}
                         </>}
-                    </>}
+                    </div>
+                    {/* <div class='d-flex flex-column ml-3'>
+                        {checkpoints && checkpoints.map(cp => {
+                            return <>
+                                <button type='button' class={`btn btn-link p-0 text-left ${checkpoint === cp.id ? 'text-primary' : 'text-dark'}`} data-id={cp.id} onClick={this.chooseCheckpoint}><nobr>{cp.name}</nobr></button>
+                            </>;
+                        })}
+                    </div> */}
                 </div>
-                {/* <div class='d-flex flex-column ml-3'>
-                    {checkpoints && checkpoints.map(cp => {
-                        return <>
-                            <button type='button' class={`btn btn-link p-0 text-left ${checkpoint === cp.id ? 'text-primary' : 'text-dark'}`} data-id={cp.id} onClick={this.chooseCheckpoint}><nobr>{cp.name}</nobr></button>
-                        </>;
-                    })}
-                </div> */}
-            </div>
             </div>
         </>);
     }

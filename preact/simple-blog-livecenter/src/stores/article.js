@@ -39,6 +39,8 @@ class ArticleStore extends StoreModel {
 
     @observable artlistLive = [];
 
+    @observable artlistWebtv = [];
+
     @observable artlistQa = [];
 
     @observable artlistProgram = [];
@@ -63,6 +65,8 @@ class ArticleStore extends StoreModel {
         if (response.artlist) {
             if (key === 'live') {
                 this.updateKeyValue('artlistLive', response.artlist);
+            } else if (key === 'webtv') {
+                this.updateKeyValue('artlistWebtv', response.artlist);
             } else if (key === 'qa') {
                 this.updateKeyValue('artlistQa', response.artlist);
             } else if (key === 'program') {
@@ -80,7 +84,7 @@ class ArticleStore extends StoreModel {
         return response;
     }
 
-    async createArticle({ author, category, categoryId, title, teaser, ingress, body, status = 2, date, dateEnd }) {
+    async createArticle({ author, category, categoryId, title, youtube, teaser, ingress, body, status = 2, date, dateEnd }) {
         // {
         //     "author":"sorenso",
         //     "category":"/v2/about/",
@@ -91,6 +95,7 @@ class ArticleStore extends StoreModel {
             category,
             categoryId,
             title,
+            youtube,
             teaser,
             ingress,
             body,
