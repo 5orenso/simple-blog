@@ -59,8 +59,8 @@ function youtubeVideo(url) {
     });
     // return youtubeVideo;
     return (<>
-        <div class="embed-responsive embed-responsive-16by9">
-            <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/${youtubeVideo}?rel=0" allowfullscreen></iframe>
+        <div class='embed-responsive embed-responsive-16by9'>
+            <iframe class='embed-responsive-item' src={`https://www.youtube.com/embed/${youtubeVideo}?rel=0`} allowfullscreen></iframe>
         </div>
     </>);
 }
@@ -125,8 +125,9 @@ class WebTvView extends Component {
 
     selectVideo = (e) => {
         const { id } = e.target.closest('.article').dataset;
+        const { articleStore } = this.props.stores;
         const { artlistWebtv } = articleStore;
-        const viewArticle = artlistWebtv.find((article) => article.id === id);
+        const viewArticle = artlistWebtv.find((article) => article.id === parseInt(id, 10));
         this.setState({
             viewArticle,
         });
@@ -146,9 +147,9 @@ class WebTvView extends Component {
             <div class='row'>
                 <div class='w-100 d-flex flex-row justify-content-center'>
                     {viewArticle ? <>
-                        Spinner
-                    </> : <>
                         {youtubeVideo(viewArticle.youtube)}
+                    </> : <>
+                        Spinner
                     </>}
                     {/* <iframe
                         width="800"
