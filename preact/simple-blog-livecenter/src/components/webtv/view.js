@@ -77,13 +77,13 @@ class WebTvView extends Component {
         this.updateTimer;
     }
 
-    loadAll = async (setLast) => {
-        const { categoryWebtv, categoryWebtvId } = this.props;
+    loadAll = async (setLast, props = this.props) => {
+        const { categoryWebtv, categoryWebtvId } = props;
         const { articleStore } = this.props.stores;
         await articleStore.loadArtlist({ limit: 10, category: categoryWebtv, key: 'webtv' });
 
         if (setLast) {
-            this.setLastVideo();
+            this.setLastVideo(props);
         }
 
         clearTimeout(this.updateTimer);
@@ -133,8 +133,8 @@ class WebTvView extends Component {
         });
     }
 
-    setLastVideo = () => {
-        const { artid } = this.props;
+    setLastVideo = (props) => {
+        const { artid } = props;
         const { articleStore } = this.props.stores;
         const { artlistWebtv } = articleStore;
         let viewArticle;
@@ -149,7 +149,13 @@ class WebTvView extends Component {
     }
 
     componentDidMount() {
-        this.loadAll(true);
+        this.loadAll(true, props);
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.artid !== this.props.artid) {
+            this.loadAll(true, nextProps);
+        }
     }
 
     render() {
