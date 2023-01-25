@@ -64,9 +64,7 @@ class Start extends Component {
         const { appState } = this.props.stores;
         appState.setMainViewCallback(this.scrollToMainContainer);
         const { page, artid } = props;
-        if (page) {
-            appState.setMainView(page);
-        }
+        appState.setMainView(page || 'webcam');
     }
 
     componentDidMount() {
@@ -81,7 +79,7 @@ class Start extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.page !== this.props.page) {
+        if (nextProps.page !== this.props.page || nextProps.artid !== this.props.artid) {
             this.loadAll(nextProps);
         }
     }
@@ -128,7 +126,7 @@ class Start extends Component {
                         <div class='w-25 d-flex align-items-center justify-content-start'>&nbsp;</div>
 
                         <div class='w-50 d-flex justify-content-center align-items-center'>
-                            <img src={`${isDevelopment ? '' : '/preact/simple-blog-livecenter'}/assets/images/logo.png`} alt='logo' class='img-fluid' style='max-height: 100px;' />
+                            <a href='/'><img src={`${isDevelopment ? '' : '/preact/simple-blog-livecenter'}/assets/images/logo.png`} alt='logo' class='img-fluid' style='max-height: 100px;' /></a>
                         </div>
 
                         <div class='w-25 d-flex align-items-center justify-content-end position-relative'>
