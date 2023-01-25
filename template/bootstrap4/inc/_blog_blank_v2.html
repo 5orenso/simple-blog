@@ -12,7 +12,8 @@
 
 {{ category.headerDetail|safe }}
 
-{% if isPhoto || isPhotoCategory %}
+{% if article.catRef.showFullWidth %}
+{% elseif isPhoto || isPhotoCategory %}
 <div class="container-fluid">
     <div class="row">
         <main class="col-sm-12 col-md-12 blog-main-full">
@@ -44,9 +45,12 @@
 </div>
 {% endif %}
 
+{% if article.catRef.showFullWidth %}
+{% else %}
 </main>
 </div>
 </div>
+{% endif %}
 
 <div
     class="{%- if article.catRef.showFullWidth -%}container-fluid{%- else -%}container{% endif %} blog-post-container"
@@ -57,9 +61,9 @@
         {% if article.catRef.showOnlyBody %}
         {% else %}
             {% if article.catRef.hideAuthorInfo %}
-                <div class="col-lg-12 blog-main">
+                <div class="col-lg-12 blog-main {% if article.catRef.showFullWidth %} p-0{% endif %}">
             {% else %}
-                <div class="col-lg-8 blog-main">
+                <div class="col-lg-8 blog-main {% if article.catRef.showFullWidth %} p-0{% endif %}">
             {% endif %}
                 <div class="blog-post">
                     {% if article.catRef.hideDetailTitle %}
@@ -169,9 +173,9 @@
         {% endif %}
 
         {% if !category.hideArticleList %}
-            <div class="col-lg-8 blog-main">
+            <div class="col-lg-8 blog-main {% if article.catRef.showFullWidth %} p-0{% endif %}">
         {% else %}
-            <div class="col-lg-12 blog-main">
+            <div class="col-lg-12 blog-main {% if article.catRef.showFullWidth %} p-0{% endif %}">
         {% endif %}
             <div class="blog-post position-relative">
                 {% for widget in ['helloworld', 'clock', 'booking', 'form', 'sheet', 'poll', 'gallery', 'weather', 'map', 'rating', 'related', 'cookies', 'livecenter'] %}

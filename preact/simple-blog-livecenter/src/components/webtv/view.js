@@ -77,14 +77,14 @@ class WebTvView extends Component {
         this.updateTimer;
     }
 
-    loadAll = async () => {
+    loadAll = async (setLast) => {
         const { categoryWebtv, categoryWebtvId } = this.props;
         const { articleStore } = this.props.stores;
         await articleStore.loadArtlist({ limit: 10, category: categoryWebtv, key: 'webtv' });
-        const { artlistWebtv } = articleStore;
-        this.setState({
-            viewArticle: artlistWebtv[0],
-        });
+
+        if (setLast) {
+            this.setLastVideo();
+        }
 
         clearTimeout(this.updateTimer);
         this.updateTimer = setTimeout(() => {
@@ -133,8 +133,17 @@ class WebTvView extends Component {
         });
     }
 
+    setLastVideo = () => {
+        const { articleStore } = this.props.stores;
+        const { artlistWebtv } = articleStore;
+        const viewArticle = artlistWebtv[0];
+        this.setState({
+            viewArticle,
+        });
+    }
+
     componentDidMount() {
-        this.loadAll();
+        this.loadAll(true);
     }
 
     render() {
@@ -177,9 +186,17 @@ class WebTvView extends Component {
                         ref={c => this.scrollerRef = c}
                     >
                         {artlistWebtv.map(art => {
+                            const dateDiff = util.dateDiff(new Date(), art.updatedDate || art.published);
+                            const dateEndDiff = util.dateDiff(new Date(), art.updatedDate || art.published);
+                            const inFuture = dateDiff.seconds > 0;
+                            const isThisWeek = dateDiff.days < 7;
+                            const endInFuture = dateEndDiff.seconds > 0;
+                            const isLiveNow = !inFuture && endInFuture;
+                            const hasBeen = !inFuture && !endInFuture;
+
                             return(<>
                                 <div
-                                    class='col-5 col-md-4 col-lg-3 clearfix p-0'
+                                    class='col-5 col-md-4 col-lg-3 clearfix p-0 mr-2'
                                     style={`
                                         line-height: 1.1em;
                                     `}
@@ -198,16 +215,47 @@ class WebTvView extends Component {
                                         data-id={art.id}
                                     >
                                         <div class='d-flex flex-row flex-nowrap h-100 w-100'>
-                                            <div class='' style='width: 40%;'>
+                                            <div
+                                                class=''
+                                                style='
+                                                    width: 40%;
+                                                    background-color: rgb(29, 138, 146);
+                                                '
+                                            >
                                                 <img src={youtubeThumb(art.youtube)} class='img-fluid' /><br />
                                             </div>
-                                            <div class='pl-2' style='width: 60%;'>
+                                            <div
+                                                class='pl-2'
+                                                style='
+                                                    width: 60%;
+                                                    color: rgb(55, 75, 80);
+                                                    background-color: rgb(87, 190, 199);
+                                                '
+                                            >
                                                 <small>
                                                     <strong>
                                                         {art.title}<br />
                                                     </strong>
                                                     {art.ingress}<br />
                                                     {/* {youtubeVideo(art.youtube)}<br /> */}
+                                                    <small>
+                                                {isThisWeek ? <>
+                                                    {util.formatDate(art.updatedDate || art.published, {
+                                                        locale: 'nb',
+                                                        hour: '2-digit',
+                                                        minute: '2-digit',
+                                                        weekday: 'short',
+                                                    }, true)}
+                                                </> : <>
+                                                    {util.formatDate(art.updatedDate || art.published, {
+                                                        locale: 'nb',
+                                                        hour: '2-digit',
+                                                        minute: '2-digit',
+                                                        day: 'numeric',
+                                                        month: 'short',
+                                                    }, true)}
+                                                </>}
+                                            </small>
                                                 </small>
                                             </div>
                                         </div>
