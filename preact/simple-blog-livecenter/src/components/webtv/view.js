@@ -149,7 +149,7 @@ class WebTvView extends Component {
     }
 
     componentDidMount() {
-        this.loadAll(true, props);
+        this.loadAll(true, this.props);
     }
 
     componentWillReceiveProps(nextProps) {
