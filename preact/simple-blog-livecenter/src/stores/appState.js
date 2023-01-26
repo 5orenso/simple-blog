@@ -360,9 +360,12 @@ class AppState {
     }
 
     @action
-    chooseCheckpoint(e) {
-        const { id } = e.target.closest('button').dataset;
-        const cpId = parseInt(id, 10);
+    chooseCheckpoint(e, checkpoint) {
+        let id;
+        if (e) {
+            id = e.target.closest('button').dataset.id;
+        }
+        const cpId = parseInt(checkpoint || id, 10);
         const currentCheckpoint = this.checkpoints.find(c => c.id === cpId);
         this.checkpoint = cpId;
         this.currentCheckpoint = currentCheckpoint;

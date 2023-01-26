@@ -23,7 +23,8 @@ class WebTv extends Component {
         const { mainView } = appState;
 
         return (<>
-            <button type='button' class={`btn ${mainView === 'webtv' ? 'bg-live-dark text-live-light' : 'bg-live-light text-live-dark'} mx-1 mt-1`} onClick={this.setMainView}>Web TV</button>
+            {/* <button type='button' class={`btn ${mainView === 'webtv' ? 'bg-live-dark text-live-light' : 'bg-live-light text-live-dark'} mx-1 mt-1`} onClick={this.setMainView}>Web TV</button> */}
+            <a href='/webtv' class={`btn ${mainView === 'webtv' ? 'bg-live-dark text-live-light' : 'bg-live-light text-live-dark'} mx-1 mt-1`}>Web TV</a>
         </>);
     }
 }

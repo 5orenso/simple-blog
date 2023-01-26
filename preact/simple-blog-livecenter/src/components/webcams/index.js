@@ -43,6 +43,31 @@ class Webcams extends Component {
         });
     }
 
+    inputCheckpoint = (props, toggleButton) => {
+        const { appState } = this.props.stores;
+        appState.chooseCheckpoint(null, props.artid);
+        if (toggleButton) {
+            const { showList } = this.state;
+            this.setState({
+                showList: !showList,
+            });
+        }
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.page === 'webcam') {
+            if (nextProps.artid !== this.props.artid) {
+                this.inputCheckpoint(nextProps, true)
+            }
+        }
+    }
+
+    componentDidMount() {
+        if (this.props.page === 'webcam') {
+            this.inputCheckpoint(this.props);
+        }
+    }
+
     render() {
         const { showList } = this.state;
         const { appState } = this.props.stores;
@@ -56,7 +81,8 @@ class Webcams extends Component {
             {showList && <div class='w-100 d-flex flex-column ml-3 mb-3'>
                 {checkpoints && checkpoints.map(cp => {
                     return <>
-                        <button type='button' class={`btn btn-link p-0 text-left ${checkpoint === cp.id ? 'text-primary' : 'text-white'}`} data-id={cp.id} onClick={this.chooseCheckpoint}><nobr>{cp.name}</nobr></button>
+                        {/* <button type='button' class={`btn btn-link p-0 text-left ${checkpoint === cp.id ? 'text-primary' : 'text-white'}`} data-id={cp.id} onClick={this.chooseCheckpoint}><nobr>{cp.name}</nobr></button> */}
+                        <a href={`/webcam/${cp.id}`} class={`btn btn-link p-0 text-left ${checkpoint === cp.id ? 'text-primary' : 'text-white'}`}><nobr>{cp.name}</nobr></a>
                     </>;
                 })}
             </div>}
