@@ -137,7 +137,7 @@ class Program extends Component {
                 </button>
             </>}
 
-            <h5 class='border-bottom pb-2'>Spør våre eksperter</h5>
+            <h3 class='border-bottom pb-2'>Spør våre eksperter</h3>
 
             {message && <>
                 <div class='alert alert-success' role='alert'>

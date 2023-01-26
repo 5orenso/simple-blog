@@ -144,7 +144,7 @@ class Live extends Component {
                     </button>
                 </>}
             </>}
-            <h5 class='border-bottom pb-2'>Siste nytt</h5>
+            <h3 class='border-bottom pb-2'>Siste nytt</h3>
             {/* {JSON.stringify(artlist)} */}
 
             {isAdmin && <>

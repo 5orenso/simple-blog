@@ -85,7 +85,7 @@ class Start extends Component {
     }
 
     render() {
-        const { artid } = this.props;
+        const { artid, bib } = this.props;
         const { sessionid, showMenu } = this.state;
         const { appState } = this.props.stores;
         const { mainView, currentEmail, isAdmin, isExpert, isDevelopment } = appState;
