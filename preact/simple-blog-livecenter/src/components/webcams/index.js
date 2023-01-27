@@ -4,12 +4,24 @@ import { observer } from 'mobx-preact';
 import { Text, Localizer } from 'preact-i18n';
 import Markdown from 'preact-markdown';
 
+function scrollTo(element, top = 0, left = 0) {
+    // element.scrollTop = to;
+    if (element) {
+        element.scrollIntoView({
+            behavior: "smooth",
+            block: "center",
+            inline: "start",
+        });
+    }
+}
+
 @observer
 class Webcams extends Component {
   	constructor(props) {
         super(props);
         this.state = {
         };
+        this.listContainer = null;
     }
 
     setMainView = () => {
@@ -38,6 +50,9 @@ class Webcams extends Component {
 
     toggleList = (e) => {
         const { showList } = this.state;
+        if (!showList) {
+            scrollTo(this.listContainer);
+        }
         this.setState({
             showList: !showList,
         });
@@ -74,18 +89,24 @@ class Webcams extends Component {
         const { mainView, checkpoints, checkpoint } = appState;
 
         return (<>
-            <button type='button' class={`btn ${mainView === 'webcam' ? 'bg-live-dark text-live-light' : 'bg-live-light text-live-dark'} mx-1 mt-1`} onClick={this.toggleList}>
+            <button type='button' class={`btn ${mainView === 'webcam' ? 'bg-live-dark text-live-light' : 'bg-live-light text-live-dark'} mx-1 mt-1`} onClick={this.toggleList}
+                ref={c => this.listContainer = c}
+            >
                 Webcam <i class='fas fa-bars' />
             </button>
 
-            {showList && <div class='w-100 d-flex flex-column ml-3 mb-3'>
-                {checkpoints && checkpoints.map(cp => {
-                    return <>
-                        {/* <button type='button' class={`btn btn-link p-0 text-left ${checkpoint === cp.id ? 'text-primary' : 'text-white'}`} data-id={cp.id} onClick={this.chooseCheckpoint}><nobr>{cp.name}</nobr></button> */}
-                        <a href={`/webcam/${cp.id}`} class={`btn btn-link p-0 text-left ${checkpoint === cp.id ? 'text-primary' : 'text-white'}`}><nobr>{cp.name}</nobr></a>
-                    </>;
-                })}
-            </div>}
+            {showList && <>
+                <div
+                    class='w-100 d-flex flex-column ml-3 mb-3'
+                >
+                    {checkpoints && checkpoints.map(cp => {
+                        return <>
+                            {/* <button type='button' class={`btn btn-link p-0 text-left ${checkpoint === cp.id ? 'text-primary' : 'text-white'}`} data-id={cp.id} onClick={this.chooseCheckpoint}><nobr>{cp.name}</nobr></button> */}
+                            <a href={`/webcam/${cp.id}`} class={`btn btn-link p-0 text-left ${checkpoint === cp.id ? 'text-primary' : 'text-dark'}`}><nobr>{cp.name}</nobr></a>
+                        </>;
+                    })}
+                </div>
+            </>}
         </>);
     }
 }

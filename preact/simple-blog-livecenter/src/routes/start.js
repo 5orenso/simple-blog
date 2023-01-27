@@ -211,7 +211,7 @@ class Start extends Component {
                     >
                         <div class='row'>
                             <div
-                                class='col-12 col-lg-12 py-2'
+                                class='col-12 col-lg-12 py-0'
                                 ref={c => this.mainContainer = c}
                             >
                                 {mainView === 'direktesport' && <DirekteSportView stores={this.props.stores} {...this.props} />}
@@ -220,7 +220,13 @@ class Start extends Component {
                                 {mainView === 'tracking' && <TrackingView stores={this.props.stores} {...this.props} />}
                                 {(!mainView || mainView === 'webcam') && <Webcam stores={this.props.stores} {...this.props} />}
                             </div>
-                            <div class='col-12 col-lg-12 d-flex flex-wrap flex-row align-items-center justify-content-center pb-2'>
+
+                        </div>
+                    </div>
+
+                    <div class='col-12'>
+                        <div class='row'>
+                            <div class='col-12 col-lg-12 d-flex flex-wrap flex-row align-items-center justify-content-center pt-2 pb-1'>
                                 <Webcams stores={this.props.stores} mainView={mainView} {...this.props} />
                                 <WebTv stores={this.props.stores} mainView={mainView} {...this.props} />
                                 <DirekteSport stores={this.props.stores} mainView={mainView} {...this.props} />

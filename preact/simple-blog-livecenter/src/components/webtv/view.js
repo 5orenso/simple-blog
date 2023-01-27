@@ -4,6 +4,7 @@ import { observer } from 'mobx-preact';
 import { Text, Localizer } from 'preact-i18n';
 import Markdown from 'preact-markdown';
 import linkState from 'linkstate';
+import { route } from 'preact-router';
 
 const RELOAD_INTERVAL_IN_SEC = 60;
 const MAX_ARTICLE_TO_SHOW = 50;
@@ -53,8 +54,6 @@ function youtubeVideo(url) {
     }
     // const regexp = /(^|[\s\t\n]+)https*:\/\/(www\.)*youtube\.com\/(.*?v=([^&\s]+)(&[^\s]+)*)/gi;
     const youtubeVideo = url.replace(youtubeRegex, (match, p0, p1, p2, p3, p4) => {
-        console.log('match', match);
-        console.log({ p0, p1, p2, p3, p4 });
         return p3;
     });
     // return youtubeVideo;
@@ -131,6 +130,7 @@ class WebTvView extends Component {
         this.setState({
             viewArticle,
         });
+        route(`/webtv/${viewArticle.id}`);
     }
 
     setLastVideo = (props) => {
@@ -170,7 +170,11 @@ class WebTvView extends Component {
                     {viewArticle ? <>
                         {youtubeVideo(viewArticle.youtube)}
                     </> : <>
-                        Spinner
+                        <div class='w-100 h-100 d-flex flex-row justify-content-center align-items-center'>
+                            <div class='spinner-border text-light' role='status' style='width: 3rem; height: 3rem;'>
+                                <span class='sr-only'>Loading...</span>
+                            </div>
+                        </div>
                     </>}
                     {/* <iframe
                         width="800"

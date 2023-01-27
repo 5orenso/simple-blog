@@ -5,6 +5,16 @@ import { Text, Localizer } from 'preact-i18n';
 import Markdown from 'preact-markdown';
 import linkState from 'linkstate';
 
+const MARKDOWN_OPTIONS = {
+	pedantic: false,
+	gfm: true,
+	breaks: true,
+	sanitize: false,
+	smartLists: true,
+	smartypants: true,
+	xhtml: true,
+};
+
 @observer
 class Program extends Component {
   	constructor(props) {
@@ -64,7 +74,7 @@ class Program extends Component {
         const { articleStore } = this.props.stores;
         const { categoryProgram, categoryProgramId } = this.props;
         await articleStore.loadArtlist({ limit: 50, category: categoryProgram, key: 'program', sort: 'date' });
-        this.scrollToNextProgram()
+        this.scrollToNextProgram();
     }
 
     scrollToNextProgram = () => {
@@ -274,8 +284,7 @@ class Program extends Component {
                                             `}
                                         >
                                             <small>
-                                                <strong>{program.title}</strong><br />
-                                                {program.body}
+                                                <Markdown markdown={`<strong>${program.title}</strong><br />${program.ingress || program.body || ''}`} markedOpts={MARKDOWN_OPTIONS} />
                                             </small>
                                         </div>
                                     </div>
