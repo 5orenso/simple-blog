@@ -193,7 +193,7 @@ class AppState {
     @observable checkpoints = [
         {
             id: 1,
-            name: 'CP Røros',
+            name: 'Røros',
             lat: 62.57727,
             lon: 11.39082,
             altitude: 640,
@@ -201,7 +201,7 @@ class AppState {
         },
         {
             id: 2,
-            name: 'CP Tufsingdalen',
+            name: 'Tufsingdalen',
             lat: 62.28067,
             lon: 11.73972,
             altitude: 608,
@@ -209,7 +209,7 @@ class AppState {
         },
         {
             id: 3,
-            name: 'CP Drevsjø',
+            name: 'Drevsjø',
             lat: 61.89063,
             lon: 12.03370,
             altitude: 691.7,
@@ -217,7 +217,7 @@ class AppState {
         },
         {
             id: 4,
-            name: 'CP Flendalen / Trysil',
+            name: 'Flendalen / Trysil',
             lat: 61.50944,
             lon: 12.24718,
             altitude: 620,
@@ -225,7 +225,7 @@ class AppState {
         },
         {
             id: 5,
-            name: 'CP Søvollen',
+            name: 'Søvollen',
             lat: 62.00398,
             lon: 11.17100,
             altitude: 801.7,
@@ -233,7 +233,7 @@ class AppState {
         },
         {
             id: 6,
-            name: 'CP Tynset bru',
+            name: 'Tynset bru',
             lat: 62.28152,
             lon: 10.76780,
             altitude: 500,
@@ -241,7 +241,7 @@ class AppState {
         },
         {
             id: 7,
-            name: 'CP Orkelbogen',
+            name: 'Orkelbogen',
             lat: 62.47445,
             lon: 10.34696,
             altitude: 720,
@@ -249,7 +249,7 @@ class AppState {
         },
         {
             id: 8,
-            name: 'CP Tolga',
+            name: 'Tolga',
             lat: 62.40534,
             lon: 11.00165,
             altitude: 544,
@@ -257,7 +257,7 @@ class AppState {
         },
         {
             id: 9,
-            name: 'CP MÅL',
+            name: 'MÅL',
             lat: 62.57727,
             lon: 11.39082,
             altitude: 640,

@@ -190,7 +190,7 @@ class WebTvView extends Component {
             </div>
             <div class='row position-relative'>
 
-                <div class='w-100 position-relative mt-3'>
+                <div class='w-100 position-relative mt-3 mb-3'>
                     <div
                         class='d-flex flex-row flex-nowrap no-scrollbar'
                         style={`
@@ -232,7 +232,7 @@ class WebTvView extends Component {
                                     >
                                         <div class='d-flex flex-row flex-nowrap h-100 w-100'>
                                             <div
-                                                class='bg-live-dark text-live-light'
+                                                class='bg-live-dark text-live-light rounded-left'
                                                 style='
                                                     width: 40%;
                                                 '
@@ -240,7 +240,7 @@ class WebTvView extends Component {
                                                 <img src={youtubeThumb(art.youtube)} class='img-fluid' /><br />
                                             </div>
                                             <div
-                                                class='pl-2 bg-live-light text-live-dark'
+                                                class='pl-2 bg-live-light text-live-dark rounded-right'
                                                 style='
                                                     width: 60%;
                                                     overflow: hidden;
