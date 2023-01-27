@@ -41,6 +41,10 @@ class ArticleStore extends StoreModel {
 
     @observable artlistWebtv = [];
 
+    @observable artlistPhoto = [];
+
+    @observable artlistDirektesport = [];
+
     @observable artlistQa = [];
 
     @observable artlistProgram = [];
@@ -67,6 +71,10 @@ class ArticleStore extends StoreModel {
                 this.updateKeyValue('artlistLive', response.artlist);
             } else if (key === 'webtv') {
                 this.updateKeyValue('artlistWebtv', response.artlist);
+            } else if (key === 'photo') {
+                this.updateKeyValue('artlistPhoto', response.artlist);
+            } else if (key === 'direktesport') {
+                this.updateKeyValue('artlistDirektesport', response.artlist);
             } else if (key === 'qa') {
                 this.updateKeyValue('artlistQa', response.artlist);
             } else if (key === 'program') {

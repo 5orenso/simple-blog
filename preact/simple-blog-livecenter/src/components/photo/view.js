@@ -9,14 +9,11 @@ import { route } from 'preact-router';
 const RELOAD_INTERVAL_IN_SEC = 60;
 const MAX_ARTICLE_TO_SHOW = 50;
 
-function amediaVideoThumb(art, props, size = '150x') {
-    if (typeof art !== 'object') {
+function articleImg(img, props, size = '150x') {
+    if (typeof img !== 'object') {
         return undefined;
     }
-    if (!art.img || !art.img[0]) {
-        return undefined;
-    }
-    const imgSrc = `${props.imageDomain}/${size}/${props.imageDomainPath}/${art.img[0].src}`;
+    const imgSrc = `${props.imageDomain}/${size}/${props.imageDomainPath}/${img.src}`;
     return imgSrc;
     // https://litt.no/150x/litt.no/photo/drakkar-er-et-utrolig-flott-motiv/simpleBlog-0af2d2c0-2dd8-49c8-bbc1-24d2542c0407.jpg
     // https://litt.no/photo/drakkar-er-et-utrolig-flott-motiv/simpleBlog-0af2d2c0-2dd8-49c8-bbc1-24d2542c0407.jpg
@@ -28,57 +25,52 @@ function amediaVideoThumb(art, props, size = '150x') {
     //l3video.lemonwhale.com/i/i-95adc986-dda5-40e5-8810-91baaaf96487.jpg
 }
 
-function amediaVideoPlus(art, props, size = '150x') {
-    if (!art || !art.url) {
+function articleCarousel(art, props) {
+    if (!art) {
         return '';
     }
-    if (art.url.match(/www.direktesport.no\/event/)) {
-        return <>
-            <i class='fas fa-plus-square position-absolute' style='bottom: 5px; right: 5px; font-size: 2.0em;' />
-        </>;
-    }
-}
 
-function amediaVideo(art, props) {
-    if (!art || !art.url) {
-        return '';
-    }
-    if (art.url.match(/www.direktesport.no\/event/)) {
-        return (<>
+    return (<>
+        <div class='w-100 position-relative overflow-auto'>
             <div
-                class='embed-responsive embed-responsive-16by9 d-flex justify-content-center align-items-center position-relative'
+                class='d-flex flex-row flex-nowrap no-scrollbar'
                 style={`
-                    height: 800px;
-                    background-image: url('${amediaVideoThumb(art, props, '800x')}');
-                    background-repeat: no-repeat;
-                    background-position: center;
-                    background-size: cover;
+                    overflow-x: auto;
+                    overflow-y: auto;
+                    scroll-snap-type: x mandatory;
                 `}
             >
-                <div class='position-absolute w-100 h-100 bg-dark' style='top: 0; left: 0; opacity: 0.7;'>&nbsp;</div>
-                <div class='position-absolute w-100 h-100' style='top: 0; left: 0;'>
-                    <div class='d-flex flex-column justify-content-center align-items-center h-100'>
-                        <div class='text-center' style='font-size: 2.5em;'>
-                            <i class='fas fa-plus-square mr-3' />
-                            Dette er en pluss video hos Direktesport.no.<br />
-                            <a href={art.url} target='_blank' rel='noopener noreferrer' class='text-live-light stretched-link'>
-                                Klikk her for å gå videre...
-                            </a>
+                {art.img.map((img, idx) => {
+                    return(<>
+                        <div
+                            class='w-100'
+                            style={`
+                            `}
+                        >
+                            <div
+                                class={`w-100 h-100 d-flex justify-content-center align-items-center position-relative p-1`}
+                                style={`
+                                    scroll-snap-align: start;
+                                    flex-wrap: wrap;
+                                `}
+                                onTouchstart={(e) => { e.stopPropagation(); }}
+                                onTouchend={(e) => { e.stopPropagation(); }}
+                                onTouchmove={(e) => { e.stopPropagation(); }}
+                            >
+                                <div class='d-flex flex-row flex-nowrap h-100 w-100 align-items-center overflow-hidden'>
+                                    <img src={articleImg(img, props, '1024x')} class='' style='max-width: 100vw;' />
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
+                    </>);
+                })}
             </div>
-        </>)
-    }
-    return (<>
-        <div class='embed-responsive embed-responsive-16by9'>
-            <iframe class='embed-responsive-item' src={`${art.url}`} allowfullscreen></iframe>
         </div>
     </>);
 }
 
 @observer
-class DirektesportView extends Component {
+class PhotoView extends Component {
   	constructor(props) {
         super(props);
         this.state = {
@@ -90,12 +82,12 @@ class DirektesportView extends Component {
     }
 
     loadAll = async (setLast, props = this.props) => {
-        const { categoryDirektesport, categoryDirektesportId } = props;
+        const { categoryPhoto, categoryPhotoId } = props;
         const { articleStore } = this.props.stores;
-        await articleStore.loadArtlist({ limit: 10, category: categoryDirektesport, key: 'direktesport' });
+        await articleStore.loadArtlist({ limit: 10, category: categoryPhoto, key: 'photo' });
 
         if (setLast) {
-            this.setLastVideo(props);
+            this.setLastPhoto(props);
         }
 
         clearTimeout(this.updateTimer);
@@ -106,14 +98,14 @@ class DirektesportView extends Component {
 
     createArticle = async () => {
         const { newArticle } = this.state;
-        const { categoryDirektesport, categoryDirektesportId } = this.props;
+        const { categoryPhoto, categoryPhotoId } = this.props;
         const { appState, articleStore } = this.props.stores;
         const { currentEmail } = appState;
 
         await articleStore.createArticle({
             author: currentEmail,
-            category: categoryDirektesport,
-            cateogryId: categoryDirektesportId,
+            category: categoryPhoto,
+            cateogryId: categoryPhotoId,
             status: 2,
             ...newArticle,
         });
@@ -138,23 +130,23 @@ class DirektesportView extends Component {
     selectVideo = (e) => {
         const { id } = e.target.closest('.article').dataset;
         const { articleStore } = this.props.stores;
-        const { artlistDirektesport } = articleStore;
-        const viewArticle = artlistDirektesport.find((article) => article.id === parseInt(id, 10));
+        const { artlistPhoto } = articleStore;
+        const viewArticle = artlistPhoto.find((article) => article.id === parseInt(id, 10));
         this.setState({
             viewArticle,
         });
-        route(`/direktesport/${viewArticle.id}`);
+        route(`/photo/${viewArticle.id}`);
     }
 
-    setLastVideo = (props) => {
+    setLastPhoto = (props) => {
         const { artid } = props;
         const { articleStore } = this.props.stores;
-        const { artlistDirektesport } = articleStore;
+        const { artlistPhoto } = articleStore;
         let viewArticle;
         if (artid) {
-            viewArticle = artlistDirektesport.find((article) => article.id === parseInt(artid, 10));
+            viewArticle = artlistPhoto.find((article) => article.id === parseInt(artid, 10));
         } else {
-            viewArticle = artlistDirektesport[0];
+            viewArticle = artlistPhoto[0];
         }
         this.setState({
             viewArticle,
@@ -175,13 +167,13 @@ class DirektesportView extends Component {
         const { height, heights, isExpanded, isOverflow, newArticle, showInput, showMore, viewArticle } = this.state;
         const { appState, articleStore } = this.props.stores;
         const { currentEmail, isAdmin, isExpert } = appState;
-        const { artlistDirektesport } = articleStore;
+        const { artlistPhoto } = articleStore;
 
         return (<>
             <div class='row'>
-                <div class='w-100 d-flex flex-row justify-content-center'>
+                <div class='w-100'>
                     {viewArticle ? <>
-                        {amediaVideo(viewArticle, this.props)}
+                        {articleCarousel(viewArticle, this.props)}
                     </> : <>
                         <div class='w-100 h-100 d-flex flex-row justify-content-center align-items-center'>
                             <div class='spinner-border text-light' role='status' style='width: 3rem; height: 3rem;'>
@@ -214,7 +206,7 @@ class DirektesportView extends Component {
                         onScroll={this.scrollBoxes}
                         ref={c => this.scrollerRef = c}
                     >
-                        {artlistDirektesport.map(art => {
+                        {artlistPhoto.map(art => {
                             const dateDiff = util.dateDiff(new Date(), art.updatedDate || art.published);
                             const dateEndDiff = util.dateDiff(new Date(), art.updatedDate || art.published);
                             const inFuture = dateDiff.seconds > 0;
@@ -245,13 +237,12 @@ class DirektesportView extends Component {
                                     >
                                         <div class='d-flex flex-row flex-nowrap h-100 w-100'>
                                             <div
-                                                class='bg-live-dark text-live-light rounded-left position-relative'
+                                                class='bg-live-dark text-live-light rounded-left'
                                                 style='
                                                     width: 40%;
                                                 '
                                             >
-                                                <img src={amediaVideoThumb(art, this.props)} class='img-fluid' /><br />
-                                                {amediaVideoPlus(art, this.props)}
+                                                {art.img && art.img[0] && <img src={articleImg(art.img[0], this.props, '150x')} class='img-fluid' />}<br />
                                             </div>
                                             <div
                                                 class='pl-2 bg-live-light text-live-dark rounded-right'
@@ -293,7 +284,7 @@ class DirektesportView extends Component {
                                                     </small>
                                                     {/* {isAdmin && <>
                                                         <br />
-                                                        <a href={`/#/direktesport/${art.id}`} native target='_blank'>&raquo; Link</a>
+                                                        <a href={`/#/webtv/${art.id}`} native target='_blank'>&raquo; Link</a>
                                                     </>} */}
                                                 </small>
                                             </div>
@@ -304,69 +295,10 @@ class DirektesportView extends Component {
                         })}
                     </div>
                 </div>
-
-                {isAdmin && <>
-                    {showInput ? <>
-                        <button type='button' class='btn btn-sm btn-link position-absolute' style='top: 10px; right: 0px; z-index: 10000;' onClick={this.toggleInput}>
-                            <i class='fas fa-times'></i> Avbryt
-                        </button>
-                    </> : <>
-                        <button type='button' class='btn btn-sm btn-primary position-absolute' style='top: 10px; right: 0px; z-index: 10000;' onClick={this.toggleInput}>
-                            <i class='fas fa-plus'></i> Ny video
-                        </button>
-                    </>}
-                </>}
-
             </div>
 
-            {isAdmin && <>
-                <div class='row'>
-                    {showInput && <>
-                        <div class='d-flex flex-column justify-content-start overflow-auto mb-5 w-100'>
-                            <div class='bg-primary text-white px-3 py-1'>
-                                <h5>Legg til video</h5>
-                            </div>
-                            <div class='form-group'>
-                                <label for='tittelInput'>Tittel</label>
-                                <input
-                                    type='text'
-                                    class='form-control'
-                                    id='tittelInput'
-                                    placeholder='Fin tittel...'
-                                    onInput={linkState(this, 'newArticle.title')}
-                                    value={newArticle.title}
-                                />
-                            </div>
-                            <div class='form-group'>
-                                <label for='youtubeInput'>Youtube</label>
-                                <input
-                                    type='text'
-                                    class='form-control'
-                                    id='youtubeInput'
-                                    placeholder='Youtube link...'
-                                    onInput={linkState(this, 'newArticle.youtube')}
-                                    value={newArticle.youtube}
-                                />
-                            </div>
-                            <div class='form-group'>
-                                <label for='ingressInput'>Beskrivelse</label>
-                                <textarea
-                                    class='form-control'
-                                    id='ingressInput'
-                                    rows='3'
-                                    onInput={linkState(this, 'newArticle.ingress')}
-                                    value={newArticle.ingress}
-                                />
-                            </div>
-                            <button type='button' class='btn btn-block btn-primary' onClick={this.createArticle}>
-                                <i class='fas fa-save'></i> Lagre
-                            </button>
-                        </div>
-                    </>}
-                </div>
-            </>}
         </>);
     }
 }
 
-export default DirektesportView;
+export default PhotoView;

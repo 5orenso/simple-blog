@@ -277,10 +277,10 @@ class WebTvView extends Component {
                                                             }, true)}
                                                         </>}
                                                     </small>
-                                                    {isAdmin && <>
+                                                    {/* {isAdmin && <>
                                                         <br />
                                                         <a href={`/#/webtv/${art.id}`} native target='_blank'>&raquo; Link</a>
-                                                    </>}
+                                                    </>} */}
                                                 </small>
                                             </div>
                                         </div>

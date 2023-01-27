@@ -13,6 +13,8 @@ import Status from '../components/status/';
 import Webcam from '../components/webcam/';
 import Results from '../components/results/';
 import ResultsView from '../components/results/view';
+import Photo from '../components/photo/';
+import PhotoView from '../components/photo/view';
 import Tracking from '../components/tracking/';
 import TrackingView from '../components/tracking/view';
 import Program from '../components/program/';
@@ -63,8 +65,12 @@ class Start extends Component {
     loadAll = (props = this.props) => {
         const { appState } = this.props.stores;
         appState.setMainViewCallback(this.scrollToMainContainer);
-        const { page, artid } = props;
-        appState.setMainView(page || 'webcam');
+        const { page, artid, showWebcam = true } = props;
+        if (showWebcam) {
+            appState.setMainView(page || 'webcam');
+        } else {
+            appState.setMainView(page || 'webtv');
+        }
     }
 
     componentDidMount() {
@@ -85,7 +91,12 @@ class Start extends Component {
     }
 
     render() {
-        const { artid, bib } = this.props;
+        const {
+            artid,
+            bib,
+            showWebcam = true,
+            showPhoto = true,
+        } = this.props;
         const { sessionid, showMenu } = this.state;
         const { appState } = this.props.stores;
         const { mainView, currentEmail, isAdmin, isExpert, isDevelopment } = appState;
@@ -218,7 +229,8 @@ class Start extends Component {
                                 {mainView === 'webtv' && <WebTvView stores={this.props.stores} {...this.props} />}
                                 {mainView === 'results' && <ResultsView stores={this.props.stores} {...this.props} />}
                                 {mainView === 'tracking' && <TrackingView stores={this.props.stores} {...this.props} />}
-                                {(!mainView || mainView === 'webcam') && <Webcam stores={this.props.stores} {...this.props} />}
+                                {mainView === 'webcam' && <Webcam stores={this.props.stores} {...this.props} />}
+                                {mainView === 'photo' && <PhotoView stores={this.props.stores} {...this.props} />}
                             </div>
 
                         </div>
@@ -227,9 +239,10 @@ class Start extends Component {
                     <div class='col-12'>
                         <div class='row'>
                             <div class='col-12 col-lg-12 d-flex flex-wrap flex-row align-items-center justify-content-center pt-2 pb-1'>
-                                <Webcams stores={this.props.stores} mainView={mainView} {...this.props} />
+                                {showWebcam && <Webcams stores={this.props.stores} mainView={mainView} {...this.props} />}
                                 <WebTv stores={this.props.stores} mainView={mainView} {...this.props} />
                                 <DirekteSport stores={this.props.stores} mainView={mainView} {...this.props} />
+                                {showPhoto && <Photo stores={this.props.stores} mainView={mainView} {...this.props} />}
                                 <Results stores={this.props.stores} mainView={mainView} {...this.props} />
                                 <Tracking stores={this.props.stores} mainView={mainView} {...this.props} />
                             </div>
