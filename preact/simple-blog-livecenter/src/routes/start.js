@@ -95,7 +95,11 @@ class Start extends Component {
             artid,
             bib,
             showWebcam = true,
+            showWebtv = true,
+            showDirektesport = true,
             showPhoto = true,
+            showResults = true,
+            showTracking = true,
         } = this.props;
         const { sessionid, showMenu } = this.state;
         const { appState } = this.props.stores;
@@ -225,12 +229,12 @@ class Start extends Component {
                                 class='col-12 col-lg-12 py-0'
                                 ref={c => this.mainContainer = c}
                             >
-                                {mainView === 'direktesport' && <DirekteSportView stores={this.props.stores} {...this.props} />}
+                                {mainView === 'webcam' && <Webcam stores={this.props.stores} {...this.props} />}
                                 {mainView === 'webtv' && <WebTvView stores={this.props.stores} {...this.props} />}
+                                {mainView === 'direktesport' && <DirekteSportView stores={this.props.stores} {...this.props} />}
+                                {mainView === 'photo' && <PhotoView stores={this.props.stores} {...this.props} />}
                                 {mainView === 'results' && <ResultsView stores={this.props.stores} {...this.props} />}
                                 {mainView === 'tracking' && <TrackingView stores={this.props.stores} {...this.props} />}
-                                {mainView === 'webcam' && <Webcam stores={this.props.stores} {...this.props} />}
-                                {mainView === 'photo' && <PhotoView stores={this.props.stores} {...this.props} />}
                             </div>
 
                         </div>
@@ -240,11 +244,11 @@ class Start extends Component {
                         <div class='row'>
                             <div class='col-12 col-lg-12 d-flex flex-wrap flex-row align-items-center justify-content-center pt-2 pb-1'>
                                 {showWebcam && <Webcams stores={this.props.stores} mainView={mainView} {...this.props} />}
-                                <WebTv stores={this.props.stores} mainView={mainView} {...this.props} />
-                                <DirekteSport stores={this.props.stores} mainView={mainView} {...this.props} />
+                                {showWebtv && <WebTv stores={this.props.stores} mainView={mainView} {...this.props} />}
+                                {showDirektesport && <DirekteSport stores={this.props.stores} mainView={mainView} {...this.props} />}
                                 {showPhoto && <Photo stores={this.props.stores} mainView={mainView} {...this.props} />}
-                                <Results stores={this.props.stores} mainView={mainView} {...this.props} />
-                                <Tracking stores={this.props.stores} mainView={mainView} {...this.props} />
+                                {showResults && <Results stores={this.props.stores} mainView={mainView} {...this.props} />}
+                                {showTracking && <Tracking stores={this.props.stores} mainView={mainView} {...this.props} />}
                             </div>
                         </div>
                     </div>
