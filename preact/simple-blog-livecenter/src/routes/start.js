@@ -243,12 +243,12 @@ class Start extends Component {
                     <div class='col-12'>
                         <div class='row'>
                             <div class='col-12 col-lg-12 d-flex flex-wrap flex-row align-items-center justify-content-center pt-2 pb-1'>
-                                {showWebcam && <Webcams stores={this.props.stores} mainView={mainView} {...this.props} />}
-                                {showWebtv && <WebTv stores={this.props.stores} mainView={mainView} {...this.props} />}
-                                {showDirektesport && <DirekteSport stores={this.props.stores} mainView={mainView} {...this.props} />}
-                                {showPhoto && <Photo stores={this.props.stores} mainView={mainView} {...this.props} />}
-                                {showResults && <Results stores={this.props.stores} mainView={mainView} {...this.props} />}
-                                {showTracking && <Tracking stores={this.props.stores} mainView={mainView} {...this.props} />}
+                                {showWebcam && showWebcam !== 'false' && <Webcams stores={this.props.stores} mainView={mainView} {...this.props} />}
+                                {showWebtv && showWebtv !== 'false' && <WebTv stores={this.props.stores} mainView={mainView} {...this.props} />}
+                                {showDirektesport && showDirektesport !== 'false' && <DirekteSport stores={this.props.stores} mainView={mainView} {...this.props} />}
+                                {showPhoto && showPhoto !== 'false' && <Photo stores={this.props.stores} mainView={mainView} {...this.props} />}
+                                {showResults && showResults !== 'false' && <Results stores={this.props.stores} mainView={mainView} {...this.props} />}
+                                {showTracking && showTracking !== 'false' && <Tracking stores={this.props.stores} mainView={mainView} {...this.props} />}
                             </div>
                         </div>
                     </div>
