@@ -218,7 +218,9 @@ module.exports = async (req, res) => {
         // }
     }
 
-    data.jwtToken = util.makeJwtToken({ readAccess: 1 }, req.config);
+    if (!req.params.status) {
+        data.jwtToken = util.makeJwtToken({ readAccess: 1 }, req.config);
+    }
     data.imageServer = req.config.blog.imageServer;
     data.imagePath = req.config.blog.imagePath;
 
