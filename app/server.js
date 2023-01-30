@@ -67,6 +67,8 @@ app.use(sessions({
 
 app.use(fileUpload());
 
+app.set('etag', false); // turn off
+
 // Include route handlers ------------------------
 const rssRouter = require('./routes/rss');
 
