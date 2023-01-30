@@ -147,7 +147,7 @@ module.exports = async (req, res) => {
     }
 
     query = webUtil.cleanObject(query);
-    const limit = parseInt(req.query.limit || 10, 10);
+    const limit = parseInt(req.params.limit || req.query.limit || 10, 10);
     const skip = parseInt(req.query.offset || 0, 10);
 
     if (req.query.category) {
@@ -162,8 +162,8 @@ module.exports = async (req, res) => {
     if (req.query.idIn && req.query.idIn.length > 0) {
         query.id = { $in: req.query.idIn.split(',').map(id => parseInt(id, 10)) };
     }
-    if (req.query.status) {
-        query.status = req.query.status;
+    if (req.params.status || req.query.status) {
+        query.status = req.params.status || req.query.status;
     }
 
     if (req.query.loadAll) {
@@ -223,7 +223,7 @@ module.exports = async (req, res) => {
     data.imagePath = req.config.blog.imagePath;
 
     utilHtml.renderApi(req, res, 200, data, {
-        cacheTime: req.query.cacheContent ? 60 : 0,
+        cacheTime: req.params.status ? 60 : 0,
     });
     // webUtil.renderApi(req, res, 200, data);
 };

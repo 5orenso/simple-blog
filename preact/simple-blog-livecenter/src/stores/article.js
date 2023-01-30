@@ -65,7 +65,11 @@ class ArticleStore extends StoreModel {
     }
 
     async loadArtlist({ limit, category, key, loadAll, status = 2, sort }) {
-        const response = await util.fetchApi(`/api/article/public/${encodeURIComponent(category)}`, { publish: true, method: 'GET' }, { cacheContent: true, status, limit, loadAll, sort });
+        const query = {};
+        if (sort) {
+            query.sort = sort;
+        }
+        const response = await util.fetchApi(`/api/article/public/${encodeURIComponent(category)}/${limit}/${status}/`, { publish: true, method: 'GET' }, query);
         if (response.artlist) {
             if (key === 'live') {
                 this.updateKeyValue('artlistLive', response.artlist);
