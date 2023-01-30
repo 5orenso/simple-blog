@@ -32,9 +32,9 @@ class Program extends Component {
         const { articleStore, appState } = this.props.stores;
         const { currentEmail, isAdmin, isExpert } = appState;
         if (isAdmin || isExpert) {
-            await articleStore.loadArtlist({ limit: 50, category: categoryQa, key: 'qa', loadAll: 1 });
+            await articleStore.loadArtlist({ isAdmin, isExpert, limit: 50, category: categoryQa, key: 'qa', loadAll: 1 });
         } else {
-            await articleStore.loadArtlist({ limit: 10, category: categoryQa, key: 'qa' });
+            await articleStore.loadArtlist({ isAdmin, isExpert, limit: 10, category: categoryQa, key: 'qa' });
         }
     }
 
