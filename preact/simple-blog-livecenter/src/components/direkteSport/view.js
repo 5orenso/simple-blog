@@ -219,8 +219,8 @@ class DirektesportView extends Component {
                         ref={c => this.scrollerRef = c}
                     >
                         {artlistDirektesport.map(art => {
-                            const dateDiff = util.dateDiff(new Date(), art.updatedDate || art.published);
-                            const dateEndDiff = util.dateDiff(new Date(), art.updatedDate || art.published);
+                            const dateDiff = util.dateDiff(new Date(), art.date || art.published);
+                            const dateEndDiff = util.dateDiff(new Date(), art.date || art.published);
                             const inFuture = dateDiff.seconds > 0;
                             const isThisWeek = dateDiff.days < 7;
                             const endInFuture = dateEndDiff.seconds > 0;
@@ -279,14 +279,14 @@ class DirektesportView extends Component {
                                                     {/* {youtubeVideo(art.youtube)}<br /> */}
                                                     <small>
                                                         {isThisWeek ? <>
-                                                            {util.formatDate(art.updatedDate || art.published, {
+                                                            {util.formatDate(art.date || art.published, {
                                                                 locale: 'nb',
                                                                 hour: '2-digit',
                                                                 minute: '2-digit',
                                                                 weekday: 'short',
                                                             }, true)}
                                                         </> : <>
-                                                            {util.formatDate(art.updatedDate || art.published, {
+                                                            {util.formatDate(art.date || art.published, {
                                                                 locale: 'nb',
                                                                 hour: '2-digit',
                                                                 minute: '2-digit',
