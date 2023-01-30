@@ -122,7 +122,7 @@ class DirektesportView extends Component {
             showInput: false,
             newArticle: {
                 title: '',
-                youtube: '',
+                url: '',
                 ingress: '',
             },
         });
@@ -341,15 +341,26 @@ class DirektesportView extends Component {
                                     value={newArticle.title}
                                 />
                             </div>
+                            <div class='form-group mr-3'>
+                                <label for='dateinput'>Dato</label>
+                                <input
+                                    type='datetime-local'
+                                    class='form-control'
+                                    id='dateinput'
+                                    placeholder='Dato og tid'
+                                    onInput={linkState(this, 'newArticle.date')}
+                                    value={newArticle.date}
+                                />
+                            </div>
                             <div class='form-group'>
-                                <label for='youtubeInput'>Youtube</label>
+                                <label for='urlInput'>URL</label>
                                 <input
                                     type='text'
                                     class='form-control'
-                                    id='youtubeInput'
-                                    placeholder='Youtube link...'
-                                    onInput={linkState(this, 'newArticle.youtube')}
-                                    value={newArticle.youtube}
+                                    id='urlInput'
+                                    placeholder='URL to video...'
+                                    onInput={linkState(this, 'newArticle.url')}
+                                    value={newArticle.url}
                                 />
                             </div>
                             <div class='form-group'>

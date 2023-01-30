@@ -70,6 +70,24 @@ export default class Edit extends Component {
                 </div>
                 <div class='col-12'>
                     <div class='form-group'>
+                        <label for='dateInput'>Date</label>
+                        <input type='text' class='form-control' id='dateInput' placeholder='Dato'
+                            name='date'
+                            onInput={handleInput}
+                            value={article.date} />
+                    </div>
+                </div>
+                <div class='col-12'>
+                    <div class='form-group'>
+                        <label for='dateEndInput'>Date End</label>
+                        <input type='text' class='form-control' id='dateEndInput' placeholder='Dato slutt'
+                            name='dateEnd'
+                            onInput={handleInput}
+                            value={article.dateEnd} />
+                    </div>
+                </div>
+                <div class='col-12'>
+                    <div class='form-group'>
                         <label for='youtubeInput'>Youtube link</label>
                         <input type='text' class='form-control' id='youtubeInput' placeholder='Youtube link'
                             name='youtube'
