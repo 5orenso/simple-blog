@@ -223,7 +223,7 @@ module.exports = async (req, res) => {
     data.imagePath = req.config.blog.imagePath;
 
     utilHtml.renderApi(req, res, 200, data, {
-        cacheTime: req.params.status ? 60 : 0,
+        cacheTime: req.params.status ? 120 : 0,
     });
     // webUtil.renderApi(req, res, 200, data);
 };
