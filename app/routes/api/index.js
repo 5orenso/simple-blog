@@ -28,6 +28,11 @@ router.get('/article/:id', wrap(require('./get-article')));
 router.patch('/article/:id', util.restrict, wrap(require('./patch-article')));
 router.post('/article/', util.restrict, wrap(require('./post-article')));
 
+router.get('/article/public/', wrap(require('./get-article')));
+router.get('/article/public/:id', wrap(require('./get-article')));
+router.patch('/article/public/:id', util.restrict, wrap(require('./patch-article')));
+router.post('/article/public/', util.restrict, wrap(require('./post-article')));
+
 router.get('/image/', wrap(require('./get-image')));
 router.get('/image/:id', wrap(require('./get-image')));
 
