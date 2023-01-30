@@ -315,6 +315,10 @@ class PhotoView extends Component {
                 </div>
             </div>
 
+            <div class='w-100 text-center mb-3'>
+                Del dine bilder fra løpet med oss på Instagram. Bruk #femundløpet2023.
+            </div>
+
         </>);
     }
 }

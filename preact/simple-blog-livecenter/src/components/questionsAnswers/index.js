@@ -25,6 +25,7 @@ class Program extends Component {
             newArticle: {},
             showAnswer: {},
         };
+        this.updateTimer = null;
     }
 
     loadAll = async () => {
@@ -36,6 +37,10 @@ class Program extends Component {
         } else {
             await articleStore.loadArtlist({ isAdmin, isExpert, limit: 10, category: categoryQa, key: 'qa' });
         }
+        clearTimeout(this.updateTimer);
+        this.updateTimer = setTimeout(() => {
+            this.loadAll();
+        }, RELOAD_INTERVAL_IN_SEC * 1000);
     }
 
     toggleShowMore = (e) => {
@@ -112,6 +117,10 @@ class Program extends Component {
 
     componentDidMount() {
         this.loadAll();
+    }
+
+    componentWillUnmount() {
+        clearTimeout(this.updateTimer);
     }
 
     render() {
@@ -251,12 +260,12 @@ class Program extends Component {
                                         </>}
 
                                     </> : <>
-                                        <div class='p-2 bg-live-dark text-live-light rounded-lg overflow-hidden' style='max-height: 70vh;'>
+                                        <div class='p-2 bg-live-dark text-live-light rounded-lg overflow-hidden qa' style='max-height: 70vh;'>
                                             <Markdown markdown={`${art.body}`} markedOpts={MARKDOWN_OPTIONS} />
                                         </div>
                                         <div class='text-right'>
                                             <small class='text-muted'>
-                                                {art.author} - {updatedIsToday ? util.formatDate(art.updatedDate, {
+                                                Femundløpet - {updatedIsToday ? util.formatDate(art.updatedDate, {
                                                     locale: 'nb',
                                                     hour: '2-digit',
                                                     minute: '2-digit',

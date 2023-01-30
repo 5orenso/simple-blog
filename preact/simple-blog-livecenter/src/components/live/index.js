@@ -122,6 +122,10 @@ class Live extends Component {
         this.loadAll();
     }
 
+    componentWillUnmount() {
+        clearTimeout(this.updateTimer);
+    }
+
     render() {
         const { height, heights, isExpanded, isOverflow, newArticle, showInput, showMore } = this.state;
         const { articleStore, appState } = this.props.stores;

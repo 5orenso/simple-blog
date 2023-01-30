@@ -69,7 +69,7 @@ class Start extends Component {
         const { appState } = this.props.stores;
         appState.setMainViewCallback(this.scrollToMainContainer);
         const { page, artid, showWebcam = true } = props;
-        if (showWebcam) {
+        if (showWebcam && showWebcam !== 'false') {
             appState.setMainView(page || 'webcam');
         } else {
             appState.setMainView(page || 'webtv');
@@ -160,6 +160,10 @@ class Start extends Component {
                     }
                     .text-live-light {
                         color: rgb(255, 255, 255);
+                    }
+
+                    .qa a:link, .qa a:visited {
+                        color: #fff;
                     }
                 `}
             </style>
