@@ -77,7 +77,7 @@ class Program extends Component {
     }
 
     loadAll = async () => {
-        const { articleStore } = this.props.stores;
+        const { articleStore, appState } = this.props.stores;
         const { categoryProgram, categoryProgramId } = this.props;
         const { isAdmin, isExpert } = appState;
         await articleStore.loadArtlist({ isAdmin, isExpert, limit: 50, category: categoryProgram, key: 'program', sort: 'date' });

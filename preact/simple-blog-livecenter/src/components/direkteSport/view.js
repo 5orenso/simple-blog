@@ -91,7 +91,7 @@ class DirektesportView extends Component {
 
     loadAll = async (setLast, props = this.props) => {
         const { categoryDirektesport, categoryDirektesportId } = props;
-        const { articleStore } = this.props.stores;
+        const { articleStore, appState } = this.props.stores;
         const { isAdmin, isExpert } = appState;
         await articleStore.loadArtlist({ isAdmin, isExpert, limit: 10, category: categoryDirektesport, key: 'direktesport', sort: 'date' });
 
