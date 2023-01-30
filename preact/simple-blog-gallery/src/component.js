@@ -64,6 +64,9 @@ export default function App(props) {
                 settings: {
                     apiServer,
                 },
+                body: {
+                    cacheContent: true,
+                },
             })
             setArticle(result.article);
             setImageServer(result.imageServer);

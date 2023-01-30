@@ -171,6 +171,10 @@ class DirektesportView extends Component {
         }
     }
 
+    componentWillUnmount() {
+        clearTimeout(this.updateTimer);
+    }
+
     render() {
         const { height, heights, isExpanded, isOverflow, newArticle, showInput, showMore, viewArticle } = this.state;
         const { appState, articleStore } = this.props.stores;

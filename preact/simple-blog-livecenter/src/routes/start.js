@@ -38,6 +38,8 @@ function scrollTo(element, top = 0, left = 0) {
     // });
 }
 
+const  RELOAD_INTERVAL_IN_SEC = 1;
+
 @observer
 class Start extends Component {
   	constructor(props) {
@@ -46,6 +48,7 @@ class Start extends Component {
             sessionid: new Date().getTime(),
         };
         this.mainContainer = null;
+        this.updateTimer = null;
     }
 
     toggleMenu = () => {
@@ -73,8 +76,35 @@ class Start extends Component {
         }
     }
 
+    tickTimer = () => {
+        const { raceTimerStart } = this.props;
+        if (!raceTimerStart) {
+            return null;
+        }
+        const now = new Date().getTime();
+        const raceStart = new Date(raceTimerStart).getTime();
+        const diff = Math.floor((now - raceStart) / 1000);
+
+        if (diff < 0) {
+            this.setState({
+                raceTime: 0,
+            });
+        } else {
+            this.setState({
+                raceTime: diff,
+            });
+        }
+
+        clearTimeout(this.updateTimer);
+        this.updateTimer = setTimeout(() => {
+            this.tickTimer();
+        }, RELOAD_INTERVAL_IN_SEC * 1000);
+    }
+
     componentDidMount() {
         this.loadAll();
+        this.tickTimer();
+
         // document.addEventListener('visibilitychange', () => {
         //     if (document.visibilityState === 'visible') {
         //         // page is visible
@@ -90,6 +120,10 @@ class Start extends Component {
         }
     }
 
+    componentWillUnmount() {
+        clearTimeout(this.updateTimer);
+    }
+
     render() {
         const {
             artid,
@@ -101,7 +135,7 @@ class Start extends Component {
             showResults = true,
             showTracking = true,
         } = this.props;
-        const { sessionid, showMenu } = this.state;
+        const { sessionid, showMenu, raceTime } = this.state;
         const { appState } = this.props.stores;
         const { mainView, currentEmail, isAdmin, isExpert, isDevelopment } = appState;
         return (<>
@@ -133,18 +167,24 @@ class Start extends Component {
             <div class='container-fluid mb-5'>
                 <div class='row'>
                     <div
-                        class='col-12 d-flex justify-content-between pt-2'
+                        class='col-12 d-flex justify-content-between pt-2 px-0'
                         style={`
                             background-color: rgb(172, 219, 226);
                         `}
                     >
-                        <div class='w-25 d-flex align-items-center justify-content-start'>&nbsp;</div>
+                        <div class='w-25 d-flex flex-column align-items-center justify-content-center text-live-dark' style='line-height: 1.0em;'>
+                            {/* <small class='d-none d-sm-inline-block'> */}
+                            <small>
+                                <small>RaceTime:</small><br />
+                            </small>
+                            <span style='font-size: 1.2em;'>{util.secToHms(raceTime)}</span>
+                        </div>
 
                         <div class='w-50 d-flex justify-content-center align-items-center'>
                             <a href='/'><img src={`${isDevelopment ? '' : '/preact/simple-blog-livecenter'}/assets/images/logo.png`} alt='logo' class='img-fluid' style='max-height: 100px;' /></a>
                         </div>
 
-                        <div class='w-25 d-flex align-items-center justify-content-end position-relative'>
+                        <div class='w-25 d-flex align-items-center justify-content-end position-relative pr-2'>
                             <i class='fas fa-bars' style='font-size: 3.0em;' onClick={this.toggleMenu} />
 
                             {showMenu && <div

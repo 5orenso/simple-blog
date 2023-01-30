@@ -243,6 +243,9 @@ export default function App(props) {
                 settings: {
                     apiServer,
                 },
+                body: {
+                    cacheContent: true,
+                },
             });
             setArticle(result.article);
             setImageServer(result.imageServer);
@@ -259,6 +262,9 @@ export default function App(props) {
                 url: `/api/bookings/${googleSheetId}`,
                 settings: {
                     apiServer,
+                },
+                body: {
+                    cacheContent: true,
                 },
             });
             setSheet(result);

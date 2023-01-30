@@ -65,7 +65,7 @@ class ArticleStore extends StoreModel {
     }
 
     async loadArtlist({ limit, category, key, loadAll, status = 2, sort }) {
-        const response = await util.fetchApi(`/api/article/`, { publish: true, method: 'GET' }, { status, limit, category, loadAll, sort });
+        const response = await util.fetchApi(`/api/article/`, { publish: true, method: 'GET' }, { cacheContent: true, status, limit, category, loadAll, sort });
         if (response.artlist) {
             if (key === 'live') {
                 this.updateKeyValue('artlistLive', response.artlist);
@@ -92,7 +92,7 @@ class ArticleStore extends StoreModel {
         return response;
     }
 
-    async createArticle({ author, category, categoryId, title, youtube, teaser, ingress, body, status = 2, date, dateEnd }) {
+    async createArticle({ author, category, categoryId, title, youtube, teaser, ingress, body, status = 2, date, dateEnd, url }) {
         // {
         //     "author":"sorenso",
         //     "category":"/v2/about/",
@@ -110,6 +110,7 @@ class ArticleStore extends StoreModel {
             status,
             date,
             dateEnd,
+            url,
         });
         return response;
     }

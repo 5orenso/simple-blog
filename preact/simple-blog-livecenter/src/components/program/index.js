@@ -4,6 +4,7 @@ import { observer } from 'mobx-preact';
 import { Text, Localizer } from 'preact-i18n';
 import Markdown from 'preact-markdown';
 import linkState from 'linkstate';
+import { route } from 'preact-router';
 
 const MARKDOWN_OPTIONS = {
 	pedantic: false,
@@ -15,13 +16,18 @@ const MARKDOWN_OPTIONS = {
 	xhtml: true,
 };
 
+const RELOAD_INTERVAL_IN_SEC = 60;
+
 @observer
 class Program extends Component {
   	constructor(props) {
         super(props);
         this.state = {
             boxIdx: props.boxIdx || 0,
-            newArticle: {},
+            newArticle: {
+                date: util.isoDate(),
+                dateEnd: util.isoDate(),
+            },
         };
         this.scrollerRef;
         this.elScrollerRef;
@@ -75,6 +81,11 @@ class Program extends Component {
         const { categoryProgram, categoryProgramId } = this.props;
         await articleStore.loadArtlist({ limit: 50, category: categoryProgram, key: 'program', sort: 'date' });
         this.scrollToNextProgram();
+
+        clearTimeout(this.updateTimer);
+        this.updateTimer = setTimeout(() => {
+            this.loadAll();
+        }, RELOAD_INTERVAL_IN_SEC * 1000);
     }
 
     scrollToNextProgram = () => {
@@ -120,12 +131,24 @@ class Program extends Component {
             newArticle: {
                 title: '',
                 body: '',
+                url: '',
             },
         });
     }
 
+    gotoProgram = (e) => {
+        const { url } = e.target.closest('.article').dataset;
+        if (url) {
+            route(url);
+        }
+    }
+
     componentDidMount() {
         this.loadAll();
+    }
+
+    componentWillUnmount() {
+        clearTimeout(this.updateTimer);
     }
 
     render() {
@@ -167,26 +190,39 @@ class Program extends Component {
                                 value={newArticle.title}
                             />
                         </div>
-                        <div class='form-group'>
-                            <label for='dateinput'>Dato</label>
-                            <input
-                                type='datetime-local'
-                                class='form-control'
-                                id='dateinput'
-                                placeholder='Dato og tid'
-                                onInput={linkState(this, 'newArticle.date')}
-                                value={newArticle.date}
-                            />
+                        <div class='d-flex flex-row'>
+                            <div class='form-group mr-3'>
+                                <label for='dateinput'>Dato</label>
+                                <input
+                                    type='datetime-local'
+                                    class='form-control'
+                                    id='dateinput'
+                                    placeholder='Dato og tid'
+                                    onInput={linkState(this, 'newArticle.date')}
+                                    value={newArticle.date}
+                                />
+                            </div>
+                            <div class='form-group'>
+                                <label for='dateendinput'>Dato slutt</label>
+                                <input
+                                    type='datetime-local'
+                                    class='form-control'
+                                    id='dateendinput'
+                                    placeholder='Dato og tid'
+                                    onInput={linkState(this, 'newArticle.dateEnd')}
+                                    value={newArticle.dateEnd}
+                                />
+                            </div>
                         </div>
                         <div class='form-group'>
-                            <label for='dateendinput'>Dato slutt</label>
+                            <label for='urlInput'>URL</label>
                             <input
-                                type='datetime-local'
+                                type='text'
                                 class='form-control'
-                                id='dateendinput'
-                                placeholder='Dato og tid'
-                                onInput={linkState(this, 'newArticle.dateEnd')}
-                                value={newArticle.dateEnd}
+                                id='urlInput'
+                                placeholder='URL til sending'
+                                onInput={linkState(this, 'newArticle.url')}
+                                value={newArticle.url}
                             />
                         </div>
                         <div class='form-group'>
@@ -244,7 +280,11 @@ class Program extends Component {
                                     onTouchend={(e) => { e.stopPropagation(); }}
                                     onTouchmove={(e) => { e.stopPropagation(); }}
                                 >
-                                    <div class='d-flex flex-row flex-nowrap h-100 w-100'>
+                                    <div
+                                        class='d-flex flex-row flex-nowrap h-100 w-100 article'
+                                        onClick={this.gotoProgram}
+                                        data-url={program.hasSpecificUrl ? program.url : null}
+                                    >
                                         <div
                                             class='h-100 w-25 text-center py-1'
                                             style={`

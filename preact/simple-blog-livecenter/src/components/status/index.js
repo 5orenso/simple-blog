@@ -125,12 +125,15 @@ function windDirection(deg) {
     return "N";
 }
 
+const  RELOAD_INTERVAL_IN_SEC = 1;
+
 @observer
 class Status extends Component {
   	constructor(props) {
         super(props);
         this.state = {
         };
+        this.updateTimer = null;
     }
 
     chooseCheckpoint = e => {
@@ -155,11 +158,42 @@ class Status extends Component {
         });
     }
 
+    tickTimer = () => {
+        const { raceTimerStart } = this.props;
+        if (!raceTimerStart) {
+            return null;
+        }
+        const now = new Date().getTime();
+        const raceStart = new Date(raceTimerStart).getTime();
+        const diff = Math.floor((now - raceStart) / 1000);
+
+        if (diff < 0) {
+            this.setState({
+                raceTime: 0,
+            });
+        } else {
+            this.setState({
+                raceTime: diff,
+            });
+        }
+
+        clearTimeout(this.updateTimer);
+        this.updateTimer = setTimeout(() => {
+            this.tickTimer();
+        }, RELOAD_INTERVAL_IN_SEC * 1000);
+    }
+
     componentDidMount() {
         this.getWeather();
+        // this.tickTimer();
+    }
+
+    componentWillUnmount() {
+        clearTimeout(this.updateTimer);
     }
 
     render() {
+        const { raceTime } = this.state;
         const { sessionid } = this.props;
         const { appState } = this.props.stores;
         const { mapColorMode, drawerHeightLarge, weather, checkpoint, currentCheckpoint } = appState;
@@ -179,9 +213,15 @@ class Status extends Component {
             {weather[0] && <>
                 <div class='d-flex align-items-center'>
                     {currentCheckpoint && <>
-                        {currentCheckpoint.name} <span class='d-none d-sm-inline-block ml-2'>{currentCheckpoint.altitude} moh</span>
+                        {currentCheckpoint.name} <span class='d-none d-md-inline-block ml-2'>{currentCheckpoint.altitude} moh</span>
                     </>}
                 </div>
+                {/* <div class='d-flex flex-column justify-content-center align-items-center' style='line-height: 1.0em;'>
+                    <small class='d-none d-md-inline-block'>
+                        <small>RaceTime:</small><br />
+                    </small>
+                    <span style='font-size: 1.5em;'>{util.secToHms(raceTime)}</span>
+                </div> */}
                 <div class='d-flex flex-row align-items-center'>
                     <div class='ml-3 d-flex align-items-center'>
                         <img
@@ -193,7 +233,7 @@ class Status extends Component {
                     <div class='ml-3 '>
                         <i class='fas fa-temperature-low text-muted' /> {weather[0].instant?.details?.air_temperature} °C
                     </div>
-                    <div class='ml-3 d-none d-sm-block'>
+                    <div class='ml-3 d-none d-md-block'>
                         <i class='fas fa-wind text-muted' />{weather[0].instant?.details?.wind_speed} m/s - {windDirection(weather[0].instant?.details?.wind_from_direction)}
                     </div>
                     {/* <div class='mr-3 d-flex align-items-center'>{weather[0].instant?.details?.air_pressure_at_sea_level} hPa</div> */}
