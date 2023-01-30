@@ -307,5 +307,12 @@ module.exports = async (req, res) => {
         originalUrl: req.originalUrl,
         language,
         disableCookies,
-    }, { runId, routePath, routeName, hrstart, useTemplate: template });
+    }, {
+        runId,
+        routePath,
+        routeName,
+        hrstart,
+        useTemplate: template,
+        cacheTime: 60,
+    });
 };

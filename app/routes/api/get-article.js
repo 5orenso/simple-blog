@@ -191,6 +191,8 @@ module.exports = async (req, res) => {
         data.artlist.forEach((a) => {
             if (!a.url) {
                 a.url = `/v2/${utilHtml.asLinkPart(a.category)}/${utilHtml.asLinkPart(a.title)}/${a.id}`;
+            } else {
+                a.hasSpecificUrl = true;
             }
         });
     }
@@ -219,6 +221,9 @@ module.exports = async (req, res) => {
     data.jwtToken = util.makeJwtToken({ readAccess: 1 }, req.config);
     data.imageServer = req.config.blog.imageServer;
     data.imagePath = req.config.blog.imagePath;
-    utilHtml.renderApi(req, res, 200, data);
+
+    utilHtml.renderApi(req, res, 200, data, {
+        cacheTime: req.query.cacheContent ? 60 : 0,
+    });
     // webUtil.renderApi(req, res, 200, data);
 };
