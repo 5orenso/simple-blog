@@ -16,6 +16,7 @@ const MARKDOWN_OPTIONS = {
 };
 
 const MAX_ARTICLE_TO_SHOW = 5;
+const RELOAD_INTERVAL_IN_SEC = 60;
 
 @observer
 class Program extends Component {
