@@ -62,28 +62,28 @@ export default class Edit extends Component {
                 <div class='col-12'>
                     <div class='form-group'>
                         <label for='publishedInput'>Published</label>
-                        <input type='text' class='form-control' id='publishedInput' placeholder='Publiseringsdato'
+                        <input type='datetime-local' class='form-control' id='publishedInput' placeholder='Publiseringsdato'
                             name='published'
                             onInput={handleInput}
-                            value={article.published} />
+                            value={util.isoDate(article.published, false, false)} />
                     </div>
                 </div>
                 <div class='col-12'>
                     <div class='form-group'>
                         <label for='dateInput'>Date</label>
-                        <input type='text' class='form-control' id='dateInput' placeholder='Dato'
+                        <input type='datetime-local' class='form-control' id='dateInput' placeholder='Dato'
                             name='date'
                             onInput={handleInput}
-                            value={article.date} />
+                            value={article.date ? util.isoDate(article.date, false, false) : ''} />
                     </div>
                 </div>
                 <div class='col-12'>
                     <div class='form-group'>
                         <label for='dateEndInput'>Date End</label>
-                        <input type='text' class='form-control' id='dateEndInput' placeholder='Dato slutt'
+                        <input type='datetime-local' class='form-control' id='dateEndInput' placeholder='Dato slutt'
                             name='dateEnd'
                             onInput={handleInput}
-                            value={article.dateEnd} />
+                            value={article.dateEnd ? util.isoDate(article.dateEnd, false, false) : ''} />
                     </div>
                 </div>
                 <div class='col-12'>

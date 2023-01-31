@@ -90,7 +90,7 @@ function ensureUrl(url) {
 }
 
 export default function App(props) {
-    const { apiServer, jwtToken, articleId, showSearch = true, language = 'EN' } = props;
+    const { apiServer, jwtToken, articleId, showSearch = true, language = 'EN', sheetId } = props;
 
     const [article, setArticle] = useState({});
     useEffect(() => {
@@ -115,6 +115,12 @@ export default function App(props) {
     const [races, setRaces] = useState([]);
     const [currentRace, setCurrentRace] = useState();
     const [currentBib, setCurrentBib] = useState();
+
+    const [sheet, setSheet] = useState({});
+    const googleSheetId = sheetId || article['booking-sheetId'];
+
+    const currentUrl = new URL(window.location.href);
+    const showInfo = currentUrl.searchParams.get('showInfo') === '1';
 
     useEffect(() => {
         const fetchData = async () => {
@@ -157,6 +163,23 @@ export default function App(props) {
         }
     }, [apiUrl]);
 
+    useEffect(() => {
+        const fetchData = async () => {
+            const result = await fetchApi({
+                url: `/api/bookings/sheet/${googleSheetId}`,
+                settings: {
+                    apiServer,
+                },
+                body: {
+                    cacheContent: true,
+                },
+            });
+            setSheet(result);
+        };
+        if (googleSheetId) {
+            fetchData();
+        }
+    }, [googleSheetId]);
 
 
     const [searchText, setSearchText] = useState('');
@@ -321,6 +344,9 @@ export default function App(props) {
                                     const musherName = searchText !== '' ? replaceAllStrings(musher.Name) : musher.Name;
                                     const musherTeam = searchText !== '' ? replaceAllStrings(musher['Club/Team']) : musher['Club/Team'];
 
+                                    const headers = sheet && sheet.headers ? sheet.headers : [];
+                                    const rowData = sheet && sheet.rows ? sheet.rows.find(e => e.Startnummer == musher.Bib) : [];
+
                                     return (<>
                                         <tr
                                             onClick={toggleMusher}
@@ -351,45 +377,64 @@ export default function App(props) {
                                         {currentBib === musher.Bib && <>
                                             <tr>
                                                 <td colspan='5'>
-                                                    <div class='w-100 d-flex flex-column mb-3'>
-                                                        <div class='d-flex flew-row flex-nowrap mb-2'>
-                                                            <div class='flex-grow-1' style='font-size: 2.0em;'>
-                                                                <span class="badge badge-pill badge-secondary">{musher.Bib}</span> {musher.Name}
+                                                    <div class='d-flex'>
+                                                        <div class='d-flex flex-column mb-3 w-50'>
+                                                            <div class='d-flex flew-row flex-nowrap mb-2'>
+                                                                <div class='flex-grow-1' style='font-size: 2.0em;'>
+                                                                    <span class="badge badge-pill badge-secondary">{musher.Bib}</span> {musher.Name}
+                                                                </div>
+                                                                <div class='' style='font-size: 2.0em;'>
+                                                                    <span class={`flag-icon flag-icon-${countryAlpha2}`} />
+                                                                </div>
                                                             </div>
-                                                            <div class='' style='font-size: 2.0em;'>
-                                                                <span class={`flag-icon flag-icon-${countryAlpha2}`} />
+                                                            <div class='d-flex flew-row flex-nowrap'>
+                                                                <div class='text-muted' style='width: 100px;'>Alder:</div>
+                                                                <div class='flex-grow-1'>{util.age(musher.DateOfBirth)}</div>
+                                                            </div>
+                                                            <div class='d-flex flew-row flex-nowrap'>
+                                                                <div class='text-muted' style='width: 100px;'>Status:</div>
+                                                                <div class='flex-grow-1'>{musher.RookieVeteran}</div>
+                                                            </div>
+                                                            <div class='d-flex flew-row flex-nowrap'>
+                                                                <div class='text-muted' style='width: 100px;'>Klubb:</div>
+                                                                <div class='flex-grow-1'>{musher['Club/Team']}</div>
+                                                            </div>
+                                                            <div class='d-flex flew-row flex-nowrap'>
+                                                                <div class='text-muted' style='width: 100px;'>Kennel:</div>
+                                                                <div class='flex-grow-1'>{musher.Kennel}</div>
+                                                            </div>
+                                                            <div class='d-flex flew-row flex-nowrap'>
+                                                                <div class='text-muted' style='width: 100px;'>Yrke:</div>
+                                                                <div class='flex-grow-1'>{musher.Occupation}</div>
+                                                            </div>
+                                                            <div class='d-flex flew-row flex-nowrap'>
+                                                                <div class='text-muted' style='width: 100px;'>Nettside:</div>
+                                                                <div class='flex-grow-1'>{musher.Web ? <a href={ensureUrl(musher.Web)} native target='_blank'>{musher.Web}</a> : <>n/a</>}</div>
+                                                            </div>
+                                                            <div class='d-flex flew-row flex-nowrap'>
+                                                                <div class='text-muted' style='width: 100px;'>Sponsorer:</div>
+                                                                <div class='flex-grow-1'><Markdown markdown={`${musher.Comment}`} markdownOpts={MARKDOWN_OPTIONS} /></div>
                                                             </div>
                                                         </div>
-                                                        <div class='d-flex flew-row flex-nowrap'>
-                                                            <div class='text-muted' style='width: 100px;'>Alder:</div>
-                                                            <div class='flex-grow-1'>{util.age(musher.DateOfBirth)}</div>
-                                                        </div>
-                                                        <div class='d-flex flew-row flex-nowrap'>
-                                                            <div class='text-muted' style='width: 100px;'>Status:</div>
-                                                            <div class='flex-grow-1'>{musher.RookieVeteran}</div>
-                                                        </div>
-                                                        <div class='d-flex flew-row flex-nowrap'>
-                                                            <div class='text-muted' style='width: 100px;'>Klubb:</div>
-                                                            <div class='flex-grow-1'>{musher['Club/Team']}</div>
-                                                        </div>
-                                                        <div class='d-flex flew-row flex-nowrap'>
-                                                            <div class='text-muted' style='width: 100px;'>Kennel:</div>
-                                                            <div class='flex-grow-1'>{musher.Kennel}</div>
-                                                        </div>
-                                                        <div class='d-flex flew-row flex-nowrap'>
-                                                            <div class='text-muted' style='width: 100px;'>Yrke:</div>
-                                                            <div class='flex-grow-1'>{musher.Occupation}</div>
-                                                        </div>
-                                                        <div class='d-flex flew-row flex-nowrap'>
-                                                            <div class='text-muted' style='width: 100px;'>Nettside:</div>
-                                                            <div class='flex-grow-1'>{musher.Web ? <a href={ensureUrl(musher.Web)} native target='_blank'>{musher.Web}</a> : <>n/a</>}</div>
-                                                        </div>
-                                                        <div class='d-flex flew-row flex-nowrap'>
-                                                            <div class='text-muted' style='width: 100px;'>Sponsorer:</div>
-                                                            <div class='flex-grow-1'><Markdown markdown={`${musher.Comment}`} markdownOpts={MARKDOWN_OPTIONS} /></div>
-                                                        </div>
+                                                        {/* <xmp>{JSON.stringify(musher, null, 4)}</xmp> */}
+
+                                                        {showInfo && <>
+                                                            {rowData && <div class='d-flex flex-column mb-3 w-50 pl-3'>
+                                                                {headers.map((key, idx) => {
+                                                                    const value = rowData[key];
+                                                                    return (<>
+                                                                        <div class='d-flex flex-column mb-3'>
+                                                                            <div class='w-100 text-muted' style='width: 100px;'>{key}:</div>
+                                                                            <div class='w-100 '>{value}</div>
+                                                                        </div>
+                                                                    </>);
+                                                                })}
+                                                            </div>}
+                                                        </>}
                                                     </div>
-                                                    {/* <xmp>{JSON.stringify(musher, null, 4)}</xmp> */}
+{/* <xmp>{JSON.stringify(rowData, null, 4)}</xmp>
+<xmp>{JSON.stringify(sheet, null, 4)}</xmp> */}
+
 
                                                 </td>
                                             </tr>

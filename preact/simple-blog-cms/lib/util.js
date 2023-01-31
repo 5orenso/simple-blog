@@ -82,7 +82,7 @@ class Utilities {
         return `${Utilities.displayTime(epochDate)}`;
     }
 
-    static isoDate(dateString) {
+    static isoDate(dateString, showTimeZone = true, showTSep = true) {
         let availDate;
         if (typeof dateString === 'string' && dateString.match(/\d{4}-\d{2}-\d{2}/)) {
             availDate = new Date(dateString);
@@ -100,9 +100,9 @@ class Utilities {
             const ss = availDate.getSeconds();
             const tzo = -availDate.getTimezoneOffset();
             const dif = tzo >= 0 ? '+' : '-';
-            return `${Utilities.pad(yy)}-${Utilities.pad(mm)}-${Utilities.pad(dd)}T`
+            return `${Utilities.pad(yy)}-${Utilities.pad(mm)}-${Utilities.pad(dd)}${showTSep ? 'T' : ' '}`
                 + `${Utilities.pad(hh)}:${Utilities.pad(mi)}:${Utilities.pad(ss)}`
-                + `${dif}${Utilities.pad(tzo / 60)}:${Utilities.pad(tzo % 60)}`;
+                + (showTimeZone ? `${dif}${Utilities.pad(tzo / 60)}:${Utilities.pad(tzo % 60)}` : '');
         }
         return dateString;
     }
@@ -464,7 +464,7 @@ class Utilities {
         return 0;
     }
 
-    static secReadable(sec = 0) { 
+    static secReadable(sec = 0) {
         const days = parseInt(sec / (24 * 3600), 10);
 
         let restSec = sec % (24 * 3600);
@@ -482,7 +482,7 @@ class Utilities {
             minutes,
             seconds,
         };
-    } 
+    }
 
     static readTime(text, language = 'en') {
         const words = Utilities.wordCount(text);
