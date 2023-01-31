@@ -345,7 +345,7 @@ export default function App(props) {
                                     const musherTeam = searchText !== '' ? replaceAllStrings(musher['Club/Team']) : musher['Club/Team'];
 
                                     const headers = sheet && sheet.headers ? sheet.headers : [];
-                                    const rowData = sheet && sheet.rows ? sheet.rows.find(e => e.Startnummer == musher.Bib) : [];
+                                    const rowData = sheet && sheet.rows ? sheet.rows.find(e => e.Startnummer == musher.Bib) : null;
 
                                     return (<>
                                         <tr
@@ -361,6 +361,7 @@ export default function App(props) {
                                             </>}
                                             <td>
                                                 <nobr>
+                                                    {showInfo && rowData && <i class='float-right fas fa-info-circle text-success' />}
                                                     <Markdown markdown={`${musherName}`} markdownOpts={MARKDOWN_OPTIONS} />
                                                 </nobr>
                                             </td>
