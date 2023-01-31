@@ -197,7 +197,7 @@ class AppState {
             lat: 62.57727,
             lon: 11.39082,
             altitude: 640,
-            camera: 'https://webkamera.atlas.vegvesen.no/public/kamera?id=452562',
+            camera: 'https://youtu.be/GwnJJ8lcWPY',
         },
         {
             id: 2,

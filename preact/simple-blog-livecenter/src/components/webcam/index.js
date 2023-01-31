@@ -4,6 +4,36 @@ import { observer } from 'mobx-preact';
 import { Text, Localizer } from 'preact-i18n';
 import Markdown from 'preact-markdown';
 
+function youtubeVideo(url) {
+    if (!url) {
+        return '';
+    }
+    let youtubeRegex;
+    if (url.match(/youtube/)) {
+        // eslint-disable-next-line
+        youtubeRegex = /(<p>|<br>|[\s\t\n]|^)*https*:\/\/(www\.)*youtube\.com\/(.*?v=([^&\s<$]+)(&[^\s<$]+)*)/gi;
+    } else if (url.match(/youtu\.be/)) {
+        // eslint-disable-next-line
+        youtubeRegex = /(<p>|<br>|[\s\t\n]|^)*https*:\/\/(www\.)*youtu\.be\/(([^?&\s<$]+)((\?|&)[^\s<$]+)*)/gi;
+    } else {
+        return (<>
+            <div class='embed-responsive embed-responsive-16by9 d-flex justify-content-center align-items-center text-center'>
+                Oisann, her gikk noe galt!<br />
+                Finner ikke denne streamen. Prøv igjen senere...
+            </div>
+        </>);
+    }
+    // const regexp = /(^|[\s\t\n]+)https*:\/\/(www\.)*youtube\.com\/(.*?v=([^&\s]+)(&[^\s]+)*)/gi;
+    const youtubeVideo = url.replace(youtubeRegex, (match, p0, p1, p2, p3, p4) => {
+        return p3;
+    });
+    // return youtubeVideo;
+    return (<>
+        <div class='embed-responsive embed-responsive-16by9'>
+            <iframe class='embed-responsive-item' src={`https://www.youtube.com/embed/${youtubeVideo}?rel=0`} allowfullscreen></iframe>
+        </div>
+    </>);
+}
 
 const weatherSymbolKeys = {
     clearsky_day: '01d',
@@ -189,13 +219,15 @@ class Webcam extends Component {
             }, */}
             <div class='row'>
                 <div class='w-100 d-flex flex-row justify-content-center'>
-                    <div class='flex-grow-1 d-flex justify-content-center'>
+                    {youtubeVideo(currentCheckpoint.camera)}
+
+                    {/* <div class='flex-grow-1 d-flex justify-content-center'>
                         {currentCheckpoint && <>
                             {currentCheckpoint.camera && <>
                                 <img src={currentCheckpoint.camera} class='img-fluid' /><br />
                             </>}
                         </>}
-                    </div>
+                    </div> */}
                     {/* <div class='d-flex flex-column ml-3'>
                         {checkpoints && checkpoints.map(cp => {
                             return <>
