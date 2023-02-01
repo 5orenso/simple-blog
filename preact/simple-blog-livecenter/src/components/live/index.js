@@ -195,7 +195,7 @@ class Live extends Component {
                     const isThisWeek = dateDiff.days < 7;
                     return (<>
                         <div
-                            class='col-12 px-0'
+                            class='col-12 px-0 mb-3'
                             style={`
                                 height: ${heights[art.id] || height}px;
                                 max-height: ${heights[art.id] || height}px;
