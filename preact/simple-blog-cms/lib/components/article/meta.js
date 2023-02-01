@@ -95,6 +95,34 @@ export default class Edit extends Component {
                             value={article.youtube} />
                     </div>
                 </div>
+                <div class='col-6'>
+                    <div class='form-group'>
+                        <label for='latInput'>Lat</label>
+                        <input type='number' class='form-control' id='latInput' placeholder=''
+                            name='lat'
+                            onInput={handleInput}
+                            value={article.lat} />
+                    </div>
+                </div>
+                <div class='col-6'>
+                    <div class='form-group'>
+                        <label for='lonInput'>Lon</label>
+                        <input type='number' class='form-control' id='lonInput' placeholder=''
+                            name='lon'
+                            onInput={handleInput}
+                            value={article.lon} />
+                    </div>
+                </div>
+                <div class='col-6'>
+                    <div class='form-group'>
+                        <label for='altitudeInput'>Altitude</label>
+                        <input type='number' class='form-control' id='altitudeInput' placeholder=''
+                            name='altitude'
+                            onInput={handleInput}
+                            value={article.altitude} />
+                    </div>
+                </div>
+
                 <div class='col-12'>
                     <div class='form-group'>
                         <label for='tagsInput'>Tags</label>

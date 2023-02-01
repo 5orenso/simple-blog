@@ -1014,13 +1014,15 @@ class AppState {
         }
     }
 
-    async getWeather({ lat, lon, altitude }) {
+    async getWeather({ lat, lon, altitude, updateAppstate = true }) {
         const response = await util.fetchApi(`/api/yr/`, { publish: true, method: 'GET' }, {
             lat, lon, altitude,
         });
         switch (response.status) {
             case 200:
-                this.setWeather(response.data);
+                if (updateAppstate) {
+                    this.setWeather(response.data);
+                }
                 return response.data;
             case 401:
                 route('/');

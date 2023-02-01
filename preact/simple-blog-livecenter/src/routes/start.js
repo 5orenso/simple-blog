@@ -69,11 +69,11 @@ class Start extends Component {
         const { appState } = this.props.stores;
         appState.setMainViewCallback(this.scrollToMainContainer);
         const { page, artid, showWebcam = true } = props;
-        if (showWebcam && showWebcam !== 'false') {
-            appState.setMainView(page || 'webcam');
-        } else {
-            appState.setMainView(page || 'webtv');
-        }
+        // if (showWebcam && showWebcam !== 'false') {
+        //     appState.setMainView(page || 'webcam');
+        // } else {
+        appState.setMainView(page || 'webtv');
+        // }
     }
 
     tickTimer = () => {

@@ -89,7 +89,7 @@ class Webcams extends Component {
         const { mainView, checkpoints, checkpoint } = appState;
 
         return (<>
-            <a href='/webcam/1' class={`btn ${mainView === 'webcam' ? 'bg-live-dark text-live-light' : 'bg-live-light text-live-dark'} mx-1 mt-1`}>Webcam</a>
+            <a href='/webcam/' class={`btn ${mainView === 'webcam' ? 'bg-live-dark text-live-light' : 'bg-live-light text-live-dark'} mx-1 mt-1`}>Webcam</a>
 
             {/* <button type='button' class={`btn ${mainView === 'webcam' ? 'bg-live-dark text-live-light' : 'bg-live-light text-live-dark'} mx-1 mt-1`} onClick={this.toggleList}
                 ref={c => this.listContainer = c}

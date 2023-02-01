@@ -131,6 +131,7 @@ class Live extends Component {
         const { articleStore, appState } = this.props.stores;
         const { currentEmail, isAdmin, isExpert } = appState;
         const { artlistLive } = articleStore;
+        const { imageDomain, imageDomainPath } = this.props;
         let finalArtlist;
         if (showMore) {
             finalArtlist = artlistLive.slice(0, artlistLive.length);
@@ -211,7 +212,7 @@ class Live extends Component {
                             <div class='body'>
                                 {art.img && art.img[0] && <>
                                     <div class='w-25 float-right'>
-                                        <img src={`https://litt.no/400x/litt.no/${art.img[0].src}`} class='img-fluid' />
+                                        <img src={`${imageDomain}/400x/${imageDomainPath}/${art.img[0].src}`} class='img-fluid' />
                                     </div>
                                 </>}
                                 <Markdown markdown={`<strong>${
