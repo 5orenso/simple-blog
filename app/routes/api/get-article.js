@@ -48,6 +48,10 @@ const fields = {
     widget: 1,
     widgetList: 1,
 
+    lat: 1,
+    lon: 1,
+    altitude: 1,
+
     background: 1,
     forground: 1,
     fontsizeH1: 1,
