@@ -28,13 +28,13 @@ class AdCenter extends Component {
         const { artlistAdCenter } = articleStore;
 
         return (<>
-            <div class='w-100 d-flex justify-content-between align-items-center'>
+            <div class='w-100 d-flex justify-content-between align-items-center mt-3'>
                 {artlistAdCenter && artlistAdCenter.map((ad, idx) => {
                     return (<>
                         <div class='flex-grow-1 mx-1'>
                             <a href={ad.url} target='_blank' rel='noopener noreferrer'>
                                 {ad.img && ad.img[0] && <>
-                                    <img src={`${imageDomain}/400x/${imageDomainPath}/${ad.img[0].src}`} class='img-fluid' style='max-height: 70px;' />
+                                    <img src={`${imageDomain}/400x/${imageDomainPath}/${ad.img[0].src}`} class='img-fluid' style='max-height: 40px;' />
                                 </>}
                             </a>
                         </div>

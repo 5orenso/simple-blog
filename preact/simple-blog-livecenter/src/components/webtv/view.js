@@ -7,7 +7,7 @@ import linkState from 'linkstate';
 import { route } from 'preact-router';
 
 const RELOAD_INTERVAL_IN_SEC = 60;
-const MAX_ARTICLE_TO_SHOW = 50;
+const MAX_ARTICLE_TO_SHOW = 200;
 
 function youtubeThumb($content, $size = 'medium') {
     if (typeof $content !== 'string') {
