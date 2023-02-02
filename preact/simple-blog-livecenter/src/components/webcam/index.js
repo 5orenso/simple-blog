@@ -209,7 +209,7 @@ class Webcam extends Component {
         const { categoryWebcam, categoryWebcamId } = props;
         const { articleStore, appState } = this.props.stores;
         const { isAdmin, isExpert } = appState;
-        await articleStore.loadArtlist({ isAdmin, isExpert, limit: 50, category: categoryWebcam, key: 'webcam' });
+        await articleStore.loadArtlist({ isAdmin, isExpert, limit: 100, category: categoryWebcam, key: 'webcam' });
 
         if (setLast) {
             this.setLastVideo(props);

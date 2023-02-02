@@ -39,7 +39,7 @@ class Live extends Component {
         const { categoryLive, categoryLiveId } = this.props;
         const { articleStore, appState } = this.props.stores;
         const { isAdmin, isExpert } = appState;
-        await articleStore.loadArtlist({ isAdmin, isExpert, limit: 10, category: categoryLive, key: 'live' });
+        await articleStore.loadArtlist({ isAdmin, isExpert, limit: 100, category: categoryLive, key: 'live' });
         this.checkHeights();
 
         clearTimeout(this.updateTimer);

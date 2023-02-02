@@ -80,7 +80,7 @@ class Program extends Component {
         const { articleStore, appState } = this.props.stores;
         const { categoryProgram, categoryProgramId } = this.props;
         const { isAdmin, isExpert } = appState;
-        await articleStore.loadArtlist({ isAdmin, isExpert, limit: 50, category: categoryProgram, key: 'program', sort: 'date' });
+        await articleStore.loadArtlist({ isAdmin, isExpert, limit: 100, category: categoryProgram, key: 'program', sort: 'date' });
         this.scrollToNextProgram();
 
         clearTimeout(this.updateTimer);

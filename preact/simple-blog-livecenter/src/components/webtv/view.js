@@ -80,7 +80,7 @@ class WebTvView extends Component {
         const { categoryWebtv, categoryWebtvId } = props;
         const { articleStore, appState } = this.props.stores;
         const { isAdmin, isExpert } = appState;
-        await articleStore.loadArtlist({ isAdmin, isExpert, limit: 10, category: categoryWebtv, key: 'webtv' });
+        await articleStore.loadArtlist({ isAdmin, isExpert, limit: 100, category: categoryWebtv, key: 'webtv' });
 
         if (setLast) {
             this.setLastVideo(props);

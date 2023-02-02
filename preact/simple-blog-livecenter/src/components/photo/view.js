@@ -98,7 +98,7 @@ class PhotoView extends Component {
         const { categoryPhoto, categoryPhotoId } = props;
         const { articleStore, appState } = this.props.stores;
         const { isAdmin, isExpert } = appState;
-        await articleStore.loadArtlist({ isAdmin, isExpert, limit: 10, category: categoryPhoto, key: 'photo' });
+        await articleStore.loadArtlist({ isAdmin, isExpert, limit: 100, category: categoryPhoto, key: 'photo' });
 
         if (setLast) {
             this.setLastPhoto(props);
