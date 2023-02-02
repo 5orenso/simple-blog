@@ -23,7 +23,7 @@ import QuestionsAnswers from '../components/questionsAnswers/';
 import AdTop from '../components/ads/top';
 import AdCenter from '../components/ads/center';
 import AdBottom from '../components/ads/bottom';
-import Button from '../components/button/';
+import QPawsButton from '../components/button/qpaws';
 
 function scrollTo(element, top = 0, left = 0) {
     // element.scrollTop = to;
@@ -135,6 +135,7 @@ class Start extends Component {
             showPhoto = true,
             showResults = true,
             showTracking = true,
+            showQpawsButton = false,
         } = this.props;
         const { sessionid, showMenu, raceTime } = this.state;
         const { appState } = this.props.stores;
@@ -295,6 +296,7 @@ class Start extends Component {
                                 {showResults && showResults !== 'false' && <Results stores={this.props.stores} mainView={mainView} {...this.props} />}
                                 {showTracking && showTracking !== 'false' && <Tracking stores={this.props.stores} mainView={mainView} {...this.props} />}
                                 {/* {showButton1 && showButton1 !== 'false' && <Button stores={this.props.stores} {...this.props} />} */}
+                                {showQpawsButton && showQpawsButton !== 'false' && <QPawsButton stores={this.props.stores} {...this.props} />}
                             </div>
                         </div>
                     </div>
