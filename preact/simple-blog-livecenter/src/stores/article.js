@@ -128,6 +128,29 @@ class ArticleStore extends StoreModel {
         return response;
     }
 
+    async createPublicArticle({ author, category, categoryId, title, youtube, teaser, ingress, body, status = 1, date, dateEnd, url }) {
+        // {
+        //     "author":"sorenso",
+        //     "category":"/v2/about/",
+        //     "categoryId":3,
+        // }
+        const response = await util.fetchApi(`/api/article/public/`, { publish: true, method: 'POST' }, {
+            author,
+            category,
+            categoryId,
+            title,
+            youtube,
+            teaser,
+            ingress,
+            body,
+            status,
+            date,
+            dateEnd,
+            url,
+        });
+        return response;
+    }
+
     async updateArticle({ id, title, teaser, ingress, body, status = 2 }) {
         const response = await util.fetchApi(`/api/article/${id}`, { publish: true, method: 'PATCH' }, {
             title,

@@ -73,7 +73,7 @@ class Program extends Component {
         const { appState, articleStore } = this.props.stores;
         const { currentEmail } = appState;
 
-        await articleStore.createArticle({
+        await articleStore.createPublicArticle({
             author: currentEmail,
             category: categoryQa,
             cateogryId: categoryQaId,
@@ -85,7 +85,7 @@ class Program extends Component {
         this.setState({
             showInput: false,
             newArticle: {
-                title: '',
+                teaser: '',
                 body: '',
             },
             message: 'Spørsmålet er sendt til ekspertene',
@@ -109,7 +109,6 @@ class Program extends Component {
         this.setState({
             showInput: false,
             newArticle: {
-                title: '',
                 teaser: '',
                 body: '',
             },
