@@ -287,7 +287,7 @@ class Start extends Component {
 
                     <div class='col-12'>
                         <div class='row'>
-                            <div class='col-12 col-lg-12 d-flex flex-wrap flex-row align-items-center justify-content-center pt-2 pb-1'>
+                            <div class='col-12 col-lg-12 d-flex flex-wrap flex-row align-items-center justify-content-center pt-2 pb-2'>
                                 {showWebcam && showWebcam !== 'false' && <Webcams stores={this.props.stores} mainView={mainView} {...this.props} />}
                                 {showWebtv && showWebtv !== 'false' && <WebTv stores={this.props.stores} mainView={mainView} {...this.props} />}
                                 {showDirektesport && showDirektesport !== 'false' && <DirekteSport stores={this.props.stores} mainView={mainView} {...this.props} />}
@@ -299,12 +299,12 @@ class Start extends Component {
                         </div>
                     </div>
 
-                    <div class='col-12  d-flex justify-content-center py-1'>
+                    <div class='col-12  d-flex justify-content-center px-0 py-1 bg-live-dark'>
                         <AdCenter stores={this.props.stores} {...this.props} />
                     </div>
 
                     <div
-                        class='col-12 mt-1 px-3 pb-3 pt-3 bg-live-dark text-live-light'
+                        class='col-12 mt-0 px-3 pb-3 pt-3 bg-live-dark text-live-light'
                     >
                         <div class='row'>
                             <div
