@@ -225,7 +225,7 @@ class Live extends Component {
                                         month: 'short',
                                     }, true)
                                 }</small><br />
-                                <h5 class='my-1' style='font-size: 1.2em;'>{art.title}</h5>
+                                <h5 class='mb-1 mt-0' style='font-size: 1.15em;'>{art.title}</h5>
 
                                 {art.img && art.img[0] && <>
                                     <div class='w-50 float-right pl-3'>
@@ -233,6 +233,7 @@ class Live extends Component {
                                     </div>
                                 </>}
                                 <Markdown markdown={`${art.ingress || art.body}`} markedOpts={MARKDOWN_OPTIONS} />
+                                <div class='border'></div>
                             </div>
                         </div>
                             {/* {isOverflow[art.id] && <>

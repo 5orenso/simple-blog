@@ -15,9 +15,9 @@ class QpawsButton extends Component {
     render() {
         const { url, urlText } = this.props;
         return (<>
-            <a href={'https://qpaws.com/femundlopet'} native target='_blank' class={`btn bg-live-light text-live-dark mx-1 mt-1 py-0`}>
+            <a href={'https://qpaws.com/femundlopet'} native target='_blank' class={`btn bg-live-light text-live-dark mx-1 mt-1 py-1`}>
                 Tracking in
-                <img src='https://themusher.app/assets/logo-qpaws-horizontal-light.png' class='img-fluid' style='height: 40px;' />
+                <img src='https://themusher.app/assets/logo-qpaws-horizontal-light.png' class='img-fluid' style='height: 35px;' />
             </a>
         </>);
     }
