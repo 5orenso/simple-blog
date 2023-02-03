@@ -88,7 +88,7 @@ class Program extends Component {
                 teaser: '',
                 body: '',
             },
-            message: 'Spørsmålet er sendt til ekspertene',
+            message: 'Spørsmålet er sendt til Femundløpet.',
         });
     }
 
@@ -145,7 +145,7 @@ class Program extends Component {
                 </button>
             </>}
 
-            <h3 class='border-bottom pb-2'>Spør våre eksperter</h3>
+            <h3 class='border-bottom pb-2'>Spør oss</h3>
 
             {message && <>
                 <div class='alert alert-success' role='alert'>

@@ -68,7 +68,7 @@ function articleCarousel(art, props) {
                                 onTouchmove={(e) => { e.stopPropagation(); }}
                             >
                                 <div class='d-flex flex-row flex-nowrap h-100 w-100 align-items-center overflow-hidden'>
-                                    <img src={articleImg(img, props, '1024x')} class='' style='max-width: 100vw;' />
+                                    <img src={articleImg(img, props, '1024x')} class='' style='max-width: 100vw; max-height: 95vh;' />
                                 </div>
                                 {img.title && <div class='d-flex w-100 justify-content-center position-absolute text-live-light font-weight-lighter' style='bottom: 10px; left: 0px;'>
                                     <Markdown markdown={`<strong>${img.title}</strong><br />${img.text || ''}`} markedOpts={MARKDOWN_OPTIONS} />
