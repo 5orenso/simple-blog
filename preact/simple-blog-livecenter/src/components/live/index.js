@@ -40,7 +40,7 @@ class Live extends Component {
         const { articleStore, appState } = this.props.stores;
         const { isAdmin, isExpert } = appState;
         await articleStore.loadArtlist({ isAdmin, isExpert, limit: 100, category: categoryLive, key: 'live' });
-        this.checkHeights();
+        // this.checkHeights();
 
         clearTimeout(this.updateTimer);
         this.updateTimer = setTimeout(() => {
@@ -195,27 +195,24 @@ class Live extends Component {
                     const isThisWeek = dateDiff.days < 7;
                     return (<>
                         <div
-                            class='col-12 px-0 mb-3'
+                            class='col-12 px-0 mb-0 pl-3'
                             style={`
-                                height: ${heights[art.id] || height}px;
-                                max-height: ${heights[art.id] || height}px;
                                 overflow-y: hidden;
                                 transition: max-height 700ms ease-in-out;
                             `}
                             ref={c => this.blockRefs[art.id] = c}
                         >
-                            <div
+                            {/* <div
                                 class='px-2 rounded-lg bg-live-dark text-live-light'
+                                style='font-size: 1.2em;'
                             >
                                 {art.title}
-                            </div>
-                            <div class='body'>
-                                {art.img && art.img[0] && <>
-                                    <div class='w-25 float-right'>
-                                        <img src={`${imageDomain}/400x/${imageDomainPath}/${art.img[0].src}`} class='img-fluid' />
-                                    </div>
-                                </>}
-                                <Markdown markdown={`<strong>${
+                            </div> */}
+                            <div class='body px-2 pt-2 pl-3 d-flex flex-column position-relative' style='border-left: 1px #a0a0a0 solid; font-size: 1.0em;'>
+                                <div class='position-absolute' style='top: 5px; left: -10px; z-index: 1000;'>
+                                    <span class='badge badge-pill badge-danger py-0 px-1' style='width: 20px; height: 20px; border: 3px #ffffff solid;'>&nbsp;</span>
+                                </div>
+                                <small class='text-danger font-weight-normal'>{
                                     isToday ? util.formatDate(art.published, {
                                         locale: 'nb',
                                         hour: '2-digit',
@@ -227,10 +224,18 @@ class Live extends Component {
                                         day: 'numeric',
                                         month: 'short',
                                     }, true)
-                                    }</strong> ${art.ingress || art.body}`} markedOpts={MARKDOWN_OPTIONS} />
+                                }</small><br />
+                                <h5 class='my-1' style='font-size: 1.2em;'>{art.title}</h5>
+
+                                {art.img && art.img[0] && <>
+                                    <div class='w-50 float-right pl-3'>
+                                        <img src={`${imageDomain}/400x/${imageDomainPath}/${art.img[0].src}`} class='img-fluid' />
+                                    </div>
+                                </>}
+                                <Markdown markdown={`${art.ingress || art.body}`} markedOpts={MARKDOWN_OPTIONS} />
                             </div>
                         </div>
-                            {isOverflow[art.id] && <>
+                            {/* {isOverflow[art.id] && <>
                                 {isExpanded[art.id] ? <>
                                     <button
                                         class='btn btn-block btn-sm btn-link text-dark'
@@ -248,7 +253,7 @@ class Live extends Component {
                                         Les mer v
                                     </button>
                                 </>}
-                            </>}
+                            </>} */}
                     </>);
                 })}
 

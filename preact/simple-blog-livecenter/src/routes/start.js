@@ -166,6 +166,7 @@ class Start extends Component {
 
                     .qa a:link, .qa a:visited {
                         color: #fff;
+                        text-decoration: underline;
                     }
                 `}
             </style>

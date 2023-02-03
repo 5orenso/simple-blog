@@ -92,7 +92,6 @@ class Program extends Component {
         });
     }
 
-
     answerQuestion = async (e) => {
         const { id } = e.target.closest('button').dataset;
         const { newArticle } = this.state;
@@ -261,6 +260,11 @@ class Program extends Component {
 
                                     </> : <>
                                         <div class='p-2 bg-live-dark text-live-light rounded-lg overflow-hidden qa' style='max-height: 70vh;'>
+                                            {art.img && art.img[0] && <>
+                                                <div class='w-50 float-right pl-3'>
+                                                    <img src={`${imageDomain}/400x/${imageDomainPath}/${art.img[0].src}`} class='img-fluid' />
+                                                </div>
+                                            </>}
                                             <Markdown markdown={`${art.body}`} markedOpts={MARKDOWN_OPTIONS} />
                                         </div>
                                         <div class='text-right'>
