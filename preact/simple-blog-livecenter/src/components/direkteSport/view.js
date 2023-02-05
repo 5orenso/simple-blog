@@ -93,7 +93,7 @@ class DirektesportView extends Component {
         const { categoryDirektesport, categoryDirektesportId } = props;
         const { articleStore, appState } = this.props.stores;
         const { isAdmin, isExpert } = appState;
-        await articleStore.loadArtlist({ isAdmin, isExpert, limit: 10, category: categoryDirektesport, key: 'direktesport', sort: 'date' });
+        await articleStore.loadArtlist({ isAdmin, isExpert, limit: 100, category: categoryDirektesport, key: 'direktesport', sort: 'date' });
 
         if (setLast) {
             this.setLastVideo(props);
