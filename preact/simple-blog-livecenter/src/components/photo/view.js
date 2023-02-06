@@ -68,7 +68,7 @@ function articleCarousel(art, props) {
                                 onTouchmove={(e) => { e.stopPropagation(); }}
                             >
                                 <div class='d-flex flex-row flex-nowrap h-100 w-100 align-items-center overflow-hidden'>
-                                    <img src={articleImg(img, props, '1024x')} class='' style='max-width: 100vw; max-height: 95vh;' />
+                                    <img src={articleImg(img, props, '1024x')} class='' style='max-width: 100vw; max-height: 80vh;' />
                                 </div>
                                 {img.title && <div class='d-flex w-100 justify-content-center position-absolute text-live-light font-weight-lighter' style='bottom: 10px; left: 0px;'>
                                     <Markdown markdown={`<strong>${img.title}</strong><br />${img.text || ''}`} markedOpts={MARKDOWN_OPTIONS} />
@@ -196,7 +196,7 @@ class PhotoView extends Component {
 
         return (<>
             <div class='row'>
-                <div class='w-100'>
+                <div class='w-100' style='max-height: 80vh;'>
                     {viewArticle ? <>
                         {articleCarousel(viewArticle, this.props)}
                     </> : <>
@@ -262,12 +262,13 @@ class PhotoView extends Component {
                                     >
                                         <div class='d-flex flex-row flex-nowrap h-100 w-100'>
                                             <div
-                                                class='bg-live-dark text-live-light rounded-left'
+                                                class='bg-live-dark text-live-light rounded-left d-flex justify-content-center align-items-center overflow-hidden'
                                                 style='
                                                     width: 40%;
+                                                    max-height: 150px;
                                                 '
                                             >
-                                                {art.img && art.img[0] && <img src={articleImg(art.img[0], this.props, '150x')} class='img-fluid' />}<br />
+                                                {art.img && art.img[0] && <img src={articleImg(art.img[0], this.props, '400x')} class='img-fluid' />}<br />
                                             </div>
                                             <div
                                                 class='pl-2 bg-live-light text-live-dark rounded-right'

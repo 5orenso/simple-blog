@@ -9,7 +9,7 @@ import { route } from 'preact-router';
 const RELOAD_INTERVAL_IN_SEC = 60;
 const MAX_ARTICLE_TO_SHOW = 50;
 
-function amediaVideoThumb(art, props, size = '150x') {
+function amediaVideoThumb(art, props, size = '400x') {
     if (typeof art !== 'object') {
         return undefined;
     }
@@ -191,7 +191,7 @@ class DirektesportView extends Component {
 
         return (<>
             <div class='row'>
-                <div class='w-100 d-flex flex-row justify-content-center'>
+                <div class='w-100 d-flex flex-row justify-content-center' style='max-height: 80vh;'>
                     {viewArticle ? <>
                         {amediaVideo(viewArticle, this.props)}
                     </> : <>
@@ -257,9 +257,10 @@ class DirektesportView extends Component {
                                     >
                                         <div class='d-flex flex-row flex-nowrap h-100 w-100'>
                                             <div
-                                                class='bg-live-dark text-live-light rounded-left position-relative'
+                                                class='bg-live-dark text-live-light rounded-left d-flex justify-content-center align-items-center overflow-hidden'
                                                 style='
                                                     width: 40%;
+                                                    max-height: 150px;
                                                 '
                                             >
                                                 <img src={amediaVideoThumb(art, this.props)} class='img-fluid' /><br />

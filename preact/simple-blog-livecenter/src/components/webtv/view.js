@@ -178,7 +178,7 @@ class WebTvView extends Component {
 
         return (<>
             <div class='row'>
-                <div class='w-100 d-flex flex-row justify-content-center'>
+                <div class='w-100 d-flex flex-row justify-content-center' style='max-height: 80vh;'>
                     {viewArticle ? <>
                         {youtubeVideo(viewArticle.youtube)}
                     </> : <>
@@ -244,9 +244,10 @@ class WebTvView extends Component {
                                     >
                                         <div class='d-flex flex-row flex-nowrap h-100 w-100'>
                                             <div
-                                                class='bg-live-dark text-live-light rounded-left'
+                                                class='bg-live-dark text-live-light rounded-left d-flex justify-content-center align-items-center overflow-hidden'
                                                 style='
                                                     width: 40%;
+                                                    max-height: 150px;
                                                 '
                                             >
                                                 <img src={youtubeThumb(art.youtube)} class='img-fluid' /><br />
