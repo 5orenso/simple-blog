@@ -191,12 +191,12 @@ class Program extends Component {
                 {finalArtlist && finalArtlist.map((art, i) => {
                     const dateDiff = util.dateDiff(art.published, new Date());
                     const inThePast = dateDiff.seconds > 0;
-                    const isToday = dateDiff.days === 0;
+                    const isToday = dateDiff.hours <= 6;
                     const isThisWeek = dateDiff.days < 7;
 
                     const updatedDateDiff = util.dateDiff(art.updatedDate, new Date());
                     const updatedInThePast = dateDiff.seconds > 0;
-                    const updatedIsToday = dateDiff.days === 0;
+                    const updatedIsToday = dateDiff.hours <= 6;
                     const updatedIsThisWeek = dateDiff.days < 7;
 
                     return (<>

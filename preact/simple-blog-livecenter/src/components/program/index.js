@@ -262,6 +262,10 @@ class Program extends Component {
                         const isLiveNow = !inFuture && endInFuture;
                         const hasBeen = !inFuture && !endInFuture;
 
+                        if (hasBeen) {
+                            return '';
+                        }
+
                         return (
                             <div
                                 class='col-6 col-md-4 col-lg-3 clearfix p-0'

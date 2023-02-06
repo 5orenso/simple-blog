@@ -162,6 +162,13 @@ class DirektesportView extends Component {
         });
     }
 
+    viewAll = () => {
+        const { viewAll } = this.state;
+        this.setState({
+            viewAll: !viewAll,
+        });
+    }
+
     componentDidMount() {
         this.loadAll(true, this.props);
     }
@@ -177,7 +184,7 @@ class DirektesportView extends Component {
     }
 
     render() {
-        const { height, heights, isExpanded, isOverflow, newArticle, showInput, showMore, viewArticle } = this.state;
+        const { height, heights, isExpanded, isOverflow, newArticle, showInput, showMore, viewArticle, viewAll } = this.state;
         const { appState, articleStore } = this.props.stores;
         const { currentEmail, isAdmin, isExpert } = appState;
         const { artlistDirektesport } = articleStore;
@@ -210,7 +217,7 @@ class DirektesportView extends Component {
 
                 <div class='w-100 position-relative mt-3 mb-3'>
                     <div
-                        class='d-flex flex-row flex-nowrap no-scrollbar'
+                        class={`d-flex ${viewAll ? 'flex-wrap' : 'flex-row flex-nowrap no-scrollbar'}`}
                         style={`
                             overflow-x: auto;
                             overflow-y: auto;
@@ -230,7 +237,7 @@ class DirektesportView extends Component {
 
                             return(<>
                                 <div
-                                    class='col-5 col-md-4 col-lg-3 clearfix p-0 mr-2'
+                                    class={`${viewAll ? 'col-6 col-md-4 col-lg-3' : 'col-5 col-md-4 col-lg-3 clearfix p-0 mr-2'}`}
                                     style={`
                                         line-height: 1.1em;
                                     `}
@@ -308,6 +315,16 @@ class DirektesportView extends Component {
                             </>);
                         })}
                     </div>
+                </div>
+
+                <div class='w-100 position-relative mb-3 d-flex justify-content-center'>
+                    <button class='btn btn-link text-live-light' onClick={this.viewAll}>
+                        {viewAll ? <>
+                            Vis mindre <i class='fas fa-angle-up' />
+                        </> : <>
+                            Vis alle <i class='fas fa-angle-down' />
+                        </>}
+                    </button>
                 </div>
 
                 {isAdmin && <>

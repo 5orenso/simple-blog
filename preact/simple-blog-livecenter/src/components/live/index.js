@@ -190,8 +190,9 @@ class Live extends Component {
             <div class='d-flex flex-column overflow-auto'>
                 {finalArtlist && finalArtlist.map((art, i) => {
                     const dateDiff = util.dateDiff(art.published, new Date());
+                    // console.log(art.published, dateDiff);
                     const inThePast = dateDiff.seconds > 0;
-                    const isToday = dateDiff.days === 0;
+                    const isToday = dateDiff.hours <= 6;
                     const isThisWeek = dateDiff.days < 7;
                     return (<>
                         <div
