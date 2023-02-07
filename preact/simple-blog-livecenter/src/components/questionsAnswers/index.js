@@ -124,6 +124,7 @@ class Program extends Component {
 
     render() {
         const { newArticle, showInput, showMore, showAnswer, message } = this.state;
+        const { showInputButton = true } = this.props;
         const { articleStore, appState } = this.props.stores;
         const { currentEmail, isAdmin, isExpert } = appState;
         const { artlistQa } = articleStore;
@@ -135,14 +136,16 @@ class Program extends Component {
         }
 
         return (<>
-            {showInput ? <>
-                <button type='button' class='btn btn-sm btn-link float-right' onClick={this.toggleInput}>
-                    <i class='fas fa-times'></i> Avbryt
-                </button>
-            </> : <>
-                <button type='button' class='btn btn-sm bg-live-light text-live-dark float-right' onClick={this.toggleInput}>
-                    <i class='fas fa-plus'></i> Nytt spørsmål
-                </button>
+            {showInputButton && showInputButton !== 'false' && <>
+                {showInput ? <>
+                    <button type='button' class='btn btn-sm btn-link float-right' onClick={this.toggleInput}>
+                        <i class='fas fa-times'></i> Avbryt
+                    </button>
+                </> : <>
+                    <button type='button' class='btn btn-sm bg-live-light text-live-dark float-right' onClick={this.toggleInput}>
+                        <i class='fas fa-plus'></i> Nytt spørsmål
+                    </button>
+                </>}
             </>}
 
             <h3 class='border-bottom pb-2'>Spør oss</h3>
