@@ -136,6 +136,7 @@ class Start extends Component {
             showResults = true,
             showTracking = true,
             showQpawsButton = false,
+            showRaceTimer = true,
         } = this.props;
         const { sessionid, showMenu, raceTime } = this.state;
         const { appState } = this.props.stores;
@@ -181,10 +182,14 @@ class Start extends Component {
                     >
                         <div class='w-25 d-flex flex-column align-items-center justify-content-center text-live-dark' style='line-height: 1.0em;'>
                             {/* <small class='d-none d-sm-inline-block'> */}
-                            <small>
-                                <small>RaceTime:</small><br />
-                            </small>
-                            <span style='font-size: 1.2em;'>{util.secToHms(raceTime)}</span>
+                            {showRaceTimer && showRaceTimer !== 'false' ? <>
+                                <small>
+                                    <small>RaceTime:</small><br />
+                                </small>
+                                <span style='font-size: 1.2em;'>{util.secToHms(raceTime)}</span>
+                            </> : <>
+                                &nbsp;
+                            </>}
                         </div>
 
                         <div class='w-50 d-flex justify-content-center align-items-center'>
