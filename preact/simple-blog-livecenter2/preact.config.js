@@ -6,7 +6,7 @@ export default {
             config.output = {
                 path: __dirname + '/bundle',
                 filename: '[name].js',
-                publicPath: '/preact/simple-blog-livecenter/',
+                publicPath: '/preact/simple-blog-livecenter2/',
             };
         }
 	},
