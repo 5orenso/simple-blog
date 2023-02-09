@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="{% if blog.backgroundColor %}background-color: {{ blog.backgroundColor }} !important;{% endif %}">
-    <a class="navbar-brand" href="/">{{ blog.title|removeLineBreaks|raw }}</a>
+    <a class="navbar-brand" href="/" native>{{ blog.title|removeLineBreaks|raw }}</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
@@ -8,7 +8,7 @@
         <ul class="navbar-nav mr-auto">
             {% for cat in article.catlist %}
                 <li class="nav-item {% if originalUrlPath == cat.url %}active{% endif %}">
-                    <a class="nav-link" href="{{ cat.baseHref }}">{{ cat.name }}</a>
+                    <a class="nav-link" href="{{ cat.baseHref }}" native>{{ cat.name }}</a>
                 </li>
             {% endfor %}
         </ul>
