@@ -160,14 +160,14 @@ class Live extends Component {
                     </button>
                 </>}
             </>}
-            <h3 class='border-bottom pb-2'>Siste nytt</h3>
+            <h3 class='border-bottom pb-2'>Siste</h3>
             {/* {JSON.stringify(artlist)} */}
 
             {isAdmin && <>
                 {showInput && <>
                     <div class='d-flex flex-column justify-content-start overflow-auto mb-5'>
                         <div class='bg-primary text-white px-3 py-1'>
-                            <h5>Legg til nyhet</h5>
+                            <h5>Legg til innlegg</h5>
                         </div>
                         <div class='form-group'>
                             <label for='tittelInput'>Tittel</label>
