@@ -234,6 +234,54 @@ class WebTvView extends Component {
                 </button>
             </div>}
             {showList && <div class='row position-relative'>
+
+                {isAdmin && <>
+                    <div class='w-100 position-relative mt-3 mb-3'>
+                        {showInput && <>
+                            <div class='d-flex flex-column justify-content-start overflow-auto mb-5 w-100'>
+                                <div class='bg-primary text-white px-3 py-1'>
+                                    <h5>Legg til video</h5>
+                                </div>
+                                <div class='form-group'>
+                                    <label for='tittelInput'>Tittel</label>
+                                    <input
+                                        type='text'
+                                        class='form-control'
+                                        id='tittelInput'
+                                        placeholder='Fin tittel...'
+                                        onInput={linkState(this, 'newArticle.title')}
+                                        value={newArticle.title}
+                                    />
+                                </div>
+                                <div class='form-group'>
+                                    <label for='youtubeInput'>Youtube</label>
+                                    <input
+                                        type='text'
+                                        class='form-control'
+                                        id='youtubeInput'
+                                        placeholder='Youtube link...'
+                                        onInput={linkState(this, 'newArticle.youtube')}
+                                        value={newArticle.youtube}
+                                    />
+                                </div>
+                                <div class='form-group'>
+                                    <label for='ingressInput'>Beskrivelse</label>
+                                    <textarea
+                                        class='form-control'
+                                        id='ingressInput'
+                                        rows='3'
+                                        onInput={linkState(this, 'newArticle.ingress')}
+                                        value={newArticle.ingress}
+                                    />
+                                </div>
+                                <button type='button' class='btn btn-block btn-primary' onClick={this.createArticle}>
+                                    <i class='fas fa-save'></i> Lagre
+                                </button>
+                            </div>
+                        </>}
+                    </div>
+                </>}
+
                 <div class='w-100 position-relative mt-3 mb-3'>
                     <div class={`d-flex flex-column`}>
                         {artlistWebtv.map(art => {
@@ -333,52 +381,6 @@ class WebTvView extends Component {
 
             </div>}
 
-            {isAdmin && <>
-                <div class='row'>
-                    {showInput && <>
-                        <div class='d-flex flex-column justify-content-start overflow-auto mb-5 w-100'>
-                            <div class='bg-primary text-white px-3 py-1'>
-                                <h5>Legg til video</h5>
-                            </div>
-                            <div class='form-group'>
-                                <label for='tittelInput'>Tittel</label>
-                                <input
-                                    type='text'
-                                    class='form-control'
-                                    id='tittelInput'
-                                    placeholder='Fin tittel...'
-                                    onInput={linkState(this, 'newArticle.title')}
-                                    value={newArticle.title}
-                                />
-                            </div>
-                            <div class='form-group'>
-                                <label for='youtubeInput'>Youtube</label>
-                                <input
-                                    type='text'
-                                    class='form-control'
-                                    id='youtubeInput'
-                                    placeholder='Youtube link...'
-                                    onInput={linkState(this, 'newArticle.youtube')}
-                                    value={newArticle.youtube}
-                                />
-                            </div>
-                            <div class='form-group'>
-                                <label for='ingressInput'>Beskrivelse</label>
-                                <textarea
-                                    class='form-control'
-                                    id='ingressInput'
-                                    rows='3'
-                                    onInput={linkState(this, 'newArticle.ingress')}
-                                    value={newArticle.ingress}
-                                />
-                            </div>
-                            <button type='button' class='btn btn-block btn-primary' onClick={this.createArticle}>
-                                <i class='fas fa-save'></i> Lagre
-                            </button>
-                        </div>
-                    </>}
-                </div>
-            </>}
         </>);
     }
 }
