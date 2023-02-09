@@ -129,6 +129,11 @@ class Start extends Component {
         const {
             artid,
             bib,
+            showHeader = true,
+            showBreadcrumb = true,
+            showStatusbar = true,
+            showTopViewer = true,
+            showProgram = true,
             showWebcam = true,
             showWebtv = true,
             showDirektesport = true,
@@ -174,7 +179,7 @@ class Start extends Component {
             {/* <xmp>{JSON.stringify(this.props, null, 2)}</xmp> */}
             <div class='container-fluid mb-5'>
                 <div class='row'>
-                    <div
+                    {showHeader && showHeader !== 'false' && <div
                         class='col-12 d-flex justify-content-between pt-2 px-0'
                         style={`
                             background-color: rgb(172, 219, 226);
@@ -215,34 +220,36 @@ class Start extends Component {
                                 <a href='https://femundlopet.no/v2/for-utovere/program-/32' class='btn btn-block btn-link text-left text-white'>Program</a>
                             </div>}
                         </div>
-                    </div>
-
-                    {(isAdmin || isExpert) && <div
-                        class='col-12  d-flex justify-content-end'
-                        style={`
-                            background-color: rgb(172, 219, 226);
-                        `}
-                    >
-                        <div class='d-flex justify-content-end align-items-end'>
-                            <small>
-                                <span class='badge badge-pill badge-success'>
-                                    {currentEmail && <>Logged in as {currentEmail}</>}
-                                </span>
-                                <span class='badge badge-pill badge-danger ml-2'>
-                                    {isAdmin && <>Admin</>}
-                                </span>
-                                <span class='badge badge-pill badge-warning ml-2'>
-                                    {isExpert && <>Expert</>}
-                                </span>
-                            </small>
-                        </div>
                     </div>}
+
+                    {showBreadcrumb && showBreadcrumb !== 'false' && <>
+                        {(isAdmin || isExpert) && <div
+                            class='col-12  d-flex justify-content-end'
+                            style={`
+                                background-color: rgb(172, 219, 226);
+                            `}
+                        >
+                            <div class='d-flex justify-content-end align-items-end'>
+                                <small>
+                                    <span class='badge badge-pill badge-success'>
+                                        {currentEmail && <>Logged in as {currentEmail}</>}
+                                    </span>
+                                    <span class='badge badge-pill badge-danger ml-2'>
+                                        {isAdmin && <>Admin</>}
+                                    </span>
+                                    <span class='badge badge-pill badge-warning ml-2'>
+                                        {isExpert && <>Expert</>}
+                                    </span>
+                                </small>
+                            </div>
+                        </div>}
+                    </>}
 
                     {/* <div class='col-12  d-flex justify-content-center py-1'>
                         <AdTop stores={this.props.stores} {...this.props} />
                     </div> */}
 
-                    <div
+                    {showStatusbar && showStatusbar !== 'false' && <div
                         class='col-12'
                         style={`
                             background-color: rgb(35, 139, 147);
@@ -255,9 +262,9 @@ class Start extends Component {
                         <div class='d-flex justify-content-between'>
                             <Status stores={this.props.stores} {...this.props} />
                         </div>
-                    </div>
+                    </div>}
 
-                    <div
+                    {showProgram && showProgram !== 'false' && <div
                         class='col-12 '
                         style={`
                             background-color: rgb(55, 75, 80);
@@ -266,46 +273,48 @@ class Start extends Component {
                         `}
                     >
                         <Program stores={this.props.stores} {...this.props} />
-                    </div>
+                    </div>}
 
 
-                    <div
-                        class='col-12 '
-                        style={`
-                            background-color: rgb(55, 75, 80);
-                            color: #ffffff;
-                        `}
-                    >
-                        <div class='row'>
-                            <div
-                                class='col-12 col-lg-12 py-0'
-                                ref={c => this.mainContainer = c}
-                            >
-                                {mainView === 'webcam' && <Webcam stores={this.props.stores} {...this.props} />}
-                                {mainView === 'webtv' && <WebTvView stores={this.props.stores} {...this.props} />}
-                                {mainView === 'direktesport' && <DirekteSportView stores={this.props.stores} {...this.props} />}
-                                {mainView === 'photo' && <PhotoView stores={this.props.stores} {...this.props} />}
-                                {mainView === 'results' && <ResultsView stores={this.props.stores} {...this.props} />}
-                                {mainView === 'tracking' && <TrackingView stores={this.props.stores} {...this.props} />}
-                            </div>
+                    {showTopViewer && showTopViewer !== 'false' && <>
+                        <div
+                            class='col-12 '
+                            style={`
+                                background-color: rgb(55, 75, 80);
+                                color: #ffffff;
+                            `}
+                        >
+                            <div class='row'>
+                                <div
+                                    class='col-12 col-lg-12 py-0'
+                                    ref={c => this.mainContainer = c}
+                                >
+                                    {mainView === 'webcam' && <Webcam stores={this.props.stores} {...this.props} />}
+                                    {mainView === 'webtv' && <WebTvView stores={this.props.stores} {...this.props} />}
+                                    {mainView === 'direktesport' && <DirekteSportView stores={this.props.stores} {...this.props} />}
+                                    {mainView === 'photo' && <PhotoView stores={this.props.stores} {...this.props} />}
+                                    {mainView === 'results' && <ResultsView stores={this.props.stores} {...this.props} />}
+                                    {mainView === 'tracking' && <TrackingView stores={this.props.stores} {...this.props} />}
+                                </div>
 
-                        </div>
-                    </div>
-
-                    <div class='col-12'>
-                        <div class='row'>
-                            <div class='col-12 col-lg-12 d-flex flex-wrap flex-row align-items-center justify-content-center pt-2 pb-2'>
-                                {showWebcam && showWebcam !== 'false' && <Webcams stores={this.props.stores} mainView={mainView} {...this.props} />}
-                                {showWebtv && showWebtv !== 'false' && <WebTv stores={this.props.stores} mainView={mainView} {...this.props} />}
-                                {showDirektesport && showDirektesport !== 'false' && <DirekteSport stores={this.props.stores} mainView={mainView} {...this.props} />}
-                                {showPhoto && showPhoto !== 'false' && <Photo stores={this.props.stores} mainView={mainView} {...this.props} />}
-                                {showResults && showResults !== 'false' && <Results stores={this.props.stores} mainView={mainView} {...this.props} />}
-                                {showTracking && showTracking !== 'false' && <Tracking stores={this.props.stores} mainView={mainView} {...this.props} />}
-                                {/* {showButton1 && showButton1 !== 'false' && <Button stores={this.props.stores} {...this.props} />} */}
-                                {showQpawsButton && showQpawsButton !== 'false' && <QPawsButton stores={this.props.stores} {...this.props} />}
                             </div>
                         </div>
-                    </div>
+
+                        <div class='col-12'>
+                            <div class='row'>
+                                <div class='col-12 col-lg-12 d-flex flex-wrap flex-row align-items-center justify-content-center pt-2 pb-2'>
+                                    {showWebcam && showWebcam !== 'false' && <Webcams stores={this.props.stores} mainView={mainView} {...this.props} />}
+                                    {showWebtv && showWebtv !== 'false' && <WebTv stores={this.props.stores} mainView={mainView} {...this.props} />}
+                                    {showDirektesport && showDirektesport !== 'false' && <DirekteSport stores={this.props.stores} mainView={mainView} {...this.props} />}
+                                    {showPhoto && showPhoto !== 'false' && <Photo stores={this.props.stores} mainView={mainView} {...this.props} />}
+                                    {showResults && showResults !== 'false' && <Results stores={this.props.stores} mainView={mainView} {...this.props} />}
+                                    {showTracking && showTracking !== 'false' && <Tracking stores={this.props.stores} mainView={mainView} {...this.props} />}
+                                    {/* {showButton1 && showButton1 !== 'false' && <Button stores={this.props.stores} {...this.props} />} */}
+                                    {showQpawsButton && showQpawsButton !== 'false' && <QPawsButton stores={this.props.stores} {...this.props} />}
+                                </div>
+                            </div>
+                        </div>
+                    </>}
 
                     <div class='col-12  d-flex justify-content-center px-0 py-1 bg-live-dark'>
                         <AdCenter stores={this.props.stores} {...this.props} />
