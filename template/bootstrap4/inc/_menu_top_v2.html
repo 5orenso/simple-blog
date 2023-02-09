@@ -28,15 +28,15 @@
         }
         .menuBackgroundInline {
             {%- if category.bgImageMenu -%}
-                background-image: url('{{ category.bgImageMenu }}') !important; 
+                background-image: url('{{ category.bgImageMenu }}') !important;
                 no-repeat center center fixed;
                 -webkit-background-size: cover;
                 -moz-background-size: cover;
                 -o-background-size: cover;
                 background-size: cover;
             {%- elseif frontpage.bgImageMenu -%}
-                background-image: url('{{ frontpage.bgImageMenu }}') !important; 
-                no-repeat center center fixed; 
+                background-image: url('{{ frontpage.bgImageMenu }}') !important;
+                no-repeat center center fixed;
                 -webkit-background-size: cover;
                 -moz-background-size: cover;
                 -o-background-size: cover;
@@ -71,7 +71,7 @@
 </style>
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark menuBackgroundInline menuTextColorInline {% if frontpage.startPageAtTop %}position-absolute w-100{% endif %}" style="{% if frontpage.startPageAtTop %}z-index: 1000;{% endif %}">
-    <a class="navbar-brand" href="/">
+    <a class="navbar-brand" href="/" native>
         {%- if frontpage.image -%}
             {%- if frontpage.image|match('http') -%}
                 <img src="{{ frontpage.image }}" class='logoStyle' />
@@ -94,7 +94,7 @@
             {% for cat in catlist %}
                 {% if cat.dropdown %}
                     <li class="nav-item dropdown {% if originalUrlPath|match(cat.url) %}active{% endif %}">
-                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="{{ cat.url }}" role="button" aria-haspopup="true" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="{{ cat.url }}" role="button" aria-haspopup="true" aria-expanded="false" native>
                             {%- if cat.image -%}
                                 <img src="{{ cat.image }}" style='max-height: 30px;'/>
                             {%- endif -%}
@@ -106,7 +106,7 @@
                     </li>
                 {% else %}
                     <li class="nav-item {% if originalUrlPath|match(cat.url) %}active{% endif %}">
-                        <a class="nav-link" href="{{ cat.url }}">
+                        <a class="nav-link" href="{{ cat.url }}" native>
                             {%- if cat.image -%}
                                 <img src="{{ cat.image }}" style='max-height: 30px;'/>
                             {%- endif -%}
