@@ -323,9 +323,9 @@ class PhotoView extends Component {
                                                     z-index: 10000;
                                                     background-color:rgba(0, 0, 0, 0.5);
                                                 '
-                                                onTouchstart={(e) => { e.stopPropagation(); e.preventDefault() }}
-                                                onTouchend={(e) => { e.stopPropagation(); e.preventDefault() }}
-                                                onTouchmove={(e) => { e.stopPropagation(); e.preventDefault() }}
+                                                // onTouchstart={(e) => { e.stopPropagation(); e.preventDefault() }}
+                                                // onTouchend={(e) => { e.stopPropagation(); e.preventDefault() }}
+                                                // onTouchmove={(e) => { e.stopPropagation(); e.preventDefault() }}
                                                 onScroll={(e) => { e.stopPropagation(); e.preventDefault() }}
                                                 onmousewheel={(e) => { e.stopPropagation(); e.preventDefault() }}
                                                 onwheel={(e) => { e.stopPropagation(); e.preventDefault() }}
