@@ -264,7 +264,7 @@ class PhotoView extends Component {
         return (<>
             {(!showList || !subView) && <div class='row'>
                 <div
-                    class='w-100 position-relative'
+                    class='w-100 position-relative bg-dark pt-1'
                     ref={c => this.imageContainer = c}
                 >
                     {viewArticle ? <>
@@ -378,7 +378,7 @@ class PhotoView extends Component {
                         allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
                         allowfullscreen
                     /> */}
-                    <button type='button' class='btn btn-block' onClick={this.toggleLargeView}>
+                    <button type='button' class='btn btn-block text-white' onClick={this.toggleLargeView}>
                         {subView ? <><i class='fa-solid fa-square-minus' /> Vis mindre</> : <><i class='fa-solid fa-square-plus' /> Vis større</>}
                     </button>
                 </div>
