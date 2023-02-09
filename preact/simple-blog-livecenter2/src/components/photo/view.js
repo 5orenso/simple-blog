@@ -345,7 +345,7 @@ class PhotoView extends Component {
                                                 <div
                                                     class='position-absolute text-white' style='top: 20px; right: 20px; z-index: 10001; font-size: 3.5em;'
                                                 >
-                                                    <i class='fa-solid fa-circle-xmark'></i>
+                                                    <i class='fa-solid fa-xmark' />
                                                 </div>
                                             </div>
                                         </>}
