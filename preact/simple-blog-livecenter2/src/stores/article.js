@@ -39,6 +39,8 @@ class ArticleStore extends StoreModel {
 
     @observable artlistLive = [];
 
+    @observable artlistCheckpoint = [];
+
     @observable artlistWebtv = [];
 
     @observable artlistWebcam = [];
@@ -80,6 +82,8 @@ class ArticleStore extends StoreModel {
         if (response.artlist) {
             if (key === 'live') {
                 this.updateKeyValue('artlistLive', response.artlist);
+            } else if (key === 'checkpoint') {
+                this.updateKeyValue('artlistCheckpoint', response.artlist);
             } else if (key === 'webtv') {
                 this.updateKeyValue('artlistWebtv', response.artlist);
             } else if (key === 'webcam') {
@@ -105,7 +109,7 @@ class ArticleStore extends StoreModel {
         return response;
     }
 
-    async createArticle({ author, category, categoryId, title, youtube, teaser, ingress, body, status = 2, date, dateEnd, url }) {
+    async createArticle({ author, category, categoryId, title, youtube, teaser, ingress, body, status = 2, date, dateEnd, url, lat, lon, altitude }) {
         // {
         //     "author":"sorenso",
         //     "category":"/v2/about/",
@@ -124,6 +128,9 @@ class ArticleStore extends StoreModel {
             date,
             dateEnd,
             url,
+            lat,
+            lon,
+            altitude,
         });
         return response;
     }

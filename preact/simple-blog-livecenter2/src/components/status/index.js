@@ -132,17 +132,38 @@ class Status extends Component {
   	constructor(props) {
         super(props);
         this.state = {
+            viewArticle: {},
         };
         this.updateTimer = null;
     }
 
-    chooseCheckpoint = e => {
-        const { id } = e.target.closest('button').dataset;
-        const cpId = parseInt(id, 10);
-        const currentCheckpoint = checkpoints.find(c => c.id === cpId);
+    loadAll = async (setLast, props = this.props) => {
+        const { categoryCheckpoint } = props;
+        const { articleStore, appState } = this.props.stores;
+        const { isAdmin, isExpert } = appState;
+        await articleStore.loadArtlist({ isAdmin, isExpert, limit: 100, category: categoryCheckpoint, key: 'checkpoint' });
+
+        if (setLast) {
+            this.setLastCheckpoint(props);
+        }
+        // clearTimeout(this.updateTimer);
+        // this.updateTimer = setTimeout(() => {
+        //     this.loadAll();
+        // }, RELOAD_INTERVAL_IN_SEC * 1000);
+    }
+
+    setLastCheckpoint = (props) => {
+        const { artid } = props;
+        const { articleStore } = this.props.stores;
+        const { artlistCheckpoint } = articleStore;
+        let viewArticle;
+        if (artid) {
+            viewArticle = artlistCheckpoint.find((article) => article.id === parseInt(artid, 10));
+        } else {
+            viewArticle = artlistCheckpoint[0];
+        }
         this.setState({
-            checkpoint: cpId,
-            currentCheckpoint,
+            viewArticle,
         }, () => {
             this.getWeather();
         });
@@ -150,53 +171,30 @@ class Status extends Component {
 
     getWeather = async () => {
         const { appState } = this.props.stores;
-        const { currentCheckpoint } = appState;
+        const { viewArticle } = this.state;
+        console.log(viewArticle);
         await appState.getWeather({
-            lat: currentCheckpoint.lat,
-            lon: currentCheckpoint.lon,
-            altitude: currentCheckpoint.altitude,
+            lat: viewArticle.lat,
+            lon: viewArticle.lon,
+            altitude: viewArticle.altitude,
         });
     }
 
-    tickTimer = () => {
-        const { raceTimerStart } = this.props;
-        if (!raceTimerStart) {
-            return null;
-        }
-        const now = new Date().getTime();
-        const raceStart = new Date(raceTimerStart).getTime();
-        const diff = Math.floor((now - raceStart) / 1000);
-
-        if (diff < 0) {
-            this.setState({
-                raceTime: 0,
-            });
-        } else {
-            this.setState({
-                raceTime: diff,
-            });
-        }
-
-        clearTimeout(this.updateTimer);
-        this.updateTimer = setTimeout(() => {
-            this.tickTimer();
-        }, RELOAD_INTERVAL_IN_SEC * 1000);
-    }
-
     componentDidMount() {
-        this.getWeather();
-        // this.tickTimer();
+        this.loadAll(true);
     }
 
-    componentWillUnmount() {
-        clearTimeout(this.updateTimer);
-    }
+    // componentWillReceiveProps(nextProps) {
+    //     if (nextProps.artid !== this.props.artid) {
+    //         this.loadAll(true, nextProps);
+    //     }
+    // }
 
     render() {
-        const { raceTime } = this.state;
+        const { viewArticle } = this.state;
         const { sessionid } = this.props;
         const { appState } = this.props.stores;
-        const { mapColorMode, drawerHeightLarge, weather, checkpoint, currentCheckpoint } = appState;
+        const { weather } = appState;
         return (<>
             {/* <xmp>{JSON.stringify(weather[0], null, 2)}</xmp>
             "instant": {
@@ -212,16 +210,10 @@ class Status extends Component {
 
             {weather[0] && <>
                 <div class='d-flex align-items-center'>
-                    {currentCheckpoint && <>
-                        {currentCheckpoint.name} <span class='d-none d-md-inline-block ml-2'>{currentCheckpoint.altitude} moh</span>
+                    {viewArticle && <>
+                        {viewArticle.title} <span class='d-none d-md-inline-block ml-2'>{viewArticle.altitude} moh</span>
                     </>}
                 </div>
-                {/* <div class='d-flex flex-column justify-content-center align-items-center' style='line-height: 1.0em;'>
-                    <small class='d-none d-md-inline-block'>
-                        <small>RaceTime:</small><br />
-                    </small>
-                    <span style='font-size: 1.5em;'>{util.secToHms(raceTime)}</span>
-                </div> */}
                 <div class='d-flex flex-row align-items-center'>
                     <div class='ml-3 d-flex align-items-center'>
                         <img
