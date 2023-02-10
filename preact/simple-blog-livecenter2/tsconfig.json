@@ -1,0 +1,23 @@
+{
+    "compilerOptions": {
+        "jsx": "preserve",
+        "jsxImportSource": "preact",
+        "skipLibCheck": true,
+        "baseUrl": "./",
+        "paths": {
+            "react": ["./node_modules/preact/compat/"],
+            "react-dom": ["./node_modules/preact/compat/"]
+        },
+        "types": [],
+        "lib": ["ESNext", "DOM"],
+        "esModuleInterop": true,
+        "experimentalDecorators": true
+    },
+    "include": ["src/**/*", "tests/**/*"],
+    "exclude": [
+        "node_modules",
+        "./node_modules",
+        "./node_modules/*",
+        "./node_modules/@types/node/index.d.ts"
+    ]
+}

@@ -29,6 +29,8 @@
     "preact": "^10.5.7"
   },
   "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.38.0",
+    "@typescript-eslint/parser": "^5.38.0",
     "enzyme": "^3.11.0",
     "enzyme-adapter-preact-pure": "^3.3.0",
     "eslint": "^7.32.0",
@@ -39,7 +41,8 @@
     "preact": "^10.5.7",
     "preact-cli": "^3.0.5",
     "preact-habitat": "^3.3.0",
-    "preact-render-to-string": "^5.1.12"
+    "preact-render-to-string": "^5.1.12",
+    "typescript": "^4.8.3"
   },
   "jest": {
     "preset": "jest-preset-preact",

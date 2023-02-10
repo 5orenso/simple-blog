@@ -248,7 +248,7 @@ class Start extends Component {
                     </div> */}
 
                     {showStatusbar && showStatusbar !== 'false' && <div
-                        class='col-12 bg-live-dark'
+                        class='col-12 bg-info text-live-light mb-2'
                     >
                         {/* <div class='d-flex justify-content-center display-4 w-100 py-3' >
                             Femundløpet Live 2023

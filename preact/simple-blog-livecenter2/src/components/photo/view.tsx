@@ -63,9 +63,9 @@ function articleCarousel(art, props, width = 300) {
                             scroll-snap-align: start;
                             flex-wrap: wrap;
                         `}
-                        onTouchstart={(e) => { e.stopPropagation(); }}
-                        onTouchend={(e) => { e.stopPropagation(); }}
-                        onTouchmove={(e) => { e.stopPropagation(); }}
+                        onTouchStart={(e) => { e.stopPropagation(); }}
+                        onTouchEnd={(e) => { e.stopPropagation(); }}
+                        onTouchMove={(e) => { e.stopPropagation(); }}
                     >
                         <div class='d-flex flex-row flex-nowrap h-100 w-100 align-items-center overflow-hidden'>
                             <img src={articleImg(img, props, '1024x')} class='' style={`width: ${width}px; max-height: 80vh;`} />
@@ -80,8 +80,37 @@ function articleCarousel(art, props, width = 300) {
     </>);
 }
 
+
+// Types for props
+type ExpandableProps = {
+    stores: {
+        appState: any;
+        articleStore: any;
+    };
+    categoryPhoto: string;
+    categoryPhotoId: number;
+    showList: boolean;
+    imageDomain: string;
+    imageDomainPath: string;
+    artid: number;
+};
+
+// Types for state
+type ExpandableState = {
+    viewArticle: object;
+    newArticle: object;
+    showImage: object;
+    viewerWidth: number;
+    viewAll: boolean;
+    showInput: boolean;
+};
+
 @observer
-class PhotoView extends Component {
+class PhotoView extends Component<ExpandableProps, ExpandableState> {
+    updateTimer: null | ReturnType<typeof setTimeout> = null;
+    imageContainer: HTMLElement;
+    imageScrollerRef: HTMLElement;
+
   	constructor(props) {
         super(props);
         this.state = {
@@ -89,7 +118,7 @@ class PhotoView extends Component {
             newArticle: {},
             showImage: {},
         };
-        this.updateTimer;
+        this.updateTimer = 0;
         this.imageContainer = null;
         this.imageScrollerRef = null;
     }
@@ -254,7 +283,7 @@ class PhotoView extends Component {
 
     render() {
         const { showList = true } = this.props;
-        const { height, heights, isExpanded, isOverflow, newArticle, showInput, showMore, viewArticle, viewAll, viewerWidth, showImage } = this.state;
+        const { newArticle, showInput, viewArticle, viewAll, viewerWidth, showImage } = this.state;
         const { appState, articleStore } = this.props.stores;
         const { currentEmail, isAdmin, isExpert, subView } = appState;
         const { artlistPhoto } = articleStore;
@@ -290,9 +319,9 @@ class PhotoView extends Component {
                                                     scroll-snap-align: start;
                                                     flex-wrap: wrap;
                                                 `}
-                                                onTouchstart={(e) => { e.stopPropagation(); }}
-                                                onTouchend={(e) => { e.stopPropagation(); }}
-                                                onTouchmove={(e) => { e.stopPropagation(); }}
+                                                onTouchStart={(e) => { e.stopPropagation(); }}
+                                                onTouchEnd={(e) => { e.stopPropagation(); }}
+                                                onTouchMove={(e) => { e.stopPropagation(); }}
                                             >
                                                 <div
                                                     class='d-flex flex-row flex-nowrap h-100 w-100 justify-content-center align-items-center overflow-hidden'
@@ -323,7 +352,7 @@ class PhotoView extends Component {
                                                     z-index: 10000;
                                                     background-color:rgba(0, 0, 0, 0.5);
                                                 '
-                                                // onTouchstart={(e) => { e.stopPropagation(); e.preventDefault() }}
+                                                // onTouchStart={(e) => { e.stopPropagation(); e.preventDefault() }}
                                                 // onTouchend={(e) => { e.stopPropagation(); e.preventDefault() }}
                                                 // onTouchmove={(e) => { e.stopPropagation(); e.preventDefault() }}
                                                 onScroll={(e) => { e.stopPropagation(); e.preventDefault() }}
@@ -410,9 +439,9 @@ class PhotoView extends Component {
                                             scroll-snap-align: start;
                                             flex-wrap: wrap;
                                         `}
-                                        onTouchstart={(e) => { e.stopPropagation(); }}
-                                        onTouchend={(e) => { e.stopPropagation(); }}
-                                        onTouchmove={(e) => { e.stopPropagation(); }}
+                                        onTouchStart={(e) => { e.stopPropagation(); }}
+                                        onTouchEnd={(e) => { e.stopPropagation(); }}
+                                        onTouchMove={(e) => { e.stopPropagation(); }}
                                         onClick={this.selectVideo}
                                         data-id={art.id}
                                     >
