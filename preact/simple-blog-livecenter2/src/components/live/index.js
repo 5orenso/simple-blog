@@ -15,7 +15,22 @@ const MARKDOWN_OPTIONS = {
 	smartLists: true,
 	smartypants: true,
 	xhtml: true,
+    highlight: function(code, lang) {
+        const hljs = require('highlight.js');
+        const language = hljs.getLanguage(lang) ? lang : 'plaintext';
+        return hljs.highlight(code, { language }).value;
+      },
+    langPrefix: 'hljs language-', // highlight.js css expects a top-level 'hljs' class.
 };
+
+function scrollTo(element, top = 0, left = 0) {
+    // element.scrollTop = to;
+    element.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+        inline: 'start',
+    });
+}
 
 const RELOAD_INTERVAL_IN_SEC = 60;
 const MAX_ARTICLE_TO_SHOW = 10;
@@ -41,7 +56,7 @@ class Live extends Component {
     }
 
     loadAll = async () => {
-        const { categoryLive, categoryLiveId } = this.props;
+        const { categoryLive, categoryLiveId, page, artid } = this.props;
         const { articleStore, appState } = this.props.stores;
         const { isAdmin, isExpert } = appState;
         await articleStore.loadArtlist({ isAdmin, isExpert, limit: TOTAL_ARTICLES, category: categoryLive, key: 'live' });
@@ -51,6 +66,14 @@ class Live extends Component {
         this.updateTimer = setTimeout(() => {
             this.loadAll();
         }, RELOAD_INTERVAL_IN_SEC * 1000);
+
+        if (page === 'live' && artid) {
+            this.setState({ showMore: true }, () => {
+                if (this.blockRefs[artid]) {
+                    scrollTo(this.blockRefs[artid]);
+                }
+            });
+        }
     }
 
     checkHeights = () => {
@@ -222,7 +245,7 @@ class Live extends Component {
         const { articleStore, appState } = this.props.stores;
         const { currentEmail, isAdmin, isExpert, jwtToken, apiServer } = appState;
         const { artlistLive } = articleStore;
-        const { imageDomain, imageDomainPath } = this.props;
+        const { imageDomain, imageDomainPath, artid } = this.props;
         let finalArtlist;
         if (showMore) {
             finalArtlist = artlistLive.slice(0, artlistLive.length);
@@ -231,6 +254,7 @@ class Live extends Component {
         }
         const apiUrl = `/api/fileupload/?category=${newArticle.category || 'no-category'}`
             + `&title=${encodeURIComponent(newArticle.title) || 'no-title'}`;
+        const location = window.location;
 
         return (<>
             {isAdmin && <>
@@ -246,7 +270,6 @@ class Live extends Component {
             </>}
             <h3 class='border-bottom pb-2'>Siste</h3>
             {/* {JSON.stringify(artlist)} */}
-
             {isAdmin && <>
                 {showInput && <>
                     <div class='d-flex flex-column justify-content-start overflow-auto mb-5'>
@@ -435,11 +458,13 @@ const a = 1;
                     const isThisWeek = dateDiff.days < 7;
                     return (<>
                         <div
-                            class='col-12 px-0 mb-0 pl-3'
+                            class={`col-12 px-0 mb-0 pl-3`}
                             style={`
                                 transition: max-height 700ms ease-in-out;
+                                ${art.id === parseInt(artid, 10) ? 'background-color: #f0f0f0;' : ''}
                             `}
                             ref={c => this.blockRefs[art.id] = c}
+                            data-id={art.id}
                         >
                             {/* <div
                                 class='px-2 rounded-lg bg-live-dark text-live-light'
@@ -481,6 +506,10 @@ const a = 1;
                                         </div>
                                     </>}
                                     <Markdown markdown={`${art.ingress || art.body}`} markedOpts={MARKDOWN_OPTIONS} />
+
+                                    <small>
+                                        <a class='text-muted' href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(`${location.origin}${location.pathname}#/live/${art.id}`)}&t=${encodeURIComponent(art.title)}`} target='_blank' rel='noopener'>Del <i class='fa-thin fa-share' /></a>
+                                    </small>
                                 </div>
                                 <div class='border'></div>
                                 {showImage[art.id] && <>

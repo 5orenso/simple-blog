@@ -128,6 +128,7 @@ class Start extends Component {
 
     render() {
         const {
+            page,
             artid,
             bib,
             showHeader = true,
@@ -360,7 +361,7 @@ class Start extends Component {
                                     </ul>
                                 </div>
                                 <div class='w-100 p-2 rounded-lg'>
-                                    {(mainView === 'webtv') && <>
+                                    {(mainView === 'webtv' || mainView === 'live') && <>
                                         <WebTvView stores={this.props.stores} {...this.props} />
                                     </>}
                                     {(mainView === 'webcam') && <>

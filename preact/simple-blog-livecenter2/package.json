@@ -51,6 +51,7 @@
     ]
   },
   "dependencies": {
+    "highlight": "^0.2.4",
     "history": "^4.10.1",
     "linkstate": "^2.0.1",
     "mobx": "^5.15.4",

@@ -171,13 +171,14 @@ class Status extends Component {
 
     getWeather = async () => {
         const { appState } = this.props.stores;
-        const { viewArticle } = this.state;
-        console.log(viewArticle);
-        await appState.getWeather({
-            lat: viewArticle.lat,
-            lon: viewArticle.lon,
-            altitude: viewArticle.altitude,
-        });
+        const { viewArticle = {} } = this.state;
+        if (viewArticle && viewArticle.lat && viewArticle.lon) {
+            await appState.getWeather({
+                lat: viewArticle.lat,
+                lon: viewArticle.lon,
+                altitude: viewArticle.altitude,
+            });
+        }
     }
 
     componentDidMount() {
