@@ -109,7 +109,7 @@ class ArticleStore extends StoreModel {
         return response;
     }
 
-    async createArticle({ author, category, categoryId, title, youtube, teaser, ingress, body, status = 2, date, dateEnd, url, lat, lon, altitude }) {
+    async createArticle({ author, category, categoryId, title, youtube, teaser = '', ingress = '', body = '', status = 2, date, dateEnd, url, lat, lon, altitude, img }) {
         // {
         //     "author":"sorenso",
         //     "category":"/v2/about/",
@@ -131,6 +131,7 @@ class ArticleStore extends StoreModel {
             lat,
             lon,
             altitude,
+            img,
         });
         return response;
     }
@@ -158,13 +159,14 @@ class ArticleStore extends StoreModel {
         return response;
     }
 
-    async updateArticle({ id, title, teaser, ingress, body, status = 2 }) {
+    async updateArticle({ id, title, teaser, ingress, body, status = 2, img }) {
         const response = await util.fetchApi(`/api/article/${id}`, { publish: true, method: 'PATCH' }, {
             title,
             teaser,
             ingress,
             body,
             status,
+            img,
         });
         return response;
     }

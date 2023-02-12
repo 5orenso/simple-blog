@@ -373,7 +373,7 @@ class WebTvView extends Component {
                             <i class='fas fa-times'></i> Avbryt
                         </button>
                     </> : <>
-                        <button type='button' class='btn btn-sm btn-primary position-absolute' style='top: 10px; right: 0px; z-index: 10000;' onClick={this.toggleInput}>
+                        <button type='button' class='btn btn-sm btn-primary position-absolute' style='top: 10px; right: 0px;' onClick={this.toggleInput}>
                             <i class='fas fa-plus'></i> Ny video
                         </button>
                     </>}

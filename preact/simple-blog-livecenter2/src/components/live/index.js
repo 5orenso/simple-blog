@@ -5,6 +5,8 @@ import { Text, Localizer } from 'preact-i18n';
 import Markdown from 'preact-markdown';
 import linkState from 'linkstate';
 
+import ImageUpload from '../form/imageUpload';
+
 const MARKDOWN_OPTIONS = {
 	pedantic: false,
 	gfm: true,
@@ -17,6 +19,7 @@ const MARKDOWN_OPTIONS = {
 
 const RELOAD_INTERVAL_IN_SEC = 60;
 const MAX_ARTICLE_TO_SHOW = 10;
+const TOTAL_ARTICLES = 100;
 
 @observer
 class Live extends Component {
@@ -33,6 +36,7 @@ class Live extends Component {
             showImage: {},
         };
         this.blockRefs = {};
+        this.currentTextarea = null;
         this.updateTimer;
     }
 
@@ -40,7 +44,7 @@ class Live extends Component {
         const { categoryLive, categoryLiveId } = this.props;
         const { articleStore, appState } = this.props.stores;
         const { isAdmin, isExpert } = appState;
-        await articleStore.loadArtlist({ isAdmin, isExpert, limit: 100, category: categoryLive, key: 'live' });
+        await articleStore.loadArtlist({ isAdmin, isExpert, limit: TOTAL_ARTICLES, category: categoryLive, key: 'live' });
         // this.checkHeights();
 
         clearTimeout(this.updateTimer);
@@ -124,9 +128,86 @@ class Live extends Component {
             newArticle: {
                 title: '',
                 body: '',
+                img: [],
             },
         });
     }
+
+    handleAddImage = (file) => {
+        const { newArticle } = this.state;
+        if (!Array.isArray(newArticle.img)) {
+            newArticle.img = [];
+        }
+        newArticle.img.push(file);
+        this.setState({ newArticle });
+    }
+
+    handleRemoveImageClick = (e, index) => {
+        event.preventDefault();
+        const el = event.target;
+        const imageIdx = el.dataset.image;
+        const { newArticle } = this.state;
+        // console.log('article.img', article.img, imageIdx);
+
+        if (Array.isArray(newArticle.img)) {
+            // console.log('article.img', article.img, imageIdx);
+            newArticle.img.splice(imageIdx, 1);
+            this.setState({ newArticle });
+        }
+    }
+
+    handleImageErrored = (e) => {
+        const image = e.target;
+
+        if (!image.dataset.retry) {
+            image.dataset.retry = 0;
+        }
+        image.dataset.retry = parseInt(image.dataset.retry, 10) + 1;
+        if (image.dataset.retry > 5) {
+            return false;
+        }
+
+        image.onerror = null;
+        setTimeout(() => {
+            image.src += `?${new Date()}`;
+        }, 1000);
+    }
+
+    typeInTextarea(el, newText) {
+        if (el && newText) {
+            const start = el.selectionStart;
+            const end = el.selectionEnd;
+            const name = el.name;
+
+            const { newArticle } = this.state;
+            if (typeof newArticle[name] !== 'string') {
+                newArticle[name] = '';
+            }
+            const before = newArticle[name].substring(0, start);
+            const after  = newArticle[name].substring(end, newArticle[name].length);
+            newArticle[name] = (before + newText + after);
+
+            this.setState({
+                newArticle,
+            }, () => {
+                if (el) {
+                    el.focus();
+                    el.selectionStart = start + newText.length;
+                    el.selectionEnd = start + newText.length;
+                }
+            });
+        }
+    }
+
+    handleInsertContent = (e) => {
+        e.preventDefault();
+        const el = e.target;
+        if (el && this.currentTextarea) {
+            const newText = el.dataset.content || el.innerHTML;
+            // console.log('handleInsertContent', this.currentTextarea, newText)
+            this.typeInTextarea(this.currentTextarea, newText);
+        }
+    };
 
     componentDidMount() {
         this.loadAll();
@@ -139,7 +220,7 @@ class Live extends Component {
     render() {
         const { height, heights, isExpanded, isOverflow, newArticle, showInput, showMore, showImage = {} } = this.state;
         const { articleStore, appState } = this.props.stores;
-        const { currentEmail, isAdmin, isExpert } = appState;
+        const { currentEmail, isAdmin, isExpert, jwtToken, apiServer } = appState;
         const { artlistLive } = articleStore;
         const { imageDomain, imageDomainPath } = this.props;
         let finalArtlist;
@@ -148,6 +229,9 @@ class Live extends Component {
         } else {
             finalArtlist = artlistLive.slice(0, MAX_ARTICLE_TO_SHOW);
         }
+        const apiUrl = `/api/fileupload/?category=${newArticle.category || 'no-category'}`
+            + `&title=${encodeURIComponent(newArticle.title) || 'no-title'}`;
+
         return (<>
             {isAdmin && <>
                 {showInput ? <>
@@ -181,13 +265,158 @@ class Live extends Component {
                             />
                         </div>
                         <div class='form-group'>
+                            <div class='w-50 float-right d-flex justify-content-end'>
+                                <button
+                                    type='button'
+                                    class='btn btn-sm btn-secondary ml-2'
+                                    onClick={this.handleInsertContent}
+                                    data-content='
+# Overskrift 1
+'
+                                >
+                                    <i class='fa-solid fa-h1' />
+                                </button>
+                                <button
+                                    type='button'
+                                    class='btn btn-sm btn-secondary ml-2'
+                                    onClick={this.handleInsertContent}
+                                    data-content='
+## Overskrift 2
+'
+                                >
+                                    <i class='fa-solid fa-h2' />
+                                </button>
+                                <button
+                                    type='button'
+                                    class='btn btn-sm btn-secondary ml-2'
+                                    onClick={this.handleInsertContent}
+                                    data-content='
+### Overskrift 3
+'
+                                >
+                                    <i class='fa-solid fa-h3' />
+                                </button>
+                                <button
+                                    type='button'
+                                    class='btn btn-sm btn-secondary ml-2'
+                                    onClick={this.handleInsertContent}
+                                    data-content='
+__fet__
+'
+                                >
+                                    <i class='fa-solid fa-bold' />
+                                </button>
+                                <button
+                                    type='button'
+                                    class='btn btn-sm btn-secondary ml-2'
+                                    onClick={this.handleInsertContent}
+                                    data-content='
+__kursiv__
+'
+                                >
+                                    <i class='fa-solid fa-italic' />
+                                </button>
+                                <button
+                                    type='button'
+                                    class='btn btn-sm btn-secondary ml-2'
+                                    onClick={this.handleInsertContent}
+                                    data-content='
+[tittel](url)
+'
+                                >
+                                    <i class='fa-solid fa-link' />
+                                </button>
+                                <button
+                                    type='button'
+                                    class='btn btn-sm btn-secondary ml-2'
+                                    onClick={this.handleInsertContent}
+                                    data-content='
+- linje1
+- linje2
+- linje3
+'
+                                >
+                                    <i class='fa-solid fa-list' />
+                                </button>
+                                <button
+                                    type='button'
+                                    class='btn btn-sm btn-secondary ml-2'
+                                    onClick={this.handleInsertContent}
+                                    data-content='
+1. linje1
+2. linje2
+3. linje3
+'
+                                >
+                                    <i class='fa-solid fa-list-ol' />
+                                </button>
+                                <button
+                                    type='button'
+                                    class='btn btn-sm btn-secondary ml-2'
+                                    onClick={this.handleInsertContent}
+                                    data-content='
+- [x] Write the press release
+- [ ] Update the website
+- [ ] Contact the media
+'
+                                >
+                                    <i class='fa-solid fa-list-check' />
+                                </button>
+                                <button
+                                    type='button'
+                                    class='btn btn-sm btn-secondary ml-2'
+                                    onClick={this.handleInsertContent}
+                                    data-content='
+```javascript
+const a = 1;
+```
+'
+                                >
+                                    <i class='fa-solid fa-code' />
+                                </button>
+                                {/* <button
+                                    type='button'
+                                    class='btn btn-secondary ml-2'
+                                    onClick={this.handleInsertContent}
+                                    data-content='
+> blockquote
+'
+                                >
+                                    <i class='fa-solid fa-quotes' />
+                                </button> */}
+                            </div>
                             <label for='bodyInput'>Innhold</label>
                             <textarea
                                 class='form-control'
                                 id='bodyInput'
-                                rows='3'
+                                rows='10'
+                                name='body'
                                 onInput={linkState(this, 'newArticle.body')}
                                 value={newArticle.body}
+                                ref={c => this.currentTextarea = c}
+                            />
+                        </div>
+                        {newArticle && newArticle.img && <>
+                            <div class='form-group'>
+                                {newArticle.img.map((img, idx) => {
+                                    return (
+                                        <div class='d-flex w-100 justify-content-between'>
+                                            <button class='btn btn-danger btn-sm' data-image={idx} onClick={this.handleRemoveImageClick}>X</button>
+                                            <div class='d-flex w-100 justify-content-between'>
+                                                {img.src && <img src={`${imageDomain}/220x/${imageDomainPath}/${img.src}`} style='max-height: 150px;'  class='img-fluid' onError={this.handleImageErrored} />}
+                                            </div>
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        </>}
+
+                        <div class='form-group'>
+                            <ImageUpload
+                                apiUrl={apiUrl}
+                                apiServer={apiServer}
+                                jwtToken={jwtToken}
+                                handleAddImage={this.handleAddImage}
                             />
                         </div>
                         <button type='button' class='btn btn-block btn-primary' onClick={this.createArticle}>
