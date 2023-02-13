@@ -55,7 +55,7 @@
     {%- endif -%} {{ category.detailContainerCss }}">
     <div class="row">
         {% if article.catRef.hideAuthorInfo %}
-            <div class="col-lg-12 blog-main {%- if article.catRef.showFullWidth -%}px-0{% endif %}">
+            <div class="col-lg-12 blog-main {%- if article.catRef.showFullWidth -%} px-0{% endif %}">
         {% else %}
             <div class="col-lg-8 blog-main">
         {% endif %}
@@ -168,7 +168,7 @@
         {% if !category.hideArticleList %}
             <div class="col-lg-8 blog-main">
         {% else %}
-            <div class="col-lg-12 blog-main {%- if article.catRef.showFullWidth -%}px-0{% endif %}">
+            <div class="col-lg-12 blog-main {%- if article.catRef.showFullWidth -%} px-0{% endif %}">
         {% endif %}
             <div class="blog-post position-relative">
                 {% for widget in ['helloworld', 'clock', 'booking', 'form', 'sheet', 'poll', 'gallery', 'weather', 'map', 'rating', 'related', 'cookies', 'livecenter', 'livecenter2'] %}
