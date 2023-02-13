@@ -180,7 +180,7 @@ class Start extends Component {
                 `}
             </style>
             {/* <xmp>{JSON.stringify(this.props, null, 2)}</xmp> */}
-            <div class='container-fluid mb-5'>
+            <div class='container-fluid mb-5 px-0'>
                 <div class='row'>
                     {showHeader && showHeader !== 'false' && <div
                         class='col-12 d-flex justify-content-between pt-2 px-0'
