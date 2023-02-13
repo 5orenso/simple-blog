@@ -16,6 +16,7 @@ module.exports = async (req, res) => {
 
     let apiContent;
     const data = webUtil.cleanObject(req.body, { nullIsUndefined: true });
+console.log('data', data);
 
     apiContent = await art.save(data);
     return utilHtml.renderApi(req, res, 201, apiContent);
