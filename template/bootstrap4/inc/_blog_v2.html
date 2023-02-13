@@ -49,7 +49,7 @@
 </div>
 
 <div
-    class="{%- if article.catRef.showFullWidth -%}container-fluid{%- else -%}container{% endif %} blog-post-container"
+    class="{%- if article.catRef.showFullWidth -%}container-fluid px-0 {%- else -%}container{% endif %} blog-post-container"
     style="{%- if category.useImageOneAsBackground -%}
         background: url(https://{{ imageServer }}/{% if isPhoto || isPhotoCategory %}1920x{% else %}1024x{% endif %}/{{ imagePath }}/{{ article.img[0].src }}) no-repeat center center;
     {%- endif -%} {{ category.detailContainerCss }}">
