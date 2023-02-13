@@ -146,11 +146,11 @@ class WebTvView extends Component {
     }
 
     setLastVideo = (props) => {
-        const { artid } = props;
+        const { artid, page } = props;
         const { articleStore } = this.props.stores;
         const { artlistWebtv } = articleStore;
         let viewArticle;
-        if (artid) {
+        if (page === 'webtv' && artid) {
             viewArticle = artlistWebtv.find((article) => article.id === parseInt(artid, 10));
         } else {
             viewArticle = artlistWebtv[0];
