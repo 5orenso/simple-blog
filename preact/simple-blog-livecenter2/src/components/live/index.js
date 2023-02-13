@@ -79,7 +79,7 @@ class Live extends Component {
 
     setPageHeaders = () => {
         const { appState, articleStore } = this.props.stores;
-        const { artid } = this.props;
+        const { imageDomain, imageDomainPath, artid } = this.props;
         const { artlistLive } = articleStore;
         const viewArticle = artlistLive.find((article) => article.id === parseInt(artid, 10));
         const { title, img } = viewArticle;
