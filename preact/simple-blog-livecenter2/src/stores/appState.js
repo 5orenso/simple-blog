@@ -18,6 +18,13 @@ function scrollTo(element, top = 0, left = 0) {
     });
 }
 
+function addMetaTag(tag = 'og:title', content = 'title') {
+    var newTag = document.createElement('meta');
+    newTag.setAttribute('property', tag);
+    newTag.content = content
+    document.getElementsByTagName('head')[0].appendChild(newTag);
+}
+
 class AppState {
     constructor() {
         this.setView(util.getObject('view'));
@@ -284,6 +291,86 @@ class AppState {
     @observable mainViewCallback = () => {};
 
     @observable subViewCallback = () => {};
+
+    @action
+    setPageHeaders(headers) {
+        // replace html headers for og and twitter
+        {/* <meta property="og:url" content="https://litt.no/Livesenter/Live/322" />
+        <meta property="og:type" content="article" />
+        <meta property="og:locale" content="no_NO" />
+        <meta property="og:title" content="Live" />
+        <meta property="og:description" content="" />
+        <meta property="og:site_name" content="litt.no" />
+        <meta property="og:image" content="https://litt.no/pho/photo/simpleblog-77e5d472-9848-4bf1-a43d-f82d9783206a.jpg?w=600" />
+        <meta property="og:image:width" content="600" />
+        <meta property="og:image:type" content="image/jpeg" />
+
+        <!-- Twitter Card -->
+        <meta name="twitter:site" content="https://twitter.com/sorenso" />
+        <meta name="twitter:text:title" content="Live" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:description" content="" />
+        <meta name="twitter:creator" content="https://twitter.com/sorenso" />
+        <meta name="twitter:image" content="https://litt.no/pho/photo/simpleblog-77e5d472-9848-4bf1-a43d-f82d9783206a.jpg?w=600" />
+
+        <meta name="thumbnail" content="https://litt.no/pho/photo/simpleblog-77e5d472-9848-4bf1-a43d-f82d9783206a.jpg?w=600" /> */}
+
+        if (headers) {
+            document.title = headers.title;
+            if (document.querySelector('meta[name="title"]')) {
+                document.querySelector('meta[name="title"]').setAttribute("content", headers.title);
+            } else {
+                addMetaTag('title', headers.title);
+            }
+            if (document.querySelector('meta[name="description"]')) {
+                document.querySelector('meta[name="description"]').setAttribute("content", headers.description);
+            } else {
+                addMetaTag('description', headers.description);
+            }
+            if (document.querySelector('meta[name="thumbnail"]')) {
+                document.querySelector('meta[name="thumbnail"]').setAttribute("content", headers.image);
+            } else {
+                addMetaTag('thumbnail', headers.image);
+            }
+
+            if (document.querySelector('meta[property="og:url"]')) {
+                document.querySelector('meta[property="og:url"]').setAttribute("content", headers.url);
+            } else {
+                addMetaTag('og:ur', headers.url);
+            }
+            if (document.querySelector('meta[property="og:title"]')) {
+                document.querySelector('meta[property="og:title"]').setAttribute("content", headers.title);
+            } else {
+                addMetaTag('og:title', headers.title);
+            }
+            if (document.querySelector('meta[property="og:description"]')) {
+                document.querySelector('meta[property="og:description"]').setAttribute("content", headers.description);
+            } else {
+                addMetaTag('og:description', headers.description);
+            }
+            if (document.querySelector('meta[property="og:image"]')) {
+                document.querySelector('meta[property="og:image"]').setAttribute("content", headers.image);
+            } else {
+                addMetaTag('og:image', headers.image);
+            }
+
+            if (document.querySelector('meta[property="twitter:text:title"]')) {
+                document.querySelector('meta[property="twitter:text:title"]').setAttribute("content", headers.title);
+            } else {
+                addMetaTag('twitter:text:title', headers.title);
+            }
+            if (document.querySelector('meta[property="twitter:description"]')) {
+                document.querySelector('meta[property="twitter:description"]').setAttribute("content", headers.description);
+            } else {
+                addMetaTag('twitter:description', headers.description);
+            }
+            if (document.querySelector('meta[property="twitter:image"]')) {
+                document.querySelector('meta[property="twitter:image"]').setAttribute("content", headers.image);
+            } else {
+                addMetaTag('twitter:image', headers.image);
+            }
+        }
+    }
 
     @action
     setWebsocketServer(webocketUrl) {

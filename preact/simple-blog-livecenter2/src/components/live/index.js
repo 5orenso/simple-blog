@@ -68,12 +68,30 @@ class Live extends Component {
         }, RELOAD_INTERVAL_IN_SEC * 1000);
 
         if (page === 'live' && artid) {
+            this.setPageHeaders();
             this.setState({ showMore: true }, () => {
                 if (this.blockRefs[artid]) {
                     scrollTo(this.blockRefs[artid]);
                 }
             });
         }
+    }
+
+    setPageHeaders = () => {
+        const { appState, articleStore } = this.props.stores;
+        const { artid } = this.props;
+        const { artlistLive } = articleStore;
+        const viewArticle = artlistLive.find((article) => article.id === parseInt(artid, 10));
+        const { title, img } = viewArticle;
+        const image = img && img.length > 0 ? `${imageDomain}/220x/${imageDomainPath}/${img.src}` : '';
+        const description = viewArticle.ingress || viewArticle.body;
+        const url = `${location.origin}${location.pathname}#/live/${viewArticle.id}`;
+        appState.setPageHeaders({
+            title,
+            description,
+            image,
+            url,
+        });
     }
 
     checkHeights = () => {
@@ -489,7 +507,7 @@ const a = 1;
                                         month: 'short',
                                     }, true)
                                 }</small><br />
-                                <div class='w-100 mb-3'>
+                                <div class='w-100 mb-1'>
                                     <h5 class='mb-1 mt-0' style='font-size: 1.15em;'>{art.title}</h5>
 
                                     {art.img && art.img[0] && <>
@@ -507,9 +525,19 @@ const a = 1;
                                     </>}
                                     <Markdown markdown={`${art.ingress || art.body}`} markedOpts={MARKDOWN_OPTIONS} />
 
-                                    <small>
-                                        <a class='text-muted' href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(`${location.origin}${location.pathname}#/live/${art.id}`)}&t=${encodeURIComponent(art.title)}`} target='_blank' rel='noopener'>Del <i class='fa-thin fa-share' /></a>
-                                    </small>
+                                </div>
+                                <div class='d-flex justify-content-end mb-3'>
+                                    <a class='text-muted ml-2' href={`${location.origin}${location.pathname}#/live/${art.id}`} target='_blank' rel='noopener'><i class='fa-solid fa-link' /></a>
+                                    <a class='text-muted ml-2' href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(`${location.origin}${location.pathname}#/live/${art.id}`)}&t=${encodeURIComponent(art.title)}`} target='_blank' rel='noopener'><i class='fa-brands fa-facebook' /></a>
+                                    <a class='text-muted ml-2' href={`mailto:?body=${encodeURIComponent(`Hei,
+
+Her kommer en artikkel som er delt med deg:
+`)}${encodeURIComponent(`${location.origin}${location.pathname}#/live/${art.id}`)}${encodeURIComponent(`
+
+Ha en fin dag :)
+${window.location.hostname}
+
+`)}&subject=Tips:%20${encodeURIComponent(art.title)}`} target='_blank' rel='noopener'><i class='fa-solid fa-envelope' /></a>
                                 </div>
                                 <div class='border'></div>
                                 {showImage[art.id] && <>
