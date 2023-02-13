@@ -54,6 +54,7 @@ export default class Edit extends Component {
             handleTagsInput,
             handleKeydown,
             currentTag,
+            currentTagIdx,
             taglist,
         } = this.props;
 

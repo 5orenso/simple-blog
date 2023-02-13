@@ -49,17 +49,20 @@ class Live extends Component {
             heights: {},
             newArticle: {},
             showImage: {},
+            taglist: [],
+            currentTagIdx: -1,
+            currentTag: '',
         };
         this.blockRefs = {};
         this.currentTextarea = null;
         this.updateTimer;
     }
 
-    loadAll = async () => {
-        const { categoryLive, categoryLiveId, page, artid } = this.props;
+    loadAll = async (props = this.props) => {
+        const { categoryLive, categoryLiveId, page, artid, tag } = props;
         const { articleStore, appState } = this.props.stores;
         const { isAdmin, isExpert } = appState;
-        await articleStore.loadArtlist({ isAdmin, isExpert, limit: TOTAL_ARTICLES, category: categoryLive, key: 'live' });
+        await articleStore.loadArtlist({ isAdmin, isExpert, limit: TOTAL_ARTICLES, category: categoryLive, key: 'live', tag });
         // this.checkHeights();
 
         clearTimeout(this.updateTimer);
@@ -170,6 +173,7 @@ class Live extends Component {
                 title: '',
                 body: '',
                 img: [],
+                tags: [],
             },
         });
     }
@@ -248,7 +252,133 @@ class Live extends Component {
             // console.log('handleInsertContent', this.currentTextarea, newText)
             this.typeInTextarea(this.currentTextarea, newText);
         }
-    };
+    }
+
+    handleKeydown = (event, handleInput, taglist) => {
+        let currentTagIdx = this.state.currentTagIdx;
+        let currentTag;
+        const total = taglist.length;
+        if (event.key === 'Enter') {
+            this.handleInput(event, {
+                action: 'add',
+                name: 'tags',
+                type: 'array',
+            });
+            currentTagIdx = 0;
+            if (taglist[currentTagIdx]) {
+                currentTag = taglist[currentTagIdx].title;
+            }
+        } else if (event.key === 'Backspace' || event.key === 'Escape') {
+            currentTagIdx = -1;
+        } else if (event.key === 'ArrowUp') {
+            event.preventDefault();
+            currentTagIdx = currentTagIdx - 1;
+            if (currentTagIdx <= -1) {
+                currentTagIdx = -1;
+            } else {
+                currentTag = taglist[currentTagIdx].title;
+            }
+        } else if (event.key === 'ArrowDown') {
+            event.preventDefault();
+            currentTagIdx = currentTagIdx + 1;
+            if (currentTagIdx >= total) {
+                currentTagIdx = 0;
+            }
+            currentTag = taglist[currentTagIdx].title;
+        }
+        this.setState({ currentTagIdx, currentTag });
+        return true;
+    }
+
+    handleTagsInput = (event, handleInput) => {
+        // TODO: Add force to lower case function.
+        event.target.value = event.target.value.toLowerCase();
+        this.handleInput(event, {
+            action: 'search',
+            name: 'tags',
+            type: 'array',
+        });
+    }
+
+    handleTagAdd = (event, handleInput, tag) => {
+        this.handleInput(event, {
+            action: 'add',
+            name: 'tags',
+            value: tag.toLowerCase(),
+            type: 'array',
+        });
+    }
+
+    handleTagRemove = (event, handleInput, tag) => {
+        this.handleInput(event, {
+            action: 'remove',
+            name: 'tags',
+            value: tag.toLowerCase(),
+            type: 'array',
+        });
+    }
+
+    handleInput = (event, opt = {}) => {
+        event.preventDefault();
+        const el = event.target;
+        let name = el.name;
+        let value = el.value || '';
+
+        if (opt.name && (opt.action === 'add' || value.match(/[,]$/))) {
+            let val = opt.value || value;
+            val = val.replace(/[, ]+$/, '');
+            this.articleInputAdd(opt.name, val, opt.type);
+            value = '';
+        } else if (opt.name && opt.action === 'remove') {
+            return this.articleInputRemove(opt.name, opt.value, opt.type);
+        } else if (opt.action === 'search') {
+            if (opt.name === 'tags' && value.length >= 1) {
+                let loadTaglistTimer = this.state.loadTaglistTimer;
+                clearTimeout(loadTaglistTimer);
+                loadTaglistTimer = setTimeout(() => this.loadTaglist(1, value), 500);
+                this.setState({ loadTaglistTimer });
+            }
+        } else if (opt.name && opt.value) {
+            name = opt.name;
+            value = opt.value;
+        }
+
+        this.articleInputAdd(name, value);
+    }
+
+    loadTaglist = async (currentPage = 1, query) => {
+        const limit = this.state.tagsPerPage;
+        const offset = (currentPage - 1) * this.state.tagsPerPage;
+        const { newArticle } = this.state;
+        let titleNin;
+        if (typeof newArticle.tags === 'object' && Array.isArray(newArticle.tags)) {
+            titleNin = newArticle.tags.join(',');
+        }
+        const result = await util.fetchApi('/api/tag/', { publish: true, method: 'GET' }, { query, titleNin, limit, offset });
+        // console.log('result', result);
+        this.setState({
+            taglist: result.taglist,
+            taglistTotal: result.total,
+        });
+    }
+
+    articleInputAdd = (name, value, type) => {
+        const { newArticle } = this.state;
+        const taglist = this.state.taglist;
+        if (type === 'array') {
+            if (!Array.isArray(newArticle[name])) {
+                newArticle[name] = [];
+            }
+            if (value && newArticle[name].indexOf(value) === -1) {
+                newArticle[name].push(value);
+                const idx = taglist.findIndex(x => x.title === value);
+                taglist.splice(idx, 1);
+            }
+        } else {
+            newArticle[name] = value;
+        }
+        this.setState({ newArticle, taglist });
+    }
 
     componentDidMount() {
         this.loadAll();
@@ -258,12 +388,30 @@ class Live extends Component {
         clearTimeout(this.updateTimer);
     }
 
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.tag !== this.props.tag) {
+            this.loadAll(nextProps);
+        }
+    }
+
     render() {
-        const { height, heights, isExpanded, isOverflow, newArticle, showInput, showMore, showImage = {} } = this.state;
+        const {
+            height,
+            heights,
+            isExpanded,
+            isOverflow,
+            newArticle,
+            showInput,
+            showMore,
+            showImage = {},
+            currentTagIdx,
+            currentTag,
+            taglist,
+        } = this.state;
         const { articleStore, appState } = this.props.stores;
         const { currentEmail, isAdmin, isExpert, jwtToken, apiServer } = appState;
         const { artlistLive } = articleStore;
-        const { imageDomain, imageDomainPath, artid } = this.props;
+        const { imageDomain, imageDomainPath, artid, tag } = this.props;
         let finalArtlist;
         if (showMore) {
             finalArtlist = artlistLive.slice(0, artlistLive.length);
@@ -451,8 +599,8 @@ const a = 1;
                                 })}
                             </div>
                         </>}
-
                         <div class='form-group'>
+                            <label for='imageInput'>Bilder</label>
                             <ImageUpload
                                 apiUrl={apiUrl}
                                 apiServer={apiServer}
@@ -460,11 +608,49 @@ const a = 1;
                                 handleAddImage={this.handleAddImage}
                             />
                         </div>
+                        <div class='form-group'>
+                            <label for='tagsInput'>Tagger</label>
+                            <input type='text' class='form-control' id='tagsInput' placeholder='Tags'
+                                name='tagSearch'
+                                onInput={e => this.handleTagsInput(e, this.handleInput)}
+                                onKeydown={e => this.handleKeydown(e, this.handleInput, taglist)}
+                                value={currentTag || newArticle.tagSearch} />
+
+                            {Array.isArray(taglist) && taglist.map((tag, idx) =>
+                                <span class={`badge badge-${currentTagIdx === idx ? 'warning' : 'light'} mr-1`}
+                                    onClick={e => this.handleTagAdd(e, this.handleInput, tag.title)}
+                                >{tag.title} <small class='text-muted'>({tag.count})</small> <i class='fas fa-plus' /></span>
+                            )}
+
+                            {Array.isArray(newArticle.tags) && newArticle.tags.map(tag =>
+                                <span class='badge badge-info mr-1'>{tag} <i class='fas fa-times-circle'
+                                    onClick={e => this.handleTagRemove(e, this.handleInput, tag)}
+                                /></span>
+                            )}
+                        </div>
                         <button type='button' class='btn btn-block btn-primary' onClick={this.createArticle}>
                             <i class='fas fa-save'></i> Lagre
                         </button>
                     </div>
                 </>}
+            </>}
+
+            {tag && <>
+                <div class='bg-light d-flex mb-2 rounded-lg p-3'>
+                    <div class='bg-light text-white rounded-lg pt-2' style='background-color: #d0d0d0 !important;'>
+                        <i class='fa-solid fa-hashtag mx-2' style='font-size: 2.0em;' />
+                    </div>
+                    <div class='flex-grow-1 p-1 d-flex justify-content-between'>
+                        <div class='flex-grow-1'>
+                            <strong>{tag}</strong>
+                        </div>
+                        <div class=''>
+                            <a class='text-white' href={`${location.origin}${location.pathname}#/live/`} style='background-color: #d0d0d0 !important;'>
+                                <i class='fa-solid fa-circle-xmark' style='font-size: 1.5em;' />
+                            </a>
+                        </div>
+                    </div>
+                </div>
             </>}
 
             <div class='d-flex flex-column overflow-auto'>
@@ -526,18 +712,30 @@ const a = 1;
                                     <Markdown markdown={`${art.ingress || art.body}`} markedOpts={MARKDOWN_OPTIONS} />
 
                                 </div>
-                                <div class='d-flex justify-content-end mb-3'>
-                                    <a class='text-muted ml-2' href={`${location.origin}${location.pathname}#/live/${art.id}`} target='_blank' rel='noopener'><i class='fa-solid fa-link' /></a>
-                                    <a class='text-muted ml-2' href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(`${location.origin}${location.pathname}#/live/${art.id}`)}&t=${encodeURIComponent(art.title)}`} target='_blank' rel='noopener'><i class='fa-brands fa-facebook' /></a>
-                                    <a class='text-muted ml-2' href={`mailto:?body=${encodeURIComponent(`Hei,
+                                <div class='d-flex justify-content-between mb-3'>
+                                    <div class='d-flex justify-content-start'>
+                                        {Array.isArray(art.tags) && art.tags.map(t =>
+                                            <a
+                                                href={`${location.origin}${location.pathname}#/live/tag/${t}`}
+                                                class={`badge ${t === tag ? 'badge-info text-white' : 'badge-light text-muted'} mr-1 d-flex align-items-center rounded-lg font-weight-normal`}
+                                            >
+                                                {t}
+                                            </a>
+                                        )}
+                                    </div>
+                                    <div class='d-flex justify-content-end'>
+                                        <a class='text-muted ml-2' href={`${location.origin}${location.pathname}#/live/${art.id}`} target='_blank' rel='noopener'><i class='fa-solid fa-link' /></a>
+                                        <a class='text-muted ml-2' href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(`${location.origin}${location.pathname}#/live/${art.id}`)}&t=${encodeURIComponent(art.title)}`} target='_blank' rel='noopener'><i class='fa-brands fa-facebook' /></a>
+                                        <a class='text-muted ml-2' href={`mailto:?body=${encodeURIComponent(`Hei,
 
-Her kommer en artikkel som er delt med deg:
-`)}${encodeURIComponent(`${location.origin}${location.pathname}#/live/${art.id}`)}${encodeURIComponent(`
+    Her kommer en artikkel som er delt med deg:
+    `)}${encodeURIComponent(`${location.origin}${location.pathname}#/live/${art.id}`)}${encodeURIComponent(`
 
-Ha en fin dag :)
-${window.location.hostname}
+    Ha en fin dag :)
+    ${window.location.hostname}
 
-`)}&subject=Tips:%20${encodeURIComponent(art.title)}`} target='_blank' rel='noopener'><i class='fa-solid fa-envelope' /></a>
+    `)}&subject=Tips:%20${encodeURIComponent(art.title)}`} target='_blank' rel='noopener'><i class='fa-solid fa-envelope' /></a>
+                                    </div>
                                 </div>
                                 <div class='border'></div>
                                 {showImage[art.id] && <>

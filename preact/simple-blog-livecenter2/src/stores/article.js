@@ -68,14 +68,17 @@ class ArticleStore extends StoreModel {
         this.time = new Date().getTime();
     }
 
-    async loadArtlist({ isAdmin, isExpert, limit, category, key, loadAll, status = 2, sort }) {
+    async loadArtlist({ isAdmin, isExpert, limit, category, key, loadAll, status = 2, sort, tag }) {
         const query = {};
         if (sort) {
             query.sort = sort;
         }
+        if (tag) {
+            query.tag = tag;
+        }
         let response;
         if (isAdmin || isExpert) {
-            response = await util.fetchApi(`/api/article/`, { publish: true, method: 'GET' }, { sort, category, limit, status, loadAll });
+            response = await util.fetchApi(`/api/article/`, { publish: true, method: 'GET' }, { sort, category, limit, status, loadAll, tag });
         } else {
             response = await util.fetchApi(`/api/article/public/${encodeURIComponent(category)}/${limit}/${status}/`, { publish: true, method: 'GET' }, query);
         }
@@ -109,7 +112,7 @@ class ArticleStore extends StoreModel {
         return response;
     }
 
-    async createArticle({ author, category, categoryId, title, youtube, teaser = '', ingress = '', body = '', status = 2, date, dateEnd, url, lat, lon, altitude, img }) {
+    async createArticle({ author, category, categoryId, title, youtube, teaser = '', ingress = '', body = '', status = 2, date, dateEnd, url, lat, lon, altitude, img, tags }) {
         // {
         //     "author":"sorenso",
         //     "category":"/v2/about/",
@@ -132,6 +135,7 @@ class ArticleStore extends StoreModel {
             lon,
             altitude,
             img,
+            tags,
         });
         return response;
     }
