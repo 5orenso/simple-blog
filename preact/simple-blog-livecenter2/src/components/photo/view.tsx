@@ -6,6 +6,8 @@ import Markdown from 'preact-markdown';
 import linkState from 'linkstate';
 import { route } from 'preact-router';
 
+import ImageUpload from '../form/imageUpload';
+
 const RELOAD_INTERVAL_IN_SEC = 60;
 const MAX_ARTICLE_TO_SHOW = 50;
 
@@ -266,6 +268,46 @@ class PhotoView extends Component<ExpandableProps, ExpandableState> {
         }
     }
 
+    handleAddImage = (file) => {
+        const { newArticle } = this.state;
+        if (!Array.isArray(newArticle.img)) {
+            newArticle.img = [];
+        }
+        newArticle.img.push(file);
+        this.setState({ newArticle });
+    }
+
+    handleRemoveImageClick = (e, index) => {
+        event.preventDefault();
+        const el = event.target;
+        const imageIdx = el.dataset.image;
+        const { newArticle } = this.state;
+        // console.log('article.img', article.img, imageIdx);
+
+        if (Array.isArray(newArticle.img)) {
+            // console.log('article.img', article.img, imageIdx);
+            newArticle.img.splice(imageIdx, 1);
+            this.setState({ newArticle });
+        }
+    }
+
+    handleImageErrored = (e) => {
+        const image = e.target;
+
+        if (!image.dataset.retry) {
+            image.dataset.retry = 0;
+        }
+        image.dataset.retry = parseInt(image.dataset.retry, 10) + 1;
+        if (image.dataset.retry > 5) {
+            return false;
+        }
+
+        image.onerror = null;
+        setTimeout(() => {
+            image.src += `?${new Date()}`;
+        }, 1000);
+    }
+
     componentDidMount() {
         this.loadAll(true, this.props);
         this.getWidth();
@@ -282,13 +324,17 @@ class PhotoView extends Component<ExpandableProps, ExpandableState> {
     }
 
     render() {
-        const { showList = true } = this.props;
+        const { showList = true, imageDomain, imageDomainPath } = this.props;
         const { newArticle, showInput, viewArticle, viewAll, viewerWidth, showImage } = this.state;
         const { appState, articleStore } = this.props.stores;
-        const { currentEmail, isAdmin, isExpert, subView } = appState;
+        const { currentEmail, isAdmin, isExpert, subView, jwtToken, apiServer } = appState;
         const { artlistPhoto } = articleStore;
 
         const hasOnlyOneImage = viewArticle?.img?.length === 1;
+
+        const apiUrl = `/api/fileupload/?category=${newArticle.category || 'no-category'}`
+            + `&title=${encodeURIComponent(newArticle.title) || 'no-title'}`;
+        const location = window.location;
 
         return (<>
             {(!showList || !subView) && <div class='row'>
@@ -414,6 +460,65 @@ class PhotoView extends Component<ExpandableProps, ExpandableState> {
             </div>}
             {showList && <div class='row position-relative'>
 
+                {isAdmin && <>
+                    <div class='w-100 position-relative mt-3 mb-3'>
+                        {showInput && <>
+                            <div class='d-flex flex-column justify-content-start overflow-auto mb-5 w-100'>
+                                <div class='bg-primary text-white px-3 py-1'>
+                                    <h5>Legg til fotoalbum</h5>
+                                </div>
+                                <div class='form-group'>
+                                    <label for='tittelInput'>Tittel</label>
+                                    <input
+                                        type='text'
+                                        class='form-control'
+                                        id='tittelInput'
+                                        placeholder='Fin tittel...'
+                                        onInput={linkState(this, 'newArticle.title')}
+                                        value={newArticle.title}
+                                    />
+                                </div>
+                                <div class='form-group'>
+                                    <label for='ingressInput'>Beskrivelse</label>
+                                    <textarea
+                                        class='form-control'
+                                        id='ingressInput'
+                                        rows='3'
+                                        onInput={linkState(this, 'newArticle.ingress')}
+                                        value={newArticle.ingress}
+                                    />
+                                </div>
+                                {newArticle && newArticle.img && <>
+                                    <div class='form-group'>
+                                        {newArticle.img.map((img, idx) => {
+                                            return (
+                                                <div class='d-flex w-100 justify-content-between'>
+                                                    <button class='btn btn-danger btn-sm' data-image={idx} onClick={this.handleRemoveImageClick}>X</button>
+                                                    <div class='d-flex w-100 justify-content-between'>
+                                                        {img.src && <img src={`${imageDomain}/220x/${imageDomainPath}/${img.src}`} style='max-height: 150px;'  class='img-fluid' onError={this.handleImageErrored} />}
+                                                    </div>
+                                                </div>
+                                            );
+                                        })}
+                                    </div>
+                                </>}
+                                <div class='form-group'>
+                                    <label for='imageInput'>Bilder</label>
+                                    <ImageUpload
+                                        apiUrl={apiUrl}
+                                        apiServer={apiServer}
+                                        jwtToken={jwtToken}
+                                        handleAddImage={this.handleAddImage}
+                                    />
+                                </div>
+                                <button type='button' class='btn btn-block btn-primary' onClick={this.createArticle}>
+                                    <i class='fas fa-save'></i> Lagre
+                                </button>
+                            </div>
+                        </>}
+                    </div>
+                </>}
+
                 <div class='w-100 position-relative mt-3 mb-3'>
                     <div class={`d-flex flex-column`}>
 
@@ -506,6 +611,18 @@ class PhotoView extends Component<ExpandableProps, ExpandableState> {
                         })}
                     </div>
                 </div>
+
+                {isAdmin && <>
+                    {showInput ? <>
+                        <button type='button' class='btn btn-sm btn-link position-absolute' style='top: 10px; right: 0px; z-index: 10000;' onClick={this.toggleInput}>
+                            <i class='fas fa-times'></i> Avbryt
+                        </button>
+                    </> : <>
+                        <button type='button' class='btn btn-sm btn-primary position-absolute' style='top: 10px; right: 0px;' onClick={this.toggleInput}>
+                            <i class='fas fa-plus'></i> Nytt fotoalbum
+                        </button>
+                    </>}
+                </>}
 
             </div>}
 
