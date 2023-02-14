@@ -152,6 +152,11 @@ module.exports = async (req, res) => {
         }
     }
 
+    if (isFrontpage && frontpage.startUrl) {
+        res.redirect(frontpage.startUrl);
+        return;
+    }
+
     limit = parseInt(limit, 10);
 
     let article = await art.findOne(query);
