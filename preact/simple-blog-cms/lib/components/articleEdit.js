@@ -196,9 +196,9 @@ export default class ArticleEdit extends Component {
     };
 
     handleKeydown = (event, handleInput, taglist) => {
-        let currentTagIdx = this.state.currentTagIdx;
+        let currentTagIdx = this.state ? this.state.currentTagIdx : -1;
         let currentTag;
-        const total = taglist.length;
+        const total = taglist ? taglist.length : 0;
         if (event.key === 'Enter') {
             handleInput(event, {
                 action: 'add',
@@ -225,7 +225,7 @@ export default class ArticleEdit extends Component {
             if (currentTagIdx >= total) {
                 currentTagIdx = 0;
             }
-            currentTag = taglist[currentTagIdx].title;
+            currentTag = taglist && taglist[currentTagIdx] ? taglist[currentTagIdx].title : '';
         }
         this.setState({ currentTagIdx, currentTag });
         return true;
@@ -394,7 +394,6 @@ export default class ArticleEdit extends Component {
     }
 
     render(props) {
-console.log('articleEdit.render');
         const {
             currentMenu, currentTagIdx, currentTag, toggleDropdown,
             backgroundHex, backgroundHexR, backgroundHexG, backgroundHexB,
@@ -551,6 +550,7 @@ console.log('articleEdit.render');
                                 handleKeydown={this.handleKeydown}
                                 currentTag={currentTag}
                                 taglist={taglist}
+                                currentTagIdx={currentTagIdx}
                             />}
                             {currentMenu === 'markdown' && <Markdown
                                 handleClickCode={this.handleClickCode}
