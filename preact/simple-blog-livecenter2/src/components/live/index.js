@@ -23,6 +23,73 @@ const MARKDOWN_OPTIONS = {
     langPrefix: 'hljs language-', // highlight.js css expects a top-level 'hljs' class.
 };
 
+
+{/* <iframe style="border-radius:12px" src="https://open.spotify.com/embed/episode/2LuvaJ0ZviirARinkTYgQG?utm_source=generator" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe> */}
+function spotifyPodcast(url) {
+    if (!url) {
+        return '';
+    }
+    let regex;
+    if (url.match(/spotify\.com/)) {
+        // https://open.spotify.com/episode/2LuvaJ0ZviirARinkTYgQG
+        // eslint-disable-next-line
+        regex = /(<p>|<br>|[\s\t\n]|^)*https*:\/\/(open\.)*spotify\.com\/episode\/(([^?&\s<$]+)((\?|&)[^\s<$]+)*)/gi;
+    } else {
+        return null;
+    }
+    // const regexp = /(^|[\s\t\n]+)https*:\/\/(www\.)*youtube\.com\/(.*?v=([^&\s]+)(&[^\s]+)*)/gi;
+    const spotifyPodcast = url.replace(regex, (match, p0, p1, p2, p3, p4) => {
+        return p3;
+    });
+    // return spotifyPodcast;
+    return (<>
+        <div class='embed-responsive' style='height: 152px;'>
+            <iframe class='embed-responsive-item' style='border-radius:12px' src={`https://open.spotify.com/embed/episode/${spotifyPodcast}?utm_source=generator`} width='100%' height='152' frameBorder='0' allowfullscreen='' allow='autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture' loading='lazy'></iframe>
+        </div>
+    </>);
+}
+
+function youtubeVideo(url) {
+    if (!url) {
+        return '';
+    }
+    let youtubeRegex;
+    let isShort = false;
+
+    // https://youtube.com/shorts/HcE_tI9KZWs?feature=share
+
+    if (url.match(/youtube\.com\/shorts/)) {
+        // eslint-disable-next-line
+        youtubeRegex = /(<p>|<br>|[\s\t\n]|^)*https*:\/\/(www\.)*youtube\.com\/shorts\/(([^?&\s<$]+)((\?|&)[^\s<$]+)*)/gi;
+        isShort = true;
+    } else if (url.match(/youtube/)) {
+        // eslint-disable-next-line
+        youtubeRegex = /(<p>|<br>|[\s\t\n]|^)*https*:\/\/(www\.)*youtube\.com\/(.*?v=([^&\s<$]+)(&[^\s<$]+)*)/gi;
+    } else if (url.match(/youtu\.be/)) {
+        // eslint-disable-next-line
+        youtubeRegex = /(<p>|<br>|[\s\t\n]|^)*https*:\/\/(www\.)*youtu\.be\/(([^?&\s<$]+)((\?|&)[^\s<$]+)*)/gi;
+    } else {
+        return null;
+    }
+    // const regexp = /(^|[\s\t\n]+)https*:\/\/(www\.)*youtube\.com\/(.*?v=([^&\s]+)(&[^\s]+)*)/gi;
+    const youtubeVideo = url.replace(youtubeRegex, (match, p0, p1, p2, p3, p4) => {
+        return p3;
+    });
+    // return youtubeVideo;
+    if (isShort) {
+        return (<>
+            <div class={`w-50 float-right pl-3 embed-responsive embed-responsive-1by1`} >
+                <iframe class='embed-responsive-item' src={`https://www.youtube.com/embed/${youtubeVideo}?rel=0`} allowfullscreen></iframe>
+            </div>
+        </>);
+    }
+    return (<>
+        <div class={`embed-responsive embed-responsive-16by9`} >
+            <iframe class='embed-responsive-item' src={`https://www.youtube.com/embed/${youtubeVideo}?rel=0`} allowfullscreen></iframe>
+        </div>
+    </>);
+}
+
 function scrollTo(element, top = 0, left = 0) {
     // element.scrollTop = to;
     element.scrollIntoView({
@@ -171,6 +238,7 @@ class Live extends Component {
             showInput: false,
             newArticle: {
                 title: '',
+                url: '',
                 body: '',
                 img: [],
                 tags: [],
@@ -454,6 +522,17 @@ class Live extends Component {
                             />
                         </div>
                         <div class='form-group'>
+                            <label for='urlInput'>URL</label>
+                            <input
+                                type='text'
+                                class='form-control'
+                                id='urlInput'
+                                placeholder='Youtube, Spotify eller annen URL...'
+                                onInput={linkState(this, 'newArticle.url')}
+                                value={newArticle.url}
+                            />
+                        </div>
+                        <div class='form-group'>
                             <div class='w-50 float-right d-flex justify-content-end'>
                                 <button
                                     type='button'
@@ -699,7 +778,7 @@ const a = 1;
                                     {art.img && art.img[0] && <>
                                         <div class='w-50 float-right pl-3'>
                                             <img
-                                                src={`${imageDomain}/400x/${imageDomainPath}/${art.img[0].src}`}
+                                                src={`${imageDomain}/800x/${imageDomainPath}/${art.img[0].src}`}
                                                 class='img-fluid'
                                                 onClick={(e) => this.toggleShowImage(e, art.id)}
                                             /><br />
@@ -709,8 +788,9 @@ const a = 1;
                                             </small>
                                         </div>
                                     </>}
+                                    {art.url && art.url.match(/spotify\.com/) && spotifyPodcast(art.url)}
+                                    {art.url && (art.url.match(/youtube\.com/) || art.url.match(/youtu\.be/)) && youtubeVideo(art.url)}
                                     <Markdown markdown={`${art.ingress || art.body}`} markedOpts={MARKDOWN_OPTIONS} />
-
                                 </div>
                                 <div class='d-flex justify-content-between mb-3'>
                                     <div class='d-flex justify-content-start'>

@@ -125,7 +125,7 @@ function windDirection(deg) {
     return "N";
 }
 
-const  RELOAD_INTERVAL_IN_SEC = 1;
+const  RELOAD_INTERVAL_IN_SEC = 60;
 
 @observer
 class Status extends Component {
@@ -146,10 +146,10 @@ class Status extends Component {
         if (setLast) {
             this.setLastCheckpoint(props);
         }
-        // clearTimeout(this.updateTimer);
-        // this.updateTimer = setTimeout(() => {
-        //     this.loadAll();
-        // }, RELOAD_INTERVAL_IN_SEC * 1000);
+        clearTimeout(this.updateTimer);
+        this.updateTimer = setTimeout(() => {
+            this.loadAll();
+        }, RELOAD_INTERVAL_IN_SEC * 1000);
     }
 
     setLastCheckpoint = (props) => {
