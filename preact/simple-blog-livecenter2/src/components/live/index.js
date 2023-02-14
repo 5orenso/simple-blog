@@ -590,6 +590,15 @@ __kursiv__
                                     class='btn btn-sm btn-secondary ml-2'
                                     onClick={this.handleInsertContent}
                                     data-content='
+– '
+                                >
+                                    <i class='fa-solid fa-minus' />
+                                </button>
+                                <button
+                                    type='button'
+                                    class='btn btn-sm btn-secondary ml-2'
+                                    onClick={this.handleInsertContent}
+                                    data-content='
 [tittel](url)
 '
                                 >
