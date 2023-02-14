@@ -316,7 +316,8 @@ class Live extends Component {
         e.preventDefault();
         const el = e.target;
         if (el && this.currentTextarea) {
-            const newText = el.dataset.content || el.innerHTML;
+            const { content } = el.closest('button').dataset;
+            const newText = content || el.innerHTML;
             // console.log('handleInsertContent', this.currentTextarea, newText)
             this.typeInTextarea(this.currentTextarea, newText);
         }

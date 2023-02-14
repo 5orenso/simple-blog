@@ -87,16 +87,18 @@ class Program extends Component {
             newArticle: {
                 teaser: '',
                 body: '',
+                author: '',
             },
-            message: 'Spørsmålet er sendt til Femundløpet.',
+            message: 'Spørsmålet er sendt inn.',
         });
     }
 
     answerQuestion = async (e) => {
-        const { id } = e.target.closest('button').dataset;
+        const { id, author } = e.target.closest('button').dataset;
         const { newArticle } = this.state;
         const { appState, articleStore } = this.props.stores;
         const { currentEmail } = appState;
+        const { imageDomainPath } = this.props;
 
         await articleStore.updateArticle({
             author: currentEmail,
@@ -104,6 +106,20 @@ class Program extends Component {
             status: 2,
             ...newArticle,
         });
+        if (author) {
+            await appState.sendEmailPlain({
+                to: author,
+                subject: `Question answered on ${imageDomainPath}`,
+                body: `Hi,
+
+Your question has been answered. Please visit ${imageDomainPath} to see the answer.
+
+Regards,
+${imageDomainPath}
+
+`,
+            });
+        }
         this.loadAll();
         this.setState({
             showInput: false,
@@ -124,7 +140,7 @@ class Program extends Component {
 
     render() {
         const { newArticle, showInput, showMore, showAnswer, message } = this.state;
-        const { showQaInputButton = true } = this.props;
+        const { showQaInputButton = true, imageDomainPath } = this.props;
         const { articleStore, appState } = this.props.stores;
         const { currentEmail, isAdmin, isExpert } = appState;
         const { artlistQa } = articleStore;
@@ -173,6 +189,16 @@ class Program extends Component {
                             value={newArticle.teaser}
                         />
                     </div>
+                    <div class='form-group mt-2'>
+                        <input
+                            type='text'
+                            class='form-control'
+                            id='authorInput'
+                            placeholder='E-post'
+                            onInput={linkState(this, 'newArticle.author')}
+                            value={newArticle.author}
+                        />
+                    </div>
                     <div class='form-group'>
                         <textarea
                             class='form-control'
@@ -207,7 +233,7 @@ class Program extends Component {
                             <div class='d-flex justify-content-start'>
                                 <div class='d-flex flex-column' style='max-width: 80%;'>
                                     <div class={`p-2 ${art.status === 1 ? 'bg-warning' : 'bg-live-light text-live-dark'} rounded-lg overflow-hidden`} style='max-height: 70vh;'>
-                                        {art.ingress || art.title}
+                                        <Markdown markdown={`${art.ingress}`} markedOpts={MARKDOWN_OPTIONS} />
                                     </div>
                                     <div class='text-right'>
                                         <small class='text-muted'>
@@ -245,7 +271,7 @@ class Program extends Component {
                                                             value={newArticle.body}
                                                         />
                                                     </div>
-                                                    <button type='button' class='btn btn-block btn-primary' onClick={this.answerQuestion} data-id={art.id}>
+                                                    <button type='button' class='btn btn-block btn-primary' onClick={this.answerQuestion} data-id={art.id} data-author={art.author}>
                                                         <i class='fas fa-save'></i> Svar på spørsmål
                                                     </button>
                                                     <button type='button' class='btn btn-block btn-link' onClick={this.toggleShowAnswer} data-id={art.id}>
@@ -272,7 +298,7 @@ class Program extends Component {
                                         </div>
                                         <div class='text-right'>
                                             <small class='text-muted'>
-                                                Femundløpet - {updatedIsToday ? util.formatDate(art.updatedDate, {
+                                                {imageDomainPath} - {updatedIsToday ? util.formatDate(art.updatedDate, {
                                                     locale: 'nb',
                                                     hour: '2-digit',
                                                     minute: '2-digit',

@@ -136,6 +136,7 @@ class ArticleStore extends StoreModel {
             altitude,
             img,
             tags,
+            author,
         });
         return response;
     }
