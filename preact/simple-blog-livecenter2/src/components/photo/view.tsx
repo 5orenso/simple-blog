@@ -544,6 +544,7 @@ class PhotoView extends Component<ExpandableProps, ExpandableState> {
                             const inFuture = dateDiff.seconds < 0;
                             const inThePast = dateDiff.seconds > 0;
                             const isToday = dateDiff.hours <= 6 && !inFuture;
+                            const isLast24Hours = dateDiff.hours <= 24 && !inFuture;
                             const isThisWeek = dateDiff.days < 7;
                             const isThisYear = dateDiff.years >= 0 && dateDiff.months <= 6;
 
@@ -598,7 +599,7 @@ class PhotoView extends Component<ExpandableProps, ExpandableState> {
                                                     </>}
                                                     {/* {youtubeVideo(art.youtube)}<br /> */}
                                                     <small>
-                                                        {isToday ? <>
+                                                        {isLast24Hours ? <>
                                                             {util.formatDistance(art.published, new Date(), { locale: 'no-NB' })} ago<br />
                                                         </> : <>
                                                             {isThisYear ? <>

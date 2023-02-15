@@ -221,11 +221,13 @@ ${imageDomainPath}
                     const dateDiff = util.dateDiff(art.published, new Date());
                     const inThePast = dateDiff.seconds > 0;
                     const isToday = dateDiff.hours <= 6;
+                    const isLast24Hours = dateDiff.hours <= 24;
                     const isThisWeek = dateDiff.days < 7;
 
                     const updatedDateDiff = util.dateDiff(art.updatedDate, new Date());
                     const updatedInThePast = dateDiff.seconds > 0;
                     const updatedIsToday = dateDiff.hours <= 6;
+                    const updatedIsLast24Hours = dateDiff.hours <= 24;
                     const updatedIsThisWeek = dateDiff.days < 7;
 
                     return (<>
@@ -237,17 +239,21 @@ ${imageDomainPath}
                                     </div>
                                     <div class='text-right'>
                                         <small class='text-muted'>
-                                            {art.teaser || 'anonym'} - {isToday ? util.formatDate(art.published, {
-                                                locale: 'nb',
-                                                hour: '2-digit',
-                                                minute: '2-digit',
-                                            }, true) : util.formatDate(art.published, {
-                                                locale: 'nb',
-                                                hour: '2-digit',
-                                                minute: '2-digit',
-                                                day: 'numeric',
-                                                month: 'short',
-                                            }, true)}
+                                            {art.teaser || 'anonym'} - {isLast24Hours ? <>
+                                                {util.formatDistance(art.published, new Date(), { locale: 'no-NB' })} ago<br />
+                                            </> : <>
+                                                {isToday ? util.formatDate(art.published, {
+                                                    locale: 'nb',
+                                                    hour: '2-digit',
+                                                    minute: '2-digit',
+                                                }, true) : util.formatDate(art.published, {
+                                                    locale: 'nb',
+                                                    hour: '2-digit',
+                                                    minute: '2-digit',
+                                                    day: 'numeric',
+                                                    month: 'short',
+                                                }, true)}
+                                            </>}
                                         </small>
                                     </div>
                                 </div>
@@ -298,17 +304,21 @@ ${imageDomainPath}
                                         </div>
                                         <div class='text-right'>
                                             <small class='text-muted'>
-                                                {imageDomainPath} - {updatedIsToday ? util.formatDate(art.updatedDate, {
-                                                    locale: 'nb',
-                                                    hour: '2-digit',
-                                                    minute: '2-digit',
-                                                }, true) : util.formatDate(art.updatedDate, {
-                                                    locale: 'nb',
-                                                    hour: '2-digit',
-                                                    minute: '2-digit',
-                                                    day: 'numeric',
-                                                    month: 'short',
-                                                }, true)}
+                                                {imageDomainPath} - {updatedIsLast24Hours ? <>
+                                                    {util.formatDistance(art.updatedDate, new Date(), { locale: 'no-NB' })} ago<br />
+                                                </> : <>
+                                                    {updatedIsToday ? util.formatDate(art.updatedDate, {
+                                                        locale: 'nb',
+                                                        hour: '2-digit',
+                                                        minute: '2-digit',
+                                                    }, true) : util.formatDate(art.updatedDate, {
+                                                        locale: 'nb',
+                                                        hour: '2-digit',
+                                                        minute: '2-digit',
+                                                        day: 'numeric',
+                                                        month: 'short',
+                                                    }, true)}
+                                                </>}
                                                 {/* {util.formatDate(art.updatedDate, { locale: 'nb', hour: '2-digit', minute: '2-digit' })} */}
                                             </small>
                                         </div>

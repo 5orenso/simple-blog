@@ -825,6 +825,7 @@ const a = 1;
                     const isToday = dateDiff.hours <= 6 && !inFuture;
                     const isThisWeek = dateDiff.days < 7;
                     const isThisYear = dateDiff.years >= 0 && dateDiff.months <= 6;
+                    const isLast24Hours = dateDiff.hours <= 24 && !inFuture;
                     const hasOnlyOneImage = art.img.length === 1;
                     const imageWidth = windowWidth > 800 ? Math.floor(viewerWidth / 2) : viewerWidth;
                     return (<>
@@ -851,7 +852,7 @@ const a = 1;
                                 <small class='text-danger font-weight-normal'>
     {/* {dateIsInTheFuture ? util.formatDate(story.date, { locale: 'no-NB', hour12: false, hour: '2-digit', minute: '2-digit' }) : util.formatDistance(story.date, new Date(), { locale: 'no-NB' })} */}
 
-                                    {isToday ? <>
+                                    {isLast24Hours ? <>
                                         {util.formatDistance(art.published, new Date(), { locale: 'no-NB' })} ago<br />
                                     </> : <>
                                         {isThisYear ? <>
