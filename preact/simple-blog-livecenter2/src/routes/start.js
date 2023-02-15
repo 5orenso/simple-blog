@@ -177,6 +177,27 @@ class Start extends Component {
                         color: #fff;
                         text-decoration: underline;
                     }
+
+                    .is-hidden {
+                        opacity: 0;
+                        filter: blur(5px);
+                        transform: translateX(-100%);
+                        transition: all 0.5s;
+                    }
+                    .is-visible {
+                        opacity: 1;
+                        filter: blur(0px);
+                        transform: translateX(0%);
+                    }
+                    .body .image:nth-child(1) {
+                        transition-delay: 100ms;
+                    }
+                    .body .image:nth-child(2) {
+                        transition-delay: 200ms;
+                    }
+                    .body .image:nth-child(3) {
+                        transition-delay: 300ms;
+                    }
                 `}
             </style>
             {/* <xmp>{JSON.stringify(this.props, null, 2)}</xmp> */}

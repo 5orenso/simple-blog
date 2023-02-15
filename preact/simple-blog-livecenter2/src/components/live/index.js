@@ -161,6 +161,7 @@ class Live extends Component {
             tag,
         });
         // this.checkHeights();
+        this.animateShit();
 
         clearTimeout(this.updateTimer);
         this.updateTimer = setTimeout(() => {
@@ -490,6 +491,22 @@ class Live extends Component {
         // });
     }
 
+    animateShit = () => {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                } else {
+                    // entry.target.classList.remove('is-visible');
+                }
+            });
+        });
+        const elements = document.querySelectorAll('.animate');
+        elements.forEach((element) => {
+            observer.observe(element);
+        });
+    }
+
     componentDidMount() {
         this.loadAll();
         this.getWidth();
@@ -812,9 +829,8 @@ const a = 1;
                     const imageWidth = windowWidth > 800 ? Math.floor(viewerWidth / 2) : viewerWidth;
                     return (<>
                         <div
-                            class={`col-12 px-0 mb-0 pl-3`}
+                            class={`col-12 px-0 mb-0 pl-3 animate is-hidden`}
                             style={`
-                                transition: max-height 700ms ease-in-out;
                                 ${art.id === parseInt(artid, 10) ? 'background-color: #f0f0f0;' : ''}
                                 ${inFuture ? 'opacity: 0.5;' : ''}
                             `}
@@ -877,7 +893,7 @@ const a = 1;
                                             >
                                                 {art.img.map((img, idx) => {
                                                     return(<>
-                                                        <div class='w-100'>
+                                                        <div class='w-100 image is-hidden animate'>
                                                             <div
                                                                 class={`w-100 h-100 d-flex justify-content-center align-items-center position-relative px-1`}
                                                                 style={`
