@@ -19,7 +19,7 @@
 {% else %}
 <div class="{%- if article.catRef.showFullWidth -%}container-fluid{%- else -%}container{% endif %}">
     <div class="row">
-        <main class="col-sm-12 col-md-12 pt-3 blog-main">
+        <main class="col-sm-12 col-md-12 {% if article.catRef.showOnlyBody %}pt-1{% else %}pt-3{% endif %} blog-main">
 {% endif %}
 
 {% if category.hideTopImage %}
