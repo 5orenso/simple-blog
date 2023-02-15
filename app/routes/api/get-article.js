@@ -143,7 +143,9 @@ module.exports = async (req, res) => {
 
     const art = new Article();
 
-    let query = {};
+    let query = {
+        published: { $lte: new Date() },
+    };
     if (req.params.id) {
         query.id = parseInt(req.params.id, 10);
     } else if (req.params.category) {
@@ -175,6 +177,11 @@ module.exports = async (req, res) => {
 
     if (req.query.loadAll) {
         delete query.status;
+        delete query.published;
+    }
+
+    if (req.query.loadUnpublished) {
+        delete query.published;
     }
 
     let apiContent;
