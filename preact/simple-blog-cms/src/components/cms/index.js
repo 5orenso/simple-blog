@@ -21,7 +21,7 @@ const debug = false;
 const initialState = {
     infoStatus: '',
     loadingProgress: 0,
-    
+
     previewJwtToken: '',
     imageServer: '',
     imagePath: '',
@@ -98,7 +98,7 @@ export default class SimpleBlogCms extends Component {
         const { query } = this.state;
         const filter = this.state.filter;
 
-        util.fetchApi(`/api/article/`, { query, limit, offset, ...filter }, this)
+        util.fetchApi(`/api/article/`, { query, limit, offset, ...filter, loadUnpublished: 1 }, this)
             .then((result) => {
                 this.setState({
                     previewJwtToken: result.jwtToken,
@@ -369,7 +369,7 @@ export default class SimpleBlogCms extends Component {
         event.preventDefault();
         const trElement = event.target.closest('tr');
         const artId = parseInt(trElement.dataset.id, 10);
-        util.fetchApi(`/api/article/${artId}`, {}, this)
+        util.fetchApi(`/api/article/${artId}`, { loadUnpublished: 1 }, this)
             .then((result) => {
                 this.setState({
                     article: result.article,
@@ -455,6 +455,7 @@ export default class SimpleBlogCms extends Component {
         const data = {
             method: 'POST',
             ...article,
+            loadUnpublished: 1,
         }
         // console.log('trying to save', this.state.article);
         util.fetchApi(`/api/article/`, data, this)

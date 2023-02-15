@@ -151,7 +151,15 @@ class Live extends Component {
         const { categoryLive, categoryLiveId, page, artid, tag } = props;
         const { articleStore, appState } = this.props.stores;
         const { isAdmin, isExpert } = appState;
-        await articleStore.loadArtlist({ isAdmin, isExpert, limit: TOTAL_ARTICLES, category: categoryLive, key: 'live', tag });
+        await articleStore.loadArtlist({
+            isAdmin,
+            isExpert,
+            loadAll: isAdmin ? 1 : undefined,
+            limit: TOTAL_ARTICLES,
+            category: categoryLive,
+            key: 'live',
+            tag,
+        });
         // this.checkHeights();
 
         clearTimeout(this.updateTimer);
@@ -559,6 +567,17 @@ class Live extends Component {
                             />
                         </div>
                         <div class='form-group'>
+                            <label for='publishedinput'>Publiseringsdato</label>
+                            <input
+                                type='datetime-local'
+                                class='form-control'
+                                id='publishedinput'
+                                placeholder='Publiseringsdata'
+                                onInput={linkState(this, 'newArticle.published')}
+                                value={newArticle.published}
+                            />
+                        </div>
+                        <div class='form-group'>
                             <label for='urlInput'>URL</label>
                             <input
                                 type='text'
@@ -784,10 +803,11 @@ const a = 1;
             >
                 {finalArtlist && finalArtlist.map((art, i) => {
                     const dateDiff = util.dateDiff(art.published, new Date());
-                    // console.log(art.published, dateDiff);
+                    const inFuture = dateDiff.seconds < 0;
                     const inThePast = dateDiff.seconds > 0;
-                    const isToday = dateDiff.hours <= 6;
+                    const isToday = dateDiff.hours <= 6 && !inFuture;
                     const isThisWeek = dateDiff.days < 7;
+                    const isThisYear = dateDiff.years >= 0 && dateDiff.months <= 6;
                     const hasOnlyOneImage = art.img.length === 1;
                     const imageWidth = windowWidth > 800 ? Math.floor(viewerWidth / 2) : viewerWidth;
                     return (<>
@@ -796,10 +816,12 @@ const a = 1;
                             style={`
                                 transition: max-height 700ms ease-in-out;
                                 ${art.id === parseInt(artid, 10) ? 'background-color: #f0f0f0;' : ''}
+                                ${inFuture ? 'opacity: 0.5;' : ''}
                             `}
                             ref={c => this.blockRefs[art.id] = c}
                             data-id={art.id}
                         >
+                            {/* dateDiff: {JSON.stringify(dateDiff)} */}
                             {/* <div
                                 class='px-2 rounded-lg bg-live-dark text-live-light'
                                 style='font-size: 1.2em;'
@@ -810,19 +832,30 @@ const a = 1;
                                 <div class='position-absolute' style='top: 5px; left: -10px; z-index: 1000;'>
                                     <span class='badge badge-pill badge-danger py-0 px-1' style='width: 20px; height: 20px; border: 3px #ffffff solid;'>&nbsp;</span>
                                 </div>
-                                <small class='text-danger font-weight-normal'>{
-                                    isToday ? util.formatDate(art.published, {
-                                        locale: 'nb',
-                                        hour: '2-digit',
-                                        minute: '2-digit',
-                                    }, true) : util.formatDate(art.published, {
-                                        locale: 'nb',
-                                        hour: '2-digit',
-                                        minute: '2-digit',
-                                        day: 'numeric',
-                                        month: 'short',
-                                    }, true)
-                                }</small><br />
+                                <small class='text-danger font-weight-normal'>
+                                    {isThisYear ? <>
+                                        {isToday ? util.formatDate(art.published, {
+                                            locale: 'nb',
+                                            hour: '2-digit',
+                                            minute: '2-digit',
+                                        }, true) : util.formatDate(art.published, {
+                                            locale: 'nb',
+                                            hour: '2-digit',
+                                            minute: '2-digit',
+                                            day: 'numeric',
+                                            month: 'short',
+                                        }, true)}
+                                    </> : <>
+                                        {util.formatDate(art.published, {
+                                            locale: 'nb',
+                                            hour: '2-digit',
+                                            minute: '2-digit',
+                                            day: 'numeric',
+                                            month: 'short',
+                                            year: 'numeric',
+                                        }, true)}
+                                    </>}
+                                </small><br />
                                 <div class='w-100 mb-1'>
                                     <h5 class='mb-1 mt-0' style='font-size: 1.15em;'>{art.title}</h5>
                                     {/* windowWidth: {windowWidth}<br />

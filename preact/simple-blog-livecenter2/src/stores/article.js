@@ -112,13 +112,14 @@ class ArticleStore extends StoreModel {
         return response;
     }
 
-    async createArticle({ author, category, categoryId, title, youtube, teaser = '', ingress = '', body = '', status = 2, date, dateEnd, url, lat, lon, altitude, img, tags }) {
+    async createArticle({ published, author, category, categoryId, title, youtube, teaser = '', ingress = '', body = '', status = 2, date, dateEnd, url, lat, lon, altitude, img, tags }) {
         // {
         //     "author":"sorenso",
         //     "category":"/v2/about/",
         //     "categoryId":3,
         // }
         const response = await util.fetchApi(`/api/article/`, { publish: true, method: 'POST' }, {
+            published,
             author,
             category,
             categoryId,

@@ -90,7 +90,14 @@ class WebTvView extends Component {
         const { categoryWebtv, categoryWebtvId } = props;
         const { articleStore, appState } = this.props.stores;
         const { isAdmin, isExpert } = appState;
-        await articleStore.loadArtlist({ isAdmin, isExpert, limit: 100, category: categoryWebtv, key: 'webtv' });
+        await articleStore.loadArtlist({
+            isAdmin,
+            isExpert,
+            loadAll: isAdmin ? 1 : undefined,
+            limit: 100,
+            category: categoryWebtv,
+            key: 'webtv',
+        });
 
         if (setLast) {
             this.setLastVideo(props);
@@ -254,6 +261,17 @@ class WebTvView extends Component {
                                     />
                                 </div>
                                 <div class='form-group'>
+                                    <label for='publishedinput'>Publiseringsdato</label>
+                                    <input
+                                        type='datetime-local'
+                                        class='form-control'
+                                        id='publishedinput'
+                                        placeholder='Publiseringsdata'
+                                        onInput={linkState(this, 'newArticle.published')}
+                                        value={newArticle.published}
+                                    />
+                                </div>
+                                <div class='form-group'>
                                     <label for='youtubeInput'>Youtube</label>
                                     <input
                                         type='text'
@@ -285,19 +303,20 @@ class WebTvView extends Component {
                 <div class='w-100 position-relative mt-3 mb-3'>
                     <div class={`d-flex flex-column`}>
                         {artlistWebtv.map(art => {
-                            const dateDiff = util.dateDiff(new Date(), art.updatedDate || art.published);
-                            const dateEndDiff = util.dateDiff(new Date(), art.updatedDate || art.published);
-                            const inFuture = dateDiff.seconds > 0;
+                            const dateDiff = util.dateDiff(art.published, new Date());
+                            const inFuture = dateDiff.seconds < 0;
+                            const inThePast = dateDiff.seconds > 0;
+                            const isToday = dateDiff.hours <= 6 && !inFuture;
                             const isThisWeek = dateDiff.days < 7;
-                            const endInFuture = dateEndDiff.seconds > 0;
-                            const isLiveNow = !inFuture && endInFuture;
-                            const hasBeen = !inFuture && !endInFuture;
+                            const isThisYear = dateDiff.years >= 0 && dateDiff.months <= 6;
 
                             return(<>
+                                {/* dateDiff: {JSON.stringify(dateDiff)} */}
                                 <div
                                     class={`w-100`}
                                     style={`
                                         line-height: 1.1em;
+                                        ${inFuture ? 'opacity: 0.5;' : ''}
                                     `}
                                 >
                                     <div
@@ -336,20 +355,26 @@ class WebTvView extends Component {
                                                     </>}
                                                     {/* {youtubeVideo(art.youtube)}<br /> */}
                                                     <small>
-                                                        {isThisWeek ? <>
-                                                            {util.formatDate(art.updatedDate || art.published, {
+                                                        {isThisYear ? <>
+                                                            {isToday ? util.formatDate(art.published, {
                                                                 locale: 'nb',
                                                                 hour: '2-digit',
                                                                 minute: '2-digit',
-                                                                weekday: 'short',
-                                                            }, true)}
-                                                        </> : <>
-                                                            {util.formatDate(art.updatedDate || art.published, {
+                                                            }, true) : util.formatDate(art.published, {
                                                                 locale: 'nb',
                                                                 hour: '2-digit',
                                                                 minute: '2-digit',
                                                                 day: 'numeric',
                                                                 month: 'short',
+                                                            }, true)}
+                                                        </> : <>
+                                                            {util.formatDate(art.published, {
+                                                                locale: 'nb',
+                                                                hour: '2-digit',
+                                                                minute: '2-digit',
+                                                                day: 'numeric',
+                                                                month: 'short',
+                                                                year: 'numeric',
                                                             }, true)}
                                                         </>}
                                                     </small>
