@@ -849,28 +849,35 @@ const a = 1;
                                     <span class='badge badge-pill badge-danger py-0 px-1' style='width: 20px; height: 20px; border: 3px #ffffff solid;'>&nbsp;</span>
                                 </div>
                                 <small class='text-danger font-weight-normal'>
-                                    {isThisYear ? <>
-                                        {isToday ? util.formatDate(art.published, {
-                                            locale: 'nb',
-                                            hour: '2-digit',
-                                            minute: '2-digit',
-                                        }, true) : util.formatDate(art.published, {
-                                            locale: 'nb',
-                                            hour: '2-digit',
-                                            minute: '2-digit',
-                                            day: 'numeric',
-                                            month: 'short',
-                                        }, true)}
+    {/* {dateIsInTheFuture ? util.formatDate(story.date, { locale: 'no-NB', hour12: false, hour: '2-digit', minute: '2-digit' }) : util.formatDistance(story.date, new Date(), { locale: 'no-NB' })} */}
+
+                                    {isToday ? <>
+                                        {util.formatDistance(art.published, new Date(), { locale: 'no-NB' })} ago<br />
                                     </> : <>
-                                        {util.formatDate(art.published, {
-                                            locale: 'nb',
-                                            hour: '2-digit',
-                                            minute: '2-digit',
-                                            day: 'numeric',
-                                            month: 'short',
-                                            year: 'numeric',
-                                        }, true)}
+                                        {isThisYear ? <>
+                                            {isToday ? util.formatDate(art.published, {
+                                                locale: 'nb',
+                                                hour: '2-digit',
+                                                minute: '2-digit',
+                                            }, true) : util.formatDate(art.published, {
+                                                locale: 'nb',
+                                                hour: '2-digit',
+                                                minute: '2-digit',
+                                                day: 'numeric',
+                                                month: 'short',
+                                            }, true)}
+                                        </> : <>
+                                            {util.formatDate(art.published, {
+                                                locale: 'nb',
+                                                hour: '2-digit',
+                                                minute: '2-digit',
+                                                day: 'numeric',
+                                                month: 'short',
+                                                year: 'numeric',
+                                            }, true)}
+                                        </>}
                                     </>}
+
                                 </small><br />
                                 <div class='w-100 mb-1'>
                                     <h5 class='mb-1 mt-0' style='font-size: 1.15em;'>{art.title}</h5>

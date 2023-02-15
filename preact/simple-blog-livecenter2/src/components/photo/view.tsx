@@ -598,27 +598,31 @@ class PhotoView extends Component<ExpandableProps, ExpandableState> {
                                                     </>}
                                                     {/* {youtubeVideo(art.youtube)}<br /> */}
                                                     <small>
-                                                        {isThisYear ? <>
-                                                            {isToday ? util.formatDate(art.published, {
-                                                                locale: 'nb',
-                                                                hour: '2-digit',
-                                                                minute: '2-digit',
-                                                            }, true) : util.formatDate(art.published, {
-                                                                locale: 'nb',
-                                                                hour: '2-digit',
-                                                                minute: '2-digit',
-                                                                day: 'numeric',
-                                                                month: 'short',
-                                                            }, true)}
+                                                        {isToday ? <>
+                                                            {util.formatDistance(art.published, new Date(), { locale: 'no-NB' })} ago<br />
                                                         </> : <>
-                                                            {util.formatDate(art.published, {
-                                                                locale: 'nb',
-                                                                hour: '2-digit',
-                                                                minute: '2-digit',
-                                                                day: 'numeric',
-                                                                month: 'short',
-                                                                year: 'numeric',
-                                                            }, true)}
+                                                            {isThisYear ? <>
+                                                                {isToday ? util.formatDate(art.published, {
+                                                                    locale: 'nb',
+                                                                    hour: '2-digit',
+                                                                    minute: '2-digit',
+                                                                }, true) : util.formatDate(art.published, {
+                                                                    locale: 'nb',
+                                                                    hour: '2-digit',
+                                                                    minute: '2-digit',
+                                                                    day: 'numeric',
+                                                                    month: 'short',
+                                                                }, true)}
+                                                            </> : <>
+                                                                {util.formatDate(art.published, {
+                                                                    locale: 'nb',
+                                                                    hour: '2-digit',
+                                                                    minute: '2-digit',
+                                                                    day: 'numeric',
+                                                                    month: 'short',
+                                                                    year: 'numeric',
+                                                                }, true)}
+                                                            </>}
                                                         </>}
                                                     </small>
                                                     {/* {isAdmin && <>
