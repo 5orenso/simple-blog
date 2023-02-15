@@ -492,19 +492,19 @@ class Live extends Component {
     }
 
     animateShit = () => {
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach((entry) => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('is-visible');
-                } else {
-                    // entry.target.classList.remove('is-visible');
-                }
-            });
-        });
-        const elements = document.querySelectorAll('.animate');
-        elements.forEach((element) => {
-            observer.observe(element);
-        });
+        // const observer = new IntersectionObserver((entries) => {
+        //     entries.forEach((entry) => {
+        //         if (entry.isIntersecting) {
+        //             entry.target.classList.add('is-visible');
+        //         } else {
+        //             // entry.target.classList.remove('is-visible');
+        //         }
+        //     });
+        // });
+        // const elements = document.querySelectorAll('.animate');
+        // elements.forEach((element) => {
+        //     observer.observe(element);
+        // });
     }
 
     componentDidMount() {

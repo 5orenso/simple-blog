@@ -178,7 +178,8 @@ class Start extends Component {
                         text-decoration: underline;
                     }
 
-                    .is-hidden {
+                    `}
+                    {/* .is-hidden {
                         opacity: 0;
                         filter: blur(5px);
                         transform: translateX(-100%);
@@ -197,8 +198,7 @@ class Start extends Component {
                     }
                     .body .image:nth-child(3) {
                         transition-delay: 300ms;
-                    }
-                `}
+                    } */}
             </style>
             {/* <xmp>{JSON.stringify(this.props, null, 2)}</xmp> */}
             <div class='container-fluid mb-5'>
