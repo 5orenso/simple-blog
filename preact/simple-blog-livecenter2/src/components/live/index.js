@@ -123,6 +123,28 @@ class Live extends Component {
         this.blockRefs = {};
         this.currentTextarea = null;
         this.updateTimer;
+        this.imageContainer = null;
+        this.imageScrollerRef = null;
+    }
+
+    onClickScrollLeft = (e) => {
+        const el = this.imageScrollerRef;
+        const width = 0 - el.clientWidth;
+        el.scrollBy({
+            top: 0,
+            left: width,
+            behavior: 'smooth'
+        });
+    }
+
+    onClickScrollRight = (e) => {
+        const el = this.imageScrollerRef;
+        const width = el.clientWidth;
+        el.scrollBy({
+            top: 0,
+            left: width,
+            behavior: 'smooth'
+        });
     }
 
     loadAll = async (props = this.props) => {
@@ -449,8 +471,20 @@ class Live extends Component {
         this.setState({ newArticle, taglist });
     }
 
+    getWidth = () => {
+        this.setState({
+            // viewerWidth: this.imageContainer?.offsetWidth > 1024 ? 1024 : this.imageContainer?.offsetWidth,
+            viewerWidth: this.imageContainer?.offsetWidth,
+            windowWidth: window.innerWidth,
+        });
+        // window.addEventListener('resize', (e) => {
+        //     this.getWidth();
+        // });
+    }
+
     componentDidMount() {
         this.loadAll();
+        this.getWidth();
     }
 
     componentWillUnmount() {
@@ -476,6 +510,8 @@ class Live extends Component {
             currentTagIdx,
             currentTag,
             taglist,
+            viewerWidth,
+            windowWidth,
         } = this.state;
         const { articleStore, appState } = this.props.stores;
         const { currentEmail, isAdmin, isExpert, jwtToken, apiServer } = appState;
@@ -742,13 +778,18 @@ const a = 1;
                 </div>
             </>}
 
-            <div class='d-flex flex-column overflow-auto'>
+            <div
+                class='d-flex flex-column overflow-auto'
+                ref={c => this.imageContainer = c}
+            >
                 {finalArtlist && finalArtlist.map((art, i) => {
                     const dateDiff = util.dateDiff(art.published, new Date());
                     // console.log(art.published, dateDiff);
                     const inThePast = dateDiff.seconds > 0;
                     const isToday = dateDiff.hours <= 6;
                     const isThisWeek = dateDiff.days < 7;
+                    const hasOnlyOneImage = art.img.length === 1;
+                    const imageWidth = windowWidth > 800 ? Math.floor(viewerWidth / 2) : viewerWidth;
                     return (<>
                         <div
                             class={`col-12 px-0 mb-0 pl-3`}
@@ -784,18 +825,62 @@ const a = 1;
                                 }</small><br />
                                 <div class='w-100 mb-1'>
                                     <h5 class='mb-1 mt-0' style='font-size: 1.15em;'>{art.title}</h5>
-
+                                    {/* windowWidth: {windowWidth}<br />
+                                    viewerWidth: {viewerWidth}<br />
+                                    Math.floor(viewerWidth / 2): {Math.floor(viewerWidth / 2)}<br /> */}
                                     {art.img && art.img[0] && <>
-                                        <div class='w-50 float-right pl-3'>
-                                            <img
-                                                src={`${imageDomain}/800x/${imageDomainPath}/${art.img[0].src}`}
-                                                class='img-fluid'
-                                                onClick={(e) => this.toggleShowImage(e, art.id)}
-                                            /><br />
-                                            <small class='text-muted'>
-                                                {art.img[0].title}<br />
-                                                <span class='font-weight-lighter'>{art.img[0].text}</span>
-                                            </small>
+                                        <div
+                                            class={`w-100 position-relative overflow-auto float-right`}
+                                            style={`max-width: ${imageWidth}px !important;`}
+                                        >
+                                            <div
+                                                class='d-flex flex-row flex-nowrap no-scrollbar'
+                                                style={`
+                                                    overflow-x: auto;
+                                                    overflow-y: auto;
+                                                    scroll-snap-type: x mandatory;
+                                                `}
+                                                ref={c => this.imageScrollerRef = c}
+                                            >
+                                                {art.img.map((img, idx) => {
+                                                    return(<>
+                                                        <div class='w-100'>
+                                                            <div
+                                                                class={`w-100 h-100 d-flex justify-content-center align-items-center position-relative px-1`}
+                                                                style={`
+                                                                    scroll-snap-align: start;
+                                                                    flex-wrap: wrap;
+                                                                `}
+                                                                onTouchStart={(e) => { e.stopPropagation(); }}
+                                                                onTouchEnd={(e) => { e.stopPropagation(); }}
+                                                                onTouchMove={(e) => { e.stopPropagation(); }}
+                                                            >
+                                                                <div
+                                                                    class='d-flex flex-row flex-nowrap h-100 w-100 justify-content-center align-items-center overflow-hidden'
+                                                                >
+                                                                    <img
+                                                                        src={`${imageDomain}/800x/${imageDomainPath}/${art.img[idx].src}`}
+                                                                        style={`width: ${(hasOnlyOneImage ? imageWidth : imageWidth - 80)}px;`}
+                                                                        onClick={(e) => this.toggleShowImage(e, art.id)}
+                                                                    /><br />
+                                                                    <small class='text-muted'>
+                                                                        {art.img[0].title}<br />
+                                                                        <span class='font-weight-lighter'>{art.img[idx].text}</span>
+                                                                    </small>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </>);
+                                                })}
+                                            </div>
+                                            {!hasOnlyOneImage && <>
+                                                <div class='position-absolute' style='top: 50%; left: 10px;'>
+                                                    <button type='button' class={`btn btn-link text-white`} style={`font-size: 3.5em; opacity: 0.7;`} onClick={this.onClickScrollLeft}><i class='fas fa-arrow-circle-left' /></button>
+                                                </div>
+                                                <div class='position-absolute' style='top: 50%; right: 10px;'>
+                                                    <button type='button' class={`btn btn-link text-white`} style={`font-size: 3.5em; opacity: 0.7;`} onClick={this.onClickScrollRight}><i class='fas fa-arrow-circle-right' /></button>
+                                                </div>
+                                            </>}
                                         </div>
                                     </>}
                                     {art.url && art.url.match(/spotify\.com/) && spotifyPodcast(art.url)}

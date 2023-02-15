@@ -355,10 +355,7 @@ class PhotoView extends Component<ExpandableProps, ExpandableState> {
                             >
                                 {viewArticle.img.map((img, idx) => {
                                     return(<>
-                                        <div
-                                            class='w-100'
-                                            style={``}
-                                        >
+                                        <div class='w-100'>
                                             <div
                                                 class={`w-100 h-100 d-flex justify-content-center align-items-center position-relative px-1`}
                                                 style={`
@@ -371,13 +368,6 @@ class PhotoView extends Component<ExpandableProps, ExpandableState> {
                                             >
                                                 <div
                                                     class='d-flex flex-row flex-nowrap h-100 w-100 justify-content-center align-items-center overflow-hidden'
-                                                    // style={`max-height: 90vh;`}
-                                                    // style={`
-                                                    //     object-fit: contain;
-                                                    //     position: relative;
-                                                    //     top: 50%;
-                                                    //     transform: translateY(-50%);
-                                                    // `}
                                                 >
                                                     <img
                                                         src={articleImg(img, this.props, '1920x')}
