@@ -212,7 +212,7 @@ class Status extends Component {
             {weather[0] && <>
                 <div class='d-flex align-items-center'>
                     {viewArticle && <>
-                        {viewArticle.title} <span class='d-none d-md-inline-block ml-2'>{viewArticle.altitude} moh</span>
+                        {viewArticle.title} <span class='d-none d-md-inline-block ml-2 font-weight-lighter'>{viewArticle.altitude} moh</span>
                     </>}
                 </div>
                 <div class='d-flex flex-row align-items-center'>
