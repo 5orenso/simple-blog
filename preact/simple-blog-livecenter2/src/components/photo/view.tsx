@@ -343,10 +343,19 @@ class PhotoView extends Component<ExpandableProps, ExpandableState> {
             + `&title=${encodeURIComponent(newArticle.title) || 'no-title'}`;
         const location = window.location;
 
+        let mainInFuture = false;
+        if (viewArticle) {
+            const mainDateDiff = util.dateDiff(viewArticle.published, new Date());
+            mainInFuture = mainDateDiff.seconds < 0;
+        }
+
         return (<>
             {(!showList || !subView) && <div class='row'>
                 <div
                     class='w-100 position-relative bg-dark pt-1'
+                    style={`
+                        ${mainInFuture ? 'opacity: 0.5;' : ''}
+                    `}
                     ref={c => this.imageContainer = c}
                 >
                     {viewArticle ? <>

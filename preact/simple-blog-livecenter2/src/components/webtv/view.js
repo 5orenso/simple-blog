@@ -210,10 +210,19 @@ class WebTvView extends Component {
         const { currentEmail, isAdmin, isExpert, subView } = appState;
         const { artlistWebtv } = articleStore;
 
+        let mainInFuture = false;
+        if (viewArticle) {
+            const mainDateDiff = util.dateDiff(viewArticle.published, new Date());
+            mainInFuture = mainDateDiff.seconds < 0;
+        }
+
         return (<>
             {(!showList || !subView) && <div class='row'>
                 <div
                     class='w-100 d-flex flex-row justify-content-center' style='max-height: 80vh;'
+                    style={`
+                        ${mainInFuture ? 'opacity: 0.5;' : ''}
+                    `}
                     ref={c => this.mainContainer = c}
                 >
                     {viewArticle ? <>
