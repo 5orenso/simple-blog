@@ -87,7 +87,7 @@ class WebTvView extends Component {
     }
 
     loadAll = async (setLast, props = this.props) => {
-        const { categoryWebtv, categoryWebtvId } = props;
+        const { categoryWebtv, categoryWebtvId, page, artid } = props;
         const { articleStore, appState } = this.props.stores;
         const { isAdmin, isExpert } = appState;
         await articleStore.loadArtlist({
@@ -107,6 +107,10 @@ class WebTvView extends Component {
         this.updateTimer = setTimeout(() => {
             this.loadAll();
         }, RELOAD_INTERVAL_IN_SEC * 1000);
+
+        if (page === 'webtv' && artid) {
+            this.scrollToMainContainer();
+        }
     }
 
     createArticle = async () => {
