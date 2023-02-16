@@ -145,6 +145,7 @@ class Start extends Component {
             showResults = true,
             showTracking = true,
             showRaceTimer = true,
+            showAnimations = false,
         } = this.props;
         const { sessionid, showMenu, raceTime } = this.state;
         const { appState } = this.props.stores;
@@ -178,36 +179,39 @@ class Start extends Component {
                         text-decoration: underline;
                     }
 
-                    .is-hidden {
-                        opacity: 0.5;
-                        filter: blur(10px);
-                        transform: translateX(-100%);
-                        transition: all 0.5s;
-                    }
-                    .is-visible {
-                        opacity: 1;
-                        filter: blur(0px);
-                        transform: translateX(0%);
-                    }
-                    .is-visible .image:nth-child(1) {
-                        transition-delay: 100ms;
-                    }
-                    .is-visible .image:nth-child(2) {
-                        transition-delay: 200ms;
-                    }
-                    .is-visible .image:nth-child(3) {
-                        transition-delay: 300ms;
-                    }
-                    .is-visible .image:nth-child(4) {
-                        transition-delay: 400ms;
-                    }
-                    .is-visible .image:nth-child(5) {
-                        transition-delay: 500ms;
-                    }
+                    ${showAnimations ? `
+                        .is-hidden {
+                            opacity: 0.5;
+                            filter: blur(10px);
+                            transform: translateX(-100%);
+                            transition: all 0.5s;
+                        }
+                        .is-visible {
+                            opacity: 1;
+                            filter: blur(0px);
+                            transform: translateX(0%);
+                        }
 
-                    @media (prefers-reduced-motion) {
+                        .is-visible .image:nth-child(1) {
+                            transition-delay: 100ms;
+                        }
+                        .is-visible .image:nth-child(2) {
+                            transition-delay: 200ms;
+                        }
+                        .is-visible .image:nth-child(3) {
+                            transition-delay: 300ms;
+                        }
+                        .is-visible .image:nth-child(4) {
+                            transition-delay: 400ms;
+                        }
+                        .is-visible .image:nth-child(5) {
+                            transition-delay: 500ms;
+                        }
 
-                    }
+                        @media (prefers-reduced-motion) {
+
+                        }
+                    ` : ''}
 
                 `}
             </style>

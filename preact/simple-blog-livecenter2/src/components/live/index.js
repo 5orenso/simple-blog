@@ -146,9 +146,16 @@ class LiveLine extends Component {
         });
     }
 
+    componentDidMount() {
+        const { obj, artid } = this.props;
+        if (artid && obj && obj.id === parseInt(artid, 10)) {
+            scrollTo(this.blockRefs[artid]);
+        }
+    }
+
     render() {
         const { showImage, showImageIdx } = this.state;
-        const { obj, imageDomain, imageDomainPath, windowWidth, viewerWidth, artid, tag } = this.props;
+        const { idx, obj, imageDomain, imageDomainPath, windowWidth, viewerWidth, artid, tag } = this.props;
         const dateDiff = util.dateDiff(obj.published, new Date());
         const inFuture = dateDiff.seconds < 0;
         const inThePast = dateDiff.seconds > 0;
@@ -158,12 +165,14 @@ class LiveLine extends Component {
         const isLast24Hours = dateDiff.hours <= 24 && !inFuture;
         const hasOnlyOneImage = obj.img.length === 1;
         const imageWidth = windowWidth > 800 ? Math.floor(viewerWidth / 2) : viewerWidth;
+        const delay = idx <= 5 ? idx * 100 : 0;
         return (<>
             <div
                 class={`w-100 px-0 mb-0 pl-2 is-hidden`}
                 style={`
                     ${obj.id === parseInt(artid, 10) ? 'background-color: #f0f0f0;' : ''}
                     ${inFuture ? 'opacity: 0.5;' : ''}
+                    transition-delay: ${delay}ms;
                 `}
                 ref={c => this.blockRefs[obj.id] = c}
                 data-id={obj.id}
@@ -745,6 +754,7 @@ class Live extends Component {
                 artid={artid}
                 tag={tag}
                 obj={obj}
+                idx={idx}
                 key={`art-detail-${obj.id}`}
             />
         </>);
