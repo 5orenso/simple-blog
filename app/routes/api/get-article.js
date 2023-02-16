@@ -39,6 +39,7 @@ const fields = {
     urlDescription: 1,
     urlImage: 1,
     urlIcon: 1,
+    urlBaseUrl: 1,
 
     img: 1,
     youtubeVideos: 1,

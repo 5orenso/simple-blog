@@ -94,12 +94,7 @@ module.exports = async (req, res) => {
         if (tagName === 'DESCRIPTION') {
             meta.description = tagContent;
         }
-        if (tagName === 'LINK' && tagAttributes.rel === 'apple-touch-icon'
-            && (
-                tagAttributes.sizes === '114x114'
-                || tagAttributes.sizes === '72x72'
-            )
-        ) {
+        if (tagName === 'LINK' && tagAttributes.rel === 'icon' && tagAttributes.href) {
             meta.icon = tagAttributes.href;
         }
 
