@@ -318,6 +318,24 @@ class PhotoView extends Component<ExpandableProps, ExpandableState> {
         }, 1000);
     }
 
+    spiderPage = async () => {
+        const { newArticle } = this.state;
+        if (newArticle.url) {
+            const value = newArticle.url;
+            const urlResponse = await util.fetchApi(`/api/spider/${encodeURIComponent(value)}`, { publish: true, method: 'GET' }, {});
+
+            if (urlResponse && urlResponse.status === 200) {
+                newArticle.title = urlResponse.data.title;
+                newArticle.ingress = urlResponse.data.description;
+                newArticle.urlTitle = urlResponse.data.title;
+                newArticle.urlDescription = urlResponse.data.description;
+                newArticle.urlImage = urlResponse.data.image;
+                newArticle.urlIcon = `${urlResponse.data.baseUrl}${urlResponse.data.icon}`;
+                this.setState({ newArticle });
+            }
+        }
+    }
+
     componentDidMount() {
         this.loadAll(true, this.props);
         this.getWidth();

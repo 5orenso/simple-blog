@@ -364,7 +364,7 @@ export default class ArticleEdit extends Component {
     }
 
     componentDidMount() {
-        console.log('componentDidMount');
+        // console.log('componentDidMount');
         const article = this.props.article;
 
         const backgroundRgbHex = article.background ? article.background.replace(/#/, '').match(/.{1,2}/g) : [];

@@ -33,7 +33,13 @@ const fields = {
     bodyEn: 1,
 
     notes: 1,
+
     url: 1,
+    urlTitle: 1,
+    urlDescription: 1,
+    urlImage: 1,
+    urlIcon: 1,
+
     img: 1,
     youtubeVideos: 1,
     links: 1,

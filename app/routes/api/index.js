@@ -22,6 +22,7 @@ router.use('/forms/', wrap(require('./forms/')));
 router.use('/sheets/', wrap(require('./sheets/')));
 router.use('/yr/', wrap(require('./yr/')));
 router.use('/proxy/', wrap(require('./proxy/')));
+router.use('/spider/', wrap(require('./spider/')));
 router.use('/email/', wrap(require('./email/')));
 
 router.get('/article/public/', wrap(require('./get-article')));

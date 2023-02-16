@@ -658,7 +658,7 @@ export default class SimpleBlogCms extends Component {
         this.setState({ article });
     }
 
-    handleArticleInput = (event, opt = {}) => {
+    handleArticleInput = async (event, opt = {}) => {
         event.preventDefault();
         const el = event.target;
         let name = el.name;
@@ -683,6 +683,15 @@ export default class SimpleBlogCms extends Component {
             value = opt.value;
         }
 
+        if (name === 'url') {
+            const urlResponse = await util.fetchApi(`/api/spider/${encodeURIComponent(value)}`, {}, this);
+            if (urlResponse && urlResponse.status === 200) {
+                this.articleInputAdd('urlTitle', urlResponse.data.title);
+                this.articleInputAdd('urlDescription', urlResponse.data.description);
+                this.articleInputAdd('urlImage', urlResponse.data.image);
+                this.articleInputAdd('urlIcon', `${urlResponse.data.baseUrl}${urlResponse.data.icon}`);
+            }
+        }
         this.articleInputAdd(name, value);
     };
 

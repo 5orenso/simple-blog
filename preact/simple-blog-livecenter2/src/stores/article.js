@@ -112,7 +112,29 @@ class ArticleStore extends StoreModel {
         return response;
     }
 
-    async createArticle({ published, author, category, categoryId, title, youtube, teaser = '', ingress = '', body = '', status = 2, date, dateEnd, url, lat, lon, altitude, img, tags }) {
+    async createArticle({
+        published,
+        author,
+        category,
+        categoryId,
+        title,
+        youtube,
+        teaser = '',
+        ingress = '',
+        body = '',
+        status = 2,
+        date,
+        dateEnd, url,
+        lat,
+        lon,
+        altitude,
+        img,
+        tags,
+        urlTitle,
+        urlDescription,
+        urlImage,
+        urlIcon,
+    }) {
         // {
         //     "author":"sorenso",
         //     "category":"/v2/about/",
@@ -138,6 +160,10 @@ class ArticleStore extends StoreModel {
             img,
             tags,
             author,
+            urlTitle,
+            urlDescription,
+            urlImage,
+            urlIcon,
         });
         return response;
     }

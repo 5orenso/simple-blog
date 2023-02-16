@@ -775,6 +775,26 @@ class Live extends Component {
         });
     }
 
+    spiderPage = async () => {
+        const { newArticle } = this.state;
+        if (newArticle.url) {
+            const value = newArticle.url;
+            const urlResponse = await util.fetchApi(`/api/spider/${encodeURIComponent(value)}`, { publish: true, method: 'GET' }, {});
+
+            if (urlResponse && urlResponse.status === 200) {
+                newArticle.title = newArticle.title ? `${newArticle.title}: ${urlResponse.data.title}` : urlResponse.data.title;
+                newArticle.body = newArticle.body ? `${newArticle.body}
+
+${urlResponse.data.description}` : urlResponse.data.description;
+                newArticle.urlTitle = urlResponse.data.title;
+                newArticle.urlDescription = urlResponse.data.description;
+                newArticle.urlImage = urlResponse.data.image;
+                newArticle.urlIcon = `${urlResponse.data.baseUrl}${urlResponse.data.icon}`;
+                this.setState({ newArticle });
+            }
+        }
+    }
+
     componentDidMount() {
         this.loadAll();
         this.getWidth();
@@ -870,6 +890,7 @@ class Live extends Component {
                                 id='urlInput'
                                 placeholder='Youtube, Spotify eller annen URL...'
                                 onInput={linkState(this, 'newArticle.url')}
+                                onBlur={this.spiderPage}
                                 value={newArticle.url}
                             />
                         </div>

@@ -87,6 +87,44 @@ export default class Edit extends Component {
                             value={article.dateEnd ? util.isoDate(article.dateEnd, false, false) : ''} />
                     </div>
                 </div>
+
+                <div class='col-12'>
+                    <div class='form-group'>
+                        <label for='urlTitleInput'>urlTitle</label>
+                        <input type='text' class='form-control' id='urlTitleInput' placeholder='urlTitle'
+                            name='urlTitle'
+                            onInput={handleInput}
+                            value={article.urlTitle} />
+                    </div>
+                </div>
+                <div class='col-12'>
+                    <div class='form-group'>
+                        <label for='urlDescriptionInput'>urlDescription</label>
+                        <input type='text' class='form-control' id='urlDescriptionInput' placeholder='urlDescription'
+                            name='urlDescription'
+                            onInput={handleInput}
+                            value={article.urlDescription} />
+                    </div>
+                </div>
+                <div class='col-12'>
+                    <div class='form-group'>
+                        <label for='urlImageInput'>urlImage</label>
+                        <input type='text' class='form-control' id='urlImageInput' placeholder='urlImage'
+                            name='urlImage'
+                            onInput={handleInput}
+                            value={article.urlImage} />
+                    </div>
+                </div>
+                <div class='col-12'>
+                    <div class='form-group'>
+                        <label for='urlIconInput'>urlIcon</label>
+                        <input type='text' class='form-control' id='urlIconInput' placeholder='urlIcon'
+                            name='urlIcon'
+                            onInput={handleInput}
+                            value={article.urlIcon} />
+                    </div>
+                </div>
+
                 <div class='col-12'>
                     <div class='form-group'>
                         <label for='youtubeInput'>Youtube link</label>
