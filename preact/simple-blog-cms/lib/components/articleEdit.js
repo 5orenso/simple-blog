@@ -545,7 +545,7 @@ export default class ArticleEdit extends Component {
                                 imageServer={imageServer}
                                 handleInput={handleInput}
                                 handleTagAdd={this.handleTagAdd}
-                                handleTagRemove={this.handleTagAdd}
+                                handleTagRemove={this.handleTagRemove}
                                 handleTagsInput={this.handleTagsInput}
                                 handleKeydown={this.handleKeydown}
                                 currentTag={currentTag}

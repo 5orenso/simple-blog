@@ -23,7 +23,10 @@ function youtubeThumb($content, $size = 'medium') {
         return undefined;
     }
     let youtubeRegex;
-    if ($content.match(/youtube/)) {
+    if ($content.match(/youtube\.com\/shorts/)) {
+        // eslint-disable-next-line
+        youtubeRegex = /(<p>|<br>|[\s\t\n]|^)*https*:\/\/(www\.)*youtube\.com\/shorts\/(([^?&\s<$]+)((\?|&)[^\s<$]+)*)/gi;
+    } else if ($content.match(/youtube/)) {
         // eslint-disable-next-line
         youtubeRegex = /(<p>|<br>|[\s\t\n]|^)*https*:\/\/(www\.)*youtube\.com\/(.*?v=([^&\s<$]+)(&[^\s<$]+)*)/gi;
     } else if ($content.match(/youtu\.be/)) {
@@ -52,7 +55,15 @@ function youtubeVideo(url) {
         return '';
     }
     let youtubeRegex;
-    if (url.match(/youtube/)) {
+    let isShort = false;
+
+    // https://youtube.com/shorts/HcE_tI9KZWs?feature=share
+
+    if (url.match(/youtube\.com\/shorts/)) {
+        // eslint-disable-next-line
+        youtubeRegex = /(<p>|<br>|[\s\t\n]|^)*https*:\/\/(www\.)*youtube\.com\/shorts\/(([^?&\s<$]+)((\?|&)[^\s<$]+)*)/gi;
+        isShort = true;
+    } else if (url.match(/youtube/)) {
         // eslint-disable-next-line
         youtubeRegex = /(<p>|<br>|[\s\t\n]|^)*https*:\/\/(www\.)*youtube\.com\/(.*?v=([^&\s<$]+)(&[^\s<$]+)*)/gi;
     } else if (url.match(/youtu\.be/)) {
@@ -66,8 +77,15 @@ function youtubeVideo(url) {
         return p3;
     });
     // return youtubeVideo;
+    if (isShort) {
+        return (<>
+            <div class={`w-50 float-right pl-3 embed-responsive embed-responsive-1by1`} >
+                <iframe class='embed-responsive-item' src={`https://www.youtube.com/embed/${youtubeVideo}?rel=0`} allowfullscreen></iframe>
+            </div>
+        </>);
+    }
     return (<>
-        <div class='embed-responsive embed-responsive-16by9'>
+        <div class={`embed-responsive embed-responsive-16by9`} >
             <iframe class='embed-responsive-item' src={`https://www.youtube.com/embed/${youtubeVideo}?rel=0`} allowfullscreen></iframe>
         </div>
     </>);
