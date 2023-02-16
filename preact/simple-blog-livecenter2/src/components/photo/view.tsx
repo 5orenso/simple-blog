@@ -146,6 +146,10 @@ class PhotoView extends Component<ExpandableProps, ExpandableState> {
         this.updateTimer = setTimeout(() => {
             this.loadAll();
         }, RELOAD_INTERVAL_IN_SEC * 1000);
+
+        if (page === 'photo' && artid) {
+            this.scrollToMainContainer();
+        }
     }
 
     createArticle = async () => {
@@ -196,7 +200,7 @@ class PhotoView extends Component<ExpandableProps, ExpandableState> {
         const { articleStore } = this.props.stores;
         const { artlistPhoto } = articleStore;
         let viewArticle;
-        if (artid) {
+        if (page === 'photo' && artid) {
             viewArticle = artlistPhoto.find((article) => article.id === parseInt(artid, 10));
         } else {
             viewArticle = artlistPhoto[0];
