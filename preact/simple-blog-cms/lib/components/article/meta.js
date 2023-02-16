@@ -124,6 +124,15 @@ export default class Edit extends Component {
                             value={article.urlIcon} />
                     </div>
                 </div>
+                <div class='col-12'>
+                    <div class='form-group'>
+                        <label for='urlBaseUrlInput'>urlBaseUrl</label>
+                        <input type='text' class='form-control' id='urlBaseUrlInput' placeholder='urlBaseUrl'
+                            name='urlBaseUrl'
+                            onInput={handleInput}
+                            value={article.urlBaseUrl} />
+                    </div>
+                </div>
 
                 <div class='col-12'>
                     <div class='form-group'>

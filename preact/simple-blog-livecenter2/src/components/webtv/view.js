@@ -218,14 +218,13 @@ class WebTvView extends Component {
             const urlResponse = await util.fetchApi(`/api/spider/${encodeURIComponent(value)}`, { publish: true, method: 'GET' }, {});
 
             if (urlResponse && urlResponse.status === 200) {
-                newArticle.title = newArticle.title ? `${newArticle.title}: ${urlResponse.data.title}` : urlResponse.data.title;
-                newArticle.ingress = newArticle.ingress ? `${newArticle.ingress}
-
-${urlResponse.data.description}` : urlResponse.data.description;
+                newArticle.title = newArticle.title ? newArticle.title : urlResponse.data.title;
+                newArticle.ingress = newArticle.ingress ? newArticle.ingress : urlResponse.data.description;
                 newArticle.urlTitle = urlResponse.data.title;
                 newArticle.urlDescription = urlResponse.data.description;
                 newArticle.urlImage = urlResponse.data.image;
                 newArticle.urlIcon = `${urlResponse.data.baseUrl}${urlResponse.data.icon}`;
+                newArticle.urlBaseUrl = urlResponse.data.baseUrl;
                 this.setState({ newArticle });
             }
         }

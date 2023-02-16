@@ -279,6 +279,28 @@ class LiveLine extends Component {
                         </>}
                         {obj.url && obj.url.match(/spotify\.com/) && spotifyPodcast(obj.url)}
                         {obj.url && (obj.url.match(/youtube\.com/) || obj.url.match(/youtu\.be/)) && youtubeVideo(obj.url)}
+                        {obj.url && obj.urlTitle && !obj.url.match(/spotify\.com/) && !((obj.url.match(/youtube\.com/) || obj.url.match(/youtu\.be/))) && <>
+                            <div class='p-4 border rounded-lg d-flex flex-column bg-light position-relative mt-2 mb-2'>
+                                {/* <div>
+                                    {obj.urlBaseUrl}
+                                </div> */}
+                                <div class='d-flex flex-row justify-content-between'>
+                                    <div class='flex-grow-1 d-flex flex-column'>
+                                        <h5>
+                                            <img src={obj.urlIcon} class='img-fluid mr-2' style='max-height: 35px;' />
+                                            {obj.urlTitle}
+                                        </h5>
+                                        <div>{obj.urlDescription}</div>
+                                    </div>
+                                    <div>
+                                        <a href={obj.url} target='_blank' class='stretched-link '><img src={obj.urlImage} class='img-fluid' style='max-height: 200px;' /></a>
+                                    </div>
+                                </div>
+                                {/* <div>
+                                    <a href={obj.url} target='_blank' class='btn btn-link btn-block stretched-link '>Følg link...</a>
+                                </div> */}
+                            </div>
+                        </>}
                         <Markdown markdown={`${obj.ingress || obj.body}`} markedOpts={MARKDOWN_OPTIONS} />
                     </div>
                     <div class='d-flex justify-content-between mb-3'>
@@ -782,14 +804,13 @@ class Live extends Component {
             const urlResponse = await util.fetchApi(`/api/spider/${encodeURIComponent(value)}`, { publish: true, method: 'GET' }, {});
 
             if (urlResponse && urlResponse.status === 200) {
-                newArticle.title = newArticle.title ? `${newArticle.title}: ${urlResponse.data.title}` : urlResponse.data.title;
-                newArticle.body = newArticle.body ? `${newArticle.body}
-
-${urlResponse.data.description}` : urlResponse.data.description;
+                newArticle.title = newArticle.title ? newArticle.title : urlResponse.data.title;
+                newArticle.body = newArticle.body ? newArticle.body : urlResponse.data.description;
                 newArticle.urlTitle = urlResponse.data.title;
                 newArticle.urlDescription = urlResponse.data.description;
                 newArticle.urlImage = urlResponse.data.image;
                 newArticle.urlIcon = `${urlResponse.data.baseUrl}${urlResponse.data.icon}`;
+                newArticle.urlBaseUrl = urlResponse.data.baseUrl;
                 this.setState({ newArticle });
             }
         }
