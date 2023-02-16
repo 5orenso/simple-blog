@@ -126,7 +126,7 @@ class PhotoView extends Component<ExpandableProps, ExpandableState> {
     }
 
     loadAll = async (setLast, props = this.props) => {
-        const { categoryPhoto, categoryPhotoId } = props;
+        const { categoryPhoto, categoryPhotoId, page, artid } = props;
         const { articleStore, appState } = this.props.stores;
         const { isAdmin, isExpert } = appState;
         await articleStore.loadArtlist({
@@ -196,7 +196,7 @@ class PhotoView extends Component<ExpandableProps, ExpandableState> {
     }
 
     setLastPhoto = (props) => {
-        const { artid } = props;
+        const { page, artid } = props;
         const { articleStore } = this.props.stores;
         const { artlistPhoto } = articleStore;
         let viewArticle;
