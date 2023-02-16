@@ -6,6 +6,7 @@ import Markdown from 'preact-markdown';
 import linkState from 'linkstate';
 
 import ImageUpload from '../form/imageUpload';
+import FastList from '../fastlist';
 
 const MARKDOWN_OPTIONS = {
 	pedantic: false,
@@ -104,6 +105,238 @@ const MAX_ARTICLE_TO_SHOW = 10;
 const TOTAL_ARTICLES = 100;
 
 @observer
+class LiveLine extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            showImage: {},
+            showImageIdx: 0,
+        };
+		this.blockRefs = {};
+        // this.ref = createRef();
+    }
+
+    toggleShowImage = (e, artId, idx = 0) => {
+        e.stopPropagation();
+        const { showImage } = this.state;
+        showImage[artId] = !showImage[artId];
+        this.setState({
+            showImage,
+            showImageIdx: idx,
+        });
+    }
+
+    onClickScrollLeft = (e) => {
+        const el = this.imageScrollerRef;
+        const width = 0 - el.clientWidth;
+        el.scrollBy({
+            top: 0,
+            left: width,
+            behavior: 'smooth'
+        });
+    }
+
+    onClickScrollRight = (e) => {
+        const el = this.imageScrollerRef;
+        const width = el.clientWidth;
+        el.scrollBy({
+            top: 0,
+            left: width,
+            behavior: 'smooth'
+        });
+    }
+
+    render() {
+        const { showImage, showImageIdx } = this.state;
+        const { obj, imageDomain, imageDomainPath, windowWidth, viewerWidth, artid, tag } = this.props;
+        const dateDiff = util.dateDiff(obj.published, new Date());
+        const inFuture = dateDiff.seconds < 0;
+        const inThePast = dateDiff.seconds > 0;
+        const isToday = dateDiff.hours <= 6 && !inFuture;
+        const isThisWeek = dateDiff.days < 7;
+        const isThisYear = dateDiff.years >= 0 && dateDiff.months <= 6;
+        const isLast24Hours = dateDiff.hours <= 24 && !inFuture;
+        const hasOnlyOneImage = obj.img.length === 1;
+        const imageWidth = windowWidth > 800 ? Math.floor(viewerWidth / 2) : viewerWidth;
+        return (<>
+            <div
+                class={`w-100 px-0 mb-0 pl-2 is-hidden`}
+                style={`
+                    ${obj.id === parseInt(artid, 10) ? 'background-color: #f0f0f0;' : ''}
+                    ${inFuture ? 'opacity: 0.5;' : ''}
+                `}
+                ref={c => this.blockRefs[obj.id] = c}
+                data-id={obj.id}
+            >
+                {/* dateDiff: {JSON.stringify(dateDiff)} */}
+                {/* <div
+                    class='px-2 rounded-lg bg-live-dark text-live-light'
+                    style='font-size: 1.2em;'
+                >
+                    {obj.title}
+                </div> */}
+                <div class='px-2 pt-2 pl-3 d-flex flex-column position-relative' style='border-left: 1px #a0a0a0 solid; font-size: 1.0em;'>
+                    <div class='position-absolute' style='top: 5px; left: -10px; z-index: 1000;'>
+                        <span class='badge badge-pill badge-danger py-0 px-1' style='width: 20px; height: 20px; border: 3px #ffffff solid;'>&nbsp;</span>
+                    </div>
+                    <small class='text-danger font-weight-normal'>
+                        {isLast24Hours ? <>
+                            {util.formatDistance(obj.published, new Date(), { locale: 'no-NB' })} ago<br />
+                        </> : <>
+                            {isThisYear ? <>
+                                {isToday ? util.formatDate(obj.published, {
+                                    locale: 'nb',
+                                    hour: '2-digit',
+                                    minute: '2-digit',
+                                }, true) : util.formatDate(obj.published, {
+                                    locale: 'nb',
+                                    hour: '2-digit',
+                                    minute: '2-digit',
+                                    day: 'numeric',
+                                    month: 'short',
+                                }, true)}
+                            </> : <>
+                                {util.formatDate(obj.published, {
+                                    locale: 'nb',
+                                    hour: '2-digit',
+                                    minute: '2-digit',
+                                    day: 'numeric',
+                                    month: 'short',
+                                    year: 'numeric',
+                                }, true)}
+                            </>}
+                        </>}
+
+                    </small><br />
+                    <div class='w-100 mb-1'>
+                        <h5 class='mb-1 mt-0' style='font-size: 1.15em;'>{obj.title}</h5>
+                        {/* windowWidth: {windowWidth}<br />
+                        viewerWidth: {viewerWidth}<br />
+                        Math.floor(viewerWidth / 2): {Math.floor(viewerWidth / 2)}<br /> */}
+                        {obj.img && obj.img[0] && <>
+                            <div
+                                class={`w-100 position-relative overflow-auto float-right`}
+                                style={`max-width: ${imageWidth}px !important;`}
+                            >
+                                <div
+                                    class='d-flex flex-row flex-nowrap no-scrollbar'
+                                    style={`
+                                        overflow-x: auto;
+                                        overflow-y: auto;
+                                        scroll-snap-type: x mandatory;
+                                    `}
+                                    ref={c => this.imageScrollerRef = c}
+                                >
+                                    {obj.img.map((img, idx) => {
+                                        return(<>
+                                            <div class='w-100 image is-hidden'>
+                                                <div
+                                                    class={`w-100 h-100 d-flex justify-content-center align-items-center position-relative px-1`}
+                                                    style={`
+                                                        scroll-snap-align: start;
+                                                        flex-wrap: wrap;
+                                                    `}
+                                                    onTouchStart={(e) => { e.stopPropagation(); }}
+                                                    onTouchEnd={(e) => { e.stopPropagation(); }}
+                                                    onTouchMove={(e) => { e.stopPropagation(); }}
+                                                >
+                                                    <div
+                                                        class='d-flex flex-row flex-nowrap h-100 w-100 justify-content-center align-items-center overflow-hidden'
+                                                    >
+                                                        <img
+                                                            src={`${imageDomain}/800x/${imageDomainPath}/${obj.img[idx].src}`}
+                                                            style={`width: ${(hasOnlyOneImage ? imageWidth : imageWidth - 80)}px;`}
+                                                            onClick={(e) => this.toggleShowImage(e, obj.id, idx)}
+                                                        /><br />
+                                                        <small class='text-muted'>
+                                                            {obj.img[idx].title}<br />
+                                                            <span class='font-weight-lighter'>{obj.img[idx].text}</span>
+                                                        </small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </>);
+                                    })}
+                                </div>
+                                {!hasOnlyOneImage && <>
+                                    <div class='position-absolute' style='top: 50%; left: 10px;'>
+                                        <button type='button' class={`btn btn-link text-white`} style={`font-size: 3.5em; opacity: 0.7;`} onClick={this.onClickScrollLeft}><i class='fas fa-arrow-circle-left' /></button>
+                                    </div>
+                                    <div class='position-absolute' style='top: 50%; right: 10px;'>
+                                        <button type='button' class={`btn btn-link text-white`} style={`font-size: 3.5em; opacity: 0.7;`} onClick={this.onClickScrollRight}><i class='fas fa-arrow-circle-right' /></button>
+                                    </div>
+                                </>}
+                            </div>
+                        </>}
+                        {obj.url && obj.url.match(/spotify\.com/) && spotifyPodcast(obj.url)}
+                        {obj.url && (obj.url.match(/youtube\.com/) || obj.url.match(/youtu\.be/)) && youtubeVideo(obj.url)}
+                        <Markdown markdown={`${obj.ingress || obj.body}`} markedOpts={MARKDOWN_OPTIONS} />
+                    </div>
+                    <div class='d-flex justify-content-between mb-3'>
+                        <div class='d-flex justify-content-start'>
+                            {Array.isArray(obj.tags) && obj.tags.map(t =>
+                                <a
+                                    href={`${location.origin}${location.pathname}#/live/tag/${t}`}
+                                    class={`badge ${t === tag ? 'badge-info text-white' : 'badge-light text-muted'} mr-1 d-flex align-items-center rounded-lg font-weight-normal`}
+                                >
+                                    {t}
+                                </a>
+                            )}
+                        </div>
+                        <div class='d-flex justify-content-end'>
+                            <a class='text-muted ml-2' href={`${location.origin}${location.pathname}#/live/${obj.id}`} target='_blank' rel='noopener'><i class='fa-solid fa-link' /></a>
+                            <a class='text-muted ml-2' href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(`${location.origin}${location.pathname}#/live/${obj.id}`)}&t=${encodeURIComponent(obj.title)}`} target='_blank' rel='noopener'><i class='fa-brands fa-facebook' /></a>
+                            <a class='text-muted ml-2' href={`mailto:?body=${encodeURIComponent(`Hei,
+
+Her kommer en artikkel som er delt med deg:
+`)}${encodeURIComponent(`${location.origin}${location.pathname}#/live/${obj.id}`)}${encodeURIComponent(`
+
+Ha en fin dag :)
+${window.location.hostname}
+
+`)}&subject=Tips:%20${encodeURIComponent(obj.title)}`} target='_blank' rel='noopener'><i class='fa-solid fa-envelope' /></a>
+                        </div>
+                    </div>
+                    <div class='border'></div>
+                </div>
+            </div>
+            {showImage[obj.id] && <>
+                <div
+                    class='fixed-top w-100 h-100 d-flex flex-column justify-content-center align-items-center'
+                    style='
+                        z-index: 100000;
+                        background-color:rgba(0, 0, 0, 0.5);
+                    '
+                    // onTouchstart={(e) => { e.stopPropagation(); e.preventDefault() }}
+                    // onTouchend={(e) => { e.stopPropagation(); e.preventDefault() }}
+                    // onTouchmove={(e) => { e.stopPropagation(); e.preventDefault() }}
+                    onScroll={(e) => { e.stopPropagation(); e.preventDefault() }}
+                    onmousewheel={(e) => { e.stopPropagation(); e.preventDefault() }}
+                    onwheel={(e) => { e.stopPropagation(); e.preventDefault() }}
+                    onClick={(e) => this.toggleShowImage(e, obj.id)}
+                >
+                    <img
+                        src={`${imageDomain}/1024x/${imageDomainPath}/${obj.img[showImageIdx].src}`}
+                        class='img-fluid rounded-lg'
+                        style='max-height: 90vh;'
+                        onClick={(e) => this.toggleShowImage(e, obj.id)}
+                    /><br />
+                    <small class='text-white mt-2'>
+                        {obj.img[0].title}<br />
+                        <span class='font-weight-lighter'>{obj.img[showImageIdx].text}</span>
+                    </small>
+                    <div
+                        class='position-absolute text-white' style='top: 20px; right: 20px; z-index: 10001; font-size: 3.5em;'
+                    >
+                        <i class='fa-solid fa-xmark' />
+                    </div>
+                </div>
+            </>}
+        </>);
+    }
+}
+
+@observer
 class Live extends Component {
   	constructor(props) {
         super(props);
@@ -115,7 +348,6 @@ class Live extends Component {
             actualHeight: {},
             heights: {},
             newArticle: {},
-            showImage: {},
             taglist: [],
             currentTagIdx: -1,
             currentTag: '',
@@ -239,15 +471,6 @@ class Live extends Component {
         const { showInput } = this.state;
         this.setState({
             showInput: !showInput,
-        });
-    }
-
-    toggleShowImage = (e, artId) => {
-        e.stopPropagation();
-        const { showImage } = this.state;
-        showImage[artId] = !showImage[artId];
-        this.setState({
-            showImage,
         });
     }
 
@@ -505,6 +728,41 @@ class Live extends Component {
         // elements.forEach((element) => {
         //     observer.observe(element);
         // });
+    }
+
+    renderContent = ({ obj, idx }) => {
+        const { appState } = this.props.stores;
+        const { path } = appState;
+        const { imageDomain, imageDomainPath, artid, tag } = this.props;
+        const { windowWidth, viewerWidth } = this.state;
+        return (<>
+            <LiveLine
+                stores={this.props.stores}
+                imageDomain={imageDomain}
+                imageDomainPath={imageDomainPath}
+                windowWidth={windowWidth}
+                viewerWidth={viewerWidth}
+                artid={artid}
+                tag={tag}
+                obj={obj}
+                key={`art-detail-${obj.id}`}
+            />
+        </>);
+    }
+
+    handleIntersection = (entries) => {
+        entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+                // entry.target.classList.add('is-visible');
+
+                const elements = entry.target.querySelectorAll('.is-hidden');
+                elements.forEach((el) => {
+                    el.classList.add('is-visible');
+                });
+            } else {
+                // entry.target.classList.remove('is-visible');
+            }
+        });
     }
 
     componentDidMount() {
@@ -818,213 +1076,14 @@ const a = 1;
                 class='d-flex flex-column overflow-auto'
                 ref={c => this.imageContainer = c}
             >
-                {finalArtlist && finalArtlist.map((art, i) => {
-                    const dateDiff = util.dateDiff(art.published, new Date());
-                    const inFuture = dateDiff.seconds < 0;
-                    const inThePast = dateDiff.seconds > 0;
-                    const isToday = dateDiff.hours <= 6 && !inFuture;
-                    const isThisWeek = dateDiff.days < 7;
-                    const isThisYear = dateDiff.years >= 0 && dateDiff.months <= 6;
-                    const isLast24Hours = dateDiff.hours <= 24 && !inFuture;
-                    const hasOnlyOneImage = art.img.length === 1;
-                    const imageWidth = windowWidth > 800 ? Math.floor(viewerWidth / 2) : viewerWidth;
-                    return (<>
-                        <div
-                            class={`col-12 px-0 mb-0 pl-3 animate is-hidden`}
-                            style={`
-                                ${art.id === parseInt(artid, 10) ? 'background-color: #f0f0f0;' : ''}
-                                ${inFuture ? 'opacity: 0.5;' : ''}
-                            `}
-                            ref={c => this.blockRefs[art.id] = c}
-                            data-id={art.id}
-                        >
-                            {/* dateDiff: {JSON.stringify(dateDiff)} */}
-                            {/* <div
-                                class='px-2 rounded-lg bg-live-dark text-live-light'
-                                style='font-size: 1.2em;'
-                            >
-                                {art.title}
-                            </div> */}
-                            <div class='body px-2 pt-2 pl-3 d-flex flex-column position-relative' style='border-left: 1px #a0a0a0 solid; font-size: 1.0em;'>
-                                <div class='position-absolute' style='top: 5px; left: -10px; z-index: 1000;'>
-                                    <span class='badge badge-pill badge-danger py-0 px-1' style='width: 20px; height: 20px; border: 3px #ffffff solid;'>&nbsp;</span>
-                                </div>
-                                <small class='text-danger font-weight-normal'>
-    {/* {dateIsInTheFuture ? util.formatDate(story.date, { locale: 'no-NB', hour12: false, hour: '2-digit', minute: '2-digit' }) : util.formatDistance(story.date, new Date(), { locale: 'no-NB' })} */}
-
-                                    {isLast24Hours ? <>
-                                        {util.formatDistance(art.published, new Date(), { locale: 'no-NB' })} ago<br />
-                                    </> : <>
-                                        {isThisYear ? <>
-                                            {isToday ? util.formatDate(art.published, {
-                                                locale: 'nb',
-                                                hour: '2-digit',
-                                                minute: '2-digit',
-                                            }, true) : util.formatDate(art.published, {
-                                                locale: 'nb',
-                                                hour: '2-digit',
-                                                minute: '2-digit',
-                                                day: 'numeric',
-                                                month: 'short',
-                                            }, true)}
-                                        </> : <>
-                                            {util.formatDate(art.published, {
-                                                locale: 'nb',
-                                                hour: '2-digit',
-                                                minute: '2-digit',
-                                                day: 'numeric',
-                                                month: 'short',
-                                                year: 'numeric',
-                                            }, true)}
-                                        </>}
-                                    </>}
-
-                                </small><br />
-                                <div class='w-100 mb-1'>
-                                    <h5 class='mb-1 mt-0' style='font-size: 1.15em;'>{art.title}</h5>
-                                    {/* windowWidth: {windowWidth}<br />
-                                    viewerWidth: {viewerWidth}<br />
-                                    Math.floor(viewerWidth / 2): {Math.floor(viewerWidth / 2)}<br /> */}
-                                    {art.img && art.img[0] && <>
-                                        <div
-                                            class={`w-100 position-relative overflow-auto float-right`}
-                                            style={`max-width: ${imageWidth}px !important;`}
-                                        >
-                                            <div
-                                                class='d-flex flex-row flex-nowrap no-scrollbar'
-                                                style={`
-                                                    overflow-x: auto;
-                                                    overflow-y: auto;
-                                                    scroll-snap-type: x mandatory;
-                                                `}
-                                                ref={c => this.imageScrollerRef = c}
-                                            >
-                                                {art.img.map((img, idx) => {
-                                                    return(<>
-                                                        <div class='w-100 image is-hidden animate'>
-                                                            <div
-                                                                class={`w-100 h-100 d-flex justify-content-center align-items-center position-relative px-1`}
-                                                                style={`
-                                                                    scroll-snap-align: start;
-                                                                    flex-wrap: wrap;
-                                                                `}
-                                                                onTouchStart={(e) => { e.stopPropagation(); }}
-                                                                onTouchEnd={(e) => { e.stopPropagation(); }}
-                                                                onTouchMove={(e) => { e.stopPropagation(); }}
-                                                            >
-                                                                <div
-                                                                    class='d-flex flex-row flex-nowrap h-100 w-100 justify-content-center align-items-center overflow-hidden'
-                                                                >
-                                                                    <img
-                                                                        src={`${imageDomain}/800x/${imageDomainPath}/${art.img[idx].src}`}
-                                                                        style={`width: ${(hasOnlyOneImage ? imageWidth : imageWidth - 80)}px;`}
-                                                                        onClick={(e) => this.toggleShowImage(e, art.id)}
-                                                                    /><br />
-                                                                    <small class='text-muted'>
-                                                                        {art.img[0].title}<br />
-                                                                        <span class='font-weight-lighter'>{art.img[idx].text}</span>
-                                                                    </small>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </>);
-                                                })}
-                                            </div>
-                                            {!hasOnlyOneImage && <>
-                                                <div class='position-absolute' style='top: 50%; left: 10px;'>
-                                                    <button type='button' class={`btn btn-link text-white`} style={`font-size: 3.5em; opacity: 0.7;`} onClick={this.onClickScrollLeft}><i class='fas fa-arrow-circle-left' /></button>
-                                                </div>
-                                                <div class='position-absolute' style='top: 50%; right: 10px;'>
-                                                    <button type='button' class={`btn btn-link text-white`} style={`font-size: 3.5em; opacity: 0.7;`} onClick={this.onClickScrollRight}><i class='fas fa-arrow-circle-right' /></button>
-                                                </div>
-                                            </>}
-                                        </div>
-                                    </>}
-                                    {art.url && art.url.match(/spotify\.com/) && spotifyPodcast(art.url)}
-                                    {art.url && (art.url.match(/youtube\.com/) || art.url.match(/youtu\.be/)) && youtubeVideo(art.url)}
-                                    <Markdown markdown={`${art.ingress || art.body}`} markedOpts={MARKDOWN_OPTIONS} />
-                                </div>
-                                <div class='d-flex justify-content-between mb-3'>
-                                    <div class='d-flex justify-content-start'>
-                                        {Array.isArray(art.tags) && art.tags.map(t =>
-                                            <a
-                                                href={`${location.origin}${location.pathname}#/live/tag/${t}`}
-                                                class={`badge ${t === tag ? 'badge-info text-white' : 'badge-light text-muted'} mr-1 d-flex align-items-center rounded-lg font-weight-normal`}
-                                            >
-                                                {t}
-                                            </a>
-                                        )}
-                                    </div>
-                                    <div class='d-flex justify-content-end'>
-                                        <a class='text-muted ml-2' href={`${location.origin}${location.pathname}#/live/${art.id}`} target='_blank' rel='noopener'><i class='fa-solid fa-link' /></a>
-                                        <a class='text-muted ml-2' href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(`${location.origin}${location.pathname}#/live/${art.id}`)}&t=${encodeURIComponent(art.title)}`} target='_blank' rel='noopener'><i class='fa-brands fa-facebook' /></a>
-                                        <a class='text-muted ml-2' href={`mailto:?body=${encodeURIComponent(`Hei,
-
-    Her kommer en artikkel som er delt med deg:
-    `)}${encodeURIComponent(`${location.origin}${location.pathname}#/live/${art.id}`)}${encodeURIComponent(`
-
-    Ha en fin dag :)
-    ${window.location.hostname}
-
-    `)}&subject=Tips:%20${encodeURIComponent(art.title)}`} target='_blank' rel='noopener'><i class='fa-solid fa-envelope' /></a>
-                                    </div>
-                                </div>
-                                <div class='border'></div>
-                                {showImage[art.id] && <>
-                                    <div
-                                        class='fixed-top w-100 h-100 d-flex flex-column justify-content-center align-items-center'
-                                        style='
-                                            z-index: 10000;
-                                            background-color:rgba(0, 0, 0, 0.5);
-                                        '
-                                        // onTouchstart={(e) => { e.stopPropagation(); e.preventDefault() }}
-                                        // onTouchend={(e) => { e.stopPropagation(); e.preventDefault() }}
-                                        // onTouchmove={(e) => { e.stopPropagation(); e.preventDefault() }}
-                                        onScroll={(e) => { e.stopPropagation(); e.preventDefault() }}
-                                        onmousewheel={(e) => { e.stopPropagation(); e.preventDefault() }}
-                                        onwheel={(e) => { e.stopPropagation(); e.preventDefault() }}
-                                        onClick={(e) => this.toggleShowImage(e, art.id)}
-                                    >
-                                        <img
-                                            src={`${imageDomain}/1024x/${imageDomainPath}/${art.img[0].src}`}
-                                            class='img-fluid rounded-lg'
-                                            style='max-height: 90vh;'
-                                            onClick={(e) => this.toggleShowImage(e, art.id)}
-                                        /><br />
-                                        <small class='text-white mt-2'>
-                                            {art.img[0].title}<br />
-                                            <span class='font-weight-lighter'>{art.img[0].text}</span>
-                                        </small>
-                                        <div
-                                            class='position-absolute text-white' style='top: 20px; right: 20px; z-index: 10001; font-size: 3.5em;'
-                                        >
-                                            <i class='fa-solid fa-xmark' />
-                                        </div>
-                                    </div>
-                                </>}
-                            </div>
-                        </div>
-                            {/* {isOverflow[art.id] && <>
-                                {isExpanded[art.id] ? <>
-                                    <button
-                                        class='btn btn-block btn-sm btn-link text-dark'
-                                        type='button'
-                                        onClick={e => this.toggleSize(e, art.id)}
-                                        >
-                                        Vis mindre ^
-                                    </button>
-                                </> : <>
-                                    <button
-                                        class='btn btn-block btn-sm btn-link text-dark'
-                                        type='button'
-                                        onClick={e => this.toggleSize(e, art.id)}
-                                    >
-                                        Les mer v
-                                    </button>
-                                </>}
-                            </>} */}
-                    </>);
-                })}
+                <FastList
+                    data={finalArtlist}
+                    wrapperClassNames={'w-100'}
+                    contentClassNames={`w-100 position-relative`}
+                    renderContent={this.renderContent}
+                    dataFields={['id']}
+                    handleIntersection={this.handleIntersection}
+                />
 
                 <div class='d-flex justify-content-center'>
                     {finalArtlist.length <= artlistLive.length && <>

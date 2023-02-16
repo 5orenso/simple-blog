@@ -178,10 +178,9 @@ class Start extends Component {
                         text-decoration: underline;
                     }
 
-                    `}
-                    {/* .is-hidden {
-                        opacity: 0;
-                        filter: blur(5px);
+                    .is-hidden {
+                        opacity: 0.5;
+                        filter: blur(10px);
                         transform: translateX(-100%);
                         transition: all 0.5s;
                     }
@@ -190,15 +189,27 @@ class Start extends Component {
                         filter: blur(0px);
                         transform: translateX(0%);
                     }
-                    .body .image:nth-child(1) {
+                    .is-visible .image:nth-child(1) {
                         transition-delay: 100ms;
                     }
-                    .body .image:nth-child(2) {
+                    .is-visible .image:nth-child(2) {
                         transition-delay: 200ms;
                     }
-                    .body .image:nth-child(3) {
+                    .is-visible .image:nth-child(3) {
                         transition-delay: 300ms;
-                    } */}
+                    }
+                    .is-visible .image:nth-child(4) {
+                        transition-delay: 400ms;
+                    }
+                    .is-visible .image:nth-child(5) {
+                        transition-delay: 500ms;
+                    }
+
+                    @media (prefers-reduced-motion) {
+
+                    }
+
+                `}
             </style>
             {/* <xmp>{JSON.stringify(this.props, null, 2)}</xmp> */}
             <div class='container-fluid mb-5'>
