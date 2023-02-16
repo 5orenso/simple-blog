@@ -22,7 +22,6 @@ const MARKDOWN_OPTIONS = {
 };
 
 function scrollTo(element, top = 0, left = 0) {
-    console.log(element)
     // element.scrollTop = to;
     element.scrollIntoView({
         behavior: 'smooth',
