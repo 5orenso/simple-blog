@@ -839,7 +839,7 @@ class Live extends Component {
                 newArticle.urlTitle = urlResponse.data.title;
                 newArticle.urlDescription = urlResponse.data.description;
                 newArticle.urlImage = urlResponse.data.image;
-                newArticle.urlIcon = urlResponse.data.icon.match(/^http/) ? urlResponse.data.icon : `${urlResponse.data.baseUrl}${urlResponse.data.icon}`;
+                newArticle.urlIcon = urlResponse.data.icon.match(/^(http|\/\/)/) ? urlResponse.data.icon : `${urlResponse.data.baseUrl}${urlResponse.data.icon}`;
                 newArticle.urlBaseUrl = urlResponse.data.baseUrl;
                 newArticle.urlThemeColor = urlResponse.data.themeColor;
                 this.setState({ newArticle });
@@ -946,6 +946,38 @@ class Live extends Component {
                                 value={newArticle.url}
                             />
                         </div>
+
+                        {newArticle.url && newArticle.urlTitle && !newArticle.url.match(/spotify\.com/) && !((newArticle.url.match(/youtube\.com/) || newArticle.url.match(/youtu\.be/))) && <>
+                            <div
+                                class='p-4 border rounded-lg d-flex flex-column bg-light position-relative mt-2 mb-2'
+                                style={`
+                                    background-color: #f0f0f0 !important;
+                                    ${newArticle.urlThemeColor ? `border: 4px ${newArticle.urlThemeColor} solid !important;` : ''}
+                                `}
+                            >
+                                {/* <div>
+                                    {newArticle.urlBaseUrl}
+                                </div> */}
+                                <div class='d-flex flex-row justify-content-between'>
+                                    <div class='flex-grow-1 d-flex flex-column'>
+                                        <span class='font-weight-bold'>
+                                            <img src={newArticle.urlIcon} class='mr-2' style='max-height: 35px;' />
+                                            {newArticle.urlTitle}
+                                        </span>
+                                        <div class='font-weight-light'>
+                                            <a href={newArticle.url} target='_blank' class='stretched-link'>
+                                                <img src={newArticle.urlImage} class='float-right ml-2' style='width: 200px; max-width: 25vw; max-height: 200px;' />
+                                            </a>
+                                            {newArticle.urlDescription}
+                                        </div>
+                                    </div>
+                                </div>
+                                {/* <div>
+                                    <a href={obj.url} target='_blank' class='btn btn-link btn-block stretched-link '>Følg link...</a>
+                                </div> */}
+                            </div>
+                        </>}
+
                         <div class='form-group'>
                             <div class='w-50 float-right d-flex justify-content-end'>
                                 <button

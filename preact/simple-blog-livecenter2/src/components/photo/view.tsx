@@ -330,7 +330,7 @@ class PhotoView extends Component<ExpandableProps, ExpandableState> {
                 newArticle.urlTitle = urlResponse.data.title;
                 newArticle.urlDescription = urlResponse.data.description;
                 newArticle.urlImage = urlResponse.data.image;
-                newArticle.urlIcon = urlResponse.data.icon.match(/^http/) ? urlResponse.data.icon : `${urlResponse.data.baseUrl}${urlResponse.data.icon}`;
+                newArticle.urlIcon = urlResponse.data.icon.match(/^(http|\/\/)/) ? urlResponse.data.icon : `${urlResponse.data.baseUrl}${urlResponse.data.icon}`;
                 newArticle.urlBaseUrl = urlResponse.data.baseUrl;
                 newArticle.urlThemeColor = urlResponse.data.themeColor;
                 this.setState({ newArticle });
