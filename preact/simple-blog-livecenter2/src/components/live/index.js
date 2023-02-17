@@ -111,6 +111,7 @@ class LiveLine extends Component {
         this.state = {
             showImage: {},
             showImageIdx: 0,
+            showFull: {},
         };
 		this.blockRefs = {};
         // this.ref = createRef();
@@ -123,6 +124,15 @@ class LiveLine extends Component {
         this.setState({
             showImage,
             showImageIdx: idx,
+        });
+    }
+
+    toggleShowFull = (e, artId, idx = 0) => {
+        e.stopPropagation();
+        const { showFull } = this.state;
+        showFull[artId] = !showFull[artId];
+        this.setState({
+            showFull,
         });
     }
 
@@ -154,7 +164,7 @@ class LiveLine extends Component {
     }
 
     render() {
-        const { showImage, showImageIdx } = this.state;
+        const { showImage, showImageIdx, showFull } = this.state;
         const { idx, obj, imageDomain, imageDomainPath, windowWidth, viewerWidth, artid, tag } = this.props;
         const dateDiff = util.dateDiff(obj.published, new Date());
         const inFuture = dateDiff.seconds < 0;
@@ -218,126 +228,138 @@ class LiveLine extends Component {
 
                     </small><br />
                     <div class='w-100 mb-1'>
-                        <h5 class='mb-1 mt-0' style='font-size: 1.15em;'>{obj.title}</h5>
                         {/* windowWidth: {windowWidth}<br />
                         viewerWidth: {viewerWidth}<br />
-                        Math.floor(viewerWidth / 2): {Math.floor(viewerWidth / 2)}<br /> */}
-                        {obj.img && obj.img[0] && <>
-                            <div
-                                class={`w-100 position-relative overflow-auto float-right`}
-                                style={`max-width: ${imageWidth}px !important;`}
-                            >
+                    Math.floor(viewerWidth / 2): {Math.floor(viewerWidth / 2)}<br /> */}
+                        {inFuture && !showFull[obj.id] ? <>
+                            <button type='button' class='btn btn-sm btn-outline-success float-right' onClick={e => this.toggleShowFull(e, obj.id)}>Show full</button>
+                            <h5 class='mb-1 mt-0' style='font-size: 1.15em;'>{obj.title}</h5>
+                        </> : <>
+                            {inFuture && <>
+                                <button type='button' class='btn btn-sm btn-success float-right' onClick={e => this.toggleShowFull(e, obj.id)}>Hide full</button>
+                            </>}
+                            <h5 class='mb-1 mt-0' style='font-size: 1.15em;'>{obj.title}</h5>
+                            {obj.img && obj.img[0] && <>
                                 <div
-                                    class='d-flex flex-row flex-nowrap no-scrollbar'
-                                    style={`
-                                        overflow-x: auto;
-                                        overflow-y: auto;
-                                        scroll-snap-type: x mandatory;
-                                    `}
-                                    ref={c => this.imageScrollerRef = c}
+                                    class={`w-100 position-relative overflow-auto float-right`}
+                                    style={`max-width: ${imageWidth}px !important;`}
                                 >
-                                    {obj.img.map((img, idx) => {
-                                        return(<>
-                                            <div class='w-100 image is-hidden'>
-                                                <div
-                                                    class={`w-100 h-100 d-flex justify-content-center align-items-center position-relative px-1`}
-                                                    style={`
-                                                        scroll-snap-align: start;
-                                                        flex-wrap: wrap;
-                                                    `}
-                                                    onTouchStart={(e) => { e.stopPropagation(); }}
-                                                    onTouchEnd={(e) => { e.stopPropagation(); }}
-                                                    onTouchMove={(e) => { e.stopPropagation(); }}
-                                                >
+                                    <div
+                                        class='d-flex flex-row flex-nowrap no-scrollbar'
+                                        style={`
+                                            overflow-x: auto;
+                                            overflow-y: auto;
+                                            scroll-snap-type: x mandatory;
+                                        `}
+                                        ref={c => this.imageScrollerRef = c}
+                                    >
+                                        {obj.img.map((img, idx) => {
+                                            return(<>
+                                                <div class='w-100 image is-hidden'>
                                                     <div
-                                                        class='d-flex flex-row flex-nowrap h-100 w-100 justify-content-center align-items-center overflow-hidden'
+                                                        class={`w-100 h-100 d-flex justify-content-center align-items-center position-relative px-1`}
+                                                        style={`
+                                                            scroll-snap-align: start;
+                                                            flex-wrap: wrap;
+                                                        `}
+                                                        onTouchStart={(e) => { e.stopPropagation(); }}
+                                                        onTouchEnd={(e) => { e.stopPropagation(); }}
+                                                        onTouchMove={(e) => { e.stopPropagation(); }}
                                                     >
-                                                        <img
-                                                            src={`${imageDomain}/800x/${imageDomainPath}/${obj.img[idx].src}`}
-                                                            style={`width: ${(hasOnlyOneImage ? imageWidth : imageWidth - 80)}px;`}
-                                                            onClick={(e) => this.toggleShowImage(e, obj.id, idx)}
-                                                        /><br />
-                                                        <small class='text-muted'>
-                                                            {obj.img[idx].title}<br />
-                                                            <span class='font-weight-lighter'>{obj.img[idx].text}</span>
-                                                        </small>
+                                                        <div
+                                                            class='d-flex flex-row flex-nowrap h-100 w-100 justify-content-center align-items-center overflow-hidden'
+                                                        >
+                                                            <img
+                                                                src={`${imageDomain}/800x/${imageDomainPath}/${obj.img[idx].src}`}
+                                                                style={`width: ${(hasOnlyOneImage ? imageWidth : imageWidth - 80)}px;`}
+                                                                onClick={(e) => this.toggleShowImage(e, obj.id, idx)}
+                                                            /><br />
+                                                            <small class='text-muted'>
+                                                                {obj.img[idx].title}<br />
+                                                                <span class='font-weight-lighter'>{obj.img[idx].text}</span>
+                                                            </small>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        </>);
-                                    })}
+                                            </>);
+                                        })}
+                                    </div>
+                                    {!hasOnlyOneImage && <>
+                                        <div class='position-absolute' style='top: 50%; left: 10px;'>
+                                            <button type='button' class={`btn btn-link text-white`} style={`font-size: 3.5em; opacity: 0.7;`} onClick={this.onClickScrollLeft}><i class='fas fa-arrow-circle-left' /></button>
+                                        </div>
+                                        <div class='position-absolute' style='top: 50%; right: 10px;'>
+                                            <button type='button' class={`btn btn-link text-white`} style={`font-size: 3.5em; opacity: 0.7;`} onClick={this.onClickScrollRight}><i class='fas fa-arrow-circle-right' /></button>
+                                        </div>
+                                    </>}
                                 </div>
-                                {!hasOnlyOneImage && <>
-                                    <div class='position-absolute' style='top: 50%; left: 10px;'>
-                                        <button type='button' class={`btn btn-link text-white`} style={`font-size: 3.5em; opacity: 0.7;`} onClick={this.onClickScrollLeft}><i class='fas fa-arrow-circle-left' /></button>
-                                    </div>
-                                    <div class='position-absolute' style='top: 50%; right: 10px;'>
-                                        <button type='button' class={`btn btn-link text-white`} style={`font-size: 3.5em; opacity: 0.7;`} onClick={this.onClickScrollRight}><i class='fas fa-arrow-circle-right' /></button>
-                                    </div>
-                                </>}
-                            </div>
-                        </>}
-                        {obj.url && obj.url.match(/spotify\.com/) && spotifyPodcast(obj.url)}
-                        {obj.url && (obj.url.match(/youtube\.com/) || obj.url.match(/youtu\.be/)) && youtubeVideo(obj.url)}
-                        {obj.url && obj.urlTitle && !obj.url.match(/spotify\.com/) && !((obj.url.match(/youtube\.com/) || obj.url.match(/youtu\.be/))) && <>
-                            <div
-                                class='p-4 border rounded-lg d-flex flex-column bg-light position-relative mt-2 mb-2'
-                                style={`
-                                    background-color: #f0f0f0 !important;
-                                    ${obj.urlThemeColor ? `border: 4px ${obj.urlThemeColor} solid !important;` : ''}
-                                `}
-                            >
-                                {/* <div>
-                                    {obj.urlBaseUrl}
-                                </div> */}
-                                <div class='d-flex flex-row justify-content-between'>
-                                    <div class='flex-grow-1 d-flex flex-column'>
-                                        <h5 class='font-weight-light'>
-                                            <img src={obj.urlIcon} class='img-fluid mr-2' style='max-height: 35px;' />
-                                            {obj.urlTitle}
-                                        </h5>
-                                        <div class='font-weight-light'>
-                                            {obj.urlDescription}
+                            </>}
+                            {obj.url && obj.url.match(/spotify\.com/) && spotifyPodcast(obj.url)}
+                            {obj.url && (obj.url.match(/youtube\.com/) || obj.url.match(/youtu\.be/)) && youtubeVideo(obj.url)}
+                            {obj.url && obj.urlTitle && !obj.url.match(/spotify\.com/) && !((obj.url.match(/youtube\.com/) || obj.url.match(/youtu\.be/))) && <>
+                                <div
+                                    class='p-4 border rounded-lg d-flex flex-column bg-light position-relative mt-2 mb-2'
+                                    style={`
+                                        background-color: #f0f0f0 !important;
+                                        ${obj.urlThemeColor ? `border: 4px ${obj.urlThemeColor} solid !important;` : ''}
+                                    `}
+                                >
+                                    {/* <div>
+                                        {obj.urlBaseUrl}
+                                    </div> */}
+                                    <div class='d-flex flex-row justify-content-between'>
+                                        <div class='flex-grow-1 d-flex flex-column'>
+                                            <h5 class='font-weight-light'>
+                                                <img src={obj.urlIcon} class='img-fluid mr-2' style='max-height: 35px;' />
+                                                {obj.urlTitle}
+                                            </h5>
+                                            <div class='font-weight-light'>
+                                                {obj.urlDescription}
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <a href={obj.url} target='_blank' class='stretched-link'>
+                                                <img src={obj.urlImage} class='img-fluid' style='min-width: 200px; max-height: 250px;' />
+                                            </a>
                                         </div>
                                     </div>
-                                    <div>
-                                        <a href={obj.url} target='_blank' class='stretched-link'>
-                                            <img src={obj.urlImage} class='img-fluid' style='min-width: 200px; max-height: 250px;' />
-                                        </a>
-                                    </div>
+                                    {/* <div>
+                                        <a href={obj.url} target='_blank' class='btn btn-link btn-block stretched-link '>Følg link...</a>
+                                    </div> */}
                                 </div>
-                                {/* <div>
-                                    <a href={obj.url} target='_blank' class='btn btn-link btn-block stretched-link '>Følg link...</a>
-                                </div> */}
-                            </div>
+                            </>}
+                            <Markdown markdown={`${obj.ingress || obj.body}`} markedOpts={MARKDOWN_OPTIONS} />
                         </>}
-                        <Markdown markdown={`${obj.ingress || obj.body}`} markedOpts={MARKDOWN_OPTIONS} />
                     </div>
-                    <div class='d-flex justify-content-between mb-3'>
-                        <div class='d-flex justify-content-start'>
-                            {Array.isArray(obj.tags) && obj.tags.map(t =>
-                                <a
-                                    href={`${location.origin}${location.pathname}#/live/tag/${t}`}
-                                    class={`badge ${t === tag ? 'badge-info text-white' : 'badge-light text-muted'} mr-1 d-flex align-items-center rounded-lg font-weight-normal`}
-                                >
-                                    {t}
-                                </a>
-                            )}
+                    {inFuture && !showFull[obj.id] ? <>
+                    </> : <>
+                        <div class='d-flex justify-content-between mb-3'>
+                            <div class='d-flex justify-content-start'>
+                                {Array.isArray(obj.tags) && obj.tags.map(t =>
+                                    <a
+                                        href={`${location.origin}${location.pathname}#/live/tag/${t}`}
+                                        class={`badge ${t === tag ? 'badge-info text-white' : 'badge-light text-muted'} mr-1 d-flex align-items-center rounded-lg font-weight-normal`}
+                                    >
+                                        {t}
+                                    </a>
+                                )}
+                            </div>
+                            <div class='d-flex justify-content-end'>
+                                <a class='text-muted ml-2' href={`${location.origin}${location.pathname}#/live/${obj.id}`} target='_blank' rel='noopener'><i class='fa-solid fa-link' /></a>
+                                <a class='text-muted ml-2' href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(`${location.origin}${location.pathname}#/live/${obj.id}`)}&t=${encodeURIComponent(obj.title)}`} target='_blank' rel='noopener'><i class='fa-brands fa-facebook' /></a>
+                                <a class='text-muted ml-2' href={`mailto:?body=${encodeURIComponent(`Hei,
+
+    Her kommer en artikkel som er delt med deg:
+    `)}${encodeURIComponent(`${location.origin}${location.pathname}#/live/${obj.id}`)}${encodeURIComponent(`
+
+    Ha en fin dag :)
+    ${window.location.hostname}
+
+    `)}&subject=Tips:%20${encodeURIComponent(obj.title)}`} target='_blank' rel='noopener'><i class='fa-solid fa-envelope' /></a>
+                            </div>
                         </div>
-                        <div class='d-flex justify-content-end'>
-                            <a class='text-muted ml-2' href={`${location.origin}${location.pathname}#/live/${obj.id}`} target='_blank' rel='noopener'><i class='fa-solid fa-link' /></a>
-                            <a class='text-muted ml-2' href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(`${location.origin}${location.pathname}#/live/${obj.id}`)}&t=${encodeURIComponent(obj.title)}`} target='_blank' rel='noopener'><i class='fa-brands fa-facebook' /></a>
-                            <a class='text-muted ml-2' href={`mailto:?body=${encodeURIComponent(`Hei,
 
-Her kommer en artikkel som er delt med deg:
-`)}${encodeURIComponent(`${location.origin}${location.pathname}#/live/${obj.id}`)}${encodeURIComponent(`
-
-Ha en fin dag :)
-${window.location.hostname}
-
-`)}&subject=Tips:%20${encodeURIComponent(obj.title)}`} target='_blank' rel='noopener'><i class='fa-solid fa-envelope' /></a>
-                        </div>
-                    </div>
+                    </>}
                     <div class='border'></div>
                 </div>
             </div>
