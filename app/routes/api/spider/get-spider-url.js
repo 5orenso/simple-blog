@@ -19,7 +19,6 @@ const isDevelopment = process.env.NODE_ENV !== 'production';
 const { routeName, routePath, run, webUtil, utilHtml, util } = require('../../../middleware/init')({ __filename, __dirname });
 
 async function getHtmlPage(pageUrl, parsedURL) {
-    // console.log('getHtmlPage', pageUrl)
     // return new Promise((resolve, reject) => {
     const options = {
         headers: {
@@ -35,6 +34,8 @@ async function getHtmlPage(pageUrl, parsedURL) {
         follow: 20,
         compress: true,
     };
+    console.log('getHtmlPage.fetch()', pageUrl, options);
+
     const response = await fetch(pageUrl, options);
     const htmlData = await response.text();
     return htmlData;
