@@ -280,20 +280,24 @@ class LiveLine extends Component {
                         {obj.url && obj.url.match(/spotify\.com/) && spotifyPodcast(obj.url)}
                         {obj.url && (obj.url.match(/youtube\.com/) || obj.url.match(/youtu\.be/)) && youtubeVideo(obj.url)}
                         {obj.url && obj.urlTitle && !obj.url.match(/spotify\.com/) && !((obj.url.match(/youtube\.com/) || obj.url.match(/youtu\.be/))) && <>
-                            <div class='p-4 border rounded-lg d-flex flex-column bg-light position-relative mt-2 mb-2'>
+                            <div class='p-4 border rounded-lg d-flex flex-column bg-light position-relative mt-2 mb-2' style='background-color: #f0f0f0 !important;'>
                                 {/* <div>
                                     {obj.urlBaseUrl}
                                 </div> */}
                                 <div class='d-flex flex-row justify-content-between'>
                                     <div class='flex-grow-1 d-flex flex-column'>
-                                        <h5>
+                                        <h5 class='font-weight-light'>
                                             <img src={obj.urlIcon} class='img-fluid mr-2' style='max-height: 35px;' />
                                             {obj.urlTitle}
                                         </h5>
-                                        <div>{obj.urlDescription}</div>
+                                        <div class='font-weight-light'>
+                                            {obj.urlDescription}
+                                        </div>
                                     </div>
                                     <div>
-                                        <a href={obj.url} target='_blank' class='stretched-link '><img src={obj.urlImage} class='img-fluid' style='max-height: 200px;' /></a>
+                                        <a href={obj.url} target='_blank' class='stretched-link'>
+                                            <img src={obj.urlImage} class='img-fluid' style='min-width: 200px; max-height: 250px;' />
+                                        </a>
                                     </div>
                                 </div>
                                 {/* <div>
@@ -809,7 +813,7 @@ class Live extends Component {
                 newArticle.urlTitle = urlResponse.data.title;
                 newArticle.urlDescription = urlResponse.data.description;
                 newArticle.urlImage = urlResponse.data.image;
-                newArticle.urlIcon = `${urlResponse.data.baseUrl}${urlResponse.data.icon}`;
+                newArticle.urlIcon = urlResponse.data.icon.match(/^http/) ? urlResponse.data.icon : `${urlResponse.data.baseUrl}${urlResponse.data.icon}`;
                 newArticle.urlBaseUrl = urlResponse.data.baseUrl;
                 this.setState({ newArticle });
             }
