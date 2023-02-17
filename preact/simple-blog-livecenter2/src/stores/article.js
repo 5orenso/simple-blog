@@ -134,6 +134,7 @@ class ArticleStore extends StoreModel {
         urlDescription,
         urlImage,
         urlIcon,
+        urlThemeColor,
     }) {
         // {
         //     "author":"sorenso",
@@ -164,6 +165,7 @@ class ArticleStore extends StoreModel {
             urlDescription,
             urlImage,
             urlIcon,
+            urlThemeColor,
         });
         return response;
     }

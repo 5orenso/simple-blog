@@ -17,7 +17,7 @@ const isDevelopment = process.env.NODE_ENV !== 'production';
 
 const { routeName, routePath, run, webUtil, utilHtml, util } = require('../../../middleware/init')({ __filename, __dirname });
 
-function getHtmlPage(pageUrl) {
+function getHtmlPage(pageUrl, parsedURL) {
     // console.log('getHtmlPage', pageUrl)
     return new Promise((resolve, reject) => {
         let htmlData = '';
@@ -27,11 +27,13 @@ function getHtmlPage(pageUrl) {
                 // 'Accept-Encoding': 'gzip, deflate, br',
                 'Accept-Language': 'en-US,en;q=0.5',
                 'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:109.0) Gecko/20100101 Firefox/109.0',
+                Connection: 'keep-alive',
+                Host: parsedURL.host,
             },
         };
         https.get(`${pageUrl}`, options, (res) => {
-            // console.log('statusCode:', res.statusCode);
-            // console.log('headers:', res.headers);
+            console.log('statusCode:', res.statusCode);
+            console.log('headers:', res.headers);
 
             res.on('data', (chunk) => {
                 htmlData += chunk.toString('utf8');
@@ -67,11 +69,14 @@ module.exports = async (req, res) => {
     }
     const parsedURL = URL.parse(url);
     console.log('parsedURL', parsedURL);
-    const data = await getHtmlPage(url);
-    // console.log('data', data);
+    const data = await getHtmlPage(url, parsedURL);
+    console.log('data', data);
     const root = HTMLParser.parse(data);
     // console.log(root.querySelector('head'));
     // Get all head tags from the page.
+
+    // <meta name="theme-color" content="#171716">
+
     const headTags = root.querySelectorAll('head > meta, head > title, head > link, head > description');
     // const headTags = root.querySelectorAll('head > meta, ');
     // Loop through all head tags.
@@ -85,8 +90,7 @@ module.exports = async (req, res) => {
         const tagContent = headTag.text;
         // Log the tag name, attributes and content.
 
-        if (
-            tagName === 'META'
+        if (tagName === 'META'
             && tagAttributes.property
             && (
                 tagAttributes.property.startsWith('og:')
@@ -95,13 +99,22 @@ module.exports = async (req, res) => {
         ) {
             meta[tagAttributes.property] = tagAttributes.content;
         }
+        if (tagName === 'META' && tagAttributes.name === 'theme-color') {
+            meta.themeColor = tagAttributes.content;
+        }
         if (tagName === 'TITLE') {
             meta.title = tagContent;
         }
         if (tagName === 'DESCRIPTION') {
             meta.description = tagContent;
         }
+        if (tagName === 'LINK' && tagAttributes.rel === 'shortcut icon' && tagAttributes.href) {
+            meta.icon = tagAttributes.href;
+        }
         if (tagName === 'LINK' && tagAttributes.rel === 'icon' && tagAttributes.href) {
+            meta.icon = tagAttributes.href;
+        }
+        if (tagName === 'LINK' && tagAttributes.rel === 'apple-touch-icon' && tagAttributes.href) {
             meta.icon = tagAttributes.href;
         }
 
@@ -136,6 +149,7 @@ module.exports = async (req, res) => {
             description: meta.description || meta['og:description'] || meta['twitter:description'],
             image: meta['og:image'] || meta['twitter:image'],
             baseUrl: `${parsedURL.protocol}//${parsedURL.host}`,
+            themeColor: meta.themeColor,
         },
     };
     if (req.isGraphql) {

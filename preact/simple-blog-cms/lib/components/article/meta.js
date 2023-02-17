@@ -133,6 +133,15 @@ export default class Edit extends Component {
                             value={article.urlBaseUrl} />
                     </div>
                 </div>
+                <div class='col-12'>
+                    <div class='form-group'>
+                        <label for='urlThemeColorInput'>urlThemeColor</label>
+                        <input type='text' class='form-control' id='urlThemeColorInput' placeholder='urlThemeColor'
+                            name='urlThemeColor'
+                            onInput={handleInput}
+                            value={article.urlThemeColor} />
+                    </div>
+                </div>
 
                 <div class='col-12'>
                     <div class='form-group'>

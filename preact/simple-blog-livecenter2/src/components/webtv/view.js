@@ -225,6 +225,7 @@ class WebTvView extends Component {
                 newArticle.urlImage = urlResponse.data.image;
                 newArticle.urlIcon = urlResponse.data.icon.match(/^http/) ? urlResponse.data.icon : `${urlResponse.data.baseUrl}${urlResponse.data.icon}`;
                 newArticle.urlBaseUrl = urlResponse.data.baseUrl;
+                newArticle.urlThemeColor = urlResponse.data.themeColor;
                 this.setState({ newArticle });
             }
         }
@@ -387,7 +388,7 @@ class WebTvView extends Component {
                                                 <img src={youtubeThumb(art.youtube)} class='img-fluid' /><br />
                                             </div>
                                             <div
-                                                class={`pl-2 bg-live-light text-live-dark rounded-right ${viewArticle?.id === art.id ? 'bg-info text-white' : ''}`}
+                                                class={`pl-2 py-2 bg-live-light text-live-dark rounded-right ${viewArticle?.id === art.id ? 'bg-info text-white' : ''}`}
                                                 style='
                                                     width: 70%;
                                                     overflow: hidden;
@@ -400,7 +401,12 @@ class WebTvView extends Component {
                                             >
                                                 <small>
                                                     <strong>
-                                                        {art.title}<br />
+                                                        <span class='d-flex flex-row justify-content-start'>
+                                                            {art.urlIcon && !art.urlIcon.match(/undefined/) && <>
+                                                                <img src={art.urlIcon} class='img-fluid mr-2' style='max-height: 1.5em;' /><br />
+                                                            </>}
+                                                            {art.title}<br />
+                                                        </span>
                                                     </strong>
                                                     {art.ingress && <>
                                                         {art.ingress}<br />

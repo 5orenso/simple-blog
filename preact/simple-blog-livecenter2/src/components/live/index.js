@@ -280,7 +280,13 @@ class LiveLine extends Component {
                         {obj.url && obj.url.match(/spotify\.com/) && spotifyPodcast(obj.url)}
                         {obj.url && (obj.url.match(/youtube\.com/) || obj.url.match(/youtu\.be/)) && youtubeVideo(obj.url)}
                         {obj.url && obj.urlTitle && !obj.url.match(/spotify\.com/) && !((obj.url.match(/youtube\.com/) || obj.url.match(/youtu\.be/))) && <>
-                            <div class='p-4 border rounded-lg d-flex flex-column bg-light position-relative mt-2 mb-2' style='background-color: #f0f0f0 !important;'>
+                            <div
+                                class='p-4 border rounded-lg d-flex flex-column bg-light position-relative mt-2 mb-2'
+                                style={`
+                                    background-color: #f0f0f0 !important;
+                                    ${obj.urlThemeColor ? `border: 4px ${obj.urlThemeColor} solid !important;` : ''}
+                                `}
+                            >
                                 {/* <div>
                                     {obj.urlBaseUrl}
                                 </div> */}
@@ -815,6 +821,7 @@ class Live extends Component {
                 newArticle.urlImage = urlResponse.data.image;
                 newArticle.urlIcon = urlResponse.data.icon.match(/^http/) ? urlResponse.data.icon : `${urlResponse.data.baseUrl}${urlResponse.data.icon}`;
                 newArticle.urlBaseUrl = urlResponse.data.baseUrl;
+                newArticle.urlThemeColor = urlResponse.data.themeColor;
                 this.setState({ newArticle });
             }
         }
