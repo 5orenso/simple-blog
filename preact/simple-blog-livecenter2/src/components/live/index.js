@@ -309,18 +309,16 @@ class LiveLine extends Component {
                                     </div> */}
                                     <div class='d-flex flex-row justify-content-between'>
                                         <div class='flex-grow-1 d-flex flex-column'>
-                                            <h5 class='font-weight-light'>
-                                                <img src={obj.urlIcon} class='img-fluid mr-2' style='max-height: 35px;' />
+                                            <span class='font-weight-bold'>
+                                                <img src={obj.urlIcon} class='mr-2' style='max-height: 35px;' />
                                                 {obj.urlTitle}
-                                            </h5>
+                                            </span>
                                             <div class='font-weight-light'>
+                                                <a href={obj.url} target='_blank' class='stretched-link'>
+                                                    <img src={obj.urlImage} class='float-right ml-2' style='width: 200px; max-width: 25vw; max-height: 200px;' />
+                                                </a>
                                                 {obj.urlDescription}
                                             </div>
-                                        </div>
-                                        <div>
-                                            <a href={obj.url} target='_blank' class='stretched-link'>
-                                                <img src={obj.urlImage} class='img-fluid' style='min-width: 200px; max-height: 250px;' />
-                                            </a>
                                         </div>
                                     </div>
                                     {/* <div>
