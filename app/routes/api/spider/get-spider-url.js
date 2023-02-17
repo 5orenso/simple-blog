@@ -13,6 +13,8 @@ const querystring = require('querystring');
 const HTMLParser = require('node-html-parser');
 const URL = require('url');
 
+const isDevelopment = process.env.NODE_ENV !== 'production';
+
 const { routeName, routePath, run, webUtil, utilHtml, util } = require('../../../middleware/init')({ __filename, __dirname });
 
 function getHtmlPage(pageUrl) {
@@ -21,12 +23,15 @@ function getHtmlPage(pageUrl) {
         let htmlData = '';
         const options = {
             headers: {
-                'User-Agent': 'some app v1.3 (sorenso@gmail.com)',
+                Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
+                // 'Accept-Encoding': 'gzip, deflate, br',
+                'Accept-Language': 'en-US,en;q=0.5',
+                'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:109.0) Gecko/20100101 Firefox/109.0',
             },
         };
         https.get(`${pageUrl}`, options, (res) => {
             // console.log('statusCode:', res.statusCode);
-            console.log('headers:', res.headers);
+            // console.log('headers:', res.headers);
 
             res.on('data', (chunk) => {
                 htmlData += chunk.toString('utf8');
@@ -63,10 +68,12 @@ module.exports = async (req, res) => {
     const parsedURL = URL.parse(url);
     console.log('parsedURL', parsedURL);
     const data = await getHtmlPage(url);
+    // console.log('data', data);
     const root = HTMLParser.parse(data);
     // console.log(root.querySelector('head'));
     // Get all head tags from the page.
     const headTags = root.querySelectorAll('head > meta, head > title, head > link, head > description');
+    // const headTags = root.querySelectorAll('head > meta, ');
     // Loop through all head tags.
     const meta = {};
     headTags.forEach((headTag) => {
@@ -98,10 +105,11 @@ module.exports = async (req, res) => {
             meta.icon = tagAttributes.href;
         }
 
-        console.log(tagName, tagAttributes, tagContent);
+        // console.log(tagName, tagAttributes, tagContent);
+        console.log(tagName);
     });
 
-    console.log('meta', meta);
+    // console.log('meta', meta);
     // meta {
     //     icon: '/cnp-assets/favicon-29bc799f/coast-228x228.png',
     //     title: 'Økte bøter er snakkis innad i politiet: – Kan være ubehagelig - VG',
@@ -134,5 +142,5 @@ module.exports = async (req, res) => {
         // req.mongoFields
         return response.data;
     }
-    return utilHtml.renderApi(req, res, 200, { ...response }, { cacheTime: 3600 });
+    return utilHtml.renderApi(req, res, 200, { ...response }, { cacheTime: isDevelopment ? 0 : 60 });
 };
