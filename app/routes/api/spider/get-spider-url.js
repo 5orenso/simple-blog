@@ -18,6 +18,23 @@ const isDevelopment = process.env.NODE_ENV !== 'production';
 
 const { routeName, routePath, run, webUtil, utilHtml, util } = require('../../../middleware/init')({ __filename, __dirname });
 
+function decodeEntities(encodedString) {
+    const translateRegex = /&(nbsp|amp|quot|lt|gt);/g;
+    const translate = {
+        nbsp: ' ',
+        amp: '&',
+        quot: '"',
+        lt: '<',
+        gt: '>',
+    };
+    return encodedString.replace(translateRegex, (match, entity) => {
+        return translate[entity];
+    }).replace(/&#(\d+);/gi, (match, numStr) => {
+        const num = parseInt(numStr, 10);
+        return String.fromCharCode(num);
+    });
+}
+
 async function getHtmlPage(pageUrl, parsedURL) {
     // return new Promise((resolve, reject) => {
     const options = {
@@ -160,8 +177,8 @@ module.exports = async (req, res) => {
         // data: tc.getNestedValue(data, 'properties.timeseries'),
         data: {
             icon: meta.icon,
-            title: meta.title || meta['og:title'] || meta['twitter:title'],
-            description: meta.description || meta['og:description'] || meta['twitter:description'],
+            title: decodeEntities(meta.title || meta['og:title'] || meta['twitter:title']),
+            description: decodeEntities(meta.description || meta['og:description'] || meta['twitter:description']),
             image: meta['og:image'] || meta['twitter:image'],
             baseUrl: `${parsedURL.protocol}//${parsedURL.host}`,
             themeColor: meta.themeColor,
