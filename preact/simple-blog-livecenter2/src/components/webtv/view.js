@@ -186,7 +186,12 @@ class WebTvView extends Component {
         if (page === 'webtv' && artid) {
             viewArticle = artlistWebtv.find((article) => article.id === parseInt(artid, 10));
         } else {
-            viewArticle = artlistWebtv[0];
+            const finalList = artlistWebtv.filter(art => {
+                const dateDiff = util.dateDiff(art.published, new Date());
+                const inFuture = dateDiff.seconds < 0;
+                return !inFuture;
+            });
+            viewArticle = finalList[0];
         }
         this.setState({
             viewArticle,

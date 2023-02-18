@@ -206,7 +206,12 @@ class PhotoView extends Component<ExpandableProps, ExpandableState> {
         if (page === 'photo' && artid) {
             viewArticle = artlistPhoto.find((article) => article.id === parseInt(artid, 10));
         } else {
-            viewArticle = artlistPhoto[0];
+            const finalList = artlistPhoto.filter(art => {
+                const dateDiff = util.dateDiff(art.published, new Date());
+                const inFuture = dateDiff.seconds < 0;
+                return !inFuture;
+            });
+            viewArticle = finalList[0];
         }
         this.setState({
             viewArticle,
