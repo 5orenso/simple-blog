@@ -118,6 +118,9 @@ class PhotoView extends Component<ExpandableProps, ExpandableState> {
             viewArticle: null,
             newArticle: {},
             showImage: {},
+            taglist: [],
+            currentTagIdx: -1,
+            currentTag: '',
         };
         this.updateTimer = 0;
         this.imageContainer = null;
@@ -171,6 +174,7 @@ class PhotoView extends Component<ExpandableProps, ExpandableState> {
                 title: '',
                 youtube: '',
                 ingress: '',
+                tags: [],
             },
         });
     }
@@ -338,6 +342,134 @@ class PhotoView extends Component<ExpandableProps, ExpandableState> {
         }
     }
 
+    handleKeydown = (event, handleInput, taglist) => {
+        let currentTagIdx = this.state.currentTagIdx;
+        let currentTag;
+        const total = taglist.length;
+        if (event.key === 'Enter') {
+            this.handleInput(event, {
+                action: 'add',
+                name: 'tags',
+                type: 'array',
+            });
+            currentTagIdx = 0;
+            if (taglist[currentTagIdx]) {
+                currentTag = taglist[currentTagIdx].title;
+            }
+        } else if (event.key === 'Backspace' || event.key === 'Escape') {
+            currentTagIdx = -1;
+        } else if (event.key === 'ArrowUp') {
+            event.preventDefault();
+            currentTagIdx = currentTagIdx - 1;
+            if (currentTagIdx <= -1) {
+                currentTagIdx = -1;
+            } else {
+                currentTag = taglist[currentTagIdx].title;
+            }
+        } else if (event.key === 'ArrowDown') {
+            event.preventDefault();
+            currentTagIdx = currentTagIdx + 1;
+            if (currentTagIdx >= total) {
+                currentTagIdx = 0;
+            }
+            if (taglist[currentTagIdx]) {
+                currentTag = taglist[currentTagIdx].title;
+            }
+        }
+        this.setState({ currentTagIdx, currentTag });
+        return true;
+    }
+
+    handleTagsInput = (event, handleInput) => {
+        // TODO: Add force to lower case function.
+        event.target.value = event.target.value.toLowerCase();
+        this.handleInput(event, {
+            action: 'search',
+            name: 'tags',
+            type: 'array',
+        });
+    }
+
+    handleTagAdd = (event, handleInput, tag) => {
+        this.handleInput(event, {
+            action: 'add',
+            name: 'tags',
+            value: tag.toLowerCase(),
+            type: 'array',
+        });
+    }
+
+    handleTagRemove = (event, handleInput, tag) => {
+        this.handleInput(event, {
+            action: 'remove',
+            name: 'tags',
+            value: tag.toLowerCase(),
+            type: 'array',
+        });
+    }
+
+    handleInput = (event, opt = {}) => {
+        event.preventDefault();
+        const el = event.target;
+        let name = el.name;
+        let value = el.value || '';
+
+        if (opt.name && (opt.action === 'add' || value.match(/[,]$/))) {
+            let val = opt.value || value;
+            val = val.replace(/[, ]+$/, '');
+            this.articleInputAdd(opt.name, val, opt.type);
+            value = '';
+        } else if (opt.name && opt.action === 'remove') {
+            return this.articleInputRemove(opt.name, opt.value, opt.type);
+        } else if (opt.action === 'search') {
+            if (opt.name === 'tags' && value.length >= 1) {
+                let loadTaglistTimer = this.state.loadTaglistTimer;
+                clearTimeout(loadTaglistTimer);
+                loadTaglistTimer = setTimeout(() => this.loadTaglist(1, value), 500);
+                this.setState({ loadTaglistTimer });
+            }
+        } else if (opt.name && opt.value) {
+            name = opt.name;
+            value = opt.value;
+        }
+
+        this.articleInputAdd(name, value);
+    }
+
+    loadTaglist = async (currentPage = 1, query) => {
+        const limit = this.state.tagsPerPage;
+        const offset = (currentPage - 1) * this.state.tagsPerPage;
+        const { newArticle } = this.state;
+        let titleNin;
+        if (typeof newArticle.tags === 'object' && Array.isArray(newArticle.tags)) {
+            titleNin = newArticle.tags.join(',');
+        }
+        const result = await util.fetchApi('/api/tag/', { publish: true, method: 'GET' }, { query, titleNin, limit, offset });
+        // console.log('result', result);
+        this.setState({
+            taglist: result.taglist,
+            taglistTotal: result.total,
+        });
+    }
+
+    articleInputAdd = (name, value, type) => {
+        const { newArticle } = this.state;
+        const taglist = this.state.taglist;
+        if (type === 'array') {
+            if (!Array.isArray(newArticle[name])) {
+                newArticle[name] = [];
+            }
+            if (value && newArticle[name].indexOf(value) === -1) {
+                newArticle[name].push(value);
+                const idx = taglist.findIndex(x => x.title === value);
+                taglist.splice(idx, 1);
+            }
+        } else {
+            newArticle[name] = value;
+        }
+        this.setState({ newArticle, taglist });
+    }
+
     componentDidMount() {
         this.loadAll(true, this.props);
         this.getWidth();
@@ -354,8 +486,18 @@ class PhotoView extends Component<ExpandableProps, ExpandableState> {
     }
 
     render() {
-        const { showList = true, imageDomain, imageDomainPath } = this.props;
-        const { newArticle, showInput, viewArticle, viewAll, viewerWidth, showImage } = this.state;
+        const { showList = true, imageDomain, imageDomainPath, artid, tag } = this.props;
+        const {
+            newArticle,
+            showInput,
+            viewArticle,
+            viewAll,
+            viewerWidth,
+            showImage,
+            taglist,
+            currentTagIdx,
+            currentTag,
+        } = this.state;
         const { appState, articleStore } = this.props.stores;
         const { currentEmail, isAdmin, isExpert, subView, jwtToken, apiServer } = appState;
         const { artlistPhoto } = articleStore;
@@ -528,6 +670,26 @@ class PhotoView extends Component<ExpandableProps, ExpandableState> {
                                         value={newArticle.ingress}
                                     />
                                 </div>
+                                <div class='form-group'>
+                                    <label for='tagsInput'>Tagger</label>
+                                    <input type='text' class='form-control' id='tagsInput' placeholder='Tags'
+                                        name='tagSearch'
+                                        onInput={e => this.handleTagsInput(e, this.handleInput)}
+                                        onKeydown={e => this.handleKeydown(e, this.handleInput, taglist)}
+                                        value={currentTag || newArticle.tagSearch} />
+
+                                    {Array.isArray(taglist) && taglist.map((tag, idx) =>
+                                        <span class={`badge badge-${currentTagIdx === idx ? 'warning' : 'light'} mr-1`}
+                                            onClick={e => this.handleTagAdd(e, this.handleInput, tag.title)}
+                                        >{tag.title} <small class='text-muted'>({tag.count})</small> <i class='fas fa-plus' /></span>
+                                    )}
+
+                                    {Array.isArray(newArticle.tags) && newArticle.tags.map(tag =>
+                                        <span class='badge badge-info mr-1'>{tag} <i class='fas fa-times-circle'
+                                            onClick={e => this.handleTagRemove(e, this.handleInput, tag)}
+                                        /></span>
+                                    )}
+                                </div>
                                 {newArticle && newArticle.img && <>
                                     <div class='form-group'>
                                         {newArticle.img.map((img, idx) => {
@@ -621,34 +783,46 @@ class PhotoView extends Component<ExpandableProps, ExpandableState> {
                                                         {art.ingress}<br />
                                                     </>}
                                                     {/* {youtubeVideo(art.youtube)}<br /> */}
-                                                    <small>
-                                                        {isLast24Hours ? <>
-                                                            {util.formatDistance(art.published, new Date(), { locale: 'no-NB' })} ago<br />
-                                                        </> : <>
-                                                            {isThisYear ? <>
-                                                                {isToday ? util.formatDate(art.published, {
-                                                                    locale: 'nb',
-                                                                    hour: '2-digit',
-                                                                    minute: '2-digit',
-                                                                }, true) : util.formatDate(art.published, {
-                                                                    locale: 'nb',
-                                                                    hour: '2-digit',
-                                                                    minute: '2-digit',
-                                                                    day: 'numeric',
-                                                                    month: 'short',
-                                                                }, true)}
+                                                    <div class='d-flex justify-content-between mb-3'>
+                                                        <small>
+                                                            {isLast24Hours ? <>
+                                                                {util.formatDistance(art.published, new Date(), { locale: 'no-NB' })} ago<br />
                                                             </> : <>
-                                                                {util.formatDate(art.published, {
-                                                                    locale: 'nb',
-                                                                    hour: '2-digit',
-                                                                    minute: '2-digit',
-                                                                    day: 'numeric',
-                                                                    month: 'short',
-                                                                    year: 'numeric',
-                                                                }, true)}
+                                                                {isThisYear ? <>
+                                                                    {isToday ? util.formatDate(art.published, {
+                                                                        locale: 'nb',
+                                                                        hour: '2-digit',
+                                                                        minute: '2-digit',
+                                                                    }, true) : util.formatDate(art.published, {
+                                                                        locale: 'nb',
+                                                                        hour: '2-digit',
+                                                                        minute: '2-digit',
+                                                                        day: 'numeric',
+                                                                        month: 'short',
+                                                                    }, true)}
+                                                                </> : <>
+                                                                    {util.formatDate(art.published, {
+                                                                        locale: 'nb',
+                                                                        hour: '2-digit',
+                                                                        minute: '2-digit',
+                                                                        day: 'numeric',
+                                                                        month: 'short',
+                                                                        year: 'numeric',
+                                                                    }, true)}
+                                                                </>}
                                                             </>}
-                                                        </>}
-                                                    </small>
+                                                        </small>
+                                                        <div class='d-flex justify-content-start flex-wrap pr-2'>
+                                                            {Array.isArray(art.tags) && art.tags.map(t =>
+                                                                <a
+                                                                    href={`${location.origin}${location.pathname}#/live/tag/${t}`}
+                                                                    class={`badge ${t === tag ? 'badge-info text-white' : 'badge-light text-muted'} mr-1 d-flex align-items-center rounded-lg font-weight-normal`}
+                                                                >
+                                                                    {t}
+                                                                </a>
+                                                            )}
+                                                        </div>
+                                                    </div>
                                                     {/* {isAdmin && <>
                                                         <br />
                                                         <a href={`/#/webtv/${art.id}`} native target='_blank'>&raquo; Link</a>

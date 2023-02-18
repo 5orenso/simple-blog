@@ -315,7 +315,7 @@ class LiveLine extends Component {
                                             </span>
                                             <div class='font-weight-light'>
                                                 <a href={obj.url} target='_blank' class='stretched-link'>
-                                                    <img src={obj.urlImage} class='float-right ml-2' style='width: 200px; max-width: 25vw; max-height: 200px;' />
+                                                    <img src={obj.urlImage} class='float-right rounded-lg border ml-2' style='width: 200px; max-width: 25vw; max-height: 200px;' />
                                                 </a>
                                                 {obj.urlDescription}
                                             </div>
@@ -668,7 +668,9 @@ class Live extends Component {
             if (currentTagIdx >= total) {
                 currentTagIdx = 0;
             }
-            currentTag = taglist[currentTagIdx].title;
+            if (taglist[currentTagIdx]) {
+                currentTag = taglist[currentTagIdx].title;
+            }
         }
         this.setState({ currentTagIdx, currentTag });
         return true;
