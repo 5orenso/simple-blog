@@ -243,6 +243,21 @@ export default class CategoryEdit extends Component {
                         </div>
 
                         <div class='form-check'>
+                            <input type='checkbox' class='form-check-input' id='useLiveCenterWidgetInput'
+                                name='useLiveCenterWidget'
+                                onInput={e => {
+                                    handleInput(e, {
+                                        name: 'useLiveCenterWidget',
+                                        value: category.useLiveCenterWidget ? 0 : 1,
+                                    });
+                                }}
+                                value={1}
+                                checked={category.useLiveCenterWidget === 1 ? 'checked' : ''}
+                            />
+                            <label for='useLiveCenterWidgetInput'>useLiveCenterWidget</label>
+                        </div>
+
+                        <div class='form-check'>
                             <input type='checkbox' class='form-check-input' id='skipDefaultArtLinkInput'
                                 name='skipDefaultArtLink'
                                 onInput={e => {

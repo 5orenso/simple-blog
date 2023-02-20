@@ -1,6 +1,63 @@
 {% include 'inc/_header.html' %}
 {% include 'inc/_menu_top_v2.html' %}
 
+{% if category.useLiveCenterWidget %}
+
+
+<div class="container">
+    <div class="row">
+        <main class="col-sm-12 col-md-12 p-0 blog-main">
+            <div class='w-100 my-0 clearfix' data-widget-host="simple-blog-livecenter2">
+                <script type="text/props">
+                    {
+                        "jwtToken": "{{ jwtToken }}",
+                        "apiServer": "{{ blog.protocol }}://{{ blog.domain }}",
+                        "serverDomain": "{{ blog.protocol }}://{{ blog.domain }}",
+                        "imageDomain": "{{ blog.protocol }}://{{ blog.domain }}",
+                        "imageDomainPath": "{{ blog.domain }}",
+
+                        "categoryCheckpoint": "checkpoints",
+                        "categoryLive": "{{ category.title }}",
+                        "categoryWebtv": "WebTv",
+                        "categoryWebcam": "Webcam",
+                        "categoryPhoto": "photo",
+                        "categoryQa": "qa",
+                        "categoryProgram": "Program",
+                        "categoryCheckpoints": "checkpoints",
+                        "categoryAdTop": "ph",
+                        "categoryAdCenter": "Livesenter",
+                        "categoryAdBottom": "photo",
+
+                        "containerClasses": "p-0",
+
+                        "showAnimations": "true",
+                        "showHeader": "false",
+                        "showBreadcrumb": "false",
+                        "showRight": "false",
+                        "showStatusbar": "true",
+                        "showAdCenter": "false",
+                        "showAdBottom": "false",
+                        "showQa": "true",
+                        "showQaInputButton": "true",
+                        "showProgram": "true",
+                        "showWebcam": "false",
+                        "showWebtv": "true",
+                        "showPhoto": "true",
+                        "showResults": "false",
+                        "showTracking": "false",
+                        "showRaceTimer": "false",
+                        "raceTimerStart": "2023-02-02T10:00:0"
+
+                    }
+                </script>
+            </div>
+            <script async src="/preact/simple-blog-livecenter2/bundle.js?time={{ env.epoch }}"></script>
+        </main>
+    </div>
+</div>
+
+{% else %}
 {% include 'inc/_index_v2.html' %}
+{% endif %}
 
 {% include 'inc/_footer_v2.html' %}

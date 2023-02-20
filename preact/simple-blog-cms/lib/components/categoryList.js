@@ -56,6 +56,7 @@ export default class CategoryList extends Component {
                                 <th scope='col'><p>Bilde</p></th>
                                 <th scope='col'><p>Tittel</p></th>
                                 <th class={styles.verticalTableHeaderFOO} scope='col'><p>Meny</p></th>
+                                <th class={styles.verticalTableHeaderFOO} scope='col'><p>Livecenter</p></th>
                                 <th class={styles.verticalTableHeaderFOO} scope='col'><p>Dropp default artlink</p></th>
                                 <th class={styles.verticalTableHeaderFOO} scope='col'><p>Skjul menytittel</p></th>
                                 <th class={styles.verticalTableHeaderFOO} scope='col'><p>Vis kun brødtekst</p></th>
@@ -103,6 +104,7 @@ export default class CategoryList extends Component {
                                 </span>}
                             </td>
                             <td class='text-center' style='font-size: 2.0em;'><i class={`${cat.menu ? `fas fa-check text-success` : 'fas fa-times-circle text-danger'}`} /></td>
+                            <td class='text-center' style='font-size: 2.0em;'><i class={`${cat.useLiveCenterWidget ? `fas fa-check text-success` : 'fas fa-times-circle text-danger'}`} /></td>
                             <td class='text-center' style='font-size: 2.0em;'><i class={`${cat.skipDefaultArtLink ? `fas fa-check text-success` : 'fas fa-times-circle text-danger'}`} /></td>
                             <td class='text-center' style='font-size: 2.0em;'><i class={`${cat.hideTitle ? `fas fa-check text-success` : 'fas fa-times-circle text-danger'}`} /></td>
                             <td class='text-center' style='font-size: 2.0em;'><i class={`${cat.showOnlyBody ? `fas fa-check text-success` : 'fas fa-times-circle text-danger'}`} /></td>

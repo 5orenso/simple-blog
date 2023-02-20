@@ -325,7 +325,7 @@ class Start extends Component {
                                 </div>
                             </div>
 
-                            {showRight && <div
+                            {showRight && showRight !== 'false' && <div
                                 class='col-12 col-lg-5 bg-light border-left'
                                 ref={c => this.mainContainer = c}
                             >

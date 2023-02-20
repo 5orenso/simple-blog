@@ -1162,7 +1162,7 @@ const a = 1;
             >
                 <FastList
                     data={finalArtlist}
-                    wrapperClassNames={'w-100'}
+                    wrapperClassNames={'w-100 overflow-hidden'}
                     contentClassNames={`w-100 position-relative`}
                     renderContent={this.renderContent}
                     dataFields={['id']}

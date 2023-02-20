@@ -690,6 +690,7 @@ export default class SimpleBlogCms extends Component {
                 this.articleInputAdd('urlDescription', urlResponse.data.description);
                 this.articleInputAdd('urlImage', urlResponse.data.image);
                 this.articleInputAdd('urlIcon', `${urlResponse.data.baseUrl}${urlResponse.data.icon}`);
+                this.articleInputAdd('urlThemeColor', `${urlResponse.data.baseUrl}${urlResponse.data.themeColor}`);
             }
         }
         this.articleInputAdd(name, value);
