@@ -549,7 +549,7 @@ class WebTvView extends Component {
                                     >
                                         <div class='d-flex flex-row flex-nowrap h-100 w-100'>
                                             <div
-                                                class='bg-live-dark text-live-light rounded-lg d-flex justify-content-center align-items-center overflow-hidden'
+                                                class='bg-live-dark text-live-light rounded-lg d-flex justify-content-center align-items-center overflow-hidden ml-2'
                                                 style='
                                                     width: 30%;
                                                     max-height: 110px;
@@ -558,7 +558,7 @@ class WebTvView extends Component {
                                                 <img src={youtubeThumb(art.youtube)} class='img-fluid' /><br />
                                             </div>
                                             <div
-                                                class={`pl-2 py-2 bg-live-light text-live-dark rounded-right ${viewArticle?.id === art.id ? 'bg-info text-white' : ''}`}
+                                                class={`pl-2 py-2 bg-live-light text-live-dark rounded-right mr-2 ${viewArticle?.id === art.id ? 'bg-info text-white' : ''}`}
                                                 style='
                                                     width: 70%;
                                                     overflow: hidden;
