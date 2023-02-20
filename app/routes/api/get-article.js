@@ -211,6 +211,9 @@ module.exports = async (req, res) => {
     }
     if (data.artlist && data.artlist.length > 0) {
         data.artlist.forEach((a) => {
+            if (a.body) {
+                a.body = utilHtml.replaceDataTags(a.body, a);
+            }
             if (!a.url) {
                 a.url = `/v2/${utilHtml.asLinkPart(a.category)}/${utilHtml.asLinkPart(a.title)}/${a.id}`;
             } else {
