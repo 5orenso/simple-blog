@@ -135,7 +135,7 @@ class PhotoView extends Component<ExpandableProps, ExpandableState> {
         await articleStore.loadArtlist({
             isAdmin,
             isExpert,
-            loadAll: isAdmin ? 1 : undefined,
+            loadUnpublished: isAdmin ? 1 : undefined,
             limit: 100,
             category: categoryPhoto,
             key: 'photo',

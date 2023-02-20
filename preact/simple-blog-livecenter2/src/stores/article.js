@@ -68,7 +68,7 @@ class ArticleStore extends StoreModel {
         this.time = new Date().getTime();
     }
 
-    async loadArtlist({ isAdmin, isExpert, limit, category, key, loadAll, status = 2, sort, tag }) {
+    async loadArtlist({ isAdmin, isExpert, limit, category, key, loadAll, loadUnpublished, status = 2, sort, tag }) {
         const query = {};
         if (sort) {
             query.sort = sort;
@@ -78,7 +78,18 @@ class ArticleStore extends StoreModel {
         }
         let response;
         if (isAdmin || isExpert) {
-            response = await util.fetchApi(`/api/article/`, { publish: true, method: 'GET' }, { sort, category, limit, status, loadAll, tag });
+            response = await util.fetchApi(`/api/article/`, {
+                publish: true,
+                method: 'GET',
+            }, {
+                sort,
+                category,
+                limit,
+                status,
+                loadAll,
+                loadUnpublished,
+                tag,
+            });
         } else {
             response = await util.fetchApi(`/api/article/public/${encodeURIComponent(category)}/${limit}/${status}/`, { publish: true, method: 'GET' }, query);
         }
