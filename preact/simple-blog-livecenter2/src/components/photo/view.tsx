@@ -7,6 +7,7 @@ import linkState from 'linkstate';
 import { route } from 'preact-router';
 
 import ImageUpload from '../form/imageUpload';
+import ImageScroller from '../imagescroller/';
 
 const RELOAD_INTERVAL_IN_SEC = 60;
 const MAX_ARTICLE_TO_SHOW = 50;
@@ -269,6 +270,7 @@ class PhotoView extends Component<ExpandableProps, ExpandableState> {
         showImage[imgid] = !showImage[imgid];
         this.setState({
             showImage,
+            showImageId: imgid,
         });
     }
 
@@ -499,6 +501,7 @@ class PhotoView extends Component<ExpandableProps, ExpandableState> {
             viewAll,
             viewerWidth,
             showImage,
+            showImageId,
             taglist,
             currentTagIdx,
             currentTag,
@@ -529,88 +532,44 @@ class PhotoView extends Component<ExpandableProps, ExpandableState> {
                     ref={c => this.imageContainer = c}
                 >
                     {viewArticle ? <>
-                        <div class='w-100 position-relative overflow-auto'>
-                            <div
-                                class='d-flex flex-row flex-nowrap no-scrollbar'
-                                style={`
-                                    overflow-x: auto;
-                                    overflow-y: auto;
-                                    scroll-snap-type: x mandatory;
-                                `}
-                                ref={c => this.imageScrollerRef = c}
-                            >
-                                {viewArticle.img.map((img, idx) => {
-                                    return(<>
-                                        <div class='w-100'>
-                                            <div
-                                                class={`w-100 h-100 d-flex justify-content-center align-items-center position-relative px-1`}
-                                                style={`
-                                                    scroll-snap-align: start;
-                                                    flex-wrap: wrap;
-                                                `}
-                                                onTouchStart={(e) => { e.stopPropagation(); }}
-                                                onTouchEnd={(e) => { e.stopPropagation(); }}
-                                                onTouchMove={(e) => { e.stopPropagation(); }}
-                                            >
-                                                <div
-                                                    class='d-flex flex-row flex-nowrap h-100 w-100 justify-content-center align-items-center overflow-hidden'
-                                                >
-                                                    <img
-                                                        src={articleImg(img, this.props, '1920x')}
-                                                        class=''
-                                                        style={`width: ${(hasOnlyOneImage ? viewerWidth : viewerWidth - 80)}px;`}
-                                                        onClick={(e) => this.toggleShowImage(e, img._id)}
-                                                    />
-                                                </div>
-                                                {img.title && <div class='d-flex w-100 justify-content-center position-absolute text-live-light font-weight-lighter' style='bottom: 10px; left: 0px;'>
-                                                    <Markdown markdown={`<strong>${img.title}</strong><br />${img.text || ''}`} markedOpts={MARKDOWN_OPTIONS} />
-                                                </div>}
-                                            </div>
+                        <ImageScroller images={viewArticle.img} stores={this.props.stores} showImg={img => articleImg(img, this.props, '1920x')} />
+
+                        {showImage[showImageId] && <>
+                            {viewArticle.img.filter(x => x._id === showImageId).map((img, idx) => {
+                                return (<>
+                                    <div
+                                        class='fixed-top w-100 h-100 d-flex flex-column justify-content-center align-items-center'
+                                        style='
+                                            z-index: 10000;
+                                            background-color:rgba(0, 0, 0, 0.85);
+                                        '
+                                        // onTouchStart={(e) => { e.stopPropagation(); e.preventDefault() }}
+                                        // onTouchend={(e) => { e.stopPropagation(); e.preventDefault() }}
+                                        // onTouchmove={(e) => { e.stopPropagation(); e.preventDefault() }}
+                                        onScroll={(e) => { e.stopPropagation(); e.preventDefault() }}
+                                        onmousewheel={(e) => { e.stopPropagation(); e.preventDefault() }}
+                                        onwheel={(e) => { e.stopPropagation(); e.preventDefault() }}
+                                        onClick={(e) => this.toggleShowImage(e, showImageId)}
+                                    >
+                                        <img
+                                            src={`${this.props.imageDomain}/1920x/${this.props.imageDomainPath}/${img.src}`}
+                                            class='img-fluid rounded-lg shadow-lg'
+                                            style='max-height: 95vh; max-width: 95vw;'
+                                            onClick={(e) => this.toggleShowImage(e, showImageId)}
+                                        /><br />
+                                        <small class='text-white mt-2'>
+                                            {img.title && <div class='d-flex w-100 justify-content-center position-absolute text-live-light font-weight-lighter' style='bottom: 10px; left: 0px;'>
+                                                <Markdown markdown={`<strong>${img.title}</strong><br />${img.text || ''}`} markedOpts={MARKDOWN_OPTIONS} />
+                                            </div>}
+                                        </small>
+                                        <div
+                                            class='position-absolute text-white' style='top: 20px; right: 20px; z-index: 10001; font-size: 3.5em;'
+                                        >
+                                            <i class='fa-solid fa-xmark' />
                                         </div>
-                                        {showImage[img._id] && <>
-                                            <div
-                                                class='fixed-top w-100 h-100 d-flex flex-column justify-content-center align-items-center'
-                                                style='
-                                                    z-index: 10000;
-                                                    background-color:rgba(0, 0, 0, 0.85);
-                                                '
-                                                // onTouchStart={(e) => { e.stopPropagation(); e.preventDefault() }}
-                                                // onTouchend={(e) => { e.stopPropagation(); e.preventDefault() }}
-                                                // onTouchmove={(e) => { e.stopPropagation(); e.preventDefault() }}
-                                                onScroll={(e) => { e.stopPropagation(); e.preventDefault() }}
-                                                onmousewheel={(e) => { e.stopPropagation(); e.preventDefault() }}
-                                                onwheel={(e) => { e.stopPropagation(); e.preventDefault() }}
-                                                onClick={(e) => this.toggleShowImage(e, img._id)}
-                                            >
-                                                <img
-                                                    src={`${this.props.imageDomain}/1920x/${this.props.imageDomainPath}/${img.src}`}
-                                                    class='img-fluid rounded-lg shadow-lg'
-                                                    style='max-height: 95vh; max-width: 95vw;'
-                                                    onClick={(e) => this.toggleShowImage(e, img._id)}
-                                                /><br />
-                                                <small class='text-white mt-2'>
-                                                    {img.title && <div class='d-flex w-100 justify-content-center position-absolute text-live-light font-weight-lighter' style='bottom: 10px; left: 0px;'>
-                                                        <Markdown markdown={`<strong>${img.title}</strong><br />${img.text || ''}`} markedOpts={MARKDOWN_OPTIONS} />
-                                                    </div>}
-                                                </small>
-                                                <div
-                                                    class='position-absolute text-white' style='top: 20px; right: 20px; z-index: 10001; font-size: 3.5em;'
-                                                >
-                                                    <i class='fa-solid fa-xmark' />
-                                                </div>
-                                            </div>
-                                        </>}
-                                    </>);
-                                })}
-                            </div>
-                        </div>
-                        {!hasOnlyOneImage && <>
-                            <div class='position-absolute' style='top: 50%; left: 10px;'>
-                                <button type='button' class={`btn btn-link text-white`} style={`font-size: 3.5em; opacity: 0.7;`} onClick={this.onClickScrollLeft}><i class='fas fa-arrow-circle-left' /></button>
-                            </div>
-                            <div class='position-absolute' style='top: 50%; right: 10px;'>
-                                <button type='button' class={`btn btn-link text-white`} style={`font-size: 3.5em; opacity: 0.7;`} onClick={this.onClickScrollRight}><i class='fas fa-arrow-circle-right' /></button>
-                            </div>
+                                    </div>
+                                </>);
+                            })}
                         </>}
                     </> : <>
                         <div class='w-100 h-100 d-flex flex-row justify-content-center align-items-center'>

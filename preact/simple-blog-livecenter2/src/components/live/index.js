@@ -7,6 +7,7 @@ import linkState from 'linkstate';
 
 import ImageUpload from '../form/imageUpload';
 import FastList from '../fastlist';
+import ImageScroller from '../imagescroller/';
 
 const MARKDOWN_OPTIONS = {
 	pedantic: false,
@@ -24,6 +25,21 @@ const MARKDOWN_OPTIONS = {
     langPrefix: 'hljs language-', // highlight.js css expects a top-level 'hljs' class.
 };
 
+function articleImg(img, props, size = '150x') {
+    if (typeof img !== 'object') {
+        return undefined;
+    }
+    const imgSrc = `${props.imageDomain}/${size}/${props.imageDomainPath}/${img.src}`;
+    return imgSrc;
+    // https://litt.no/150x/litt.no/photo/drakkar-er-et-utrolig-flott-motiv/simpleBlog-0af2d2c0-2dd8-49c8-bbc1-24d2542c0407.jpg
+    // https://litt.no/photo/drakkar-er-et-utrolig-flott-motiv/simpleBlog-0af2d2c0-2dd8-49c8-bbc1-24d2542c0407.jpg
+    // if (typeof youtubeMatch === 'object' && Array.isArray(youtubeMatch)) {
+    //     youtubeVideoThumb = `//img.youtube.com/vi/${youtubeMatch[4]}/${sizes[$size]}.jpg`;
+    // }
+    // return youtubeVideoThumb;
+
+    //l3video.lemonwhale.com/i/i-95adc986-dda5-40e5-8810-91baaaf96487.jpg
+}
 
 {/* <iframe style="border-radius:12px" src="https://open.spotify.com/embed/episode/2LuvaJ0ZviirARinkTYgQG?utm_source=generator" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe> */}
 function spotifyPodcast(url) {
@@ -175,6 +191,7 @@ class LiveLine extends Component {
         const isLast24Hours = dateDiff.hours <= 24 && !inFuture;
         const hasOnlyOneImage = obj.img.length === 1;
         const imageWidth = windowWidth > 800 ? Math.floor(viewerWidth / 2) : viewerWidth;
+        const imageShouldFloat = windowWidth > 800;
         const delay = idx <= 5 ? idx * 100 : 0;
         return (<>
             <div
@@ -240,58 +257,8 @@ class LiveLine extends Component {
                             </>}
                             <h5 class='mb-1 mt-0' style='font-size: 1.15em;'>{obj.title}</h5>
                             {obj.img && obj.img[0] && <>
-                                <div
-                                    class={`w-100 position-relative overflow-auto float-right`}
-                                    style={`max-width: ${imageWidth}px !important;`}
-                                >
-                                    <div
-                                        class='d-flex flex-row flex-nowrap no-scrollbar'
-                                        style={`
-                                            overflow-x: auto;
-                                            overflow-y: auto;
-                                            scroll-snap-type: x mandatory;
-                                        `}
-                                        ref={c => this.imageScrollerRef = c}
-                                    >
-                                        {obj.img.map((img, idx) => {
-                                            return(<>
-                                                <div class='w-100 image is-hidden'>
-                                                    <div
-                                                        class={`w-100 h-100 d-flex justify-content-center align-items-center position-relative px-1`}
-                                                        style={`
-                                                            scroll-snap-align: start;
-                                                            flex-wrap: wrap;
-                                                        `}
-                                                        onTouchStart={(e) => { e.stopPropagation(); }}
-                                                        onTouchEnd={(e) => { e.stopPropagation(); }}
-                                                        onTouchMove={(e) => { e.stopPropagation(); }}
-                                                    >
-                                                        <div
-                                                            class='d-flex flex-row flex-nowrap h-100 w-100 justify-content-center align-items-center overflow-hidden'
-                                                        >
-                                                            <img
-                                                                src={`${imageDomain}/800x/${imageDomainPath}/${obj.img[idx].src}`}
-                                                                style={`width: ${(hasOnlyOneImage ? imageWidth : imageWidth - 80)}px;`}
-                                                                onClick={(e) => this.toggleShowImage(e, obj.id, idx)}
-                                                            /><br />
-                                                            <small class='text-muted'>
-                                                                {obj.img[idx].title}<br />
-                                                                <span class='font-weight-lighter'>{obj.img[idx].text}</span>
-                                                            </small>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </>);
-                                        })}
-                                    </div>
-                                    {!hasOnlyOneImage && <>
-                                        <div class='position-absolute' style='top: 50%; left: 10px;'>
-                                            <button type='button' class={`btn btn-link text-white`} style={`font-size: 3.5em; opacity: 0.7;`} onClick={this.onClickScrollLeft}><i class='fas fa-arrow-circle-left' /></button>
-                                        </div>
-                                        <div class='position-absolute' style='top: 50%; right: 10px;'>
-                                            <button type='button' class={`btn btn-link text-white`} style={`font-size: 3.5em; opacity: 0.7;`} onClick={this.onClickScrollRight}><i class='fas fa-arrow-circle-right' /></button>
-                                        </div>
-                                    </>}
+                                <div class={`${imageShouldFloat ? 'float-right' : ''}`} style={`max-width: ${imageWidth}px !important;`}>
+                                    <ImageScroller images={obj.img} stores={this.props.stores} showImg={img => articleImg(img, this.props, '1920x')} />
                                 </div>
                             </>}
                             {obj.url && obj.url.match(/spotify\.com/) && spotifyPodcast(obj.url)}
