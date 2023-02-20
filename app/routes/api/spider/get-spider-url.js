@@ -19,6 +19,9 @@ const isDevelopment = process.env.NODE_ENV !== 'production';
 const { routeName, routePath, run, webUtil, utilHtml, util } = require('../../../middleware/init')({ __filename, __dirname });
 
 function decodeEntities(encodedString) {
+    if (!encodedString) {
+        return '';
+    }
     const translateRegex = /&(nbsp|amp|quot|lt|gt);/g;
     const translate = {
         nbsp: ' ',
