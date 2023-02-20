@@ -719,7 +719,7 @@ class PhotoView extends Component<ExpandableProps, ExpandableState> {
                                     >
                                         <div class='d-flex flex-row flex-nowrap h-100 w-100'>
                                             <div
-                                                class='bg-secondary text-white rounded d-flex justify-content-center align-items-center overflow-hidden'
+                                                class='bg-secondary text-white rounded d-flex justify-content-center align-items-center overflow-hidden ml-2'
                                                 style='
                                                     width: 30%;
                                                     max-height: 110px;
@@ -728,7 +728,7 @@ class PhotoView extends Component<ExpandableProps, ExpandableState> {
                                                 {art.img && art.img[0] && <img src={articleImg(art.img[0], this.props, '400x')} class='img-fluid' />}<br />
                                             </div>
                                             <div
-                                                class={`pl-2 py-2 bg-live-light text-live-dark rounded-right ${viewArticle?.id === art.id ? 'bg-info text-white' : ''}`}
+                                                class={`pl-2 py-2 bg-live-light text-live-dark rounded-right mr-2 ${viewArticle?.id === art.id ? 'bg-info text-white' : ''}`}
                                                 style='
                                                     width: 70%;
                                                     overflow: hidden;

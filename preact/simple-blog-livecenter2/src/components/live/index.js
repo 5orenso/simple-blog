@@ -864,16 +864,16 @@ class Live extends Component {
         return (<>
             {isAdmin && <>
                 {showInput ? <>
-                    <button type='button' class='btn btn-sm btn-link float-right' onClick={this.toggleInput}>
+                    <button type='button' class='btn btn-sm btn-link float-right mr-2' onClick={this.toggleInput}>
                         <i class='fas fa-times'></i> Avbryt
                     </button>
                 </> : <>
-                    <button type='button' class='btn btn-sm btn-primary float-right' onClick={this.toggleInput}>
+                    <button type='button' class='btn btn-sm btn-primary float-right mr-2' onClick={this.toggleInput}>
                         <i class='fas fa-plus'></i> Nytt innlegg
                     </button>
                 </>}
             </>}
-            <h3 class='border-bottom pb-2'>Siste</h3>
+            <h3 class='border-bottom pb-2 pl-2'>Siste</h3>
             {/* {JSON.stringify(artlist)} */}
             {isAdmin && <>
                 {showInput && <>
@@ -1157,7 +1157,7 @@ const a = 1;
             </>}
 
             <div
-                class='d-flex flex-column overflow-auto'
+                class='d-flex flex-column overflow-auto pr-2'
                 ref={c => this.imageContainer = c}
             >
                 <FastList

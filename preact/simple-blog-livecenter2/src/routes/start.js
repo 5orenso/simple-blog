@@ -319,8 +319,8 @@ class Start extends Component {
                                     <ResultsView stores={this.props.stores} {...this.props} showList={false} />
                                 </>}
                             </div>
-                            <div class={`col-12 ${showRight && showRight !== 'false' ? 'col-lg-7' : ''}`}>
-                                <div class='w-100 p-2 rounded-lg'>
+                            <div class={`col-12 px-0 ${showRight && showRight !== 'false' ? 'col-lg-7' : ''}`}>
+                                <div class='w-100 p-0 rounded-lg'>
                                     <Live stores={this.props.stores} {...this.props} />
                                 </div>
                             </div>
@@ -354,7 +354,7 @@ class Start extends Component {
                                         </li>}
                                     </ul>
                                 </div>
-                                <div class='w-100 p-2 rounded-lg'>
+                                <div class='w-100 p-0 rounded-lg'>
                                     {(mainView === 'webtv' || mainView === 'live') && <>
                                         <WebTvView stores={this.props.stores} {...this.props} />
                                     </>}
