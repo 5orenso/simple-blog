@@ -134,6 +134,7 @@ class Start extends Component {
             showHeader = true,
             showBreadcrumb = true,
             showStatusbar = true,
+            showRight = true,
             showAdCenter = true,
             showAdBottom = true,
             showProgram = true,
@@ -295,49 +296,6 @@ class Start extends Component {
                         </div>
                     </div>}
 
-                    {/* {showProgram && showProgram !== 'false' && <div
-                        class='col-12 bg-live-dark border-bottom'
-                    >
-                        <Program stores={this.props.stores} {...this.props} />
-                    </div>} */}
-
-
-                    {/* {showTopViewer && showTopViewer !== 'false' && <>
-                        <div
-                            class='col-12 '
-                            style={`
-                                background-color: rgb(55, 75, 80);
-                                color: #ffffff;
-                            `}
-                        >
-                            <div class='row'>
-                                <div
-                                    class='col-12 col-lg-12 py-0'
-                                    ref={c => this.mainContainer = c}
-                                >
-                                    {mainView === 'webcam' && <Webcam stores={this.props.stores} {...this.props} />}
-                                    {mainView === 'webtv' && <WebTvView stores={this.props.stores} {...this.props} />}
-                                    {mainView === 'photo' && <PhotoView stores={this.props.stores} {...this.props} />}
-                                    {mainView === 'results' && <ResultsView stores={this.props.stores} {...this.props} />}
-                                    {mainView === 'tracking' && <TrackingView stores={this.props.stores} {...this.props} />}
-                                </div>
-
-                            </div>
-                        </div>
-
-                        <div class='col-12'>
-                            <div class='row'>
-                                <div class='col-12 col-lg-12 d-flex flex-wrap flex-row align-items-center justify-content-center pt-2 pb-2'>
-                                    {showWebcam && showWebcam !== 'false' && <Webcams stores={this.props.stores} mainView={mainView} {...this.props} />}
-                                    {showWebtv && showWebtv !== 'false' && <WebTv stores={this.props.stores} mainView={mainView} {...this.props} />}
-                                    {showPhoto && showPhoto !== 'false' && <Photo stores={this.props.stores} mainView={mainView} {...this.props} />}
-                                    {showResults && showResults !== 'false' && <Results stores={this.props.stores} mainView={mainView} {...this.props} />}
-                                    {showTracking && showTracking !== 'false' && <Tracking stores={this.props.stores} mainView={mainView} {...this.props} />}
-                                </div>
-                            </div>
-                        </div>
-                    </>} */}
-
                     {showAdCenter && showAdCenter !== 'false' && <div class='col-12  d-flex justify-content-center px-0 py-1 bg-live-dark'>
                         <AdCenter stores={this.props.stores} {...this.props} />
                     </div>}
@@ -367,7 +325,7 @@ class Start extends Component {
                                 </div>
                             </div>
 
-                            <div
+                            {showRight && <div
                                 class='col-12 col-lg-5 bg-light border-left'
                                 ref={c => this.mainContainer = c}
                             >
@@ -419,7 +377,7 @@ class Start extends Component {
                                         <ResultsView stores={this.props.stores} {...this.props} />
                                     </>}
                                 </div>
-                            </div>
+                            </div>}
                         </div>
                     </div>
 
