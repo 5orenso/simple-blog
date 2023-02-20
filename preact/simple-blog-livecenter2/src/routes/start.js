@@ -319,7 +319,7 @@ class Start extends Component {
                                     <ResultsView stores={this.props.stores} {...this.props} showList={false} />
                                 </>}
                             </div>
-                            <div class={`col-12 ${showRight ? 'col-lg-7' : ''}`}>
+                            <div class={`col-12 ${showRight && showRight !== 'false' ? 'col-lg-7' : ''}`}>
                                 <div class='w-100 p-2 rounded-lg'>
                                     <Live stores={this.props.stores} {...this.props} />
                                 </div>
