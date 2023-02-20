@@ -25,6 +25,7 @@ const fields = {
     image: 1,
     type: 1,
     menu: 1,
+    useLiveCenterWidget: 1,
     limit: 1,
     skipDefaultArtLink: 1,
     useImageOneAsBackground: 1,
