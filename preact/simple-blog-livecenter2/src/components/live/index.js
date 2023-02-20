@@ -1148,7 +1148,7 @@ const a = 1;
                             <strong>{tag}</strong>
                         </div>
                         <div class=''>
-                            <a class='text-white' href={`${location.origin}${location.pathname}#/live/`} style='background-color: #d0d0d0 !important;'>
+                            <a class='text-muted' href={`${location.origin}${location.pathname}#/live/`}>
                                 <i class='fa-solid fa-circle-xmark' style='font-size: 1.5em;' />
                             </a>
                         </div>

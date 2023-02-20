@@ -719,7 +719,7 @@ class PhotoView extends Component<ExpandableProps, ExpandableState> {
                                     >
                                         <div class='d-flex flex-row flex-nowrap h-100 w-100'>
                                             <div
-                                                class='bg-live-dark text-live-light rounded d-flex justify-content-center align-items-center overflow-hidden'
+                                                class='bg-secondary text-white rounded d-flex justify-content-center align-items-center overflow-hidden'
                                                 style='
                                                     width: 30%;
                                                     max-height: 110px;
