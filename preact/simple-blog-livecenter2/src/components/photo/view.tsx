@@ -572,7 +572,7 @@ class PhotoView extends Component<ExpandableProps, ExpandableState> {
                                                 class='fixed-top w-100 h-100 d-flex flex-column justify-content-center align-items-center'
                                                 style='
                                                     z-index: 10000;
-                                                    background-color:rgba(0, 0, 0, 0.5);
+                                                    background-color:rgba(0, 0, 0, 0.85);
                                                 '
                                                 // onTouchStart={(e) => { e.stopPropagation(); e.preventDefault() }}
                                                 // onTouchend={(e) => { e.stopPropagation(); e.preventDefault() }}
@@ -583,9 +583,9 @@ class PhotoView extends Component<ExpandableProps, ExpandableState> {
                                                 onClick={(e) => this.toggleShowImage(e, img._id)}
                                             >
                                                 <img
-                                                    src={`${this.props.imageDomain}/1280x/${this.props.imageDomainPath}/${img.src}`}
-                                                    class='img-fluid rounded-lg'
-                                                    style='max-height: 90vh;'
+                                                    src={`${this.props.imageDomain}/1920x/${this.props.imageDomainPath}/${img.src}`}
+                                                    class='img-fluid rounded-lg shadow-lg'
+                                                    style='max-height: 95vh; max-width: 95vw;'
                                                     onClick={(e) => this.toggleShowImage(e, img._id)}
                                                 /><br />
                                                 <small class='text-white mt-2'>
