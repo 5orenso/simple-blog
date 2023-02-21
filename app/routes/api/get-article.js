@@ -22,6 +22,7 @@ const fields = {
     date: 1,
     dateEnd: 1,
     clicks: 1,
+    views: 1,
 
     title: 1,
     teaser: 1,
