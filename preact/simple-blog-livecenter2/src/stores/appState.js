@@ -199,6 +199,10 @@ class AppState {
 
     @observable weather = [];
 
+    @observable intersectionElements = [];
+
+    @observable intersectionHistory = [];
+
     @observable checkpoints = [
         {
             id: 1,
@@ -1177,9 +1181,65 @@ class AppState {
                 cameraDirection: Camera?.Direction?.BACK,
             });
         }
-
     }
 
+    @action
+    intersectionObserverCallback(entries) {
+        entries.forEach((e) => {
+            const { id, type, title, user, sessionid } = e.target.dataset;
+            const { intersectionRatio, isIntersecting, time } = e;
+            const el = this.intersectionElements[`${type}-${id}`];
+            if (el && el.isIntersecting && !isIntersecting) {
+                el.endTime = new Date().getTime();
+                el.duration = el.endTime - el.startTime;
+                const elToPush = { ...el };
+                delete this.intersectionElements[`${type}-${id}`];
+                this.intersectionHistory.push(elToPush);
+            } else {
+                this.intersectionElements[`${type}-${id}`] = {
+                    startTime: new Date().getTime(),
+                    elementId: parseInt(id, 10),
+                    user: parseInt(user, 10),
+                    type,
+                    intersectionRatio,
+                    isIntersecting,
+                    time,
+                    sessionId: sessionid,
+                };
+            }
+
+            // boundingClientRect: DOMRect { x: 0, y: 336.48333740234375, width: 1191, … }
+            // intersectionRatio: 1
+            // intersectionRect: DOMRect { x: 0, y: 336.48333740234375, width: 1191, … }
+            // isIntersecting: true
+            // rootBounds: DOMRect { x: 0, y: 0, width: 1206, … }
+            // target: <div class="row pt-3 pb-3 bg-light" style="">
+            // time: 26522.14
+            // console.log({ id, title, intersectionRatio, isIntersecting, time });
+        });
+    }
+
+    @action
+    getIntersectionObserverHistory() {
+        const elements = this.intersectionHistory.splice(0, this.intersectionHistory.length).map(e => toJS(e));
+        return elements;
+    }
+
+    async postScrollview() {
+        const elements = toJS(this.getIntersectionObserverHistory());
+        if (elements.length > 0) {
+            const response = await util.fetchApi(`/api/article/views/`, { publish: true, method: 'POST' }, {
+                elements,
+            });
+            switch (response.status) {
+                case 201:
+                    return response;
+                case 401:
+                    route('/');
+                    break;
+            }
+        }
+    }
 
 }
 

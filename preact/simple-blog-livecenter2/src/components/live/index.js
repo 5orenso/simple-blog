@@ -292,16 +292,15 @@ class LiveLine extends Component {
                                         {obj.urlBaseUrl}
                                     </div> */}
                                     <div class='w-100'>
-                                        <a href={obj.url} target='_blank' class='stretched-link' onClick={e => this.countClick(e, obj.id)}>
-                                            <img src={obj.urlImage} class='float-right rounded-lg border ml-2' style='width: 200px; max-width: 25vw; max-height: 130px;' />
-                                        </a>
                                         <div class='flex-grow-1 d-flex flex-column'>
                                             <span class='font-weight-bold'>
                                                 <img src={obj.urlIcon} class='mr-2' style='max-height: 35px;' />
                                                 {obj.urlTitle}
                                             </span>
                                             <div class='font-weight-light'>
-
+                                                <a href={obj.url} target='_blank' class='stretched-link' onClick={e => this.countClick(e, obj.id)}>
+                                                    <img src={obj.urlImage} class='float-right rounded-lg border ml-2' style='width: 200px; max-width: 25vw; max-height: 130px;' />
+                                                </a>
                                                 {obj.urlDescription}
                                             </div>
                                         </div>
@@ -812,6 +811,9 @@ class Live extends Component {
                 // entry.target.classList.remove('is-visible');
             }
         });
+
+        const { appState } = this.props.stores;
+        appState.intersectionObserverCallback(entries);
     }
 
     spiderPage = async () => {
@@ -837,10 +839,17 @@ class Live extends Component {
     componentDidMount() {
         this.loadAll();
         this.getWidth();
+
+        const { appState } = this.props.stores;
+        this.scrollViewTimer = setInterval(() => appState.postScrollview(), 30 * 1000);
     }
 
     componentWillUnmount() {
         clearTimeout(this.updateTimer);
+
+        const { appState } = this.props.stores;
+        appState.postScrollview()
+        clearInterval(this.scrollViewTimer);
     }
 
     componentWillReceiveProps(nextProps) {
