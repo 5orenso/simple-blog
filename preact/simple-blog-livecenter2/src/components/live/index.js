@@ -284,22 +284,24 @@ class LiveLine extends Component {
                                     class='p-4 border rounded-lg d-flex flex-column bg-light position-relative mt-2 mb-2'
                                     style={`
                                         background-color: #f0f0f0 !important;
-                                        ${obj.urlThemeColor ? `border: 4px ${obj.urlThemeColor} solid !important;` : ''}
+                                        ${obj.urlThemeColor ? `border: 3px ${obj.urlThemeColor} solid !important;` : ''}
+                                        font-size: 0.9em;
                                     `}
                                 >
                                     {/* <div>
                                         {obj.urlBaseUrl}
                                     </div> */}
-                                    <div class='d-flex flex-row justify-content-between'>
+                                    <div class='w-100'>
+                                        <a href={obj.url} target='_blank' class='stretched-link' onClick={e => this.countClick(e, obj.id)}>
+                                            <img src={obj.urlImage} class='float-right rounded-lg border ml-2' style='width: 200px; max-width: 25vw; max-height: 130px;' />
+                                        </a>
                                         <div class='flex-grow-1 d-flex flex-column'>
                                             <span class='font-weight-bold'>
                                                 <img src={obj.urlIcon} class='mr-2' style='max-height: 35px;' />
                                                 {obj.urlTitle}
                                             </span>
                                             <div class='font-weight-light'>
-                                                <a href={obj.url} target='_blank' class='stretched-link' onClick={e => this.countClick(e, obj.id)}>
-                                                    <img src={obj.urlImage} class='float-right rounded-lg border ml-2' style='width: 200px; max-width: 25vw; max-height: 200px;' />
-                                                </a>
+
                                                 {obj.urlDescription}
                                             </div>
                                         </div>
