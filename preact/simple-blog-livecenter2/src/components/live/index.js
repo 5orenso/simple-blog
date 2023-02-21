@@ -172,11 +172,27 @@ class LiveLine extends Component {
         });
     }
 
+    // findAllExternalLinks = () => {
+    //     // Find all external links in this article
+    //     const links = document.querySelectorAll('a[href^="http"]');
+    //     console.log(links);
+    //     links.forEach(link => {
+    //         if (link.target === '_blank') {
+    //             console.log(link);
+    //         }
+    //     });
+    // }
+
+    countClick = async (e, artId) => {
+        const result = await util.fetchApi(`/api/article/click/${artId}`, { publish: true, method: 'GET' }, {});
+    }
+
     componentDidMount() {
         const { obj, artid } = this.props;
         if (artid && obj && obj.id === parseInt(artid, 10)) {
             scrollTo(this.blockRefs[artid]);
         }
+        // this.findAllExternalLinks();
     }
 
     render() {
@@ -281,7 +297,7 @@ class LiveLine extends Component {
                                                 {obj.urlTitle}
                                             </span>
                                             <div class='font-weight-light'>
-                                                <a href={obj.url} target='_blank' class='stretched-link'>
+                                                <a href={obj.url} target='_blank' class='stretched-link' onClick={e => this.countClick(e, obj.id)}>
                                                     <img src={obj.urlImage} class='float-right rounded-lg border ml-2' style='width: 200px; max-width: 25vw; max-height: 200px;' />
                                                 </a>
                                                 {obj.urlDescription}
@@ -846,12 +862,17 @@ class Live extends Component {
             taglist,
             viewerWidth,
             windowWidth,
-            liveTitle = 'Siste',
         } = this.state;
         const { articleStore, appState } = this.props.stores;
         const { currentEmail, isAdmin, isExpert, jwtToken, apiServer } = appState;
         const { artlistLive } = articleStore;
-        const { imageDomain, imageDomainPath, artid, tag } = this.props;
+        const {
+            imageDomain,
+            imageDomainPath,
+            artid,
+            tag,
+            liveTitle = 'Siste',
+        } = this.props;
         let finalArtlist;
         if (showMore) {
             finalArtlist = artlistLive.slice(0, artlistLive.length);

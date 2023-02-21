@@ -147,6 +147,14 @@ class Start extends Component {
             showTracking = true,
             showRaceTimer = true,
             showAnimations = false,
+
+            webtvTitle = 'WebTV',
+            webcamTitle = 'Webcam',
+            photoTitle = 'Foto',
+            qaTitle = 'Spør oss',
+            programTitle = 'Program',
+            trackingTitle = 'Tracking',
+            resultTitle = 'Result',
         } = this.props;
         const { sessionid, showMenu, raceTime } = this.state;
         const { appState } = this.props.stores;
@@ -332,25 +340,25 @@ class Start extends Component {
                                 <div class='w-100'>
                                     <ul class='nav nav-pills nav-fill'>
                                         {showWebtv && showWebtv !== 'false' && <li class='nav-item'>
-                                            <a class={`nav-link ${mainView === 'webtv' ? 'active' : ''}`} href='/webtv'><i class='fas fa-tv-retro' /> WebTv</a>
+                                            <a class={`nav-link ${mainView === 'webtv' ? 'active' : ''}`} href='/webtv'><i class='fas fa-tv-retro' /> {webtvTitle}</a>
                                         </li>}
                                         {showWebcam && showWebcam !== 'false' && <li class='nav-item'>
-                                            <a class={`nav-link ${mainView === 'webcam' ? 'active' : ''}`} href='/webcam'><i class='fa-solid fa-camera-cctv' /> Webcam</a>
+                                            <a class={`nav-link ${mainView === 'webcam' ? 'active' : ''}`} href='/webcam'><i class='fa-solid fa-camera-cctv' /> {webcamTitle}</a>
                                         </li>}
                                         {showPhoto && showPhoto !== 'false' && <li class='nav-item'>
-                                            <a class={`nav-link ${mainView === 'photo' ? 'active' : ''}`} href='/photo'><i class='fas fa-images' /> Foto</a>
+                                            <a class={`nav-link ${mainView === 'photo' ? 'active' : ''}`} href='/photo'><i class='fas fa-images' /> {photoTitle}</a>
                                         </li>}
                                         {showQa && showQa !== 'false' && <li class='nav-item'>
-                                            <a class={`nav-link ${mainView === 'qa' ? 'active' : ''}`} href='/qa'><i class='fas fa-question' /> Spør oss</a>
+                                            <a class={`nav-link ${mainView === 'qa' ? 'active' : ''}`} href='/qa'><i class='fas fa-question' /> {qaTitle}</a>
                                         </li>}
                                         {showProgram && showProgram !== 'false' && <li class='nav-item'>
-                                            <a class={`nav-link ${mainView === 'program' ? 'active' : ''}`} href='/program'><i class='fa-solid fa-calendar' /> Program</a>
+                                            <a class={`nav-link ${mainView === 'program' ? 'active' : ''}`} href='/program'><i class='fa-solid fa-calendar' /> {programTitle}</a>
                                         </li>}
                                         {showTracking && showTracking !== 'false' && <li class='nav-item'>
-                                            <a class={`nav-link ${mainView === 'tracking' ? 'active' : ''}`} href='/tracking'><i class='fa-solid fa-map-location-dot' /> Tracking</a>
+                                            <a class={`nav-link ${mainView === 'tracking' ? 'active' : ''}`} href='/tracking'><i class='fa-solid fa-map-location-dot' /> {trackingTitle}</a>
                                         </li>}
                                         {showResults && showResults !== 'false' && <li class='nav-item'>
-                                            <a class={`nav-link ${mainView === 'results' ? 'active' : ''}`} href='/results'><i class='fa-solid fa-list-ol' /> Result</a>
+                                            <a class={`nav-link ${mainView === 'results' ? 'active' : ''}`} href='/results'><i class='fa-solid fa-list-ol' /> {resultTitle}</a>
                                         </li>}
                                     </ul>
                                 </div>
