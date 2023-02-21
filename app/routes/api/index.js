@@ -25,6 +25,7 @@ router.use('/proxy/', wrap(require('./proxy/')));
 router.use('/spider/', wrap(require('./spider/')));
 router.use('/email/', wrap(require('./email/')));
 
+router.get('/article/click/:id', wrap(require('./get-article-click')));
 router.get('/article/public/', wrap(require('./get-article')));
 router.get('/article/public/:category', wrap(require('./get-article')));
 router.get('/article/public/:category/:limit/:status/', wrap(require('./get-article')));
