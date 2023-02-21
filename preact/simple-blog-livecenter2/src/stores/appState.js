@@ -1227,6 +1227,9 @@ class AppState {
 
     async postScrollview() {
         const elements = toJS(this.getIntersectionObserverHistory());
+        if (isAdmin) {
+            return false;
+        }
         if (elements.length > 0) {
             const response = await util.fetchApi(`/api/article/views/`, { publish: true, method: 'POST' }, {
                 elements,
