@@ -846,6 +846,7 @@ class Live extends Component {
             taglist,
             viewerWidth,
             windowWidth,
+            liveTitle = 'Siste',
         } = this.state;
         const { articleStore, appState } = this.props.stores;
         const { currentEmail, isAdmin, isExpert, jwtToken, apiServer } = appState;
