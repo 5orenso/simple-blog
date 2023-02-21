@@ -899,7 +899,7 @@ class Live extends Component {
             {/* {JSON.stringify(artlist)} */}
             {isAdmin && <>
                 {showInput && <>
-                    <div class='d-flex flex-column justify-content-start overflow-auto mb-5'>
+                    <div class='d-flex flex-column justify-content-start overflow-auto mb-5 p-4'>
                         <div class='bg-primary text-white px-3 py-1'>
                             <h5>Legg til innlegg</h5>
                         </div>

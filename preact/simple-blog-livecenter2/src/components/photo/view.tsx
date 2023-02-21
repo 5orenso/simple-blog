@@ -598,7 +598,7 @@ class PhotoView extends Component<ExpandableProps, ExpandableState> {
                 {isAdmin && <>
                     <div class='w-100 position-relative mt-3 mb-3'>
                         {showInput && <>
-                            <div class='d-flex flex-column justify-content-start overflow-auto mb-5 w-100'>
+                            <div class='d-flex flex-column justify-content-start overflow-auto mb-5 w-100 p-4'>
                                 <div class='bg-primary text-white px-3 py-1'>
                                     <h5>Legg til fotoalbum</h5>
                                 </div>
