@@ -29,6 +29,7 @@ router.post('/article/views/', wrap(require('./post-article-views')));
 router.get('/article/click/:id', wrap(require('./get-article-click')));
 router.get('/article/public/', wrap(require('./get-article')));
 router.get('/article/public/:category', wrap(require('./get-article')));
+router.get('/article/public/:category/:limit/:status/:offset', wrap(require('./get-article')));
 router.get('/article/public/:category/:limit/:status/', wrap(require('./get-article')));
 router.get('/article/public/:category/:id', wrap(require('./get-article')));
 

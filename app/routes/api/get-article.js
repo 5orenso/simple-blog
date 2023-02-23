@@ -164,7 +164,7 @@ module.exports = async (req, res) => {
 
     query = webUtil.cleanObject(query);
     const limit = parseInt(req.params.limit || req.query.limit || 10, 10);
-    const skip = parseInt(req.query.offset || 0, 10);
+    const skip = parseInt(req.params.offset || req.query.offset || 0, 10);
 
     if (req.query.category) {
         query.category = req.query.category;

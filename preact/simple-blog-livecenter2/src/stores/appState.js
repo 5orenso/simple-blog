@@ -1227,7 +1227,7 @@ class AppState {
 
     async postScrollview() {
         const elements = toJS(this.getIntersectionObserverHistory());
-        if (isAdmin) {
+        if (this.isAdmin) {
             return false;
         }
         if (elements.length > 0) {
