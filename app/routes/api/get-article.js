@@ -159,9 +159,13 @@ module.exports = async (req, res) => {
     if (req.params.id) {
         query.id = parseInt(req.params.id, 10);
     } else if (req.params.category) {
-        query.category = req.params.category;
+        const isMultipleCategories = /,/.test(req.params.category);
+        if (isMultipleCategories) {
+            query.category = { $in: req.params.category.split(',').filter(c => c).map(c => c.trim()) };
+        } else {
+            query.category = req.params.category;
+        }
     }
-
     query = webUtil.cleanObject(query);
     const limit = parseInt(req.params.limit || req.query.limit || 10, 10);
     const skip = parseInt(req.params.offset || req.query.offset || 0, 10);
