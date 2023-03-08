@@ -156,6 +156,12 @@ module.exports = async (req, res) => {
     let query = {
         published: { $lte: new Date() },
     };
+    if (req.query.cutoffdate) {
+        query.published = {
+            ...query.published,
+            $gte: new Date(req.query.cutoffdate),
+        };
+    }
     if (req.params.id) {
         query.id = parseInt(req.params.id, 10);
     } else if (req.params.category) {
