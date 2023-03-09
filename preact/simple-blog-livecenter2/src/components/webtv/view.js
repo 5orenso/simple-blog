@@ -91,6 +91,74 @@ function youtubeVideo(url) {
     </>);
 }
 
+function amediaVideoThumb(art, props, size = '400x') {
+    if (typeof art !== 'object') {
+        return undefined;
+    }
+    if (!art.img || !art.img[0]) {
+        return undefined;
+    }
+    const imgSrc = `${props.imageDomain}/${size}/${props.imageDomainPath}/${art.img[0].src}`;
+    return imgSrc;
+    // https://litt.no/150x/litt.no/photo/drakkar-er-et-utrolig-flott-motiv/simpleBlog-0af2d2c0-2dd8-49c8-bbc1-24d2542c0407.jpg
+    // https://litt.no/photo/drakkar-er-et-utrolig-flott-motiv/simpleBlog-0af2d2c0-2dd8-49c8-bbc1-24d2542c0407.jpg
+    // if (typeof youtubeMatch === 'object' && Array.isArray(youtubeMatch)) {
+    //     youtubeVideoThumb = `//img.youtube.com/vi/${youtubeMatch[4]}/${sizes[$size]}.jpg`;
+    // }
+    // return youtubeVideoThumb;
+
+    //l3video.lemonwhale.com/i/i-95adc986-dda5-40e5-8810-91baaaf96487.jpg
+}
+
+function amediaVideoPlus(art, props, size = '150x') {
+    if (!art || !art.url) {
+        return '';
+    }
+    if (art.url.match(/www.direktesport.no\/event/)) {
+        return <>
+            <i class='fas fa-plus-square position-absolute' style='bottom: 5px; right: 5px; font-size: 2.0em;' />
+        </>;
+    }
+}
+
+function amediaVideo(art, props) {
+    if (!art || !art.url) {
+        return '';
+    }
+    if (art.url.match(/www.direktesport.no\/event/)) {
+        return (<>
+            <div
+                class='embed-responsive embed-responsive-16by9 d-flex justify-content-center align-items-center position-relative'
+                style={`
+                    height: 800px;
+                    background-image: url('${amediaVideoThumb(art, props, '800x')}');
+                    background-repeat: no-repeat;
+                    background-position: center;
+                    background-size: cover;
+                `}
+            >
+                <div class='position-absolute w-100 h-100 bg-dark' style='top: 0; left: 0; opacity: 0.7;'>&nbsp;</div>
+                <div class='position-absolute w-100 h-100' style='top: 0; left: 0;'>
+                    <div class='d-flex flex-column justify-content-center align-items-center h-100'>
+                        <div class='text-center' style='font-size: 2.5em;'>
+                            <i class='fas fa-plus-square mr-3' />
+                            Dette er en pluss video hos Direktesport.no.<br />
+                            <a href={art.url} target='_blank' rel='noopener noreferrer' class='text-live-light stretched-link'>
+                                Klikk her for å gå videre...
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </>)
+    }
+    return (<>
+        <div class='embed-responsive embed-responsive-16by9'>
+            <iframe class='embed-responsive-item' src={`${art.url}`} allowfullscreen></iframe>
+        </div>
+    </>);
+}
+
 @observer
 class WebTvView extends Component {
   	constructor(props) {
@@ -418,7 +486,11 @@ class WebTvView extends Component {
                     ref={c => this.mainContainer = c}
                 >
                     {viewArticle ? <>
-                        {youtubeVideo(viewArticle.youtube)}
+                        {viewArticle.youtube ? <>
+                            {youtubeVideo(viewArticle.youtube)}
+                        </> : <>
+                            {amediaVideo(viewArticle, this.props)}
+                        </>}
                     </> : <>
                         <div class='w-100 h-100 d-flex flex-row justify-content-center align-items-center'>
                             <div class='spinner-border text-light' role='status' style='width: 3rem; height: 3rem;'>
@@ -555,7 +627,12 @@ class WebTvView extends Component {
                                                     max-height: 110px;
                                                 '
                                             >
-                                                <img src={youtubeThumb(art.youtube)} class='img-fluid' /><br />
+                                                {art.youtube ? <>
+                                                    <img src={youtubeThumb(art.youtube)} class='img-fluid' /><br />
+                                                </> : <>
+                                                    <img src={amediaVideoThumb(art, this.props)} class='img-fluid' /><br />
+                                                    {amediaVideoPlus(art, this.props)}
+                                                </>}
                                             </div>
                                             <div
                                                 class={`pl-2 py-2 bg-live-light text-live-dark rounded-right mr-2 ${viewArticle?.id === art.id ? 'bg-info text-white' : ''}`}
