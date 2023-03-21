@@ -206,7 +206,7 @@ module.exports = async (req, res) => {
     }
 
     if (req.query.loadUnpublished) {
-        delete query.published;
+        delete query.published.$lte;
     }
 
     let apiContent;
