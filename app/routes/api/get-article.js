@@ -177,7 +177,12 @@ module.exports = async (req, res) => {
     const skip = parseInt(req.params.offset || req.query.offset || 0, 10);
 
     if (req.query.category) {
-        query.category = req.query.category;
+        const isMultipleCategories = /,/.test(req.query.category);
+        if (isMultipleCategories) {
+            query.category = { $in: req.query.category.split(',').filter(c => c).map(c => c.trim()) };
+        } else {
+            query.category = req.query.category;
+        }
     }
     if (req.query.categoryId) {
         query.categoryId = parseInt(req.query.categoryId, 10);
