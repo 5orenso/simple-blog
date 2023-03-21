@@ -206,7 +206,11 @@ module.exports = async (req, res) => {
     }
 
     if (req.query.loadUnpublished) {
-        delete query.published.$lte;
+        if (req.query.cutoffdate) {
+            delete query.published.$lte;
+        } else {
+            delete query.published;
+        }
     }
 
     let apiContent;
