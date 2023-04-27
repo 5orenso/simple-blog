@@ -144,7 +144,7 @@ const server = app.listen(config.app.port, () => {
 });
 
 // Start Web socket server
-setTimeout(() => {
-    const ws = new WebSocketServer(config);
-    ws.run();
-}, 1000);
+// setTimeout(() => {
+//     const ws = new WebSocketServer(config);
+//     ws.run();
+// }, 1000);
