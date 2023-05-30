@@ -31,6 +31,14 @@ const typeList = [
     { value: 24, title: 'Forsiden under toppsak' },
     { value: 25, title: 'Forsiden designelementer' },
     { value: 26, title: 'Artikkel designelementer' },
+
+    { value: 27, title: 'Forsiden designelementer menu' },
+    { value: 28, title: 'Forsiden designelementer top' },
+    { value: 29, title: 'Forsiden designelementer center' },
+
+    { value: 30, title: 'Artikkel designelementer menu' },
+    { value: 31, title: 'Artikkel designelementer top' },
+    { value: 32, title: 'Artikkel designelementer center' },
 ];
 
 export default class CategoryEdit extends Component {
