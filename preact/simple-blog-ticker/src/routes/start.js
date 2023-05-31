@@ -137,7 +137,7 @@ class Start extends Component {
             const isDay = interval === 'd';
             const isSec = interval === 's';
             timerComponents.push(<span>
-                {timeLeft[interval]}<span class={`text-muted font-weight-lighter ${isDay ? 'mr-1' : ''}`}>{isDay ? 'd' : (isSec ? '' : ':')}</span>{" "}
+                {timeLeft[interval]}<span class={`font-weight-light ${isDay ? 'mr-1' : ''}`}>{isDay ? 'd' : (isSec ? '' : ':')}</span>{" "}
             </span>);
         });
         
@@ -150,6 +150,13 @@ class Start extends Component {
         this.updateTimer = setTimeout(() => {
             this.tickTimer();
         }, RELOAD_INTERVAL_IN_SEC * 1000);
+    }
+
+    onLogoClick = () => {
+        const { tickerTitleUrl } = this.props;
+        if (tickerTitleUrl) {
+            window.location = tickerTitleUrl;
+        }
     }
 
     componentWillMount() {
@@ -185,9 +192,10 @@ class Start extends Component {
             showCountDown,
             articleId,
             height = '60px',
-            titleWidth = '60px',
+            titleWidth = '120px',
             dateWidth = '120px',
-            fontSize = '15px',
+            fontSize = '14px',
+            countDownFontSize = '12px',
             titleFontSize = '18px',
         } = this.props;
         const { raceTime, timerComponents } = this.state;
@@ -209,50 +217,55 @@ class Start extends Component {
                 `}
             >
                 {title && <div 
-                    class='position-absolute d-flex justify-content-center align-items-center border-right'
+                    class='position-absolute d-flex flex-column border-right'
                     style={`
                         top: 0; 
                         left: 0; 
                         width: ${titleWidth}; 
                         height: ${height};
                         border-right: 1px solid #888;
-                        font-size: ${titleFontSize};
                     `}
+                    onClick={this.onLogoClick}
                 >
-                    {titleUrl ? <>
-                        <a href={titleUrl} class='text-dark' native>
-                            {title}                    
-                        </a>
-                    </> : <>
-                        {title}                
-                    </>}
-                </div>}
-
-                {date && <div 
-                    class='position-absolute d-flex flex-column justify-content-center align-items-center border-left'
-                    style={`
-                        top: 0; 
-                        right: 0; 
-                        width: ${dateWidth}; 
-                        height: ${height};
-                        border-left: 1px solid #888;
-                    `}
-                >
-                    <div>
-                        {util.formatDate(date)}
+                    <div 
+                        class='pl-2'
+                        style={`
+                            line-height: 1.1rem; 
+                            font-size: ${titleFontSize};
+                        `}
+                    >
+                        {titleUrl ? <>
+                            <a href={titleUrl} native>
+                                <div dangerouslySetInnerHTML={{__html: title}} />
+                            </a>
+                        </> : <>
+                            <div dangerouslySetInnerHTML={{__html: title}} />
+                        </>}
                     </div>
-                    <small>
-                        <div class='d-flex flex-row flex-nowrap'>
+                    <div class='pl-2' style='line-height: 1.0rem;'>
+                        <i class='fa-solid fa-flag-checkered' /> {util.formatDate(date)}
+                    </div>
+                    <div 
+                        class='text-white flex-fill'
+                        style={`
+                            background-color: rgb(233, 90, 43);                            
+                        `}
+                    >
+                        <div 
+                            class='d-flex flex-row flex-nowrap justify-content-center align-items-center'
+                            style={`
+                                font-size: ${countDownFontSize};
+                            `}
+                        >
                             {timerComponents}
                         </div>
-                    </small>
+                    </div>
                 </div>}
 
                 <div 
                     class='w-100 overflow-hidden d-flex flex-row flex-nowrap position-relative' 
                     style={`
                         margin-left: ${titleWidth}; 
-                        margin-right: ${dateWidth};
                     `}
                 >
                     {articleId ? <>

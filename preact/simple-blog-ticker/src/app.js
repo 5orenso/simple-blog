@@ -11,7 +11,7 @@ import util from 'preact-util';
 
 const W3CWebSocket = require('websocket').w3cwebsocket;
 
-const history = createHashHistory();
+// const history = createHashHistory();
 
 import Start from './routes/start';
 
@@ -120,7 +120,7 @@ class App extends Component {
         const { router } = e;
         const { props = {} } = router;
         const { history = {} } = props;
-        const { action = {} } = history;
+        // const { action = {} } = history;
         if (this.appContainer) {
             //             if (prevScroll && action === 'POP') {
             //                 console.log({ e, scrolledDown, prevScroll }, this.appContainer);
@@ -552,16 +552,16 @@ language: ${language}<br />
                             onScroll={this.onScroll}
                             ref={c => this.appContainer = c}
                         >
-                            <Router onChange={this.handleRoute} history={history}>
+                            {/* <Router onChange={this.handleRoute} history={history}> */}
                                 {/* <AsyncRoute stores={this.stores} {...this.props} scrolledDown={scrolledDownPlaceholder} default getComponent={() => import('./routes/start').then(module => module.default)} /> */}
-                                <Start stores={this.stores} scrolledDown={scrolledDownPlaceholder} {...this.props} path="/:page/tag/:tag" />
-                                <Start stores={this.stores} scrolledDown={scrolledDownPlaceholder} {...this.props} path="/:page/:artid/:bib" />
-                                <Start stores={this.stores} scrolledDown={scrolledDownPlaceholder} {...this.props} path="/:page/:artid" />
-                                <Start stores={this.stores} scrolledDown={scrolledDownPlaceholder} {...this.props} path="/:page" />
+                                {/* <Start stores={this.stores} scrolledDown={scrolledDownPlaceholder} {...this.props} path="/:page/tag/:tag" /> */}
+                                {/* <Start stores={this.stores} scrolledDown={scrolledDownPlaceholder} {...this.props} path="/:page/:artid/:bib" /> */}
+                                {/* <Start stores={this.stores} scrolledDown={scrolledDownPlaceholder} {...this.props} path="/:page/:artid" /> */}
+                                {/* <Start stores={this.stores} scrolledDown={scrolledDownPlaceholder} {...this.props} path="/:page" /> */}
                                 <Start stores={this.stores} scrolledDown={scrolledDownPlaceholder} {...this.props} default />
 
-                                <LoadingSpinner default goto='/' gotoTitle='Home' routerName='livecenter' />
-                            </Router>
+                                {/* <LoadingSpinner default goto='/' gotoTitle='Home' routerName='livecenter' /> */}
+                            {/* </Router> */}
                         </div>
                     </Catcher>
                 </IntlProvider>
