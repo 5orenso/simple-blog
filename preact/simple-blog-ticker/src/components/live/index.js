@@ -22,12 +22,12 @@ class Live extends Component {
   	constructor(props) {
         super(props);
         this.state = {
-            height: 150,
-            maxHeight: 150,
             left: 0,
             top: 0,
             x: 0,
             y: 0,
+            hasContentLeft: false,
+            hasContentRight: true,
         };
         this.updateTimer;
         this.contentContainer = null;
@@ -126,7 +126,38 @@ class Live extends Component {
         if (!hasMoved) {
             window.location = url;
         }
-    }        
+    }       
+    
+    onScroll = (e) => {
+        const { scrollLeft, scrollWidth, clientWidth } = e.target;
+        const maxScrollLeft = scrollWidth - clientWidth;
+        // console.log('onScroll', { scrollLeft, clientWidth, maxScrollLeft });
+        this.setState({
+            hasContentLeft: scrollLeft > 0,
+            hasContentRight: scrollLeft < maxScrollLeft,
+        })
+    }
+
+    onClickScrollLeft = (e) => {
+        const el = this.contentContainer;
+        const width = parseInt((0 - el.clientWidth) * 0.5, 10);
+        el.scrollBy({
+            top: 0,
+            left: width,
+            behavior: 'smooth'
+        });
+    }
+
+    onClickScrollRight = (e) => {
+        const el = this.contentContainer;
+        const width = parseInt(el.clientWidth * 0.5, 10);
+        el.scrollBy({
+            top: 0,
+            left: width,
+            behavior: 'smooth'
+        });
+    }
+
 
     componentDidMount() {
         this.loadAll();
@@ -142,15 +173,77 @@ class Live extends Component {
 
     render() {
         const {
-            height,
-            newArticle,
             viewerWidth,
             windowWidth,
+            hasContentLeft,
+            hasContentRight,
         } = this.state;
         const { articleStore, appState } = this.props.stores;
         const { artlistLive } = articleStore;
+        const { 
+            height,
+            arrowWidth = '20px',
+            fadeWidth = '20px',
+        } = this.props;
 
         return (<>            
+            {hasContentLeft && <div 
+                class='position-absolute d-flex flex-row align-items-center justify-content-center' 
+                style={`
+                    top: 0; 
+                    left: 0;
+                    height: ${height};
+                    background-image: linear-gradient(to left, rgba(255,255,255,0), rgba(255,255,255,1));
+                `}
+                onClick={this.onClickScrollLeft}
+            >        
+                <div 
+                    class='d-flex align-items-center justify-content-center text-muted' 
+                    style={`
+                        width: ${arrowWidth};
+                        height: ${height};
+                        background-color: rgba(255,255,255,1);
+                        color: #aaaaaa !important;
+                    `}
+                >
+                    <i class='fa-solid fa-angle-left' />
+                </div>     
+                <div 
+                    style={`
+                        width: ${fadeWidth};
+                        height: ${height};
+                        background-image: linear-gradient(to left, rgba(255,255,255,0), rgba(255,255,255,1));                    
+                    `}
+                >&nbsp;</div>   
+            </div>}
+            {hasContentRight && <div 
+                class='position-absolute d-flex flex-row' 
+                style={`
+                    top: 0; 
+                    right: 0;
+                    height: ${height};
+                `}
+                onClick={this.onClickScrollRight}
+            >                
+                <div 
+                    style={`
+                        width: ${fadeWidth};
+                        height: ${height};
+                        background-image: linear-gradient(to right, rgba(255,255,255,0), rgba(255,255,255,1));                    
+                    `}
+                >&nbsp;</div>
+                <div 
+                    class='d-flex align-items-center justify-content-center text-muted' 
+                    style={`
+                        width: ${arrowWidth};
+                        height: ${height};
+                        background-color: rgba(255,255,255,1);
+                        color: #aaaaaa !important;
+                    `}
+                >
+                    <i class='fa-solid fa-angle-right' />
+                </div>
+            </div>}
             <div 
                 class='overflow-auto d-flex flex-row flex-nowrap no-scrollbar align-items-center'
                 style={`
@@ -158,6 +251,7 @@ class Live extends Component {
                     cursor: grab;
                 `}
                 onMouseDown={this.mouseDownHandler}
+                onScroll={this.onScroll}
                 ref={c => this.contentContainer = c}
             >
                 {artlistLive.map(art => {

@@ -184,6 +184,11 @@ class Start extends Component {
             raceDate,
             showCountDown,
             articleId,
+            height = '60px',
+            titleWidth = '60px',
+            dateWidth = '120px',
+            fontSize = '15px',
+            titleFontSize = '18px',
         } = this.props;
         const { raceTime, timerComponents } = this.state;
         const { appState, articleStore } = this.props.stores;
@@ -199,8 +204,8 @@ class Start extends Component {
             <div 
                 class='d-flex flex-row flex-nowrap position-relative w-100'
                 style={`
-                    height: 60px;
-                    font-size: 15px;
+                    height: ${height};
+                    font-size: ${fontSize};
                 `}
             >
                 {title && <div 
@@ -208,10 +213,10 @@ class Start extends Component {
                     style={`
                         top: 0; 
                         left: 0; 
-                        width: 60px; 
-                        height: 60px;
-                        box-shadow: 2px 0 5px -2px #888;
-                        font-size: 18px;
+                        width: ${titleWidth}; 
+                        height: ${height};
+                        border-right: 1px solid #888;
+                        font-size: ${titleFontSize};
                     `}
                 >
                     {titleUrl ? <>
@@ -228,9 +233,9 @@ class Start extends Component {
                     style={`
                         top: 0; 
                         right: 0; 
-                        width: 120px; 
-                        height: 60px;
-                        box-shadow: 0px 2px 5px -2px #888;
+                        width: ${dateWidth}; 
+                        height: ${height};
+                        border-left: 1px solid #888;
                     `}
                 >
                     <div>
@@ -244,17 +249,20 @@ class Start extends Component {
                 </div>}
 
                 <div 
-                    class='w-100 overflow-hidden d-flex flex-row flex-nowrap' 
-                    style='padding-left: 60px; padding-right: 120px;'
+                    class='w-100 overflow-hidden d-flex flex-row flex-nowrap position-relative' 
+                    style={`
+                        margin-left: ${titleWidth}; 
+                        margin-right: ${dateWidth};
+                    `}
                 >
                     {articleId ? <>
                         {article.id ? <>
-                            <Live stores={this.props.stores} {...this.props} />            
+                            <Live stores={this.props.stores} {...this.props} height={height} />            
                         </> : <>
                             Loading...
                         </>}
                     </>: <>
-                        <Live stores={this.props.stores} {...this.props} />
+                        <Live stores={this.props.stores} {...this.props} height={height} />
                     </>}
                 </div>
                  

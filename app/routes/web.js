@@ -51,6 +51,13 @@ const accessLogStream = fs.createWriteStream(`${appPath}/logs/web-access.log`, {
 webRouter.use(morgan('combined', { stream: accessLogStream }));
 
 // Set config
+
+webRouter.all('*', (req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers', 'X-Requested-With');
+    next();
+});
+
 webRouter.use(setConfig);
 webRouter.use(require('../../lib/jwt'));
 
