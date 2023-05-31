@@ -196,6 +196,7 @@ class Start extends Component {
             dateWidth = '120px',
             fontSize = '15px',
             countDownFontSize = '12px',
+            dateFontSize = '12px',
             titleFontSize = '18px',
         } = this.props;
         const { raceTime, timerComponents } = this.state;
@@ -242,7 +243,13 @@ class Start extends Component {
                             <div dangerouslySetInnerHTML={{__html: title}} />
                         </>}
                     </div>
-                    <div class='pl-2' style='line-height: 1.0rem;'>
+                    <div 
+                        class='pl-2' 
+                        style={`
+                            line-height: 1.0rem; 
+                            font-size: ${dateFontSize};
+                        `}
+                    >
                         <i class='fa-solid fa-flag-checkered' /> {util.formatDate(date)}
                     </div>
                     <div 
