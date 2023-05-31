@@ -170,10 +170,12 @@ class Live extends Component {
                     const isLast24Hours = dateDiff.hours <= 24 && !inFuture; 
                     return (<>
                         <div
-                            class='col-6 col-md-4 col-lg-3 col-xl-2 d-flex flex-column postion-relative article-card'
+                            class='d-flex flex-column postion-relative article-card px-2'
                             style={`
                                 display: block;
-                                width: 200px;
+                                width: 250px;
+                                min-width: 250px;
+                                max-width: 250px;
                                 scroll-snap-align: start;
                                 flex-wrap: wrap;
                                 border-right: 1px solid #ddd;
