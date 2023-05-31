@@ -123,97 +123,14 @@ class ArticleStore extends StoreModel {
         return response;
     }
 
-    async createArticle({
-        published,
-        author,
-        category,
-        categoryId,
-        title,
-        youtube,
-        teaser = '',
-        ingress = '',
-        body = '',
-        status = 2,
-        date,
-        dateEnd, url,
-        lat,
-        lon,
-        altitude,
-        img,
-        tags,
-        urlTitle,
-        urlDescription,
-        urlImage,
-        urlIcon,
-        urlThemeColor,
-    }) {
-        // {
-        //     "author":"sorenso",
-        //     "category":"/v2/about/",
-        //     "categoryId":3,
-        // }
-        const response = await util.fetchApi(`/api/article/`, { publish: true, method: 'POST' }, {
-            published,
-            author,
-            category,
-            categoryId,
-            title,
-            youtube,
-            teaser,
-            ingress,
-            body,
-            status,
-            date,
-            dateEnd,
-            url,
-            lat,
-            lon,
-            altitude,
-            img,
-            tags,
-            author,
-            urlTitle,
-            urlDescription,
-            urlImage,
-            urlIcon,
-            urlThemeColor,
-        });
-        return response;
-    }
+    async loadArticle(id) {
+        let response;
+        response = await util.fetchApi(`/api/article/${id}`, { publish: true, method: 'GET' });
 
-    async createPublicArticle({ author, category, categoryId, title, youtube, teaser, ingress, body, status = 1, date, dateEnd, url }) {
-        // {
-        //     "author":"sorenso",
-        //     "category":"/v2/about/",
-        //     "categoryId":3,
-        // }
-        const response = await util.fetchApi(`/api/article/public/`, { publish: true, method: 'POST' }, {
-            author,
-            category,
-            categoryId,
-            title,
-            youtube,
-            teaser,
-            ingress,
-            body,
-            status,
-            date,
-            dateEnd,
-            url,
-        });
-        return response;
-    }
-
-    async updateArticle({ id, title, teaser, ingress, body, status = 2, img }) {
-        const response = await util.fetchApi(`/api/article/${id}`, { publish: true, method: 'PATCH' }, {
-            title,
-            teaser,
-            ingress,
-            body,
-            status,
-            img,
-        });
-        return response;
+        if (response.article) {
+            this.updateKeyValue('article', response.article);
+        }
+        return response.article;
     }
 }
 

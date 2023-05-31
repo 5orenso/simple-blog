@@ -34,15 +34,19 @@ class Live extends Component {
     }
 
     loadAll = async (props = this.props) => {
-        const { categoryTicker } = props;
+        const { categoryTicker, articleId } = props;
         const { articleStore, appState } = this.props.stores;
         const { isAdmin, isExpert } = appState;
+
+        const { article } = articleStore;
+        const category = articleId ? article['ticker-categoryTicker'] : categoryTicker;
+
         await articleStore.loadArtlist({
             isAdmin,
             isExpert,
             loadUnpublished: undefined,
             limit: TOTAL_ARTICLES,
-            category: categoryTicker,
+            category,
             key: 'live',
         });
 

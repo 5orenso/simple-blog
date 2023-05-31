@@ -140,6 +140,20 @@ const fields = {
 
     'cookies-class': 1,
     'cookies-style': 1,
+
+    'livecenter-class': 1,
+    'livecenter-style': 1,
+
+    'livecenter2-class': 1,
+    'livecenter2-style': 1,
+
+    'ticker-class': 1,
+    'ticker-style': 1,
+    'ticker-tickerTitle': 1,
+    'ticker-tickerTitleUrl': 1,
+    'ticker-categoryTicker': 1,
+    'ticker-showCountDown': 1,
+    'ticker-raceDate': 1,
 };
 
 module.exports = async (req, res) => {

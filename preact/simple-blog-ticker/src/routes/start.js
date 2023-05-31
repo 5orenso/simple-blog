@@ -22,6 +22,14 @@ function scrollTo(element, top = 0, left = 0) {
 
 const  RELOAD_INTERVAL_IN_SEC = 1;
 
+function pad(number) {
+    let r = String(number);
+    if (r.length === 1) {
+        r = `0${r}`;
+    }
+    return r;
+}
+
 function getDateParts({ showDateOnly, showSeconds, showTimezone, showClockOnly }) {
     const now = new Date();
     const mm = now.getMonth() + 1;
@@ -58,8 +66,8 @@ function calculateTimeLeft({ countdownto }) {
         timeLeft = {
             d: Math.floor(difference / (1000 * 60 * 60 * 24)),
             h: Math.floor((difference / (1000 * 60 * 60)) % 24),
-            m: Math.floor((difference / 1000 / 60) % 60),
-            s: Math.floor((difference / 1000) % 60),
+            m: pad(Math.floor((difference / 1000 / 60) % 60)),
+            s: pad(Math.floor((difference / 1000) % 60)),
         };
     } else {
         timeLeft = {
@@ -97,29 +105,30 @@ class Start extends Component {
         }
     }
 
-    loadAll = (props = this.props) => {
-        const { appState } = this.props.stores;
+    loadAll = async (props = this.props) => {
+        const { appState, articleStore } = this.props.stores;
         // appState.setMainViewCallback(this.scrollToMainContainer);
-        const { page, artid, showWebcam = true } = props;
+        const { page, articleId } = props;
         // if (showWebcam && showWebcam !== 'false') {
         //     appState.setMainView(page || 'webcam');
         // } else {
-        const { mainView } = appState;
-        if (mainView !== page) {
-            appState.setSubView(null);
+        if (articleId) {
+            await articleStore.loadArticle(articleId);
         }
-        appState.setMainView(page || 'webtv');
-        // }
+        this.tickTimer();
     }
 
     tickTimer = () => {
-        const { raceDate } = this.props;
-        if (!raceDate) {
+        const { articleStore } = this.props.stores;
+        const { article } = articleStore; 
+        const { articleId, raceDate } = this.props;
+        const date = articleId ? article['ticker-raceDate'] : raceDate;
+        
+        if (!date) {
             return null;
         }        
-        const timeLeft = calculateTimeLeft({ countdownto: raceDate });
+        const timeLeft = calculateTimeLeft({ countdownto: date });
         // const timeNow = getDateParts({ showDateOnly, showSeconds, showTimezone, showClockOnly });
-        
         const timerComponents = [];
         Object.keys(timeLeft).forEach((interval) => {
             if (timerComponents.length === 0 && !timeLeft[interval]) {
@@ -143,9 +152,11 @@ class Start extends Component {
         }, RELOAD_INTERVAL_IN_SEC * 1000);
     }
 
-    componentDidMount() {
+    componentWillMount() {
         this.loadAll();
-        this.tickTimer();
+    }
+
+    componentDidMount() {
 
         // document.addEventListener('visibilitychange', () => {
         //     if (document.visibilityState === 'visible') {
@@ -172,10 +183,18 @@ class Start extends Component {
             tickerTitleUrl,
             raceDate,
             showCountDown,
+            articleId,
         } = this.props;
         const { raceTime, timerComponents } = this.state;
-        const { appState } = this.props.stores;
+        const { appState, articleStore } = this.props.stores;
+        const { article } = articleStore; 
         const { mainView, subView, currentEmail, isAdmin, isExpert, isDevelopment, path } = appState;
+
+        const title = articleId ? article['ticker-tickerTitle'] : tickerTitle;
+        const titleUrl = articleId ? article['ticker-tickerTitleUrl'] : tickerTitleUrl;
+        const countDown = articleId ? article['ticker-showCountDown'] : showCountDown;
+        const date = articleId ? article['ticker-raceDate'] : raceDate;
+
         return (<>
             <div 
                 class='d-flex flex-row flex-nowrap position-relative w-100'
@@ -184,7 +203,7 @@ class Start extends Component {
                     font-size: 15px;
                 `}
             >
-                {tickerTitle && <div 
+                {title && <div 
                     class='position-absolute d-flex justify-content-center align-items-center border-right'
                     style={`
                         top: 0; 
@@ -195,16 +214,16 @@ class Start extends Component {
                         font-size: 18px;
                     `}
                 >
-                    {tickerTitleUrl ? <>
-                        <a href={tickerTitleUrl} class='text-dark' native>
-                            {tickerTitle}                    
+                    {titleUrl ? <>
+                        <a href={titleUrl} class='text-dark' native>
+                            {title}                    
                         </a>
                     </> : <>
-                        {tickerTitle}                
+                        {title}                
                     </>}
                 </div>}
 
-                {raceDate && <div 
+                {date && <div 
                     class='position-absolute d-flex flex-column justify-content-center align-items-center border-left'
                     style={`
                         top: 0; 
@@ -215,7 +234,7 @@ class Start extends Component {
                     `}
                 >
                     <div>
-                        {util.formatDate(raceDate)}
+                        {util.formatDate(date)}
                     </div>
                     <small>
                         <div class='d-flex flex-row flex-nowrap'>
@@ -228,7 +247,15 @@ class Start extends Component {
                     class='w-100 overflow-hidden d-flex flex-row flex-nowrap' 
                     style='padding-left: 60px; padding-right: 140px;'
                 >
-                    <Live stores={this.props.stores} {...this.props} />
+                    {articleId ? <>
+                        {article.id ? <>
+                            <Live stores={this.props.stores} {...this.props} />            
+                        </> : <>
+                            Loading...
+                        </>}
+                    </>: <>
+                        <Live stores={this.props.stores} {...this.props} />
+                    </>}
                 </div>
                  
             </div>
