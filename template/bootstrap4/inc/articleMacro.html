@@ -134,9 +134,9 @@
 {% endmacro %}
 
 {% macro designListRaw(artlist) %}
-    <div class="d-flex justify-content-bewteen align-items-center">
+    <div class="d-flex flex-row justify-content-bewteen align-items-center">
         {% for art in artlist %}
-            <div class="{% if art.classNames %}{{ art.classNames }}{% endif %}" {% if art.cssStyles %}style="{{ art.cssStyles }}"{% endif %}>
+            <div class="flex-fill {% if art.classNames %}{{ art.classNames }}{% endif %}" {% if art.cssStyles %}style="{{ art.cssStyles }}"{% endif %}>
                 {% if art.url %}
                     <a {% if art.catRef.artlistSkipLinkTarget %}{% else %}target="_blank"{% endif %} href="{{ art.url }}" title="{{ art.title|e }} - {{ art.teaser|e }}">
                 {% endif %}
