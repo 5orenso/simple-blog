@@ -208,14 +208,19 @@ module.exports = async (req, res) => {
         queryAds = { type: 2 };
         queryAdsLower = { type: 8 };
         queryAdsLowerUpper = { type: 23 };
+    } else {
+        queryAds = { type: 3 };
+        queryAdsLower = { type: 4 };
+        queryAdsLowerUpper = { type: 22 };
+        
+    }
+
+    if (isFrontpage) {
         queryDesign = { type: 26 };
         queryDesignMenu = { type: 30 };
         queryDesignTop = { type: 31 };
         queryDesignCenter = { type: 32 };
     } else {
-        queryAds = { type: 3 };
-        queryAdsLower = { type: 4 };
-        queryAdsLowerUpper = { type: 22 };
         queryDesign = { type: 25 };
         queryDesignMenu = { type: 27 };
         queryDesignTop = { type: 28 };
