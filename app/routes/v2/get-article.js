@@ -216,15 +216,15 @@ module.exports = async (req, res) => {
     }
 
     if (isFrontpage) {
-        queryDesign = { type: 26 };
-        queryDesignMenu = { type: 30 };
-        queryDesignTop = { type: 31 };
-        queryDesignCenter = { type: 32 };
-    } else {
         queryDesign = { type: 25 };
         queryDesignMenu = { type: 27 };
         queryDesignTop = { type: 28 };
         queryDesignCenter = { type: 29 };
+    } else {
+        queryDesign = { type: 26 };
+        queryDesignMenu = { type: 30 };
+        queryDesignTop = { type: 31 };
+        queryDesignCenter = { type: 32 };
     }
 
     const frontpageBannercats = await catFrontpageBanner.find({ type: 24 });
