@@ -133,6 +133,32 @@
     {% endfor %}
 {% endmacro %}
 
+{% macro designListRaw(artlist) %}
+    <div class="d-flex justify-content-bewteen align-items-center">
+        {% for art in artlist %}
+            <div class="{% if art.classNames %}{{ art.classNames }}{% endif %}" {% if art.cssStyles %}style="{{ art.cssStyles }}"{% endif %}>
+                {% if art.url %}
+                    <a {% if art.catRef.artlistSkipLinkTarget %}{% else %}target="_blank"{% endif %} href="{{ art.url }}" title="{{ art.title|e }} - {{ art.teaser|e }}">
+                {% endif %}
+                    {% if art.ingress %}
+                        <div class='{{ art.catRef.artlistTeaserClass }}'>{{ art.ingress|md|safe }}</div>
+                    {% elseif art.img[0] %}
+                        <img src="https://{{ imageServer }}/{% if art.imgSizeList %}{{ art.imgSizeList }}{% elseif art.catRef.artlistImageSize %}{{ art.catRef.artlistImageSize }}{% else %}220x{% endif %}/{{ imagePath }}/{{ art.img[0].src }}"
+                            alt="{{ art.title|e }} - {{ art.teaser|e }}"
+                            class="{% if art.catRef.artlistImageClass %}{{ art.catRef.artlistImageClass }}{% else %}img-fluid{% endif %}"
+                            {% if art.catRef.artlistImageCss %}style="{{ art.catRef.artlistImageCss }}"{% endif %}
+                        ><br clear="all">
+                    {% elseif art.teaser %}
+                        <div class='{{ art.catRef.artlistTeaserClass }}'>{{ art.teaser|md|safe }}</div>
+                    {% endif %}
+                {% if art.url %}
+                    </a>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+{% endmacro %}
+
 {% macro articleTeaserImage(art, imgIdx, size, heading, idx, classNames) %}
     {% if art.img[imgIdx] && art.img[imgIdx].src|match('(jpg|jpeg|png|gif|heic|heif|svg|webp|tif|JPG|JPEG|PNG|GIF|HEIC|HEIF|SVG|WEBP|TIF)$', 'i') %}
         <div class="{{ classNames }}">

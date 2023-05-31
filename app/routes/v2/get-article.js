@@ -56,6 +56,9 @@ module.exports = async (req, res) => {
     let queryAdsLower = {};
     let queryAdsLowerUpper = {};
     let queryDesign = {};
+    let queryDesignMenu = {};
+    let queryDesignTop = {};
+    let queryDesignCenter = {};
 
     if (req.query.previewJwtToken) {
         const jwtData = util.decodeJwtToken(req.query.previewJwtToken, req.config);
@@ -200,11 +203,17 @@ module.exports = async (req, res) => {
         queryAdsLower = { type: 8 };
         queryAdsLowerUpper = { type: 23 };
         queryDesign = { type: 26 };
+        queryDesignMenu = { type: 30 };
+        queryDesignTop = { type: 31 };
+        queryDesignCenter = { type: 32 };
     } else {
         queryAds = { type: 3 };
         queryAdsLower = { type: 4 };
         queryAdsLowerUpper = { type: 22 };
         queryDesign = { type: 25 };
+        queryDesignMenu = { type: 27 };
+        queryDesignTop = { type: 28 };
+        queryDesignCenter = { type: 29 };
     }
 
     const frontpageBannercats = await catFrontpageBanner.find({ type: 24 });
@@ -264,6 +273,28 @@ module.exports = async (req, res) => {
         });
     }
 
+    const catsDesignListMenu = await catsDesign.find(queryDesignMenu);
+    const artsDesignListMenu = await artsDesign.find({ status: 2, categoryId: { $in: catsDesignListMenu.map(c => c.id) }});
+    if (tc.isArray(artsDesignListMenu)) {
+        artsDesignListMenu.forEach((a) => {
+            a.catRef = catsDesignListMenu.find(c => c.id === a.categoryId);
+        });
+    }
+    const catsDesignListTop = await catsDesign.find(queryDesignTop);
+    const artsDesignListTop = await artsDesign.find({ status: 2, categoryId: { $in: catsDesignListTop.map(c => c.id) }});
+    if (tc.isArray(artsDesignListTop)) {
+        artsDesignListTop.forEach((a) => {
+            a.catRef = catsDesignListTop.find(c => c.id === a.categoryId);
+        });
+    }
+    const catsDesignListCenter = await catsDesign.find(queryDesignCenter);
+    const artsDesignListCenter = await artsDesign.find({ status: 2, categoryId: { $in: catsDesignListCenter.map(c => c.id) }});
+    if (tc.isArray(artsDesignListCenter)) {
+        artsDesignListCenter.forEach((a) => {
+            a.catRef = catsDesignListCenter.find(c => c.id === a.categoryId);
+        });
+    }
+
     const artcatsBottom = await catBottom.find({ type: 7 });
     const artlistBottom = await artBottom.find({ status: 2, categoryId: { $in: artcatsBottom.map(c => c.id) }});
     if (tc.isArray(artlistBottom)) {
@@ -300,6 +331,9 @@ module.exports = async (req, res) => {
         adlistLower,
         adlistLowerUpper,
         artsDesignList,
+        artsDesignListMenu,
+        artsDesignListTop,
+        artsDesignListCenter,
         limit,
         page,
         skip,

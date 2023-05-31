@@ -30,6 +30,10 @@
     </div>
 {% endif %}
 
+{% if artsDesignListMenu[0] %}
+    {{ articleMacro.designListRaw(artsDesignListMenu) }}
+{% endif %}
+
 {% if queryString.q %}
     {% set startArt = 0 %}
     <div class="container pt-3">
@@ -195,6 +199,10 @@
         {{ articleMacro.adList(adlist) }}
     {% endif %}
 
+    {% if artsDesignListTop[0] %}
+        {{ articleMacro.designListRaw(artsDesignListTop) }}
+    {% endif %}
+
     {% if artlistFrontpageBanner[0] %}
         <div class="container">
             <div class="row">
@@ -258,6 +266,10 @@
             </main>
         </div>
     </div>
+
+    {% if artsDesignListCenter[0] %}
+        {{ articleMacro.designListRaw(artsDesignListCenter) }}
+    {% endif %}
 
     {% if adlistLowerUpper[0] %}
         {{ articleMacro.adList(adlistLowerUpper) }}
