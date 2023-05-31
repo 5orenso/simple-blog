@@ -194,7 +194,7 @@ class Start extends Component {
             height = '60px',
             titleWidth = '120px',
             dateWidth = '120px',
-            fontSize = '15px',
+            fontSize = '16px',
             countDownFontSize = '12px',
             dateFontSize = '12px',
             titleFontSize = '18px',
