@@ -244,7 +244,7 @@ class Start extends Component {
                         </>}
                     </div>
                     <div 
-                        class='pl-2' 
+                        class='pl-2 flex-fill d-flex align-items-center' 
                         style={`
                             line-height: 1.0rem; 
                             font-size: ${dateFontSize};
@@ -253,7 +253,7 @@ class Start extends Component {
                         <i class='fa-solid fa-flag-checkered' /> {util.formatDate(date)}
                     </div>
                     <div 
-                        class='text-white flex-fill'
+                        class='text-white flex-fill d-flex align-items-center'
                         style={`
                             background-color: rgb(233, 90, 43);                            
                         `}
