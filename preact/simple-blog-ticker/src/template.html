@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title><% preact.title %></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1">
+		<link href="http://localhost:8080/css/bootstrap.min.css" rel="stylesheet">
+		<link href="http://localhost:8080/css/custom.css?v18" rel="stylesheet">
+		<link href="http://localhost:8080/global/css/youtube.css" rel="stylesheet">
+		<link href="http://localhost:8080/css/flag-icon-css/css/flag-icon.min.css" rel="stylesheet">
+		<link href="http://localhost:8080/fonts/fontawesome-pro-6.2.0-web/css/all.css" rel="stylesheet">
+		<link rel="stylesheet" href="assets/highlight-github.css" />
+		<% preact.headEnd %>
+	</head>
+	<body>
+		<div class='container-fluid'>
+			<div class='row'>
+				<div class='col-12 p-0 border-top border-bottom'>
+					<div data-widget-host="simple-blog-ticker" class="preview">						
+						<script type="text/props">
+							{
+								"apiServer": "http://localhost:8080",
+								"serverDomain": "https://litt.no",
+								"imageDomain": "https://litt.no",
+								"imageDomainPath": "litt.no",
+
+								"containerClasses": "p-0",
+
+								"tickerTitle": "Live",
+								"tickerTitleUrl": "https://femundlopet.no/v2/livesenter/live/229",
+								"categoryTicker": "other",
+								"showCountDown": "true",
+								"raceDate": "2024-02-02 10:00:0"
+							}
+						</script>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<% preact.bodyEnd %>
+	</body>
+</html>

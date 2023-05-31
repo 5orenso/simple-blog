@@ -56,7 +56,7 @@ const statusList = [
     { value: 2, title: 'Live' },
 ];
 
-const widgetList = ['clock', 'booking', 'form', 'sheet', 'poll', 'gallery', 'weather', 'map', 'rating', 'related', 'cookies', 'livecenter'];
+const widgetList = ['clock', 'booking', 'form', 'sheet', 'poll', 'gallery', 'weather', 'map', 'rating', 'related', 'cookies', 'livecenter', 'livecenter2', 'ticker'];
 
 const widgetFields = {
     clock: ['class', 'style', 'countdownto', 'showDateOnly', 'showSeconds', 'showTimezone', 'showClockOnly'],
@@ -70,6 +70,9 @@ const widgetFields = {
     rating: ['class', 'style', 'from', 'to'],
     related: ['class', 'style', 'tags'],
     cookies: ['class', 'style'],
+    livecenter: ['class', 'style'],
+    livecenter2: ['class', 'style'],
+    ticker: ['class', 'style', 'tickerTitle', 'tickerTitleUrl', 'categoryTicker', 'showCountDown', 'raceDate'],
 };
 
 function pad(n) {
