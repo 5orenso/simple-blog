@@ -136,7 +136,7 @@
 {% macro designListRaw(artlist) %}
     <div class="d-flex flex-row justify-content-bewteen align-items-center" style="max-width: 100%;">
         {% for art in artlist %}
-            <div class="flex-fill {% if art.classNames %}{{ art.classNames }}{% endif %}" {% if art.cssStyles %}style="{{ art.cssStyles }}"{% endif %}>
+            <div class="flex-fill {% if art.classNames %}{{ art.classNames }}{% endif %}" {% if art.cssStyles %}style="max-width: 100%; {{ art.cssStyles }}"{% endif %}>
                 {% if art.body %}
                     {{ art.body|safe }}
                 {% elseif art.url %}
