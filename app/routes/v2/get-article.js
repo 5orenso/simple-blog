@@ -24,6 +24,9 @@ module.exports = async (req, res) => {
     const artAdsLowerUpper = new Article();
     const artBottom = new Article();
     const artsDesign = new Article();
+    const artsDesignMenu = new Article();
+    const artsDesignTop = new Article();
+    const artsDesignCenter = new Article();
 
     const catFrontpage = new Category();
     const catFrontpageBanner = new Category();
@@ -34,6 +37,9 @@ module.exports = async (req, res) => {
     const cat = new Category();
     const catBottom = new Category();
     const catsDesign = new Category();
+    const catsDesignMenu = new Category();
+    const catsDesignTop = new Category();
+    const catsDesignCenter = new Category();
 
     let isFrontpage = true;
     let isDetailView = false;
@@ -273,22 +279,22 @@ module.exports = async (req, res) => {
         });
     }
 
-    const catsDesignListMenu = await catsDesign.find(queryDesignMenu);
-    const artsDesignListMenu = await artsDesign.find({ status: 2, categoryId: { $in: catsDesignListMenu.map(c => c.id) }});
+    const catsDesignListMenu = await catsDesignMenu.find(queryDesignMenu);
+    const artsDesignListMenu = await artsDesignMenu.find({ status: 2, categoryId: { $in: catsDesignListMenu.map(c => c.id) }});
     if (tc.isArray(artsDesignListMenu)) {
         artsDesignListMenu.forEach((a) => {
             a.catRef = catsDesignListMenu.find(c => c.id === a.categoryId);
         });
     }
-    const catsDesignListTop = await catsDesign.find(queryDesignTop);
-    const artsDesignListTop = await artsDesign.find({ status: 2, categoryId: { $in: catsDesignListTop.map(c => c.id) }});
+    const catsDesignListTop = await catsDesignTop.find(queryDesignTop);
+    const artsDesignListTop = await artsDesignTop.find({ status: 2, categoryId: { $in: catsDesignListTop.map(c => c.id) }});
     if (tc.isArray(artsDesignListTop)) {
         artsDesignListTop.forEach((a) => {
             a.catRef = catsDesignListTop.find(c => c.id === a.categoryId);
         });
     }
-    const catsDesignListCenter = await catsDesign.find(queryDesignCenter);
-    const artsDesignListCenter = await artsDesign.find({ status: 2, categoryId: { $in: catsDesignListCenter.map(c => c.id) }});
+    const catsDesignListCenter = await catsDesignCenter.find(queryDesignCenter);
+    const artsDesignListCenter = await artsDesignCenter.find({ status: 2, categoryId: { $in: catsDesignListCenter.map(c => c.id) }});
     if (tc.isArray(artsDesignListCenter)) {
         artsDesignListCenter.forEach((a) => {
             a.catRef = catsDesignListCenter.find(c => c.id === a.categoryId);
