@@ -382,6 +382,10 @@ pre code {
     filter: grayscale(100%); */
 }
 
+.navbar-brand {
+    padding-top: 0px !important;
+    padding-bottom: 0px !important;
+}
 .custom-toggler.navbar-toggler {
     border-color: rgb(255,255,255);
 }
