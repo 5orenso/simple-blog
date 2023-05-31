@@ -228,7 +228,7 @@ class Start extends Component {
                     style={`
                         top: 0; 
                         right: 0; 
-                        width: 140px; 
+                        width: 120px; 
                         height: 60px;
                         box-shadow: 0px 2px 5px -2px #888;
                     `}
@@ -245,7 +245,7 @@ class Start extends Component {
 
                 <div 
                     class='w-100 overflow-hidden d-flex flex-row flex-nowrap' 
-                    style='padding-left: 60px; padding-right: 140px;'
+                    style='padding-left: 60px; padding-right: 120px;'
                 >
                     {articleId ? <>
                         {article.id ? <>
