@@ -253,7 +253,7 @@ class Start extends Component {
                         <i class='fa-solid fa-flag-checkered' /> {util.formatDate(date)}
                     </div>
                     <div 
-                        class='text-white flex-fill d-flex align-items-center'
+                        class='text-white flex-fill d-flex align-items-center justify-content-center'
                         style={`
                             background-color: rgb(233, 90, 43);                            
                         `}
