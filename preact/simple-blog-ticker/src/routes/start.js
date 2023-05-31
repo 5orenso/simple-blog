@@ -192,12 +192,12 @@ class Start extends Component {
             showCountDown,
             articleId,
             height = '60px',
-            titleWidth = '120px',
-            dateWidth = '120px',
-            fontSize = '16px',
+            titleWidth = '100px',
+            dateWidth = '100px',
+            fontSize = '15px',
             countDownFontSize = '12px',
             dateFontSize = '12px',
-            titleFontSize = '18px',
+            titleFontSize = '17px',
         } = this.props;
         const { raceTime, timerComponents } = this.state;
         const { appState, articleStore } = this.props.stores;
