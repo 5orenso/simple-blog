@@ -250,7 +250,7 @@ class Start extends Component {
                             font-size: ${dateFontSize};
                         `}
                     >
-                        <i class='fa-solid fa-flag-checkered' /> {util.formatDate(date)}
+                        <i class='fa-solid fa-flag-checkered mr-1' /> {util.formatDate(date)}
                     </div>
                     <div 
                         class='text-white flex-fill d-flex align-items-center justify-content-center'

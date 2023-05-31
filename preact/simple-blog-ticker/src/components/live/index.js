@@ -306,7 +306,7 @@ class Live extends Component {
                                             year: 'numeric',
                                         }, true)}
                                     </>}
-                                </>} <span class='ml-1 font-weight-light'>{art.category}</span>
+                                </>} <span class='ml-1 font-weight-light text-muted'>{art.category}</span>
                             
                             </small>
                         </div>
