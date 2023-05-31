@@ -137,7 +137,9 @@
     <div class="d-flex flex-row justify-content-bewteen align-items-center">
         {% for art in artlist %}
             <div class="flex-fill {% if art.classNames %}{{ art.classNames }}{% endif %}" {% if art.cssStyles %}style="{{ art.cssStyles }}"{% endif %}>
-                {% if art.url %}
+                {% if art.body %}
+                    {{ art.body|safe }}
+                {% elseif art.url %}
                     <a {% if art.catRef.artlistSkipLinkTarget %}{% else %}target="_blank"{% endif %} href="{{ art.url }}" title="{{ art.title|e }} - {{ art.teaser|e }}">
                 {% endif %}
                     {% if art.ingress %}
