@@ -249,12 +249,7 @@
                         "jwtToken": "{{ jwtToken }}",
                         "sessionEmail": "{{ session.email }}",
                         "sessionAge": "{{ session.age }}",
-                        "articleId": {{ art.id }},
-                        "tickerTitle": {{ art['ticker-tickerTitle']|json_encode }},
-                        "tickerTitleUrl": {{ art['ticker-tickerUrl']|json_encode }},
-                        "categoryTicker": {{ art['ticker-categoryTicker']|json_encode }},
-                        "showCountDown": {{ art['ticker-showCountDown']|json_encode }},
-                        "raceDate": {{ art['ticker-raceDate']|json_encode }}
+                        "articleId": {{ art.id }}
                     }
                 </script>
             </div>
