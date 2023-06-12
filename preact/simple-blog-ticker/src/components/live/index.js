@@ -53,7 +53,7 @@ class Live extends Component {
         clearTimeout(this.updateTimer);
         this.updateTimer = setTimeout(() => {
             this.loadAll();
-        }, RELOAD_INTERVAL_IN_SEC * 1000);        
+        }, RELOAD_INTERVAL_IN_SEC * 1000);
     }
 
     getWidth = () => {
@@ -91,8 +91,8 @@ class Live extends Component {
         // How far the mouse has been moved
         const dx = e.clientX - x;
         const dy = e.clientY - y;
-    
-        
+
+
         // Scroll the element
         this.setState({
             left: left - dx,
@@ -100,7 +100,7 @@ class Live extends Component {
             x: e.clientX,
             y: e.clientY,
             hasMoved: true,
-        }, () => {            
+        }, () => {
             // Scroll the element
             const ele = this.contentContainer;
             ele.scrollTop = top - dy;
@@ -116,7 +116,7 @@ class Live extends Component {
         ele.style.removeProperty('user-select');
         ele.style.scrollSnapType = 'x mandatory';
         document.removeEventListener('mousemove', this.mouseMoveHandler);
-        document.removeEventListener('mouseup', this.mouseUpHandler);        
+        document.removeEventListener('mouseup', this.mouseUpHandler);
     }
 
     onClickArticle = (e) => {
@@ -126,8 +126,8 @@ class Live extends Component {
         if (!hasMoved) {
             window.location = url;
         }
-    }       
-    
+    }
+
     onScroll = (e) => {
         const { scrollLeft, scrollWidth, clientWidth } = e.target;
         const maxScrollLeft = scrollWidth - clientWidth;
@@ -168,7 +168,7 @@ class Live extends Component {
         clearTimeout(this.updateTimer);
     }
 
-    componentWillReceiveProps(nextProps) {       
+    componentWillReceiveProps(nextProps) {
     }
 
     render() {
@@ -180,25 +180,25 @@ class Live extends Component {
         } = this.state;
         const { articleStore, appState } = this.props.stores;
         const { artlistLive } = articleStore;
-        const { 
+        const {
             height,
             arrowWidth = '20px',
             fadeWidth = '20px',
         } = this.props;
 
-        return (<>            
-            {hasContentLeft && <div 
-                class='position-absolute d-flex flex-row align-items-center justify-content-center' 
+        return (<>
+            {hasContentLeft && <div
+                class='position-absolute d-flex flex-row align-items-center justify-content-center'
                 style={`
-                    top: 0; 
+                    top: 0;
                     left: 0;
                     height: ${height};
                     background-image: linear-gradient(to left, rgba(255,255,255,0), rgba(255,255,255,1));
                 `}
                 onClick={this.onClickScrollLeft}
-            >        
-                <div 
-                    class='d-flex align-items-center justify-content-center text-muted' 
+            >
+                <div
+                    class='d-flex align-items-center justify-content-center text-muted'
                     style={`
                         width: ${arrowWidth};
                         height: ${height};
@@ -207,33 +207,33 @@ class Live extends Component {
                     `}
                 >
                     <i class='fa-solid fa-angle-left' />
-                </div>     
-                <div 
+                </div>
+                <div
                     style={`
                         width: ${fadeWidth};
                         height: ${height};
-                        background-image: linear-gradient(to left, rgba(255,255,255,0), rgba(255,255,255,1));                    
+                        background-image: linear-gradient(to left, rgba(255,255,255,0), rgba(255,255,255,1));
                     `}
-                >&nbsp;</div>   
+                >&nbsp;</div>
             </div>}
-            {hasContentRight && <div 
-                class='position-absolute d-flex flex-row' 
+            {hasContentRight && <div
+                class='position-absolute d-flex flex-row'
                 style={`
-                    top: 0; 
+                    top: 0;
                     right: 0;
                     height: ${height};
                 `}
                 onClick={this.onClickScrollRight}
-            >                
-                <div 
+            >
+                <div
                     style={`
                         width: ${fadeWidth};
                         height: ${height};
-                        background-image: linear-gradient(to right, rgba(255,255,255,0), rgba(255,255,255,1));                    
+                        background-image: linear-gradient(to right, rgba(255,255,255,0), rgba(255,255,255,1));
                     `}
                 >&nbsp;</div>
-                <div 
-                    class='d-flex align-items-center justify-content-center text-muted' 
+                <div
+                    class='d-flex align-items-center justify-content-center text-muted'
                     style={`
                         width: ${arrowWidth};
                         height: ${height};
@@ -244,7 +244,7 @@ class Live extends Component {
                     <i class='fa-solid fa-angle-right' />
                 </div>
             </div>}
-            <div 
+            <div
                 class='overflow-auto d-flex flex-row flex-nowrap no-scrollbar align-items-center'
                 style={`
                     scroll-snap-type: x mandatory;
@@ -261,7 +261,7 @@ class Live extends Component {
                     const isToday = dateDiff.hours <= 6 && !inFuture;
                     const isThisWeek = dateDiff.days < 7;
                     const isThisYear = dateDiff.years >= 0 && dateDiff.months <= 6;
-                    const isLast24Hours = dateDiff.hours <= 24 && !inFuture; 
+                    const isLast24Hours = dateDiff.hours <= 24 && !inFuture;
                     return (<>
                         <div
                             class='d-flex flex-column postion-relative article-card px-2'
@@ -307,7 +307,7 @@ class Live extends Component {
                                         }, true)}
                                     </>}
                                 </>} <span class='ml-1 font-weight-light text-muted'>{art.category}</span>
-                            
+
                             </small>
                         </div>
                     </>);
