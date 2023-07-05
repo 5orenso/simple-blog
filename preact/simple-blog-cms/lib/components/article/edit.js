@@ -232,7 +232,7 @@ export default class Edit extends Component {
                             type='button'
                             onClick={e => this.handleDropdownClick(e, 'category')}
                         >
-                            {article.category ? article.category : 'Velg kategori'}
+                            {article.category ? <span dangerouslySetInnerHTML={{ __html: article.category }} /> : 'Velg kategori'}
                         </button>
                         <div class={`dropdown-menu ${toggleDropdown.category ? 'show' : ''}`} style='z-index: 1200;'>
                             <a class='dropdown-item' href='#'

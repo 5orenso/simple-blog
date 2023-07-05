@@ -78,7 +78,7 @@ export default class ArticleList extends Component {
                                 type='button'
                                 onClick={e => this.handleDropdownClick(e, 'category')}
                             >
-                                {filter.category ? filter.category : 'Velg kategori'}
+                                {filter.category ? <span dangerouslySetInnerHTML={{ __html: filter.category }} /> : 'Velg kategori'}
                             </button>
                             <div class={`dropdown-menu ${toggleDropdown.category ? 'show' : ''}`} style='z-index: 1200;'>
                                 <a class='dropdown-item' href='#'
@@ -121,7 +121,7 @@ export default class ArticleList extends Component {
                                 type='button'
                                 onClick={e => this.handleDropdownClick(e, 'status')}
                             >
-                                {filter.status ?
+                                {filter && filter.status ?
                                     statusList.find(x => x.value === filter.status).title : 'Velg status'}
                             </button>
                             <div class={`dropdown-menu ${toggleDropdown.status ? 'show' : ''}`} style='z-index: 1200;'>
@@ -139,6 +139,7 @@ export default class ArticleList extends Component {
                                     <a class={`dropdown-item ${filter.status === stat.value ? 'text-success' : ''}`} href='#'
                                         data-key='status'
                                         data-val={stat.value}
+                                        data-type='number'
                                         onClick={e => {
                                             this.handleDropdownClick(e, 'status');
                                             handleFilterClick(e);

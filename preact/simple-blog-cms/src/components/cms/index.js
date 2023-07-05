@@ -432,9 +432,10 @@ export default class SimpleBlogCms extends Component {
 
     handleFilterClick = (event) => {
         event.preventDefault();
-        const el = event.target;
-        const key = el.dataset.key;
-        const val = util.isNumber(el.dataset.val) ? parseFloat(el.dataset.val) : el.dataset.val;
+        const { key, val: value, type } = event.target.closest('a').dataset;
+        // const el = event.target;
+        // const key = el.dataset.key;
+        const val = type === 'number' ? parseFloat(value) : value;
         const filter = this.state.filter;
         if (filter[key] && (filter[key] === val || val === '')) {
             delete filter[key];
