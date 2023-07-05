@@ -207,12 +207,12 @@ export default class ArticleList extends Component {
                                             </span>
                                         )}
                                     </td>
-                                    <td><small class='text-muted'>#{art.categoryId}</small> {art.category}</td>
+                                    <td><small class='text-muted'>#{art.categoryId}</small> <span dangerouslySetInnerHTML={{ __html: art.category }} /></td>
                                     <td>
                                         {art.widget && <span class='badge badge-success float-right ml-1'>{art.widget}</span>}
                                         {art.widgetList && <span class='badge badge-primary float-right ml-1'>{art.widgetList}</span>}
                                         <div class='rounded-lg px-2 py-1' style={`background-color: ${art.background};`}>
-                                            <span style={`color: ${art.forground}; font-weight: ${art.fontweightH1};`}>{art.title}</span>
+                                            <span style={`color: ${art.forground}; font-weight: ${art.fontweightH1};`} dangerouslySetInnerHTML={{ __html: art.title }}></span>
                                         </div>
                                         {art.titleEn && <div class='rounded-lg px-2 py-1 mt-1' style={`background-color: ${art.background};`}>
                                             <span style={`color: ${art.forground}; font-weight: ${art.fontweightH1};`}>🇬🇧 {art.titleEn}</span>

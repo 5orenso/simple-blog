@@ -75,7 +75,7 @@ export default class Edit extends Component {
             {renderImages}
 
             {language === 'no' && <div>
-                <h1>{article.title}</h1>
+                <h1 dangerouslySetInnerHTML={{ __html: article.title }}></h1>
                 <h5>{article.teaser}</h5>
                 <div>
                     <small>
@@ -86,7 +86,7 @@ export default class Edit extends Component {
                         <span class={`badge badge-${util.getStatusClass(article.status)} p-2`}>
                             {util.getStatus(article.status)}
                         </span>
-                        &nbsp; / 
+                        &nbsp; /
                         &nbsp;<a rel='noopener' target='_blank' href={`https://www.facebook.com/sharer.php?u=${shareLink}`}>
                             <i class='fab fa-facebook' />
                         </a>
@@ -112,9 +112,9 @@ export default class Edit extends Component {
                             + `Les mer: ${shareLink}`}>
                             <i class='far fa-envelope' />
                         </a>
-                        &nbsp; /                        
+                        &nbsp; /
                         {/* Ord: {util.wordCount(article.body)}
-                        &nbsp; /                        
+                        &nbsp; /
                         Lesetid: {util.readTime(article.body, 'no')} */}
                     </small>
                 </div>
@@ -145,7 +145,7 @@ export default class Edit extends Component {
                         <span class={`badge badge-${util.getStatusClass(article.status)} p-2`}>
                             {util.getStatus(article.status)}
                         </span>
-                        &nbsp; / 
+                        &nbsp; /
                         &nbsp;<a rel='noopener' target='_blank' href={`https://www.facebook.com/sharer.php?u=${shareLink}`}>
                             <i class='fab fa-facebook' />
                         </a>
@@ -171,9 +171,9 @@ export default class Edit extends Component {
                             + `Les mer: ${shareLink}`}>
                             <i class='far fa-envelope' />
                         </a>
-                        &nbsp; /                        
+                        &nbsp; /
                         Words: {util.wordCount(article.bodyEn)}
-                        &nbsp; /                        
+                        &nbsp; /
                         Read time: {util.readTime(article.body, 'en')}
                     </small>
                 </div>
