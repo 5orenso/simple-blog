@@ -111,7 +111,7 @@
                                 <img src="{{ cat.image }}" style='max-height: 30px;'/>
                             {%- endif -%}
                             {%- if !cat.hideTitle -%}
-                                <nobr>{{ cat.title }}</nobr>
+                                <nobr>{{ cat.title|md(true)|safe }}</nobr>
                             {%- endif -%}
                         </a>
                     </li>

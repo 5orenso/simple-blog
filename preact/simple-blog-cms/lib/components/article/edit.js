@@ -276,7 +276,7 @@ export default class Edit extends Component {
                                     {[6].indexOf(cat.type) !== -1 && <i class='fas fa-link mr-2' />}
                                     {[7].indexOf(cat.type) !== -1 && <i class='fas fa-download mr-2' />}
                                     {!cat.type && !cat.menu && <i class='fas fa-question mr-2' />}
-                                    {cat.title}
+                                    <span dangerouslySetInnerHTML={{ __html: cat.title }} />
                                 </a>
                             )}
                         </div>

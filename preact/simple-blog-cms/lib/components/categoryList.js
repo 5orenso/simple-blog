@@ -106,7 +106,7 @@ export default class CategoryList extends Component {
                                 {[7].indexOf(cat.type) !== -1 && <i class='fas fa-download mr-2' />}
                                 {!cat.type && !cat.menu && <i class='fas fa-question mr-2' />}
 
-                                {cat.title}
+                                <span dangerouslySetInnerHTML={{ __html: cat.title }} />
                                 {cat.titleEn && <span>
                                     <br />🇬🇧 {cat.titleEn}
                                 </span>}
