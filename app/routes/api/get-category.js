@@ -22,6 +22,7 @@ const fields = {
     hideDetailTeaser: 1,
     subTitle: 1,
     startUrl: 1,
+    readRelated: 1,
     image: 1,
     type: 1,
     menu: 1,

@@ -38,6 +38,7 @@ const fields = {
 
     url: 1,
     urlTitle: 1,
+    hideInArtlist: 1,
     urlDescription: 1,
     urlImage: 1,
     urlIcon: 1,

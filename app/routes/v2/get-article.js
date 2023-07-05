@@ -55,7 +55,13 @@ module.exports = async (req, res) => {
     const skip = parseInt((page - 1) * limit || 0, 10);
 
     const query = { status: 2 };
-    const queryList = { status: 2 };
+    const queryList = {
+        status: 2,
+        $or: [
+            { hideInArtlist: { $lt: 1 } },
+            { hideInArtlist: { $exists: false } },
+        ],
+    };
     const queryFrontpage = { status: 2 };
     let queryCategory = {};
     let queryAds = {};
@@ -212,7 +218,7 @@ module.exports = async (req, res) => {
         queryAds = { type: 3 };
         queryAdsLower = { type: 4 };
         queryAdsLowerUpper = { type: 22 };
-        
+
     }
 
     if (isFrontpage) {

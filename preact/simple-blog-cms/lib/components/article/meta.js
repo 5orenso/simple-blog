@@ -99,6 +99,15 @@ export default class Edit extends Component {
                 </div>
                 <div class='col-12'>
                     <div class='form-group'>
+                        <label for='hideInArtlistInput'>hideInArtlist</label>
+                        <input type='number' class='form-control' id='hideInArtlistInput' placeholder='hideInArtlist'
+                            name='hideInArtlist'
+                            onInput={handleInput}
+                            value={article.hideInArtlist} />
+                    </div>
+                </div>
+                <div class='col-12'>
+                    <div class='form-group'>
                         <label for='urlDescriptionInput'>urlDescription</label>
                         <input type='text' class='form-control' id='urlDescriptionInput' placeholder='urlDescription'
                             name='urlDescription'

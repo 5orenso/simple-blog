@@ -311,7 +311,7 @@
             {% endif %}
 
             {% if category.showBottomArticleList && artlist[0] %}
-                <h4>{{ blog.readRelated || 'Les også' }}:</h4>
+                <h4>{{ category.readRelated || blog.readRelated || 'Les også' }}:</h4>
                 <div class="container-fluid p-0" {{ articleMacro.colorArticleBackground(artlist[0].catRef) }}>
                     <div class="row artlist">
                         {% for art in artlist %}

@@ -176,6 +176,13 @@ export default class CategoryEdit extends Component {
                                 value={category.startUrl} />
                         </div>
                         <div class='form-group'>
+                            <label for='readRelatedInput'>readRelated</label>
+                            <input type='text' class='form-control' id='readRelatedInput' placeholder='Start URL for this category'
+                                name='readRelated'
+                                onInput={handleInput}
+                                value={category.readRelated} />
+                        </div>
+                        <div class='form-group'>
                             <label for='templateInput'>template (/bootstrap4/(blog_v2|blank_v2).html)</label>
                             <input type='text' class='form-control' id='templateInput' placeholder='/bootstrap4/blog_v2.html'
                                 name='template'
