@@ -118,6 +118,8 @@ const fields = {
     'gallery-class-photo-img': 1,
     'gallery-skip-background-images': 1,
     'gallery-img-wrapper-class': 1,
+    'gallery-img-wrapper-style': 1,
+    'gallery-img-style': 1,
     'gallery-style': 1,
     'gallery-start': 1,
     'gallery-end': 1,

@@ -164,6 +164,7 @@ export default function App(props) {
                                 style={`
                                     scroll-snap-align: start;
                                     overflow-y: hidden;
+                                    ${article['gallery-img-wrapper-style']}
                                 `}
                             >
                                 {!article['gallery-skip-background-images'] && <div
@@ -178,7 +179,10 @@ export default function App(props) {
                                     class={`img-fluid position-relative ${article['gallery-class-photo-img']} ${imgClass}`}
                                     src={`https://${imageServer}/${size}/${imagePath}/${img.src}`}
                                     loading='lazy'
-                                    style={`${idx !== imageIdx ? '' : ''}`}
+                                    style={`
+                                        ${idx !== imageIdx ? '' : ''}
+                                        ${article['gallery-img-style']}
+                                    `}
                                 /> : <>
                                     <span class='display-1 text-muted'>
                                         <i class='fas fa-camera' />
