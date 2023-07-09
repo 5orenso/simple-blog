@@ -57,9 +57,13 @@ module.exports = async (req, res) => {
     const query = { status: 2 };
     const queryList = {
         status: 2,
-        $or: [
-            { hideInArtlist: { $lt: 1 } },
-            { hideInArtlist: { $exists: false } },
+        $and: [
+            {
+                $or: [
+                    { hideInArtlist: { $lt: 1 } },
+                    { hideInArtlist: { $exists: false } },
+                ],
+            },
         ],
     };
     const queryFrontpage = { status: 2 };
@@ -175,6 +179,19 @@ module.exports = async (req, res) => {
     limit = parseInt(limit, 10);
 
     let article = await art.findOne(query);
+    if (article?.tags) {
+        // console.log('queryList', JSON.stringify(queryList, null, 4));
+        // console.log('article.tags: ', article.tags);
+        queryList.$and.push({
+            $or: [
+                { categoryId: queryList.categoryId },
+                { tags: { $in: article.tags } },
+            ],
+        });
+        delete queryList.categoryId;
+        // console.log('queryList', JSON.stringify(queryList, null, 4));
+    }
+
     let artlist = [];
     if (category && category.id === 100000404) {
         article = {
