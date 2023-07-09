@@ -212,6 +212,9 @@ module.exports = async (req, res) => {
     if (tc.isArray(artlist)) {
         artlist.forEach((a) => {
             a.catRef = contentCatlist.find(c => c.id === a.categoryId);
+            if (!a.catRef) {
+                a.catRef = article.catRef;
+            }
         });
     }
     if (!isFrontpage && !isDetailView && artlist.length === 1) {
