@@ -124,6 +124,7 @@ module.exports = async (req, res) => {
         limit = category.limit || limit;
         queryList.categoryId = category.id;
         query.categoryId = category.id;
+// console.log(JSON.stringify(queryCategory, null, 4));
         contentCatlist = await cat.find({ ...queryCategory, type: { $nin: [1, 2, 3, 4, 6, 7] } });
     } else {
         contentCatlist = await cat.find({
@@ -179,7 +180,9 @@ module.exports = async (req, res) => {
     limit = parseInt(limit, 10);
 
     let article = await art.findOne(query);
-    if (article?.tags) {
+// console.log('query', JSON.stringify(query, null, 4));
+// console.log('article', JSON.stringify(article, null, 4));
+    if (article?.tags && query.id) {
         // console.log('queryList', JSON.stringify(queryList, null, 4));
         // console.log('article.tags: ', article.tags);
         queryList.$and.push({
@@ -189,7 +192,7 @@ module.exports = async (req, res) => {
             ],
         });
         delete queryList.categoryId;
-        // console.log('queryList', JSON.stringify(queryList, null, 4));
+// console.log('queryList', JSON.stringify(queryList, null, 4));
     }
 
     let artlist = [];
