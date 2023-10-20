@@ -401,7 +401,7 @@ export default function App(props) {
 
         return (
             <div class={`${article['booking-class']} ${className}`} style={`${article['booking-style']} ${style}`}>
-                <button class='btn btn-link btn-lg' type='button' onClick={onClickBack}><i class='fas fa-arrow-left' /> Tilbake</button>
+                <button class='btn btn-link btn-lg rounded-circle' type='button' onClick={onClickBack}><i class='fas fa-arrow-left' /> Tilbake</button>
                 {row.photo && <>
                     <div>
                         <img class='img-fluid w-100' src={row.photo} />
@@ -722,9 +722,10 @@ export default function App(props) {
                             if (!row.id) {
                                 return '';
                             }
+                            const hasFreeSeats = row['free seats'] > 0;
                             return (<>
                                 <tr onClick={onClickRow} data-id={row.id} style='cursor: pointer;'>
-                                    <td class='py-1 px-1'><button class='btn btn-sm btn-success'><i class='fas fa-arrow-right' /></button></td>
+                                    <td class='py-1 px-1'><button class={`btn btn-sm btn-${hasFreeSeats ? 'success' : 'danger'} rounded-circle`}><i class='fas fa-arrow-right' /></button></td>
                                     <td class='py-1 px-1'
                                         style={getColStyles({
                                             col: 'name',
@@ -736,7 +737,7 @@ export default function App(props) {
                                         <Markdown markdown={`${row.name}`} markdownOpts={MARKDOWN_OPTIONS} />
                                     </td>
                                     <td class='text-center py-1 px-1'>{formatDate(row['date from'], true)} - {formatDate(row['date to'], true)}</td>
-                                    <td class='text-right py-1 px-1'>{row['free seats']}/{row['total seats']}</td>
+                                    <td class='text-right py-1 px-1'>{row['free seats']}</td>
                                 </tr>
                             </>);
                         })}
