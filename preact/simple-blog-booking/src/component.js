@@ -722,10 +722,33 @@ export default function App(props) {
                             if (!row.id) {
                                 return '';
                             }
+                            if (row.id === 'header') {
+                                return (<>
+                                    <tr>
+                                        <td colspan='4' class='text-center'
+                                            style={getColStyles({
+                                                col: 'name',
+                                                row,
+                                                rowIdx,
+                                                sheet
+                                            })}
+                                        >
+                                            <span class='font-weight-bold'>{row.name}</span>
+                                        </td>
+                                    </tr>
+                                </>);
+                            }
                             const hasFreeSeats = row['free seats'] > 0;
                             return (<>
                                 <tr onClick={onClickRow} data-id={row.id} style='cursor: pointer;'>
-                                    <td class='py-1 px-1'><button class={`btn btn-sm btn-${hasFreeSeats ? 'success' : 'danger'} rounded-circle`}><i class='fas fa-arrow-right' /></button></td>
+                                    <td class='py-1 px-1'
+                                        style={getColStyles({
+                                            col: 'name',
+                                            row,
+                                            rowIdx,
+                                            sheet
+                                        })}
+                                    ><button class={`btn btn-sm btn-${hasFreeSeats ? 'success' : 'danger'} rounded-circle`}><i class='fas fa-arrow-right' /></button></td>
                                     <td class='py-1 px-1'
                                         style={getColStyles({
                                             col: 'name',
