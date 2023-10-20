@@ -714,7 +714,7 @@ export default function App(props) {
                             <th>&nbsp;</th>
                             <th style={getHeaderColStyles('name', sheet)}>Arrangement</th>
                             <th class='text-center'>Dato</th>
-                            <th class='text-center'>Ledige plasser</th>
+                            <th class='text-right' style='width: 10%;'>Ledige plasser</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -766,7 +766,7 @@ export default function App(props) {
                                             rowIdx,
                                             sheet
                                         })}
-                                    >{formatDate(row['date from'], true)} - {formatDate(row['date to'], true)}</td>
+                                    ><nobr>{formatDate(row['date from'], true)}</nobr> - <nobr>{formatDate(row['date to'], true)}</nobr></td>
                                     <td class='text-right py-1 px-1'
                                         style={getColStyles({
                                             col: 'name',
