@@ -736,8 +736,22 @@ export default function App(props) {
                                     >
                                         <Markdown markdown={`${row.name}`} markdownOpts={MARKDOWN_OPTIONS} />
                                     </td>
-                                    <td class='text-center py-1 px-1'>{formatDate(row['date from'], true)} - {formatDate(row['date to'], true)}</td>
-                                    <td class='text-right py-1 px-1'>{row['free seats']}</td>
+                                    <td class='text-center py-1 px-1'
+                                        style={getColStyles({
+                                            col: 'name',
+                                            row,
+                                            rowIdx,
+                                            sheet
+                                        })}
+                                    >{formatDate(row['date from'], true)} - {formatDate(row['date to'], true)}</td>
+                                    <td class='text-right py-1 px-1'
+                                        style={getColStyles({
+                                            col: 'name',
+                                            row,
+                                            rowIdx,
+                                            sheet
+                                        })}
+                                    >{row['free seats']}</td>
                                 </tr>
                             </>);
                         })}
