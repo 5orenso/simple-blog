@@ -48,6 +48,9 @@ const FIELDS = {
     childbirth: {
         required: true,
     },
+    buySwimmingTrunks: {
+        required: false,
+    },
     address: {
         validation: '^.{2,}$',
         removechars: null,
@@ -205,7 +208,7 @@ export default function App(props) {
         jwtToken,
         articleId,
         sheetId,
-        fields = 'email,cellphone,firstname,lastname,childname,childbirth,address,postalplace',
+        fields = 'email,cellphone,firstname,lastname,childname,childbirth,address,postalplace,buySwimmingTrunks',
         participantsFields = 'name,country,team,club',
         // fields = 'email,cellphone,firstname,lastname,address,postalplace,team,club,country',
         showParticipants = false,
@@ -515,6 +518,24 @@ export default function App(props) {
                                 <label for='inputCountry'>Land</label>
                                 <input type='text' class='form-control' id='inputCountry' name='country' value={input.country} onInput={onInput} onBlur={onBlur} data-validation={FIELDS.country.validation} data-removechars={FIELDS.country.removechars} />
                             </div>}
+                        </div>
+                        <div class='row'>
+                            {parsedFields.indexOf('buySwimmingTrunks') > -1 && <>
+                                <div class='col-12 form-check ml-3'>
+                                    <input
+                                        class='form-check-input'
+                                        type='checkbox'
+                                        id='inputBuySwimmingTrunks'
+                                        name='buySwimmingTrunks'
+                                        value={'yes'}
+                                        checked={input.buySwimmingTrunks ? true : false}
+                                        onInput={onInput}
+                                        onBlur={onBlur}
+                                        data-validation={FIELDS.buySwimmingTrunks.validation}
+                                    />
+                                    <label for='inputBuySwimmingTrunks'>Jeg ønsker å kjøpe badebukse</label>
+                                </div>
+                            </>}
                         </div>
 
                         {invalidFields && Object.keys(invalidFields).length > 0 && <>
