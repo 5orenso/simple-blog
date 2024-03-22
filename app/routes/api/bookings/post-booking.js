@@ -64,7 +64,7 @@ module.exports = async (req, res) => {
 
     const {
         cellphone, firstname, lastname, address, postalcode, postalplace,
-        childname, childbirth, team, club, country,
+        childname, childbirth, team, club, country, buySwimmingTrunks,
     } = req.body;
     const { emailSender, emailSignature } = req.config.blog;
     const mail = new Mail(req.config);
@@ -114,8 +114,10 @@ ${childbirth ? `<span style='font-weight: lighter; color: #808080;'>Barnets fød
 ${address ? `<span style='font-weight: lighter; color: #808080;'>Adresse:</span> ${address}` : ''}
 ${postalplace ? `<span style='font-weight: lighter; color: #808080;'>Sted:</span> ${postalcode} ${postalplace}` : ''}
 ${country ? `<span style='font-weight: lighter; color: #808080;'>Land:</span> ${country}` : ''}
+${country ? `<span style='font-weight: lighter; color: #808080;'>Land:</span> ${country}` : ''}
 ${team ? `<span style='font-weight: lighter; color: #808080;'>Team:</span> ${team}` : ''}
 ${club ? `<span style='font-weight: lighter; color: #808080;'>Klubb:</span> ${club}` : ''}
+${buySwimmingTrunks ? `<span style='font-weight: lighter; color: #808080;'>Kjøpe badebukse:</span> ${buySwimmingTrunks}` : ''}
 
 ${emailSignature}
 
