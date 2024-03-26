@@ -79,9 +79,10 @@ export default function App(props) {
 
     const { img: images = [] } = article;
     let filteredImages = images;
-    if (article['gallery-start'] || article['gallery-end'] || start || end) {
-        const startIdx = parseInt(start || article['gallery-start'] || 0, 10);
-        const endIdx = parseInt(end || article['gallery-end'] || images.length, 10);
+
+    if (article['gallery-grid-start'] || article['gallery-grid-end'] || start || end) {
+        const startIdx = parseInt(start || article['gallery-grid-start'] || 0, 10);
+        const endIdx = parseInt(end || article['gallery-grid-end'] || images.length, 10);
         filteredImages = images.slice(startIdx, endIdx);
     }
 
@@ -90,10 +91,10 @@ export default function App(props) {
     const selectedImage = filteredImages[imageIdx - 1];
 
     return (
-        <div class={`${article['gallery-class']} ${className}`} style={`${article['gallery-style']} ${style}`}>
+        <div class={`${article['gallery-grid-class']} ${className}`} style={`${article['gallery-grid-style']} ${style}`}>
 
-            <div class={`w-100 ${article['gallery-wrapper-class']}`}>
-                <div class={`d-flex flex-wrap ${article['gallery-wrapper-inner-class']}`}>
+            <div class={`w-100 ${article['gallery-grid-wrapper-class']}`}>
+                <div class={`d-flex flex-wrap ${article['gallery-grid-wrapper-inner-class']}`}>
                     {filteredImages && filteredImages.map((img, idx) => (
                         <div
                             style={`
@@ -102,23 +103,24 @@ export default function App(props) {
                         >
                             <div class='w-100 h-100 p-1'>
                                 <div
-                                    class={`position-relative w-100 h-100 text-center rounded-lg imageContainer overflow-hidden d-flex justify-content-center align-items-center ${article['gallery-img-wrapper-class']}`}
+                                    class={`position-relative w-100 h-100 text-center rounded-lg imageContainer overflow-hidden d-flex justify-content-center align-items-center ${article['gallery-grid-img-wrapper-class']}`}
                                     style={`
-                                        max-height: 300px;
-                                        ${article['gallery-img-wrapper-style']}
+                                        max-height: 200px;
+                                        width: 200px;
+                                        ${article['gallery-grid-img-wrapper-style']}
                                     `}
                                     onClick={() => {
                                         setImageidx(idx + 1);
                                     }}
                                 >
                                     {img.src ? <img
-                                        class={`img-fluid rounded-lg position-relative ${article['gallery-class-photo-img']} ${imgClass}`}
+                                        class={`img-fluid rounded-lg position-relative ${article['gallery-grid-class-photo-img']} ${imgClass}`}
                                         src={`https://${imageServer}/${size}/${imagePath}/${img.src}`}
                                         loading='lazy'
                                         style={`
-                                            width: 200px;
+                                            max-height: 100%;
                                             ${idx !== imageIdx ? '' : ''}
-                                            ${article['gallery-img-style']}
+                                            ${article['gallery-grid-img-style']}
                                         `}
                                     /> : <>
                                         <span class='display-1 text-muted'>
