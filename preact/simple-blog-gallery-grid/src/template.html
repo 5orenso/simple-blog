@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title><% preact.title %></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1">
+		<style>
+			.preview {
+				width: 100%;
+				border: 1px dashed rgba(0, 0, 0, 0.2);
+				position: relative;
+			}
+		</style>
+		<link href="http://localhost:8080/css/bootstrap.min.css" rel="stylesheet">
+		<link href="http://localhost:8080/css/custom.css?v18" rel="stylesheet">
+		<link href="http://localhost:8080/global/css/youtube.css" rel="stylesheet">
+		<link href="http://localhost:8080/css/flag-icon-css/css/flag-icon.min.css" rel="stylesheet">
+		<link href="http://localhost:8080/fonts/fontawesome-free-5.15.3-web/css/all.css" rel="stylesheet">
+		<% preact.headEnd %>
+	</head>
+	<body>
+		<div class='container'>
+			<div class='row'>
+				<div class='col-8'>
+					<h5>Gallery 1</h5>
+					<div data-widget-host="simple-blog-gallery-grid" class="preview">
+						<script type="text/props">
+							{
+								"apiServer": "http://localhost:8080",
+								"articleId": 245
+							}
+						</script>
+					</div>
+				</div>
+				<div class='col-4'>
+					<h5>Gallery 2</h5>
+					<div data-widget-host="simple-blog-gallery-grid" class="preview">
+						<script type="text/props">
+							{
+								"apiServer": "http://localhost:8080",
+								"articleId": 238
+							}
+						</script>
+					</div>
+				</div>
+			</div>
+			<div class='row'>
+				<div class='col-12'>
+					<h5>Gallery 3</h5>
+					<div data-widget-host="simple-blog-gallery-grid" class="preview">
+						<script type="text/props">
+							{
+								"apiServer": "http://localhost:8080",
+								"start": "3",
+								"end": "6",
+								"size": "1600x",
+								"articleId": 245
+							}
+						</script>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<% preact.bodyEnd %>
+	</body>
+</html>
