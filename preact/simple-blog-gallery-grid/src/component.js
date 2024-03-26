@@ -104,6 +104,7 @@ export default function App(props) {
                                 <div
                                     class={`position-relative w-100 h-100 text-center rounded-lg imageContainer d-flex justify-content-center align-items-center ${article['gallery-img-wrapper-class']}`}
                                     style={`
+                                        max-height: 300px;
                                         ${article['gallery-img-wrapper-style']}
                                     `}
                                     onClick={() => {
@@ -169,7 +170,10 @@ export default function App(props) {
                             <div>
                                 <img
                                     class='img-fluid'
-                                    style='border-radius: 20px; !important;'
+                                    style={`
+                                        max-height: 90vh;
+                                        border-radius: 20px; !important;
+                                    `}
                                     src={`https://${imageServer}/1920x/${imagePath}/${selectedImage.src}`}
                                     onClick={e => {
                                         e.stopPropagation();
