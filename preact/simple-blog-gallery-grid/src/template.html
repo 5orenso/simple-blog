@@ -19,19 +19,17 @@
 		<% preact.headEnd %>
 	</head>
 	<body>
+		<h5>Gallery 1</h5>
+		<div data-widget-host="simple-blog-gallery-grid" class="preview">
+			<script type="text/props">
+				{
+					"apiServer": "http://localhost:8080",
+					"articleId": 245
+				}
+			</script>
+		</div>
 		<div class='container'>
 			<div class='row'>
-				<div class='col-8'>
-					<h5>Gallery 1</h5>
-					<div data-widget-host="simple-blog-gallery-grid" class="preview">
-						<script type="text/props">
-							{
-								"apiServer": "http://localhost:8080",
-								"articleId": 245
-							}
-						</script>
-					</div>
-				</div>
 				<div class='col-4'>
 					<h5>Gallery 2</h5>
 					<div data-widget-host="simple-blog-gallery-grid" class="preview">

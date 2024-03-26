@@ -97,7 +97,7 @@ export default function App(props) {
                     {filteredImages && filteredImages.map((img, idx) => (
                         <div
                             style={`
-                                width: 33%;
+                                // width: 33%;
                             `}
                         >
                             <div class='w-100 h-100 p-1'>
@@ -115,6 +115,7 @@ export default function App(props) {
                                         src={`https://${imageServer}/${size}/${imagePath}/${img.src}`}
                                         loading='lazy'
                                         style={`
+                                            width: 200px;
                                             ${idx !== imageIdx ? '' : ''}
                                             ${article['gallery-img-style']}
                                         `}
