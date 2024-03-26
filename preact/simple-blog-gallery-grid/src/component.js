@@ -102,7 +102,7 @@ export default function App(props) {
                         >
                             <div class='w-100 h-100 p-1'>
                                 <div
-                                    class={`position-relative w-100 h-100 text-center rounded-lg imageContainer d-flex justify-content-center align-items-center ${article['gallery-img-wrapper-class']}`}
+                                    class={`position-relative w-100 h-100 text-center rounded-lg imageContainer overflow-hidden d-flex justify-content-center align-items-center ${article['gallery-img-wrapper-class']}`}
                                     style={`
                                         max-height: 300px;
                                         ${article['gallery-img-wrapper-style']}
