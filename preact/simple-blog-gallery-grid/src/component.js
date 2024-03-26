@@ -107,6 +107,7 @@ export default function App(props) {
                                     style={`
                                         max-height: 200px;
                                         width: 200px;
+                                        background-color: rgba(0, 0, 0, 0.4);
                                         ${article['gallery-grid-img-wrapper-style']}
                                     `}
                                     onClick={() => {
