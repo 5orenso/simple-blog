@@ -116,7 +116,7 @@ _habitat.render({
 
 5. Add widget to simple-blog-cms/lib/components/articleEdit.js
 
-const widgetList = ['clock', 'booking', 'poll', 'gallery', 'weather', 'rating', 'related'];
+const widgetList = ['clock', 'booking', 'poll', 'gallery', 'gallery-grid', 'weather', 'rating', 'related'];
 
 
 6. Add widget to template/bootstrap4/inc/_blog_v2.html

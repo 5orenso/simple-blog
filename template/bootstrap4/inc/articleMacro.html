@@ -240,7 +240,7 @@
 {% endmacro %}
 
 {% macro articleTeaserWidget(art, col, extraClasses, heading, idx) %}
-    {% for widget in ['helloworld', 'clock', 'booking', 'form', 'sheet', 'poll', 'gallery', 'weather', 'map', 'rating', 'related', 'livecenter', 'livecenter2', 'ticker'] %}
+    {% for widget in ['helloworld', 'clock', 'booking', 'form', 'sheet', 'poll', 'gallery', 'gallery-grid', 'weather', 'map', 'rating', 'related', 'livecenter', 'livecenter2', 'ticker'] %}
         {% if art.widgetList === widget %}
             <div class='w-100 my-2 clearfix' data-widget-host="simple-blog-{{ widget }}">
                 <script type="text/props">
