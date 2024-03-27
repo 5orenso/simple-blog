@@ -137,7 +137,7 @@ export default function App(props) {
                     ))}
                 </div>
 
-                imageIdx: {imageIdx}
+                {/* imageIdx: {imageIdx} */}
 
             </div>
 
