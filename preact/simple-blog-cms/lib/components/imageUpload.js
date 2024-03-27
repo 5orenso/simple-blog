@@ -6,9 +6,19 @@ const initialState = {
     loadingProgress: 0,
     uploadedFiles: [],
     uploadedFilesData: {},
+    uploadQueue: [],
+    totalUploading: 0,
 };
 const debug = false;
 const debugName = 'ImageUpload';
+
+const MAX_WIDTH = 2048;
+const MAX_HEIGHT = 2048;
+const MAX_FILES = 20;
+
+function filenameSafe(filename) {
+    return filename.replace(/[^a-z0-9]/gi, '_').replace(/_+/g, '_').toLowerCase();
+}
 
 export default class ImageUpload extends Component {
     constructor(props) {
@@ -18,19 +28,41 @@ export default class ImageUpload extends Component {
         this.fileInput;
     }
 
-    handleAddFiles = (event) => {
-        event.preventDefault();
+    handleAddFiles = event => {
         const el = event.target;
-        if (debug) {
-            console.log(`${debugName}.handleAddFiles: event, el`, event, el);
+// console.log('handleAddFiles', el);
+        try {
+            // console.log('handleAddFiles', el);
+            if (!el || !el.files || el.files.length === 0) {
+                return this.reportError({
+                    file: 'dragNdropFileupload.js',
+                    function: 'handleAddFiles',
+                    error: 'No files selected',
+                    el,
+                });
+            }
+            if (el.files.length > MAX_FILES) {
+                this.setState({ error: `Max ${MAX_FILES} files in each upload...` });
+            } else {
+                this.setState({ error: null });
+                if (debug) {
+                    console.log(`${debugName}.handleAddFiles: event, el`, event, el);
+                }
+                for (let i = 0, l = el.files.length; i < l; i += 1) {
+                    const photo = el.files[i];
+                    // if (photo.type.match('image.*')) {
+                    this.readLocalFile(photo);
+                    // }
+                }
+            }
+        } catch(err) {
+            this.reportError({
+                file: 'dragNdropFileupload.js',
+                function: 'handleAddFiles',
+                error: err,
+            });
         }
-        for (let i = 0, l = el.files.length; i < l; i += 1) {
-            const photo = el.files[i];
-            // if (photo.type.match('image.*')) {
-            this.readLocalFile(photo);
-            // }
-        }
-    };
+    }
 
     handleEvent = (e, fileObject) => {
         if (debug) {
@@ -65,6 +97,9 @@ export default class ImageUpload extends Component {
         });
         uploadMeta.xhr.addEventListener('loadend', (event) => {
             const fileObj = fileObject;
+            this.setState({ totalUploading: this.state.totalUploading - 1 }, () => {
+                this.handleUploadQueue();
+            });
             this.handleEvent(event, fileObj);
         });
         uploadMeta.xhr.addEventListener('progress', (event) => {
@@ -88,68 +123,181 @@ export default class ImageUpload extends Component {
         uploadMeta.xhr.setRequestHeader('Authorization', `Bearer ${this.props.jwtToken}`);
         uploadMeta.xhr.send(formData);
 
-        const filename = fileObject.name;
+        const filename = filenameSafe(fileObject.name);
         const uploadedFilesData = this.state.uploadedFilesData;
         if (!uploadedFilesData[filename]) {
             uploadedFilesData[filename] = {};
         }
         uploadedFilesData[filename].uploadMeta = uploadMeta;
+        uploadedFilesData[filename].imageNum = this.state.imageNum;
         this.setState({ uploadedFilesData });
     };
 
     // eslint-disable-next-line
-    readLocalFile = (fileObject) => {
+    readLocalFile = (fileObject, maxWidth = 256, maxHeight = 256) => {
         return new Promise((resolve, reject) => {
-            const reader = new FileReader();
+            let reader = new FileReader();
+
+            // Get the original real FileReader. The polyfill saves a reference to it.
+            const realFileReader = reader._realReader;
+            // Make sure we were able to get the original FileReader
+            if (realFileReader) {
+                // Swap out the polyfill instance for the original instance.
+                reader = realFileReader;
+            }
 
             reader.addEventListener('error', (error) => {
                 if (debug) {
                     console.log(`${debugName}.FileReader: Error occurred reading file: ${fileObject.name}: ${error}`);
+                    this.reportError({
+                        file: 'dragNdropFileupload.js',
+                        function: 'readLocalFile.reader.addEventListener',
+                        error,
+                    });
                 }
                 reject(error);
             });
 
-            reader.addEventListener('load', (event) => {
+            reader.addEventListener('load', async (event) => {
                 if (debug) {
                     console.log(`${debugName}.FileReader: File: ${fileObject.name} read successfully: `
                         + `${JSON.stringify(event)}`);
                 }
+                const resizedImage = await this.resizeImage(event.target.result, maxWidth, maxHeight);
+
                 const photo = fileObject;
-                const filename = photo.name;
+                const filename = filenameSafe(photo.name);
                 const uploadedFilesData = this.state.uploadedFilesData;
                 if (!uploadedFilesData[filename]) {
                     uploadedFilesData[filename] = {};
                 }
                 uploadedFilesData[filename].event = event;
+                uploadedFilesData[filename].resizedSrc = resizedImage;
                 this.setState({ uploadedFilesData });
-                this.handleUpload(photo)
+                this.addToUploadQueue(photo);
+                // this.handleUpload(photo, MAX_WIDTH, MAX_HEIGHT);
                 resolve(event);
             });
 
             reader.readAsDataURL(fileObject);
         });
-    };
+    }
+
+    addToUploadQueue = (photo) => {
+        const { uploadQueue = [] } = this.state;
+        uploadQueue.push(photo);
+        this.setState({
+            uploadQueue,
+        }, () => {
+            this.handleUploadQueue();
+        });
+    }
+
+    handleUploadQueue = () => {
+        const { uploadQueue = [], totalUploading } = this.state;
+        console.log('handleUploadQueue.totalUploading', totalUploading)
+        if (uploadQueue.length > 0 && totalUploading < 1) {
+            const photo = uploadQueue.shift();
+            this.setState({
+                totalUploading: totalUploading + 1,
+                uploadQueue,
+            });
+            this.handleUpload(photo, MAX_WIDTH, MAX_HEIGHT);
+        }
+    }
+
+    resizeImage = (inputImage, maxWidth = 256, maxHeight = 256, isBlob) => {
+        return new Promise((resolve, reject) => {
+            const image = new Image();
+            image.addEventListener('load', () => {
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                let newWidth = image.width;
+                let newHeight = image.height;
+
+                // Calculate new dimensions while maintaining aspect ratio
+                if (newWidth > maxWidth) {
+                    const ratio = maxWidth / newWidth;
+                    newWidth = maxWidth;
+                    newHeight = newHeight * ratio;
+                }
+                if (newHeight > maxHeight) {
+                    const ratio = maxHeight / newHeight;
+                    newHeight = maxHeight;
+                    newWidth = newWidth * ratio;
+                }
+
+                // Set canvas dimensions
+                canvas.width = newWidth;
+                canvas.height = newHeight;
+
+                // Draw image on canvas
+                ctx.drawImage(image, 0, 0, newWidth, newHeight);
+
+                if (isBlob) {
+                    // Convert canvas content to blob
+                    canvas.toBlob((blob) => {
+                        resolve(blob);
+                    });
+                } else {
+                    // Convert canvas content to base64 image
+                    resolve(canvas.toDataURL('image/jpeg'));
+                }
+            });
+            image.src = inputImage;
+        });
+    }
+
+    localLoadAndResizeImage = (fileObject, maxWidth = 256, maxHeight = 256) => {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.addEventListener('error', (error) => {
+                if (debug) {
+                    console.log(`${debugName}.FileReader: Error occurred reading file: ${fileObject.name}: ${error}`);
+                    this.reportError({
+                        file: 'dragNdropFileupload.js',
+                        function: 'localLoadAndResizeImage.reader.addEventListener',
+                        error,
+                    });
+                }
+                reject(error);
+            });
+
+            reader.addEventListener('load', async (event) => {
+                if (debug) {
+                    console.log(`${debugName}.FileReader: File: ${fileObject.name} read successfully: `
+                        + `${JSON.stringify(event)}`);
+                }
+                const resizedImage = await this.resizeImage(event.target.result, maxWidth, maxHeight, true);
+                resolve(resizedImage);
+            });
+
+            reader.readAsDataURL(fileObject);
+        });
+    }
+
 
     updateProgress = (event, fileObject) => {
         if (event.lengthComputable) {
-            const filename = fileObject.name;
+            const filename = filenameSafe(fileObject.name);
             const uploadedFilesData = this.state.uploadedFilesData;
-            var percentComplete = (event.loaded / event.total) * 100;
+            const percentComplete = (event.loaded / event.total) * 100;
             if (debug) {
                 console.log(`${debugName}.updateProgress[${filename}].progress`, percentComplete);
             }
             uploadedFilesData[filename].uploadMeta.progress = percentComplete;
             this.setState({ uploadedFilesData });
         }
-    };
+    }
 
     uploadDone = (event, fileObject) => {
-        const filename = fileObject.name;
+        const filename = filenameSafe(fileObject.name);
         const uploadedFilesData = this.state.uploadedFilesData;
         const uploadMeta = uploadedFilesData[filename].uploadMeta;
         if (debug) {
             console.log(`${debugName}.uploadDone[${filename}].uploadedFilesData`, uploadedFilesData);
             console.log(`${debugName}.uploadDone[${filename}].uploadMeta`, uploadMeta);
+            console.log(`${debugName}.uploadDone.event`, event);
         }
 
         if (uploadMeta && uploadMeta.xhr.readyState === 4 && uploadMeta.xhr.status === 201) {
@@ -158,19 +306,25 @@ export default class ImageUpload extends Component {
             for (let i = 0; i < files.length; i += 1) {
                 const file = files[i];
                 this.addFileToUpload(file);
-                this.fileInput.value = '';
+                if (this.fileInput) {
+                    this.fileInput.value = '';
+                }
             }
         }
-    };
+    }
 
     addFileToUpload(file) {
+        const filename = filenameSafe(file.name);
         if (debug) {
-            console.log(`${debugName}.addFileToUpload[${file.name}]`);
+            console.log(`${debugName}.addFileToUpload[${filename}]`);
         }
-        const uploadedFilesData = this.state.uploadedFilesData;
-        delete uploadedFilesData[file.name];
+        const { uploadedFilesData } = this.state;
+        const { handleAddImage, uploadStatus = () => {} } = this.props;
+
+        delete uploadedFilesData[filename];
         this.setState({ uploadedFilesData });
-        this.handleAddImage(file);
+        handleAddImage(file);
+        uploadStatus(true);
     }
 
     render() {
@@ -197,7 +351,7 @@ export default class ImageUpload extends Component {
                                     </div>
                                     <div class='d-flex w-100 justify-content-between'>
                                         <img class='img-fluid'
-                                            src={uploadedFilesData[key].event.target.result}
+                                            src={uploadedFilesData[key].resizedSrc || uploadedFilesData[key].event.target.result}
                                             style='max-height: 150px;'
                                         />
                                         <small>{uploadedFilesData[key].event.uploadDone}</small>
