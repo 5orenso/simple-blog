@@ -14,7 +14,7 @@ const debugName = 'ImageUpload';
 
 const MAX_WIDTH = 2048;
 const MAX_HEIGHT = 2048;
-const MAX_FILES = 20;
+const MAX_FILES = 100;
 
 function filenameSafe(filename) {
     return filename.replace(/[^a-z0-9]/gi, '_').replace(/_+/g, '_').toLowerCase();
