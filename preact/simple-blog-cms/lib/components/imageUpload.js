@@ -26,6 +26,7 @@ export default class ImageUpload extends Component {
         this.state = { ...initialState };
         this.handleAddImage = this.props.handleAddImage;
         this.fileInput;
+        this.uploadQueue = [];
     }
 
     handleAddFiles = event => {
@@ -184,23 +185,26 @@ export default class ImageUpload extends Component {
     }
 
     addToUploadQueue = (photo) => {
-        const { uploadQueue = [] } = this.state;
-        uploadQueue.push(photo);
-        this.setState({
-            uploadQueue,
-        }, () => {
-            this.handleUploadQueue();
-        });
+        // const { uploadQueue = [] } = this.state;
+        // uploadQueue.push(photo);
+        // this.setState({
+        //     uploadQueue,
+        // }, () => {
+        //     this.handleUploadQueue();
+        // });
+        this.uploadQueue.push(photo);
+        this.handleUploadQueue();
     }
 
     handleUploadQueue = () => {
-        const { uploadQueue = [], totalUploading } = this.state;
+        // const { uploadQueue = [], totalUploading } = this.state;
+        const { totalUploading } = this.state;
         console.log('handleUploadQueue.totalUploading', totalUploading)
-        if (uploadQueue.length > 0 && totalUploading < 1) {
-            const photo = uploadQueue.shift();
+        if (this.uploadQueue.length > 0 && totalUploading < 1) {
+            const photo = this.uploadQueue.shift();
             this.setState({
                 totalUploading: totalUploading + 1,
-                uploadQueue,
+                // uploadQueue,
             });
             this.handleUpload(photo, MAX_WIDTH, MAX_HEIGHT);
         }
