@@ -164,8 +164,20 @@ export default class ImageUpload extends Component {
                     console.log(`${debugName}.FileReader: File: ${fileObject.name} read successfully: `
                         + `${JSON.stringify(event)}`);
                 }
-                const resizedImage = await this.resizeImage(event.target.result, maxWidth, maxHeight);
-
+                let resizedImage;
+                try {
+                    const isImage = fileObject.type.match(/image\//); // .match(/(jpg|jpeg|png|gif|heic|heif|svg|webp|tif)/i);
+                    if (isImage) {
+                        resizedImage = await this.resizeImage(event.target.result, maxWidth, maxHeight);
+                    }
+                } catch(e) {
+                    console.error('Error resizing image:', e);
+                    this.reportError({
+                        file: 'dragNdropFileupload.js',
+                        function: 'readLocalFile.reader.addEventListener.load',
+                        error: e,
+                    });
+                }
                 const photo = fileObject;
                 const filename = filenameSafe(photo.name);
                 const uploadedFilesData = this.state.uploadedFilesData;

@@ -862,9 +862,9 @@ export default class SimpleBlogCms extends Component {
     };
 
     // - - - [ Component events from Preact it self: ] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    componentWillMount() {
+    componentDidMount() {
         if (debug) {
-            console.log(widgetName, 'componentWillMount', this.props);
+            console.log(widgetName, 'componentDidMount', this.props);
         }
     }
 

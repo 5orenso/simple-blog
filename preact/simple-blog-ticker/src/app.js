@@ -504,7 +504,7 @@ language: ${language}<br />
         };
     }
 
-    componentWillMount() {
+    componentDidMount() {
         // window.addEventListener("cordovacallbackerror", (event) => {
         //     // event.error contains the original error object
         //     console.log(event.error);

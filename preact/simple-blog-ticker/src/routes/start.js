@@ -120,13 +120,13 @@ class Start extends Component {
 
     tickTimer = () => {
         const { articleStore } = this.props.stores;
-        const { article } = articleStore; 
+        const { article } = articleStore;
         const { articleId, raceDate } = this.props;
         const date = articleId ? article['ticker-raceDate'] : raceDate;
-        
+
         if (!date) {
             return null;
-        }        
+        }
         const timeLeft = calculateTimeLeft({ countdownto: date });
         // const timeNow = getDateParts({ showDateOnly, showSeconds, showTimezone, showClockOnly });
         const timerComponents = [];
@@ -140,7 +140,7 @@ class Start extends Component {
                 {timeLeft[interval]}<span class={`font-weight-light ${isDay ? 'mr-1' : ''}`}>{isDay ? 'd' : (isSec ? '' : ':')}</span>{" "}
             </span>);
         });
-        
+
         this.setState({
             raceTime: timeLeft,
             timerComponents,
@@ -159,7 +159,7 @@ class Start extends Component {
         }
     }
 
-    componentWillMount() {
+    componentDidMount() {
         this.loadAll();
     }
 
@@ -201,7 +201,7 @@ class Start extends Component {
         } = this.props;
         const { raceTime, timerComponents } = this.state;
         const { appState, articleStore } = this.props.stores;
-        const { article } = articleStore; 
+        const { article } = articleStore;
         const { mainView, subView, currentEmail, isAdmin, isExpert, isDevelopment, path } = appState;
 
         const title = articleId ? article['ticker-tickerTitle'] : tickerTitle;
@@ -210,28 +210,28 @@ class Start extends Component {
         const date = articleId ? article['ticker-raceDate'] : raceDate;
 
         return (<>
-            <div 
+            <div
                 class='d-flex flex-row flex-nowrap position-relative w-100'
                 style={`
                     height: ${height};
                     font-size: ${fontSize};
                 `}
             >
-                {title && <div 
+                {title && <div
                     class='position-absolute d-flex flex-column border-right'
                     style={`
-                        top: 0; 
-                        left: 0; 
-                        width: ${titleWidth}; 
+                        top: 0;
+                        left: 0;
+                        width: ${titleWidth};
                         height: ${height};
                         border-right: 1px solid #888;
                     `}
                     onClick={this.onLogoClick}
                 >
-                    <div 
+                    <div
                         class='pl-2'
                         style={`
-                            line-height: 1.1rem; 
+                            line-height: 1.1rem;
                             font-size: ${titleFontSize};
                         `}
                     >
@@ -243,22 +243,22 @@ class Start extends Component {
                             <div dangerouslySetInnerHTML={{__html: title}} />
                         </>}
                     </div>
-                    <div 
-                        class='pl-2 flex-fill d-flex align-items-center' 
+                    <div
+                        class='pl-2 flex-fill d-flex align-items-center'
                         style={`
-                            line-height: 1.0rem; 
+                            line-height: 1.0rem;
                             font-size: ${dateFontSize};
                         `}
                     >
                         <i class='fa-solid fa-flag-checkered mr-1' /> {util.formatDate(date)}
                     </div>
-                    <div 
+                    <div
                         class='text-white flex-fill d-flex align-items-center justify-content-center'
                         style={`
-                            background-color: rgb(233, 90, 43);                            
+                            background-color: rgb(233, 90, 43);
                         `}
                     >
-                        <div 
+                        <div
                             class='d-flex flex-row flex-nowrap justify-content-center align-items-center'
                             style={`
                                 font-size: ${countDownFontSize};
@@ -269,15 +269,15 @@ class Start extends Component {
                     </div>
                 </div>}
 
-                <div 
-                    class='w-100 overflow-hidden d-flex flex-row flex-nowrap position-relative' 
+                <div
+                    class='w-100 overflow-hidden d-flex flex-row flex-nowrap position-relative'
                     style={`
-                        margin-left: ${titleWidth}; 
+                        margin-left: ${titleWidth};
                     `}
                 >
                     {articleId ? <>
                         {article.id ? <>
-                            <Live stores={this.props.stores} {...this.props} height={height} />            
+                            <Live stores={this.props.stores} {...this.props} height={height} />
                         </> : <>
                             Loading...
                         </>}
@@ -285,7 +285,7 @@ class Start extends Component {
                         <Live stores={this.props.stores} {...this.props} height={height} />
                     </>}
                 </div>
-                 
+
             </div>
         </>);
     }

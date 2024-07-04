@@ -145,7 +145,7 @@ class FastList extends Component {
         }
     }
 
-    componentWillMount() {
+    componentDidMount() {
         this.setupIntersectionObserver();
     }
 
