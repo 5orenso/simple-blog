@@ -179,7 +179,14 @@ module.exports = async (req, res) => {
 
     limit = parseInt(limit, 10);
 
-    let article = await art.findOne(query);
+    let article = null;
+    try {
+        article = await art.findOne(query);
+    } catch (err) {
+        console.error('Error in get-article.js:', err);
+        console.log('query', JSON.stringify(query, null, 4));
+        console.log('req.params', JSON.stringify(req.params, null, 4));
+    }
 // console.log('query', JSON.stringify(query, null, 4));
 // console.log('article', JSON.stringify(article, null, 4));
     if (article?.tags && query.id) {
