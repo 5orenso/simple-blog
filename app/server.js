@@ -81,10 +81,10 @@ const webRouter = require('./routes/web');
 // webRouter.setConfig(config);
 // const imageRouter = require('./routes/image');
 
-imageRouter.setConfig(config, {
-    photoPath: config.adapter.markdown.photoPath,
-    photoCachePath: config.adapter.markdown.photoCachePath,
-});
+// imageRouter.setConfig(config, {
+//     photoPath: config.adapter.markdown.photoPath,
+//     photoCachePath: config.adapter.markdown.photoCachePath,
+// });
 const searchRouter = require('./routes/search');
 
 searchRouter.setConfig(config);
