@@ -78,13 +78,13 @@ const apiRouter = require('./routes/api');
 apiRouter.setConfig(config);
 const webRouter = require('./routes/web');
 
-// webRouter.setConfig(config);
-// const imageRouter = require('./routes/image');
+webRouter.setConfig(config);
+const imageRouter = require('./routes/image');
 
-// imageRouter.setConfig(config, {
-//     photoPath: config.adapter.markdown.photoPath,
-//     photoCachePath: config.adapter.markdown.photoCachePath,
-// });
+imageRouter.setConfig(config, {
+    photoPath: config.adapter.markdown.photoPath,
+    photoCachePath: config.adapter.markdown.photoCachePath,
+});
 const searchRouter = require('./routes/search');
 
 searchRouter.setConfig(config);
@@ -112,9 +112,10 @@ searchRouter.setConfig(config);
 app.use('/api', apiRouter);
 app.use('/rss', rssRouter);
 app.use('/static', localUtil.setCacheHeaders);
+app.use('/pho/', express.static(config.blog.staticFilesPath));
 app.use('/static', express.static(config.blog.staticFilesPath));
 app.use('/.well-known/', express.static(config.blog.textFilesPath));
-// app.use('/pho/', imageRouter);
+app.use('/pho/', imageRouter);
 app.use('/search/', searchRouter);
 
 app.use('/', webRouter);
