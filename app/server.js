@@ -78,8 +78,8 @@ const apiRouter = require('./routes/api');
 apiRouter.setConfig(config);
 const webRouter = require('./routes/web');
 
-webRouter.setConfig(config);
-const imageRouter = require('./routes/image');
+// webRouter.setConfig(config);
+// const imageRouter = require('./routes/image');
 
 imageRouter.setConfig(config, {
     photoPath: config.adapter.markdown.photoPath,
@@ -93,20 +93,20 @@ searchRouter.setConfig(config);
 // /220x/litt.no/aeropress/2012-05-25 11.26.27.jpg
 
 // Rewrite the URL before it gets to Express' static middleware.
-app.use('/pho/', (req, res, next) => {
-    // req.url = req.url.replace(/\/([^\/]+)\.[0-9a-f]+\.(css|js|jpg|png|gif|svg)$/, "/$1.$2");
-    const regexp = new RegExp(/^\/(.+?)\?w=([0-9]+)/);
-    const found = req.url.match(regexp);
-    if (!Array.isArray(found)) {
-        next();
-    }
-    const path = found[1];
-    const size = found[2];
-    const allowedSizes = [150, 220, 400, 800, 1024, 1280, 1600, 1920];
-    const closest = allowedSizes.sort((a, b) => Math.abs(size - a) - Math.abs(size - b))[0];
-    const target = `https://${config.blog.imageServer}/${closest}x/${config.blog.imagePath}/${path}`;
-    res.redirect(301, target);
-});
+// app.use('/pho/', (req, res, next) => {
+//     // req.url = req.url.replace(/\/([^\/]+)\.[0-9a-f]+\.(css|js|jpg|png|gif|svg)$/, "/$1.$2");
+//     const regexp = new RegExp(/^\/(.+?)\?w=([0-9]+)/);
+//     const found = req.url.match(regexp);
+//     if (!Array.isArray(found)) {
+//         next();
+//     }
+//     const path = found[1];
+//     const size = found[2];
+//     const allowedSizes = [150, 220, 400, 800, 1024, 1280, 1600, 1920];
+//     const closest = allowedSizes.sort((a, b) => Math.abs(size - a) - Math.abs(size - b))[0];
+//     const target = `https://${config.blog.imageServer}/${closest}x/${config.blog.imagePath}/${path}`;
+//     res.redirect(301, target);
+// });
 
 // Register routes -------------------------------
 app.use('/api', apiRouter);
@@ -114,7 +114,7 @@ app.use('/rss', rssRouter);
 app.use('/static', localUtil.setCacheHeaders);
 app.use('/static', express.static(config.blog.staticFilesPath));
 app.use('/.well-known/', express.static(config.blog.textFilesPath));
-app.use('/pho/', imageRouter);
+// app.use('/pho/', imageRouter);
 app.use('/search/', searchRouter);
 
 app.use('/', webRouter);
