@@ -309,7 +309,7 @@ class HtmlUtilities {
             if (!opts.articleId) {
                 opts.articleId = article.id;
             }
-            if (['poll', 'booking', 'clock', 'form', 'gallery', 'gallery-grid', 'map', 'racetracker', 'rating', 'related', 'sheet', 'weather'].includes(tag)) {
+            if (['poll', 'booking', 'clock', 'form', 'gallery', 'gallery-grid', 'logo-grid', 'map', 'racetracker', 'rating', 'related', 'sheet', 'weather'].includes(tag)) {
                 const replacerResult = `<div class='w-100 ${opts.containerClasses || 'my-3 border'} clearfix' data-widget-host="simple-blog-${tag}">
                 <h3>WIDGET: ${tag}</h3>
 <xmp>
