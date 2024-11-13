@@ -47,6 +47,16 @@ function fetchApi({ url, headers = {}, body = {}, settings = {} }) {
         });
 }
 
+const fieldSorter = (fields) => (a, b) => fields.map(o => {
+    let dir = 1;
+    if (o[0] === '-') {
+        dir = -1;
+        o = o.substring(1);
+    }
+    // eslint-disable-next-line no-nested-ternary
+    return a[o] > b[o] ? dir : a[o] < b[o] ? -(dir) : 0;
+}).reduce((p, n) => (p || n), 0);
+
 export default function App(props) {
     const { apiServer, jwtToken, articleId, start, end, size = '220x', className = '', style = '', photoClass = '', imgClass = '', autoScroll } = props;
 
@@ -94,8 +104,9 @@ export default function App(props) {
         <div class={`${article['logo-grid-class']} ${className}`} style={`${article['logo-grid-style']} ${style}`}>
 
             <div class={`w-100 ${article['logo-grid-wrapper-class']}`}>
+                {/* <xmp>{JSON.stringify(filteredImages.sort(fieldSorter(['sort'])).map(i => i.sort), null, 2)}</xmp> */}
                 <div class={`d-flex flex-wrap ${article['logo-grid-wrapper-inner-class']}`}>
-                    {filteredImages && filteredImages.map((img, idx) => (
+                    {filteredImages && filteredImages.sort(fieldSorter(['sort'])).map((img, idx) => (
                         <div
                             style={`
                                 // width: 33%;
