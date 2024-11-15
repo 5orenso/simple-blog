@@ -216,7 +216,7 @@ export default function App(props) {
         jwtToken,
         articleId,
         sheetId,
-        fields = 'email,cellphone,firstname,lastname,childname,childbirth,address,postalplace,buySwimmingTrunks',
+        fields = 'email,cellphone,firstname,lastname,childname,childbirth,address,postalplace,buySwimmingTrunks,buySwimmingTrunks,haveGiftcard',
         participantsFields = 'name,country,team,club',
         // fields = 'email,cellphone,firstname,lastname,address,postalplace,team,club,country',
         showParticipants = false,
@@ -534,6 +534,7 @@ export default function App(props) {
                                 <input type='text' class='form-control' id='inputCountry' name='country' value={input.country} onInput={onInput} onBlur={onBlur} data-validation={FIELDS.country.validation} data-removechars={FIELDS.country.removechars} />
                             </div>}
                         </div>
+
                         <div class='row'>
                             {parsedFields.indexOf('buySwimmingTrunks') > -1 && <>
                                 <div class='col-12 form-check ml-3'>
