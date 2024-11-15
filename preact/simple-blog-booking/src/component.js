@@ -46,6 +46,8 @@ const FIELDS = {
         required: true,
     },
     childbirth: {
+        validation: '^.{2,}$',
+        removechars: null,
         required: true,
     },
     buySwimmingTrunks: {
@@ -479,7 +481,7 @@ export default function App(props) {
                             </div>}
                             {parsedFields.indexOf('childbirth') > -1 && <div class='col-6 form-group'>
                                 <label for='inputChildBirth'><i class='fas fa-birthday-cake text-muted' /> Barnets fødselsdato</label>
-                                <input type='date' class='form-control' id='inputChildBirth' name='childbirth' value={input.childbirth} onInput={onInput} onBlur={onBlur} data-validation={FIELDS.childbirth.validation} data-removechars={FIELDS.childbirth.removechars}  />
+                                <input type='text' class='form-control' id='inputChildBirth' name='childbirth' value={input.childbirth} onInput={onInput} onBlur={onBlur} data-validation={FIELDS.childbirth.validation} data-removechars={FIELDS.childbirth.removechars}  />
                             </div>}
                         </div>
                         <div class='row'>
