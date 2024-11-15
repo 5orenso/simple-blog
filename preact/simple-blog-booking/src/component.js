@@ -552,6 +552,7 @@ export default function App(props) {
                                 </div>
                             </>}
                         </div>
+
                         <div class='row'>
                             {parsedFields.indexOf('haveGiftcard') > -1 && <>
                                 <div class='col-12 form-check ml-3'>
@@ -570,6 +571,7 @@ export default function App(props) {
                                 </div>
                             </>}
                         </div>
+
                         {input.haveGiftcard && <div class='row'>
                             {parsedFields.indexOf('giftcardAmount') > -1 && <div class='col-12 form-group'>
                                 <label for='inputGiftCardAmount'>Gavekort beløp</label>
