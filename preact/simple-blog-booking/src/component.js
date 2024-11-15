@@ -53,6 +53,12 @@ const FIELDS = {
     buySwimmingTrunks: {
         required: false,
     },
+    haveGiftcard: {
+        required: false,
+    },
+    giftcardAmount: {
+        required: false,
+    },
     address: {
         validation: '^.{2,}$',
         removechars: null,
@@ -546,6 +552,30 @@ export default function App(props) {
                                 </div>
                             </>}
                         </div>
+                        <div class='row'>
+                            {parsedFields.indexOf('haveGiftcard') > -1 && <>
+                                <div class='col-12 form-check ml-3'>
+                                    <input
+                                        class='form-check-input'
+                                        type='checkbox'
+                                        id='inputHaveGiftcard'
+                                        name='haveGiftcard'
+                                        value={'yes'}
+                                        checked={input.haveGiftcard ? true : false}
+                                        onInput={onInputCheckbox}
+                                        onBlur={onBlur}
+                                        data-validation={FIELDS.haveGiftcard.validation}
+                                    />
+                                    <label for='inputHaveGiftcard'>Jeg har gavekort</label>
+                                </div>
+                            </>}
+                        </div>
+                        {input.haveGiftcard && <div class='row'>
+                            {parsedFields.indexOf('giftcardAmount') > -1 && <div class='col-12 form-group'>
+                                <label for='inputGiftCardAmount'>Gavekort beløp</label>
+                                <input type='text' class='form-control' id='inputGiftCardAmount' name='giftcardAmount' value={input.giftcardAmount} onInput={onInput} onBlur={onBlur} data-validation={FIELDS.giftcardAmount.validation} data-removechars={FIELDS.giftcardAmount.removechars} />
+                            </div>}
+                        </div>}
 
                         {invalidFields && Object.keys(invalidFields).length > 0 && <>
                             <div class='alert alert-warning' role='alert'>
