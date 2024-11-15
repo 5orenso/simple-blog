@@ -341,6 +341,13 @@ export default function App(props) {
         }
     }, [input]);
 
+    const onInputCheckbox = useCallback((e) => {
+        const { name, checked } = e.target;
+        const newInput = { ...input };
+        newInput[name] = checked;
+        setInput(newInput);
+    }, [input]);
+
     const onBlur = useCallback(async () => {
         const postData = async () => {
             const result = await fetchApi({
@@ -531,7 +538,7 @@ export default function App(props) {
                                         name='buySwimmingTrunks'
                                         value={'yes'}
                                         checked={input.buySwimmingTrunks ? true : false}
-                                        onInput={onInput}
+                                        onInput={onInputCheckbox}
                                         onBlur={onBlur}
                                         data-validation={FIELDS.buySwimmingTrunks.validation}
                                     />
