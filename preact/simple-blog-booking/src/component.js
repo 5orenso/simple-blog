@@ -216,7 +216,7 @@ export default function App(props) {
         jwtToken,
         articleId,
         sheetId,
-        fields = 'email,cellphone,firstname,lastname,childname,childbirth,address,postalplace,buySwimmingTrunks,buySwimmingTrunks,haveGiftcard',
+        fields = 'email,cellphone,firstname,lastname,childname,childbirth,address,postalplace,buySwimmingTrunks,giftcardAmount,haveGiftcard',
         participantsFields = 'name,country,team,club',
         // fields = 'email,cellphone,firstname,lastname,address,postalplace,team,club,country',
         showParticipants = false,
