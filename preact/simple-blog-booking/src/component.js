@@ -610,7 +610,14 @@ export default function App(props) {
                             </div>}
                         </div>}
 
-                        <div class='row'>
+                        <div class='row bg-primary'>
+                            <div class='col-12 form-group'>
+                                <label for='inputGiftCardAmount'>Gavekort beløp</label>
+                                <input type='text' class='form-control' id='inputGiftCardAmount' name='giftcardAmount' value={input.giftcardAmount} onInput={onInput} onBlur={onBlur} data-validation={FIELDS.giftcardAmount.validation} data-removechars={FIELDS.giftcardAmount.removechars} />
+                            </div>
+                        </div>
+
+                        <div class='row bg-primary'>
                             {parsedFields.indexOf('toEmail') > -1 && <div class='col-6 form-group'>
                                 <label for='inputToEmail'><i class='fas fa-at text-muted' /> Mottaker e-post</label>
                                 <input type='email' autocomplete='off'  onFocus={onFocus} class='form-control' id='inputToEmail' aria-describedby='emailHelp' name='toEmail' value={input.toEmail} onInput={onInput} onBlur={onBlur} data-validation={FIELDS.toEmail.validation} data-removechars={FIELDS.toEmail.removechars} />
@@ -624,7 +631,7 @@ export default function App(props) {
                                 <input type='password' class='form-control' id='inputPassword' name='password' value={input.password} onInput={onInput} onBlur={onBlur} />
                             </div> */}
                         </div>
-                        <div class='row'>
+                        <div class='row bg-primary'>
                             {parsedFields.indexOf('toFirstname') > -1 && <div class='col-6 form-group'>
                                 <label for='inputToFirstname'>Mottaker fornavn</label>
                                 <input type='text' autocomplete='off'  onFocus={onFocus} class='form-control' id='inputToFirstname' name='toFirstname' value={input.toFirstname} onInput={onInput} onBlur={onBlur} data-validation={FIELDS.toFirstname.validation} data-removechars={FIELDS.toFirstname.removechars} />
