@@ -113,6 +113,9 @@ const FIELDS = {
         help: 'Etternavnet er ikke gyldig. Må være minst 2 bokstaver langt.',
         required: true,
     },
+    toGiftcardAmount: {
+        required: false,
+    },
 };
 
 function hasAllFields(object, fields) {
@@ -610,14 +613,14 @@ export default function App(props) {
                             </div>}
                         </div>}
 
-                        <div class='row bg-primary'>
+                        {parsedFields.indexOf('toGiftcardAmount') > -1 && <div class='row' style='background-color: rgba(13, 110, 253, 0.1);'>
                             <div class='col-12 form-group'>
-                                <label for='inputGiftCardAmount'>Gavekort beløp</label>
-                                <input type='text' class='form-control' id='inputGiftCardAmount' name='giftcardAmount' value={input.giftcardAmount} onInput={onInput} onBlur={onBlur} data-validation={FIELDS.giftcardAmount.validation} data-removechars={FIELDS.giftcardAmount.removechars} />
+                                <label for='inputToGiftCardAmount'>Gavekort beløp</label>
+                                <input type='text' class='form-control' id='inputToGiftCardAmount' name='toGiftcardAmount' value={input.toGiftcardAmount} onInput={onInput} onBlur={onBlur} data-validation={FIELDS.toGiftcardAmount.validation} data-removechars={FIELDS.toGiftcardAmount.removechars} />
                             </div>
-                        </div>
+                        </div>}
 
-                        <div class='row bg-primary'>
+                        <div class='row'  style='background-color: rgba(13, 110, 253, 0.1);'>
                             {parsedFields.indexOf('toEmail') > -1 && <div class='col-6 form-group'>
                                 <label for='inputToEmail'><i class='fas fa-at text-muted' /> Mottaker e-post</label>
                                 <input type='email' autocomplete='off'  onFocus={onFocus} class='form-control' id='inputToEmail' aria-describedby='emailHelp' name='toEmail' value={input.toEmail} onInput={onInput} onBlur={onBlur} data-validation={FIELDS.toEmail.validation} data-removechars={FIELDS.toEmail.removechars} />
@@ -631,7 +634,7 @@ export default function App(props) {
                                 <input type='password' class='form-control' id='inputPassword' name='password' value={input.password} onInput={onInput} onBlur={onBlur} />
                             </div> */}
                         </div>
-                        <div class='row bg-primary'>
+                        <div class='row '  style='background-color: rgba(13, 110, 253, 0.1);'>
                             {parsedFields.indexOf('toFirstname') > -1 && <div class='col-6 form-group'>
                                 <label for='inputToFirstname'>Mottaker fornavn</label>
                                 <input type='text' autocomplete='off'  onFocus={onFocus} class='form-control' id='inputToFirstname' name='toFirstname' value={input.toFirstname} onInput={onInput} onBlur={onBlur} data-validation={FIELDS.toFirstname.validation} data-removechars={FIELDS.toFirstname.removechars} />
