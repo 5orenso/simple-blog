@@ -52,15 +52,15 @@ module.exports = async (req, res) => {
         return utilHtml.renderApi(req, res, 400, data);
     }
 
-    if (!row.toEmail && existingRow > -1) {
-        const data = {
-            title: doc.title,
-            data: 'Allerede påmeldt!',
-            status: 400,
-            id: existingRow.id,
-        };
-        return utilHtml.renderApi(req, res, 400, data);
-    }
+    // if (existingRow > -1) {
+    //     const data = {
+    //         title: doc.title,
+    //         data: 'Allerede påmeldt!',
+    //         status: 400,
+    //         id: existingRow.id,
+    //     };
+    //     return utilHtml.renderApi(req, res, 400, data);
+    // }
 
     const {
         cellphone, firstname, lastname, address, postalcode, postalplace,
