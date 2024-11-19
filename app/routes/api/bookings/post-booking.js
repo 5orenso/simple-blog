@@ -52,7 +52,7 @@ module.exports = async (req, res) => {
         return utilHtml.renderApi(req, res, 400, data);
     }
 
-    if (existingRow > -1) {
+    if (!row.toEmail && existingRow > -1) {
         const data = {
             title: doc.title,
             data: 'Allerede påmeldt!',
