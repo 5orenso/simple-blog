@@ -89,6 +89,30 @@ const FIELDS = {
         removechars: null,
         help: 'Land er ikke gyldig. Må være minst 2 bokstaver langt.',
     },
+    toEmail: {
+        validation: 'email',
+        help: 'E-post adressen er ikke gyldig. Sjekk at du har skrevet den riktig.',
+        required: true,
+    },
+    toCellphone: {
+        // validation: '^(0047|\\\+47|47)?[2-9]\\\d{7}$',
+        validation: '^\\\+?[0-9]{8,}$',
+        removechars: '[ a-zA-Z]',
+        help: 'Mobilnummer er ikke gyldig. Sjekk at du har skrevet det riktig.',
+        required: true,
+    },
+    toFirstname: {
+        validation: '^.{2,}$',
+        removechars: null,
+        help: 'Fornavnet er ikke gyldig. Må være minst 2 bokstaver langt.',
+        required: true,
+    },
+    toLastname: {
+        validation: '^.{2,}$',
+        removechars: null,
+        help: 'Etternavnet er ikke gyldig. Må være minst 2 bokstaver langt.',
+        required: true,
+    },
 };
 
 function hasAllFields(object, fields) {
@@ -585,6 +609,33 @@ export default function App(props) {
                                 <input type='text' class='form-control' id='inputGiftCardAmount' name='giftcardAmount' value={input.giftcardAmount} onInput={onInput} onBlur={onBlur} data-validation={FIELDS.giftcardAmount.validation} data-removechars={FIELDS.giftcardAmount.removechars} />
                             </div>}
                         </div>}
+
+                        <div class='row'>
+                            {parsedFields.indexOf('toEmail') > -1 && <div class='col-6 form-group'>
+                                <label for='inputToEmail'><i class='fas fa-at text-muted' /> Mottaker e-post</label>
+                                <input type='email' autocomplete='off'  onFocus={onFocus} class='form-control' id='inputToEmail' aria-describedby='emailHelp' name='toEmail' value={input.toEmail} onInput={onInput} onBlur={onBlur} data-validation={FIELDS.toEmail.validation} data-removechars={FIELDS.toEmail.removechars} />
+                            </div>}
+                            {parsedFields.indexOf('toCellphone') > -1 && <div class='col-6 form-group'>
+                                <label for='inputToCellphone'><i class='fas fa-mobile-alt text-muted' /> Mottaker mobil</label>
+                                <input type='tel' autocomplete='off'  onFocus={onFocus} class='form-control' id='inputToCellphone' name='toCellphone' value={input.toCellphone} onInput={onInput} onBlur={onBlur} data-validation={FIELDS.toCellphone.validation} data-removechars={FIELDS.toCellphone.removechars} />
+                            </div>}
+                            {/* <div class='col-6 form-group'>
+                                <label for='inputPassword'>Passord</label>
+                                <input type='password' class='form-control' id='inputPassword' name='password' value={input.password} onInput={onInput} onBlur={onBlur} />
+                            </div> */}
+                        </div>
+                        <div class='row'>
+                            {parsedFields.indexOf('toFirstname') > -1 && <div class='col-6 form-group'>
+                                <label for='inputToFirstname'>Mottaker fornavn</label>
+                                <input type='text' autocomplete='off'  onFocus={onFocus} class='form-control' id='inputToFirstname' name='toFirstname' value={input.toFirstname} onInput={onInput} onBlur={onBlur} data-validation={FIELDS.toFirstname.validation} data-removechars={FIELDS.toFirstname.removechars} />
+                                <small id='inputToFirstnameHelp' class='form-text text-muted'>Ditt fornavn.</small>
+                            </div>}
+                            {parsedFields.indexOf('toLastname') > -1 && <div class='col-6 form-group'>
+                                <label for='inputToLastname'>Mottaker etternavn</label>
+                                <input type='text' autocomplete='off'  onFocus={onFocus} class='form-control' id='inputToLastname' name='toLastname' value={input.toLastname} onInput={onInput} onBlur={onBlur} data-validation={FIELDS.toLastname.validation} data-removechars={FIELDS.toLastname.removechars} />
+                                <small id='inputToLastnameHelp' class='form-text text-muted'>Ditt etternavn.</small>
+                            </div>}
+                        </div>
 
                         {invalidFields && Object.keys(invalidFields).length > 0 && <>
                             <div class='alert alert-warning' role='alert'>
