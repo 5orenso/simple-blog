@@ -493,169 +493,171 @@ export default function App(props) {
                 </> : <>
                     {row['free seats'] > 0 ? <>
                         <h2 class='mt-5'><i class='fas fa-user-plus text-muted' /> Påmeldingskjema</h2>
-                        <div class='row'>
-                            {parsedFields.indexOf('email') > -1 && <div class='col-6 form-group'>
-                                <label for='inputEmail'><i class='fas fa-at text-muted' /> E-post</label>
-                                <input type='email' autocomplete='off'  onFocus={onFocus} class='form-control' id='inputEmail' aria-describedby='emailHelp' name='email' value={input.email} onInput={onInput} onBlur={onBlur} data-validation={FIELDS.email.validation} data-removechars={FIELDS.email.removechars} />
-                            </div>}
-                            {parsedFields.indexOf('cellphone') > -1 && <div class='col-6 form-group'>
-                                <label for='inputCellphone'><i class='fas fa-mobile-alt text-muted' /> Mobil</label>
-                                <input type='tel' autocomplete='off'  onFocus={onFocus} class='form-control' id='inputCellphone' name='cellphone' value={input.cellphone} onInput={onInput} onBlur={onBlur} data-validation={FIELDS.cellphone.validation} data-removechars={FIELDS.cellphone.removechars} />
-                            </div>}
-                            {/* <div class='col-6 form-group'>
-                                <label for='inputPassword'>Passord</label>
-                                <input type='password' class='form-control' id='inputPassword' name='password' value={input.password} onInput={onInput} onBlur={onBlur} />
-                            </div> */}
-                        </div>
-                        <div class='row'>
-                            {parsedFields.indexOf('firstname') > -1 && <div class='col-6 form-group'>
-                                <label for='inputFirstname'>Fornavn</label>
-                                <input type='text' autocomplete='off'  onFocus={onFocus} class='form-control' id='inputFirstname' name='firstname' value={input.firstname} onInput={onInput} onBlur={onBlur} data-validation={FIELDS.firstname.validation} data-removechars={FIELDS.firstname.removechars} />
-                                <small id='inputFirstnameHelp' class='form-text text-muted'>Ditt fornavn.</small>
-                            </div>}
-                            {parsedFields.indexOf('lastname') > -1 && <div class='col-6 form-group'>
-                                <label for='inputLastname'>Etternavn</label>
-                                <input type='text' autocomplete='off'  onFocus={onFocus} class='form-control' id='inputLastname' name='lastname' value={input.lastname} onInput={onInput} onBlur={onBlur} data-validation={FIELDS.lastname.validation} data-removechars={FIELDS.lastname.removechars} />
-                                <small id='inputLastnameHelp' class='form-text text-muted'>Ditt etternavn.</small>
-                            </div>}
-                        </div>
-                        <div class='row'>
-                            {parsedFields.indexOf('childname') > -1 && <div class='col-6 form-group'>
-                                <label for='inputChildname'><i class='fas fa-baby text-muted' /> Barnets navn</label>
-                                <input type='text' autocomplete='off'  onFocus={onFocus} class='form-control' id='inputChildname' name='childname' value={input.childname} onInput={onInput} onBlur={onBlur} data-validation={FIELDS.childname.validation} data-removechars={FIELDS.childname.removechars} />
-                                <small id='inputChildnameHelp' class='form-text text-muted'>Fullt navn på barnet som skal på kurs.</small>
-                            </div>}
-                            {parsedFields.indexOf('childbirth') > -1 && <div class='col-6 form-group'>
-                                <label for='inputChildBirth'><i class='fas fa-birthday-cake text-muted' /> Barnets fødselsdato</label>
-                                <input type='text' autocomplete='off'  onFocus={onFocus} class='form-control' id='inputChildBirth' name='childbirth' value={input.childbirth} onInput={onInput} onBlur={onBlur} data-validation={FIELDS.childbirth.validation} data-removechars={FIELDS.childbirth.removechars}  />
-                            </div>}
-                        </div>
-                        <div class='row'>
-                            {parsedFields.indexOf('team') > -1 && <div class='col-6 form-group'>
-                                <label for='inputTeam'>Team</label>
-                                <input type='text' autocomplete='off'  onFocus={onFocus} class='form-control' id='inputTeam' name='team' value={input.team} onInput={onInput} onBlur={onBlur} data-validation={FIELDS.team.validation} data-removechars={FIELDS.team.removechars} />
-                                <small id='inputTeamHelp' class='form-text text-muted'>Navn på teamet ditt</small>
-                            </div>}
-                            {parsedFields.indexOf('club') > -1 && <div class='col-6 form-group'>
-                                <label for='inputClub'>Klubb</label>
-                                <input type='text' autocomplete='off'  onFocus={onFocus} class='form-control' id='inputClub' name='club' value={input.club} onInput={onInput} onBlur={onBlur} data-validation={FIELDS.club.validation} data-removechars={FIELDS.club.removechars} />
-                                <small id='inputClubHelp' class='form-text text-muted'>Navn på klubb eller idrettslag</small>
-                            </div>}
-                        </div>
-                        <div class='row'>
-                            {parsedFields.indexOf('address') > -1 && <div class='col-12 form-group'>
-                                <label for='inputAddress'>Adresse</label>
-                                <input type='text' autocomplete='off'  onFocus={onFocus} class='form-control' id='inputAddress' name='address' value={input.address} onInput={onInput} onBlur={onBlur} data-validation={FIELDS.address.validation} data-removechars={FIELDS.address.removechars} />
-                            </div>}
-                        </div>
-                        <div class='row'>
-                            {parsedFields.indexOf('postalplace') > -1 && <div class='col-12 form-group'>
-                                <label for='inputPostalcode'>Postnr-/sted</label>
-                                <div class='row'>
-                                    <div class='col-3'>
-                                        <input type='text' autocomplete='off'  onFocus={onFocus} class='form-control' id='inputPostalcode' name='postalcode' value={input.postalcode} onInput={onInput} onBlur={onBlur} cols='4' data-validation='^\d{4}$' data-removechars='[^0-9]' />
+                        <form autocomplete='off'>
+                            <div class='row'>
+                                {parsedFields.indexOf('email') > -1 && <div class='col-6 form-group'>
+                                    <label for='inputEmail'><i class='fas fa-at text-muted' /> E-post</label>
+                                    <input type='email' autocomplete='off'  onFocus={onFocus} class='form-control' id='inputEmail' aria-describedby='emailHelp' name='email' value={input.email} onInput={onInput} onBlur={onBlur} data-validation={FIELDS.email.validation} data-removechars={FIELDS.email.removechars} />
+                                </div>}
+                                {parsedFields.indexOf('cellphone') > -1 && <div class='col-6 form-group'>
+                                    <label for='inputCellphone'><i class='fas fa-mobile-alt text-muted' /> Mobil</label>
+                                    <input type='tel' autocomplete='off'  onFocus={onFocus} class='form-control' id='inputCellphone' name='cellphone' value={input.cellphone} onInput={onInput} onBlur={onBlur} data-validation={FIELDS.cellphone.validation} data-removechars={FIELDS.cellphone.removechars} />
+                                </div>}
+                                {/* <div class='col-6 form-group'>
+                                    <label for='inputPassword'>Passord</label>
+                                    <input type='password' class='form-control' id='inputPassword' name='password' value={input.password} onInput={onInput} onBlur={onBlur} />
+                                </div> */}
+                            </div>
+                            <div class='row'>
+                                {parsedFields.indexOf('firstname') > -1 && <div class='col-6 form-group'>
+                                    <label for='inputFirstname'>Fornavn</label>
+                                    <input type='text' autocomplete='off'  onFocus={onFocus} class='form-control' id='inputFirstname' name='firstname' value={input.firstname} onInput={onInput} onBlur={onBlur} data-validation={FIELDS.firstname.validation} data-removechars={FIELDS.firstname.removechars} />
+                                    <small id='inputFirstnameHelp' class='form-text text-muted'>Ditt fornavn.</small>
+                                </div>}
+                                {parsedFields.indexOf('lastname') > -1 && <div class='col-6 form-group'>
+                                    <label for='inputLastname'>Etternavn</label>
+                                    <input type='text' autocomplete='off'  onFocus={onFocus} class='form-control' id='inputLastname' name='lastname' value={input.lastname} onInput={onInput} onBlur={onBlur} data-validation={FIELDS.lastname.validation} data-removechars={FIELDS.lastname.removechars} />
+                                    <small id='inputLastnameHelp' class='form-text text-muted'>Ditt etternavn.</small>
+                                </div>}
+                            </div>
+                            <div class='row'>
+                                {parsedFields.indexOf('childname') > -1 && <div class='col-6 form-group'>
+                                    <label for='inputChildname'><i class='fas fa-baby text-muted' /> Barnets navn</label>
+                                    <input type='text' autocomplete='off'  onFocus={onFocus} class='form-control' id='inputChildname' name='childname' value={input.childname} onInput={onInput} onBlur={onBlur} data-validation={FIELDS.childname.validation} data-removechars={FIELDS.childname.removechars} />
+                                    <small id='inputChildnameHelp' class='form-text text-muted'>Fullt navn på barnet som skal på kurs.</small>
+                                </div>}
+                                {parsedFields.indexOf('childbirth') > -1 && <div class='col-6 form-group'>
+                                    <label for='inputChildBirth'><i class='fas fa-birthday-cake text-muted' /> Barnets fødselsdato</label>
+                                    <input type='text' autocomplete='off'  onFocus={onFocus} class='form-control' id='inputChildBirth' name='childbirth' value={input.childbirth} onInput={onInput} onBlur={onBlur} data-validation={FIELDS.childbirth.validation} data-removechars={FIELDS.childbirth.removechars}  />
+                                </div>}
+                            </div>
+                            <div class='row'>
+                                {parsedFields.indexOf('team') > -1 && <div class='col-6 form-group'>
+                                    <label for='inputTeam'>Team</label>
+                                    <input type='text' autocomplete='off'  onFocus={onFocus} class='form-control' id='inputTeam' name='team' value={input.team} onInput={onInput} onBlur={onBlur} data-validation={FIELDS.team.validation} data-removechars={FIELDS.team.removechars} />
+                                    <small id='inputTeamHelp' class='form-text text-muted'>Navn på teamet ditt</small>
+                                </div>}
+                                {parsedFields.indexOf('club') > -1 && <div class='col-6 form-group'>
+                                    <label for='inputClub'>Klubb</label>
+                                    <input type='text' autocomplete='off'  onFocus={onFocus} class='form-control' id='inputClub' name='club' value={input.club} onInput={onInput} onBlur={onBlur} data-validation={FIELDS.club.validation} data-removechars={FIELDS.club.removechars} />
+                                    <small id='inputClubHelp' class='form-text text-muted'>Navn på klubb eller idrettslag</small>
+                                </div>}
+                            </div>
+                            <div class='row'>
+                                {parsedFields.indexOf('address') > -1 && <div class='col-12 form-group'>
+                                    <label for='inputAddress'>Adresse</label>
+                                    <input type='text' autocomplete='off'  onFocus={onFocus} class='form-control' id='inputAddress' name='address' value={input.address} onInput={onInput} onBlur={onBlur} data-validation={FIELDS.address.validation} data-removechars={FIELDS.address.removechars} />
+                                </div>}
+                            </div>
+                            <div class='row'>
+                                {parsedFields.indexOf('postalplace') > -1 && <div class='col-12 form-group'>
+                                    <label for='inputPostalcode'>Postnr-/sted</label>
+                                    <div class='row'>
+                                        <div class='col-3'>
+                                            <input type='text' autocomplete='off'  onFocus={onFocus} class='form-control' id='inputPostalcode' name='postalcode' value={input.postalcode} onInput={onInput} onBlur={onBlur} cols='4' data-validation='^\d{4}$' data-removechars='[^0-9]' />
+                                        </div>
+                                        <div class='col-9'>
+                                            <input type='text' autocomplete='off'  onFocus={onFocus} class='form-control' name='postalplace' value={input.postalplace} onInput={onInput} onBlur={onBlur} data-validation={FIELDS.postalplace.validation} data-removechars={FIELDS.postalplace.removechars} />
+                                        </div>
                                     </div>
-                                    <div class='col-9'>
-                                        <input type='text' autocomplete='off'  onFocus={onFocus} class='form-control' name='postalplace' value={input.postalplace} onInput={onInput} onBlur={onBlur} data-validation={FIELDS.postalplace.validation} data-removechars={FIELDS.postalplace.removechars} />
+                                </div>}
+                            </div>
+                            <div class='row'>
+                                {parsedFields.indexOf('country') > -1 && <div class='col-12 form-group'>
+                                    <label for='inputCountry'>Land</label>
+                                    <input type='text' autocomplete='off'  onFocus={onFocus} class='form-control' id='inputCountry' name='country' value={input.country} onInput={onInput} onBlur={onBlur} data-validation={FIELDS.country.validation} data-removechars={FIELDS.country.removechars} />
+                                </div>}
+                            </div>
+
+                            <div class='row'>
+                                {parsedFields.indexOf('buySwimmingTrunks') > -1 && <>
+                                    <div class='col-12 form-check ml-3'>
+                                        <input
+                                            class='form-check-input'
+                                            type='checkbox'
+                                            id='inputBuySwimmingTrunks'
+                                            name='buySwimmingTrunks'
+                                            value={'yes'}
+                                            checked={input.buySwimmingTrunks ? true : false}
+                                            onInput={onInputCheckbox}
+                                            onBlur={onBlur}
+                                            data-validation={FIELDS.buySwimmingTrunks.validation}
+                                        />
+                                        <label for='inputBuySwimmingTrunks'>Jeg ønsker å kjøpe badebukse</label>
                                     </div>
+                                </>}
+                            </div>
+
+                            <div class='row'>
+                                {parsedFields.indexOf('haveGiftcard') > -1 && <>
+                                    <div class='col-12 form-check ml-3'>
+                                        <input
+                                            class='form-check-input'
+                                            type='checkbox'
+                                            id='inputHaveGiftcard'
+                                            name='haveGiftcard'
+                                            value={'yes'}
+                                            checked={input.haveGiftcard ? true : false}
+                                            onInput={onInputCheckbox}
+                                            onBlur={onBlur}
+                                            data-validation={FIELDS.haveGiftcard.validation}
+                                        />
+                                        <label for='inputHaveGiftcard'>Jeg har gavekort</label>
+                                    </div>
+                                </>}
+                            </div>
+
+                            {input.haveGiftcard && <div class='row'>
+                                {parsedFields.indexOf('giftcardAmount') > -1 && <div class='col-12 form-group'>
+                                    <label for='inputGiftCardAmount'>Gavekort beløp</label>
+                                    <input type='text' class='form-control' id='inputGiftCardAmount' name='giftcardAmount' value={input.giftcardAmount} onInput={onInput} onBlur={onBlur} data-validation={FIELDS.giftcardAmount.validation} data-removechars={FIELDS.giftcardAmount.removechars} />
+                                </div>}
+                            </div>}
+
+                            {parsedFields.indexOf('toGiftcardAmount') > -1 && <div class='row' style='background-color: rgba(13, 110, 253, 0.1);'>
+                                <div class='col-12 form-group'>
+                                    <label for='inputToGiftCardAmount'>Gavekort beløp</label>
+                                    <input type='text' class='form-control' id='inputToGiftCardAmount' name='toGiftcardAmount' value={input.toGiftcardAmount} onInput={onInput} onBlur={onBlur} data-validation={FIELDS.toGiftcardAmount.validation} data-removechars={FIELDS.toGiftcardAmount.removechars} />
                                 </div>
                             </div>}
-                        </div>
-                        <div class='row'>
-                            {parsedFields.indexOf('country') > -1 && <div class='col-12 form-group'>
-                                <label for='inputCountry'>Land</label>
-                                <input type='text' autocomplete='off'  onFocus={onFocus} class='form-control' id='inputCountry' name='country' value={input.country} onInput={onInput} onBlur={onBlur} data-validation={FIELDS.country.validation} data-removechars={FIELDS.country.removechars} />
-                            </div>}
-                        </div>
 
-                        <div class='row'>
-                            {parsedFields.indexOf('buySwimmingTrunks') > -1 && <>
-                                <div class='col-12 form-check ml-3'>
-                                    <input
-                                        class='form-check-input'
-                                        type='checkbox'
-                                        id='inputBuySwimmingTrunks'
-                                        name='buySwimmingTrunks'
-                                        value={'yes'}
-                                        checked={input.buySwimmingTrunks ? true : false}
-                                        onInput={onInputCheckbox}
-                                        onBlur={onBlur}
-                                        data-validation={FIELDS.buySwimmingTrunks.validation}
-                                    />
-                                    <label for='inputBuySwimmingTrunks'>Jeg ønsker å kjøpe badebukse</label>
+                            <div class='row'  style='background-color: rgba(13, 110, 253, 0.1);'>
+                                {parsedFields.indexOf('toEmail') > -1 && <div class='col-6 form-group'>
+                                    <label for='inputToEmail'><i class='fas fa-at text-muted' /> Mottaker e-post</label>
+                                    <input type='email' autocomplete='off'  onFocus={onFocus} class='form-control' id='inputToEmail' aria-describedby='emailHelp' name='toEmail' value={input.toEmail} onInput={onInput} onBlur={onBlur} data-validation={FIELDS.toEmail.validation} data-removechars={FIELDS.toEmail.removechars} />
+                                </div>}
+                                {parsedFields.indexOf('toCellphone') > -1 && <div class='col-6 form-group'>
+                                    <label for='inputToCellphone'><i class='fas fa-mobile-alt text-muted' /> Mottaker mobil</label>
+                                    <input type='tel' autocomplete='off'  onFocus={onFocus} class='form-control' id='inputToCellphone' name='toCellphone' value={input.toCellphone} onInput={onInput} onBlur={onBlur} data-validation={FIELDS.toCellphone.validation} data-removechars={FIELDS.toCellphone.removechars} />
+                                </div>}
+                                {/* <div class='col-6 form-group'>
+                                    <label for='inputPassword'>Passord</label>
+                                    <input type='password' class='form-control' id='inputPassword' name='password' value={input.password} onInput={onInput} onBlur={onBlur} />
+                                </div> */}
+                            </div>
+                            <div class='row '  style='background-color: rgba(13, 110, 253, 0.1);'>
+                                {parsedFields.indexOf('toFirstname') > -1 && <div class='col-6 form-group'>
+                                    <label for='inputToFirstname'>Mottaker fornavn</label>
+                                    <input type='text' autocomplete='off'  onFocus={onFocus} class='form-control' id='inputToFirstname' name='toFirstname' value={input.toFirstname} onInput={onInput} onBlur={onBlur} data-validation={FIELDS.toFirstname.validation} data-removechars={FIELDS.toFirstname.removechars} />
+                                    <small id='inputToFirstnameHelp' class='form-text text-muted'>Ditt fornavn.</small>
+                                </div>}
+                                {parsedFields.indexOf('toLastname') > -1 && <div class='col-6 form-group'>
+                                    <label for='inputToLastname'>Mottaker etternavn</label>
+                                    <input type='text' autocomplete='off'  onFocus={onFocus} class='form-control' id='inputToLastname' name='toLastname' value={input.toLastname} onInput={onInput} onBlur={onBlur} data-validation={FIELDS.toLastname.validation} data-removechars={FIELDS.toLastname.removechars} />
+                                    <small id='inputToLastnameHelp' class='form-text text-muted'>Ditt etternavn.</small>
+                                </div>}
+                            </div>
+
+                            {invalidFields && Object.keys(invalidFields).length > 0 && <>
+                                <div class='alert alert-warning' role='alert'>
+                                    <ul>
+                                        {Object.keys(invalidFields).map(field => <li>
+                                            {FIELDS[field].help}
+                                        </li>)}
+                                    </ul>
                                 </div>
                             </>}
-                        </div>
-
-                        <div class='row'>
-                            {parsedFields.indexOf('haveGiftcard') > -1 && <>
-                                <div class='col-12 form-check ml-3'>
-                                    <input
-                                        class='form-check-input'
-                                        type='checkbox'
-                                        id='inputHaveGiftcard'
-                                        name='haveGiftcard'
-                                        value={'yes'}
-                                        checked={input.haveGiftcard ? true : false}
-                                        onInput={onInputCheckbox}
-                                        onBlur={onBlur}
-                                        data-validation={FIELDS.haveGiftcard.validation}
-                                    />
-                                    <label for='inputHaveGiftcard'>Jeg har gavekort</label>
-                                </div>
-                            </>}
-                        </div>
-
-                        {input.haveGiftcard && <div class='row'>
-                            {parsedFields.indexOf('giftcardAmount') > -1 && <div class='col-12 form-group'>
-                                <label for='inputGiftCardAmount'>Gavekort beløp</label>
-                                <input type='text' class='form-control' id='inputGiftCardAmount' name='giftcardAmount' value={input.giftcardAmount} onInput={onInput} onBlur={onBlur} data-validation={FIELDS.giftcardAmount.validation} data-removechars={FIELDS.giftcardAmount.removechars} />
-                            </div>}
-                        </div>}
-
-                        {parsedFields.indexOf('toGiftcardAmount') > -1 && <div class='row' style='background-color: rgba(13, 110, 253, 0.1);'>
-                            <div class='col-12 form-group'>
-                                <label for='inputToGiftCardAmount'>Gavekort beløp</label>
-                                <input type='text' class='form-control' id='inputToGiftCardAmount' name='toGiftcardAmount' value={input.toGiftcardAmount} onInput={onInput} onBlur={onBlur} data-validation={FIELDS.toGiftcardAmount.validation} data-removechars={FIELDS.toGiftcardAmount.removechars} />
-                            </div>
-                        </div>}
-
-                        <div class='row'  style='background-color: rgba(13, 110, 253, 0.1);'>
-                            {parsedFields.indexOf('toEmail') > -1 && <div class='col-6 form-group'>
-                                <label for='inputToEmail'><i class='fas fa-at text-muted' /> Mottaker e-post</label>
-                                <input type='email' autocomplete='off'  onFocus={onFocus} class='form-control' id='inputToEmail' aria-describedby='emailHelp' name='toEmail' value={input.toEmail} onInput={onInput} onBlur={onBlur} data-validation={FIELDS.toEmail.validation} data-removechars={FIELDS.toEmail.removechars} />
-                            </div>}
-                            {parsedFields.indexOf('toCellphone') > -1 && <div class='col-6 form-group'>
-                                <label for='inputToCellphone'><i class='fas fa-mobile-alt text-muted' /> Mottaker mobil</label>
-                                <input type='tel' autocomplete='off'  onFocus={onFocus} class='form-control' id='inputToCellphone' name='toCellphone' value={input.toCellphone} onInput={onInput} onBlur={onBlur} data-validation={FIELDS.toCellphone.validation} data-removechars={FIELDS.toCellphone.removechars} />
-                            </div>}
-                            {/* <div class='col-6 form-group'>
-                                <label for='inputPassword'>Passord</label>
-                                <input type='password' class='form-control' id='inputPassword' name='password' value={input.password} onInput={onInput} onBlur={onBlur} />
-                            </div> */}
-                        </div>
-                        <div class='row '  style='background-color: rgba(13, 110, 253, 0.1);'>
-                            {parsedFields.indexOf('toFirstname') > -1 && <div class='col-6 form-group'>
-                                <label for='inputToFirstname'>Mottaker fornavn</label>
-                                <input type='text' autocomplete='off'  onFocus={onFocus} class='form-control' id='inputToFirstname' name='toFirstname' value={input.toFirstname} onInput={onInput} onBlur={onBlur} data-validation={FIELDS.toFirstname.validation} data-removechars={FIELDS.toFirstname.removechars} />
-                                <small id='inputToFirstnameHelp' class='form-text text-muted'>Ditt fornavn.</small>
-                            </div>}
-                            {parsedFields.indexOf('toLastname') > -1 && <div class='col-6 form-group'>
-                                <label for='inputToLastname'>Mottaker etternavn</label>
-                                <input type='text' autocomplete='off'  onFocus={onFocus} class='form-control' id='inputToLastname' name='toLastname' value={input.toLastname} onInput={onInput} onBlur={onBlur} data-validation={FIELDS.toLastname.validation} data-removechars={FIELDS.toLastname.removechars} />
-                                <small id='inputToLastnameHelp' class='form-text text-muted'>Ditt etternavn.</small>
-                            </div>}
-                        </div>
-
-                        {invalidFields && Object.keys(invalidFields).length > 0 && <>
-                            <div class='alert alert-warning' role='alert'>
-                                <ul>
-                                    {Object.keys(invalidFields).map(field => <li>
-                                        {FIELDS[field].help}
-                                    </li>)}
-                                </ul>
-                            </div>
-                        </>}
+                        </form>
 
                         <button type='button' class={`btn btn-${isOkToSubmit ? 'primary' : 'secondary'} float-right`} onClick={submitForm} disabled={loading || !isOkToSubmit}>
                             {isOkToSubmit ? <>
