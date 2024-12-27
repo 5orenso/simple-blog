@@ -663,7 +663,11 @@ export default function App(props) {
                             {isOkToSubmit ? <>
                                 Meld meg på!
                             </> : <>
-                                Fyll inn feltene over...
+                                Fyll inn feltene over...<br />
+
+                                <div class="alert alert-danger" role="alert">
+                                    Dersom du bruker autofill, må du gå gjennom og redigere feltene manuelt.
+                                </div>
                             </>}
                         </button>
 
