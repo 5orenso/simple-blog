@@ -498,10 +498,12 @@ export default function App(props) {
                                 {parsedFields.indexOf('email') > -1 && <div class='col-6 form-group'>
                                     <label for='inputEmail'><i class='fas fa-at text-muted' /> E-post</label>
                                     <input type='email' autocomplete='off'  onFocus={onFocus} class='form-control' id='inputEmail' aria-describedby='emailHelp' name='email' value={input.email} onInput={onInput} onBlur={onBlur} data-validation={FIELDS.email.validation} data-removechars={FIELDS.email.removechars} />
+                                    <small id='inputEmailHelp' class='form-text text-muted'>Din e-post. {input.email ? <></> : <>⚠️ Mangler data...</>}</small>
                                 </div>}
                                 {parsedFields.indexOf('cellphone') > -1 && <div class='col-6 form-group'>
                                     <label for='inputCellphone'><i class='fas fa-mobile-alt text-muted' /> Mobil</label>
                                     <input type='tel' autocomplete='off'  onFocus={onFocus} class='form-control' id='inputCellphone' name='cellphone' value={input.cellphone} onInput={onInput} onBlur={onBlur} data-validation={FIELDS.cellphone.validation} data-removechars={FIELDS.cellphone.removechars} />
+                                    <small id='inputCellphoneHelp' class='form-text text-muted'>Ditt mobilnummer. {input.cellphone ? <></> : <>⚠️ Mangler data...</>}</small>
                                 </div>}
                                 {/* <div class='col-6 form-group'>
                                     <label for='inputPassword'>Passord</label>
