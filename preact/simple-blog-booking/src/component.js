@@ -512,23 +512,24 @@ export default function App(props) {
                                 {parsedFields.indexOf('firstname') > -1 && <div class='col-6 form-group'>
                                     <label for='inputFirstname'>Fornavn</label>
                                     <input type='text' autocomplete='off'  onFocus={onFocus} class='form-control' id='inputFirstname' name='firstname' value={input.firstname} onInput={onInput} onBlur={onBlur} data-validation={FIELDS.firstname.validation} data-removechars={FIELDS.firstname.removechars} />
-                                    <small id='inputFirstnameHelp' class='form-text text-muted'>Ditt fornavn.</small>
+                                    <small id='inputFirstnameHelp' class='form-text text-muted'>Ditt fornavn. {input.firstname ? <></> : <>⚠️ Mangler data...</>}</small>
                                 </div>}
                                 {parsedFields.indexOf('lastname') > -1 && <div class='col-6 form-group'>
                                     <label for='inputLastname'>Etternavn</label>
                                     <input type='text' autocomplete='off'  onFocus={onFocus} class='form-control' id='inputLastname' name='lastname' value={input.lastname} onInput={onInput} onBlur={onBlur} data-validation={FIELDS.lastname.validation} data-removechars={FIELDS.lastname.removechars} />
-                                    <small id='inputLastnameHelp' class='form-text text-muted'>Ditt etternavn.</small>
+                                    <small id='inputLastnameHelp' class='form-text text-muted'>Ditt etternavn. {input.lastname ? <></> : <>⚠️ Mangler data...</>}</small>
                                 </div>}
                             </div>
                             <div class='row'>
                                 {parsedFields.indexOf('childname') > -1 && <div class='col-6 form-group'>
                                     <label for='inputChildname'><i class='fas fa-baby text-muted' /> Barnets navn</label>
                                     <input type='text' autocomplete='off'  onFocus={onFocus} class='form-control' id='inputChildname' name='childname' value={input.childname} onInput={onInput} onBlur={onBlur} data-validation={FIELDS.childname.validation} data-removechars={FIELDS.childname.removechars} />
-                                    <small id='inputChildnameHelp' class='form-text text-muted'>Fullt navn på barnet som skal på kurs.</small>
+                                    <small id='inputChildnameHelp' class='form-text text-muted'>Fullt navn på barnet som skal på kurs. {input.childname ? <></> : <>⚠️ Mangler data...</>}</small>
                                 </div>}
                                 {parsedFields.indexOf('childbirth') > -1 && <div class='col-6 form-group'>
                                     <label for='inputChildBirth'><i class='fas fa-birthday-cake text-muted' /> Barnets fødselsdato</label>
-                                    <input type='text' autocomplete='off'  onFocus={onFocus} class='form-control' id='inputChildBirth' name='childbirth' value={input.childbirth} onInput={onInput} onBlur={onBlur} data-validation={FIELDS.childbirth.validation} data-removechars={FIELDS.childbirth.removechars}  />
+                                    <input type='text' autocomplete='off'  onFocus={onFocus} class='form-control' id='inputChildBirth' name='childbirth' value={input.childbirth} onInput={onInput} onBlur={onBlur} data-validation={FIELDS.childbirth.validation} data-removechars={FIELDS.childbirth.removechars} />
+                                    <small id='inputChildBirthHelp' class='form-text text-muted'>Fødselsdatao på barnet som skal på kurs. {input.childbirth ? <></> : <>⚠️ Mangler data...</>}</small>
                                 </div>}
                             </div>
                             <div class='row'>
@@ -555,9 +556,11 @@ export default function App(props) {
                                     <div class='row'>
                                         <div class='col-3'>
                                             <input type='text' autocomplete='off'  onFocus={onFocus} class='form-control' id='inputPostalcode' name='postalcode' value={input.postalcode} onInput={onInput} onBlur={onBlur} cols='4' data-validation='^\d{4}$' data-removechars='[^0-9]' />
+                                            <small id='inputPostalcodeHelp' class='form-text text-muted'>Postnummer. {input.postalcode ? <></> : <>⚠️ Mangler data...</>}</small>
                                         </div>
                                         <div class='col-9'>
                                             <input type='text' autocomplete='off'  onFocus={onFocus} class='form-control' name='postalplace' value={input.postalplace} onInput={onInput} onBlur={onBlur} data-validation={FIELDS.postalplace.validation} data-removechars={FIELDS.postalplace.removechars} />
+                                            <small id='inputPostalplaceHelp' class='form-text text-muted'>Postnummer. {input.postalplace ? <></> : <>⚠️ Mangler data...</>}</small>
                                         </div>
                                     </div>
                                 </div>}
@@ -664,12 +667,14 @@ export default function App(props) {
                                 Meld meg på!
                             </> : <>
                                 Fyll inn feltene over...<br />
-
-                                <div class="alert alert-danger" role="alert">
-                                    Dersom du bruker autofill, må du gå gjennom og redigere feltene manuelt.
-                                </div>
                             </>}
                         </button>
+
+                        {isOkToSubmit ? <></> : <>
+                            <div class='alert alert-danger' role='alert'>
+                                ⚠️ Dersom du bruker autofill, må du gå gjennom og redigere feltene manuelt.
+                            </div>
+                        </>}
 
                         {loading && <div class='d-flex justify-content-center py-3'>
                             <div class='spinner-border' role='status'>
