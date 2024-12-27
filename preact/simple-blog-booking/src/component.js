@@ -558,11 +558,11 @@ export default function App(props) {
                                     <div class='row'>
                                         <div class='col-3'>
                                             <input type='text' autocomplete='off'  onFocus={onFocus} class='form-control' id='inputPostalcode' name='postalcode' value={input.postalcode} onInput={onInput} onBlur={onBlur} cols='4' data-validation='^\d{4}$' data-removechars='[^0-9]' />
-                                            <small id='inputPostalcodeHelp' class='form-text text-muted'>Postnummer. {input.postalcode ? <></> : <>⚠️ Mangler data...</>}</small>
+                                            <small id='inputPostalcodeHelp' class='form-text text-muted'>Postnummer.</small>
                                         </div>
                                         <div class='col-9'>
                                             <input type='text' autocomplete='off'  onFocus={onFocus} class='form-control' name='postalplace' value={input.postalplace} onInput={onInput} onBlur={onBlur} data-validation={FIELDS.postalplace.validation} data-removechars={FIELDS.postalplace.removechars} />
-                                            <small id='inputPostalplaceHelp' class='form-text text-muted'>Postnummer. {input.postalplace ? <></> : <>⚠️ Mangler data...</>}</small>
+                                            <small id='inputPostalplaceHelp' class='form-text text-muted'>Postnummer.</small>
                                         </div>
                                     </div>
                                 </div>}
