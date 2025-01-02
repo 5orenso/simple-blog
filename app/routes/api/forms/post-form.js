@@ -19,7 +19,7 @@ const { routeName, routePath, run, webUtil, utilHtml, util } = require('../../..
 module.exports = async (req, res) => {
     const { hrstart, runId } = run(req);
 
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     const googleSheetId = req.params.sheetid; // '1A6hdvpg_Kz2mHbcaGA6-RmLvgwALB2bE3kKnPTFtPjE';
     const { google } = req.config;
     const { email } = req.body;
@@ -36,17 +36,16 @@ module.exports = async (req, res) => {
     const signupSheet = doc.sheetsByIndex[1];
     const sheetRows = await signupSheet.getRows();
 
-    const existingRow = sheetRows.findIndex(row => (row.email === email));
-
-    if (existingRow > -1) {
-        const data = {
-            title: doc.title,
-            data: 'Allerede påmeldt!',
-            status: 400,
-            id: existingRow.id,
-        };
-        return utilHtml.renderApi(req, res, 400, data);
-    }
+    // const existingRow = sheetRows.findIndex(row => (row.email === email));
+    // if (existingRow > -1) {
+    //     const data = {
+    //         title: doc.title,
+    //         data: 'Allerede påmeldt!',
+    //         status: 400,
+    //         id: existingRow.id,
+    //     };
+    //     return utilHtml.renderApi(req, res, 400, data);
+    // }
 
     const {
         cellphone, phone, firstname, lastname, address, zip, place,
@@ -78,7 +77,7 @@ ${emailSignature || ''}
         logincode: util.generateCode(),
     });
 
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     const data = {
         title: doc.title,
         data: 'Row added',

@@ -50,7 +50,7 @@ function fetchApi({ url, headers = {}, body = {}, settings = {} }) {
 
 function getLang() {
     if (navigator.languages !== undefined) {
-        return navigator.languages[0]; 
+        return navigator.languages[0];
     }
     return navigator.language;
 }
@@ -92,7 +92,7 @@ function getHeaderColStyles(col, sheet) {
         'font-style': italic ? 'italic' : 'none',
         // 'width': `${columnWidth}px`,
         // 'height': `${rowHeight}px`,
-    };   
+    };
 }
 
 function getColStyles({ col, row, rowIdx, sheet }) {
@@ -107,7 +107,7 @@ function getColStyles({ col, row, rowIdx, sheet }) {
     const fgColor = (fgRed || fgGreen || fgBlue) ? `rgb(${putil.normalizeBetween(fgRed || 0, 0, 1, 0, 255)}, ${putil.normalizeBetween(fgGreen || 0, 0, 1, 0, 255)}, ${putil.normalizeBetween(fgBlue || 0, 0, 1, 0, 255)})` : 'inherit';
     const { pixelSize: columnWidth } = headerMeta.columnMeta;
     const { pixelSize: rowHeight } = props;
-    return {     
+    return {
         'color': fgColor,
         'background-color': bgColor,
         'font-size': `${fontSize ? `${fontSize}pt` : ''}`,
@@ -249,7 +249,7 @@ export default function App(props) {
             });
             setApiResponse(result);
         };
-        if (input.email && putil.validateEmail(input.email) && Object.keys(invalidFields).length === 0) {
+        if (Object.keys(invalidFields).length === 0) {
             setLoading(true);
             await postData();
             setLoading(false);
@@ -292,7 +292,7 @@ export default function App(props) {
                             </div>}
                             <div class={'col-12'}>
                                 <div class='row'>
-                                    <div class={row.classes || 'col-3'}>                            
+                                    <div class={row.classes || 'col-3'}>
                                         {row.title && <label for={`${row.name}Input`}>{row.title}</label>}
                                     </div>
                                     {values && values.map((val, valIdx) => <div class={`${row.valueClasses || 'col-12'}`}>
@@ -313,7 +313,7 @@ export default function App(props) {
                             </div>}
                             <div class={'col-12'}>
                                 <div class='row'>
-                                    <div class={row.classes || 'col-3'}>                            
+                                    <div class={row.classes || 'col-3'}>
                                         {row.title && <label for={`${row.name}Input`}>{row.title}</label>}
                                     </div>
                                     {values && values.map((val, valIdx) => <div class={`${row.valueClasses || 'col-12'}`}>
@@ -433,16 +433,16 @@ export default function App(props) {
                             <div class='form-group'>
                                 {row.description && <Markdown markdown={`${row.description}`} markdownOpts={MARKDOWN_OPTIONS} />}
                                 <label for={`${row.name}Input`}>{row.title}</label>
-                                <input 
-                                    type={row.type} 
-                                    class='form-control' 
-                                    id={`${row.name}Input`} 
-                                    name={row.name} 
-                                    value={input[row.name]} 
-                                    aria-describedby={`${row.name}Help`} 
-                                    onInput={onInput} 
-                                    data-validation={row.validation} 
-                                    data-removechars={row.removechars} 
+                                <input
+                                    type={row.type}
+                                    class='form-control'
+                                    id={`${row.name}Input`}
+                                    name={row.name}
+                                    value={input[row.name]}
+                                    aria-describedby={`${row.name}Help`}
+                                    onInput={onInput}
+                                    data-validation={row.validation}
+                                    data-removechars={row.removechars}
                                     data-help={row.helpvalidation}
                                     min={row.min}
                                     max={row.max}
