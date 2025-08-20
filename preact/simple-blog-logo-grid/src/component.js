@@ -61,6 +61,7 @@ export default function App(props) {
     const { apiServer, jwtToken, articleId, start, end, size = '220x', className = '', style = '', photoClass = '', imgClass = '', autoScroll } = props;
 
     const [article, setArticle] = useState({});
+    const [artlist, setArticleList] = useState([]);
     const [imageServer, setImageServer] = useState({});
     const [imagePath, setImagePath] = useState({});
     const [imageIdx, setImageidx] = useState(0);
@@ -68,24 +69,34 @@ export default function App(props) {
     const imageScrollerRef = useRef(null);
 
     useEffect(() => {
-        const fetchData = async () => {
+        if (!articleId) { return; }
+        let cancelled = false;
+        (async () => {
             const result = await fetchApi({
                 url: `/api/article/${articleId}`,
-                settings: {
-                    apiServer,
-                },
-                body: {
-                    cacheContent: true,
-                },
-            })
-            setArticle(result.article);
+                settings: { apiServer },
+                body: { cacheContent: true }
+            });
+            if (cancelled) { return; }
+            const articleObj = result.article || {};
+            setArticle(articleObj);
             setImageServer(result.imageServer);
             setImagePath(result.imagePath);
-        };
-        if (articleId) {
-            fetchData();
-        }
-    }, [articleId]);
+
+            const category = (articleObj['logo-grid-category'] || '').trim();
+            if (category) {
+                const res2 = await fetchApi({
+                    url: `/api/article/public/${category}`,
+                    settings: { apiServer },
+                    body: { cacheContent: true }
+                });
+                if (!cancelled) {
+                    setArticleList(res2?.artlist || []);
+                }
+            }
+        })();
+        return () => { cancelled = true; };
+    }, [articleId, apiServer]);
 
     const { img: images = [] } = article;
     let filteredImages = images;
@@ -99,6 +110,66 @@ export default function App(props) {
     const hasPrev = imageIdx > 1;
     const hasNext = imageIdx < filteredImages.length;
     const selectedImage = filteredImages[imageIdx - 1];
+
+    if (article['logo-grid-category']) {
+        const { 'logo-grid-category': category } = article;
+        const allCategories = category.split(',').map(c => c.trim());
+        return (<>
+            {allCategories.map((category, idx) => {
+                const catArtlist = artlist.filter(a => a.category === category).sort(fieldSorter(['sort']));
+                const maxHeight = idx === 0 ? '50vh' : '200px';
+                const width = idx === 0 ? '100%' : '30%';
+                const imageSize = idx === 0 ? '1024x' : '220x';
+                return <>
+                    <h2 class='text-center'>{category}</h2>
+                    <div class={`d-flex flex-wrap justify-content-center mb-5 ${article['logo-grid-wrapper-class']}`}>
+                        {catArtlist.length > 0 ? (<>
+                            {catArtlist.map(article => {
+                                const articleImages = article.img || [];
+                                return (<>
+                                    {articleImages && articleImages.map((img, imgIdx) => (
+                                        <div class={`d-flex mx-1 my-1`} style={`width: ${width};`}>
+                                            <div
+                                                class={`d-flex flex-column text-center w-100 p-2 rounded-lg imageContainer overflow-hidden d-flex justify-content-start align-items-center ${article['logo-grid-img-wrapper-class']} p-1`}
+                                                style={`
+                                                    // background-color: rgba(0, 0, 0, 0.4);
+                                                    border: 1px solid rgba(0, 0, 0, 0.2);
+                                                    ${article['logo-grid-img-wrapper-style']}
+                                                `}
+                                            >
+                                                <a href={article.url} target='_blank'>
+                                                    {img.src ? <img
+                                                        class={`img-fluid rounded-lg position-relative ${article['logo-grid-class-photo-img']} ${imgClass}`}
+                                                        src={`https://${imageServer}/${imageSize}/${imagePath}/${img.src}`}
+                                                        loading='lazy'
+                                                        style={`
+                                                            max-height: ${maxHeight};
+                                                            ${imgIdx !== imageIdx ? '' : ''}
+                                                            ${article['logo-grid-img-style']}
+                                                        `}
+                                                    /> : <>
+                                                        <span class='display-1 text-muted'>
+                                                            <i class='fas fa-camera' />
+                                                        </span>
+                                                    </>}
+                                                </a>
+                                                {article.ingress && <div class='d-flex font-weight-lighter pt-3 pb-2 w-100 justify-content-center'>
+                                                    {article.ingress && <Markdown markdown={article.ingress} markdownOpts={MARKDOWN_OPTIONS} />}
+                                                </div>}
+                                            </div>
+                                        </div>
+                                    ))}
+
+                                </>);
+                            })}
+                        </>) : (
+                            <p class='text-muted'>No articles found.</p>
+                        )}
+                    </div>
+                </>;
+            })}
+        </>);
+    }
 
     return (
         <div class={`${article['logo-grid-class']} ${className}`} style={`${article['logo-grid-style']} ${style}`}>

@@ -124,6 +124,27 @@ const fields = {
     'gallery-start': 1,
     'gallery-end': 1,
 
+    'logo-grid-category': 1,
+
+    'logo-grid-autoscroll': 1,
+    'logo-grid-class': 1,
+    'logo-grid-wrapper-class': 1,
+    'logo-grid-wrapper-inner-class': 1,
+    'logo-grid-class-photo': 1,
+    'logo-grid-skip-background-images': 1,
+    'logo-grid-class-photo-img': 1,
+    'logo-grid-img-wrapper-class': 1,
+    'logo-grid-img-wrapper-style': 1,
+    'logo-grid-img-style': 1,
+
+    'logo-grid-style': 1,
+    'logo-grid-start': 1,
+    'logo-grid-end': 1,
+    'logo-grid-nav-back': 1,
+    'logo-grid-nav-forward': 1,
+    'logo-grid-nav-class': 1,
+    'logo-grid-nav-style': 1,
+
     'weather-class': 1,
     'weather-style': 1,
     'weather-name': 1,

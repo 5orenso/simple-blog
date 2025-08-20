@@ -36,7 +36,7 @@ const widgetFields = {
     poll: ['class', 'style'],
     gallery: ['class', 'style', 'wrapper-class', 'wrapper-inner-class', 'class-photo', 'skip-background-images', 'class-photo-img', 'img-wrapper-class', 'img-wrapper-style', 'img-style', 'start', 'end', 'nav-back', 'nav-forward', 'nav-class', 'nav-style', 'autoscroll'],
     'gallery-grid': ['class', 'style', 'wrapper-class', 'wrapper-inner-class', 'class-photo', 'skip-background-images', 'class-photo-img', 'img-wrapper-class', 'img-wrapper-style', 'img-style', 'start', 'end', 'nav-back', 'nav-forward', 'nav-class', 'nav-style', 'autoscroll'],
-    'logo-grid': ['class', 'style', 'wrapper-class', 'wrapper-inner-class', 'class-photo', 'skip-background-images', 'class-photo-img', 'img-wrapper-class', 'img-wrapper-style', 'img-style', 'start', 'end', 'nav-back', 'nav-forward', 'nav-class', 'nav-style', 'autoscroll'],
+    'logo-grid': ['category', 'class', 'style', 'wrapper-class', 'wrapper-inner-class', 'class-photo', 'skip-background-images', 'class-photo-img', 'img-wrapper-class', 'img-wrapper-style', 'img-style', 'start', 'end', 'nav-back', 'nav-forward', 'nav-class', 'nav-style', 'autoscroll'],
     weather: ['class', 'style', 'name', 'height', 'lat', 'lon', 'date'],
     map: ['class', 'style'],
     rating: ['class', 'style', 'from', 'to'],
