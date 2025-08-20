@@ -54,7 +54,7 @@
     "jsdoc": "^3.5.5",
     "mockingoose": "^2.12.0",
     "node-gyp": "^3.8.0",
-    "request": "^2.88.0",
+    "request": "^2.88.2",
     "sinon": "^7.3.1",
     "time-grunt": "^2.0.0",
     "uglifyjs-webpack-plugin": "^2.1.2",
