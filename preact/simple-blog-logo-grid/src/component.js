@@ -121,7 +121,7 @@ export default function App(props) {
                 const width = idx === 0 ? '100%' : '30%';
                 const imageSize = idx === 0 ? '1024x' : '220x';
                 return <>
-                    <h2 class='text-center'>{category}</h2>
+                    <h5 class='text-center'>{`${category}`.replace(/•/g, '')}</h5>
                     <div class={`d-flex flex-wrap justify-content-center mb-5 ${article['logo-grid-wrapper-class']}`}>
                         {catArtlist.length > 0 ? (<>
                             {catArtlist.map(article => {
