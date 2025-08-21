@@ -153,7 +153,10 @@ export default function App(props) {
                                                         </span>
                                                     </>}
                                                 </a>
-                                                {article.ingress && <div class='d-flex font-weight-lighter pt-3 pb-2 w-100 justify-content-center'>
+                                                {article.ingress && <div
+                                                    class='d-flex font-weight-lighter pt-3 pb-2 w-100 justify-content-center'
+                                                    style={`${idx === 0 ? '' : 'font-size: 0.8rem;'}`}
+                                                >
                                                     {article.ingress && <Markdown markdown={article.ingress} markdownOpts={MARKDOWN_OPTIONS} />}
                                                 </div>}
                                             </div>
