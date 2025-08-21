@@ -155,7 +155,7 @@ export default function App(props) {
                                                 </a>
                                                 {article.ingress && <div
                                                     class='d-flex font-weight-lighter pt-3 pb-2 w-100 justify-content-center'
-                                                    style={`${idx === 0 ? '' : 'font-size: 0.8rem;'}`}
+                                                    style={`${idx === 0 ? '' : 'font-size: 0.7rem; font-stretch: condensed;'}`}
                                                 >
                                                     {article.ingress && <Markdown markdown={article.ingress} markdownOpts={MARKDOWN_OPTIONS} />}
                                                 </div>}
