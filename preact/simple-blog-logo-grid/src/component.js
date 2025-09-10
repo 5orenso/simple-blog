@@ -57,6 +57,20 @@ const fieldSorter = (fields) => (a, b) => fields.map(o => {
     return a[o] > b[o] ? dir : a[o] < b[o] ? -(dir) : 0;
 }).reduce((p, n) => (p || n), 0);
 
+export function getCookieValue(name) {
+    if (typeof document === 'undefined') {
+        return undefined;
+    }
+    const pairs = document.cookie ? document.cookie.split('; ') : [];
+    for (const pair of pairs) {
+        const [key, ...rest] = pair.split('=');
+        if (key === name) {
+            return decodeURIComponent(rest.join('='));
+        }
+    }
+    return undefined;
+}
+
 export default function App(props) {
     const { apiServer, jwtToken, articleId, start, end, size = '220x', className = '', style = '', photoClass = '', imgClass = '', autoScroll } = props;
 
@@ -65,8 +79,16 @@ export default function App(props) {
     const [imageServer, setImageServer] = useState({});
     const [imagePath, setImagePath] = useState({});
     const [imageIdx, setImageidx] = useState(0);
+    const [language, setLanguage] = useState('no'); // default fallback
     const [autoscroll, setAutoscroll] = useState(true);
     const imageScrollerRef = useRef(null);
+
+    useEffect(() => {
+        const cookieLang = getCookieValue('language') || (typeof navigator !== 'undefined' ? navigator.language?.split('-')[0] : undefined);
+        if (cookieLang) {
+            setLanguage(cookieLang);
+        }
+    }, []);
 
     useEffect(() => {
         if (!articleId) { return; }
@@ -157,7 +179,11 @@ export default function App(props) {
                                                     class='d-flex font-weight-lighter pt-3 pb-2 w-100 justify-content-center'
                                                     style={`${idx === 0 ? '' : 'font-size: 0.7rem; font-stretch: condensed;'}`}
                                                 >
-                                                    {article.ingress && <Markdown markdown={article.ingress} markdownOpts={MARKDOWN_OPTIONS} />}
+                                                    {language === 'en' ? <>
+                                                        {article.ingressEn && <Markdown markdown={article.ingressEn} markdownOpts={MARKDOWN_OPTIONS} />}
+                                                    </> : <>
+                                                        {article.ingress && <Markdown markdown={article.ingress} markdownOpts={MARKDOWN_OPTIONS} />}
+                                                    </>}
                                                 </div>}
                                             </div>
                                         </div>
